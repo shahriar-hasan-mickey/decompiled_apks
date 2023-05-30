@@ -1,0 +1,220 @@
+record `rx.internal.util.atomic.SpscAtomicArrayQueue` @kind class @AccessFlag PUBLIC_FINAL extends `rx.internal.util.atomic.AtomicReferenceArrayQueue` @kind class {
+  `java.util.concurrent.atomic.AtomicLong` `rx.internal.util.atomic.SpscAtomicArrayQueue.consumerIndex` @AccessFlag FINAL;
+  `int` `rx.internal.util.atomic.SpscAtomicArrayQueue.lookAheadStep` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicLong` `rx.internal.util.atomic.SpscAtomicArrayQueue.producerIndex` @AccessFlag FINAL;
+  `long` `rx.internal.util.atomic.SpscAtomicArrayQueue.producerLookAhead` @AccessFlag ;
+}
+global `java.lang.Integer` `@@rx.internal.util.atomic.SpscAtomicArrayQueue.MAX_LOOK_AHEAD_STEP` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4b8334.  v0:= "jctools.spsc.max.lookahead.step" @kind object;
+  #L4b8338.  v1:= 4096I;
+  #L4b833c.  call temp:= `getInteger`(v0, v1) @signature `Ljava/lang/Integer;.getInteger:(Ljava/lang/String;I)Ljava/lang/Integer;` @kind static;
+  #L4b8342.  v0:= temp @kind object;
+  #L4b8344.  `@@rx.internal.util.atomic.SpscAtomicArrayQueue.MAX_LOOK_AHEAD_STEP` @type ^`java.lang.Integer` := v0 @kind object;
+  #L4b8348.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v1 @kind this, `int` v2 ) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b835c.  call `<init>`(v1, v2) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.<init>:(I)V` @kind direct;
+  #L4b8362.  v0:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L4b8366.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4b836c.  v1.`rx.internal.util.atomic.SpscAtomicArrayQueue.producerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` := v0 @kind object;
+  #L4b8370.  v0:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L4b8374.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4b837a.  v1.`rx.internal.util.atomic.SpscAtomicArrayQueue.consumerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` := v0 @kind object;
+  #L4b837e.  v2:= v2 / 4;
+  #L4b8382.  v0:= `@@rx.internal.util.atomic.SpscAtomicArrayQueue.MAX_LOOK_AHEAD_STEP` @type ^`java.lang.Integer` @kind object;
+  #L4b8386.  call temp:= `intValue`(v0) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L4b838c.  v0:= temp;
+  #L4b838e.  call temp:= `min`(v2, v0) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L4b8394.  v2:= temp;
+  #L4b8396.  v1.`rx.internal.util.atomic.SpscAtomicArrayQueue.lookAheadStep` @type ^`int` := v2;
+  #L4b839a.  return @kind void;
+}
+procedure `long` `lvConsumerIndex`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v2 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvConsumerIndex:()J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L4b82f4.  v0:= v2.`rx.internal.util.atomic.SpscAtomicArrayQueue.consumerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4b82f8.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4b82fe.  v0:= temp @kind wide;
+  #L4b8300.  return v0 @kind wide;
+}
+procedure `long` `lvProducerIndex`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v2 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvProducerIndex:()J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L4b8314.  v0:= v2.`rx.internal.util.atomic.SpscAtomicArrayQueue.producerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4b8318.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4b831e.  v0:= temp @kind wide;
+  #L4b8320.  return v0 @kind wide;
+}
+procedure `void` `soConsumerIndex`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v1 @kind this, `long` v2 ) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.soConsumerIndex:(J)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4b83c4.  v0:= v1.`rx.internal.util.atomic.SpscAtomicArrayQueue.consumerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4b83c8.  call `lazySet`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.lazySet:(J)V` @kind virtual;
+  #L4b83ce.  return @kind void;
+}
+procedure `void` `soProducerIndex`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v1 @kind this, `long` v2 ) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.soProducerIndex:(J)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4b83e0.  v0:= v1.`rx.internal.util.atomic.SpscAtomicArrayQueue.producerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4b83e4.  call `lazySet`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.lazySet:(J)V` @kind virtual;
+  #L4b83ea.  return @kind void;
+}
+procedure `void` `clear`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v0 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.clear:()V` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+
+  #L4b83ac.  call `clear`(v0) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.clear:()V` @kind super;
+  #L4b83b2.  return @kind void;
+}
+procedure `boolean` `isEmpty`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v5 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.isEmpty:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b815c.  call temp:= `lvProducerIndex`(v5) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvProducerIndex:()J` @kind direct;
+  #L4b8162.  v0:= temp @kind wide;
+  #L4b8164.  call temp:= `lvConsumerIndex`(v5) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvConsumerIndex:()J` @kind direct;
+  #L4b816a.  v2:= temp @kind wide;
+  #L4b816c.  v4:= lcmp(v0, v2);
+  #L4b8170.  if v4 != 0 then goto L4b8178;
+  #L4b8174.  v0:= 1I;
+  #L4b8176.  goto L4b817a;
+  #L4b8178.  v0:= 0I;
+  #L4b817a.  return v0;
+}
+procedure `java.util.Iterator` `iterator`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v1 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.iterator:()Ljava/util/Iterator;` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L4b82d8.  call temp:= `iterator`(v1) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.iterator:()Ljava/util/Iterator;` @kind super;
+  #L4b82de.  v0:= temp @kind object;
+  #L4b82e0.  return v0 @kind object;
+}
+procedure `boolean` `offer`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v8 @kind this, `java.lang.Object` v9 @kind object) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.offer:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4b818c.  if v9 == 0 then goto L4b8200;
+  #L4b8190.  v0:= v8.`rx.internal.util.atomic.SpscAtomicArrayQueue.buffer` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b8194.  v1:= v8.`rx.internal.util.atomic.SpscAtomicArrayQueue.mask` @type ^`int`;
+  #L4b8198.  v2:= v8.`rx.internal.util.atomic.SpscAtomicArrayQueue.producerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4b819c.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4b81a2.  v2:= temp @kind wide;
+  #L4b81a4.  call temp:= `calcElementOffset`(v8, v2, v1) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.calcElementOffset:(JI)I` @kind virtual;
+  #L4b81aa.  v4:= temp;
+  #L4b81ac.  v5:= v8.`rx.internal.util.atomic.SpscAtomicArrayQueue.producerLookAhead` @type ^`long` @kind wide;
+  #L4b81b0.  v7:= lcmp(v2, v5);
+  #L4b81b4.  if v7 < 0 then goto L4b81ea;
+  #L4b81b8.  v5:= v8.`rx.internal.util.atomic.SpscAtomicArrayQueue.lookAheadStep` @type ^`int`;
+  #L4b81bc.  v5:= (`long`) v5 @kind i2l;
+  #L4b81be.  v5:= v5 + v2 @kind long;
+  #L4b81c0.  call temp:= `calcElementOffset`(v8, v5, v1) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.calcElementOffset:(JI)I` @kind virtual;
+  #L4b81c6.  v1:= temp;
+  #L4b81c8.  call temp:= `lvElement`(v8, v0, v1) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;I)Ljava/lang/Object;` @kind virtual;
+  #L4b81ce.  v1:= temp @kind object;
+  #L4b81d0.  if v1 != 0 then goto L4b81da;
+  #L4b81d4.  v8.`rx.internal.util.atomic.SpscAtomicArrayQueue.producerLookAhead` @type ^`long` := v5 @kind wide;
+  #L4b81d8.  goto L4b81ea;
+  #L4b81da.  call temp:= `lvElement`(v8, v0, v4) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;I)Ljava/lang/Object;` @kind virtual;
+  #L4b81e0.  v1:= temp @kind object;
+  #L4b81e2.  if v1 == 0 then goto L4b81ea;
+  #L4b81e6.  v9:= 0I;
+  #L4b81e8.  return v9;
+  #L4b81ea.  call `soElement`(v8, v0, v4, v9) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.soElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;ILjava/lang/Object;)V` @kind virtual;
+  #L4b81f0.  v0:= 1L;
+  #L4b81f4.  v2:= v2 + v0 @kind long;
+  #L4b81f6.  call `soProducerIndex`(v8, v2) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.soProducerIndex:(J)V` @kind direct;
+  #L4b81fc.  v9:= 1I;
+  #L4b81fe.  return v9;
+  #L4b8200.  v9:= new `java.lang.NullPointerException`;
+  #L4b8204.  v0:= "Null is not a valid element" @kind object;
+  #L4b8208.  call `<init>`(v9, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b820e.  throw v9;
+}
+procedure `java.lang.Object` `peek`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v2 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.peek:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b825c.  v0:= v2.`rx.internal.util.atomic.SpscAtomicArrayQueue.consumerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4b8260.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4b8266.  v0:= temp @kind wide;
+  #L4b8268.  call temp:= `calcElementOffset`(v2, v0) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.calcElementOffset:(J)I` @kind virtual;
+  #L4b826e.  v0:= temp;
+  #L4b8270.  call temp:= `lvElement`(v2, v0) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvElement:(I)Ljava/lang/Object;` @kind virtual;
+  #L4b8276.  v0:= temp @kind object;
+  #L4b8278.  return v0 @kind object;
+}
+procedure `java.lang.Object` `poll`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v6 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.poll:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4b828c.  v0:= v6.`rx.internal.util.atomic.SpscAtomicArrayQueue.consumerIndex` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4b8290.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4b8296.  v0:= temp @kind wide;
+  #L4b8298.  call temp:= `calcElementOffset`(v6, v0) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.calcElementOffset:(J)I` @kind virtual;
+  #L4b829e.  v2:= temp;
+  #L4b82a0.  v3:= v6.`rx.internal.util.atomic.SpscAtomicArrayQueue.buffer` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b82a4.  call temp:= `lvElement`(v6, v3, v2) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;I)Ljava/lang/Object;` @kind virtual;
+  #L4b82aa.  v4:= temp @kind object;
+  #L4b82ac.  v5:= 0I;
+  #L4b82ae.  if v4 != 0 then goto L4b82b4;
+  #L4b82b2.  return v5 @kind object;
+  #L4b82b4.  call `soElement`(v6, v3, v2, v5) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.soElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;ILjava/lang/Object;)V` @kind virtual;
+  #L4b82ba.  v2:= 1L;
+  #L4b82be.  v0:= v0 + v2 @kind long;
+  #L4b82c0.  call `soConsumerIndex`(v6, v0) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.soConsumerIndex:(J)V` @kind direct;
+  #L4b82c6.  return v4 @kind object;
+}
+procedure `int` `size`(`rx.internal.util.atomic.SpscAtomicArrayQueue` v7 @kind this) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.size:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4b8220.  call temp:= `lvConsumerIndex`(v7) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvConsumerIndex:()J` @kind direct;
+  #L4b8226.  v0:= temp @kind wide;
+  #L4b8228.  call temp:= `lvProducerIndex`(v7) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvProducerIndex:()J` @kind direct;
+  #L4b822e.  v2:= temp @kind wide;
+  #L4b8230.  call temp:= `lvConsumerIndex`(v7) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.lvConsumerIndex:()J` @kind direct;
+  #L4b8236.  v4:= temp @kind wide;
+  #L4b8238.  v6:= lcmp(v0, v4);
+  #L4b823c.  if v6 != 0 then goto L4b8246;
+  #L4b8240.  v2:= v2 - v4 @kind long;
+  #L4b8242.  v0:= (`int`) v2 @kind l2i;
+  #L4b8244.  return v0;
+  #L4b8246.  v0:= v4 @kind wide;
+  #L4b8248.  goto L4b8228;
+}

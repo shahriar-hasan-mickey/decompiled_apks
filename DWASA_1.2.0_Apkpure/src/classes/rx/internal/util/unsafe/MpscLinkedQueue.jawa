@@ -1,0 +1,106 @@
+record `rx.internal.util.unsafe.MpscLinkedQueue` @kind class @AccessFlag PUBLIC_FINAL extends `rx.internal.util.unsafe.BaseLinkedQueue` @kind class {
+}
+procedure `void` `<init>`(`rx.internal.util.unsafe.MpscLinkedQueue` v1 @kind this) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4ba034.  call `<init>`(v1) @signature `Lrx/internal/util/unsafe/BaseLinkedQueue;.<init>:()V` @kind direct;
+  #L4ba03a.  v0:= new `rx.internal.util.atomic.LinkedQueueNode`;
+  #L4ba03e.  call `<init>`(v0) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.<init>:()V` @kind direct;
+  #L4ba044.  v1.`rx.internal.util.unsafe.MpscLinkedQueue.consumerNode` @type ^`rx.internal.util.atomic.LinkedQueueNode` := v0 @kind object;
+  #L4ba048.  v0:= v1.`rx.internal.util.unsafe.MpscLinkedQueue.consumerNode` @type ^`rx.internal.util.atomic.LinkedQueueNode` @kind object;
+  #L4ba04c.  call temp:= `xchgProducerNode`(v1, v0) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.xchgProducerNode:(Lrx/internal/util/atomic/LinkedQueueNode;)Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4ba052.  return @kind void;
+}
+procedure `boolean` `offer`(`rx.internal.util.unsafe.MpscLinkedQueue` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.offer:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b9f0c.  if v2 == 0 then goto L4b9f2c;
+  #L4b9f10.  v0:= new `rx.internal.util.atomic.LinkedQueueNode`;
+  #L4b9f14.  call `<init>`(v0, v2) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4b9f1a.  call temp:= `xchgProducerNode`(v1, v0) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.xchgProducerNode:(Lrx/internal/util/atomic/LinkedQueueNode;)Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9f20.  v2:= temp @kind object;
+  #L4b9f22.  call `soNext`(v2, v0) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.soNext:(Lrx/internal/util/atomic/LinkedQueueNode;)V` @kind virtual;
+  #L4b9f28.  v2:= 1I;
+  #L4b9f2a.  return v2;
+  #L4b9f2c.  v2:= new `java.lang.NullPointerException`;
+  #L4b9f30.  v0:= "null elements not allowed" @kind object;
+  #L4b9f34.  call `<init>`(v2, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b9f3a.  throw v2;
+}
+procedure `java.lang.Object` `peek`(`rx.internal.util.unsafe.MpscLinkedQueue` v2 @kind this) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.peek:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b9f4c.  v0:= v2.`rx.internal.util.unsafe.MpscLinkedQueue.consumerNode` @type ^`rx.internal.util.atomic.LinkedQueueNode` @kind object;
+  #L4b9f50.  call temp:= `lvNext`(v0) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.lvNext:()Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9f56.  v1:= temp @kind object;
+  #L4b9f58.  if v1 == 0 then goto L4b9f66;
+  #L4b9f5c.  call temp:= `lpValue`(v1) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.lpValue:()Ljava/lang/Object;` @kind virtual;
+  #L4b9f62.  v0:= temp @kind object;
+  #L4b9f64.  return v0 @kind object;
+  #L4b9f66.  call temp:= `lvProducerNode`(v2) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.lvProducerNode:()Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9f6c.  v1:= temp @kind object;
+  #L4b9f6e.  if v0 == v1 then goto L4b9f8a;
+  #L4b9f72.  call temp:= `lvNext`(v0) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.lvNext:()Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9f78.  v1:= temp @kind object;
+  #L4b9f7a.  if v1 != 0 then goto L4b9f80;
+  #L4b9f7e.  goto L4b9f72;
+  #L4b9f80.  call temp:= `lpValue`(v1) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.lpValue:()Ljava/lang/Object;` @kind virtual;
+  #L4b9f86.  v0:= temp @kind object;
+  #L4b9f88.  return v0 @kind object;
+  #L4b9f8a.  v0:= 0I;
+  #L4b9f8c.  return v0 @kind object;
+}
+procedure `java.lang.Object` `poll`(`rx.internal.util.unsafe.MpscLinkedQueue` v2 @kind this) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.poll:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b9fa0.  call temp:= `lpConsumerNode`(v2) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.lpConsumerNode:()Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9fa6.  v0:= temp @kind object;
+  #L4b9fa8.  call temp:= `lvNext`(v0) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.lvNext:()Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9fae.  v1:= temp @kind object;
+  #L4b9fb0.  if v1 == 0 then goto L4b9fc4;
+  #L4b9fb4.  call temp:= `getAndNullValue`(v1) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.getAndNullValue:()Ljava/lang/Object;` @kind virtual;
+  #L4b9fba.  v0:= temp @kind object;
+  #L4b9fbc.  call `spConsumerNode`(v2, v1) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.spConsumerNode:(Lrx/internal/util/atomic/LinkedQueueNode;)V` @kind virtual;
+  #L4b9fc2.  return v0 @kind object;
+  #L4b9fc4.  call temp:= `lvProducerNode`(v2) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.lvProducerNode:()Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9fca.  v1:= temp @kind object;
+  #L4b9fcc.  if v0 == v1 then goto L4b9fec;
+  #L4b9fd0.  call temp:= `lvNext`(v0) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.lvNext:()Lrx/internal/util/atomic/LinkedQueueNode;` @kind virtual;
+  #L4b9fd6.  v1:= temp @kind object;
+  #L4b9fd8.  if v1 != 0 then goto L4b9fde;
+  #L4b9fdc.  goto L4b9fd0;
+  #L4b9fde.  call temp:= `getAndNullValue`(v1) @signature `Lrx/internal/util/atomic/LinkedQueueNode;.getAndNullValue:()Ljava/lang/Object;` @kind virtual;
+  #L4b9fe4.  v0:= temp @kind object;
+  #L4b9fe6.  v2.`rx.internal.util.unsafe.MpscLinkedQueue.consumerNode` @type ^`rx.internal.util.atomic.LinkedQueueNode` := v1 @kind object;
+  #L4b9fea.  return v0 @kind object;
+  #L4b9fec.  v0:= 0I;
+  #L4b9fee.  return v0 @kind object;
+}
+procedure `rx.internal.util.atomic.LinkedQueueNode` `xchgProducerNode`(`rx.internal.util.unsafe.MpscLinkedQueue` v7 @kind this, `rx.internal.util.atomic.LinkedQueueNode` v8 @kind object) @signature `Lrx/internal/util/unsafe/MpscLinkedQueue;.xchgProducerNode:(Lrx/internal/util/atomic/LinkedQueueNode;)Lrx/internal/util/atomic/LinkedQueueNode;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4ba000.  v6:= v7.`rx.internal.util.unsafe.MpscLinkedQueue.producerNode` @type ^`rx.internal.util.atomic.LinkedQueueNode` @kind object;
+  #L4ba004.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4ba008.  v2:= `@@rx.internal.util.unsafe.MpscLinkedQueue.P_NODE_OFFSET` @type ^`long` @kind wide;
+  #L4ba00c.  v1:= v7 @kind object;
+  #L4ba00e.  v4:= v6 @kind object;
+  #L4ba010.  v5:= v8 @kind object;
+  #L4ba012.  call temp:= `compareAndSwapObject`(v0, v1, v2, v4, v5) @signature `Lsun/misc/Unsafe;.compareAndSwapObject:(Ljava/lang/Object;JLjava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4ba018.  v0:= temp;
+  #L4ba01a.  if v0 == 0 then goto L4ba000;
+  #L4ba01e.  v6:= (`rx.internal.util.atomic.LinkedQueueNode`) v6 @kind object;
+  #L4ba022.  return v6 @kind object;
+}

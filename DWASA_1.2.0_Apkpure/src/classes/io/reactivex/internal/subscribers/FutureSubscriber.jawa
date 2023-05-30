@@ -1,0 +1,226 @@
+record `io.reactivex.internal.subscribers.FutureSubscriber` @kind class @AccessFlag PUBLIC_FINAL extends `java.util.concurrent.CountDownLatch` @kind class, `io.reactivex.FlowableSubscriber` @kind interface, `java.util.concurrent.Future` @kind interface, `org.reactivestreams.Subscription` @kind interface {
+  `java.lang.Throwable` `io.reactivex.internal.subscribers.FutureSubscriber.error` @AccessFlag ;
+  `java.util.concurrent.atomic.AtomicReference` `io.reactivex.internal.subscribers.FutureSubscriber.upstream` @AccessFlag FINAL;
+  `java.lang.Object` `io.reactivex.internal.subscribers.FutureSubscriber.value` @AccessFlag ;
+}
+procedure `void` `<init>`(`io.reactivex.internal.subscribers.FutureSubscriber` v1 @kind this) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L443434.  v0:= 1I;
+  #L443436.  call `<init>`(v1, v0) @signature `Ljava/util/concurrent/CountDownLatch;.<init>:(I)V` @kind direct;
+  #L44343c.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L443440.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L443446.  v1.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L44344a.  return @kind void;
+}
+procedure `void` `cancel`(`io.reactivex.internal.subscribers.FutureSubscriber` v0 @kind this) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.cancel:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L44345c.  return @kind void;
+}
+procedure `boolean` `cancel`(`io.reactivex.internal.subscribers.FutureSubscriber` v2 @kind this, `boolean` v3 ) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.cancel:(Z)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4432a4.  v3:= v2.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4432a8.  call temp:= `get`(v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4432ae.  v3:= temp @kind object;
+  #L4432b0.  v3:= (`org.reactivestreams.Subscription`) v3 @kind object;
+  #L4432b4.  if v3 == v2 then goto L4432ea;
+  #L4432b8.  v0:= `@@io.reactivex.internal.subscriptions.SubscriptionHelper.CANCELLED` @type ^`io.reactivex.internal.subscriptions.SubscriptionHelper` @kind object;
+  #L4432bc.  if v3 != v0 then goto L4432c2;
+  #L4432c0.  goto L4432ea;
+  #L4432c2.  v0:= v2.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4432c6.  v1:= `@@io.reactivex.internal.subscriptions.SubscriptionHelper.CANCELLED` @type ^`io.reactivex.internal.subscriptions.SubscriptionHelper` @kind object;
+  #L4432ca.  call temp:= `compareAndSet`(v0, v3, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4432d0.  v0:= temp;
+  #L4432d2.  if v0 == 0 then goto L4432a4;
+  #L4432d6.  if v3 == 0 then goto L4432e0;
+  #L4432da.  call `cancel`(v3) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L4432e0.  call `countDown`(v2) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.countDown:()V` @kind virtual;
+  #L4432e6.  v3:= 1I;
+  #L4432e8.  return v3;
+  #L4432ea.  v3:= 0I;
+  #L4432ec.  return v3;
+}
+procedure `java.lang.Object` `get`(`io.reactivex.internal.subscribers.FutureSubscriber` v5 @kind this) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.get:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L443358.  call temp:= `getCount`(v5) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.getCount:()J` @kind virtual;
+  #L44335e.  v0:= temp @kind wide;
+  #L443360.  v2:= 0L;
+  #L443364.  v4:= lcmp(v0, v2);
+  #L443368.  if v4 == 0 then goto L443378;
+  #L44336c.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L443372.  call `await`(v5) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.await:()V` @kind virtual;
+  #L443378.  call temp:= `isCancelled`(v5) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.isCancelled:()Z` @kind virtual;
+  #L44337e.  v0:= temp;
+  #L443380.  if v0 != 0 then goto L44339e;
+  #L443384.  v0:= v5.`io.reactivex.internal.subscribers.FutureSubscriber.error` @type ^`java.lang.Throwable` @kind object;
+  #L443388.  if v0 != 0 then goto L443392;
+  #L44338c.  v0:= v5.`io.reactivex.internal.subscribers.FutureSubscriber.value` @type ^`java.lang.Object` @kind object;
+  #L443390.  return v0 @kind object;
+  #L443392.  v1:= new `java.util.concurrent.ExecutionException`;
+  #L443396.  call `<init>`(v1, v0) @signature `Ljava/util/concurrent/ExecutionException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L44339c.  throw v1;
+  #L44339e.  v0:= new `java.util.concurrent.CancellationException`;
+  #L4433a2.  call `<init>`(v0) @signature `Ljava/util/concurrent/CancellationException;.<init>:()V` @kind direct;
+  #L4433a8.  throw v0;
+}
+procedure `java.lang.Object` `get`(`io.reactivex.internal.subscribers.FutureSubscriber` v5 @kind this, `long` v6 , `java.util.concurrent.TimeUnit` v8 @kind object) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.get:(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4433bc.  call temp:= `getCount`(v5) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.getCount:()J` @kind virtual;
+  #L4433c2.  v0:= temp @kind wide;
+  #L4433c4.  v2:= 0L;
+  #L4433c8.  v4:= lcmp(v0, v2);
+  #L4433cc.  if v4 == 0 then goto L4433f0;
+  #L4433d0.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L4433d6.  call temp:= `await`(v5, v6, v8) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L4433dc.  v6:= temp;
+  #L4433de.  if v6 == 0 then goto L4433e4;
+  #L4433e2.  goto L4433f0;
+  #L4433e4.  v6:= new `java.util.concurrent.TimeoutException`;
+  #L4433e8.  call `<init>`(v6) @signature `Ljava/util/concurrent/TimeoutException;.<init>:()V` @kind direct;
+  #L4433ee.  throw v6;
+  #L4433f0.  call temp:= `isCancelled`(v5) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.isCancelled:()Z` @kind virtual;
+  #L4433f6.  v6:= temp;
+  #L4433f8.  if v6 != 0 then goto L443416;
+  #L4433fc.  v6:= v5.`io.reactivex.internal.subscribers.FutureSubscriber.error` @type ^`java.lang.Throwable` @kind object;
+  #L443400.  if v6 != 0 then goto L44340a;
+  #L443404.  v6:= v5.`io.reactivex.internal.subscribers.FutureSubscriber.value` @type ^`java.lang.Object` @kind object;
+  #L443408.  return v6 @kind object;
+  #L44340a.  v7:= new `java.util.concurrent.ExecutionException`;
+  #L44340e.  call `<init>`(v7, v6) @signature `Ljava/util/concurrent/ExecutionException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L443414.  throw v7;
+  #L443416.  v6:= new `java.util.concurrent.CancellationException`;
+  #L44341a.  call `<init>`(v6) @signature `Ljava/util/concurrent/CancellationException;.<init>:()V` @kind direct;
+  #L443420.  throw v6;
+}
+procedure `boolean` `isCancelled`(`io.reactivex.internal.subscribers.FutureSubscriber` v1 @kind this) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.isCancelled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L443300.  v0:= v1.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L443304.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44330a.  v0:= temp @kind object;
+  #L44330c.  v0:= (`org.reactivestreams.Subscription`) v0 @kind object;
+  #L443310.  call temp:= `isCancelled`(v0) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.isCancelled:(Lorg/reactivestreams/Subscription;)Z` @kind static;
+  #L443316.  v0:= temp;
+  #L443318.  return v0;
+}
+procedure `boolean` `isDone`(`io.reactivex.internal.subscribers.FutureSubscriber` v5 @kind this) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.isDone:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L44332c.  call temp:= `getCount`(v5) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.getCount:()J` @kind virtual;
+  #L443332.  v0:= temp @kind wide;
+  #L443334.  v2:= 0L;
+  #L443338.  v4:= lcmp(v0, v2);
+  #L44333c.  if v4 != 0 then goto L443344;
+  #L443340.  v0:= 1I;
+  #L443342.  goto L443346;
+  #L443344.  v0:= 0I;
+  #L443346.  return v0;
+}
+procedure `void` `onComplete`(`io.reactivex.internal.subscribers.FutureSubscriber` v2 @kind this) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.onComplete:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L443470.  v0:= v2.`io.reactivex.internal.subscribers.FutureSubscriber.value` @type ^`java.lang.Object` @kind object;
+  #L443474.  if v0 != 0 then goto L44348e;
+  #L443478.  v0:= new `java.util.NoSuchElementException`;
+  #L44347c.  v1:= "The source is empty" @kind object;
+  #L443480.  call `<init>`(v0, v1) @signature `Ljava/util/NoSuchElementException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L443486.  call `onError`(v2, v0) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L44348c.  return @kind void;
+  #L44348e.  v0:= v2.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L443492.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L443498.  v0:= temp @kind object;
+  #L44349a.  v0:= (`org.reactivestreams.Subscription`) v0 @kind object;
+  #L44349e.  if v0 == v2 then goto L4434c2;
+  #L4434a2.  v1:= `@@io.reactivex.internal.subscriptions.SubscriptionHelper.CANCELLED` @type ^`io.reactivex.internal.subscriptions.SubscriptionHelper` @kind object;
+  #L4434a6.  if v0 != v1 then goto L4434ac;
+  #L4434aa.  goto L4434c2;
+  #L4434ac.  v1:= v2.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4434b0.  call temp:= `compareAndSet`(v1, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4434b6.  v0:= temp;
+  #L4434b8.  if v0 == 0 then goto L44348e;
+  #L4434bc.  call `countDown`(v2) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.countDown:()V` @kind virtual;
+  #L4434c2.  return @kind void;
+}
+procedure `void` `onError`(`io.reactivex.internal.subscribers.FutureSubscriber` v2 @kind this, `java.lang.Throwable` v3 @kind object) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4434d4.  v0:= v2.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4434d8.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4434de.  v0:= temp @kind object;
+  #L4434e0.  v0:= (`org.reactivestreams.Subscription`) v0 @kind object;
+  #L4434e4.  if v0 == v2 then goto L44350e;
+  #L4434e8.  v1:= `@@io.reactivex.internal.subscriptions.SubscriptionHelper.CANCELLED` @type ^`io.reactivex.internal.subscriptions.SubscriptionHelper` @kind object;
+  #L4434ec.  if v0 != v1 then goto L4434f2;
+  #L4434f0.  goto L44350e;
+  #L4434f2.  v2.`io.reactivex.internal.subscribers.FutureSubscriber.error` @type ^`java.lang.Throwable` := v3 @kind object;
+  #L4434f6.  v1:= v2.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4434fa.  call temp:= `compareAndSet`(v1, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L443500.  v0:= temp;
+  #L443502.  if v0 == 0 then goto L4434d4;
+  #L443506.  call `countDown`(v2) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.countDown:()V` @kind virtual;
+  #L44350c.  return @kind void;
+  #L44350e.  call `onError`(v3) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L443514.  return @kind void;
+}
+procedure `void` `onNext`(`io.reactivex.internal.subscribers.FutureSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L443528.  v0:= v1.`io.reactivex.internal.subscribers.FutureSubscriber.value` @type ^`java.lang.Object` @kind object;
+  #L44352c.  if v0 == 0 then goto L44355c;
+  #L443530.  v2:= v1.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L443534.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44353a.  v2:= temp @kind object;
+  #L44353c.  v2:= (`org.reactivestreams.Subscription`) v2 @kind object;
+  #L443540.  call `cancel`(v2) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L443546.  v2:= new `java.lang.IndexOutOfBoundsException`;
+  #L44354a.  v0:= "More than one element received" @kind object;
+  #L44354e.  call `<init>`(v2, v0) @signature `Ljava/lang/IndexOutOfBoundsException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L443554.  call `onError`(v1, v2) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L44355a.  return @kind void;
+  #L44355c.  v1.`io.reactivex.internal.subscribers.FutureSubscriber.value` @type ^`java.lang.Object` := v2 @kind object;
+  #L443560.  return @kind void;
+}
+procedure `void` `onSubscribe`(`io.reactivex.internal.subscribers.FutureSubscriber` v3 @kind this, `org.reactivestreams.Subscription` v4 @kind object) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.onSubscribe:(Lorg/reactivestreams/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L443574.  v0:= v3.`io.reactivex.internal.subscribers.FutureSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L443578.  v1:= 9223372036854775807L;
+  #L443582.  call temp:= `setOnce`(v0, v4, v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.setOnce:(Ljava/util/concurrent/atomic/AtomicReference;Lorg/reactivestreams/Subscription;J)Z` @kind static;
+  #L443588.  return @kind void;
+}
+procedure `void` `request`(`io.reactivex.internal.subscribers.FutureSubscriber` v0 @kind this, `long` v1 ) @signature `Lio/reactivex/internal/subscribers/FutureSubscriber;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L44359c.  return @kind void;
+}

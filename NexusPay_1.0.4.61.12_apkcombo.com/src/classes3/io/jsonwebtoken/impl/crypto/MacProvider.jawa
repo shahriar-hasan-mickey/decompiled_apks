@@ -1,0 +1,62 @@
+record `io.jsonwebtoken.impl.crypto.MacProvider` @kind class @AccessFlag PUBLIC_ABSTRACT extends `io.jsonwebtoken.impl.crypto.a` @kind class {
+}
+procedure `void` `<init>`(`io.jsonwebtoken.impl.crypto.MacProvider` v0 @kind this, `io.jsonwebtoken.SignatureAlgorithm` v1 @kind object, `java.security.Key` v2 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/MacProvider;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+
+  #L40f4b4.  call `<init>`(v0, v1, v2) @signature `Lio/jsonwebtoken/impl/crypto/a;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @kind direct;
+  #L40f4ba.  call temp:= `isHmac`(v1) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.isHmac:()Z` @kind virtual;
+  #L40f4c0.  v1:= temp;
+  #L40f4c2.  v2:= "SignatureAlgorithm must be a HMAC SHA algorithm." @kind object;
+  #L40f4c6.  call `isTrue`(v1, v2) @signature `Lio/jsonwebtoken/lang/Assert;.isTrue:(ZLjava/lang/String;)V` @kind static;
+  #L40f4cc.  return @kind void;
+}
+procedure `javax.crypto.SecretKey` `generateKey`() @signature `Lio/jsonwebtoken/impl/crypto/MacProvider;.generateKey:()Ljavax/crypto/SecretKey;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L40f400.  v0:= `@@io.jsonwebtoken.SignatureAlgorithm.HS512` @type ^`io.jsonwebtoken.SignatureAlgorithm` @kind object;
+  #L40f404.  call temp:= `generateKey`(v0) @signature `Lio/jsonwebtoken/impl/crypto/MacProvider;.generateKey:(Lio/jsonwebtoken/SignatureAlgorithm;)Ljavax/crypto/SecretKey;` @kind static;
+  #L40f40a.  v0:= temp @kind object;
+  #L40f40c.  return v0 @kind object;
+}
+procedure `javax.crypto.SecretKey` `generateKey`(`io.jsonwebtoken.SignatureAlgorithm` v1 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/MacProvider;.generateKey:(Lio/jsonwebtoken/SignatureAlgorithm;)Ljavax/crypto/SecretKey;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L40f420.  v0:= `@@io.jsonwebtoken.impl.crypto.a.DEFAULT_SECURE_RANDOM` @type ^`java.security.SecureRandom` @kind object;
+  #L40f424.  call temp:= `generateKey`(v1, v0) @signature `Lio/jsonwebtoken/impl/crypto/MacProvider;.generateKey:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/SecureRandom;)Ljavax/crypto/SecretKey;` @kind static;
+  #L40f42a.  v1:= temp @kind object;
+  #L40f42c.  return v1 @kind object;
+}
+procedure `javax.crypto.SecretKey` `generateKey`(`io.jsonwebtoken.SignatureAlgorithm` v2 @kind object, `java.security.SecureRandom` v3 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/MacProvider;.generateKey:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/SecureRandom;)Ljavax/crypto/SecretKey;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L40f440.  call temp:= `isHmac`(v2) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.isHmac:()Z` @kind virtual;
+  #L40f446.  v0:= temp;
+  #L40f448.  v1:= "SignatureAlgorithm argument must represent an HMAC algorithm." @kind object;
+  #L40f44c.  call `isTrue`(v0, v1) @signature `Lio/jsonwebtoken/lang/Assert;.isTrue:(ZLjava/lang/String;)V` @kind static;
+  #L40f452.  v0:= `@@io.jsonwebtoken.impl.crypto.MacProvider$a.a` @type ^`int`[] @kind object;
+  #L40f456.  call temp:= `ordinal`(v2) @signature `Ljava/lang/Enum;.ordinal:()I` @kind virtual;
+  #L40f45c.  v1:= temp;
+  #L40f45e.  v0:= v0[v1];
+  #L40f462.  v1:= 1I;
+  #L40f464.  if v0 == v1 then goto L40f482;
+  #L40f468.  v1:= 2I;
+  #L40f46a.  if v0 == v1 then goto L40f478;
+  #L40f46e.  v0:= 64I;
+  #L40f472.  v0:= new `byte`[v0];
+  #L40f476.  goto L40f48a;
+  #L40f478.  v0:= 48I;
+  #L40f47c.  v0:= new `byte`[v0];
+  #L40f480.  goto L40f48a;
+  #L40f482.  v0:= 32I;
+  #L40f486.  v0:= new `byte`[v0];
+  #L40f48a.  call `nextBytes`(v3, v0) @signature `Ljava/security/SecureRandom;.nextBytes:([B)V` @kind virtual;
+  #L40f490.  v3:= new `javax.crypto.spec.SecretKeySpec`;
+  #L40f494.  call temp:= `getJcaName`(v2) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.getJcaName:()Ljava/lang/String;` @kind virtual;
+  #L40f49a.  v2:= temp @kind object;
+  #L40f49c.  call `<init>`(v3, v0, v2) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L40f4a2.  return v3 @kind object;
+}

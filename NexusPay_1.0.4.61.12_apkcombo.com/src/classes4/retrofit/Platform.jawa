@@ -1,0 +1,107 @@
+record `retrofit.Platform` @kind class @AccessFlag ABSTRACT {
+}
+global `boolean` `@@retrofit.Platform.HAS_RX_JAVA` @AccessFlag STATIC_FINAL;
+global `retrofit.Platform` `@@retrofit.Platform.PLATFORM` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lretrofit/Platform;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L48c1a8.  call temp:= `findPlatform`() @signature `Lretrofit/Platform;.findPlatform:()Lretrofit/Platform;` @kind static;
+  #L48c1ae.  v0:= temp @kind object;
+  #L48c1b0.  `@@retrofit.Platform.PLATFORM` @type ^`retrofit.Platform` := v0 @kind object;
+  #L48c1b4.  call temp:= `hasRxJavaOnClasspath`() @signature `Lretrofit/Platform;.hasRxJavaOnClasspath:()Z` @kind static;
+  #L48c1ba.  v0:= temp;
+  #L48c1bc.  `@@retrofit.Platform.HAS_RX_JAVA` @type ^`boolean` := v0 @kind boolean;
+  #L48c1c0.  return @kind void;
+}
+procedure `void` `<init>`(`retrofit.Platform` v0 @kind this) @signature `Lretrofit/Platform;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L48c1d4.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L48c1da.  return @kind void;
+}
+procedure `boolean` `access$300`() @signature `Lretrofit/Platform;.access$300:()Z` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L48c0a0.  call temp:= `hasOkHttpOnClasspath`() @signature `Lretrofit/Platform;.hasOkHttpOnClasspath:()Z` @kind static;
+  #L48c0a6.  v0:= temp;
+  #L48c0a8.  return v0;
+}
+procedure `retrofit.Platform` `findPlatform`() @signature `Lretrofit/Platform;.findPlatform:()Lretrofit/Platform;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L48c124.  v0:= 0I;
+  #L48c126.  v1:= "android.os.Build" @kind object;
+  #L48c12a.  call temp:= `forName`(v1) @signature `Ljava/lang/Class;.forName:(Ljava/lang/String;)Ljava/lang/Class;` @kind static;
+  #L48c130.  v1:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L48c134.  if v1 == 0 then goto L48c146;
+  #L48c138.  v1:= new `retrofit.Platform$Android`;
+  #L48c13c.  call `<init>`(v1, v0) @signature `Lretrofit/Platform$Android;.<init>:(Lretrofit/Platform$1;)V` @kind direct;
+  #L48c142.  return v1 @kind object;
+  #L48c144.  
+  #L48c146.  v1:= "com.google.appengine.runtime.version" @kind object;
+  #L48c14a.  call temp:= `getProperty`(v1) @signature `Ljava/lang/System;.getProperty:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L48c150.  v1:= temp @kind object;
+  #L48c152.  if v1 == 0 then goto L48c162;
+  #L48c156.  v1:= new `retrofit.Platform$AppEngine`;
+  #L48c15a.  call `<init>`(v1, v0) @signature `Lretrofit/Platform$AppEngine;.<init>:(Lretrofit/Platform$1;)V` @kind direct;
+  #L48c160.  return v1 @kind object;
+  #L48c162.  v1:= new `retrofit.Platform$Base`;
+  #L48c166.  call `<init>`(v1, v0) @signature `Lretrofit/Platform$Base;.<init>:(Lretrofit/Platform$1;)V` @kind direct;
+  #L48c16c.  return v1 @kind object;
+  catch `java.lang.ClassNotFoundException` @[L48c126..L48c142] goto L48c144;
+}
+procedure `retrofit.Platform` `get`() @signature `Lretrofit/Platform;.get:()Lretrofit/Platform;` @AccessFlag STATIC {
+    temp;
+    v0;
+
+  #L48c190.  v0:= `@@retrofit.Platform.PLATFORM` @type ^`retrofit.Platform` @kind object;
+  #L48c194.  return v0 @kind object;
+}
+procedure `boolean` `hasOkHttpOnClasspath`() @signature `Lretrofit/Platform;.hasOkHttpOnClasspath:()Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L48c0bc.  v0:= "com.squareup.okhttp.OkHttpClient" @kind object;
+  #L48c0c0.  call temp:= `forName`(v0) @signature `Ljava/lang/Class;.forName:(Ljava/lang/String;)Ljava/lang/Class;` @kind static;
+  #L48c0c6.  v0:= 1I;
+  #L48c0c8.  return v0;
+  #L48c0ca.  v0:= 0I;
+  #L48c0cc.  return v0;
+  catch `java.lang.ClassNotFoundException` @[L48c0bc..L48c0c6] goto L48c0ca;
+}
+procedure `boolean` `hasRxJavaOnClasspath`() @signature `Lretrofit/Platform;.hasRxJavaOnClasspath:()Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L48c0f0.  v0:= "rx.Observable" @kind object;
+  #L48c0f4.  call temp:= `forName`(v0) @signature `Ljava/lang/Class;.forName:(Ljava/lang/String;)Ljava/lang/Class;` @kind static;
+  #L48c0fa.  v0:= 1I;
+  #L48c0fc.  return v0;
+  #L48c0fe.  v0:= 0I;
+  #L48c100.  return v0;
+  catch `java.lang.ClassNotFoundException` @[L48c0f0..L48c0fa] goto L48c0fe;
+}
+procedure `java.util.concurrent.Executor` `defaultCallbackExecutor`() @signature `Lretrofit/Platform;.defaultCallbackExecutor:()Ljava/util/concurrent/Executor;` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `retrofit.client.Client$Provider` `defaultClient`() @signature `Lretrofit/Platform;.defaultClient:()Lretrofit/client/Client$Provider;` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `retrofit.converter.Converter` `defaultConverter`() @signature `Lretrofit/Platform;.defaultConverter:()Lretrofit/converter/Converter;` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `java.util.concurrent.Executor` `defaultHttpExecutor`() @signature `Lretrofit/Platform;.defaultHttpExecutor:()Ljava/util/concurrent/Executor;` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `retrofit.RestAdapter$Log` `defaultLog`() @signature `Lretrofit/Platform;.defaultLog:()Lretrofit/RestAdapter$Log;` @AccessFlag ABSTRACT {
+
+  # return;
+}

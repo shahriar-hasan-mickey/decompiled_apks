@@ -1,0 +1,210 @@
+record `com.dbbl.nexus.pay.utils.CipherUtility` @kind class @AccessFlag PUBLIC {
+}
+global `int` `@@com.dbbl.nexus.pay.utils.CipherUtility.P2P_TOKEN_MASK` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<init>`(`com.dbbl.nexus.pay.utils.CipherUtility` v0 @kind this) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L1b85f4.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1b85fa.  return @kind void;
+}
+procedure `boolean` `a`(`java.lang.String` v3 @kind object) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.a:(Ljava/lang/String;)Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1b836c.  v0:= 0I;
+  #L1b836e.  if v3 == 0 then goto L1b839c;
+  #L1b8372.  v1:= 0I;
+  #L1b8374.  call temp:= `length`(v3) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L1b837a.  v2:= temp;
+  #L1b837c.  if v1 >= v2 then goto L1b83a2;
+  #L1b8380.  call temp:= `charAt`(v3, v1) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L1b8386.  v2:= temp;
+  #L1b8388.  call temp:= `isDigit`(v2) @signature `Ljava/lang/Character;.isDigit:(C)Z` @kind static;
+  #L1b838e.  v2:= temp;
+  #L1b8390.  if v2 != 0 then goto L1b8396;
+  #L1b8394.  return v0;
+  #L1b8396.  v1:= v1 + 1;
+  #L1b839a.  goto L1b8374;
+  #L1b839c.  if v3 != 0 then goto L1b83a2;
+  #L1b83a0.  return v0;
+  #L1b83a2.  v3:= 1I;
+  #L1b83a4.  return v3;
+}
+procedure `char` `convertToChar`(`int` v1 ) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.convertToChar:(I)C` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L1b83b8.  if v1 < 0 then goto L1b83cc;
+  #L1b83bc.  v0:= 9I;
+  #L1b83c0.  if v1 > v0 then goto L1b83cc;
+  #L1b83c4.  v1:= v1 + 48;
+  #L1b83c8.  v1:= (`char`) v1 @kind i2c;
+  #L1b83ca.  return v1;
+  #L1b83cc.  v1:= 0I;
+  #L1b83ce.  return v1;
+}
+procedure `java.lang.String` `decryptBuildConfigString`(`java.lang.String` v3 @kind object) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.decryptBuildConfigString:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1b83e0.  v0:= "ThisIsSecretEncryptionKey" @kind object;
+  #L1b83e4.  v1:= "UTF-8" @kind object;
+  #L1b83e8.  call temp:= `getBytes`(v0, v1) @signature `Ljava/lang/String;.getBytes:(Ljava/lang/String;)[B` @kind virtual;
+  #L1b83ee.  v0:= temp @kind object;
+  #L1b83f0.  v1:= new `javax.crypto.spec.DESedeKeySpec`;
+  #L1b83f4.  call `<init>`(v1, v0) @signature `Ljavax/crypto/spec/DESedeKeySpec;.<init>:([B)V` @kind direct;
+  #L1b83fa.  v0:= "DESede" @kind object;
+  #L1b83fe.  call temp:= `getInstance`(v0) @signature `Ljavax/crypto/SecretKeyFactory;.getInstance:(Ljava/lang/String;)Ljavax/crypto/SecretKeyFactory;` @kind static;
+  #L1b8404.  v2:= temp @kind object;
+  #L1b8406.  call temp:= `getInstance`(v0) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L1b840c.  v0:= temp @kind object;
+  #L1b840e.  call temp:= `generateSecret`(v2, v1) @signature `Ljavax/crypto/SecretKeyFactory;.generateSecret:(Ljava/security/spec/KeySpec;)Ljavax/crypto/SecretKey;` @kind virtual;
+  #L1b8414.  v1:= temp @kind object;
+  #L1b8416.  v2:= 2I;
+  #L1b8418.  call `init`(v0, v2, v1) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/Key;)V` @kind virtual;
+  #L1b841e.  v1:= 4I;
+  #L1b8420.  call temp:= `decode`(v3, v1) @signature `Landroid/util/Base64;.decode:(Ljava/lang/String;I)[B` @kind static;
+  #L1b8426.  v3:= temp @kind object;
+  #L1b8428.  call temp:= `doFinal`(v0, v3) @signature `Ljavax/crypto/Cipher;.doFinal:([B)[B` @kind virtual;
+  #L1b842e.  v3:= temp @kind object;
+  #L1b8430.  v0:= new `java.lang.String`;
+  #L1b8434.  call `<init>`(v0, v3) @signature `Ljava/lang/String;.<init>:([B)V` @kind direct;
+  #L1b843a.  return v0 @kind object;
+}
+procedure `java.lang.String` `hideP2pQrToken`(`java.lang.String` v5 @kind object) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.hideP2pQrToken:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L1b844c.  if v5 == 0 then goto L1b84c8;
+  #L1b8450.  call temp:= `a`(v5) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.a:(Ljava/lang/String;)Z` @kind static;
+  #L1b8456.  v0:= temp;
+  #L1b8458.  if v0 == 0 then goto L1b84c8;
+  #L1b845c.  call temp:= `length`(v5) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L1b8462.  v0:= temp;
+  #L1b8464.  v1:= 16I;
+  #L1b8468.  if v0 != v1 then goto L1b84c8;
+  #L1b846c.  v0:= 6I;
+  #L1b846e.  v1:= 12I;
+  #L1b8472.  call temp:= `substring`(v5, v0, v1) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L1b8478.  v2:= temp @kind object;
+  #L1b847a.  call temp:= `convertHexStringToBytes`(v2) @signature `Lcom/konasl/konapayment/sdk/card/CardUtility;.convertHexStringToBytes:(Ljava/lang/String;)[B` @kind static;
+  #L1b8480.  v2:= temp @kind object;
+  #L1b8482.  call `xorValue`(v2) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.xorValue:([B)V` @kind static;
+  #L1b8488.  call temp:= `byteArrayToHex`(v2) @signature `Lcom/konasl/konapayment/sdk/card/CardUtility;.byteArrayToHex:([B)Ljava/lang/String;` @kind static;
+  #L1b848e.  v2:= temp @kind object;
+  #L1b8490.  v3:= new `java.lang.StringBuilder`;
+  #L1b8494.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b849a.  v4:= 0I;
+  #L1b849c.  call temp:= `substring`(v5, v4, v0) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L1b84a2.  v0:= temp @kind object;
+  #L1b84a4.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b84aa.  call temp:= `append`(v3, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b84b0.  call temp:= `substring`(v5, v1) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L1b84b6.  v5:= temp @kind object;
+  #L1b84b8.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b84be.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b84c4.  v5:= temp @kind object;
+  #L1b84c6.  return v5 @kind object;
+  #L1b84c8.  v5:= new `java.lang.IllegalArgumentException`;
+  #L1b84cc.  v0:= "Token length must be 16 digits" @kind object;
+  #L1b84d0.  call `<init>`(v5, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b84d6.  throw v5;
+}
+procedure `java.lang.String` `recoverP2pQrToken`(`java.lang.String` v7 @kind object) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.recoverP2pQrToken:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L1b84e8.  if v7 == 0 then goto L1b85d2;
+  #L1b84ec.  call temp:= `length`(v7) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L1b84f2.  v0:= temp;
+  #L1b84f4.  v1:= 16I;
+  #L1b84f8.  if v0 != v1 then goto L1b85d2;
+  #L1b84fc.  v0:= new `java.lang.StringBuilder`;
+  #L1b8500.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b8506.  v1:= 0I;
+  #L1b8508.  v2:= 6I;
+  #L1b850a.  call temp:= `substring`(v7, v1, v2) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L1b8510.  v3:= temp @kind object;
+  #L1b8512.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b8518.  v3:= 12I;
+  #L1b851c.  call temp:= `substring`(v7, v2, v3) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L1b8522.  v2:= temp @kind object;
+  #L1b8524.  call temp:= `convertHexStringToBytes`(v2) @signature `Lcom/konasl/konapayment/sdk/card/CardUtility;.convertHexStringToBytes:(Ljava/lang/String;)[B` @kind static;
+  #L1b852a.  v2:= temp @kind object;
+  #L1b852c.  call `xorValue`(v2) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.xorValue:([B)V` @kind static;
+  #L1b8532.  v4:= 3I;
+  #L1b8534.  v5:= "Failed to recover token" @kind object;
+  #L1b8538.  if v1 >= v4 then goto L1b85a2;
+  #L1b853c.  v4:= v2[v1] @kind byte;
+  #L1b8540.  v4:= v4 ^& 240;
+  #L1b8544.  v4:= v4 ^> 4;
+  #L1b8548.  call temp:= `convertToChar`(v4) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.convertToChar:(I)C` @kind static;
+  #L1b854e.  v4:= temp;
+  #L1b8550.  call temp:= `isDigit`(v4) @signature `Ljava/lang/Character;.isDigit:(C)Z` @kind static;
+  #L1b8556.  v6:= temp;
+  #L1b8558.  if v6 == 0 then goto L1b8596;
+  #L1b855c.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b8562.  v4:= v2[v1] @kind byte;
+  #L1b8566.  v4:= v4 ^& 15;
+  #L1b856a.  call temp:= `convertToChar`(v4) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.convertToChar:(I)C` @kind static;
+  #L1b8570.  v4:= temp;
+  #L1b8572.  call temp:= `isDigit`(v4) @signature `Ljava/lang/Character;.isDigit:(C)Z` @kind static;
+  #L1b8578.  v6:= temp;
+  #L1b857a.  if v6 == 0 then goto L1b858a;
+  #L1b857e.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b8584.  v1:= v1 + 1;
+  #L1b8588.  goto L1b8532;
+  #L1b858a.  v7:= new `java.lang.IllegalArgumentException`;
+  #L1b858e.  call `<init>`(v7, v5) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b8594.  throw v7;
+  #L1b8596.  v7:= new `java.lang.IllegalArgumentException`;
+  #L1b859a.  call `<init>`(v7, v5) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b85a0.  throw v7;
+  #L1b85a2.  call temp:= `substring`(v7, v3) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L1b85a8.  v7:= temp @kind object;
+  #L1b85aa.  call temp:= `append`(v0, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b85b0.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b85b6.  v7:= temp @kind object;
+  #L1b85b8.  call temp:= `a`(v7) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.a:(Ljava/lang/String;)Z` @kind static;
+  #L1b85be.  v0:= temp;
+  #L1b85c0.  if v0 == 0 then goto L1b85c6;
+  #L1b85c4.  return v7 @kind object;
+  #L1b85c6.  v7:= new `java.lang.IllegalArgumentException`;
+  #L1b85ca.  call `<init>`(v7, v5) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b85d0.  throw v7;
+  #L1b85d2.  v7:= new `java.lang.IllegalArgumentException`;
+  #L1b85d6.  v0:= "Token length must be 16 digits" @kind object;
+  #L1b85da.  call `<init>`(v7, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b85e0.  throw v7;
+}
+procedure `void` `xorValue`(`byte`[] v2 @kind object) @signature `Lcom/dbbl/nexus/pay/utils/CipherUtility;.xorValue:([B)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L1b860c.  v0:= 0I;
+  #L1b860e.  v1:= length @variable v2;
+  #L1b8610.  if v0 >= v1 then goto L1b862c;
+  #L1b8614.  v1:= v2[v0] @kind byte;
+  #L1b8618.  v1:= v1 ^& 255;
+  #L1b861c.  v1:= v1 ^~ 92;
+  #L1b8620.  v1:= (`byte`) v1 @kind i2b;
+  #L1b8622.  v2[v0]:= v1 @kind byte;
+  #L1b8626.  v0:= v0 + 1;
+  #L1b862a.  goto L1b860e;
+  #L1b862c.  return @kind void;
+}

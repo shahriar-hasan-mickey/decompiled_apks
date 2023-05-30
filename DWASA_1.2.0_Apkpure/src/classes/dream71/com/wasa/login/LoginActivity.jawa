@@ -1,0 +1,437 @@
+record `dream71.com.wasa.login.LoginActivity` @kind class @AccessFlag PUBLIC extends `androidx.appcompat.app.AppCompatActivity` @kind class, `dream71.com.wasa.NetworkConnection.DataController` @kind interface {
+  `int` `dream71.com.wasa.login.LoginActivity.MY_PERMISSIONS_REQUEST_PHONE` @AccessFlag FINAL;
+  `java.lang.String`[] `dream71.com.wasa.login.LoginActivity.PERMISSIONS` @AccessFlag ;
+  `android.widget.Button` `dream71.com.wasa.login.LoginActivity.btnsignUp` @AccessFlag ;
+  `android.widget.EditText` `dream71.com.wasa.login.LoginActivity.fullName` @AccessFlag ;
+  `com.google.gson.Gson` `dream71.com.wasa.login.LoginActivity.gson` @AccessFlag ;
+  `android.widget.EditText` `dream71.com.wasa.login.LoginActivity.password_layout` @AccessFlag ;
+  `butterknife.Unbinder` `dream71.com.wasa.login.LoginActivity.unbinder` @AccessFlag ;
+}
+procedure `void` `<init>`(`dream71.com.wasa.login.LoginActivity` v4 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3ca594.  call `<init>`(v4) @signature `Landroidx/appcompat/app/AppCompatActivity;.<init>:()V` @kind direct;
+  #L3ca59a.  v0:= new `com.google.gson.Gson`;
+  #L3ca59e.  call `<init>`(v0) @signature `Lcom/google/gson/Gson;.<init>:()V` @kind direct;
+  #L3ca5a4.  v4.`dream71.com.wasa.login.LoginActivity.gson` @type ^`com.google.gson.Gson` := v0 @kind object;
+  #L3ca5a8.  v0:= 4I;
+  #L3ca5aa.  v0:= new `java.lang.String`[v0];
+  #L3ca5ae.  v1:= 0I;
+  #L3ca5b0.  v2:= "android.permission.ACCESS_COARSE_LOCATION" @kind object;
+  #L3ca5b4.  v0[v1]:= v2 @kind object;
+  #L3ca5b8.  v1:= 1I;
+  #L3ca5ba.  v2:= "android.permission.WRITE_EXTERNAL_STORAGE" @kind object;
+  #L3ca5be.  v0[v1]:= v2 @kind object;
+  #L3ca5c2.  v2:= 2I;
+  #L3ca5c4.  v3:= "android.permission.READ_EXTERNAL_STORAGE" @kind object;
+  #L3ca5c8.  v0[v2]:= v3 @kind object;
+  #L3ca5cc.  v2:= 3I;
+  #L3ca5ce.  v3:= "android.permission.CALL_PHONE" @kind object;
+  #L3ca5d2.  v0[v2]:= v3 @kind object;
+  #L3ca5d6.  v4.`dream71.com.wasa.login.LoginActivity.PERMISSIONS` @type ^`java.lang.String`[] := v0 @kind object;
+  #L3ca5da.  v4.`dream71.com.wasa.login.LoginActivity.MY_PERMISSIONS_REQUEST_PHONE` @type ^`int` := v1;
+  #L3ca5de.  return @kind void;
+}
+procedure `void` `StartServices`(`dream71.com.wasa.login.LoginActivity` v2 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.StartServices:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3ca7b0.  v0:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L3ca7b4.  call temp:= `isServiceRunning`(v2, v0) @signature `Ldream71/com/wasa/utils/Validation;.isServiceRunning:(Landroid/content/Context;Ljava/lang/Class;)Z` @kind static;
+  #L3ca7ba.  v0:= temp;
+  #L3ca7bc.  if v0 != 0 then goto L3ca7d4;
+  #L3ca7c0.  v0:= new `android.content.Intent`;
+  #L3ca7c4.  v1:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L3ca7c8.  call `<init>`(v0, v2, v1) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L3ca7ce.  call temp:= `startService`(v2, v0) @signature `Ldream71/com/wasa/login/LoginActivity;.startService:(Landroid/content/Intent;)Landroid/content/ComponentName;` @kind virtual;
+  #L3ca7d4.  return @kind void;
+}
+procedure `boolean` `checkPhonePermission`(`dream71.com.wasa.login.LoginActivity` v4 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.checkPhonePermission:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3ca3dc.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3ca3e0.  v1:= 1I;
+  #L3ca3e2.  v2:= 23I;
+  #L3ca3e6.  if v0 < v2 then goto L3ca40c;
+  #L3ca3ea.  v0:= "android.permission.CALL_PHONE" @kind object;
+  #L3ca3ee.  call temp:= `checkSelfPermission`(v4, v0) @signature `Landroidx/core/app/ActivityCompat;.checkSelfPermission:(Landroid/content/Context;Ljava/lang/String;)I` @kind static;
+  #L3ca3f4.  v2:= temp;
+  #L3ca3f6.  if v2 == 0 then goto L3ca40c;
+  #L3ca3fa.  v2:= new `java.lang.String`[v1];
+  #L3ca3fe.  v3:= 0I;
+  #L3ca400.  v2[v3]:= v0 @kind object;
+  #L3ca404.  call `requestPermissions`(v4, v2, v1) @signature `Landroidx/core/app/ActivityCompat;.requestPermissions:(Landroid/app/Activity;[Ljava/lang/String;I)V` @kind static;
+  #L3ca40a.  return v3;
+  #L3ca40c.  return v1;
+}
+procedure `boolean` `checkStoragePermission`(`dream71.com.wasa.login.LoginActivity` v3 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.checkStoragePermission:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3ca420.  v0:= v3.`dream71.com.wasa.login.LoginActivity.PERMISSIONS` @type ^`java.lang.String`[] @kind object;
+  #L3ca424.  call temp:= `hasPermissions`(v3, v3, v0) @signature `Ldream71/com/wasa/login/LoginActivity;.hasPermissions:(Landroid/content/Context;[Ljava/lang/String;)Z` @kind virtual;
+  #L3ca42a.  v0:= temp;
+  #L3ca42c.  v1:= 1I;
+  #L3ca42e.  v2:= "permission" @kind object;
+  #L3ca432.  if v0 != 0 then goto L3ca44a;
+  #L3ca436.  v0:= v3.`dream71.com.wasa.login.LoginActivity.PERMISSIONS` @type ^`java.lang.String`[] @kind object;
+  #L3ca43a.  call `requestPermissions`(v3, v0, v1) @signature `Landroidx/core/app/ActivityCompat;.requestPermissions:(Landroid/app/Activity;[Ljava/lang/String;I)V` @kind static;
+  #L3ca440.  v0:= "1 call" @kind object;
+  #L3ca444.  call temp:= `e`(v2, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca44a.  v0:= "2 call" @kind object;
+  #L3ca44e.  call temp:= `e`(v2, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca454.  return v1;
+  #L3ca456.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L3ca458.  call `printStackTrace`(v0) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L3ca45e.  v0:= "3 call" @kind object;
+  #L3ca462.  call temp:= `e`(v2, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca468.  v0:= 0I;
+  #L3ca46a.  return v0;
+  catch `java.lang.Exception` @[L3ca44a..L3ca454] goto L3ca456;
+}
+procedure `void` `gotoHome`(`dream71.com.wasa.login.LoginActivity` v2 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.gotoHome:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3ca8ac.  call `StartServices`(v2) @signature `Ldream71/com/wasa/login/LoginActivity;.StartServices:()V` @kind direct;
+  #L3ca8b2.  v0:= new `android.content.Intent`;
+  #L3ca8b6.  v1:= constclass @type ^`dream71.com.wasa.Main.MainActivity` @kind object;
+  #L3ca8ba.  call `<init>`(v0, v2, v1) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L3ca8c0.  v1:= 67108864I;
+  #L3ca8c4.  call temp:= `setFlags`(v0, v1) @signature `Landroid/content/Intent;.setFlags:(I)Landroid/content/Intent;` @kind virtual;
+  #L3ca8ca.  call `startActivity`(v2, v0) @signature `Ldream71/com/wasa/login/LoginActivity;.startActivity:(Landroid/content/Intent;)V` @kind virtual;
+  #L3ca8d0.  v0:= 2130771998I;
+  #L3ca8d6.  v1:= 2130771999I;
+  #L3ca8dc.  call `overridePendingTransition`(v2, v0, v1) @signature `Ldream71/com/wasa/login/LoginActivity;.overridePendingTransition:(II)V` @kind virtual;
+  #L3ca8e2.  call `finish`(v2) @signature `Ldream71/com/wasa/login/LoginActivity;.finish:()V` @kind virtual;
+  #L3ca8e8.  return @kind void;
+}
+procedure `java.lang.Boolean` `lambda$ValidateForm$0`(`java.lang.CharSequence` v5 @kind object, `java.lang.CharSequence` v6 @kind object) @signature `Ldream71/com/wasa/login/LoginActivity;.lambda$ValidateForm$0:(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/Boolean;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3ca504.  call temp:= `isEmpty`(v5) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L3ca50a.  v0:= temp;
+  #L3ca50c.  v1:= 1I;
+  #L3ca50e.  v2:= 2I;
+  #L3ca510.  v3:= 0I;
+  #L3ca512.  if v0 != 0 then goto L3ca526;
+  #L3ca516.  call temp:= `length`(v5) @signature `Ljava/lang/CharSequence;.length:()I` @kind interface;
+  #L3ca51c.  v0:= temp;
+  #L3ca51e.  if v0 <= v2 then goto L3ca526;
+  #L3ca522.  v0:= 1I;
+  #L3ca524.  goto L3ca528;
+  #L3ca526.  v0:= 0I;
+  #L3ca528.  call temp:= `isEmpty`(v6) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L3ca52e.  v4:= temp;
+  #L3ca530.  if v4 != 0 then goto L3ca544;
+  #L3ca534.  call temp:= `length`(v6) @signature `Ljava/lang/CharSequence;.length:()I` @kind interface;
+  #L3ca53a.  v6:= temp;
+  #L3ca53c.  if v6 <= v2 then goto L3ca544;
+  #L3ca540.  v6:= 1I;
+  #L3ca542.  goto L3ca546;
+  #L3ca544.  v6:= 0I;
+  #L3ca546.  call temp:= `length`(v5) @signature `Ljava/lang/CharSequence;.length:()I` @kind interface;
+  #L3ca54c.  v5:= temp;
+  #L3ca54e.  v4:= "2" @kind object;
+  #L3ca552.  if v5 <= v2 then goto L3ca562;
+  #L3ca556.  v5:= "greater than" @kind object;
+  #L3ca55a.  call temp:= `e`(v5, v4) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca560.  goto L3ca56c;
+  #L3ca562.  v5:= "less than" @kind object;
+  #L3ca566.  call temp:= `e`(v5, v4) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca56c.  if v0 == 0 then goto L3ca576;
+  #L3ca570.  if v6 == 0 then goto L3ca576;
+  #L3ca574.  goto L3ca578;
+  #L3ca576.  v1:= 0I;
+  #L3ca578.  call temp:= `valueOf`(v1) @signature `Ljava/lang/Boolean;.valueOf:(Z)Ljava/lang/Boolean;` @kind static;
+  #L3ca57e.  v5:= temp @kind object;
+  #L3ca580.  return v5 @kind object;
+}
+procedure `void` `DataReceivedFromDataController`(`dream71.com.wasa.login.LoginActivity` v3 @kind this, `java.lang.String` v4 @kind object, `int` v5 ) @signature `Ldream71/com/wasa/login/LoginActivity;.DataReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3ca5f0.  v5:= v3.`dream71.com.wasa.login.LoginActivity.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L3ca5f4.  v0:= constclass @type ^`dream71.com.wasa.model.ResponseMessage` @kind object;
+  #L3ca5f8.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L3ca5fe.  v5:= temp @kind object;
+  #L3ca600.  v5:= (`dream71.com.wasa.model.ResponseMessage`) v5 @kind object;
+  #L3ca604.  v0:= v5.`dream71.com.wasa.model.ResponseMessage.status` @type ^`int`;
+  #L3ca608.  v1:= 1I;
+  #L3ca60a.  v2:= "" @kind object;
+  #L3ca60e.  if v0 != v1 then goto L3ca6b2;
+  #L3ca612.  v5:= v3.`dream71.com.wasa.login.LoginActivity.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L3ca616.  v0:= constclass @type ^`dream71.com.wasa.Account.AccountMessage` @kind object;
+  #L3ca61a.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L3ca620.  v4:= temp @kind object;
+  #L3ca622.  v4:= (`dream71.com.wasa.Account.AccountMessage`) v4 @kind object;
+  #L3ca626.  v5:= `@@dream71.com.wasa.Account.AppData.employeeInfo` @type ^`java.lang.String` @kind object;
+  #L3ca62a.  v0:= new `com.google.gson.Gson`;
+  #L3ca62e.  call `<init>`(v0) @signature `Lcom/google/gson/Gson;.<init>:()V` @kind direct;
+  #L3ca634.  v1:= v4.`dream71.com.wasa.Account.AccountMessage.profile` @type ^`dream71.com.wasa.Account.Employee` @kind object;
+  #L3ca638.  call temp:= `toJson`(v0, v1) @signature `Lcom/google/gson/Gson;.toJson:(Ljava/lang/Object;)Ljava/lang/String;` @kind virtual;
+  #L3ca63e.  v0:= temp @kind object;
+  #L3ca640.  call temp:= `getApplicationContext`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca646.  v1:= temp @kind object;
+  #L3ca648.  call `saveData`(v5, v0, v1) @signature `Ldream71/com/wasa/Account/AppData;.saveData:(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V` @kind static;
+  #L3ca64e.  v5:= `@@dream71.com.wasa.Account.AppData.Acess_Toten` @type ^`java.lang.String` @kind object;
+  #L3ca652.  v0:= v4.`dream71.com.wasa.Account.AccountMessage.oauth_token` @type ^`java.lang.String` @kind object;
+  #L3ca656.  call temp:= `getApplicationContext`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca65c.  v1:= temp @kind object;
+  #L3ca65e.  call `saveData`(v5, v0, v1) @signature `Ldream71/com/wasa/Account/AppData;.saveData:(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V` @kind static;
+  #L3ca664.  v5:= `@@dream71.com.wasa.Account.AppData.avatar` @type ^`java.lang.String` @kind object;
+  #L3ca668.  v0:= v4.`dream71.com.wasa.Account.AccountMessage.avatar` @type ^`java.lang.String` @kind object;
+  #L3ca66c.  call temp:= `getApplicationContext`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca672.  v1:= temp @kind object;
+  #L3ca674.  call `saveData`(v5, v0, v1) @signature `Ldream71/com/wasa/Account/AppData;.saveData:(Ljava/lang/String;Ljava/lang/String;Landroid/content/Context;)V` @kind static;
+  #L3ca67a.  call temp:= `getApplicationContext`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca680.  v5:= temp @kind object;
+  #L3ca682.  v0:= new `java.lang.StringBuilder`;
+  #L3ca686.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3ca68c.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ca692.  v4:= v4.`dream71.com.wasa.Account.AccountMessage.message` @type ^`java.lang.String` @kind object;
+  #L3ca696.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ca69c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ca6a2.  v4:= temp @kind object;
+  #L3ca6a4.  call `Success`(v5, v4) @signature `Ldream71/com/wasa/utils/ToastyMsg;.Success:(Landroid/content/Context;Ljava/lang/String;)V` @kind static;
+  #L3ca6aa.  call `gotoHome`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.gotoHome:()V` @kind direct;
+  #L3ca6b0.  goto L3ca6f6;
+  #L3ca6b2.  call temp:= `getApplicationContext`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca6b8.  v4:= temp @kind object;
+  #L3ca6ba.  v0:= new `java.lang.StringBuilder`;
+  #L3ca6be.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3ca6c4.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ca6ca.  v5:= v5.`dream71.com.wasa.model.ResponseMessage.message` @type ^`java.lang.String` @kind object;
+  #L3ca6ce.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ca6d4.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ca6da.  v5:= temp @kind object;
+  #L3ca6dc.  call `Error`(v4, v5) @signature `Ldream71/com/wasa/utils/ToastyMsg;.Error:(Landroid/content/Context;Ljava/lang/String;)V` @kind static;
+  #L3ca6e2.  goto L3ca6f6;
+  #L3ca6e4.  call temp:= `getApplicationContext`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca6ea.  v4:= temp @kind object;
+  #L3ca6ec.  v5:= "Something went wrong!" @kind object;
+  #L3ca6f0.  call `Info`(v4, v5) @signature `Ldream71/com/wasa/utils/ToastyMsg;.Info:(Landroid/content/Context;Ljava/lang/String;)V` @kind static;
+  #L3ca6f6.  return @kind void;
+  catch `java.lang.Exception` @[L3ca5f0..L3ca608] goto L3ca6e4;
+  catch `java.lang.Exception` @[L3ca612..L3ca6e2] goto L3ca6e4;
+}
+procedure `void` `SignUp`(`dream71.com.wasa.login.LoginActivity` v4 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.SignUp:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3ca720.  call `StartServices`(v4) @signature `Ldream71/com/wasa/login/LoginActivity;.StartServices:()V` @kind direct;
+  #L3ca726.  v0:= new `dream71.com.wasa.NetworkConnection.RemoteDataController`;
+  #L3ca72a.  call temp:= `getApplicationContext`(v4) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca730.  v1:= temp @kind object;
+  #L3ca732.  call `<init>`(v0, v4, v1) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.<init>:(Ldream71/com/wasa/NetworkConnection/DataController;Landroid/content/Context;)V` @kind direct;
+  #L3ca738.  v1:= new `java.util.HashMap`;
+  #L3ca73c.  call `<init>`(v1) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L3ca742.  v2:= v4.`dream71.com.wasa.login.LoginActivity.fullName` @type ^`android.widget.EditText` @kind object;
+  #L3ca746.  call temp:= `getText`(v2) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L3ca74c.  v2:= temp @kind object;
+  #L3ca74e.  call temp:= `toString`(v2) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ca754.  v2:= temp @kind object;
+  #L3ca756.  call temp:= `trim`(v2) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L3ca75c.  v2:= temp @kind object;
+  #L3ca75e.  v3:= "username" @kind object;
+  #L3ca762.  call temp:= `put`(v1, v3, v2) @signature `Ljava/util/HashMap;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L3ca768.  v2:= v4.`dream71.com.wasa.login.LoginActivity.password_layout` @type ^`android.widget.EditText` @kind object;
+  #L3ca76c.  call temp:= `getText`(v2) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L3ca772.  v2:= temp @kind object;
+  #L3ca774.  call temp:= `toString`(v2) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ca77a.  v2:= temp @kind object;
+  #L3ca77c.  call temp:= `trim`(v2) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L3ca782.  v2:= temp @kind object;
+  #L3ca784.  v3:= "password" @kind object;
+  #L3ca788.  call temp:= `put`(v1, v3, v2) @signature `Ljava/util/HashMap;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L3ca78e.  v2:= "http://info.dwasa.org.bd:4040/api/login" @kind object;
+  #L3ca792.  v3:= 100I;
+  #L3ca796.  call `postData`(v0, v2, v1, v3) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.postData:(Ljava/lang/String;Ljava/util/HashMap;I)V` @kind virtual;
+  #L3ca79c.  return @kind void;
+}
+procedure `void` `ValidateForm`(`dream71.com.wasa.login.LoginActivity` v1 @kind this, `android.widget.EditText` v2 @kind object, `android.widget.EditText` v3 @kind object, `android.widget.Button` v4 @kind object) @signature `Ldream71/com/wasa/login/LoginActivity;.ValidateForm:(Landroid/widget/EditText;Landroid/widget/EditText;Landroid/widget/Button;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3ca7e8.  call temp:= `textChanges`(v2) @signature `Lcom/jakewharton/rxbinding/widget/RxTextView;.textChanges:(Landroid/widget/TextView;)Lrx/Observable;` @kind static;
+  #L3ca7ee.  v2:= temp @kind object;
+  #L3ca7f0.  v0:= 1I;
+  #L3ca7f2.  call temp:= `skip`(v2, v0) @signature `Lrx/Observable;.skip:(I)Lrx/Observable;` @kind virtual;
+  #L3ca7f8.  v2:= temp @kind object;
+  #L3ca7fa.  call temp:= `toV2Flowable`(v2) @signature `Lhu/akarnokd/rxjava/interop/RxJavaInterop;.toV2Flowable:(Lrx/Observable;)Lio/reactivex/Flowable;` @kind static;
+  #L3ca800.  v2:= temp @kind object;
+  #L3ca802.  call temp:= `textChanges`(v3) @signature `Lcom/jakewharton/rxbinding/widget/RxTextView;.textChanges:(Landroid/widget/TextView;)Lrx/Observable;` @kind static;
+  #L3ca808.  v3:= temp @kind object;
+  #L3ca80a.  call temp:= `skip`(v3, v0) @signature `Lrx/Observable;.skip:(I)Lrx/Observable;` @kind virtual;
+  #L3ca810.  v3:= temp @kind object;
+  #L3ca812.  call temp:= `toV2Flowable`(v3) @signature `Lhu/akarnokd/rxjava/interop/RxJavaInterop;.toV2Flowable:(Lrx/Observable;)Lio/reactivex/Flowable;` @kind static;
+  #L3ca818.  v3:= temp @kind object;
+  #L3ca81a.  v0:= new `dream71.com.wasa.login.LoginActivity$1`;
+  #L3ca81e.  call `<init>`(v0, v1, v4) @signature `Ldream71/com/wasa/login/LoginActivity$1;.<init>:(Ldream71/com/wasa/login/LoginActivity;Landroid/widget/Button;)V` @kind direct;
+  #L3ca824.  v4:= `@@dream71.com.wasa.login.-$$Lambda$LoginActivity$Qh80EMDIR1rWdViiLGHbYRyTAUg.INSTANCE` @type ^`dream71.com.wasa.login.-$$Lambda$LoginActivity$Qh80EMDIR1rWdViiLGHbYRyTAUg` @kind object;
+  #L3ca828.  call temp:= `combineLatest`(v2, v3, v4) @signature `Lio/reactivex/Flowable;.combineLatest:(Lorg/reactivestreams/Publisher;Lorg/reactivestreams/Publisher;Lio/reactivex/functions/BiFunction;)Lio/reactivex/Flowable;` @kind static;
+  #L3ca82e.  v2:= temp @kind object;
+  #L3ca830.  call `subscribe`(v2, v0) @signature `Lio/reactivex/Flowable;.subscribe:(Lio/reactivex/FlowableSubscriber;)V` @kind virtual;
+  #L3ca836.  return @kind void;
+}
+procedure `void` `call`(`dream71.com.wasa.login.LoginActivity` v3 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.call:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3ca848.  call temp:= `checkPhonePermission`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.checkPhonePermission:()Z` @kind direct;
+  #L3ca84e.  v0:= temp;
+  #L3ca850.  if v0 == 0 then goto L3ca874;
+  #L3ca854.  v0:= "tel:16162" @kind object;
+  #L3ca858.  call temp:= `parse`(v0) @signature `Landroid/net/Uri;.parse:(Ljava/lang/String;)Landroid/net/Uri;` @kind static;
+  #L3ca85e.  v0:= temp @kind object;
+  #L3ca860.  v1:= new `android.content.Intent`;
+  #L3ca864.  v2:= "android.intent.action.DIAL" @kind object;
+  #L3ca868.  call `<init>`(v1, v2, v0) @signature `Landroid/content/Intent;.<init>:(Ljava/lang/String;Landroid/net/Uri;)V` @kind direct;
+  #L3ca86e.  call `startActivity`(v3, v1) @signature `Ldream71/com/wasa/login/LoginActivity;.startActivity:(Landroid/content/Intent;)V` @kind virtual;
+  #L3ca874.  return @kind void;
+}
+procedure `void` `errorReceivedFromDataController`(`dream71.com.wasa.login.LoginActivity` v0 @kind this, `java.lang.String` v1 @kind object, `int` v2 ) @signature `Ldream71/com/wasa/login/LoginActivity;.errorReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3ca888.  call temp:= `getApplicationContext`(v0) @signature `Ldream71/com/wasa/login/LoginActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L3ca88e.  v1:= temp @kind object;
+  #L3ca890.  v2:= "Something went wrong" @kind object;
+  #L3ca894.  call `Error`(v1, v2) @signature `Ldream71/com/wasa/utils/ToastyMsg;.Error:(Landroid/content/Context;Ljava/lang/String;)V` @kind static;
+  #L3ca89a.  return @kind void;
+}
+procedure `boolean` `hasPermissions`(`dream71.com.wasa.login.LoginActivity` v5 @kind this, `android.content.Context` v6 @kind object, `java.lang.String`[] v7 @kind object) @signature `Ldream71/com/wasa/login/LoginActivity;.hasPermissions:(Landroid/content/Context;[Ljava/lang/String;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3ca48c.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3ca490.  v1:= "Location per" @kind object;
+  #L3ca494.  v2:= 23I;
+  #L3ca498.  if v0 < v2 then goto L3ca4e4;
+  #L3ca49c.  if v6 == 0 then goto L3ca4e4;
+  #L3ca4a0.  if v7 == 0 then goto L3ca4e4;
+  #L3ca4a4.  v0:= "granted 1" @kind object;
+  #L3ca4a8.  call temp:= `e`(v1, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca4ae.  v0:= length @variable v7;
+  #L3ca4b0.  v2:= 0I;
+  #L3ca4b2.  v3:= 0I;
+  #L3ca4b4.  if v3 >= v0 then goto L3ca4e4;
+  #L3ca4b8.  v4:= v7[v3] @kind object;
+  #L3ca4bc.  call temp:= `checkSelfPermission`(v6, v4) @signature `Landroidx/core/app/ActivityCompat;.checkSelfPermission:(Landroid/content/Context;Ljava/lang/String;)I` @kind static;
+  #L3ca4c2.  v4:= temp;
+  #L3ca4c4.  if v4 == 0 then goto L3ca4d4;
+  #L3ca4c8.  v6:= "granted 2" @kind object;
+  #L3ca4cc.  call temp:= `e`(v1, v6) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca4d2.  return v2;
+  #L3ca4d4.  v4:= "granted 3" @kind object;
+  #L3ca4d8.  call temp:= `e`(v1, v4) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca4de.  v3:= v3 + 1;
+  #L3ca4e2.  goto L3ca4b4;
+  #L3ca4e4.  v6:= "granted" @kind object;
+  #L3ca4e8.  call temp:= `e`(v1, v6) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3ca4ee.  v6:= 1I;
+  #L3ca4f0.  return v6;
+}
+procedure `void` `onCreate`(`dream71.com.wasa.login.LoginActivity` v0 @kind this, `android.os.Bundle` v1 @kind object) @signature `Ldream71/com/wasa/login/LoginActivity;.onCreate:(Landroid/os/Bundle;)V` @AccessFlag PROTECTED {
+    temp;
+
+  #L3ca8fc.  call `onCreate`(v0, v1) @signature `Landroidx/appcompat/app/AppCompatActivity;.onCreate:(Landroid/os/Bundle;)V` @kind super;
+  #L3ca902.  v1:= 2131427363I;
+  #L3ca908.  call `setContentView`(v0, v1) @signature `Ldream71/com/wasa/login/LoginActivity;.setContentView:(I)V` @kind virtual;
+  #L3ca90e.  call temp:= `bind`(v0) @signature `Lbutterknife/ButterKnife;.bind:(Landroid/app/Activity;)Lbutterknife/Unbinder;` @kind static;
+  #L3ca914.  v1:= temp @kind object;
+  #L3ca916.  v0.`dream71.com.wasa.login.LoginActivity.unbinder` @type ^`butterknife.Unbinder` := v1 @kind object;
+  #L3ca91a.  return @kind void;
+}
+procedure `void` `onDestroy`(`dream71.com.wasa.login.LoginActivity` v1 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.onDestroy:()V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L3ca92c.  call `onDestroy`(v1) @signature `Landroidx/appcompat/app/AppCompatActivity;.onDestroy:()V` @kind super;
+  #L3ca932.  v0:= v1.`dream71.com.wasa.login.LoginActivity.unbinder` @type ^`butterknife.Unbinder` @kind object;
+  #L3ca936.  call `unbind`(v0) @signature `Lbutterknife/Unbinder;.unbind:()V` @kind interface;
+  #L3ca93c.  return @kind void;
+}
+procedure `void` `onMessageEvent`(`dream71.com.wasa.login.LoginActivity` v2 @kind this, `dream71.com.wasa.Main.MessageEvent` v3 @kind object) @signature `Ldream71/com/wasa/login/LoginActivity;.onMessageEvent:(Ldream71/com/wasa/Main/MessageEvent;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ca950.  v0:= v3.`dream71.com.wasa.Main.MessageEvent.type` @type ^`int`;
+  #L3ca954.  v1:= 1I;
+  #L3ca956.  if v0 != v1 then goto L3ca986;
+  #L3ca95a.  v0:= new `java.lang.StringBuilder`;
+  #L3ca95e.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3ca964.  v1:= "" @kind object;
+  #L3ca968.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ca96e.  v3:= v3.`dream71.com.wasa.Main.MessageEvent.message` @type ^`java.lang.String` @kind object;
+  #L3ca972.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ca978.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ca97e.  v3:= temp @kind object;
+  #L3ca980.  call `showInternetMessage`(v2, v3) @signature `Ldream71/com/wasa/utils/SnackbarCustom;.showInternetMessage:(Landroid/app/Activity;Ljava/lang/String;)V` @kind static;
+  #L3ca986.  return @kind void;
+}
+procedure `void` `onResume`(`dream71.com.wasa.login.LoginActivity` v3 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.onResume:()V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3ca998.  call `onResume`(v3) @signature `Landroidx/appcompat/app/AppCompatActivity;.onResume:()V` @kind super;
+  #L3ca99e.  v0:= v3.`dream71.com.wasa.login.LoginActivity.fullName` @type ^`android.widget.EditText` @kind object;
+  #L3ca9a2.  v1:= v3.`dream71.com.wasa.login.LoginActivity.password_layout` @type ^`android.widget.EditText` @kind object;
+  #L3ca9a6.  v2:= v3.`dream71.com.wasa.login.LoginActivity.btnsignUp` @type ^`android.widget.Button` @kind object;
+  #L3ca9aa.  call `ValidateForm`(v3, v0, v1, v2) @signature `Ldream71/com/wasa/login/LoginActivity;.ValidateForm:(Landroid/widget/EditText;Landroid/widget/EditText;Landroid/widget/Button;)V` @kind virtual;
+  #L3ca9b0.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3ca9b4.  v1:= 23I;
+  #L3ca9b8.  if v0 < v1 then goto L3ca9c2;
+  #L3ca9bc.  call temp:= `checkStoragePermission`(v3) @signature `Ldream71/com/wasa/login/LoginActivity;.checkStoragePermission:()Z` @kind direct;
+  #L3ca9c2.  return @kind void;
+}
+procedure `void` `onStart`(`dream71.com.wasa.login.LoginActivity` v1 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.onStart:()V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L3ca9d4.  call `onStart`(v1) @signature `Landroidx/appcompat/app/AppCompatActivity;.onStart:()V` @kind super;
+  #L3ca9da.  call temp:= `getDefault`() @signature `Lorg/greenrobot/eventbus/EventBus;.getDefault:()Lorg/greenrobot/eventbus/EventBus;` @kind static;
+  #L3ca9e0.  v0:= temp @kind object;
+  #L3ca9e2.  call `register`(v0, v1) @signature `Lorg/greenrobot/eventbus/EventBus;.register:(Ljava/lang/Object;)V` @kind virtual;
+  #L3ca9e8.  return @kind void;
+}
+procedure `void` `onStop`(`dream71.com.wasa.login.LoginActivity` v1 @kind this) @signature `Ldream71/com/wasa/login/LoginActivity;.onStop:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3ca9fc.  call `onStop`(v1) @signature `Landroidx/appcompat/app/AppCompatActivity;.onStop:()V` @kind super;
+  #L3caa02.  call temp:= `getDefault`() @signature `Lorg/greenrobot/eventbus/EventBus;.getDefault:()Lorg/greenrobot/eventbus/EventBus;` @kind static;
+  #L3caa08.  v0:= temp @kind object;
+  #L3caa0a.  call `unregister`(v0, v1) @signature `Lorg/greenrobot/eventbus/EventBus;.unregister:(Ljava/lang/Object;)V` @kind virtual;
+  #L3caa10.  return @kind void;
+}

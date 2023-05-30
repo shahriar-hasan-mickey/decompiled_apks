@@ -1,0 +1,78 @@
+record `io.reactivex.internal.observers.BlockingBaseObserver` @kind class @AccessFlag PUBLIC_ABSTRACT extends `java.util.concurrent.CountDownLatch` @kind class, `io.reactivex.Observer` @kind interface, `io.reactivex.disposables.Disposable` @kind interface {
+  `boolean` `io.reactivex.internal.observers.BlockingBaseObserver.cancelled` @AccessFlag VOLATILE;
+  `java.lang.Throwable` `io.reactivex.internal.observers.BlockingBaseObserver.error` @AccessFlag ;
+  `io.reactivex.disposables.Disposable` `io.reactivex.internal.observers.BlockingBaseObserver.upstream` @AccessFlag ;
+  `java.lang.Object` `io.reactivex.internal.observers.BlockingBaseObserver.value` @AccessFlag ;
+}
+procedure `void` `<init>`(`io.reactivex.internal.observers.BlockingBaseObserver` v1 @kind this) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3e7918.  v0:= 1I;
+  #L3e791a.  call `<init>`(v1, v0) @signature `Ljava/util/concurrent/CountDownLatch;.<init>:(I)V` @kind direct;
+  #L3e7920.  return @kind void;
+}
+procedure `java.lang.Object` `blockingGet`(`io.reactivex.internal.observers.BlockingBaseObserver` v5 @kind this) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.blockingGet:()Ljava/lang/Object;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3e78ac.  call temp:= `getCount`(v5) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.getCount:()J` @kind virtual;
+  #L3e78b2.  v0:= temp @kind wide;
+  #L3e78b4.  v2:= 0L;
+  #L3e78b8.  v4:= lcmp(v0, v2);
+  #L3e78bc.  if v4 == 0 then goto L3e78e0;
+  #L3e78c0.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L3e78c6.  call `await`(v5) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.await:()V` @kind virtual;
+  #L3e78cc.  goto L3e78e0;
+  #L3e78ce.  v0:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L3e78d0.  call `dispose`(v5) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.dispose:()V` @kind virtual;
+  #L3e78d6.  call temp:= `wrapOrThrow`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L3e78dc.  v0:= temp @kind object;
+  #L3e78de.  throw v0;
+  #L3e78e0.  v0:= v5.`io.reactivex.internal.observers.BlockingBaseObserver.error` @type ^`java.lang.Throwable` @kind object;
+  #L3e78e4.  if v0 != 0 then goto L3e78ee;
+  #L3e78e8.  v0:= v5.`io.reactivex.internal.observers.BlockingBaseObserver.value` @type ^`java.lang.Object` @kind object;
+  #L3e78ec.  return v0 @kind object;
+  #L3e78ee.  call temp:= `wrapOrThrow`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L3e78f4.  v0:= temp @kind object;
+  #L3e78f6.  throw v0;
+  catch `java.lang.InterruptedException` @[L3e78c0..L3e78cc] goto L3e78ce;
+}
+procedure `void` `dispose`(`io.reactivex.internal.observers.BlockingBaseObserver` v1 @kind this) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.dispose:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L3e7934.  v0:= 1I;
+  #L3e7936.  v1.`io.reactivex.internal.observers.BlockingBaseObserver.cancelled` @type ^`boolean` := v0 @kind boolean;
+  #L3e793a.  v0:= v1.`io.reactivex.internal.observers.BlockingBaseObserver.upstream` @type ^`io.reactivex.disposables.Disposable` @kind object;
+  #L3e793e.  if v0 == 0 then goto L3e7948;
+  #L3e7942.  call `dispose`(v0) @signature `Lio/reactivex/disposables/Disposable;.dispose:()V` @kind interface;
+  #L3e7948.  return @kind void;
+}
+procedure `boolean` `isDisposed`(`io.reactivex.internal.observers.BlockingBaseObserver` v1 @kind this) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.isDisposed:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L3e7894.  v0:= v1.`io.reactivex.internal.observers.BlockingBaseObserver.cancelled` @type ^`boolean` @kind boolean;
+  #L3e7898.  return v0;
+}
+procedure `void` `onComplete`(`io.reactivex.internal.observers.BlockingBaseObserver` v0 @kind this) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.onComplete:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+
+  #L3e795c.  call `countDown`(v0) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.countDown:()V` @kind virtual;
+  #L3e7962.  return @kind void;
+}
+procedure `void` `onSubscribe`(`io.reactivex.internal.observers.BlockingBaseObserver` v1 @kind this, `io.reactivex.disposables.Disposable` v2 @kind object) @signature `Lio/reactivex/internal/observers/BlockingBaseObserver;.onSubscribe:(Lio/reactivex/disposables/Disposable;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L3e7974.  v1.`io.reactivex.internal.observers.BlockingBaseObserver.upstream` @type ^`io.reactivex.disposables.Disposable` := v2 @kind object;
+  #L3e7978.  v0:= v1.`io.reactivex.internal.observers.BlockingBaseObserver.cancelled` @type ^`boolean` @kind boolean;
+  #L3e797c.  if v0 == 0 then goto L3e7986;
+  #L3e7980.  call `dispose`(v2) @signature `Lio/reactivex/disposables/Disposable;.dispose:()V` @kind interface;
+  #L3e7986.  return @kind void;
+}

@@ -1,0 +1,303 @@
+record `okio.AsyncTimeout` @kind class @AccessFlag PUBLIC extends `okio.Timeout` @kind class {
+  `boolean` `okio.AsyncTimeout.inQueue` @AccessFlag PRIVATE;
+  `okio.AsyncTimeout` `okio.AsyncTimeout.next` @AccessFlag PRIVATE;
+  `long` `okio.AsyncTimeout.timeoutAt` @AccessFlag PRIVATE;
+}
+global `long` `@@okio.AsyncTimeout.IDLE_TIMEOUT_MILLIS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `long` `@@okio.AsyncTimeout.IDLE_TIMEOUT_NANOS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@okio.AsyncTimeout.TIMEOUT_WRITE_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `okio.AsyncTimeout` `@@okio.AsyncTimeout.head` @AccessFlag STATIC;
+procedure `void` `<clinit>`() @signature `Lokio/AsyncTimeout;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4778c8.  v0:= `@@java.util.concurrent.TimeUnit.SECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4778cc.  v1:= 60L;
+  #L4778d0.  call temp:= `toMillis`(v0, v1) @signature `Ljava/util/concurrent/TimeUnit;.toMillis:(J)J` @kind virtual;
+  #L4778d6.  v0:= temp @kind wide;
+  #L4778d8.  `@@okio.AsyncTimeout.IDLE_TIMEOUT_MILLIS` @type ^`long` := v0 @kind wide;
+  #L4778dc.  v0:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4778e0.  v1:= `@@okio.AsyncTimeout.IDLE_TIMEOUT_MILLIS` @type ^`long` @kind wide;
+  #L4778e4.  call temp:= `toNanos`(v0, v1) @signature `Ljava/util/concurrent/TimeUnit;.toNanos:(J)J` @kind virtual;
+  #L4778ea.  v0:= temp @kind wide;
+  #L4778ec.  `@@okio.AsyncTimeout.IDLE_TIMEOUT_NANOS` @type ^`long` := v0 @kind wide;
+  #L4778f0.  return @kind void;
+}
+procedure `void` `<init>`(`okio.AsyncTimeout` v0 @kind this) @signature `Lokio/AsyncTimeout;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L477904.  call `<init>`(v0) @signature `Lokio/Timeout;.<init>:()V` @kind direct;
+  #L47790a.  return @kind void;
+}
+procedure `okio.AsyncTimeout` `awaitTimeout`() @signature `Lokio/AsyncTimeout;.awaitTimeout:()Lokio/AsyncTimeout;` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L4777ec.  v0:= constclass @type ^`okio.AsyncTimeout` @kind object;
+  #L4777f0.  v1:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L4777f4.  v1:= v1.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L4777f8.  v2:= 0I;
+  #L4777fa.  if v1 != 0 then goto L477838;
+  #L4777fe.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L477804.  v3:= temp @kind wide;
+  #L477806.  v5:= `@@okio.AsyncTimeout.IDLE_TIMEOUT_MILLIS` @type ^`long` @kind wide;
+  #L47780a.  call `wait`(v0, v5) @signature `Ljava/lang/Object;.wait:(J)V` @kind virtual;
+  #L477810.  v0:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L477814.  v0:= v0.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L477818.  if v0 != 0 then goto L477836;
+  #L47781c.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L477822.  v0:= temp @kind wide;
+  #L477824.  v0:= v0 - v3 @kind long;
+  #L477826.  v3:= `@@okio.AsyncTimeout.IDLE_TIMEOUT_NANOS` @type ^`long` @kind wide;
+  #L47782a.  v5:= lcmp(v0, v3);
+  #L47782e.  if v5 < 0 then goto L477836;
+  #L477832.  v2:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L477836.  return v2 @kind object;
+  #L477838.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L47783e.  v3:= temp @kind wide;
+  #L477840.  call temp:= `remainingNanos`(v1, v3) @signature `Lokio/AsyncTimeout;.remainingNanos:(J)J` @kind direct;
+  #L477846.  v3:= temp @kind wide;
+  #L477848.  v5:= 0L;
+  #L47784c.  v7:= lcmp(v3, v5);
+  #L477850.  if v7 <= 0 then goto L47786e;
+  #L477854.  v5:= 1000000L;
+  #L47785a.  v7:= v3 / v5 @kind long;
+  #L47785e.  v5:= v5 * v7 @kind long;
+  #L477862.  v3:= v3 - v5 @kind long;
+  #L477864.  v1:= (`int`) v3 @kind l2i;
+  #L477866.  call `wait`(v0, v7, v1) @signature `Ljava/lang/Object;.wait:(JI)V` @kind virtual;
+  #L47786c.  return v2 @kind object;
+  #L47786e.  v0:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L477872.  v3:= v1.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L477876.  v0.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` := v3 @kind object;
+  #L47787a.  v1.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` := v2 @kind object;
+  #L47787e.  return v1 @kind object;
+}
+procedure `boolean` `cancelScheduledTimeout`(`okio.AsyncTimeout` v3 @kind object) @signature `Lokio/AsyncTimeout;.cancelScheduledTimeout:(Lokio/AsyncTimeout;)Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4776f0.  v0:= constclass @type ^`okio.AsyncTimeout` @kind object;
+  #L4776f4.  @monitorenter v0
+  #L4776f6.  v1:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L4776fa.  if v1 == 0 then goto L477720;
+  #L4776fe.  v2:= v1.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L477702.  if v2 != v3 then goto L47771a;
+  #L477706.  v2:= v3.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L47770a.  v1.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` := v2 @kind object;
+  #L47770e.  v1:= 0I;
+  #L477710.  v3.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` := v1 @kind object;
+  #L477714.  v3:= 0I;
+  #L477716.  @monitorexit v0
+  #L477718.  return v3;
+  #L47771a.  v1:= v1.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L47771e.  goto L4776fa;
+  #L477720.  v3:= 1I;
+  #L477722.  @monitorexit v0
+  #L477724.  return v3;
+  #L477726.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L477728.  @monitorexit v0
+  #L47772a.  goto L47772e;
+  #L47772c.  throw v3;
+  #L47772e.  goto L47772c;
+  catch `java.lang.Throwable` @[L4776f6..L477714] goto L477726;
+  catch `java.lang.Throwable` @[L47771a..L47771e] goto L477726;
+}
+procedure `long` `remainingNanos`(`okio.AsyncTimeout` v2 @kind this, `long` v3 ) @signature `Lokio/AsyncTimeout;.remainingNanos:(J)J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L4777d4.  v0:= v2.`okio.AsyncTimeout.timeoutAt` @type ^`long` @kind wide;
+  #L4777d8.  v0:= v0 - v3 @kind long;
+  #L4777da.  return v0 @kind wide;
+}
+procedure `void` `scheduleTimeout`(`okio.AsyncTimeout` v6 @kind object, `long` v7 , `boolean` v9 ) @signature `Lokio/AsyncTimeout;.scheduleTimeout:(Lokio/AsyncTimeout;JZ)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4779a4.  v0:= constclass @type ^`okio.AsyncTimeout` @kind object;
+  #L4779a8.  @monitorenter v0
+  #L4779aa.  v1:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L4779ae.  if v1 != 0 then goto L4779d0;
+  #L4779b2.  v1:= new `okio.AsyncTimeout`;
+  #L4779b6.  call `<init>`(v1) @signature `Lokio/AsyncTimeout;.<init>:()V` @kind direct;
+  #L4779bc.  `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` := v1 @kind object;
+  #L4779c0.  v1:= new `okio.AsyncTimeout$Watchdog`;
+  #L4779c4.  call `<init>`(v1) @signature `Lokio/AsyncTimeout$Watchdog;.<init>:()V` @kind direct;
+  #L4779ca.  call `start`(v1) @signature `Lokio/AsyncTimeout$Watchdog;.start:()V` @kind virtual;
+  #L4779d0.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L4779d6.  v1:= temp @kind wide;
+  #L4779d8.  v3:= 0L;
+  #L4779dc.  v5:= lcmp(v7, v3);
+  #L4779e0.  if v5 == 0 then goto L477a02;
+  #L4779e4.  if v9 == 0 then goto L477a02;
+  #L4779e8.  call temp:= `deadlineNanoTime`(v6) @signature `Lokio/AsyncTimeout;.deadlineNanoTime:()J` @kind virtual;
+  #L4779ee.  v3:= temp @kind wide;
+  #L4779f0.  v3:= v3 - v1 @kind long;
+  #L4779f2.  call temp:= `min`(v7, v3) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L4779f8.  v7:= temp @kind wide;
+  #L4779fa.  v7:= v7 + v1 @kind long;
+  #L4779fc.  v6.`okio.AsyncTimeout.timeoutAt` @type ^`long` := v7 @kind wide;
+  #L477a00.  goto L477a22;
+  #L477a02.  v5:= lcmp(v7, v3);
+  #L477a06.  if v5 == 0 then goto L477a12;
+  #L477a0a.  v7:= v7 + v1 @kind long;
+  #L477a0c.  v6.`okio.AsyncTimeout.timeoutAt` @type ^`long` := v7 @kind wide;
+  #L477a10.  goto L477a22;
+  #L477a12.  if v9 == 0 then goto L477a70;
+  #L477a16.  call temp:= `deadlineNanoTime`(v6) @signature `Lokio/AsyncTimeout;.deadlineNanoTime:()J` @kind virtual;
+  #L477a1c.  v7:= temp @kind wide;
+  #L477a1e.  v6.`okio.AsyncTimeout.timeoutAt` @type ^`long` := v7 @kind wide;
+  #L477a22.  call temp:= `remainingNanos`(v6, v1) @signature `Lokio/AsyncTimeout;.remainingNanos:(J)J` @kind direct;
+  #L477a28.  v7:= temp @kind wide;
+  #L477a2a.  v9:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L477a2e.  v3:= v9.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L477a32.  if v3 == 0 then goto L477a52;
+  #L477a36.  v3:= v9.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L477a3a.  call temp:= `remainingNanos`(v3, v1) @signature `Lokio/AsyncTimeout;.remainingNanos:(J)J` @kind direct;
+  #L477a40.  v3:= temp @kind wide;
+  #L477a42.  v5:= lcmp(v7, v3);
+  #L477a46.  if v5 >= 0 then goto L477a4c;
+  #L477a4a.  goto L477a52;
+  #L477a4c.  v9:= v9.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L477a50.  goto L477a2e;
+  #L477a52.  v7:= v9.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` @kind object;
+  #L477a56.  v6.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` := v7 @kind object;
+  #L477a5a.  v9.`okio.AsyncTimeout.next` @type ^`okio.AsyncTimeout` := v6 @kind object;
+  #L477a5e.  v6:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L477a62.  if v9 != v6 then goto L477a6c;
+  #L477a66.  call `notify`(v0) @signature `Ljava/lang/Object;.notify:()V` @kind virtual;
+  #L477a6c.  @monitorexit v0
+  #L477a6e.  return @kind void;
+  #L477a70.  v6:= new `java.lang.AssertionError`;
+  #L477a74.  call `<init>`(v6) @signature `Ljava/lang/AssertionError;.<init>:()V` @kind direct;
+  #L477a7a.  throw v6;
+  #L477a7c.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L477a7e.  @monitorexit v0
+  #L477a80.  goto L477a84;
+  #L477a82.  throw v6;
+  #L477a84.  goto L477a82;
+  catch `java.lang.Throwable` @[L4779aa..L477a6c] goto L477a7c;
+  catch `java.lang.Throwable` @[L477a70..L477a7c] goto L477a7c;
+}
+procedure `void` `enter`(`okio.AsyncTimeout` v6 @kind this) @signature `Lokio/AsyncTimeout;.enter:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L47791c.  v0:= v6.`okio.AsyncTimeout.inQueue` @type ^`boolean` @kind boolean;
+  #L477920.  if v0 != 0 then goto L477954;
+  #L477924.  call temp:= `timeoutNanos`(v6) @signature `Lokio/AsyncTimeout;.timeoutNanos:()J` @kind virtual;
+  #L47792a.  v0:= temp @kind wide;
+  #L47792c.  call temp:= `hasDeadline`(v6) @signature `Lokio/AsyncTimeout;.hasDeadline:()Z` @kind virtual;
+  #L477932.  v2:= temp;
+  #L477934.  v3:= 0L;
+  #L477938.  v5:= lcmp(v0, v3);
+  #L47793c.  if v5 != 0 then goto L477946;
+  #L477940.  if v2 != 0 then goto L477946;
+  #L477944.  return @kind void;
+  #L477946.  v3:= 1I;
+  #L477948.  v6.`okio.AsyncTimeout.inQueue` @type ^`boolean` := v3 @kind boolean;
+  #L47794c.  call `scheduleTimeout`(v6, v0, v2) @signature `Lokio/AsyncTimeout;.scheduleTimeout:(Lokio/AsyncTimeout;JZ)V` @kind static;
+  #L477952.  return @kind void;
+  #L477954.  v0:= new `java.lang.IllegalStateException`;
+  #L477958.  v1:= "Unbalanced enter/exit" @kind object;
+  #L47795c.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L477962.  throw v0;
+}
+procedure `java.io.IOException` `exit`(`okio.AsyncTimeout` v1 @kind this, `java.io.IOException` v2 @kind object) @signature `Lokio/AsyncTimeout;.exit:(Ljava/io/IOException;)Ljava/io/IOException;` @AccessFlag FINAL {
+    temp;
+    v0;
+
+  #L477780.  call temp:= `exit`(v1) @signature `Lokio/AsyncTimeout;.exit:()Z` @kind virtual;
+  #L477786.  v0:= temp;
+  #L477788.  if v0 != 0 then goto L47778e;
+  #L47778c.  return v2 @kind object;
+  #L47778e.  call temp:= `newTimeoutException`(v1, v2) @signature `Lokio/AsyncTimeout;.newTimeoutException:(Ljava/io/IOException;)Ljava/io/IOException;` @kind virtual;
+  #L477794.  v2:= temp @kind object;
+  #L477796.  return v2 @kind object;
+}
+procedure `void` `exit`(`okio.AsyncTimeout` v1 @kind this, `boolean` v2 ) @signature `Lokio/AsyncTimeout;.exit:(Z)V` @AccessFlag FINAL {
+    temp;
+    v0;
+
+  #L477974.  call temp:= `exit`(v1) @signature `Lokio/AsyncTimeout;.exit:()Z` @kind virtual;
+  #L47797a.  v0:= temp;
+  #L47797c.  if v0 == 0 then goto L477992;
+  #L477980.  if v2 != 0 then goto L477986;
+  #L477984.  goto L477992;
+  #L477986.  v2:= 0I;
+  #L477988.  call temp:= `newTimeoutException`(v1, v2) @signature `Lokio/AsyncTimeout;.newTimeoutException:(Ljava/io/IOException;)Ljava/io/IOException;` @kind virtual;
+  #L47798e.  v2:= temp @kind object;
+  #L477990.  throw v2;
+  #L477992.  return @kind void;
+}
+procedure `boolean` `exit`(`okio.AsyncTimeout` v2 @kind this) @signature `Lokio/AsyncTimeout;.exit:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L477754.  v0:= v2.`okio.AsyncTimeout.inQueue` @type ^`boolean` @kind boolean;
+  #L477758.  v1:= 0I;
+  #L47775a.  if v0 != 0 then goto L477760;
+  #L47775e.  return v1;
+  #L477760.  v2.`okio.AsyncTimeout.inQueue` @type ^`boolean` := v1 @kind boolean;
+  #L477764.  call temp:= `cancelScheduledTimeout`(v2) @signature `Lokio/AsyncTimeout;.cancelScheduledTimeout:(Lokio/AsyncTimeout;)Z` @kind static;
+  #L47776a.  v0:= temp;
+  #L47776c.  return v0;
+}
+procedure `java.io.IOException` `newTimeoutException`(`okio.AsyncTimeout` v2 @kind this, `java.io.IOException` v3 @kind object) @signature `Lokio/AsyncTimeout;.newTimeoutException:(Ljava/io/IOException;)Ljava/io/IOException;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+
+  #L4777a8.  v0:= new `java.io.InterruptedIOException`;
+  #L4777ac.  v1:= "timeout" @kind object;
+  #L4777b0.  call `<init>`(v0, v1) @signature `Ljava/io/InterruptedIOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4777b6.  if v3 == 0 then goto L4777c0;
+  #L4777ba.  call temp:= `initCause`(v0, v3) @signature `Ljava/io/InterruptedIOException;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L4777c0.  return v0 @kind object;
+}
+procedure `okio.Sink` `sink`(`okio.AsyncTimeout` v1 @kind this, `okio.Sink` v2 @kind object) @signature `Lokio/AsyncTimeout;.sink:(Lokio/Sink;)Lokio/Sink;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L477890.  v0:= new `okio.AsyncTimeout$1`;
+  #L477894.  call `<init>`(v0, v1, v2) @signature `Lokio/AsyncTimeout$1;.<init>:(Lokio/AsyncTimeout;Lokio/Sink;)V` @kind direct;
+  #L47789a.  return v0 @kind object;
+}
+procedure `okio.Source` `source`(`okio.AsyncTimeout` v1 @kind this, `okio.Source` v2 @kind object) @signature `Lokio/AsyncTimeout;.source:(Lokio/Source;)Lokio/Source;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L4778ac.  v0:= new `okio.AsyncTimeout$2`;
+  #L4778b0.  call `<init>`(v0, v1, v2) @signature `Lokio/AsyncTimeout$2;.<init>:(Lokio/AsyncTimeout;Lokio/Source;)V` @kind direct;
+  #L4778b6.  return v0 @kind object;
+}
+procedure `void` `timedOut`(`okio.AsyncTimeout` v0 @kind this) @signature `Lokio/AsyncTimeout;.timedOut:()V` @AccessFlag PROTECTED {
+    temp;
+
+  #L477aac.  return @kind void;
+}

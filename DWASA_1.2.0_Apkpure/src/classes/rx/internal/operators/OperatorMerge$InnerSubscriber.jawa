@@ -1,0 +1,89 @@
+record `rx.internal.operators.OperatorMerge$InnerSubscriber` @kind class @AccessFlag FINAL extends `rx.Subscriber` @kind class {
+  `boolean` `rx.internal.operators.OperatorMerge$InnerSubscriber.done` @AccessFlag VOLATILE;
+  `long` `rx.internal.operators.OperatorMerge$InnerSubscriber.id` @AccessFlag FINAL;
+  `int` `rx.internal.operators.OperatorMerge$InnerSubscriber.outstanding` @AccessFlag ;
+  `rx.internal.operators.OperatorMerge$MergeSubscriber` `rx.internal.operators.OperatorMerge$InnerSubscriber.parent` @AccessFlag FINAL;
+  `rx.internal.util.RxRingBuffer` `rx.internal.operators.OperatorMerge$InnerSubscriber.queue` @AccessFlag VOLATILE;
+}
+global `int` `@@rx.internal.operators.OperatorMerge$InnerSubscriber.LIMIT` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4a2b38.  v0:= `@@rx.internal.util.RxRingBuffer.SIZE` @type ^`int`;
+  #L4a2b3c.  v0:= v0 / 4;
+  #L4a2b40.  `@@rx.internal.operators.OperatorMerge$InnerSubscriber.LIMIT` @type ^`int` := v0;
+  #L4a2b44.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.operators.OperatorMerge$InnerSubscriber` v0 @kind this, `rx.internal.operators.OperatorMerge$MergeSubscriber` v1 @kind object, `long` v2 ) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.<init>:(Lrx/internal/operators/OperatorMerge$MergeSubscriber;J)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4a2b58.  call `<init>`(v0) @signature `Lrx/Subscriber;.<init>:()V` @kind direct;
+  #L4a2b5e.  v0.`rx.internal.operators.OperatorMerge$InnerSubscriber.parent` @type ^`rx.internal.operators.OperatorMerge$MergeSubscriber` := v1 @kind object;
+  #L4a2b62.  v0.`rx.internal.operators.OperatorMerge$InnerSubscriber.id` @type ^`long` := v2 @kind wide;
+  #L4a2b66.  return @kind void;
+}
+procedure `void` `onCompleted`(`rx.internal.operators.OperatorMerge$InnerSubscriber` v1 @kind this) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a2b78.  v0:= 1I;
+  #L4a2b7a.  v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.done` @type ^`boolean` := v0 @kind boolean;
+  #L4a2b7e.  v0:= v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.parent` @type ^`rx.internal.operators.OperatorMerge$MergeSubscriber` @kind object;
+  #L4a2b82.  call `emit`(v0) @signature `Lrx/internal/operators/OperatorMerge$MergeSubscriber;.emit:()V` @kind virtual;
+  #L4a2b88.  return @kind void;
+}
+procedure `void` `onError`(`rx.internal.operators.OperatorMerge$InnerSubscriber` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a2b9c.  v0:= 1I;
+  #L4a2b9e.  v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.done` @type ^`boolean` := v0 @kind boolean;
+  #L4a2ba2.  v0:= v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.parent` @type ^`rx.internal.operators.OperatorMerge$MergeSubscriber` @kind object;
+  #L4a2ba6.  call temp:= `getOrCreateErrorQueue`(v0) @signature `Lrx/internal/operators/OperatorMerge$MergeSubscriber;.getOrCreateErrorQueue:()Ljava/util/Queue;` @kind virtual;
+  #L4a2bac.  v0:= temp @kind object;
+  #L4a2bae.  call temp:= `offer`(v0, v2) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L4a2bb4.  v2:= v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.parent` @type ^`rx.internal.operators.OperatorMerge$MergeSubscriber` @kind object;
+  #L4a2bb8.  call `emit`(v2) @signature `Lrx/internal/operators/OperatorMerge$MergeSubscriber;.emit:()V` @kind virtual;
+  #L4a2bbe.  return @kind void;
+}
+procedure `void` `onNext`(`rx.internal.operators.OperatorMerge$InnerSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a2bd0.  v0:= v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.parent` @type ^`rx.internal.operators.OperatorMerge$MergeSubscriber` @kind object;
+  #L4a2bd4.  call `tryEmit`(v0, v1, v2) @signature `Lrx/internal/operators/OperatorMerge$MergeSubscriber;.tryEmit:(Lrx/internal/operators/OperatorMerge$InnerSubscriber;Ljava/lang/Object;)V` @kind virtual;
+  #L4a2bda.  return @kind void;
+}
+procedure `void` `onStart`(`rx.internal.operators.OperatorMerge$InnerSubscriber` v2 @kind this) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.onStart:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4a2bec.  v0:= `@@rx.internal.util.RxRingBuffer.SIZE` @type ^`int`;
+  #L4a2bf0.  v2.`rx.internal.operators.OperatorMerge$InnerSubscriber.outstanding` @type ^`int` := v0;
+  #L4a2bf4.  v0:= `@@rx.internal.util.RxRingBuffer.SIZE` @type ^`int`;
+  #L4a2bf8.  v0:= (`long`) v0 @kind i2l;
+  #L4a2bfa.  call `request`(v2, v0) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.request:(J)V` @kind virtual;
+  #L4a2c00.  return @kind void;
+}
+procedure `void` `requestMore`(`rx.internal.operators.OperatorMerge$InnerSubscriber` v1 @kind this, `long` v2 ) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.requestMore:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a2c14.  v0:= v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.outstanding` @type ^`int`;
+  #L4a2c18.  v3:= (`int`) v2 @kind l2i;
+  #L4a2c1a.  v0:= v0 - v3 @kind int;
+  #L4a2c1c.  v2:= `@@rx.internal.operators.OperatorMerge$InnerSubscriber.LIMIT` @type ^`int`;
+  #L4a2c20.  if v0 <= v2 then goto L4a2c2a;
+  #L4a2c24.  v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.outstanding` @type ^`int` := v0;
+  #L4a2c28.  return @kind void;
+  #L4a2c2a.  v2:= `@@rx.internal.util.RxRingBuffer.SIZE` @type ^`int`;
+  #L4a2c2e.  v1.`rx.internal.operators.OperatorMerge$InnerSubscriber.outstanding` @type ^`int` := v2;
+  #L4a2c32.  v2:= `@@rx.internal.util.RxRingBuffer.SIZE` @type ^`int`;
+  #L4a2c36.  v2:= v2 - v0 @kind int;
+  #L4a2c38.  if v2 <= 0 then goto L4a2c44;
+  #L4a2c3c.  v2:= (`long`) v2 @kind i2l;
+  #L4a2c3e.  call `request`(v1, v2) @signature `Lrx/internal/operators/OperatorMerge$InnerSubscriber;.request:(J)V` @kind virtual;
+  #L4a2c44.  return @kind void;
+}

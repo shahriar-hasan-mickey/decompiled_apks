@@ -1,0 +1,142 @@
+record `rx.internal.schedulers.GenericScheduledExecutorService` @kind class @AccessFlag PUBLIC_FINAL extends `rx.internal.schedulers.SchedulerLifecycle` @kind interface {
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.schedulers.GenericScheduledExecutorService.executor` @AccessFlag PRIVATE_FINAL;
+}
+global `rx.internal.schedulers.GenericScheduledExecutorService` `@@rx.internal.schedulers.GenericScheduledExecutorService.INSTANCE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.util.concurrent.ScheduledExecutorService`[] `@@rx.internal.schedulers.GenericScheduledExecutorService.NONE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.ScheduledExecutorService` `@@rx.internal.schedulers.GenericScheduledExecutorService.SHUTDOWN` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@rx.internal.schedulers.GenericScheduledExecutorService.roundRobin` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4b2c9c.  v0:= 0I;
+  #L4b2c9e.  v1:= new `java.util.concurrent.ScheduledExecutorService`[v0];
+  #L4b2ca2.  `@@rx.internal.schedulers.GenericScheduledExecutorService.NONE` @type ^`java.util.concurrent.ScheduledExecutorService`[] := v1 @kind object;
+  #L4b2ca6.  call temp:= `newScheduledThreadPool`(v0) @signature `Ljava/util/concurrent/Executors;.newScheduledThreadPool:(I)Ljava/util/concurrent/ScheduledExecutorService;` @kind static;
+  #L4b2cac.  v0:= temp @kind object;
+  #L4b2cae.  `@@rx.internal.schedulers.GenericScheduledExecutorService.SHUTDOWN` @type ^`java.util.concurrent.ScheduledExecutorService` := v0 @kind object;
+  #L4b2cb2.  v0:= `@@rx.internal.schedulers.GenericScheduledExecutorService.SHUTDOWN` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b2cb6.  call `shutdown`(v0) @signature `Ljava/util/concurrent/ScheduledExecutorService;.shutdown:()V` @kind interface;
+  #L4b2cbc.  v0:= new `rx.internal.schedulers.GenericScheduledExecutorService`;
+  #L4b2cc0.  call `<init>`(v0) @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.<init>:()V` @kind direct;
+  #L4b2cc6.  `@@rx.internal.schedulers.GenericScheduledExecutorService.INSTANCE` @type ^`rx.internal.schedulers.GenericScheduledExecutorService` := v0 @kind object;
+  #L4b2cca.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.GenericScheduledExecutorService` v2 @kind this) @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4b2cdc.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b2ce2.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4b2ce6.  v1:= `@@rx.internal.schedulers.GenericScheduledExecutorService.NONE` @type ^`java.util.concurrent.ScheduledExecutorService`[] @kind object;
+  #L4b2cea.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4b2cf0.  v2.`rx.internal.schedulers.GenericScheduledExecutorService.executor` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L4b2cf4.  call `start`(v2) @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.start:()V` @kind virtual;
+  #L4b2cfa.  return @kind void;
+}
+procedure `java.util.concurrent.ScheduledExecutorService` `getInstance`() @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.getInstance:()Ljava/util/concurrent/ScheduledExecutorService;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b2c50.  v0:= `@@rx.internal.schedulers.GenericScheduledExecutorService.INSTANCE` @type ^`rx.internal.schedulers.GenericScheduledExecutorService` @kind object;
+  #L4b2c54.  v0:= v0.`rx.internal.schedulers.GenericScheduledExecutorService.executor` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2c58.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b2c5e.  v0:= temp @kind object;
+  #L4b2c60.  v0:= (`java.util.concurrent.ScheduledExecutorService`[]) v0 @kind object;
+  #L4b2c64.  v1:= `@@rx.internal.schedulers.GenericScheduledExecutorService.NONE` @type ^`java.util.concurrent.ScheduledExecutorService`[] @kind object;
+  #L4b2c68.  if v0 != v1 then goto L4b2c72;
+  #L4b2c6c.  v0:= `@@rx.internal.schedulers.GenericScheduledExecutorService.SHUTDOWN` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b2c70.  return v0 @kind object;
+  #L4b2c72.  v1:= `@@rx.internal.schedulers.GenericScheduledExecutorService.roundRobin` @type ^`int`;
+  #L4b2c76.  v1:= v1 + 1;
+  #L4b2c7a.  v2:= length @variable v0;
+  #L4b2c7c.  if v1 < v2 then goto L4b2c82;
+  #L4b2c80.  v1:= 0I;
+  #L4b2c82.  `@@rx.internal.schedulers.GenericScheduledExecutorService.roundRobin` @type ^`int` := v1;
+  #L4b2c86.  v0:= v0[v1] @kind object;
+  #L4b2c8a.  return v0 @kind object;
+}
+procedure `void` `shutdown`(`rx.internal.schedulers.GenericScheduledExecutorService` v4 @kind this) @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4b2d0c.  v0:= v4.`rx.internal.schedulers.GenericScheduledExecutorService.executor` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2d10.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b2d16.  v0:= temp @kind object;
+  #L4b2d18.  v0:= (`java.util.concurrent.ScheduledExecutorService`[]) v0 @kind object;
+  #L4b2d1c.  v1:= `@@rx.internal.schedulers.GenericScheduledExecutorService.NONE` @type ^`java.util.concurrent.ScheduledExecutorService`[] @kind object;
+  #L4b2d20.  if v0 != v1 then goto L4b2d26;
+  #L4b2d24.  return @kind void;
+  #L4b2d26.  v2:= v4.`rx.internal.schedulers.GenericScheduledExecutorService.executor` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2d2a.  call temp:= `compareAndSet`(v2, v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b2d30.  v1:= temp;
+  #L4b2d32.  if v1 == 0 then goto L4b2d0c;
+  #L4b2d36.  v1:= length @variable v0;
+  #L4b2d38.  v2:= 0I;
+  #L4b2d3a.  if v2 >= v1 then goto L4b2d54;
+  #L4b2d3e.  v3:= v0[v2] @kind object;
+  #L4b2d42.  call `deregisterExecutor`(v3) @signature `Lrx/internal/schedulers/NewThreadWorker;.deregisterExecutor:(Ljava/util/concurrent/ScheduledExecutorService;)V` @kind static;
+  #L4b2d48.  call temp:= `shutdownNow`(v3) @signature `Ljava/util/concurrent/ScheduledExecutorService;.shutdownNow:()Ljava/util/List;` @kind interface;
+  #L4b2d4e.  v2:= v2 + 1;
+  #L4b2d52.  goto L4b2d3a;
+  #L4b2d54.  return @kind void;
+}
+procedure `void` `start`(`rx.internal.schedulers.GenericScheduledExecutorService` v5 @kind this) @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.start:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b2d68.  call temp:= `getRuntime`() @signature `Ljava/lang/Runtime;.getRuntime:()Ljava/lang/Runtime;` @kind static;
+  #L4b2d6e.  v0:= temp @kind object;
+  #L4b2d70.  call temp:= `availableProcessors`(v0) @signature `Ljava/lang/Runtime;.availableProcessors:()I` @kind virtual;
+  #L4b2d76.  v0:= temp;
+  #L4b2d78.  v1:= 4I;
+  #L4b2d7a.  if v0 <= v1 then goto L4b2d82;
+  #L4b2d7e.  v0:= v0 / 2;
+  #L4b2d82.  v1:= 8I;
+  #L4b2d86.  if v0 <= v1 then goto L4b2d8e;
+  #L4b2d8a.  v0:= 8I;
+  #L4b2d8e.  v1:= new `java.util.concurrent.ScheduledExecutorService`[v0];
+  #L4b2d92.  v2:= 0I;
+  #L4b2d94.  v3:= 0I;
+  #L4b2d96.  if v3 >= v0 then goto L4b2dac;
+  #L4b2d9a.  call temp:= `create`() @signature `Lrx/internal/schedulers/GenericScheduledExecutorServiceFactory;.create:()Ljava/util/concurrent/ScheduledExecutorService;` @kind static;
+  #L4b2da0.  v4:= temp @kind object;
+  #L4b2da2.  v1[v3]:= v4 @kind object;
+  #L4b2da6.  v3:= v3 + 1;
+  #L4b2daa.  goto L4b2d96;
+  #L4b2dac.  v0:= v5.`rx.internal.schedulers.GenericScheduledExecutorService.executor` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2db0.  v3:= `@@rx.internal.schedulers.GenericScheduledExecutorService.NONE` @type ^`java.util.concurrent.ScheduledExecutorService`[] @kind object;
+  #L4b2db4.  call temp:= `compareAndSet`(v0, v3, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b2dba.  v0:= temp;
+  #L4b2dbc.  if v0 == 0 then goto L4b2dee;
+  #L4b2dc0.  v0:= length @variable v1;
+  #L4b2dc2.  if v2 >= v0 then goto L4b2e04;
+  #L4b2dc6.  v3:= v1[v2] @kind object;
+  #L4b2dca.  call temp:= `tryEnableCancelPolicy`(v3) @signature `Lrx/internal/schedulers/NewThreadWorker;.tryEnableCancelPolicy:(Ljava/util/concurrent/ScheduledExecutorService;)Z` @kind static;
+  #L4b2dd0.  v4:= temp;
+  #L4b2dd2.  if v4 != 0 then goto L4b2de8;
+  #L4b2dd6.  v4:= instanceof @variable v3 @type ^`java.util.concurrent.ScheduledThreadPoolExecutor` @kind boolean;
+  #L4b2dda.  if v4 == 0 then goto L4b2de8;
+  #L4b2dde.  v3:= (`java.util.concurrent.ScheduledThreadPoolExecutor`) v3 @kind object;
+  #L4b2de2.  call `registerExecutor`(v3) @signature `Lrx/internal/schedulers/NewThreadWorker;.registerExecutor:(Ljava/util/concurrent/ScheduledThreadPoolExecutor;)V` @kind static;
+  #L4b2de8.  v2:= v2 + 1;
+  #L4b2dec.  goto L4b2dc2;
+  #L4b2dee.  v0:= length @variable v1;
+  #L4b2df0.  if v2 >= v0 then goto L4b2e04;
+  #L4b2df4.  v3:= v1[v2] @kind object;
+  #L4b2df8.  call temp:= `shutdownNow`(v3) @signature `Ljava/util/concurrent/ScheduledExecutorService;.shutdownNow:()Ljava/util/List;` @kind interface;
+  #L4b2dfe.  v2:= v2 + 1;
+  #L4b2e02.  goto L4b2df0;
+  #L4b2e04.  return @kind void;
+}

@@ -1,0 +1,69 @@
+record `com.androidnetworking.interceptors.GzipRequestInterceptor` @kind class @AccessFlag PUBLIC extends `okhttp3.Interceptor` @kind interface {
+}
+procedure `void` `<init>`(`com.androidnetworking.interceptors.GzipRequestInterceptor` v0 @kind this) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L2a9db0.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2a9db6.  return @kind void;
+}
+procedure `okhttp3.RequestBody` `forceContentLength`(`com.androidnetworking.interceptors.GzipRequestInterceptor` v2 @kind this, `okhttp3.RequestBody` v3 @kind object) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor;.forceContentLength:(Lokhttp3/RequestBody;)Lokhttp3/RequestBody;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2a9cd8.  v0:= new `okio.Buffer`;
+  #L2a9cdc.  call `<init>`(v0) @signature `Lokio/Buffer;.<init>:()V` @kind direct;
+  #L2a9ce2.  call `writeTo`(v3, v0) @signature `Lokhttp3/RequestBody;.writeTo:(Lokio/BufferedSink;)V` @kind virtual;
+  #L2a9ce8.  v1:= new `com.androidnetworking.interceptors.GzipRequestInterceptor$1`;
+  #L2a9cec.  call `<init>`(v1, v2, v3, v0) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor$1;.<init>:(Lcom/androidnetworking/interceptors/GzipRequestInterceptor;Lokhttp3/RequestBody;Lokio/Buffer;)V` @kind direct;
+  #L2a9cf2.  return v1 @kind object;
+}
+procedure `okhttp3.RequestBody` `gzip`(`com.androidnetworking.interceptors.GzipRequestInterceptor` v1 @kind this, `okhttp3.RequestBody` v2 @kind object) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor;.gzip:(Lokhttp3/RequestBody;)Lokhttp3/RequestBody;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2a9d04.  v0:= new `com.androidnetworking.interceptors.GzipRequestInterceptor$2`;
+  #L2a9d08.  call `<init>`(v0, v1, v2) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor$2;.<init>:(Lcom/androidnetworking/interceptors/GzipRequestInterceptor;Lokhttp3/RequestBody;)V` @kind direct;
+  #L2a9d0e.  return v0 @kind object;
+}
+procedure `okhttp3.Response` `intercept`(`com.androidnetworking.interceptors.GzipRequestInterceptor` v4 @kind this, `okhttp3.Interceptor$Chain` v5 @kind object) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor;.intercept:(Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2a9d20.  call temp:= `request`(v5) @signature `Lokhttp3/Interceptor$Chain;.request:()Lokhttp3/Request;` @kind interface;
+  #L2a9d26.  v0:= temp @kind object;
+  #L2a9d28.  call temp:= `body`(v0) @signature `Lokhttp3/Request;.body:()Lokhttp3/RequestBody;` @kind virtual;
+  #L2a9d2e.  v1:= temp @kind object;
+  #L2a9d30.  if v1 == 0 then goto L2a9d94;
+  #L2a9d34.  v1:= "Content-Encoding" @kind object;
+  #L2a9d38.  call temp:= `header`(v0, v1) @signature `Lokhttp3/Request;.header:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L2a9d3e.  v2:= temp @kind object;
+  #L2a9d40.  if v2 == 0 then goto L2a9d46;
+  #L2a9d44.  goto L2a9d94;
+  #L2a9d46.  call temp:= `newBuilder`(v0) @signature `Lokhttp3/Request;.newBuilder:()Lokhttp3/Request$Builder;` @kind virtual;
+  #L2a9d4c.  v2:= temp @kind object;
+  #L2a9d4e.  v3:= "gzip" @kind object;
+  #L2a9d52.  call temp:= `header`(v2, v1, v3) @signature `Lokhttp3/Request$Builder;.header:(Ljava/lang/String;Ljava/lang/String;)Lokhttp3/Request$Builder;` @kind virtual;
+  #L2a9d58.  v1:= temp @kind object;
+  #L2a9d5a.  call temp:= `method`(v0) @signature `Lokhttp3/Request;.method:()Ljava/lang/String;` @kind virtual;
+  #L2a9d60.  v2:= temp @kind object;
+  #L2a9d62.  call temp:= `body`(v0) @signature `Lokhttp3/Request;.body:()Lokhttp3/RequestBody;` @kind virtual;
+  #L2a9d68.  v0:= temp @kind object;
+  #L2a9d6a.  call temp:= `gzip`(v4, v0) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor;.gzip:(Lokhttp3/RequestBody;)Lokhttp3/RequestBody;` @kind direct;
+  #L2a9d70.  v0:= temp @kind object;
+  #L2a9d72.  call temp:= `forceContentLength`(v4, v0) @signature `Lcom/androidnetworking/interceptors/GzipRequestInterceptor;.forceContentLength:(Lokhttp3/RequestBody;)Lokhttp3/RequestBody;` @kind direct;
+  #L2a9d78.  v0:= temp @kind object;
+  #L2a9d7a.  call temp:= `method`(v1, v2, v0) @signature `Lokhttp3/Request$Builder;.method:(Ljava/lang/String;Lokhttp3/RequestBody;)Lokhttp3/Request$Builder;` @kind virtual;
+  #L2a9d80.  v0:= temp @kind object;
+  #L2a9d82.  call temp:= `build`(v0) @signature `Lokhttp3/Request$Builder;.build:()Lokhttp3/Request;` @kind virtual;
+  #L2a9d88.  v0:= temp @kind object;
+  #L2a9d8a.  call temp:= `proceed`(v5, v0) @signature `Lokhttp3/Interceptor$Chain;.proceed:(Lokhttp3/Request;)Lokhttp3/Response;` @kind interface;
+  #L2a9d90.  v5:= temp @kind object;
+  #L2a9d92.  return v5 @kind object;
+  #L2a9d94.  call temp:= `proceed`(v5, v0) @signature `Lokhttp3/Interceptor$Chain;.proceed:(Lokhttp3/Request;)Lokhttp3/Response;` @kind interface;
+  #L2a9d9a.  v5:= temp @kind object;
+  #L2a9d9c.  return v5 @kind object;
+}

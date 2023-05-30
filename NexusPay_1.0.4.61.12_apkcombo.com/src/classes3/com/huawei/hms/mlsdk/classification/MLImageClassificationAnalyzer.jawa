@@ -1,0 +1,216 @@
+record `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` @kind class @AccessFlag PUBLIC extends `com.huawei.hms.mlsdk.common.MLAnalyzer` @kind class {
+  `com.huawei.hms.mlsdk.classification.internal.client.NativeCloudImageLabeler` `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.cloudImageLabeler` @AccessFlag PRIVATE_FINAL;
+  `com.huawei.hms.mlsdk.classification.internal.client.NativeOnDeviceImageLabeler` `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.onDeviceImageLabeler` @AccessFlag PRIVATE_FINAL;
+  `int` `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.type` @AccessFlag PRIVATE_FINAL;
+}
+global `int` `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.TYPE_LOCAL` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.TYPE_REMOTE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.util.Map` `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.localClassificationMap` @AccessFlag PRIVATE_STATIC;
+global `java.util.Map` `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.remoteClassificationMap` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2370f4.  v0:= new `java.util.HashMap`;
+  #L2370f8.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L2370fe.  `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.localClassificationMap` @type ^`java.util.Map` := v0 @kind object;
+  #L237102.  v0:= new `java.util.HashMap`;
+  #L237106.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L23710c.  `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.remoteClassificationMap` @type ^`java.util.Map` := v0 @kind object;
+  #L237110.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` v4 @kind this, `com.huawei.hms.mlsdk.classification.internal.client.NativeOnDeviceImageLabeler` v5 @kind object, `com.huawei.hms.mlsdk.classification.internal.client.NativeCloudImageLabeler` v6 @kind object) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.<init>:(Lcom/huawei/hms/mlsdk/classification/internal/client/NativeOnDeviceImageLabeler;Lcom/huawei/hms/mlsdk/classification/internal/client/NativeCloudImageLabeler;)V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L237124.  call `<init>`(v4) @signature `Lcom/huawei/hms/mlsdk/common/MLAnalyzer;.<init>:()V` @kind direct;
+  #L23712a.  v0:= 0I;
+  #L23712c.  v1:= 1I;
+  #L23712e.  if v5 != 0 then goto L23713c;
+  #L237132.  if v6 == 0 then goto L237138;
+  #L237136.  goto L23713c;
+  #L237138.  v2:= 0I;
+  #L23713a.  goto L23713e;
+  #L23713c.  v2:= 1I;
+  #L23713e.  v3:= "One of on-device, cloud or on-device AutoML image labeler should be set." @kind object;
+  #L237142.  call `checkArgument`(v2, v3) @signature `Lcom/huawei/hms/common/Preconditions;.checkArgument:(ZLjava/lang/Object;)V` @kind static;
+  #L237148.  v4.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.onDeviceImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeOnDeviceImageLabeler` := v5 @kind object;
+  #L23714c.  v4.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.cloudImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeCloudImageLabeler` := v6 @kind object;
+  #L237150.  if v6 == 0 then goto L23715a;
+  #L237154.  v4.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.type` @type ^`int` := v1;
+  #L237158.  goto L23715e;
+  #L23715a.  v4.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.type` @type ^`int` := v0;
+  #L23715e.  return @kind void;
+}
+procedure `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` `create`(`com.huawei.hms.mlsdk.common.MLApplication` v5 @kind object, `com.huawei.hms.mlsdk.classification.MLLocalClassificationAnalyzerSetting` v6 @kind object) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.create:(Lcom/huawei/hms/mlsdk/common/MLApplication;Lcom/huawei/hms/mlsdk/classification/MLLocalClassificationAnalyzerSetting;)Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L236fa4.  v0:= constclass @type ^`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` @kind object;
+  #L236fa8.  @monitorenter v0
+  #L236faa.  call temp:= `getUniqueKey`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.getUniqueKey:()Ljava/lang/String;` @kind virtual;
+  #L236fb0.  v1:= temp @kind object;
+  #L236fb2.  call temp:= `create`(v1, v6) @signature `Lcom/huawei/hms/mlsdk/common/AppSettingHolder;.create:(Ljava/lang/String;Ljava/lang/Object;)Lcom/huawei/hms/mlsdk/common/AppSettingHolder;` @kind static;
+  #L236fb8.  v1:= temp @kind object;
+  #L236fba.  v2:= `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.localClassificationMap` @type ^`java.util.Map` @kind object;
+  #L236fbe.  call temp:= `get`(v2, v1) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L236fc4.  v2:= temp @kind object;
+  #L236fc6.  v2:= (`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer`) v2 @kind object;
+  #L236fca.  if v2 != 0 then goto L237000;
+  #L236fce.  v2:= new `com.huawei.hms.mlsdk.classification.internal.client.NativeOnDeviceImageLabeler`;
+  #L236fd2.  call temp:= `getAppContext`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.getAppContext:()Landroid/content/Context;` @kind virtual;
+  #L236fd8.  v3:= temp @kind object;
+  #L236fda.  call temp:= `toBundle`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.toBundle:()Landroid/os/Bundle;` @kind virtual;
+  #L236fe0.  v4:= temp @kind object;
+  #L236fe2.  call `<init>`(v2, v3, v6, v4) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeOnDeviceImageLabeler;.<init>:(Landroid/content/Context;Lcom/huawei/hms/mlsdk/classification/MLLocalClassificationAnalyzerSetting;Landroid/os/Bundle;)V` @kind direct;
+  #L236fe8.  v3:= new `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer`;
+  #L236fec.  v4:= 0I;
+  #L236fee.  call `<init>`(v3, v2, v4) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.<init>:(Lcom/huawei/hms/mlsdk/classification/internal/client/NativeOnDeviceImageLabeler;Lcom/huawei/hms/mlsdk/classification/internal/client/NativeCloudImageLabeler;)V` @kind direct;
+  #L236ff4.  v2:= `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.localClassificationMap` @type ^`java.util.Map` @kind object;
+  #L236ff8.  call temp:= `put`(v2, v1, v3) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L236ffe.  v2:= v3 @kind object;
+  #L237000.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/RemoteOnDeviceImageLabeler;.getInstance:()Lcom/huawei/hms/mlsdk/classification/internal/client/RemoteOnDeviceImageLabeler;` @kind static;
+  #L237006.  v1:= temp @kind object;
+  #L237008.  call temp:= `getAppContext`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.getAppContext:()Landroid/content/Context;` @kind virtual;
+  #L23700e.  v3:= temp @kind object;
+  #L237010.  call `prepare`(v1, v3) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/RemoteOnDeviceImageLabeler;.prepare:(Landroid/content/Context;)V` @kind virtual;
+  #L237016.  v1:= new `com.huawei.hms.ml.common.label.ImageLabelerOptionsParcel`;
+  #L23701a.  call temp:= `getMinAcceptablePossibility`(v6) @signature `Lcom/huawei/hms/mlsdk/classification/MLLocalClassificationAnalyzerSetting;.getMinAcceptablePossibility:()F` @kind virtual;
+  #L237020.  v6:= temp;
+  #L237022.  call temp:= `toBundle`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.toBundle:()Landroid/os/Bundle;` @kind virtual;
+  #L237028.  v3:= temp @kind object;
+  #L23702a.  call `<init>`(v1, v6, v3) @signature `Lcom/huawei/hms/ml/common/label/ImageLabelerOptionsParcel;.<init>:(FLandroid/os/Bundle;)V` @kind direct;
+  #L237030.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/RemoteOnDeviceImageLabeler;.getInstance:()Lcom/huawei/hms/mlsdk/classification/internal/client/RemoteOnDeviceImageLabeler;` @kind static;
+  #L237036.  v6:= temp @kind object;
+  #L237038.  call temp:= `getAppContext`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.getAppContext:()Landroid/content/Context;` @kind virtual;
+  #L23703e.  v5:= temp @kind object;
+  #L237040.  call temp:= `initialize`(v6, v5, v1) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/RemoteOnDeviceImageLabeler;.initialize:(Landroid/content/Context;Lcom/huawei/hms/ml/common/label/ImageLabelerOptionsParcel;)I` @kind virtual;
+  #L237046.  @monitorexit v0
+  #L237048.  return v2 @kind object;
+  #L23704a.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L23704c.  @monitorexit v0
+  #L23704e.  throw v5;
+  catch `java.lang.Throwable` @[L236faa..L237046] goto L23704a;
+}
+procedure `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` `create`(`com.huawei.hms.mlsdk.common.MLApplication` v4 @kind object, `com.huawei.hms.mlsdk.classification.MLRemoteClassificationAnalyzerSetting` v5 @kind object) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.create:(Lcom/huawei/hms/mlsdk/common/MLApplication;Lcom/huawei/hms/mlsdk/classification/MLRemoteClassificationAnalyzerSetting;)Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L23706c.  v0:= constclass @type ^`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` @kind object;
+  #L237070.  @monitorenter v0
+  #L237072.  call temp:= `getUniqueKey`(v4) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.getUniqueKey:()Ljava/lang/String;` @kind virtual;
+  #L237078.  v1:= temp @kind object;
+  #L23707a.  call temp:= `create`(v1, v5) @signature `Lcom/huawei/hms/mlsdk/common/AppSettingHolder;.create:(Ljava/lang/String;Ljava/lang/Object;)Lcom/huawei/hms/mlsdk/common/AppSettingHolder;` @kind static;
+  #L237080.  v1:= temp @kind object;
+  #L237082.  v2:= `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.remoteClassificationMap` @type ^`java.util.Map` @kind object;
+  #L237086.  call temp:= `get`(v2, v1) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L23708c.  v2:= temp @kind object;
+  #L23708e.  v2:= (`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer`) v2 @kind object;
+  #L237092.  if v2 != 0 then goto L2370b6;
+  #L237096.  v2:= new `com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer`;
+  #L23709a.  v3:= new `com.huawei.hms.mlsdk.classification.internal.client.NativeCloudImageLabeler`;
+  #L23709e.  call `<init>`(v3, v4, v5) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeCloudImageLabeler;.<init>:(Lcom/huawei/hms/mlsdk/common/MLApplication;Lcom/huawei/hms/mlsdk/classification/MLRemoteClassificationAnalyzerSetting;)V` @kind direct;
+  #L2370a4.  v4:= 0I;
+  #L2370a6.  call `<init>`(v2, v4, v3) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.<init>:(Lcom/huawei/hms/mlsdk/classification/internal/client/NativeOnDeviceImageLabeler;Lcom/huawei/hms/mlsdk/classification/internal/client/NativeCloudImageLabeler;)V` @kind direct;
+  #L2370ac.  v4:= `@@com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.remoteClassificationMap` @type ^`java.util.Map` @kind object;
+  #L2370b0.  call temp:= `put`(v4, v1, v2) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2370b6.  @monitorexit v0
+  #L2370b8.  return v2 @kind object;
+  #L2370ba.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2370bc.  @monitorexit v0
+  #L2370be.  throw v4;
+  catch `java.lang.Throwable` @[L237072..L2370b6] goto L2370ba;
+}
+procedure `android.util.SparseArray` `analyseFrame`(`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` v2 @kind this, `com.huawei.hms.mlsdk.common.MLFrame` v3 @kind object) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.analyseFrame:(Lcom/huawei/hms/mlsdk/common/MLFrame;)Landroid/util/SparseArray;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L236ebc.  if v3 == 0 then goto L236f0e;
+  #L236ec0.  call `initialize`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.initialize:()V` @kind virtual;
+  #L236ec6.  v0:= 0I;
+  #L236ec8.  v1:= 1I;
+  #L236eca.  call temp:= `getFrame`(v3, v0, v1) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.getFrame:(ZZ)Lcom/huawei/hms/mlsdk/common/MLFrame;` @kind virtual;
+  #L236ed0.  v0:= temp @kind object;
+  #L236ed2.  v1:= v2.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.cloudImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeCloudImageLabeler` @kind object;
+  #L236ed6.  if v1 == 0 then goto L236eec;
+  #L236eda.  call temp:= `readBitmap`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.readBitmap:()Landroid/graphics/Bitmap;` @kind virtual;
+  #L236ee0.  v3:= temp @kind object;
+  #L236ee2.  call temp:= `analyseFrame`(v1, v3) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeCloudImageLabeler;.analyseFrame:(Landroid/graphics/Bitmap;)Landroid/util/SparseArray;` @kind virtual;
+  #L236ee8.  v3:= temp @kind object;
+  #L236eea.  return v3 @kind object;
+  #L236eec.  v3:= v2.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.onDeviceImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeOnDeviceImageLabeler` @kind object;
+  #L236ef0.  if v3 == 0 then goto L236efe;
+  #L236ef4.  call temp:= `analyseFrame`(v3, v0) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeOnDeviceImageLabeler;.analyseFrame:(Lcom/huawei/hms/mlsdk/common/MLFrame;)Landroid/util/SparseArray;` @kind virtual;
+  #L236efa.  v3:= temp @kind object;
+  #L236efc.  return v3 @kind object;
+  #L236efe.  v3:= new `java.lang.IllegalArgumentException`;
+  #L236f02.  v0:= "Missing analyzer" @kind object;
+  #L236f06.  call `<init>`(v3, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L236f0c.  throw v3;
+  #L236f0e.  v3:= new `java.lang.IllegalArgumentException`;
+  #L236f12.  v0:= "Missing frame." @kind object;
+  #L236f16.  call `<init>`(v3, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L236f1c.  throw v3;
+}
+procedure `com.huawei.hmf.tasks.Task` `asyncAnalyseFrame`(`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` v2 @kind this, `com.huawei.hms.mlsdk.common.MLFrame` v3 @kind object) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.asyncAnalyseFrame:(Lcom/huawei/hms/mlsdk/common/MLFrame;)Lcom/huawei/hmf/tasks/Task;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L236f30.  if v3 == 0 then goto L236f82;
+  #L236f34.  call `initialize`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.initialize:()V` @kind virtual;
+  #L236f3a.  v0:= 0I;
+  #L236f3c.  v1:= 1I;
+  #L236f3e.  call temp:= `getFrame`(v3, v0, v1) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.getFrame:(ZZ)Lcom/huawei/hms/mlsdk/common/MLFrame;` @kind virtual;
+  #L236f44.  v0:= temp @kind object;
+  #L236f46.  v1:= v2.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.cloudImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeCloudImageLabeler` @kind object;
+  #L236f4a.  if v1 == 0 then goto L236f60;
+  #L236f4e.  call temp:= `readBitmap`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.readBitmap:()Landroid/graphics/Bitmap;` @kind virtual;
+  #L236f54.  v3:= temp @kind object;
+  #L236f56.  call temp:= `asyncAnalyseFrame`(v1, v3) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeCloudImageLabeler;.asyncAnalyseFrame:(Landroid/graphics/Bitmap;)Lcom/huawei/hmf/tasks/Task;` @kind virtual;
+  #L236f5c.  v3:= temp @kind object;
+  #L236f5e.  return v3 @kind object;
+  #L236f60.  v3:= v2.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.onDeviceImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeOnDeviceImageLabeler` @kind object;
+  #L236f64.  if v3 == 0 then goto L236f72;
+  #L236f68.  call temp:= `asyncAnalyseFrame`(v3, v0) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeOnDeviceImageLabeler;.asyncAnalyseFrame:(Lcom/huawei/hms/mlsdk/common/MLFrame;)Lcom/huawei/hmf/tasks/Task;` @kind virtual;
+  #L236f6e.  v3:= temp @kind object;
+  #L236f70.  return v3 @kind object;
+  #L236f72.  v3:= new `java.lang.IllegalArgumentException`;
+  #L236f76.  v0:= "Missing analyzer" @kind object;
+  #L236f7a.  call `<init>`(v3, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L236f80.  throw v3;
+  #L236f82.  v3:= new `java.lang.IllegalArgumentException`;
+  #L236f86.  v0:= "Missing frame." @kind object;
+  #L236f8a.  call `<init>`(v3, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L236f90.  throw v3;
+}
+procedure `int` `getAnalyzerType`(`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` v1 @kind this) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.getAnalyzerType:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2370dc.  v0:= v1.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.type` @type ^`int`;
+  #L2370e0.  return v0;
+}
+procedure `void` `stop`(`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer` v1 @kind this) @signature `Lcom/huawei/hms/mlsdk/classification/MLImageClassificationAnalyzer;.stop:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L237170.  v0:= v1.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.onDeviceImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeOnDeviceImageLabeler` @kind object;
+  #L237174.  if v0 == 0 then goto L23717e;
+  #L237178.  call `close`(v0) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeOnDeviceImageLabeler;.close:()V` @kind virtual;
+  #L23717e.  v0:= v1.`com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer.cloudImageLabeler` @type ^`com.huawei.hms.mlsdk.classification.internal.client.NativeCloudImageLabeler` @kind object;
+  #L237182.  if v0 == 0 then goto L23718c;
+  #L237186.  call `close`(v0) @signature `Lcom/huawei/hms/mlsdk/classification/internal/client/NativeCloudImageLabeler;.close:()V` @kind virtual;
+  #L23718c.  return @kind void;
+}

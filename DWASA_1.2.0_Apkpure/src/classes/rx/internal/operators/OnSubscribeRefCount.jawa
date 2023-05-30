@@ -1,0 +1,107 @@
+record `rx.internal.operators.OnSubscribeRefCount` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Observable$OnSubscribe` @kind interface {
+  `rx.subscriptions.CompositeSubscription` `rx.internal.operators.OnSubscribeRefCount.baseSubscription` @AccessFlag VOLATILE;
+  `java.util.concurrent.locks.ReentrantLock` `rx.internal.operators.OnSubscribeRefCount.lock` @AccessFlag FINAL;
+  `rx.observables.ConnectableObservable` `rx.internal.operators.OnSubscribeRefCount.source` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.operators.OnSubscribeRefCount.subscriptionCount` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`rx.internal.operators.OnSubscribeRefCount` v2 @kind this, `rx.observables.ConnectableObservable` v3 @kind object) @signature `Lrx/internal/operators/OnSubscribeRefCount;.<init>:(Lrx/observables/ConnectableObservable;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L49cd18.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L49cd1e.  v0:= new `rx.subscriptions.CompositeSubscription`;
+  #L49cd22.  call `<init>`(v0) @signature `Lrx/subscriptions/CompositeSubscription;.<init>:()V` @kind direct;
+  #L49cd28.  v2.`rx.internal.operators.OnSubscribeRefCount.baseSubscription` @type ^`rx.subscriptions.CompositeSubscription` := v0 @kind object;
+  #L49cd2c.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L49cd30.  v1:= 0I;
+  #L49cd32.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:(I)V` @kind direct;
+  #L49cd38.  v2.`rx.internal.operators.OnSubscribeRefCount.subscriptionCount` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L49cd3c.  v0:= new `java.util.concurrent.locks.ReentrantLock`;
+  #L49cd40.  call `<init>`(v0) @signature `Ljava/util/concurrent/locks/ReentrantLock;.<init>:()V` @kind direct;
+  #L49cd46.  v2.`rx.internal.operators.OnSubscribeRefCount.lock` @type ^`java.util.concurrent.locks.ReentrantLock` := v0 @kind object;
+  #L49cd4a.  v2.`rx.internal.operators.OnSubscribeRefCount.source` @type ^`rx.observables.ConnectableObservable` := v3 @kind object;
+  #L49cd4e.  return @kind void;
+}
+procedure `rx.Subscription` `disconnect`(`rx.internal.operators.OnSubscribeRefCount` v1 @kind this, `rx.subscriptions.CompositeSubscription` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeRefCount;.disconnect:(Lrx/subscriptions/CompositeSubscription;)Lrx/Subscription;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L49ccd8.  v0:= new `rx.internal.operators.OnSubscribeRefCount$3`;
+  #L49ccdc.  call `<init>`(v0, v1, v2) @signature `Lrx/internal/operators/OnSubscribeRefCount$3;.<init>:(Lrx/internal/operators/OnSubscribeRefCount;Lrx/subscriptions/CompositeSubscription;)V` @kind direct;
+  #L49cce2.  call temp:= `create`(v0) @signature `Lrx/subscriptions/Subscriptions;.create:(Lrx/functions/Action0;)Lrx/Subscription;` @kind static;
+  #L49cce8.  v2:= temp @kind object;
+  #L49ccea.  return v2 @kind object;
+}
+procedure `rx.functions.Action1` `onSubscribe`(`rx.internal.operators.OnSubscribeRefCount` v1 @kind this, `rx.Subscriber` v2 @kind object, `java.util.concurrent.atomic.AtomicBoolean` v3 @kind object) @signature `Lrx/internal/operators/OnSubscribeRefCount;.onSubscribe:(Lrx/Subscriber;Ljava/util/concurrent/atomic/AtomicBoolean;)Lrx/functions/Action1;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L49ccfc.  v0:= new `rx.internal.operators.OnSubscribeRefCount$1`;
+  #L49cd00.  call `<init>`(v0, v1, v2, v3) @signature `Lrx/internal/operators/OnSubscribeRefCount$1;.<init>:(Lrx/internal/operators/OnSubscribeRefCount;Lrx/Subscriber;Ljava/util/concurrent/atomic/AtomicBoolean;)V` @kind direct;
+  #L49cd06.  return v0 @kind object;
+}
+procedure `void` `call`(`rx.internal.operators.OnSubscribeRefCount` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/internal/operators/OnSubscribeRefCount;.call:(Ljava/lang/Object;)V` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+
+  #L49cd60.  v1:= (`rx.Subscriber`) v1 @kind object;
+  #L49cd64.  call `call`(v0, v1) @signature `Lrx/internal/operators/OnSubscribeRefCount;.call:(Lrx/Subscriber;)V` @kind virtual;
+  #L49cd6a.  return @kind void;
+}
+procedure `void` `call`(`rx.internal.operators.OnSubscribeRefCount` v2 @kind this, `rx.Subscriber` v3 @kind object) @signature `Lrx/internal/operators/OnSubscribeRefCount;.call:(Lrx/Subscriber;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L49cd7c.  v0:= v2.`rx.internal.operators.OnSubscribeRefCount.lock` @type ^`java.util.concurrent.locks.ReentrantLock` @kind object;
+  #L49cd80.  call `lock`(v0) @signature `Ljava/util/concurrent/locks/ReentrantLock;.lock:()V` @kind virtual;
+  #L49cd86.  v0:= v2.`rx.internal.operators.OnSubscribeRefCount.subscriptionCount` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L49cd8a.  call temp:= `incrementAndGet`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.incrementAndGet:()I` @kind virtual;
+  #L49cd90.  v0:= temp;
+  #L49cd92.  v1:= 1I;
+  #L49cd94.  if v0 != v1 then goto L49cde6;
+  #L49cd98.  v0:= new `java.util.concurrent.atomic.AtomicBoolean`;
+  #L49cd9c.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.<init>:(Z)V` @kind direct;
+  #L49cda2.  v1:= v2.`rx.internal.operators.OnSubscribeRefCount.source` @type ^`rx.observables.ConnectableObservable` @kind object;
+  #L49cda6.  call temp:= `onSubscribe`(v2, v3, v0) @signature `Lrx/internal/operators/OnSubscribeRefCount;.onSubscribe:(Lrx/Subscriber;Ljava/util/concurrent/atomic/AtomicBoolean;)Lrx/functions/Action1;` @kind direct;
+  #L49cdac.  v3:= temp @kind object;
+  #L49cdae.  call `connect`(v1, v3) @signature `Lrx/observables/ConnectableObservable;.connect:(Lrx/functions/Action1;)V` @kind virtual;
+  #L49cdb4.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L49cdba.  v3:= temp;
+  #L49cdbc.  if v3 == 0 then goto L49cdfa;
+  #L49cdc0.  v3:= v2.`rx.internal.operators.OnSubscribeRefCount.lock` @type ^`java.util.concurrent.locks.ReentrantLock` @kind object;
+  #L49cdc4.  call `unlock`(v3) @signature `Ljava/util/concurrent/locks/ReentrantLock;.unlock:()V` @kind virtual;
+  #L49cdca.  goto L49cdfa;
+  #L49cdcc.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L49cdce.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L49cdd4.  v0:= temp;
+  #L49cdd6.  if v0 == 0 then goto L49cde4;
+  #L49cdda.  v0:= v2.`rx.internal.operators.OnSubscribeRefCount.lock` @type ^`java.util.concurrent.locks.ReentrantLock` @kind object;
+  #L49cdde.  call `unlock`(v0) @signature `Ljava/util/concurrent/locks/ReentrantLock;.unlock:()V` @kind virtual;
+  #L49cde4.  throw v3;
+  #L49cde6.  v0:= v2.`rx.internal.operators.OnSubscribeRefCount.baseSubscription` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L49cdea.  call `doSubscribe`(v2, v3, v0) @signature `Lrx/internal/operators/OnSubscribeRefCount;.doSubscribe:(Lrx/Subscriber;Lrx/subscriptions/CompositeSubscription;)V` @kind virtual;
+  #L49cdf0.  v3:= v2.`rx.internal.operators.OnSubscribeRefCount.lock` @type ^`java.util.concurrent.locks.ReentrantLock` @kind object;
+  #L49cdf4.  call `unlock`(v3) @signature `Ljava/util/concurrent/locks/ReentrantLock;.unlock:()V` @kind virtual;
+  #L49cdfa.  return @kind void;
+  #L49cdfc.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L49cdfe.  v0:= v2.`rx.internal.operators.OnSubscribeRefCount.lock` @type ^`java.util.concurrent.locks.ReentrantLock` @kind object;
+  #L49ce02.  call `unlock`(v0) @signature `Ljava/util/concurrent/locks/ReentrantLock;.unlock:()V` @kind virtual;
+  #L49ce08.  throw v3;
+  catch `java.lang.Throwable` @[L49cda2..L49cdb4] goto L49cdcc;
+  catch `java.lang.Throwable` @[L49cde6..L49cdf0] goto L49cdfc;
+}
+procedure `void` `doSubscribe`(`rx.internal.operators.OnSubscribeRefCount` v2 @kind this, `rx.Subscriber` v3 @kind object, `rx.subscriptions.CompositeSubscription` v4 @kind object) @signature `Lrx/internal/operators/OnSubscribeRefCount;.doSubscribe:(Lrx/Subscriber;Lrx/subscriptions/CompositeSubscription;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L49ce34.  call temp:= `disconnect`(v2, v4) @signature `Lrx/internal/operators/OnSubscribeRefCount;.disconnect:(Lrx/subscriptions/CompositeSubscription;)Lrx/Subscription;` @kind direct;
+  #L49ce3a.  v0:= temp @kind object;
+  #L49ce3c.  call `add`(v3, v0) @signature `Lrx/Subscriber;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L49ce42.  v0:= v2.`rx.internal.operators.OnSubscribeRefCount.source` @type ^`rx.observables.ConnectableObservable` @kind object;
+  #L49ce46.  v1:= new `rx.internal.operators.OnSubscribeRefCount$2`;
+  #L49ce4a.  call `<init>`(v1, v2, v3, v3, v4) @signature `Lrx/internal/operators/OnSubscribeRefCount$2;.<init>:(Lrx/internal/operators/OnSubscribeRefCount;Lrx/Subscriber;Lrx/Subscriber;Lrx/subscriptions/CompositeSubscription;)V` @kind direct;
+  #L49ce50.  call temp:= `unsafeSubscribe`(v0, v1) @signature `Lrx/observables/ConnectableObservable;.unsafeSubscribe:(Lrx/Subscriber;)Lrx/Subscription;` @kind virtual;
+  #L49ce56.  return @kind void;
+}

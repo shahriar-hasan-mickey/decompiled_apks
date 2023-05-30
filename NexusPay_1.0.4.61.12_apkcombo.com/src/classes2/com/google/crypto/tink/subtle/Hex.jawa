@@ -1,0 +1,90 @@
+record `com.google.crypto.tink.subtle.Hex` @kind class @AccessFlag PUBLIC_FINAL {
+}
+procedure `void` `<init>`(`com.google.crypto.tink.subtle.Hex` v0 @kind this) @signature `Lcom/google/crypto/tink/subtle/Hex;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L49bac4.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L49baca.  return @kind void;
+}
+procedure `byte`[] `decode`(`java.lang.String` v6 @kind object) @signature `Lcom/google/crypto/tink/subtle/Hex;.decode:(Ljava/lang/String;)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L49b9bc.  call temp:= `length`(v6) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L49b9c2.  v0:= temp;
+  #L49b9c4.  v0:= v0 %% 2;
+  #L49b9c8.  if v0 != 0 then goto L49ba3c;
+  #L49b9cc.  call temp:= `length`(v6) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L49b9d2.  v0:= temp;
+  #L49b9d4.  v0:= v0 / 2;
+  #L49b9d8.  v1:= new `byte`[v0];
+  #L49b9dc.  v2:= 0I;
+  #L49b9de.  if v2 >= v0 then goto L49ba3a;
+  #L49b9e2.  v3:= v2 * 2;
+  #L49b9e6.  call temp:= `charAt`(v6, v3) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L49b9ec.  v4:= temp;
+  #L49b9ee.  v5:= 16I;
+  #L49b9f2.  call temp:= `digit`(v4, v5) @signature `Ljava/lang/Character;.digit:(CI)I` @kind static;
+  #L49b9f8.  v4:= temp;
+  #L49b9fa.  v3:= v3 + 1;
+  #L49b9fe.  call temp:= `charAt`(v6, v3) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L49ba04.  v3:= temp;
+  #L49ba06.  call temp:= `digit`(v3, v5) @signature `Ljava/lang/Character;.digit:(CI)I` @kind static;
+  #L49ba0c.  v3:= temp;
+  #L49ba0e.  v5:= -1I;
+  #L49ba10.  if v4 == v5 then goto L49ba2a;
+  #L49ba14.  if v3 == v5 then goto L49ba2a;
+  #L49ba18.  v4:= v4 * 16;
+  #L49ba1c.  v4:= v4 + v3 @kind int;
+  #L49ba1e.  v3:= (`byte`) v4 @kind i2b;
+  #L49ba20.  v1[v2]:= v3 @kind byte;
+  #L49ba24.  v2:= v2 + 1;
+  #L49ba28.  goto L49b9de;
+  #L49ba2a.  v6:= new `java.lang.IllegalArgumentException`;
+  #L49ba2e.  v0:= "input is not hexadecimal" @kind object;
+  #L49ba32.  call `<init>`(v6, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49ba38.  throw v6;
+  #L49ba3a.  return v1 @kind object;
+  #L49ba3c.  v6:= new `java.lang.IllegalArgumentException`;
+  #L49ba40.  v0:= "Expected a string of even length" @kind object;
+  #L49ba44.  call `<init>`(v6, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49ba4a.  throw v6;
+}
+procedure `java.lang.String` `encode`(`byte`[] v6 @kind object) @signature `Lcom/google/crypto/tink/subtle/Hex;.encode:([B)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L49ba5c.  v0:= new `java.lang.StringBuilder`;
+  #L49ba60.  v1:= length @variable v6;
+  #L49ba62.  v1:= v1 * 2;
+  #L49ba66.  call `<init>`(v0, v1) @signature `Ljava/lang/StringBuilder;.<init>:(I)V` @kind direct;
+  #L49ba6c.  v1:= length @variable v6;
+  #L49ba6e.  v2:= 0I;
+  #L49ba70.  if v2 >= v1 then goto L49baaa;
+  #L49ba74.  v3:= v6[v2] @kind byte;
+  #L49ba78.  v3:= v3 ^& 255;
+  #L49ba7c.  v4:= v3 / 16;
+  #L49ba80.  v5:= "0123456789abcdef" @kind object;
+  #L49ba84.  call temp:= `charAt`(v5, v4) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L49ba8a.  v4:= temp;
+  #L49ba8c.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49ba92.  v3:= v3 %% 16;
+  #L49ba96.  call temp:= `charAt`(v5, v3) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L49ba9c.  v3:= temp;
+  #L49ba9e.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49baa4.  v2:= v2 + 1;
+  #L49baa8.  goto L49ba70;
+  #L49baaa.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L49bab0.  v6:= temp @kind object;
+  #L49bab2.  return v6 @kind object;
+}

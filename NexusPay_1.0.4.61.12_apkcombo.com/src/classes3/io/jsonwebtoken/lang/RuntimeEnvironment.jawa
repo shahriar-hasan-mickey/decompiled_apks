@@ -1,0 +1,67 @@
+record `io.jsonwebtoken.lang.RuntimeEnvironment` @kind class @AccessFlag PUBLIC_FINAL {
+}
+global `boolean` `@@io.jsonwebtoken.lang.RuntimeEnvironment.BOUNCY_CASTLE_AVAILABLE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.util.concurrent.atomic.AtomicBoolean` `@@io.jsonwebtoken.lang.RuntimeEnvironment.a` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lio/jsonwebtoken/lang/RuntimeEnvironment;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L411b20.  v0:= new `java.util.concurrent.atomic.AtomicBoolean`;
+  #L411b24.  v1:= 0I;
+  #L411b26.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.<init>:(Z)V` @kind direct;
+  #L411b2c.  `@@io.jsonwebtoken.lang.RuntimeEnvironment.a` @type ^`java.util.concurrent.atomic.AtomicBoolean` := v0 @kind object;
+  #L411b30.  v0:= "org.bouncycastle.jce.provider.BouncyCastleProvider" @kind object;
+  #L411b34.  call temp:= `isAvailable`(v0) @signature `Lio/jsonwebtoken/lang/Classes;.isAvailable:(Ljava/lang/String;)Z` @kind static;
+  #L411b3a.  v0:= temp;
+  #L411b3c.  `@@io.jsonwebtoken.lang.RuntimeEnvironment.BOUNCY_CASTLE_AVAILABLE` @type ^`boolean` := v0 @kind boolean;
+  #L411b40.  call `enableBouncyCastleIfPossible`() @signature `Lio/jsonwebtoken/lang/RuntimeEnvironment;.enableBouncyCastleIfPossible:()V` @kind static;
+  #L411b46.  return @kind void;
+}
+procedure `void` `<init>`(`io.jsonwebtoken.lang.RuntimeEnvironment` v0 @kind this) @signature `Lio/jsonwebtoken/lang/RuntimeEnvironment;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L411b58.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L411b5e.  return @kind void;
+}
+procedure `void` `enableBouncyCastleIfPossible`() @signature `Lio/jsonwebtoken/lang/RuntimeEnvironment;.enableBouncyCastleIfPossible:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L411b70.  v0:= `@@io.jsonwebtoken.lang.RuntimeEnvironment.a` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L411b74.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L411b7a.  v0:= temp;
+  #L411b7c.  if v0 == 0 then goto L411b82;
+  #L411b80.  return @kind void;
+  #L411b82.  v0:= "org.bouncycastle.jce.provider.BouncyCastleProvider" @kind object;
+  #L411b86.  call temp:= `forName`(v0) @signature `Lio/jsonwebtoken/lang/Classes;.forName:(Ljava/lang/String;)Ljava/lang/Class;` @kind static;
+  #L411b8c.  v0:= temp @kind object;
+  #L411b8e.  call temp:= `getProviders`() @signature `Ljava/security/Security;.getProviders:()[Ljava/security/Provider;` @kind static;
+  #L411b94.  v1:= temp @kind object;
+  #L411b96.  v2:= length @variable v1;
+  #L411b98.  v3:= 0I;
+  #L411b9a.  v4:= 1I;
+  #L411b9c.  if v3 >= v2 then goto L411bc2;
+  #L411ba0.  v5:= v1[v3] @kind object;
+  #L411ba4.  call temp:= `isInstance`(v0, v5) @signature `Ljava/lang/Class;.isInstance:(Ljava/lang/Object;)Z` @kind virtual;
+  #L411baa.  v5:= temp;
+  #L411bac.  if v5 == 0 then goto L411bbc;
+  #L411bb0.  v0:= `@@io.jsonwebtoken.lang.RuntimeEnvironment.a` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L411bb4.  call `set`(v0, v4) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.set:(Z)V` @kind virtual;
+  #L411bba.  return @kind void;
+  #L411bbc.  v3:= v3 + 1;
+  #L411bc0.  goto L411b9a;
+  #L411bc2.  call temp:= `newInstance`(v0) @signature `Lio/jsonwebtoken/lang/Classes;.newInstance:(Ljava/lang/Class;)Ljava/lang/Object;` @kind static;
+  #L411bc8.  v0:= temp @kind object;
+  #L411bca.  v0:= (`java.security.Provider`) v0 @kind object;
+  #L411bce.  call temp:= `addProvider`(v0) @signature `Ljava/security/Security;.addProvider:(Ljava/security/Provider;)I` @kind static;
+  #L411bd4.  v0:= `@@io.jsonwebtoken.lang.RuntimeEnvironment.a` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L411bd8.  call `set`(v0, v4) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.set:(Z)V` @kind virtual;
+  #L411bde.  return @kind void;
+  catch `io.jsonwebtoken.lang.UnknownClassException` @[L411b82..L411bde] goto L411bde;
+}

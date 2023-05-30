@@ -1,0 +1,216 @@
+record `io.reactivex.subscribers.SerializedSubscriber` @kind class @AccessFlag PUBLIC_FINAL extends `io.reactivex.FlowableSubscriber` @kind interface, `org.reactivestreams.Subscription` @kind interface {
+  `boolean` `io.reactivex.subscribers.SerializedSubscriber.delayError` @AccessFlag FINAL;
+  `boolean` `io.reactivex.subscribers.SerializedSubscriber.done` @AccessFlag VOLATILE;
+  `org.reactivestreams.Subscriber` `io.reactivex.subscribers.SerializedSubscriber.downstream` @AccessFlag FINAL;
+  `boolean` `io.reactivex.subscribers.SerializedSubscriber.emitting` @AccessFlag ;
+  `io.reactivex.internal.util.AppendOnlyLinkedArrayList` `io.reactivex.subscribers.SerializedSubscriber.queue` @AccessFlag ;
+  `org.reactivestreams.Subscription` `io.reactivex.subscribers.SerializedSubscriber.upstream` @AccessFlag ;
+}
+global `int` `@@io.reactivex.subscribers.SerializedSubscriber.QUEUE_LINK_SIZE` @AccessFlag STATIC_FINAL;
+procedure `void` `<init>`(`io.reactivex.subscribers.SerializedSubscriber` v1 @kind this, `org.reactivestreams.Subscriber` v2 @kind object) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.<init>:(Lorg/reactivestreams/Subscriber;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L454a88.  v0:= 0I;
+  #L454a8a.  call `<init>`(v1, v2, v0) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.<init>:(Lorg/reactivestreams/Subscriber;Z)V` @kind direct;
+  #L454a90.  return @kind void;
+}
+procedure `void` `<init>`(`io.reactivex.subscribers.SerializedSubscriber` v0 @kind this, `org.reactivestreams.Subscriber` v1 @kind object, `boolean` v2 ) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.<init>:(Lorg/reactivestreams/Subscriber;Z)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L454aa4.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L454aaa.  v0.`io.reactivex.subscribers.SerializedSubscriber.downstream` @type ^`org.reactivestreams.Subscriber` := v1 @kind object;
+  #L454aae.  v0.`io.reactivex.subscribers.SerializedSubscriber.delayError` @type ^`boolean` := v2 @kind boolean;
+  #L454ab2.  return @kind void;
+}
+procedure `void` `cancel`(`io.reactivex.subscribers.SerializedSubscriber` v1 @kind this) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.cancel:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L454ac4.  v0:= v1.`io.reactivex.subscribers.SerializedSubscriber.upstream` @type ^`org.reactivestreams.Subscription` @kind object;
+  #L454ac8.  call `cancel`(v0) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L454ace.  return @kind void;
+}
+procedure `void` `emitLoop`(`io.reactivex.subscribers.SerializedSubscriber` v2 @kind this) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.emitLoop:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L454ae0.  @monitorenter v2
+  #L454ae2.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` @kind object;
+  #L454ae6.  if v0 != 0 then goto L454af4;
+  #L454aea.  v0:= 0I;
+  #L454aec.  v2.`io.reactivex.subscribers.SerializedSubscriber.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L454af0.  @monitorexit v2
+  #L454af2.  return @kind void;
+  #L454af4.  v1:= 0I;
+  #L454af6.  v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` := v1 @kind object;
+  #L454afa.  @monitorexit v2
+  #L454afc.  v1:= v2.`io.reactivex.subscribers.SerializedSubscriber.downstream` @type ^`org.reactivestreams.Subscriber` @kind object;
+  #L454b00.  call temp:= `accept`(v0, v1) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.accept:(Lorg/reactivestreams/Subscriber;)Z` @kind virtual;
+  #L454b06.  v0:= temp;
+  #L454b08.  if v0 == 0 then goto L454ae0;
+  #L454b0c.  return @kind void;
+  #L454b0e.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L454b10.  @monitorexit v2
+  #L454b12.  goto L454b16;
+  #L454b14.  throw v0;
+  #L454b16.  goto L454b14;
+  catch `java.lang.Throwable` @[L454ae2..L454afc] goto L454b0e;
+  catch `java.lang.Throwable` @[L454b10..L454b12] goto L454b0e;
+}
+procedure `void` `onComplete`(`io.reactivex.subscribers.SerializedSubscriber` v2 @kind this) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.onComplete:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L454b3c.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` @kind boolean;
+  #L454b40.  if v0 == 0 then goto L454b46;
+  #L454b44.  return @kind void;
+  #L454b46.  @monitorenter v2
+  #L454b48.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` @kind boolean;
+  #L454b4c.  if v0 == 0 then goto L454b54;
+  #L454b50.  @monitorexit v2
+  #L454b52.  return @kind void;
+  #L454b54.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.emitting` @type ^`boolean` @kind boolean;
+  #L454b58.  if v0 == 0 then goto L454b86;
+  #L454b5c.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` @kind object;
+  #L454b60.  if v0 != 0 then goto L454b74;
+  #L454b64.  v0:= new `io.reactivex.internal.util.AppendOnlyLinkedArrayList`;
+  #L454b68.  v1:= 4I;
+  #L454b6a.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.<init>:(I)V` @kind direct;
+  #L454b70.  v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` := v0 @kind object;
+  #L454b74.  call temp:= `complete`() @signature `Lio/reactivex/internal/util/NotificationLite;.complete:()Ljava/lang/Object;` @kind static;
+  #L454b7a.  v1:= temp @kind object;
+  #L454b7c.  call `add`(v0, v1) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.add:(Ljava/lang/Object;)V` @kind virtual;
+  #L454b82.  @monitorexit v2
+  #L454b84.  return @kind void;
+  #L454b86.  v0:= 1I;
+  #L454b88.  v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` := v0 @kind boolean;
+  #L454b8c.  v2.`io.reactivex.subscribers.SerializedSubscriber.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L454b90.  @monitorexit v2
+  #L454b92.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.downstream` @type ^`org.reactivestreams.Subscriber` @kind object;
+  #L454b96.  call `onComplete`(v0) @signature `Lorg/reactivestreams/Subscriber;.onComplete:()V` @kind interface;
+  #L454b9c.  return @kind void;
+  #L454b9e.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L454ba0.  @monitorexit v2
+  #L454ba2.  throw v0;
+  catch `java.lang.Throwable` @[L454b48..L454b92] goto L454b9e;
+  catch `java.lang.Throwable` @[L454ba0..L454ba2] goto L454b9e;
+}
+procedure `void` `onError`(`io.reactivex.subscribers.SerializedSubscriber` v2 @kind this, `java.lang.Throwable` v3 @kind object) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L454bc8.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` @kind boolean;
+  #L454bcc.  if v0 == 0 then goto L454bd8;
+  #L454bd0.  call `onError`(v3) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L454bd6.  return @kind void;
+  #L454bd8.  @monitorenter v2
+  #L454bda.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` @kind boolean;
+  #L454bde.  v1:= 1I;
+  #L454be0.  if v0 == 0 then goto L454be6;
+  #L454be4.  goto L454c36;
+  #L454be6.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.emitting` @type ^`boolean` @kind boolean;
+  #L454bea.  if v0 == 0 then goto L454c2c;
+  #L454bee.  v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` := v1 @kind boolean;
+  #L454bf2.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` @kind object;
+  #L454bf6.  if v0 != 0 then goto L454c0a;
+  #L454bfa.  v0:= new `io.reactivex.internal.util.AppendOnlyLinkedArrayList`;
+  #L454bfe.  v1:= 4I;
+  #L454c00.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.<init>:(I)V` @kind direct;
+  #L454c06.  v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` := v0 @kind object;
+  #L454c0a.  call temp:= `error`(v3) @signature `Lio/reactivex/internal/util/NotificationLite;.error:(Ljava/lang/Throwable;)Ljava/lang/Object;` @kind static;
+  #L454c10.  v3:= temp @kind object;
+  #L454c12.  v1:= v2.`io.reactivex.subscribers.SerializedSubscriber.delayError` @type ^`boolean` @kind boolean;
+  #L454c16.  if v1 == 0 then goto L454c22;
+  #L454c1a.  call `add`(v0, v3) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.add:(Ljava/lang/Object;)V` @kind virtual;
+  #L454c20.  goto L454c28;
+  #L454c22.  call `setFirst`(v0, v3) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.setFirst:(Ljava/lang/Object;)V` @kind virtual;
+  #L454c28.  @monitorexit v2
+  #L454c2a.  return @kind void;
+  #L454c2c.  v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` := v1 @kind boolean;
+  #L454c30.  v2.`io.reactivex.subscribers.SerializedSubscriber.emitting` @type ^`boolean` := v1 @kind boolean;
+  #L454c34.  v1:= 0I;
+  #L454c36.  @monitorexit v2
+  #L454c38.  if v1 == 0 then goto L454c44;
+  #L454c3c.  call `onError`(v3) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L454c42.  return @kind void;
+  #L454c44.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.downstream` @type ^`org.reactivestreams.Subscriber` @kind object;
+  #L454c48.  call `onError`(v0, v3) @signature `Lorg/reactivestreams/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L454c4e.  return @kind void;
+  #L454c50.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L454c52.  @monitorexit v2
+  #L454c54.  throw v3;
+  catch `java.lang.Throwable` @[L454bda..L454c38] goto L454c50;
+  catch `java.lang.Throwable` @[L454c52..L454c54] goto L454c50;
+}
+procedure `void` `onNext`(`io.reactivex.subscribers.SerializedSubscriber` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L454c7c.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` @kind boolean;
+  #L454c80.  if v0 == 0 then goto L454c86;
+  #L454c84.  return @kind void;
+  #L454c86.  if v3 != 0 then goto L454caa;
+  #L454c8a.  v3:= v2.`io.reactivex.subscribers.SerializedSubscriber.upstream` @type ^`org.reactivestreams.Subscription` @kind object;
+  #L454c8e.  call `cancel`(v3) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L454c94.  v3:= new `java.lang.NullPointerException`;
+  #L454c98.  v0:= "onNext called with null. Null values are generally not allowed in 2.x operators and sources." @kind object;
+  #L454c9c.  call `<init>`(v3, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L454ca2.  call `onError`(v2, v3) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L454ca8.  return @kind void;
+  #L454caa.  @monitorenter v2
+  #L454cac.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.done` @type ^`boolean` @kind boolean;
+  #L454cb0.  if v0 == 0 then goto L454cb8;
+  #L454cb4.  @monitorexit v2
+  #L454cb6.  return @kind void;
+  #L454cb8.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.emitting` @type ^`boolean` @kind boolean;
+  #L454cbc.  if v0 == 0 then goto L454cea;
+  #L454cc0.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` @kind object;
+  #L454cc4.  if v0 != 0 then goto L454cd8;
+  #L454cc8.  v0:= new `io.reactivex.internal.util.AppendOnlyLinkedArrayList`;
+  #L454ccc.  v1:= 4I;
+  #L454cce.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.<init>:(I)V` @kind direct;
+  #L454cd4.  v2.`io.reactivex.subscribers.SerializedSubscriber.queue` @type ^`io.reactivex.internal.util.AppendOnlyLinkedArrayList` := v0 @kind object;
+  #L454cd8.  call temp:= `next`(v3) @signature `Lio/reactivex/internal/util/NotificationLite;.next:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L454cde.  v3:= temp @kind object;
+  #L454ce0.  call `add`(v0, v3) @signature `Lio/reactivex/internal/util/AppendOnlyLinkedArrayList;.add:(Ljava/lang/Object;)V` @kind virtual;
+  #L454ce6.  @monitorexit v2
+  #L454ce8.  return @kind void;
+  #L454cea.  v0:= 1I;
+  #L454cec.  v2.`io.reactivex.subscribers.SerializedSubscriber.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L454cf0.  @monitorexit v2
+  #L454cf2.  v0:= v2.`io.reactivex.subscribers.SerializedSubscriber.downstream` @type ^`org.reactivestreams.Subscriber` @kind object;
+  #L454cf6.  call `onNext`(v0, v3) @signature `Lorg/reactivestreams/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L454cfc.  call `emitLoop`(v2) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.emitLoop:()V` @kind virtual;
+  #L454d02.  return @kind void;
+  #L454d04.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L454d06.  @monitorexit v2
+  #L454d08.  throw v3;
+  catch `java.lang.Throwable` @[L454cac..L454cf2] goto L454d04;
+  catch `java.lang.Throwable` @[L454d06..L454d08] goto L454d04;
+}
+procedure `void` `onSubscribe`(`io.reactivex.subscribers.SerializedSubscriber` v1 @kind this, `org.reactivestreams.Subscription` v2 @kind object) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.onSubscribe:(Lorg/reactivestreams/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L454d30.  v0:= v1.`io.reactivex.subscribers.SerializedSubscriber.upstream` @type ^`org.reactivestreams.Subscription` @kind object;
+  #L454d34.  call temp:= `validate`(v0, v2) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.validate:(Lorg/reactivestreams/Subscription;Lorg/reactivestreams/Subscription;)Z` @kind static;
+  #L454d3a.  v0:= temp;
+  #L454d3c.  if v0 == 0 then goto L454d4e;
+  #L454d40.  v1.`io.reactivex.subscribers.SerializedSubscriber.upstream` @type ^`org.reactivestreams.Subscription` := v2 @kind object;
+  #L454d44.  v2:= v1.`io.reactivex.subscribers.SerializedSubscriber.downstream` @type ^`org.reactivestreams.Subscriber` @kind object;
+  #L454d48.  call `onSubscribe`(v2, v1) @signature `Lorg/reactivestreams/Subscriber;.onSubscribe:(Lorg/reactivestreams/Subscription;)V` @kind interface;
+  #L454d4e.  return @kind void;
+}
+procedure `void` `request`(`io.reactivex.subscribers.SerializedSubscriber` v1 @kind this, `long` v2 ) @signature `Lio/reactivex/subscribers/SerializedSubscriber;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L454d60.  v0:= v1.`io.reactivex.subscribers.SerializedSubscriber.upstream` @type ^`org.reactivestreams.Subscription` @kind object;
+  #L454d64.  call `request`(v0, v2) @signature `Lorg/reactivestreams/Subscription;.request:(J)V` @kind interface;
+  #L454d6a.  return @kind void;
+}

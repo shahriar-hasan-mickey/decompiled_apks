@@ -1,0 +1,117 @@
+record `io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker` @kind class @AccessFlag FINAL extends `io.reactivex.Scheduler$Worker` @kind class, `io.reactivex.disposables.Disposable` @kind interface {
+  `java.util.concurrent.atomic.AtomicInteger` `io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.counter` @AccessFlag FINAL;
+  `boolean` `io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.disposed` @AccessFlag VOLATILE;
+  `java.util.concurrent.PriorityBlockingQueue` `io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.queue` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.wip` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker` v1 @kind this) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L442550.  call `<init>`(v1) @signature `Lio/reactivex/Scheduler$Worker;.<init>:()V` @kind direct;
+  #L442556.  v0:= new `java.util.concurrent.PriorityBlockingQueue`;
+  #L44255a.  call `<init>`(v0) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.<init>:()V` @kind direct;
+  #L442560.  v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.queue` @type ^`java.util.concurrent.PriorityBlockingQueue` := v0 @kind object;
+  #L442564.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L442568.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L44256e.  v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L442572.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L442576.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L44257c.  v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.counter` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L442580.  return @kind void;
+}
+procedure `void` `dispose`(`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker` v1 @kind this) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.dispose:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L442594.  v0:= 1I;
+  #L442596.  v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.disposed` @type ^`boolean` := v0 @kind boolean;
+  #L44259a.  return @kind void;
+}
+procedure `io.reactivex.disposables.Disposable` `enqueue`(`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker` v1 @kind this, `java.lang.Runnable` v2 @kind object, `long` v3 ) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.enqueue:(Ljava/lang/Runnable;J)Lio/reactivex/disposables/Disposable;` @AccessFlag  {
+    temp;
+    v0;
+
+  #L442428.  v0:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.disposed` @type ^`boolean` @kind boolean;
+  #L44242c.  if v0 == 0 then goto L442436;
+  #L442430.  v2:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L442434.  return v2 @kind object;
+  #L442436.  v0:= new `io.reactivex.internal.schedulers.TrampolineScheduler$TimedRunnable`;
+  #L44243a.  call temp:= `valueOf`(v3) @signature `Ljava/lang/Long;.valueOf:(J)Ljava/lang/Long;` @kind static;
+  #L442440.  v3:= temp @kind object;
+  #L442442.  v4:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.counter` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L442446.  call temp:= `incrementAndGet`(v4) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.incrementAndGet:()I` @kind virtual;
+  #L44244c.  v4:= temp;
+  #L44244e.  call `<init>`(v0, v2, v3, v4) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TimedRunnable;.<init>:(Ljava/lang/Runnable;Ljava/lang/Long;I)V` @kind direct;
+  #L442454.  v2:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.queue` @type ^`java.util.concurrent.PriorityBlockingQueue` @kind object;
+  #L442458.  call temp:= `add`(v2, v0) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.add:(Ljava/lang/Object;)Z` @kind virtual;
+  #L44245e.  v2:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L442462.  call temp:= `getAndIncrement`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L442468.  v2:= temp;
+  #L44246a.  if v2 != 0 then goto L4424c8;
+  #L44246e.  v2:= 1I;
+  #L442470.  v3:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.disposed` @type ^`boolean` @kind boolean;
+  #L442474.  if v3 == 0 then goto L442488;
+  #L442478.  v2:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.queue` @type ^`java.util.concurrent.PriorityBlockingQueue` @kind object;
+  #L44247c.  call `clear`(v2) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.clear:()V` @kind virtual;
+  #L442482.  v2:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L442486.  return v2 @kind object;
+  #L442488.  v3:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.queue` @type ^`java.util.concurrent.PriorityBlockingQueue` @kind object;
+  #L44248c.  call temp:= `poll`(v3) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L442492.  v3:= temp @kind object;
+  #L442494.  v3:= (`io.reactivex.internal.schedulers.TrampolineScheduler$TimedRunnable`) v3 @kind object;
+  #L442498.  if v3 != 0 then goto L4424b4;
+  #L44249c.  v3:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4424a0.  v2:= -v2 @kind int;
+  #L4424a2.  call temp:= `addAndGet`(v3, v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.addAndGet:(I)I` @kind virtual;
+  #L4424a8.  v2:= temp;
+  #L4424aa.  if v2 != 0 then goto L442470;
+  #L4424ae.  v2:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L4424b2.  return v2 @kind object;
+  #L4424b4.  v4:= v3.`io.reactivex.internal.schedulers.TrampolineScheduler$TimedRunnable.disposed` @type ^`boolean` @kind boolean;
+  #L4424b8.  if v4 != 0 then goto L442470;
+  #L4424bc.  v3:= v3.`io.reactivex.internal.schedulers.TrampolineScheduler$TimedRunnable.run` @type ^`java.lang.Runnable` @kind object;
+  #L4424c0.  call `run`(v3) @signature `Ljava/lang/Runnable;.run:()V` @kind interface;
+  #L4424c6.  goto L442470;
+  #L4424c8.  v2:= new `io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker$AppendToQueueTask`;
+  #L4424cc.  call `<init>`(v2, v1, v0) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker$AppendToQueueTask;.<init>:(Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;Lio/reactivex/internal/schedulers/TrampolineScheduler$TimedRunnable;)V` @kind direct;
+  #L4424d2.  call temp:= `fromRunnable`(v2) @signature `Lio/reactivex/disposables/Disposables;.fromRunnable:(Ljava/lang/Runnable;)Lio/reactivex/disposables/Disposable;` @kind static;
+  #L4424d8.  v2:= temp @kind object;
+  #L4424da.  return v2 @kind object;
+}
+procedure `boolean` `isDisposed`(`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker` v1 @kind this) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.isDisposed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L442410.  v0:= v1.`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker.disposed` @type ^`boolean` @kind boolean;
+  #L442414.  return v0;
+}
+procedure `io.reactivex.disposables.Disposable` `schedule`(`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker` v2 @kind this, `java.lang.Runnable` v3 @kind object) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.schedule:(Ljava/lang/Runnable;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4424ec.  v0:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4424f0.  call temp:= `now`(v2, v0) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.now:(Ljava/util/concurrent/TimeUnit;)J` @kind virtual;
+  #L4424f6.  v0:= temp @kind wide;
+  #L4424f8.  call temp:= `enqueue`(v2, v3, v0) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.enqueue:(Ljava/lang/Runnable;J)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L4424fe.  v3:= temp @kind object;
+  #L442500.  return v3 @kind object;
+}
+procedure `io.reactivex.disposables.Disposable` `schedule`(`io.reactivex.internal.schedulers.TrampolineScheduler$TrampolineWorker` v2 @kind this, `java.lang.Runnable` v3 @kind object, `long` v4 , `java.util.concurrent.TimeUnit` v6 @kind object) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L442514.  v0:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L442518.  call temp:= `now`(v2, v0) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.now:(Ljava/util/concurrent/TimeUnit;)J` @kind virtual;
+  #L44251e.  v0:= temp @kind wide;
+  #L442520.  call temp:= `toMillis`(v6, v4) @signature `Ljava/util/concurrent/TimeUnit;.toMillis:(J)J` @kind virtual;
+  #L442526.  v4:= temp @kind wide;
+  #L442528.  v0:= v0 + v4 @kind long;
+  #L44252a.  v4:= new `io.reactivex.internal.schedulers.TrampolineScheduler$SleepingRunnable`;
+  #L44252e.  call `<init>`(v4, v3, v2, v0) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$SleepingRunnable;.<init>:(Ljava/lang/Runnable;Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;J)V` @kind direct;
+  #L442534.  call temp:= `enqueue`(v2, v4, v0) @signature `Lio/reactivex/internal/schedulers/TrampolineScheduler$TrampolineWorker;.enqueue:(Ljava/lang/Runnable;J)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L44253a.  v3:= temp @kind object;
+  #L44253c.  return v3 @kind object;
+}

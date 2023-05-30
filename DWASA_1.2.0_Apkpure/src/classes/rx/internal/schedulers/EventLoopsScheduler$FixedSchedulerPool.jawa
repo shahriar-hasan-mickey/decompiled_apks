@@ -1,0 +1,66 @@
+record `rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` @kind class @AccessFlag FINAL {
+  `int` `rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.cores` @AccessFlag FINAL;
+  `rx.internal.schedulers.EventLoopsScheduler$PoolWorker`[] `rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.eventLoops` @AccessFlag FINAL;
+  `long` `rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.n` @AccessFlag ;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` v3 @kind this, `java.util.concurrent.ThreadFactory` v4 @kind object, `int` v5 ) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.<init>:(Ljava/util/concurrent/ThreadFactory;I)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b25a4.  call `<init>`(v3) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b25aa.  v3.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.cores` @type ^`int` := v5;
+  #L4b25ae.  v0:= new `rx.internal.schedulers.EventLoopsScheduler$PoolWorker`[v5];
+  #L4b25b2.  v3.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.eventLoops` @type ^`rx.internal.schedulers.EventLoopsScheduler$PoolWorker`[] := v0 @kind object;
+  #L4b25b6.  v0:= 0I;
+  #L4b25b8.  if v0 >= v5 then goto L4b25d4;
+  #L4b25bc.  v1:= v3.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.eventLoops` @type ^`rx.internal.schedulers.EventLoopsScheduler$PoolWorker`[] @kind object;
+  #L4b25c0.  v2:= new `rx.internal.schedulers.EventLoopsScheduler$PoolWorker`;
+  #L4b25c4.  call `<init>`(v2, v4) @signature `Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L4b25ca.  v1[v0]:= v2 @kind object;
+  #L4b25ce.  v0:= v0 + 1;
+  #L4b25d2.  goto L4b25b8;
+  #L4b25d4.  return @kind void;
+}
+procedure `rx.internal.schedulers.EventLoopsScheduler$PoolWorker` `getEventLoop`(`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` v6 @kind this) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.getEventLoop:()Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4b2568.  v0:= v6.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.cores` @type ^`int`;
+  #L4b256c.  if v0 != 0 then goto L4b2576;
+  #L4b2570.  v0:= `@@rx.internal.schedulers.EventLoopsScheduler.SHUTDOWN_WORKER` @type ^`rx.internal.schedulers.EventLoopsScheduler$PoolWorker` @kind object;
+  #L4b2574.  return v0 @kind object;
+  #L4b2576.  v1:= v6.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.eventLoops` @type ^`rx.internal.schedulers.EventLoopsScheduler$PoolWorker`[] @kind object;
+  #L4b257a.  v2:= v6.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.n` @type ^`long` @kind wide;
+  #L4b257e.  v4:= 1L;
+  #L4b2582.  v4:= v4 + v2 @kind long;
+  #L4b2584.  v6.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.n` @type ^`long` := v4 @kind wide;
+  #L4b2588.  v4:= (`long`) v0 @kind i2l;
+  #L4b258a.  v2:= v2 %% v4 @kind long;
+  #L4b258c.  v0:= (`int`) v2 @kind l2i;
+  #L4b258e.  v0:= v1[v0] @kind object;
+  #L4b2592.  return v0 @kind object;
+}
+procedure `void` `shutdown`(`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` v4 @kind this) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4b25e8.  v0:= v4.`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool.eventLoops` @type ^`rx.internal.schedulers.EventLoopsScheduler$PoolWorker`[] @kind object;
+  #L4b25ec.  v1:= length @variable v0;
+  #L4b25ee.  v2:= 0I;
+  #L4b25f0.  if v2 >= v1 then goto L4b2604;
+  #L4b25f4.  v3:= v0[v2] @kind object;
+  #L4b25f8.  call `unsubscribe`(v3) @signature `Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;.unsubscribe:()V` @kind virtual;
+  #L4b25fe.  v2:= v2 + 1;
+  #L4b2602.  goto L4b25f0;
+  #L4b2604.  return @kind void;
+}

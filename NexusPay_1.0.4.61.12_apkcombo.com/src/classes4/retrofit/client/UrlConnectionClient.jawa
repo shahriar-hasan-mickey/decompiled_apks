@@ -1,0 +1,175 @@
+record `retrofit.client.UrlConnectionClient` @kind class @AccessFlag PUBLIC extends `retrofit.client.Client` @kind interface {
+}
+global `int` `@@retrofit.client.UrlConnectionClient.CHUNK_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`retrofit.client.UrlConnectionClient` v0 @kind this) @signature `Lretrofit/client/UrlConnectionClient;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L491860.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L491866.  return @kind void;
+}
+procedure `retrofit.client.Response` `execute`(`retrofit.client.UrlConnectionClient` v1 @kind this, `retrofit.client.Request` v2 @kind object) @signature `Lretrofit/client/UrlConnectionClient;.execute:(Lretrofit/client/Request;)Lretrofit/client/Response;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L491730.  call temp:= `openConnection`(v1, v2) @signature `Lretrofit/client/UrlConnectionClient;.openConnection:(Lretrofit/client/Request;)Ljava/net/HttpURLConnection;` @kind virtual;
+  #L491736.  v0:= temp @kind object;
+  #L491738.  call `prepareRequest`(v1, v0, v2) @signature `Lretrofit/client/UrlConnectionClient;.prepareRequest:(Ljava/net/HttpURLConnection;Lretrofit/client/Request;)V` @kind virtual;
+  #L49173e.  call temp:= `readResponse`(v1, v0) @signature `Lretrofit/client/UrlConnectionClient;.readResponse:(Ljava/net/HttpURLConnection;)Lretrofit/client/Response;` @kind virtual;
+  #L491744.  v2:= temp @kind object;
+  #L491746.  return v2 @kind object;
+}
+procedure `java.net.HttpURLConnection` `openConnection`(`retrofit.client.UrlConnectionClient` v1 @kind this, `retrofit.client.Request` v2 @kind object) @signature `Lretrofit/client/UrlConnectionClient;.openConnection:(Lretrofit/client/Request;)Ljava/net/HttpURLConnection;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L4916ec.  v0:= new `java.net.URL`;
+  #L4916f0.  call temp:= `getUrl`(v2) @signature `Lretrofit/client/Request;.getUrl:()Ljava/lang/String;` @kind virtual;
+  #L4916f6.  v2:= temp @kind object;
+  #L4916f8.  call `<init>`(v0, v2) @signature `Ljava/net/URL;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4916fe.  call temp:= `openConnection`(v0) @signature `Ljava/net/URL;.openConnection:()Ljava/net/URLConnection;` @kind virtual;
+  #L491704.  v2:= temp @kind object;
+  #L491706.  v2:= (`java.net.HttpURLConnection`) v2 @kind object;
+  #L49170a.  v0:= 15000I;
+  #L49170e.  call `setConnectTimeout`(v2, v0) @signature `Ljava/net/HttpURLConnection;.setConnectTimeout:(I)V` @kind virtual;
+  #L491714.  v0:= 20000I;
+  #L491718.  call `setReadTimeout`(v2, v0) @signature `Ljava/net/HttpURLConnection;.setReadTimeout:(I)V` @kind virtual;
+  #L49171e.  return v2 @kind object;
+}
+procedure `void` `prepareRequest`(`retrofit.client.UrlConnectionClient` v5 @kind this, `java.net.HttpURLConnection` v6 @kind object, `retrofit.client.Request` v7 @kind object) @signature `Lretrofit/client/UrlConnectionClient;.prepareRequest:(Ljava/net/HttpURLConnection;Lretrofit/client/Request;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L491878.  call temp:= `getMethod`(v7) @signature `Lretrofit/client/Request;.getMethod:()Ljava/lang/String;` @kind virtual;
+  #L49187e.  v0:= temp @kind object;
+  #L491880.  call `setRequestMethod`(v6, v0) @signature `Ljava/net/HttpURLConnection;.setRequestMethod:(Ljava/lang/String;)V` @kind virtual;
+  #L491886.  v0:= 1I;
+  #L491888.  call `setDoInput`(v6, v0) @signature `Ljava/net/HttpURLConnection;.setDoInput:(Z)V` @kind virtual;
+  #L49188e.  call temp:= `getHeaders`(v7) @signature `Lretrofit/client/Request;.getHeaders:()Ljava/util/List;` @kind virtual;
+  #L491894.  v1:= temp @kind object;
+  #L491896.  call temp:= `iterator`(v1) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L49189c.  v1:= temp @kind object;
+  #L49189e.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4918a4.  v2:= temp;
+  #L4918a6.  if v2 == 0 then goto L4918ce;
+  #L4918aa.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4918b0.  v2:= temp @kind object;
+  #L4918b2.  v2:= (`retrofit.client.Header`) v2 @kind object;
+  #L4918b6.  call temp:= `getName`(v2) @signature `Lretrofit/client/Header;.getName:()Ljava/lang/String;` @kind virtual;
+  #L4918bc.  v3:= temp @kind object;
+  #L4918be.  call temp:= `getValue`(v2) @signature `Lretrofit/client/Header;.getValue:()Ljava/lang/String;` @kind virtual;
+  #L4918c4.  v2:= temp @kind object;
+  #L4918c6.  call `addRequestProperty`(v6, v3, v2) @signature `Ljava/net/HttpURLConnection;.addRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L4918cc.  goto L49189e;
+  #L4918ce.  call temp:= `getBody`(v7) @signature `Lretrofit/client/Request;.getBody:()Lretrofit/mime/TypedOutput;` @kind virtual;
+  #L4918d4.  v7:= temp @kind object;
+  #L4918d6.  if v7 == 0 then goto L49193a;
+  #L4918da.  call `setDoOutput`(v6, v0) @signature `Ljava/net/HttpURLConnection;.setDoOutput:(Z)V` @kind virtual;
+  #L4918e0.  call temp:= `mimeType`(v7) @signature `Lretrofit/mime/TypedOutput;.mimeType:()Ljava/lang/String;` @kind interface;
+  #L4918e6.  v0:= temp @kind object;
+  #L4918e8.  v1:= "Content-Type" @kind object;
+  #L4918ec.  call `addRequestProperty`(v6, v1, v0) @signature `Ljava/net/HttpURLConnection;.addRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L4918f2.  call temp:= `length`(v7) @signature `Lretrofit/mime/TypedOutput;.length:()J` @kind interface;
+  #L4918f8.  v0:= temp @kind wide;
+  #L4918fa.  v2:= -1L;
+  #L4918fe.  v4:= lcmp(v0, v2);
+  #L491902.  if v4 == 0 then goto L491922;
+  #L491906.  v2:= (`int`) v0 @kind l2i;
+  #L491908.  call `setFixedLengthStreamingMode`(v6, v2) @signature `Ljava/net/HttpURLConnection;.setFixedLengthStreamingMode:(I)V` @kind virtual;
+  #L49190e.  call temp:= `valueOf`(v0) @signature `Ljava/lang/String;.valueOf:(J)Ljava/lang/String;` @kind static;
+  #L491914.  v0:= temp @kind object;
+  #L491916.  v1:= "Content-Length" @kind object;
+  #L49191a.  call `addRequestProperty`(v6, v1, v0) @signature `Ljava/net/HttpURLConnection;.addRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L491920.  goto L49192c;
+  #L491922.  v0:= 4096I;
+  #L491926.  call `setChunkedStreamingMode`(v6, v0) @signature `Ljava/net/HttpURLConnection;.setChunkedStreamingMode:(I)V` @kind virtual;
+  #L49192c.  call temp:= `getOutputStream`(v6) @signature `Ljava/net/HttpURLConnection;.getOutputStream:()Ljava/io/OutputStream;` @kind virtual;
+  #L491932.  v6:= temp @kind object;
+  #L491934.  call `writeTo`(v7, v6) @signature `Lretrofit/mime/TypedOutput;.writeTo:(Ljava/io/OutputStream;)V` @kind interface;
+  #L49193a.  return @kind void;
+}
+procedure `retrofit.client.Response` `readResponse`(`retrofit.client.UrlConnectionClient` v14 @kind this, `java.net.HttpURLConnection` v15 @kind object) @signature `Lretrofit/client/UrlConnectionClient;.readResponse:(Ljava/net/HttpURLConnection;)Lretrofit/client/Response;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+
+  #L491758.  call temp:= `getResponseCode`(v15) @signature `Ljava/net/HttpURLConnection;.getResponseCode:()I` @kind virtual;
+  #L49175e.  v2:= temp;
+  #L491760.  call temp:= `getResponseMessage`(v15) @signature `Ljava/net/HttpURLConnection;.getResponseMessage:()Ljava/lang/String;` @kind virtual;
+  #L491766.  v0:= temp @kind object;
+  #L491768.  if v0 != 0 then goto L491770;
+  #L49176c.  v0:= "" @kind object;
+  #L491770.  v3:= v0 @kind object;
+  #L491772.  v4:= new `java.util.ArrayList`;
+  #L491776.  call `<init>`(v4) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L49177c.  call temp:= `getHeaderFields`(v15) @signature `Ljava/net/HttpURLConnection;.getHeaderFields:()Ljava/util/Map;` @kind virtual;
+  #L491782.  v0:= temp @kind object;
+  #L491784.  call temp:= `entrySet`(v0) @signature `Ljava/util/Map;.entrySet:()Ljava/util/Set;` @kind interface;
+  #L49178a.  v0:= temp @kind object;
+  #L49178c.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L491792.  v0:= temp @kind object;
+  #L491794.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L49179a.  v1:= temp;
+  #L49179c.  if v1 == 0 then goto L4917f6;
+  #L4917a0.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4917a6.  v1:= temp @kind object;
+  #L4917a8.  v1:= (`java.util.Map$Entry`) v1 @kind object;
+  #L4917ac.  call temp:= `getKey`(v1) @signature `Ljava/util/Map$Entry;.getKey:()Ljava/lang/Object;` @kind interface;
+  #L4917b2.  v5:= temp @kind object;
+  #L4917b4.  v5:= (`java.lang.String`) v5 @kind object;
+  #L4917b8.  call temp:= `getValue`(v1) @signature `Ljava/util/Map$Entry;.getValue:()Ljava/lang/Object;` @kind interface;
+  #L4917be.  v1:= temp @kind object;
+  #L4917c0.  v1:= (`java.util.List`) v1 @kind object;
+  #L4917c4.  call temp:= `iterator`(v1) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L4917ca.  v1:= temp @kind object;
+  #L4917cc.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4917d2.  v6:= temp;
+  #L4917d4.  if v6 == 0 then goto L491794;
+  #L4917d8.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4917de.  v6:= temp @kind object;
+  #L4917e0.  v6:= (`java.lang.String`) v6 @kind object;
+  #L4917e4.  v7:= new `retrofit.client.Header`;
+  #L4917e8.  call `<init>`(v7, v5, v6) @signature `Lretrofit/client/Header;.<init>:(Ljava/lang/String;Ljava/lang/String;)V` @kind direct;
+  #L4917ee.  call temp:= `add`(v4, v7) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4917f4.  goto L4917cc;
+  #L4917f6.  call temp:= `getContentType`(v15) @signature `Ljava/net/HttpURLConnection;.getContentType:()Ljava/lang/String;` @kind virtual;
+  #L4917fc.  v9:= temp @kind object;
+  #L4917fe.  call temp:= `getContentLength`(v15) @signature `Ljava/net/HttpURLConnection;.getContentLength:()I` @kind virtual;
+  #L491804.  v0:= temp;
+  #L491806.  v1:= 400I;
+  #L49180a.  if v2 < v1 then goto L491818;
+  #L49180e.  call temp:= `getErrorStream`(v15) @signature `Ljava/net/HttpURLConnection;.getErrorStream:()Ljava/io/InputStream;` @kind virtual;
+  #L491814.  v1:= temp @kind object;
+  #L491816.  goto L491820;
+  #L491818.  call temp:= `getInputStream`(v15) @signature `Ljava/net/HttpURLConnection;.getInputStream:()Ljava/io/InputStream;` @kind virtual;
+  #L49181e.  v1:= temp @kind object;
+  #L491820.  v12:= v1 @kind object;
+  #L491822.  v5:= new `retrofit.client.UrlConnectionClient$TypedInputStream`;
+  #L491826.  v10:= (`long`) v0 @kind i2l;
+  #L491828.  v13:= 0I;
+  #L49182a.  v8:= v5 @kind object;
+  #L49182c.  call `<init>`(v8, v9, v10, v12, v13) @signature `Lretrofit/client/UrlConnectionClient$TypedInputStream;.<init>:(Ljava/lang/String;JLjava/io/InputStream;Lretrofit/client/UrlConnectionClient$1;)V` @kind direct;
+  #L491832.  v6:= new `retrofit.client.Response`;
+  #L491836.  call temp:= `getURL`(v15) @signature `Ljava/net/HttpURLConnection;.getURL:()Ljava/net/URL;` @kind virtual;
+  #L49183c.  v15:= temp @kind object;
+  #L49183e.  call temp:= `toString`(v15) @signature `Ljava/net/URL;.toString:()Ljava/lang/String;` @kind virtual;
+  #L491844.  v1:= temp @kind object;
+  #L491846.  v0:= v6 @kind object;
+  #L491848.  call `<init>`(v0, v1, v2, v3, v4, v5) @signature `Lretrofit/client/Response;.<init>:(Ljava/lang/String;ILjava/lang/String;Ljava/util/List;Lretrofit/mime/TypedInput;)V` @kind direct;
+  #L49184e.  return v6 @kind object;
+}

@@ -1,0 +1,319 @@
+record `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicInteger` @kind class, `io.reactivex.disposables.Disposable` @kind interface {
+  `int` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.active` @AccessFlag ;
+  `boolean` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.cancelled` @AccessFlag VOLATILE;
+  `io.reactivex.functions.Function` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.combiner` @AccessFlag FINAL;
+  `int` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.complete` @AccessFlag ;
+  `boolean` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.delayError` @AccessFlag FINAL;
+  `boolean` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.done` @AccessFlag VOLATILE;
+  `io.reactivex.Observer` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.downstream` @AccessFlag FINAL;
+  `io.reactivex.internal.util.AtomicThrowable` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @AccessFlag FINAL;
+  `java.lang.Object`[] `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.latest` @AccessFlag ;
+  `io.reactivex.internal.operators.observable.ObservableCombineLatest$CombinerObserver`[] `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.observers` @AccessFlag FINAL;
+  `io.reactivex.internal.queue.SpscLinkedArrayQueue` `io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.queue` @AccessFlag FINAL;
+}
+global `long` `@@io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v1 @kind this, `io.reactivex.Observer` v2 @kind object, `io.reactivex.functions.Function` v3 @kind object, `int` v4 , `int` v5 , `boolean` v6 ) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.<init>:(Lio/reactivex/Observer;Lio/reactivex/functions/Function;IIZ)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L41fc98.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L41fc9e.  v0:= new `io.reactivex.internal.util.AtomicThrowable`;
+  #L41fca2.  call `<init>`(v0) @signature `Lio/reactivex/internal/util/AtomicThrowable;.<init>:()V` @kind direct;
+  #L41fca8.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @type ^`io.reactivex.internal.util.AtomicThrowable` := v0 @kind object;
+  #L41fcac.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.downstream` @type ^`io.reactivex.Observer` := v2 @kind object;
+  #L41fcb0.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.combiner` @type ^`io.reactivex.functions.Function` := v3 @kind object;
+  #L41fcb4.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.delayError` @type ^`boolean` := v6 @kind boolean;
+  #L41fcb8.  v2:= new `java.lang.Object`[v4];
+  #L41fcbc.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.latest` @type ^`java.lang.Object`[] := v2 @kind object;
+  #L41fcc0.  v2:= new `io.reactivex.internal.operators.observable.ObservableCombineLatest$CombinerObserver`[v4];
+  #L41fcc4.  v3:= 0I;
+  #L41fcc6.  if v3 >= v4 then goto L41fcde;
+  #L41fcca.  v6:= new `io.reactivex.internal.operators.observable.ObservableCombineLatest$CombinerObserver`;
+  #L41fcce.  call `<init>`(v6, v1, v3) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$CombinerObserver;.<init>:(Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;I)V` @kind direct;
+  #L41fcd4.  v2[v3]:= v6 @kind object;
+  #L41fcd8.  v3:= v3 + 1;
+  #L41fcdc.  goto L41fcc6;
+  #L41fcde.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.observers` @type ^`io.reactivex.internal.operators.observable.ObservableCombineLatest$CombinerObserver`[] := v2 @kind object;
+  #L41fce2.  v2:= new `io.reactivex.internal.queue.SpscLinkedArrayQueue`;
+  #L41fce6.  call `<init>`(v2, v5) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.<init>:(I)V` @kind direct;
+  #L41fcec.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` := v2 @kind object;
+  #L41fcf0.  return @kind void;
+}
+procedure `void` `cancelSources`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v4 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.cancelSources:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L41fd04.  v0:= v4.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.observers` @type ^`io.reactivex.internal.operators.observable.ObservableCombineLatest$CombinerObserver`[] @kind object;
+  #L41fd08.  v1:= length @variable v0;
+  #L41fd0a.  v2:= 0I;
+  #L41fd0c.  if v2 >= v1 then goto L41fd20;
+  #L41fd10.  v3:= v0[v2] @kind object;
+  #L41fd14.  call `dispose`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$CombinerObserver;.dispose:()V` @kind virtual;
+  #L41fd1a.  v2:= v2 + 1;
+  #L41fd1e.  goto L41fd0c;
+  #L41fd20.  return @kind void;
+}
+procedure `void` `clear`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v1 @kind this, `io.reactivex.internal.queue.SpscLinkedArrayQueue` v2 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.clear:(Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L41fd34.  @monitorenter v1
+  #L41fd36.  v0:= 0I;
+  #L41fd38.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.latest` @type ^`java.lang.Object`[] := v0 @kind object;
+  #L41fd3c.  @monitorexit v1
+  #L41fd3e.  call `clear`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L41fd44.  return @kind void;
+  #L41fd46.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L41fd48.  @monitorexit v1
+  #L41fd4a.  throw v2;
+  catch `java.lang.Throwable` @[L41fd38..L41fd3e] goto L41fd46;
+  catch `java.lang.Throwable` @[L41fd48..L41fd4a] goto L41fd46;
+}
+procedure `void` `dispose`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.dispose:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L41fd70.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.cancelled` @type ^`boolean` @kind boolean;
+  #L41fd74.  if v0 != 0 then goto L41fd9a;
+  #L41fd78.  v0:= 1I;
+  #L41fd7a.  v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.cancelled` @type ^`boolean` := v0 @kind boolean;
+  #L41fd7e.  call `cancelSources`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.cancelSources:()V` @kind virtual;
+  #L41fd84.  call temp:= `getAndIncrement`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.getAndIncrement:()I` @kind virtual;
+  #L41fd8a.  v0:= temp;
+  #L41fd8c.  if v0 != 0 then goto L41fd9a;
+  #L41fd90.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L41fd94.  call `clear`(v1, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.clear:(Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L41fd9a.  return @kind void;
+}
+procedure `void` `drain`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v8 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.drain:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L41fdac.  call temp:= `getAndIncrement`(v8) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.getAndIncrement:()I` @kind virtual;
+  #L41fdb2.  v0:= temp;
+  #L41fdb4.  if v0 == 0 then goto L41fdba;
+  #L41fdb8.  return @kind void;
+  #L41fdba.  v0:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L41fdbe.  v1:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L41fdc2.  v2:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.delayError` @type ^`boolean` @kind boolean;
+  #L41fdc6.  v3:= 1I;
+  #L41fdc8.  v4:= 1I;
+  #L41fdca.  v5:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.cancelled` @type ^`boolean` @kind boolean;
+  #L41fdce.  if v5 == 0 then goto L41fdda;
+  #L41fdd2.  call `clear`(v8, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.clear:(Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L41fdd8.  return @kind void;
+  #L41fdda.  if v2 != 0 then goto L41fe0e;
+  #L41fdde.  v5:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @type ^`io.reactivex.internal.util.AtomicThrowable` @kind object;
+  #L41fde2.  call temp:= `get`(v5) @signature `Lio/reactivex/internal/util/AtomicThrowable;.get:()Ljava/lang/Object;` @kind virtual;
+  #L41fde8.  v5:= temp @kind object;
+  #L41fdea.  if v5 == 0 then goto L41fe0e;
+  #L41fdee.  call `cancelSources`(v8) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.cancelSources:()V` @kind virtual;
+  #L41fdf4.  call `clear`(v8, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.clear:(Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L41fdfa.  v0:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @type ^`io.reactivex.internal.util.AtomicThrowable` @kind object;
+  #L41fdfe.  call temp:= `terminate`(v0) @signature `Lio/reactivex/internal/util/AtomicThrowable;.terminate:()Ljava/lang/Throwable;` @kind virtual;
+  #L41fe04.  v0:= temp @kind object;
+  #L41fe06.  call `onError`(v1, v0) @signature `Lio/reactivex/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L41fe0c.  return @kind void;
+  #L41fe0e.  v5:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.done` @type ^`boolean` @kind boolean;
+  #L41fe12.  call temp:= `poll`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L41fe18.  v6:= temp @kind object;
+  #L41fe1a.  v6:= (`java.lang.Object`[]) v6 @kind object;
+  #L41fe1e.  if v6 != 0 then goto L41fe26;
+  #L41fe22.  v7:= 1I;
+  #L41fe24.  goto L41fe28;
+  #L41fe26.  v7:= 0I;
+  #L41fe28.  if v5 == 0 then goto L41fe56;
+  #L41fe2c.  if v7 == 0 then goto L41fe56;
+  #L41fe30.  call `clear`(v8, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.clear:(Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L41fe36.  v0:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @type ^`io.reactivex.internal.util.AtomicThrowable` @kind object;
+  #L41fe3a.  call temp:= `terminate`(v0) @signature `Lio/reactivex/internal/util/AtomicThrowable;.terminate:()Ljava/lang/Throwable;` @kind virtual;
+  #L41fe40.  v0:= temp @kind object;
+  #L41fe42.  if v0 != 0 then goto L41fe4e;
+  #L41fe46.  call `onComplete`(v1) @signature `Lio/reactivex/Observer;.onComplete:()V` @kind interface;
+  #L41fe4c.  goto L41fe54;
+  #L41fe4e.  call `onError`(v1, v0) @signature `Lio/reactivex/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L41fe54.  return @kind void;
+  #L41fe56.  if v7 == 0 then goto L41fe6a;
+  #L41fe5a.  v4:= -v4 @kind int;
+  #L41fe5c.  call temp:= `addAndGet`(v8, v4) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.addAndGet:(I)I` @kind virtual;
+  #L41fe62.  v4:= temp;
+  #L41fe64.  if v4 != 0 then goto L41fdca;
+  #L41fe68.  return @kind void;
+  #L41fe6a.  v5:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.combiner` @type ^`io.reactivex.functions.Function` @kind object;
+  #L41fe6e.  call temp:= `apply`(v5, v6) @signature `Lio/reactivex/functions/Function;.apply:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L41fe74.  v5:= temp @kind object;
+  #L41fe76.  v6:= "The combiner returned a null value" @kind object;
+  #L41fe7a.  call temp:= `requireNonNull`(v5, v6) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L41fe80.  v5:= temp @kind object;
+  #L41fe82.  call `onNext`(v1, v5) @signature `Lio/reactivex/Observer;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L41fe88.  goto L41fdca;
+  #L41fe8a.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L41fe8c.  call `throwIfFatal`(v2) @signature `Lio/reactivex/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L41fe92.  v3:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @type ^`io.reactivex.internal.util.AtomicThrowable` @kind object;
+  #L41fe96.  call temp:= `addThrowable`(v3, v2) @signature `Lio/reactivex/internal/util/AtomicThrowable;.addThrowable:(Ljava/lang/Throwable;)Z` @kind virtual;
+  #L41fe9c.  call `cancelSources`(v8) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.cancelSources:()V` @kind virtual;
+  #L41fea2.  call `clear`(v8, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.clear:(Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L41fea8.  v0:= v8.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @type ^`io.reactivex.internal.util.AtomicThrowable` @kind object;
+  #L41feac.  call temp:= `terminate`(v0) @signature `Lio/reactivex/internal/util/AtomicThrowable;.terminate:()Ljava/lang/Throwable;` @kind virtual;
+  #L41feb2.  v0:= temp @kind object;
+  #L41feb4.  call `onError`(v1, v0) @signature `Lio/reactivex/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L41feba.  return @kind void;
+  catch `java.lang.Throwable` @[L41fe6a..L41fe82] goto L41fe8a;
+}
+procedure `void` `innerComplete`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v3 @kind this, `int` v4 ) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.innerComplete:(I)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L41fed8.  @monitorenter v3
+  #L41feda.  v0:= v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.latest` @type ^`java.lang.Object`[] @kind object;
+  #L41fede.  if v0 != 0 then goto L41fee6;
+  #L41fee2.  @monitorexit v3
+  #L41fee4.  return @kind void;
+  #L41fee6.  v4:= v0[v4] @kind object;
+  #L41feea.  v1:= 1I;
+  #L41feec.  if v4 != 0 then goto L41fef4;
+  #L41fef0.  v4:= 1I;
+  #L41fef2.  goto L41fef6;
+  #L41fef4.  v4:= 0I;
+  #L41fef6.  if v4 != 0 then goto L41ff0a;
+  #L41fefa.  v2:= v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.complete` @type ^`int`;
+  #L41fefe.  v2:= v2 + v1 @kind int;
+  #L41ff00.  v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.complete` @type ^`int` := v2;
+  #L41ff04.  v0:= length @variable v0;
+  #L41ff06.  if v2 != v0 then goto L41ff0e;
+  #L41ff0a.  v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.done` @type ^`boolean` := v1 @kind boolean;
+  #L41ff0e.  @monitorexit v3
+  #L41ff10.  if v4 == 0 then goto L41ff1a;
+  #L41ff14.  call `cancelSources`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.cancelSources:()V` @kind virtual;
+  #L41ff1a.  call `drain`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.drain:()V` @kind virtual;
+  #L41ff20.  return @kind void;
+  #L41ff22.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L41ff24.  @monitorexit v3
+  #L41ff26.  throw v4;
+  catch `java.lang.Throwable` @[L41feda..L41ff10] goto L41ff22;
+  catch `java.lang.Throwable` @[L41ff24..L41ff26] goto L41ff22;
+}
+procedure `void` `innerError`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v2 @kind this, `int` v3 , `java.lang.Throwable` v4 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.innerError:(ILjava/lang/Throwable;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L41ff4c.  v0:= v2.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.errors` @type ^`io.reactivex.internal.util.AtomicThrowable` @kind object;
+  #L41ff50.  call temp:= `addThrowable`(v0, v4) @signature `Lio/reactivex/internal/util/AtomicThrowable;.addThrowable:(Ljava/lang/Throwable;)Z` @kind virtual;
+  #L41ff56.  v0:= temp;
+  #L41ff58.  if v0 == 0 then goto L41ffb8;
+  #L41ff5c.  v4:= v2.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.delayError` @type ^`boolean` @kind boolean;
+  #L41ff60.  v0:= 1I;
+  #L41ff62.  if v4 == 0 then goto L41ffa4;
+  #L41ff66.  @monitorenter v2
+  #L41ff68.  v4:= v2.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.latest` @type ^`java.lang.Object`[] @kind object;
+  #L41ff6c.  if v4 != 0 then goto L41ff74;
+  #L41ff70.  @monitorexit v2
+  #L41ff72.  return @kind void;
+  #L41ff74.  v3:= v4[v3] @kind object;
+  #L41ff78.  if v3 != 0 then goto L41ff80;
+  #L41ff7c.  v3:= 1I;
+  #L41ff7e.  goto L41ff82;
+  #L41ff80.  v3:= 0I;
+  #L41ff82.  if v3 != 0 then goto L41ff96;
+  #L41ff86.  v1:= v2.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.complete` @type ^`int`;
+  #L41ff8a.  v1:= v1 + v0 @kind int;
+  #L41ff8c.  v2.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.complete` @type ^`int` := v1;
+  #L41ff90.  v4:= length @variable v4;
+  #L41ff92.  if v1 != v4 then goto L41ff9a;
+  #L41ff96.  v2.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.done` @type ^`boolean` := v0 @kind boolean;
+  #L41ff9a.  @monitorexit v2
+  #L41ff9c.  goto L41ffa6;
+  #L41ff9e.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L41ffa0.  @monitorexit v2
+  #L41ffa2.  throw v3;
+  #L41ffa4.  v3:= 1I;
+  #L41ffa6.  if v3 == 0 then goto L41ffb0;
+  #L41ffaa.  call `cancelSources`(v2) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.cancelSources:()V` @kind virtual;
+  #L41ffb0.  call `drain`(v2) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.drain:()V` @kind virtual;
+  #L41ffb6.  goto L41ffbe;
+  #L41ffb8.  call `onError`(v4) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L41ffbe.  return @kind void;
+  catch `java.lang.Throwable` @[L41ff68..L41ffa2] goto L41ff9e;
+}
+procedure `void` `innerNext`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v3 @kind this, `int` v4 , `java.lang.Object` v5 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.innerNext:(ILjava/lang/Object;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L41ffdc.  @monitorenter v3
+  #L41ffde.  v0:= v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.latest` @type ^`java.lang.Object`[] @kind object;
+  #L41ffe2.  if v0 != 0 then goto L41ffea;
+  #L41ffe6.  @monitorexit v3
+  #L41ffe8.  return @kind void;
+  #L41ffea.  v1:= v0[v4] @kind object;
+  #L41ffee.  v2:= v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.active` @type ^`int`;
+  #L41fff2.  if v1 != 0 then goto L41fffe;
+  #L41fff6.  v2:= v2 + 1;
+  #L41fffa.  v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.active` @type ^`int` := v2;
+  #L41fffe.  v0[v4]:= v5 @kind object;
+  #L420002.  v4:= length @variable v0;
+  #L420004.  if v2 != v4 then goto L42001e;
+  #L420008.  v4:= v3.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L42000c.  call temp:= `clone`(v0) @signature `[Ljava/lang/Object;.clone:()Ljava/lang/Object;` @kind virtual;
+  #L420012.  v5:= temp @kind object;
+  #L420014.  call temp:= `offer`(v4, v5) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.offer:(Ljava/lang/Object;)Z` @kind virtual;
+  #L42001a.  v4:= 1I;
+  #L42001c.  goto L420020;
+  #L42001e.  v4:= 0I;
+  #L420020.  @monitorexit v3
+  #L420022.  if v4 == 0 then goto L42002c;
+  #L420026.  call `drain`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.drain:()V` @kind virtual;
+  #L42002c.  return @kind void;
+  #L42002e.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L420030.  @monitorexit v3
+  #L420032.  throw v4;
+  catch `java.lang.Throwable` @[L41ffde..L420022] goto L42002e;
+  catch `java.lang.Throwable` @[L420030..L420032] goto L42002e;
+}
+procedure `boolean` `isDisposed`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.isDisposed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L41fc80.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.cancelled` @type ^`boolean` @kind boolean;
+  #L41fc84.  return v0;
+}
+procedure `void` `subscribe`(`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator` v5 @kind this, `io.reactivex.ObservableSource`[] v6 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableCombineLatest$LatestCoordinator;.subscribe:([Lio/reactivex/ObservableSource;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L420058.  v0:= v5.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.observers` @type ^`io.reactivex.internal.operators.observable.ObservableCombineLatest$CombinerObserver`[] @kind object;
+  #L42005c.  v1:= length @variable v0;
+  #L42005e.  v2:= v5.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L420062.  call `onSubscribe`(v2, v5) @signature `Lio/reactivex/Observer;.onSubscribe:(Lio/reactivex/disposables/Disposable;)V` @kind interface;
+  #L420068.  v2:= 0I;
+  #L42006a.  if v2 >= v1 then goto L420094;
+  #L42006e.  v3:= v5.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.done` @type ^`boolean` @kind boolean;
+  #L420072.  if v3 != 0 then goto L420094;
+  #L420076.  v3:= v5.`io.reactivex.internal.operators.observable.ObservableCombineLatest$LatestCoordinator.cancelled` @type ^`boolean` @kind boolean;
+  #L42007a.  if v3 == 0 then goto L420080;
+  #L42007e.  goto L420094;
+  #L420080.  v3:= v6[v2] @kind object;
+  #L420084.  v4:= v0[v2] @kind object;
+  #L420088.  call `subscribe`(v3, v4) @signature `Lio/reactivex/ObservableSource;.subscribe:(Lio/reactivex/Observer;)V` @kind interface;
+  #L42008e.  v2:= v2 + 1;
+  #L420092.  goto L42006a;
+  #L420094.  return @kind void;
+}

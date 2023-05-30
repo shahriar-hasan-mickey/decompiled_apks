@@ -1,0 +1,156 @@
+record `rx.internal.producers.QueuedValueProducer` @kind class @AccessFlag PUBLIC_FINAL extends `java.util.concurrent.atomic.AtomicLong` @kind class, `rx.Producer` @kind interface {
+  `rx.Subscriber` `rx.internal.producers.QueuedValueProducer.child` @AccessFlag FINAL;
+  `java.util.Queue` `rx.internal.producers.QueuedValueProducer.queue` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.producers.QueuedValueProducer.wip` @AccessFlag FINAL;
+}
+global `java.lang.Object` `@@rx.internal.producers.QueuedValueProducer.NULL_SENTINEL` @AccessFlag STATIC_FINAL;
+global `long` `@@rx.internal.producers.QueuedValueProducer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/producers/QueuedValueProducer;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b1a0c.  v0:= new `java.lang.Object`;
+  #L4b1a10.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b1a16.  `@@rx.internal.producers.QueuedValueProducer.NULL_SENTINEL` @type ^`java.lang.Object` := v0 @kind object;
+  #L4b1a1a.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.producers.QueuedValueProducer` v1 @kind this, `rx.Subscriber` v2 @kind object) @signature `Lrx/internal/producers/QueuedValueProducer;.<init>:(Lrx/Subscriber;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b1a2c.  call temp:= `isUnsafeAvailable`() @signature `Lrx/internal/util/unsafe/UnsafeAccess;.isUnsafeAvailable:()Z` @kind static;
+  #L4b1a32.  v0:= temp;
+  #L4b1a34.  if v0 == 0 then goto L4b1a44;
+  #L4b1a38.  v0:= new `rx.internal.util.unsafe.SpscLinkedQueue`;
+  #L4b1a3c.  call `<init>`(v0) @signature `Lrx/internal/util/unsafe/SpscLinkedQueue;.<init>:()V` @kind direct;
+  #L4b1a42.  goto L4b1a4e;
+  #L4b1a44.  v0:= new `rx.internal.util.atomic.SpscLinkedAtomicQueue`;
+  #L4b1a48.  call `<init>`(v0) @signature `Lrx/internal/util/atomic/SpscLinkedAtomicQueue;.<init>:()V` @kind direct;
+  #L4b1a4e.  call `<init>`(v1, v2, v0) @signature `Lrx/internal/producers/QueuedValueProducer;.<init>:(Lrx/Subscriber;Ljava/util/Queue;)V` @kind direct;
+  #L4b1a54.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.producers.QueuedValueProducer` v0 @kind this, `rx.Subscriber` v1 @kind object, `java.util.Queue` v2 @kind object) @signature `Lrx/internal/producers/QueuedValueProducer;.<init>:(Lrx/Subscriber;Ljava/util/Queue;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b1a68.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4b1a6e.  v0.`rx.internal.producers.QueuedValueProducer.child` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4b1a72.  v0.`rx.internal.producers.QueuedValueProducer.queue` @type ^`java.util.Queue` := v2 @kind object;
+  #L4b1a76.  v1:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4b1a7a.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4b1a80.  v0.`rx.internal.producers.QueuedValueProducer.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v1 @kind object;
+  #L4b1a84.  return @kind void;
+}
+procedure `void` `drain`(`rx.internal.producers.QueuedValueProducer` v11 @kind this) @signature `Lrx/internal/producers/QueuedValueProducer;.drain:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+
+  #L4b1a98.  v0:= v11.`rx.internal.producers.QueuedValueProducer.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b1a9c.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L4b1aa2.  v0:= temp;
+  #L4b1aa4.  if v0 != 0 then goto L4b1b6c;
+  #L4b1aa8.  v0:= v11.`rx.internal.producers.QueuedValueProducer.child` @type ^`rx.Subscriber` @kind object;
+  #L4b1aac.  v1:= v11.`rx.internal.producers.QueuedValueProducer.queue` @type ^`java.util.Queue` @kind object;
+  #L4b1ab0.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4b1ab6.  v2:= temp;
+  #L4b1ab8.  if v2 == 0 then goto L4b1abe;
+  #L4b1abc.  return @kind void;
+  #L4b1abe.  v2:= v11.`rx.internal.producers.QueuedValueProducer.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b1ac2.  v3:= 1I;
+  #L4b1ac4.  call `lazySet`(v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.lazySet:(I)V` @kind virtual;
+  #L4b1aca.  call temp:= `get`(v11) @signature `Lrx/internal/producers/QueuedValueProducer;.get:()J` @kind virtual;
+  #L4b1ad0.  v2:= temp @kind wide;
+  #L4b1ad2.  v4:= 0L;
+  #L4b1ad6.  v6:= v4 @kind wide;
+  #L4b1ad8.  v8:= lcmp(v2, v4);
+  #L4b1adc.  if v8 == 0 then goto L4b1b32;
+  #L4b1ae0.  call temp:= `poll`(v1) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L4b1ae6.  v8:= temp @kind object;
+  #L4b1ae8.  if v8 == 0 then goto L4b1b32;
+  #L4b1aec.  v9:= 0I;
+  #L4b1aee.  v10:= `@@rx.internal.producers.QueuedValueProducer.NULL_SENTINEL` @type ^`java.lang.Object` @kind object;
+  #L4b1af2.  if v8 != v10 then goto L4b1afe;
+  #L4b1af6.  call `onNext`(v0, v9) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4b1afc.  goto L4b1b04;
+  #L4b1afe.  call `onNext`(v0, v8) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4b1b04.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4b1b0a.  v8:= temp;
+  #L4b1b0c.  if v8 == 0 then goto L4b1b12;
+  #L4b1b10.  return @kind void;
+  #L4b1b12.  v8:= 1L;
+  #L4b1b16.  v2:= v2 - v8 @kind long;
+  #L4b1b18.  v6:= v6 + v8 @kind long;
+  #L4b1b1a.  goto L4b1ad8;
+  #L4b1b1c.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b1b1e.  v2:= `@@rx.internal.producers.QueuedValueProducer.NULL_SENTINEL` @type ^`java.lang.Object` @kind object;
+  #L4b1b22.  if v8 == v2 then goto L4b1b28;
+  #L4b1b26.  goto L4b1b2a;
+  #L4b1b28.  v8:= v9 @kind object;
+  #L4b1b2a.  call `throwOrReport`(v1, v0, v8) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;Ljava/lang/Object;)V` @kind static;
+  #L4b1b30.  return @kind void;
+  #L4b1b32.  v2:= lcmp(v6, v4);
+  #L4b1b36.  if v2 == 0 then goto L4b1b5c;
+  #L4b1b3a.  call temp:= `get`(v11) @signature `Lrx/internal/producers/QueuedValueProducer;.get:()J` @kind virtual;
+  #L4b1b40.  v2:= temp @kind wide;
+  #L4b1b42.  v4:= 9223372036854775807L;
+  #L4b1b4c.  v8:= lcmp(v2, v4);
+  #L4b1b50.  if v8 == 0 then goto L4b1b5c;
+  #L4b1b54.  v2:= -v6 @kind long;
+  #L4b1b56.  call temp:= `addAndGet`(v11, v2) @signature `Lrx/internal/producers/QueuedValueProducer;.addAndGet:(J)J` @kind virtual;
+  #L4b1b5c.  v2:= v11.`rx.internal.producers.QueuedValueProducer.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b1b60.  call temp:= `decrementAndGet`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L4b1b66.  v2:= temp;
+  #L4b1b68.  if v2 != 0 then goto L4b1ab0;
+  #L4b1b6c.  return @kind void;
+  catch `java.lang.Throwable` @[L4b1aee..L4b1b04] goto L4b1b1c;
+}
+procedure `boolean` `offer`(`rx.internal.producers.QueuedValueProducer` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lrx/internal/producers/QueuedValueProducer;.offer:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b19c4.  v0:= 0I;
+  #L4b19c6.  if v3 != 0 then goto L4b19e0;
+  #L4b19ca.  v3:= v2.`rx.internal.producers.QueuedValueProducer.queue` @type ^`java.util.Queue` @kind object;
+  #L4b19ce.  v1:= `@@rx.internal.producers.QueuedValueProducer.NULL_SENTINEL` @type ^`java.lang.Object` @kind object;
+  #L4b19d2.  call temp:= `offer`(v3, v1) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b19d8.  v3:= temp;
+  #L4b19da.  if v3 != 0 then goto L4b19f2;
+  #L4b19de.  return v0;
+  #L4b19e0.  v1:= v2.`rx.internal.producers.QueuedValueProducer.queue` @type ^`java.util.Queue` @kind object;
+  #L4b19e4.  call temp:= `offer`(v1, v3) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b19ea.  v3:= temp;
+  #L4b19ec.  if v3 != 0 then goto L4b19f2;
+  #L4b19f0.  return v0;
+  #L4b19f2.  call `drain`(v2) @signature `Lrx/internal/producers/QueuedValueProducer;.drain:()V` @kind direct;
+  #L4b19f8.  v3:= 1I;
+  #L4b19fa.  return v3;
+}
+procedure `void` `request`(`rx.internal.producers.QueuedValueProducer` v3 @kind this, `long` v4 ) @signature `Lrx/internal/producers/QueuedValueProducer;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b1b8c.  v0:= 0L;
+  #L4b1b90.  v2:= lcmp(v4, v0);
+  #L4b1b94.  if v2 < 0 then goto L4b1bae;
+  #L4b1b98.  v2:= lcmp(v4, v0);
+  #L4b1b9c.  if v2 <= 0 then goto L4b1bac;
+  #L4b1ba0.  call temp:= `getAndAddRequest`(v3, v4) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L4b1ba6.  call `drain`(v3) @signature `Lrx/internal/producers/QueuedValueProducer;.drain:()V` @kind direct;
+  #L4b1bac.  return @kind void;
+  #L4b1bae.  v4:= new `java.lang.IllegalArgumentException`;
+  #L4b1bb2.  v5:= "n >= 0 required" @kind object;
+  #L4b1bb6.  call `<init>`(v4, v5) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b1bbc.  throw v4;
+}

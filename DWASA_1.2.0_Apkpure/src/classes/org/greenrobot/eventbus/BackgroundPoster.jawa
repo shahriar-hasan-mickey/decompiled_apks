@@ -1,0 +1,103 @@
+record `org.greenrobot.eventbus.BackgroundPoster` @kind class @AccessFlag FINAL extends `java.lang.Runnable` @kind interface, `org.greenrobot.eventbus.Poster` @kind interface {
+  `org.greenrobot.eventbus.EventBus` `org.greenrobot.eventbus.BackgroundPoster.eventBus` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.BackgroundPoster.executorRunning` @AccessFlag PRIVATE_VOLATILE;
+  `org.greenrobot.eventbus.PendingPostQueue` `org.greenrobot.eventbus.BackgroundPoster.queue` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`org.greenrobot.eventbus.BackgroundPoster` v0 @kind this, `org.greenrobot.eventbus.EventBus` v1 @kind object) @signature `Lorg/greenrobot/eventbus/BackgroundPoster;.<init>:(Lorg/greenrobot/eventbus/EventBus;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L48107c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L481082.  v0.`org.greenrobot.eventbus.BackgroundPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` := v1 @kind object;
+  #L481086.  v1:= new `org.greenrobot.eventbus.PendingPostQueue`;
+  #L48108a.  call `<init>`(v1) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.<init>:()V` @kind direct;
+  #L481090.  v0.`org.greenrobot.eventbus.BackgroundPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` := v1 @kind object;
+  #L481094.  return @kind void;
+}
+procedure `void` `enqueue`(`org.greenrobot.eventbus.BackgroundPoster` v0 @kind this, `org.greenrobot.eventbus.Subscription` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lorg/greenrobot/eventbus/BackgroundPoster;.enqueue:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4810a8.  call temp:= `obtainPendingPost`(v1, v2) @signature `Lorg/greenrobot/eventbus/PendingPost;.obtainPendingPost:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)Lorg/greenrobot/eventbus/PendingPost;` @kind static;
+  #L4810ae.  v1:= temp @kind object;
+  #L4810b0.  @monitorenter v0
+  #L4810b2.  v2:= v0.`org.greenrobot.eventbus.BackgroundPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L4810b6.  call `enqueue`(v2, v1) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.enqueue:(Lorg/greenrobot/eventbus/PendingPost;)V` @kind virtual;
+  #L4810bc.  v1:= v0.`org.greenrobot.eventbus.BackgroundPoster.executorRunning` @type ^`boolean` @kind boolean;
+  #L4810c0.  if v1 != 0 then goto L4810dc;
+  #L4810c4.  v1:= 1I;
+  #L4810c6.  v0.`org.greenrobot.eventbus.BackgroundPoster.executorRunning` @type ^`boolean` := v1 @kind boolean;
+  #L4810ca.  v1:= v0.`org.greenrobot.eventbus.BackgroundPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L4810ce.  call temp:= `getExecutorService`(v1) @signature `Lorg/greenrobot/eventbus/EventBus;.getExecutorService:()Ljava/util/concurrent/ExecutorService;` @kind virtual;
+  #L4810d4.  v1:= temp @kind object;
+  #L4810d6.  call `execute`(v1, v0) @signature `Ljava/util/concurrent/ExecutorService;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L4810dc.  @monitorexit v0
+  #L4810de.  return @kind void;
+  #L4810e0.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4810e2.  @monitorexit v0
+  #L4810e4.  throw v1;
+  catch `java.lang.Throwable` @[L4810b2..L4810e4] goto L4810e0;
+}
+procedure `void` `run`(`org.greenrobot.eventbus.BackgroundPoster` v6 @kind this) @signature `Lorg/greenrobot/eventbus/BackgroundPoster;.run:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L481104.  v0:= 0I;
+  #L481106.  v1:= v6.`org.greenrobot.eventbus.BackgroundPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L48110a.  v2:= 1000I;
+  #L48110e.  call temp:= `poll`(v1, v2) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:(I)Lorg/greenrobot/eventbus/PendingPost;` @kind virtual;
+  #L481114.  v1:= temp @kind object;
+  #L481116.  if v1 != 0 then goto L481142;
+  #L48111a.  @monitorenter v6
+  #L48111c.  v1:= v6.`org.greenrobot.eventbus.BackgroundPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L481120.  call temp:= `poll`(v1) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:()Lorg/greenrobot/eventbus/PendingPost;` @kind virtual;
+  #L481126.  v1:= temp @kind object;
+  #L481128.  if v1 != 0 then goto L481138;
+  #L48112c.  v6.`org.greenrobot.eventbus.BackgroundPoster.executorRunning` @type ^`boolean` := v0 @kind boolean;
+  #L481130.  @monitorexit v6
+  #L481132.  v6.`org.greenrobot.eventbus.BackgroundPoster.executorRunning` @type ^`boolean` := v0 @kind boolean;
+  #L481136.  return @kind void;
+  #L481138.  @monitorexit v6
+  #L48113a.  goto L481142;
+  #L48113c.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L48113e.  @monitorexit v6
+  #L481140.  throw v1;
+  #L481142.  v2:= v6.`org.greenrobot.eventbus.BackgroundPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L481146.  call `invokeSubscriber`(v2, v1) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/PendingPost;)V` @kind virtual;
+  #L48114c.  goto L481104;
+  #L48114e.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L481150.  goto L4811a2;
+  #L481152.  v1:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L481154.  v2:= v6.`org.greenrobot.eventbus.BackgroundPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L481158.  call temp:= `getLogger`(v2) @signature `Lorg/greenrobot/eventbus/EventBus;.getLogger:()Lorg/greenrobot/eventbus/Logger;` @kind virtual;
+  #L48115e.  v2:= temp @kind object;
+  #L481160.  v3:= `@@java.util.logging.Level.WARNING` @type ^`java.util.logging.Level` @kind object;
+  #L481164.  v4:= new `java.lang.StringBuilder`;
+  #L481168.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L48116e.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L481174.  v5:= temp @kind object;
+  #L481176.  call temp:= `getName`(v5) @signature `Ljava/lang/Thread;.getName:()Ljava/lang/String;` @kind virtual;
+  #L48117c.  v5:= temp @kind object;
+  #L48117e.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481184.  v5:= " was interruppted" @kind object;
+  #L481188.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48118e.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L481194.  v4:= temp @kind object;
+  #L481196.  call `log`(v2, v3, v4, v1) @signature `Lorg/greenrobot/eventbus/Logger;.log:(Ljava/util/logging/Level;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind interface;
+  #L48119c.  v6.`org.greenrobot.eventbus.BackgroundPoster.executorRunning` @type ^`boolean` := v0 @kind boolean;
+  #L4811a0.  return @kind void;
+  #L4811a2.  v6.`org.greenrobot.eventbus.BackgroundPoster.executorRunning` @type ^`boolean` := v0 @kind boolean;
+  #L4811a6.  goto L4811aa;
+  #L4811a8.  throw v1;
+  #L4811aa.  goto L4811a8;
+  catch `java.lang.InterruptedException` @[L481106..L48111c] goto L481152;
+  catch `java.lang.Throwable` @[L481106..L48111c] goto L48114e;
+  catch `java.lang.Throwable` @[L48111c..L481132] goto L48113c;
+  catch `java.lang.Throwable` @[L481138..L481140] goto L48113c;
+  catch `java.lang.InterruptedException` @[L481140..L48114c] goto L481152;
+  catch `java.lang.Throwable` @[L481140..L48114c] goto L48114e;
+  catch `java.lang.Throwable` @[L481154..L48119c] goto L48114e;
+}

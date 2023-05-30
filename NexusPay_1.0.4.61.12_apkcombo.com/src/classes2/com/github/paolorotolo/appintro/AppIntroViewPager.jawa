@@ -1,0 +1,401 @@
+record `com.github.paolorotolo.appintro.AppIntroViewPager` @kind class @AccessFlag PUBLIC_FINAL extends `androidx.viewpager.widget.ViewPager` @kind class {
+  `float` `com.github.paolorotolo.appintro.AppIntroViewPager.currentTouchDownX` @AccessFlag PRIVATE;
+  `long` `com.github.paolorotolo.appintro.AppIntroViewPager.illegallyRequestedNextPageLastCalled` @AccessFlag PRIVATE;
+  `int` `com.github.paolorotolo.appintro.AppIntroViewPager.lockPage` @AccessFlag PRIVATE;
+  `com.github.paolorotolo.appintro.ScrollerCustomDuration` `com.github.paolorotolo.appintro.AppIntroViewPager.mScroller` @AccessFlag PRIVATE;
+  `com.github.paolorotolo.appintro.AppIntroViewPager$OnNextPageRequestedListener` `com.github.paolorotolo.appintro.AppIntroViewPager.nextPageRequestedListener` @AccessFlag PRIVATE;
+  `boolean` `com.github.paolorotolo.appintro.AppIntroViewPager.nextPagingEnabled` @AccessFlag PRIVATE;
+  `androidx.viewpager.widget.ViewPager$OnPageChangeListener` `com.github.paolorotolo.appintro.AppIntroViewPager.pageChangeListener` @AccessFlag PRIVATE;
+  `boolean` `com.github.paolorotolo.appintro.AppIntroViewPager.pagingEnabled` @AccessFlag PRIVATE;
+}
+global `int` `@@com.github.paolorotolo.appintro.AppIntroViewPager.ON_ILLEGALLY_REQUESTED_NEXT_PAGE_MAX_INTERVAL` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.github.paolorotolo.appintro.AppIntroViewPager` v0 @kind this, `android.content.Context` v1 @kind object, `android.util.AttributeSet` v2 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L24d680.  call `<init>`(v0, v1, v2) @signature `Landroidx/viewpager/widget/ViewPager;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @kind direct;
+  #L24d686.  v1:= 0I;
+  #L24d688.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.mScroller` @type ^`com.github.paolorotolo.appintro.ScrollerCustomDuration` := v1 @kind object;
+  #L24d68c.  v1:= 1I;
+  #L24d68e.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.pagingEnabled` @type ^`boolean` := v1 @kind boolean;
+  #L24d692.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.nextPagingEnabled` @type ^`boolean` := v1 @kind boolean;
+  #L24d696.  v1:= 0I;
+  #L24d698.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.lockPage` @type ^`int` := v1;
+  #L24d69c.  call `initViewPagerScroller`(v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.initViewPagerScroller:()V` @kind direct;
+  #L24d6a2.  return @kind void;
+}
+procedure `boolean` `checkCanRequestNextPage`(`com.github.paolorotolo.appintro.AppIntroViewPager` v0 @kind this, `android.view.MotionEvent` v1 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkCanRequestNextPage:(Landroid/view/MotionEvent;)Z` @AccessFlag PRIVATE {
+    temp;
+
+  #L24d3f8.  v1:= v0.`com.github.paolorotolo.appintro.AppIntroViewPager.nextPageRequestedListener` @type ^`com.github.paolorotolo.appintro.AppIntroViewPager$OnNextPageRequestedListener` @kind object;
+  #L24d3fc.  if v1 == 0 then goto L24d410;
+  #L24d400.  call temp:= `onCanRequestNextPage`(v1) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager$OnNextPageRequestedListener;.onCanRequestNextPage:()Z` @kind interface;
+  #L24d406.  v1:= temp;
+  #L24d408.  if v1 != 0 then goto L24d410;
+  #L24d40c.  v1:= 1I;
+  #L24d40e.  goto L24d412;
+  #L24d410.  v1:= 0I;
+  #L24d412.  return v1;
+}
+procedure `void` `checkIllegallyRequestedNextPage`(`com.github.paolorotolo.appintro.AppIntroViewPager` v4 @kind this, `android.view.MotionEvent` v5 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkIllegallyRequestedNextPage:(Landroid/view/MotionEvent;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L24d6d0.  call temp:= `getAction`(v5) @signature `Landroid/view/MotionEvent;.getAction:()I` @kind virtual;
+  #L24d6d6.  v0:= temp;
+  #L24d6d8.  v1:= 2I;
+  #L24d6da.  if v0 != v1 then goto L24d736;
+  #L24d6de.  call temp:= `getX`(v5) @signature `Landroid/view/MotionEvent;.getX:()F` @kind virtual;
+  #L24d6e4.  v5:= temp;
+  #L24d6e6.  v0:= v4.`com.github.paolorotolo.appintro.AppIntroViewPager.currentTouchDownX` @type ^`float`;
+  #L24d6ea.  v5:= v5 - v0 @kind float;
+  #L24d6ec.  call temp:= `abs`(v5) @signature `Ljava/lang/Math;.abs:(F)F` @kind static;
+  #L24d6f2.  v5:= temp;
+  #L24d6f4.  v0:= 25I;
+  #L24d6f8.  v0:= (`float`) v0 @kind i2f;
+  #L24d6fa.  v5:= fcmpl(v5, v0);
+  #L24d6fe.  if v5 < 0 then goto L24d736;
+  #L24d702.  call temp:= `currentTimeMillis`() @signature `Ljava/lang/System;.currentTimeMillis:()J` @kind static;
+  #L24d708.  v0:= temp @kind wide;
+  #L24d70a.  v2:= v4.`com.github.paolorotolo.appintro.AppIntroViewPager.illegallyRequestedNextPageLastCalled` @type ^`long` @kind wide;
+  #L24d70e.  v0:= v0 - v2 @kind long;
+  #L24d710.  v2:= 1000L;
+  #L24d714.  v5:= lcmp(v0, v2);
+  #L24d718.  if v5 < 0 then goto L24d736;
+  #L24d71c.  call temp:= `currentTimeMillis`() @signature `Ljava/lang/System;.currentTimeMillis:()J` @kind static;
+  #L24d722.  v0:= temp @kind wide;
+  #L24d724.  v4.`com.github.paolorotolo.appintro.AppIntroViewPager.illegallyRequestedNextPageLastCalled` @type ^`long` := v0 @kind wide;
+  #L24d728.  v5:= v4.`com.github.paolorotolo.appintro.AppIntroViewPager.nextPageRequestedListener` @type ^`com.github.paolorotolo.appintro.AppIntroViewPager$OnNextPageRequestedListener` @kind object;
+  #L24d72c.  if v5 == 0 then goto L24d736;
+  #L24d730.  call `onIllegallyRequestedNextPage`(v5) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager$OnNextPageRequestedListener;.onIllegallyRequestedNextPage:()V` @kind interface;
+  #L24d736.  return @kind void;
+}
+procedure `boolean` `checkPagingState`(`com.github.paolorotolo.appintro.AppIntroViewPager` v3 @kind this, `android.view.MotionEvent` v4 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkPagingState:(Landroid/view/MotionEvent;)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L24d424.  v0:= v3.`com.github.paolorotolo.appintro.AppIntroViewPager.pagingEnabled` @type ^`boolean` @kind boolean;
+  #L24d428.  v1:= 1I;
+  #L24d42a.  if v0 != 0 then goto L24d430;
+  #L24d42e.  return v1;
+  #L24d430.  v0:= v3.`com.github.paolorotolo.appintro.AppIntroViewPager.nextPagingEnabled` @type ^`boolean` @kind boolean;
+  #L24d434.  if v0 != 0 then goto L24d46c;
+  #L24d438.  call temp:= `getAction`(v4) @signature `Landroid/view/MotionEvent;.getAction:()I` @kind virtual;
+  #L24d43e.  v0:= temp;
+  #L24d440.  if v0 != 0 then goto L24d450;
+  #L24d444.  call temp:= `getX`(v4) @signature `Landroid/view/MotionEvent;.getX:()F` @kind virtual;
+  #L24d44a.  v0:= temp;
+  #L24d44c.  v3.`com.github.paolorotolo.appintro.AppIntroViewPager.currentTouchDownX` @type ^`float` := v0;
+  #L24d450.  call temp:= `getAction`(v4) @signature `Landroid/view/MotionEvent;.getAction:()I` @kind virtual;
+  #L24d456.  v0:= temp;
+  #L24d458.  v2:= 2I;
+  #L24d45a.  if v0 != v2 then goto L24d46c;
+  #L24d45e.  call temp:= `detectSwipeToEnd`(v3, v4) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.detectSwipeToEnd:(Landroid/view/MotionEvent;)Z` @kind direct;
+  #L24d464.  v4:= temp;
+  #L24d466.  if v4 == 0 then goto L24d46c;
+  #L24d46a.  return v1;
+  #L24d46c.  v4:= 0I;
+  #L24d46e.  return v4;
+}
+procedure `boolean` `detectSwipeToEnd`(`com.github.paolorotolo.appintro.AppIntroViewPager` v4 @kind this, `android.view.MotionEvent` v5 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.detectSwipeToEnd:(Landroid/view/MotionEvent;)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L24d480.  v0:= 1I;
+  #L24d482.  v1:= 0I;
+  #L24d484.  call temp:= `getX`(v5) @signature `Landroid/view/MotionEvent;.getX:()F` @kind virtual;
+  #L24d48a.  v5:= temp;
+  #L24d48c.  v2:= v4.`com.github.paolorotolo.appintro.AppIntroViewPager.currentTouchDownX` @type ^`float`;
+  #L24d490.  v5:= v5 - v2 @kind float;
+  #L24d492.  call temp:= `abs`(v5) @signature `Ljava/lang/Math;.abs:(F)F` @kind static;
+  #L24d498.  v2:= temp;
+  #L24d49a.  v3:= 0I;
+  #L24d49c.  v2:= fcmpl(v2, v3);
+  #L24d4a0.  if v2 <= 0 then goto L24d4b8;
+  #L24d4a4.  v5:= fcmpg(v5, v3);
+  #L24d4a8.  if v5 >= 0 then goto L24d4b8;
+  #L24d4ac.  v1:= 1I;
+  #L24d4ae.  goto L24d4b8;
+  #L24d4b0.  v5:= Exception @type ^`java.lang.Exception` @kind object;
+  #L24d4b2.  call `printStackTrace`(v5) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L24d4b8.  call temp:= `getResources`(v4) @signature `Landroid/view/ViewGroup;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L24d4be.  v5:= temp @kind object;
+  #L24d4c0.  call temp:= `isRtl`(v5) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isRtl:(Landroid/content/res/Resources;)Z` @kind static;
+  #L24d4c6.  v5:= temp;
+  #L24d4c8.  if v5 == 0 then goto L24d4d2;
+  #L24d4cc.  v5:= v1 ^~ 1;
+  #L24d4d0.  return v5;
+  #L24d4d2.  return v1;
+  catch `java.lang.Exception` @[L24d484..L24d49a] goto L24d4b0;
+}
+procedure `void` `initViewPagerScroller`(`com.github.paolorotolo.appintro.AppIntroViewPager` v5 @kind this) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.initViewPagerScroller:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L24d800.  v0:= constclass @type ^`androidx.viewpager.widget.ViewPager` @kind object;
+  #L24d804.  v1:= "mScroller" @kind object;
+  #L24d808.  call temp:= `getDeclaredField`(v0, v1) @signature `Ljava/lang/Class;.getDeclaredField:(Ljava/lang/String;)Ljava/lang/reflect/Field;` @kind virtual;
+  #L24d80e.  v0:= temp @kind object;
+  #L24d810.  v1:= 1I;
+  #L24d812.  call `setAccessible`(v0, v1) @signature `Ljava/lang/reflect/Field;.setAccessible:(Z)V` @kind virtual;
+  #L24d818.  v2:= constclass @type ^`androidx.viewpager.widget.ViewPager` @kind object;
+  #L24d81c.  v3:= "sInterpolator" @kind object;
+  #L24d820.  call temp:= `getDeclaredField`(v2, v3) @signature `Ljava/lang/Class;.getDeclaredField:(Ljava/lang/String;)Ljava/lang/reflect/Field;` @kind virtual;
+  #L24d826.  v2:= temp @kind object;
+  #L24d828.  call `setAccessible`(v2, v1) @signature `Ljava/lang/reflect/Field;.setAccessible:(Z)V` @kind virtual;
+  #L24d82e.  v1:= new `com.github.paolorotolo.appintro.ScrollerCustomDuration`;
+  #L24d832.  call temp:= `getContext`(v5) @signature `Landroid/view/ViewGroup;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L24d838.  v3:= temp @kind object;
+  #L24d83a.  v4:= 0I;
+  #L24d83c.  call temp:= `get`(v2, v4) @signature `Ljava/lang/reflect/Field;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L24d842.  v2:= temp @kind object;
+  #L24d844.  v2:= (`android.view.animation.Interpolator`) v2 @kind object;
+  #L24d848.  call `<init>`(v1, v3, v2) @signature `Lcom/github/paolorotolo/appintro/ScrollerCustomDuration;.<init>:(Landroid/content/Context;Landroid/view/animation/Interpolator;)V` @kind direct;
+  #L24d84e.  v5.`com.github.paolorotolo.appintro.AppIntroViewPager.mScroller` @type ^`com.github.paolorotolo.appintro.ScrollerCustomDuration` := v1 @kind object;
+  #L24d852.  call `set`(v0, v5, v1) @signature `Ljava/lang/reflect/Field;.set:(Ljava/lang/Object;Ljava/lang/Object;)V` @kind virtual;
+  #L24d858.  goto L24d862;
+  #L24d85a.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L24d85c.  call `printStackTrace`(v0) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L24d862.  return @kind void;
+  catch `java.lang.Exception` @[L24d800..L24d858] goto L24d85a;
+}
+procedure `boolean` `isRtl`(`android.content.res.Resources` v3 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isRtl:(Landroid/content/res/Resources;)Z` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L24d570.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L24d574.  v1:= 0I;
+  #L24d576.  v2:= 17I;
+  #L24d57a.  if v0 < v2 then goto L24d596;
+  #L24d57e.  call temp:= `getConfiguration`(v3) @signature `Landroid/content/res/Resources;.getConfiguration:()Landroid/content/res/Configuration;` @kind virtual;
+  #L24d584.  v3:= temp @kind object;
+  #L24d586.  call temp:= `getLayoutDirection`(v3) @signature `Landroid/content/res/Configuration;.getLayoutDirection:()I` @kind virtual;
+  #L24d58c.  v3:= temp;
+  #L24d58e.  v0:= 1I;
+  #L24d590.  if v3 != v0 then goto L24d596;
+  #L24d594.  v1:= 1I;
+  #L24d596.  return v1;
+}
+procedure `void` `addOnPageChangeListener`(`com.github.paolorotolo.appintro.AppIntroViewPager` v0 @kind this, `com.github.paolorotolo.appintro.AppIntroBase$PagerOnPageChangeListener` v1 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.addOnPageChangeListener:(Lcom/github/paolorotolo/appintro/AppIntroBase$PagerOnPageChangeListener;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L24d6b4.  call `addOnPageChangeListener`(v0, v1) @signature `Landroidx/viewpager/widget/ViewPager;.addOnPageChangeListener:(Landroidx/viewpager/widget/ViewPager$OnPageChangeListener;)V` @kind super;
+  #L24d6ba.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.pageChangeListener` @type ^`androidx.viewpager.widget.ViewPager$OnPageChangeListener` := v1 @kind object;
+  #L24d6be.  return @kind void;
+}
+procedure `int` `getLockPage`(`com.github.paolorotolo.appintro.AppIntroViewPager` v1 @kind this) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.getLockPage:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L24d668.  v0:= v1.`com.github.paolorotolo.appintro.AppIntroViewPager.lockPage` @type ^`int`;
+  #L24d66c.  return v0;
+}
+procedure `void` `goToNextSlide`(`com.github.paolorotolo.appintro.AppIntroViewPager` v1 @kind this) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.goToNextSlide:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L24d748.  call temp:= `getResources`(v1) @signature `Landroid/view/ViewGroup;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L24d74e.  v0:= temp @kind object;
+  #L24d750.  call temp:= `isRtl`(v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isRtl:(Landroid/content/res/Resources;)Z` @kind static;
+  #L24d756.  v0:= temp;
+  #L24d758.  if v0 == 0 then goto L24d770;
+  #L24d75c.  call temp:= `getCurrentItem`(v1) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind virtual;
+  #L24d762.  v0:= temp;
+  #L24d764.  v0:= v0 + -1;
+  #L24d768.  call `setCurrentItem`(v1, v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setCurrentItem:(I)V` @kind virtual;
+  #L24d76e.  goto L24d782;
+  #L24d770.  call temp:= `getCurrentItem`(v1) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind virtual;
+  #L24d776.  v0:= temp;
+  #L24d778.  v0:= v0 + 1;
+  #L24d77c.  call `setCurrentItem`(v1, v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setCurrentItem:(I)V` @kind virtual;
+  #L24d782.  return @kind void;
+}
+procedure `void` `goToPreviousSlide`(`com.github.paolorotolo.appintro.AppIntroViewPager` v2 @kind this) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.goToPreviousSlide:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L24d794.  call temp:= `getResources`(v2) @signature `Landroid/view/ViewGroup;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L24d79a.  v0:= temp @kind object;
+  #L24d79c.  call temp:= `isRtl`(v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isRtl:(Landroid/content/res/Resources;)Z` @kind static;
+  #L24d7a2.  v0:= temp;
+  #L24d7a4.  if v0 == 0 then goto L24d7bc;
+  #L24d7a8.  call temp:= `getCurrentItem`(v2) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind virtual;
+  #L24d7ae.  v0:= temp;
+  #L24d7b0.  v0:= v0 + 1;
+  #L24d7b4.  call `setCurrentItem`(v2, v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setCurrentItem:(I)V` @kind virtual;
+  #L24d7ba.  goto L24d7de;
+  #L24d7bc.  call temp:= `getCurrentItem`(v2) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind virtual;
+  #L24d7c2.  v0:= temp;
+  #L24d7c4.  v0:= v0 + -1;
+  #L24d7c8.  call `setCurrentItem`(v2, v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setCurrentItem:(I)V` @kind virtual;
+  #L24d7ce.  goto L24d7de;
+  #L24d7d0.  v0:= "AppIntroViewPager" @kind object;
+  #L24d7d4.  v1:= "goToPreviousSlide: An error occured while switching to the previous slide. Was isFirstSlide checked before the call?" @kind object;
+  #L24d7d8.  call temp:= `e`(v0, v1) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L24d7de.  return @kind void;
+  catch `java.lang.Exception` @[L24d794..L24d7ce] goto L24d7d0;
+}
+procedure `boolean` `isFirstSlide`(`com.github.paolorotolo.appintro.AppIntroViewPager` v3 @kind this, `int` v4 ) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isFirstSlide:(I)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L24d4f4.  call temp:= `getResources`(v3) @signature `Landroid/view/ViewGroup;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L24d4fa.  v0:= temp @kind object;
+  #L24d4fc.  call temp:= `isRtl`(v0) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isRtl:(Landroid/content/res/Resources;)Z` @kind static;
+  #L24d502.  v0:= temp;
+  #L24d504.  v1:= 0I;
+  #L24d506.  v2:= 1I;
+  #L24d508.  if v0 == 0 then goto L24d520;
+  #L24d50c.  call temp:= `getCurrentItem`(v3) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind virtual;
+  #L24d512.  v0:= temp;
+  #L24d514.  v0:= v0 - v4 @kind int;
+  #L24d516.  v0:= v0 + v2 @kind int;
+  #L24d518.  if v0 != 0 then goto L24d51e;
+  #L24d51c.  v1:= 1I;
+  #L24d51e.  return v1;
+  #L24d520.  call temp:= `getCurrentItem`(v3) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind virtual;
+  #L24d526.  v4:= temp;
+  #L24d528.  if v4 != 0 then goto L24d52e;
+  #L24d52c.  v1:= 1I;
+  #L24d52e.  return v1;
+}
+procedure `boolean` `isNextPagingEnabled`(`com.github.paolorotolo.appintro.AppIntroViewPager` v1 @kind this) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isNextPagingEnabled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L24d540.  v0:= v1.`com.github.paolorotolo.appintro.AppIntroViewPager.nextPagingEnabled` @type ^`boolean` @kind boolean;
+  #L24d544.  return v0;
+}
+procedure `boolean` `isPagingEnabled`(`com.github.paolorotolo.appintro.AppIntroViewPager` v1 @kind this) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.isPagingEnabled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L24d558.  v0:= v1.`com.github.paolorotolo.appintro.AppIntroViewPager.pagingEnabled` @type ^`boolean` @kind boolean;
+  #L24d55c.  return v0;
+}
+procedure `boolean` `onInterceptTouchEvent`(`com.github.paolorotolo.appintro.AppIntroViewPager` v1 @kind this, `android.view.MotionEvent` v2 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.onInterceptTouchEvent:(Landroid/view/MotionEvent;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L24d5a8.  call temp:= `getAction`(v2) @signature `Landroid/view/MotionEvent;.getAction:()I` @kind virtual;
+  #L24d5ae.  v0:= temp;
+  #L24d5b0.  if v0 != 0 then goto L24d5ca;
+  #L24d5b4.  call temp:= `getX`(v2) @signature `Landroid/view/MotionEvent;.getX:()F` @kind virtual;
+  #L24d5ba.  v0:= temp;
+  #L24d5bc.  v1.`com.github.paolorotolo.appintro.AppIntroViewPager.currentTouchDownX` @type ^`float` := v0;
+  #L24d5c0.  call temp:= `onInterceptTouchEvent`(v1, v2) @signature `Landroidx/viewpager/widget/ViewPager;.onInterceptTouchEvent:(Landroid/view/MotionEvent;)Z` @kind super;
+  #L24d5c6.  v2:= temp;
+  #L24d5c8.  return v2;
+  #L24d5ca.  call temp:= `checkPagingState`(v1, v2) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkPagingState:(Landroid/view/MotionEvent;)Z` @kind direct;
+  #L24d5d0.  v0:= temp;
+  #L24d5d2.  if v0 != 0 then goto L24d5ee;
+  #L24d5d6.  call temp:= `checkCanRequestNextPage`(v1, v2) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkCanRequestNextPage:(Landroid/view/MotionEvent;)Z` @kind direct;
+  #L24d5dc.  v0:= temp;
+  #L24d5de.  if v0 == 0 then goto L24d5e4;
+  #L24d5e2.  goto L24d5ee;
+  #L24d5e4.  call temp:= `onInterceptTouchEvent`(v1, v2) @signature `Landroidx/viewpager/widget/ViewPager;.onInterceptTouchEvent:(Landroid/view/MotionEvent;)Z` @kind super;
+  #L24d5ea.  v2:= temp;
+  #L24d5ec.  return v2;
+  #L24d5ee.  call `checkIllegallyRequestedNextPage`(v1, v2) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkIllegallyRequestedNextPage:(Landroid/view/MotionEvent;)V` @kind direct;
+  #L24d5f4.  v2:= 0I;
+  #L24d5f6.  return v2;
+}
+procedure `boolean` `onTouchEvent`(`com.github.paolorotolo.appintro.AppIntroViewPager` v1 @kind this, `android.view.MotionEvent` v2 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.onTouchEvent:(Landroid/view/MotionEvent;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L24d608.  call temp:= `getAction`(v2) @signature `Landroid/view/MotionEvent;.getAction:()I` @kind virtual;
+  #L24d60e.  v0:= temp;
+  #L24d610.  if v0 != 0 then goto L24d62a;
+  #L24d614.  call temp:= `getX`(v2) @signature `Landroid/view/MotionEvent;.getX:()F` @kind virtual;
+  #L24d61a.  v0:= temp;
+  #L24d61c.  v1.`com.github.paolorotolo.appintro.AppIntroViewPager.currentTouchDownX` @type ^`float` := v0;
+  #L24d620.  call temp:= `onTouchEvent`(v1, v2) @signature `Landroidx/viewpager/widget/ViewPager;.onTouchEvent:(Landroid/view/MotionEvent;)Z` @kind super;
+  #L24d626.  v2:= temp;
+  #L24d628.  return v2;
+  #L24d62a.  call temp:= `checkPagingState`(v1, v2) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkPagingState:(Landroid/view/MotionEvent;)Z` @kind direct;
+  #L24d630.  v0:= temp;
+  #L24d632.  if v0 != 0 then goto L24d64e;
+  #L24d636.  call temp:= `checkCanRequestNextPage`(v1, v2) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkCanRequestNextPage:(Landroid/view/MotionEvent;)Z` @kind direct;
+  #L24d63c.  v0:= temp;
+  #L24d63e.  if v0 == 0 then goto L24d644;
+  #L24d642.  goto L24d64e;
+  #L24d644.  call temp:= `onTouchEvent`(v1, v2) @signature `Landroidx/viewpager/widget/ViewPager;.onTouchEvent:(Landroid/view/MotionEvent;)Z` @kind super;
+  #L24d64a.  v2:= temp;
+  #L24d64c.  return v2;
+  #L24d64e.  call `checkIllegallyRequestedNextPage`(v1, v2) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.checkIllegallyRequestedNextPage:(Landroid/view/MotionEvent;)V` @kind direct;
+  #L24d654.  v2:= 0I;
+  #L24d656.  return v2;
+}
+procedure `void` `setCurrentItem`(`com.github.paolorotolo.appintro.AppIntroViewPager` v2 @kind this, `int` v3 ) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setCurrentItem:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L24d884.  call temp:= `getCurrentItem`(v2) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind super;
+  #L24d88a.  v0:= temp;
+  #L24d88c.  v1:= 0I;
+  #L24d88e.  if v0 != 0 then goto L24d89a;
+  #L24d892.  if v3 != 0 then goto L24d89a;
+  #L24d896.  v0:= 1I;
+  #L24d898.  goto L24d89c;
+  #L24d89a.  v0:= 0I;
+  #L24d89c.  call `setCurrentItem`(v2, v3) @signature `Landroidx/viewpager/widget/ViewPager;.setCurrentItem:(I)V` @kind super;
+  #L24d8a2.  if v0 == 0 then goto L24d8b4;
+  #L24d8a6.  v3:= v2.`com.github.paolorotolo.appintro.AppIntroViewPager.pageChangeListener` @type ^`androidx.viewpager.widget.ViewPager$OnPageChangeListener` @kind object;
+  #L24d8aa.  if v3 == 0 then goto L24d8b4;
+  #L24d8ae.  call `onPageSelected`(v3, v1) @signature `Landroidx/viewpager/widget/ViewPager$OnPageChangeListener;.onPageSelected:(I)V` @kind interface;
+  #L24d8b4.  return @kind void;
+}
+procedure `void` `setLockPage`(`com.github.paolorotolo.appintro.AppIntroViewPager` v0 @kind this, `int` v1 ) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setLockPage:(I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L24d8c8.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.lockPage` @type ^`int` := v1;
+  #L24d8cc.  return @kind void;
+}
+procedure `void` `setNextPagingEnabled`(`com.github.paolorotolo.appintro.AppIntroViewPager` v0 @kind this, `boolean` v1 ) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setNextPagingEnabled:(Z)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L24d8e0.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.nextPagingEnabled` @type ^`boolean` := v1 @kind boolean;
+  #L24d8e4.  if v1 != 0 then goto L24d8f4;
+  #L24d8e8.  call temp:= `getCurrentItem`(v0) @signature `Landroidx/viewpager/widget/ViewPager;.getCurrentItem:()I` @kind virtual;
+  #L24d8ee.  v1:= temp;
+  #L24d8f0.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.lockPage` @type ^`int` := v1;
+  #L24d8f4.  return @kind void;
+}
+procedure `void` `setOnNextPageRequestedListener`(`com.github.paolorotolo.appintro.AppIntroViewPager` v0 @kind this, `com.github.paolorotolo.appintro.AppIntroViewPager$OnNextPageRequestedListener` v1 @kind object) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setOnNextPageRequestedListener:(Lcom/github/paolorotolo/appintro/AppIntroViewPager$OnNextPageRequestedListener;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L24d908.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.nextPageRequestedListener` @type ^`com.github.paolorotolo.appintro.AppIntroViewPager$OnNextPageRequestedListener` := v1 @kind object;
+  #L24d90c.  return @kind void;
+}
+procedure `void` `setPagingEnabled`(`com.github.paolorotolo.appintro.AppIntroViewPager` v0 @kind this, `boolean` v1 ) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setPagingEnabled:(Z)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L24d920.  v0.`com.github.paolorotolo.appintro.AppIntroViewPager.pagingEnabled` @type ^`boolean` := v1 @kind boolean;
+  #L24d924.  return @kind void;
+}
+procedure `void` `setScrollDurationFactor`(`com.github.paolorotolo.appintro.AppIntroViewPager` v1 @kind this, `double` v2 ) @signature `Lcom/github/paolorotolo/appintro/AppIntroViewPager;.setScrollDurationFactor:(D)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L24d938.  v0:= v1.`com.github.paolorotolo.appintro.AppIntroViewPager.mScroller` @type ^`com.github.paolorotolo.appintro.ScrollerCustomDuration` @kind object;
+  #L24d93c.  call `setScrollDurationFactor`(v0, v2) @signature `Lcom/github/paolorotolo/appintro/ScrollerCustomDuration;.setScrollDurationFactor:(D)V` @kind virtual;
+  #L24d942.  return @kind void;
+}

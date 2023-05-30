@@ -1,0 +1,436 @@
+record `dream71.com.wasa.home.sewerage.stp.STPListFragment` @kind class @AccessFlag PUBLIC extends `androidx.fragment.app.Fragment` @kind class, `dream71.com.wasa.NetworkConnection.DataController` @kind interface, `dream71.com.wasa.interfaces.OnClickItemPosition` @kind interface {
+  `dream71.com.wasa.database.DatabaseHelper` `dream71.com.wasa.home.sewerage.stp.STPListFragment.databaseHelper` @AccessFlag ;
+  `androidx.recyclerview.widget.RecyclerView` `dream71.com.wasa.home.sewerage.stp.STPListFragment.dtwList` @AccessFlag ;
+  `com.google.gson.Gson` `dream71.com.wasa.home.sewerage.stp.STPListFragment.gson` @AccessFlag ;
+  `androidx.swiperefreshlayout.widget.SwipeRefreshLayout` `dream71.com.wasa.home.sewerage.stp.STPListFragment.mSwipeRefreshLayout` @AccessFlag ;
+  `android.app.ProgressDialog` `dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @AccessFlag ;
+  `int` `dream71.com.wasa.home.sewerage.stp.STPListFragment.pageNumber` @AccessFlag ;
+  `android.widget.EditText` `dream71.com.wasa.home.sewerage.stp.STPListFragment.search_bar` @AccessFlag ;
+  `android.widget.TextView` `dream71.com.wasa.home.sewerage.stp.STPListFragment.titleBar` @AccessFlag ;
+  `butterknife.Unbinder` `dream71.com.wasa.home.sewerage.stp.STPListFragment.unbinder` @AccessFlag ;
+  `dream71.com.wasa.home.sewerage.adapter.STPAdapter` `dream71.com.wasa.home.sewerage.stp.STPListFragment.valveAdapter` @AccessFlag ;
+  `java.util.List` `dream71.com.wasa.home.sewerage.stp.STPListFragment.valveList` @AccessFlag ;
+  `dream71.com.wasa.home.sewerage.stp.model.STPListMessage` `dream71.com.wasa.home.sewerage.stp.STPListFragment.valveListMessage` @AccessFlag ;
+}
+procedure `void` `<init>`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L39d0fc.  call `<init>`(v1) @signature `Landroidx/fragment/app/Fragment;.<init>:()V` @kind direct;
+  #L39d102.  v0:= new `java.util.ArrayList`;
+  #L39d106.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L39d10c.  v1.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveList` @type ^`java.util.List` := v0 @kind object;
+  #L39d110.  v0:= 0I;
+  #L39d112.  v1.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pageNumber` @type ^`int` := v0;
+  #L39d116.  v0:= new `com.google.gson.Gson`;
+  #L39d11a.  call `<init>`(v0) @signature `Lcom/google/gson/Gson;.<init>:()V` @kind direct;
+  #L39d120.  v1.`dream71.com.wasa.home.sewerage.stp.STPListFragment.gson` @type ^`com.google.gson.Gson` := v0 @kind object;
+  #L39d124.  return @kind void;
+}
+procedure `void` `ReloadPage`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.ReloadPage:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L39d24c.  v0:= `@@dream71.com.wasa.Main.MainActivity.FragmentManagerDashBoard` @type ^`androidx.fragment.app.FragmentManager` @kind object;
+  #L39d250.  call temp:= `beginTransaction`(v0) @signature `Landroidx/fragment/app/FragmentManager;.beginTransaction:()Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L39d256.  v0:= temp @kind object;
+  #L39d258.  v1:= 2130771997I;
+  #L39d25e.  v2:= 2130772000I;
+  #L39d264.  call temp:= `setCustomAnimations`(v0, v1, v2) @signature `Landroidx/fragment/app/FragmentTransaction;.setCustomAnimations:(II)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L39d26a.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L39d26e.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L39d274.  v1:= temp @kind object;
+  #L39d276.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L39d27a.  call `onPause`(v1) @signature `Landroidx/fragment/app/Fragment;.onPause:()V` @kind virtual;
+  #L39d280.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L39d284.  call temp:= `pop`(v1) @signature `Ljava/util/Stack;.pop:()Ljava/lang/Object;` @kind virtual;
+  #L39d28a.  v1:= temp @kind object;
+  #L39d28c.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L39d290.  call temp:= `remove`(v0, v1) @signature `Landroidx/fragment/app/FragmentTransaction;.remove:(Landroidx/fragment/app/Fragment;)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L39d296.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L39d29a.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L39d2a0.  v1:= temp @kind object;
+  #L39d2a2.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L39d2a6.  call `onResume`(v1) @signature `Landroidx/fragment/app/Fragment;.onResume:()V` @kind virtual;
+  #L39d2ac.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L39d2b0.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L39d2b6.  v1:= temp @kind object;
+  #L39d2b8.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L39d2bc.  call temp:= `show`(v0, v1) @signature `Landroidx/fragment/app/FragmentTransaction;.show:(Landroidx/fragment/app/Fragment;)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L39d2c2.  call temp:= `commit`(v0) @signature `Landroidx/fragment/app/FragmentTransaction;.commit:()I` @kind virtual;
+  #L39d2c8.  return @kind void;
+}
+procedure `void` `SaveData`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v2 @kind this, `java.util.List` v3 @kind object) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.SaveData:(Ljava/util/List;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L39d2dc.  v0:= new `com.arasthel.asyncjob.AsyncJob$AsyncJobBuilder`;
+  #L39d2e0.  call `<init>`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.<init>:()V` @kind direct;
+  #L39d2e6.  v1:= new `dream71.com.wasa.home.sewerage.stp.STPListFragment$7`;
+  #L39d2ea.  call `<init>`(v1, v2, v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment$7;.<init>:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;Ljava/util/List;)V` @kind direct;
+  #L39d2f0.  call temp:= `doInBackground`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doInBackground:(Lcom/arasthel/asyncjob/AsyncJob$AsyncAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L39d2f6.  v3:= temp @kind object;
+  #L39d2f8.  v0:= new `dream71.com.wasa.home.sewerage.stp.STPListFragment$6`;
+  #L39d2fc.  call `<init>`(v0, v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment$6;.<init>:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;)V` @kind direct;
+  #L39d302.  call temp:= `doWhenFinished`(v3, v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doWhenFinished:(Lcom/arasthel/asyncjob/AsyncJob$AsyncResultAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L39d308.  v3:= temp @kind object;
+  #L39d30a.  call temp:= `create`(v3) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.create:()Lcom/arasthel/asyncjob/AsyncJob;` @kind virtual;
+  #L39d310.  v3:= temp @kind object;
+  #L39d312.  call `start`(v3) @signature `Lcom/arasthel/asyncjob/AsyncJob;.start:()V` @kind virtual;
+  #L39d318.  return @kind void;
+}
+procedure `void` `StartServices`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.StartServices:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L39d3b4.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d3ba.  v0:= temp @kind object;
+  #L39d3bc.  v1:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L39d3c0.  call temp:= `isServiceRunning`(v0, v1) @signature `Ldream71/com/wasa/utils/Validation;.isServiceRunning:(Landroid/content/Context;Ljava/lang/Class;)Z` @kind static;
+  #L39d3c6.  v0:= temp;
+  #L39d3c8.  if v0 != 0 then goto L39d3f0;
+  #L39d3cc.  v0:= new `android.content.Intent`;
+  #L39d3d0.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d3d6.  v1:= temp @kind object;
+  #L39d3d8.  v2:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L39d3dc.  call `<init>`(v0, v1, v2) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L39d3e2.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d3e8.  v1:= temp @kind object;
+  #L39d3ea.  call temp:= `startService`(v1, v0) @signature `Landroidx/fragment/app/FragmentActivity;.startService:(Landroid/content/Intent;)Landroid/content/ComponentName;` @kind virtual;
+  #L39d3f0.  return @kind void;
+}
+procedure `void` `access$000`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v0 @kind object) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.access$000:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L39d454.  call `getData`(v0) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getData:()V` @kind direct;
+  #L39d45a.  return @kind void;
+}
+procedure `void` `getData`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getData:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L39d49c.  call temp:= `getActivity`(v1) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d4a2.  v0:= temp @kind object;
+  #L39d4a4.  call temp:= `getConnectivitychecking`(v0) @signature `Ldream71/com/wasa/NetworkConnection/NetworkConnection;.getConnectivitychecking:(Landroid/content/Context;)Z` @kind static;
+  #L39d4aa.  v0:= temp;
+  #L39d4ac.  if v0 != 0 then goto L39d4b8;
+  #L39d4b0.  call `getOfflineData`(v1) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getOfflineData:()V` @kind direct;
+  #L39d4b6.  goto L39d4be;
+  #L39d4b8.  call `getDataFromAPI`(v1) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getDataFromAPI:()V` @kind virtual;
+  #L39d4be.  return @kind void;
+}
+procedure `void` `getOfflineData`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getOfflineData:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L39d558.  v0:= new `com.arasthel.asyncjob.AsyncJob$AsyncJobBuilder`;
+  #L39d55c.  call `<init>`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.<init>:()V` @kind direct;
+  #L39d562.  v1:= new `dream71.com.wasa.home.sewerage.stp.STPListFragment$5`;
+  #L39d566.  call `<init>`(v1, v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment$5;.<init>:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;)V` @kind direct;
+  #L39d56c.  call temp:= `doInBackground`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doInBackground:(Lcom/arasthel/asyncjob/AsyncJob$AsyncAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L39d572.  v0:= temp @kind object;
+  #L39d574.  v1:= new `dream71.com.wasa.home.sewerage.stp.STPListFragment$4`;
+  #L39d578.  call `<init>`(v1, v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment$4;.<init>:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;)V` @kind direct;
+  #L39d57e.  call temp:= `doWhenFinished`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doWhenFinished:(Lcom/arasthel/asyncjob/AsyncJob$AsyncResultAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L39d584.  v0:= temp @kind object;
+  #L39d586.  call temp:= `create`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.create:()Lcom/arasthel/asyncjob/AsyncJob;` @kind virtual;
+  #L39d58c.  v0:= temp @kind object;
+  #L39d58e.  call `start`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob;.start:()V` @kind virtual;
+  #L39d594.  return @kind void;
+}
+procedure `void` `DataReceivedFromDataController`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v3 @kind this, `java.lang.String` v4 @kind object, `int` v5 ) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.DataReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L39d138.  v5:= v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L39d13c.  v0:= 0I;
+  #L39d13e.  call `setRefreshing`(v5, v0) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setRefreshing:(Z)V` @kind virtual;
+  #L39d144.  call `hideProgressBar`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.hideProgressBar:()V` @kind virtual;
+  #L39d14a.  v5:= v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L39d14e.  v0:= constclass @type ^`dream71.com.wasa.model.ResponseMessage` @kind object;
+  #L39d152.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L39d158.  v5:= temp @kind object;
+  #L39d15a.  v5:= (`dream71.com.wasa.model.ResponseMessage`) v5 @kind object;
+  #L39d15e.  v0:= new `java.lang.StringBuilder`;
+  #L39d162.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L39d168.  v1:= "" @kind object;
+  #L39d16c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d172.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d178.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L39d17e.  v0:= temp @kind object;
+  #L39d180.  v2:= "response" @kind object;
+  #L39d184.  call temp:= `e`(v2, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L39d18a.  v0:= v5.`dream71.com.wasa.model.ResponseMessage.status` @type ^`int`;
+  #L39d18e.  v2:= 1I;
+  #L39d190.  if v0 != v2 then goto L39d1d4;
+  #L39d194.  v5:= v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L39d198.  v0:= constclass @type ^`dream71.com.wasa.home.sewerage.stp.model.STPListMessage` @kind object;
+  #L39d19c.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L39d1a2.  v4:= temp @kind object;
+  #L39d1a4.  v4:= (`dream71.com.wasa.home.sewerage.stp.model.STPListMessage`) v4 @kind object;
+  #L39d1a8.  v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveListMessage` @type ^`dream71.com.wasa.home.sewerage.stp.model.STPListMessage` := v4 @kind object;
+  #L39d1ac.  v4:= v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveListMessage` @type ^`dream71.com.wasa.home.sewerage.stp.model.STPListMessage` @kind object;
+  #L39d1b0.  v4:= v4.`dream71.com.wasa.home.sewerage.stp.model.STPListMessage.sewerage_treatment_plant` @type ^`java.util.List` @kind object;
+  #L39d1b4.  v5:= v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveList` @type ^`java.util.List` @kind object;
+  #L39d1b8.  call temp:= `addAll`(v5, v4) @signature `Ljava/util/List;.addAll:(Ljava/util/Collection;)Z` @kind interface;
+  #L39d1be.  v4:= v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveAdapter` @type ^`dream71.com.wasa.home.sewerage.adapter.STPAdapter` @kind object;
+  #L39d1c2.  call `notifyDataSetChanged`(v4) @signature `Ldream71/com/wasa/home/sewerage/adapter/STPAdapter;.notifyDataSetChanged:()V` @kind virtual;
+  #L39d1c8.  v4:= v3.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveList` @type ^`java.util.List` @kind object;
+  #L39d1cc.  call `SaveData`(v3, v4) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.SaveData:(Ljava/util/List;)V` @kind direct;
+  #L39d1d2.  goto L39d23a;
+  #L39d1d4.  v4:= v5.`dream71.com.wasa.model.ResponseMessage.message` @type ^`java.lang.String` @kind object;
+  #L39d1d8.  call temp:= `toLowerCase`(v4) @signature `Ljava/lang/String;.toLowerCase:()Ljava/lang/String;` @kind virtual;
+  #L39d1de.  v4:= temp @kind object;
+  #L39d1e0.  v0:= "invalid token" @kind object;
+  #L39d1e4.  call temp:= `contains`(v4, v0) @signature `Ljava/lang/String;.contains:(Ljava/lang/CharSequence;)Z` @kind virtual;
+  #L39d1ea.  v4:= temp;
+  #L39d1ec.  if v4 == 0 then goto L39d20a;
+  #L39d1f0.  v4:= new `dream71.com.wasa.utils.Utils`;
+  #L39d1f4.  call `<init>`(v4) @signature `Ldream71/com/wasa/utils/Utils;.<init>:()V` @kind direct;
+  #L39d1fa.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d200.  v5:= temp @kind object;
+  #L39d202.  call `showLoginAlertDialog`(v4, v5) @signature `Ldream71/com/wasa/utils/Utils;.showLoginAlertDialog:(Landroid/content/Context;)V` @kind virtual;
+  #L39d208.  goto L39d23a;
+  #L39d20a.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d210.  v4:= temp @kind object;
+  #L39d212.  v0:= new `java.lang.StringBuilder`;
+  #L39d216.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L39d21c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d222.  v5:= v5.`dream71.com.wasa.model.ResponseMessage.message` @type ^`java.lang.String` @kind object;
+  #L39d226.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d22c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L39d232.  v5:= temp @kind object;
+  #L39d234.  call `Info`(v4, v5) @signature `Ldream71/com/wasa/utils/ToastyMsg;.Info:(Landroid/content/Context;Ljava/lang/String;)V` @kind static;
+  #L39d23a.  return @kind void;
+}
+procedure `void` `Search`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.Search:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L39d32c.  v0:= new `java.lang.StringBuilder`;
+  #L39d330.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L39d336.  v1:= "" @kind object;
+  #L39d33a.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d340.  v1:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.search_bar` @type ^`android.widget.EditText` @kind object;
+  #L39d344.  call temp:= `getText`(v1) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L39d34a.  v1:= temp @kind object;
+  #L39d34c.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L39d352.  v1:= temp @kind object;
+  #L39d354.  call temp:= `trim`(v1) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L39d35a.  v1:= temp @kind object;
+  #L39d35c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d362.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L39d368.  v0:= temp @kind object;
+  #L39d36a.  v1:= "search_bar" @kind object;
+  #L39d36e.  call temp:= `e`(v1, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L39d374.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveAdapter` @type ^`dream71.com.wasa.home.sewerage.adapter.STPAdapter` @kind object;
+  #L39d378.  call temp:= `getFilter`(v0) @signature `Ldream71/com/wasa/home/sewerage/adapter/STPAdapter;.getFilter:()Landroid/widget/Filter;` @kind virtual;
+  #L39d37e.  v0:= temp @kind object;
+  #L39d380.  v1:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.search_bar` @type ^`android.widget.EditText` @kind object;
+  #L39d384.  call temp:= `getText`(v1) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L39d38a.  v1:= temp @kind object;
+  #L39d38c.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L39d392.  v1:= temp @kind object;
+  #L39d394.  call temp:= `trim`(v1) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L39d39a.  v1:= temp @kind object;
+  #L39d39c.  call `filter`(v0, v1) @signature `Landroid/widget/Filter;.filter:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L39d3a2.  return @kind void;
+}
+procedure `void` `TubeWeel`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.TubeWeel:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L39d404.  v0:= new `android.content.Intent`;
+  #L39d408.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d40e.  v1:= temp @kind object;
+  #L39d410.  v2:= constclass @type ^`dream71.com.wasa.home.sewerage.stp.SewerTreatmentActivity` @kind object;
+  #L39d414.  call `<init>`(v0, v1, v2) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L39d41a.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d420.  v1:= temp @kind object;
+  #L39d422.  call `startActivity`(v1, v0) @signature `Landroidx/fragment/app/FragmentActivity;.startActivity:(Landroid/content/Intent;)V` @kind virtual;
+  #L39d428.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d42e.  v0:= temp @kind object;
+  #L39d430.  v1:= 2130771998I;
+  #L39d436.  v2:= 2130771999I;
+  #L39d43c.  call `overridePendingTransition`(v0, v1, v2) @signature `Landroidx/fragment/app/FragmentActivity;.overridePendingTransition:(II)V` @kind virtual;
+  #L39d442.  return @kind void;
+}
+procedure `void` `back`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v0 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.back:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L39d46c.  call `ReloadPage`(v0) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.ReloadPage:()V` @kind direct;
+  #L39d472.  return @kind void;
+}
+procedure `void` `errorReceivedFromDataController`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v0 @kind this, `java.lang.String` v1 @kind object, `int` v2 ) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.errorReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L39d484.  call `hideProgressBar`(v0) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.hideProgressBar:()V` @kind virtual;
+  #L39d48a.  return @kind void;
+}
+procedure `void` `getDataFromAPI`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v4 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getDataFromAPI:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L39d4d0.  call temp:= `getActivity`(v4) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d4d6.  v0:= temp @kind object;
+  #L39d4d8.  call temp:= `getConnectivitychecking`(v0) @signature `Ldream71/com/wasa/NetworkConnection/NetworkConnection;.getConnectivitychecking:(Landroid/content/Context;)Z` @kind static;
+  #L39d4de.  v0:= temp;
+  #L39d4e0.  if v0 != 0 then goto L39d4e6;
+  #L39d4e4.  return @kind void;
+  #L39d4e6.  v0:= new `dream71.com.wasa.NetworkConnection.RemoteDataController`;
+  #L39d4ea.  call temp:= `getActivity`(v4) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d4f0.  v1:= temp @kind object;
+  #L39d4f2.  call `<init>`(v0, v4, v1) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.<init>:(Ldream71/com/wasa/NetworkConnection/DataController;Landroid/content/Context;)V` @kind direct;
+  #L39d4f8.  v1:= new `java.util.HashMap`;
+  #L39d4fc.  call `<init>`(v1) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L39d502.  v2:= new `java.lang.StringBuilder`;
+  #L39d506.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L39d50c.  v3:= "http://info.dwasa.org.bd:4040/api/sewerage-treatmentlist?page=" @kind object;
+  #L39d510.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d516.  v3:= v4.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pageNumber` @type ^`int`;
+  #L39d51a.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L39d520.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L39d526.  v2:= temp @kind object;
+  #L39d528.  v3:= 100I;
+  #L39d52c.  call `getData`(v0, v2, v1, v3) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.getData:(Ljava/lang/String;Ljava/util/HashMap;I)V` @kind virtual;
+  #L39d532.  return @kind void;
+}
+procedure `void` `getItemPosition`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v0 @kind this, `int` v1 , `java.lang.String` v2 @kind object, `int` v3 ) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getItemPosition:(ILjava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L39d544.  return @kind void;
+}
+procedure `void` `hideProgressBar`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.hideProgressBar:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L39d5a8.  v0:= v1.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L39d5ac.  if v0 == 0 then goto L39d5b6;
+  #L39d5b0.  call `dismiss`(v0) @signature `Landroid/app/ProgressDialog;.dismiss:()V` @kind virtual;
+  #L39d5b6.  return @kind void;
+}
+procedure `android.view.View` `onCreateView`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v2 @kind this, `android.view.LayoutInflater` v3 @kind object, `android.view.ViewGroup` v4 @kind object, `android.os.Bundle` v5 @kind object) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.onCreateView:(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L39cfdc.  v5:= 2131427402I;
+  #L39cfe2.  v0:= 0I;
+  #L39cfe4.  call temp:= `inflate`(v3, v5, v4, v0) @signature `Landroid/view/LayoutInflater;.inflate:(ILandroid/view/ViewGroup;Z)Landroid/view/View;` @kind virtual;
+  #L39cfea.  v3:= temp @kind object;
+  #L39cfec.  v4:= 1I;
+  #L39cfee.  call `shouldShowBackButton`(v4) @signature `Ldream71/com/wasa/Main/MainActivity;.shouldShowBackButton:(Z)V` @kind static;
+  #L39cff4.  call temp:= `bind`(v2, v3) @signature `Lbutterknife/ButterKnife;.bind:(Ljava/lang/Object;Landroid/view/View;)Lbutterknife/Unbinder;` @kind static;
+  #L39cffa.  v5:= temp @kind object;
+  #L39cffc.  v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.unbinder` @type ^`butterknife.Unbinder` := v5 @kind object;
+  #L39d000.  v5:= `@@dream71.com.wasa.Main.MainActivity.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L39d004.  v0:= "" @kind object;
+  #L39d008.  call `setText`(v5, v0) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L39d00e.  v5:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L39d012.  v0:= "STP List" @kind object;
+  #L39d016.  call `setText`(v5, v0) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L39d01c.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d022.  v5:= temp @kind object;
+  #L39d024.  call temp:= `getAppDatabase`(v5) @signature `Ldream71/com/wasa/database/DatabaseHelper;.getAppDatabase:(Landroid/content/Context;)Ldream71/com/wasa/database/DatabaseHelper;` @kind static;
+  #L39d02a.  v5:= temp @kind object;
+  #L39d02c.  v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.databaseHelper` @type ^`dream71.com.wasa.database.DatabaseHelper` := v5 @kind object;
+  #L39d030.  v5:= new `androidx.recyclerview.widget.LinearLayoutManager`;
+  #L39d034.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d03a.  v0:= temp @kind object;
+  #L39d03c.  call `<init>`(v5, v0) @signature `Landroidx/recyclerview/widget/LinearLayoutManager;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L39d042.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L39d046.  call `setHasFixedSize`(v0, v4) @signature `Landroidx/recyclerview/widget/RecyclerView;.setHasFixedSize:(Z)V` @kind virtual;
+  #L39d04c.  v4:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L39d050.  call `setLayoutManager`(v4, v5) @signature `Landroidx/recyclerview/widget/RecyclerView;.setLayoutManager:(Landroidx/recyclerview/widget/RecyclerView$LayoutManager;)V` @kind virtual;
+  #L39d056.  v4:= new `dream71.com.wasa.home.sewerage.adapter.STPAdapter`;
+  #L39d05a.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d060.  v0:= temp @kind object;
+  #L39d062.  v1:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveList` @type ^`java.util.List` @kind object;
+  #L39d066.  call `<init>`(v4, v0, v1) @signature `Ldream71/com/wasa/home/sewerage/adapter/STPAdapter;.<init>:(Landroid/content/Context;Ljava/util/List;)V` @kind direct;
+  #L39d06c.  v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveAdapter` @type ^`dream71.com.wasa.home.sewerage.adapter.STPAdapter` := v4 @kind object;
+  #L39d070.  v4:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L39d074.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.valveAdapter` @type ^`dream71.com.wasa.home.sewerage.adapter.STPAdapter` @kind object;
+  #L39d078.  call `setAdapter`(v4, v0) @signature `Landroidx/recyclerview/widget/RecyclerView;.setAdapter:(Landroidx/recyclerview/widget/RecyclerView$Adapter;)V` @kind virtual;
+  #L39d07e.  v4:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L39d082.  v0:= new `dream71.com.wasa.home.sewerage.stp.STPListFragment$1`;
+  #L39d086.  call `<init>`(v0, v2, v5) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment$1;.<init>:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;Landroidx/recyclerview/widget/LinearLayoutManager;)V` @kind direct;
+  #L39d08c.  call `addOnScrollListener`(v4, v0) @signature `Landroidx/recyclerview/widget/RecyclerView;.addOnScrollListener:(Landroidx/recyclerview/widget/RecyclerView$OnScrollListener;)V` @kind virtual;
+  #L39d092.  v4:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L39d096.  v5:= 4I;
+  #L39d098.  v5:= new `int`[v5];
+  #L39d09c.  goto L39d0d4;
+  #L39d0a2.  call `setColorSchemeResources`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setColorSchemeResources:([I)V` @kind virtual;
+  #L39d0a8.  v4:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L39d0ac.  v5:= new `dream71.com.wasa.home.sewerage.stp.STPListFragment$2`;
+  #L39d0b0.  call `<init>`(v5, v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment$2;.<init>:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;)V` @kind direct;
+  #L39d0b6.  call temp:= `post`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.post:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L39d0bc.  v4:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L39d0c0.  v5:= new `dream71.com.wasa.home.sewerage.stp.STPListFragment$3`;
+  #L39d0c4.  call `<init>`(v5, v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment$3;.<init>:(Ldream71/com/wasa/home/sewerage/stp/STPListFragment;)V` @kind direct;
+  #L39d0ca.  call `setOnRefreshListener`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setOnRefreshListener:(Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout$OnRefreshListener;)V` @kind virtual;
+  #L39d0d0.  return v3 @kind object;
+  #L39d0d2.  
+  #L39d0d4.  v5:= (2131034173I, 17170453I, 17170457I, 17170451I) @kind object;
+  #L39d0eb.  goto L39d0a2;
+}
+procedure `void` `onDestroy`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.onDestroy:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L39d5c8.  call `onDestroy`(v1) @signature `Landroidx/fragment/app/Fragment;.onDestroy:()V` @kind super;
+  #L39d5ce.  v0:= v1.`dream71.com.wasa.home.sewerage.stp.STPListFragment.unbinder` @type ^`butterknife.Unbinder` @kind object;
+  #L39d5d2.  call `unbind`(v0) @signature `Lbutterknife/Unbinder;.unbind:()V` @kind interface;
+  #L39d5d8.  return @kind void;
+}
+procedure `void` `onResume`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.onResume:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L39d5ec.  call `onResume`(v2) @signature `Landroidx/fragment/app/Fragment;.onResume:()V` @kind super;
+  #L39d5f2.  v0:= 1I;
+  #L39d5f4.  call `shouldShowBackButton`(v0) @signature `Ldream71/com/wasa/Main/MainActivity;.shouldShowBackButton:(Z)V` @kind static;
+  #L39d5fa.  v0:= `@@dream71.com.wasa.Main.MainActivity.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L39d5fe.  v1:= "" @kind object;
+  #L39d602.  call `setText`(v0, v1) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L39d608.  return @kind void;
+}
+procedure `void` `showProgressBar`(`dream71.com.wasa.home.sewerage.stp.STPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.showProgressBar:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L39d61c.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L39d620.  if v0 != 0 then goto L39d660;
+  #L39d624.  v0:= new `android.app.ProgressDialog`;
+  #L39d628.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/sewerage/stp/STPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L39d62e.  v1:= temp @kind object;
+  #L39d630.  call `<init>`(v0, v1) @signature `Landroid/app/ProgressDialog;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L39d636.  v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @type ^`android.app.ProgressDialog` := v0 @kind object;
+  #L39d63a.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L39d63e.  v1:= "Loading..." @kind object;
+  #L39d642.  call `setMessage`(v0, v1) @signature `Landroid/app/ProgressDialog;.setMessage:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L39d648.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L39d64c.  v1:= 0I;
+  #L39d64e.  call `setIndeterminate`(v0, v1) @signature `Landroid/app/ProgressDialog;.setIndeterminate:(Z)V` @kind virtual;
+  #L39d654.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L39d658.  v1:= 1I;
+  #L39d65a.  call `setCancelable`(v0, v1) @signature `Landroid/app/ProgressDialog;.setCancelable:(Z)V` @kind virtual;
+  #L39d660.  v0:= v2.`dream71.com.wasa.home.sewerage.stp.STPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L39d664.  call `show`(v0) @signature `Landroid/app/ProgressDialog;.show:()V` @kind virtual;
+  #L39d66a.  return @kind void;
+}

@@ -1,0 +1,260 @@
+record `rx.observables.SyncOnSubscribe$SubscriptionProducer` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicLong` @kind class, `rx.Producer` @kind interface, `rx.Subscription` @kind interface, `rx.Observer` @kind interface {
+  `rx.Subscriber` `rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @AccessFlag PRIVATE_FINAL;
+  `boolean` `rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @AccessFlag PRIVATE;
+  `boolean` `rx.observables.SyncOnSubscribe$SubscriptionProducer.onNextCalled` @AccessFlag PRIVATE;
+  `rx.observables.SyncOnSubscribe` `rx.observables.SyncOnSubscribe$SubscriptionProducer.parent` @AccessFlag PRIVATE_FINAL;
+  `java.lang.Object` `rx.observables.SyncOnSubscribe$SubscriptionProducer.state` @AccessFlag PRIVATE;
+}
+global `long` `@@rx.observables.SyncOnSubscribe$SubscriptionProducer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v0 @kind this, `rx.Subscriber` v1 @kind object, `rx.observables.SyncOnSubscribe` v2 @kind object, `java.lang.Object` v3 @kind object) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.<init>:(Lrx/Subscriber;Lrx/observables/SyncOnSubscribe;Ljava/lang/Object;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L4bdd10.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4bdd16.  v0.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4bdd1a.  v0.`rx.observables.SyncOnSubscribe$SubscriptionProducer.parent` @type ^`rx.observables.SyncOnSubscribe` := v2 @kind object;
+  #L4bdd1e.  v0.`rx.observables.SyncOnSubscribe$SubscriptionProducer.state` @type ^`java.lang.Object` := v3 @kind object;
+  #L4bdd22.  return @kind void;
+}
+procedure `void` `doUnsubscribe`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v2 @kind this) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.doUnsubscribe:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L4bdd34.  v0:= v2.`rx.observables.SyncOnSubscribe$SubscriptionProducer.parent` @type ^`rx.observables.SyncOnSubscribe` @kind object;
+  #L4bdd38.  v1:= v2.`rx.observables.SyncOnSubscribe$SubscriptionProducer.state` @type ^`java.lang.Object` @kind object;
+  #L4bdd3c.  call `onUnsubscribe`(v0, v1) @signature `Lrx/observables/SyncOnSubscribe;.onUnsubscribe:(Ljava/lang/Object;)V` @kind virtual;
+  #L4bdd42.  goto L4bdd52;
+  #L4bdd44.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4bdd46.  call `throwIfFatal`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L4bdd4c.  call `onError`(v0) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4bdd52.  return @kind void;
+  catch `java.lang.Throwable` @[L4bdd34..L4bdd42] goto L4bdd44;
+}
+procedure `void` `fastPath`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v3 @kind this) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.fastPath:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4bdd70.  v0:= v3.`rx.observables.SyncOnSubscribe$SubscriptionProducer.parent` @type ^`rx.observables.SyncOnSubscribe` @kind object;
+  #L4bdd74.  v1:= v3.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L4bdd78.  v2:= 0I;
+  #L4bdd7a.  v3.`rx.observables.SyncOnSubscribe$SubscriptionProducer.onNextCalled` @type ^`boolean` := v2 @kind boolean;
+  #L4bdd7e.  call `nextIteration`(v3, v0) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.nextIteration:(Lrx/observables/SyncOnSubscribe;)V` @kind direct;
+  #L4bdd84.  call temp:= `tryUnsubscribe`(v3) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.tryUnsubscribe:()Z` @kind direct;
+  #L4bdd8a.  v2:= temp;
+  #L4bdd8c.  if v2 == 0 then goto L4bdd78;
+  #L4bdd90.  return @kind void;
+  #L4bdd92.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4bdd94.  call `handleThrownError`(v3, v1, v0) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.handleThrownError:(Lrx/Subscriber;Ljava/lang/Throwable;)V` @kind direct;
+  #L4bdd9a.  return @kind void;
+  catch `java.lang.Throwable` @[L4bdd7a..L4bdd84] goto L4bdd92;
+}
+procedure `void` `handleThrownError`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v1 @kind this, `rx.Subscriber` v2 @kind object, `java.lang.Throwable` v3 @kind object) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.handleThrownError:(Lrx/Subscriber;Ljava/lang/Throwable;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4bddb8.  v0:= v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @type ^`boolean` @kind boolean;
+  #L4bddbc.  if v0 == 0 then goto L4bddc8;
+  #L4bddc0.  call `onError`(v3) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4bddc6.  goto L4bddda;
+  #L4bddc8.  v0:= 1I;
+  #L4bddca.  v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @type ^`boolean` := v0 @kind boolean;
+  #L4bddce.  call `onError`(v2, v3) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4bddd4.  call `unsubscribe`(v1) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.unsubscribe:()V` @kind virtual;
+  #L4bddda.  return @kind void;
+}
+procedure `void` `nextIteration`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v1 @kind this, `rx.observables.SyncOnSubscribe` v2 @kind object) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.nextIteration:(Lrx/observables/SyncOnSubscribe;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4bddec.  v0:= v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.state` @type ^`java.lang.Object` @kind object;
+  #L4bddf0.  call temp:= `next`(v2, v0, v1) @signature `Lrx/observables/SyncOnSubscribe;.next:(Ljava/lang/Object;Lrx/Observer;)Ljava/lang/Object;` @kind virtual;
+  #L4bddf6.  v2:= temp @kind object;
+  #L4bddf8.  v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.state` @type ^`java.lang.Object` := v2 @kind object;
+  #L4bddfc.  return @kind void;
+}
+procedure `void` `slowPath`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v7 @kind this, `long` v8 ) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.slowPath:(J)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4bdf34.  v0:= v7.`rx.observables.SyncOnSubscribe$SubscriptionProducer.parent` @type ^`rx.observables.SyncOnSubscribe` @kind object;
+  #L4bdf38.  v1:= v7.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L4bdf3c.  v2:= v8 @kind wide;
+  #L4bdf3e.  v4:= 0I;
+  #L4bdf40.  v7.`rx.observables.SyncOnSubscribe$SubscriptionProducer.onNextCalled` @type ^`boolean` := v4 @kind boolean;
+  #L4bdf44.  call `nextIteration`(v7, v0) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.nextIteration:(Lrx/observables/SyncOnSubscribe;)V` @kind direct;
+  #L4bdf4a.  call temp:= `tryUnsubscribe`(v7) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.tryUnsubscribe:()Z` @kind direct;
+  #L4bdf50.  v4:= temp;
+  #L4bdf52.  if v4 == 0 then goto L4bdf58;
+  #L4bdf56.  return @kind void;
+  #L4bdf58.  v4:= v7.`rx.observables.SyncOnSubscribe$SubscriptionProducer.onNextCalled` @type ^`boolean` @kind boolean;
+  #L4bdf5c.  if v4 == 0 then goto L4bdf66;
+  #L4bdf60.  v4:= 1L;
+  #L4bdf64.  v2:= v2 - v4 @kind long;
+  #L4bdf66.  v4:= 0L;
+  #L4bdf6a.  v6:= lcmp(v2, v4);
+  #L4bdf6e.  if v6 != 0 then goto L4bdf3e;
+  #L4bdf72.  v8:= -v8 @kind long;
+  #L4bdf74.  call temp:= `addAndGet`(v7, v8) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.addAndGet:(J)J` @kind virtual;
+  #L4bdf7a.  v8:= temp @kind wide;
+  #L4bdf7c.  v2:= lcmp(v8, v4);
+  #L4bdf80.  if v2 > 0 then goto L4bdf3c;
+  #L4bdf84.  call temp:= `tryUnsubscribe`(v7) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.tryUnsubscribe:()Z` @kind direct;
+  #L4bdf8a.  return @kind void;
+  #L4bdf8c.  v8:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4bdf8e.  call `handleThrownError`(v7, v1, v8) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.handleThrownError:(Lrx/Subscriber;Ljava/lang/Throwable;)V` @kind direct;
+  #L4bdf94.  return @kind void;
+  catch `java.lang.Throwable` @[L4bdf40..L4bdf4a] goto L4bdf8c;
+}
+procedure `boolean` `tryUnsubscribe`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v5 @kind this) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.tryUnsubscribe:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4bdccc.  v0:= v5.`rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @type ^`boolean` @kind boolean;
+  #L4bdcd0.  v1:= -1L;
+  #L4bdcd4.  if v0 != 0 then goto L4bdcee;
+  #L4bdcd8.  call temp:= `get`(v5) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.get:()J` @kind virtual;
+  #L4bdcde.  v3:= temp @kind wide;
+  #L4bdce0.  v0:= lcmp(v3, v1);
+  #L4bdce4.  if v0 >= 0 then goto L4bdcea;
+  #L4bdce8.  goto L4bdcee;
+  #L4bdcea.  v0:= 0I;
+  #L4bdcec.  return v0;
+  #L4bdcee.  call `set`(v5, v1) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.set:(J)V` @kind virtual;
+  #L4bdcf4.  call `doUnsubscribe`(v5) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.doUnsubscribe:()V` @kind direct;
+  #L4bdcfa.  v0:= 1I;
+  #L4bdcfc.  return v0;
+}
+procedure `boolean` `isUnsubscribed`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v5 @kind this) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4bdca0.  call temp:= `get`(v5) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.get:()J` @kind virtual;
+  #L4bdca6.  v0:= temp @kind wide;
+  #L4bdca8.  v2:= 0L;
+  #L4bdcac.  v4:= lcmp(v0, v2);
+  #L4bdcb0.  if v4 >= 0 then goto L4bdcb8;
+  #L4bdcb4.  v0:= 1I;
+  #L4bdcb6.  goto L4bdcba;
+  #L4bdcb8.  v0:= 0I;
+  #L4bdcba.  return v0;
+}
+procedure `void` `onCompleted`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v2 @kind this) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4bde10.  v0:= v2.`rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @type ^`boolean` @kind boolean;
+  #L4bde14.  if v0 != 0 then goto L4bde3a;
+  #L4bde18.  v0:= 1I;
+  #L4bde1a.  v2.`rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @type ^`boolean` := v0 @kind boolean;
+  #L4bde1e.  v0:= v2.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L4bde22.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4bde28.  v0:= temp;
+  #L4bde2a.  if v0 != 0 then goto L4bde38;
+  #L4bde2e.  v0:= v2.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L4bde32.  call `onCompleted`(v0) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4bde38.  return @kind void;
+  #L4bde3a.  v0:= new `java.lang.IllegalStateException`;
+  #L4bde3e.  v1:= "Terminal event already emitted." @kind object;
+  #L4bde42.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4bde48.  throw v0;
+}
+procedure `void` `onError`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4bde5c.  v0:= v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @type ^`boolean` @kind boolean;
+  #L4bde60.  if v0 != 0 then goto L4bde86;
+  #L4bde64.  v0:= 1I;
+  #L4bde66.  v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.hasTerminated` @type ^`boolean` := v0 @kind boolean;
+  #L4bde6a.  v0:= v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L4bde6e.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4bde74.  v0:= temp;
+  #L4bde76.  if v0 != 0 then goto L4bde84;
+  #L4bde7a.  v0:= v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L4bde7e.  call `onError`(v0, v2) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4bde84.  return @kind void;
+  #L4bde86.  v2:= new `java.lang.IllegalStateException`;
+  #L4bde8a.  v0:= "Terminal event already emitted." @kind object;
+  #L4bde8e.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4bde94.  throw v2;
+}
+procedure `void` `onNext`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4bdea8.  v0:= v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.onNextCalled` @type ^`boolean` @kind boolean;
+  #L4bdeac.  if v0 != 0 then goto L4bdec2;
+  #L4bdeb0.  v0:= 1I;
+  #L4bdeb2.  v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.onNextCalled` @type ^`boolean` := v0 @kind boolean;
+  #L4bdeb6.  v0:= v1.`rx.observables.SyncOnSubscribe$SubscriptionProducer.actualSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L4bdeba.  call `onNext`(v0, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4bdec0.  return @kind void;
+  #L4bdec2.  v2:= new `java.lang.IllegalStateException`;
+  #L4bdec6.  v0:= "onNext called multiple times!" @kind object;
+  #L4bdeca.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4bded0.  throw v2;
+}
+procedure `void` `request`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v5 @kind this, `long` v6 ) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4bdee4.  v0:= 0L;
+  #L4bdee8.  v2:= lcmp(v6, v0);
+  #L4bdeec.  if v2 <= 0 then goto L4bdf20;
+  #L4bdef0.  call temp:= `getAndAddRequest`(v5, v6) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L4bdef6.  v2:= temp @kind wide;
+  #L4bdef8.  v4:= lcmp(v2, v0);
+  #L4bdefc.  if v4 != 0 then goto L4bdf20;
+  #L4bdf00.  v0:= 9223372036854775807L;
+  #L4bdf0a.  v2:= lcmp(v6, v0);
+  #L4bdf0e.  if v2 != 0 then goto L4bdf1a;
+  #L4bdf12.  call `fastPath`(v5) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.fastPath:()V` @kind direct;
+  #L4bdf18.  goto L4bdf20;
+  #L4bdf1a.  call `slowPath`(v5, v6) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.slowPath:(J)V` @kind direct;
+  #L4bdf20.  return @kind void;
+}
+procedure `void` `unsubscribe`(`rx.observables.SyncOnSubscribe$SubscriptionProducer` v6 @kind this) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4bdfb4.  call temp:= `get`(v6) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.get:()J` @kind virtual;
+  #L4bdfba.  v0:= temp @kind wide;
+  #L4bdfbc.  v2:= 0L;
+  #L4bdfc0.  v4:= -1L;
+  #L4bdfc4.  call temp:= `compareAndSet`(v6, v2, v4) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.compareAndSet:(JJ)Z` @kind virtual;
+  #L4bdfca.  v2:= temp;
+  #L4bdfcc.  if v2 == 0 then goto L4bdfd8;
+  #L4bdfd0.  call `doUnsubscribe`(v6) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.doUnsubscribe:()V` @kind direct;
+  #L4bdfd6.  return @kind void;
+  #L4bdfd8.  v2:= -2L;
+  #L4bdfdc.  call temp:= `compareAndSet`(v6, v0, v2) @signature `Lrx/observables/SyncOnSubscribe$SubscriptionProducer;.compareAndSet:(JJ)Z` @kind virtual;
+  #L4bdfe2.  v0:= temp;
+  #L4bdfe4.  if v0 == 0 then goto L4bdfb4;
+  #L4bdfe8.  return @kind void;
+}

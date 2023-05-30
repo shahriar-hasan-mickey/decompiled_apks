@@ -1,0 +1,158 @@
+record `kotlinx.coroutines.scheduling.a` @kind class @AccessFlag FINAL extends `kotlinx.coroutines.ExecutorCoroutineDispatcher` @kind class, `kotlinx.coroutines.scheduling.TaskContext` @kind interface, `java.util.concurrent.Executor` @kind interface {
+  `kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher` `kotlinx.coroutines.scheduling.a.a` @AccessFlag PRIVATE_FINAL;
+  `int` `kotlinx.coroutines.scheduling.a.b` @AccessFlag PRIVATE_FINAL;
+  `java.lang.String` `kotlinx.coroutines.scheduling.a.c` @AccessFlag PRIVATE_FINAL;
+  `int` `kotlinx.coroutines.scheduling.a.d` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.ConcurrentLinkedQueue` `kotlinx.coroutines.scheduling.a.e` @AccessFlag PRIVATE_FINAL;
+  `int` `kotlinx.coroutines.scheduling.a.inFlightTasks` @AccessFlag PRIVATE_VOLATILE_SYNTHETIC;
+}
+global `java.util.concurrent.atomic.AtomicIntegerFieldUpdater` `@@kotlinx.coroutines.scheduling.a.f` @AccessFlag PRIVATE_STATIC_FINAL_SYNTHETIC;
+procedure `void` `<clinit>`() @signature `Lkotlinx/coroutines/scheduling/a;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L18d21c.  v0:= constclass @type ^`kotlinx.coroutines.scheduling.a` @kind object;
+  #L18d220.  v1:= "inFlightTasks" @kind object;
+  #L18d224.  call temp:= `newUpdater`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.newUpdater:(Ljava/lang/Class;Ljava/lang/String;)Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;` @kind static;
+  #L18d22a.  v0:= temp @kind object;
+  #L18d22c.  `@@kotlinx.coroutines.scheduling.a.f` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` := v0 @kind object;
+  #L18d230.  return @kind void;
+}
+procedure `void` `<init>`(`kotlinx.coroutines.scheduling.a` v0 @kind this, `kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher` v1 @kind object, `int` v2 , `java.lang.String` v3 @kind object, `int` v4 ) @signature `Lkotlinx/coroutines/scheduling/a;.<init>:(Lkotlinx/coroutines/scheduling/ExperimentalCoroutineDispatcher;ILjava/lang/String;I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L18d244.  call `<init>`(v0) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.<init>:()V` @kind direct;
+  #L18d24a.  v0.`kotlinx.coroutines.scheduling.a.a` @type ^`kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher` := v1 @kind object;
+  #L18d24e.  v0.`kotlinx.coroutines.scheduling.a.b` @type ^`int` := v2;
+  #L18d252.  v0.`kotlinx.coroutines.scheduling.a.c` @type ^`java.lang.String` := v3 @kind object;
+  #L18d256.  v0.`kotlinx.coroutines.scheduling.a.d` @type ^`int` := v4;
+  #L18d25a.  v1:= new `java.util.concurrent.ConcurrentLinkedQueue`;
+  #L18d25e.  call `<init>`(v1) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.<init>:()V` @kind direct;
+  #L18d264.  v0.`kotlinx.coroutines.scheduling.a.e` @type ^`java.util.concurrent.ConcurrentLinkedQueue` := v1 @kind object;
+  #L18d268.  v1:= 0I;
+  #L18d26a.  v0.`kotlinx.coroutines.scheduling.a.inFlightTasks` @type ^`int` := v1;
+  #L18d26e.  return @kind void;
+}
+procedure `void` `a`(`kotlinx.coroutines.scheduling.a` v2 @kind this, `java.lang.Runnable` v3 @kind object, `boolean` v4 ) @signature `Lkotlinx/coroutines/scheduling/a;.a:(Ljava/lang/Runnable;Z)V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L18d304.  v0:= `@@kotlinx.coroutines.scheduling.a.f` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` @kind object;
+  #L18d308.  call temp:= `incrementAndGet`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.incrementAndGet:(Ljava/lang/Object;)I` @kind virtual;
+  #L18d30e.  v0:= temp;
+  #L18d310.  v1:= v2.`kotlinx.coroutines.scheduling.a.b` @type ^`int`;
+  #L18d314.  if v0 > v1 then goto L18d324;
+  #L18d318.  v0:= v2.`kotlinx.coroutines.scheduling.a.a` @type ^`kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher` @kind object;
+  #L18d31c.  call `dispatchWithContext$kotlinx_coroutines_core`(v0, v3, v2, v4) @signature `Lkotlinx/coroutines/scheduling/ExperimentalCoroutineDispatcher;.dispatchWithContext$kotlinx_coroutines_core:(Ljava/lang/Runnable;Lkotlinx/coroutines/scheduling/TaskContext;Z)V` @kind virtual;
+  #L18d322.  return @kind void;
+  #L18d324.  v0:= v2.`kotlinx.coroutines.scheduling.a.e` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L18d328.  call temp:= `add`(v0, v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.add:(Ljava/lang/Object;)Z` @kind virtual;
+  #L18d32e.  v3:= `@@kotlinx.coroutines.scheduling.a.f` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` @kind object;
+  #L18d332.  call temp:= `decrementAndGet`(v3, v2) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.decrementAndGet:(Ljava/lang/Object;)I` @kind virtual;
+  #L18d338.  v3:= temp;
+  #L18d33a.  v0:= v2.`kotlinx.coroutines.scheduling.a.b` @type ^`int`;
+  #L18d33e.  if v3 < v0 then goto L18d344;
+  #L18d342.  return @kind void;
+  #L18d344.  v3:= v2.`kotlinx.coroutines.scheduling.a.e` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L18d348.  call temp:= `poll`(v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L18d34e.  v3:= temp @kind object;
+  #L18d350.  v3:= (`java.lang.Runnable`) v3 @kind object;
+  #L18d354.  if v3 != 0 then goto L18d304;
+  #L18d358.  return @kind void;
+}
+procedure `void` `afterTask`(`kotlinx.coroutines.scheduling.a` v3 @kind this) @signature `Lkotlinx/coroutines/scheduling/a;.afterTask:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L18d280.  v0:= v3.`kotlinx.coroutines.scheduling.a.e` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L18d284.  call temp:= `poll`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L18d28a.  v0:= temp @kind object;
+  #L18d28c.  v0:= (`java.lang.Runnable`) v0 @kind object;
+  #L18d290.  v1:= 1I;
+  #L18d292.  if v0 == 0 then goto L18d2a2;
+  #L18d296.  v2:= v3.`kotlinx.coroutines.scheduling.a.a` @type ^`kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher` @kind object;
+  #L18d29a.  call `dispatchWithContext$kotlinx_coroutines_core`(v2, v0, v3, v1) @signature `Lkotlinx/coroutines/scheduling/ExperimentalCoroutineDispatcher;.dispatchWithContext$kotlinx_coroutines_core:(Ljava/lang/Runnable;Lkotlinx/coroutines/scheduling/TaskContext;Z)V` @kind virtual;
+  #L18d2a0.  return @kind void;
+  #L18d2a2.  v0:= `@@kotlinx.coroutines.scheduling.a.f` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` @kind object;
+  #L18d2a6.  call temp:= `decrementAndGet`(v0, v3) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.decrementAndGet:(Ljava/lang/Object;)I` @kind virtual;
+  #L18d2ac.  v0:= v3.`kotlinx.coroutines.scheduling.a.e` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L18d2b0.  call temp:= `poll`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L18d2b6.  v0:= temp @kind object;
+  #L18d2b8.  v0:= (`java.lang.Runnable`) v0 @kind object;
+  #L18d2bc.  if v0 != 0 then goto L18d2c2;
+  #L18d2c0.  return @kind void;
+  #L18d2c2.  call `a`(v3, v0, v1) @signature `Lkotlinx/coroutines/scheduling/a;.a:(Ljava/lang/Runnable;Z)V` @kind direct;
+  #L18d2c8.  return @kind void;
+}
+procedure `void` `close`(`kotlinx.coroutines.scheduling.a` v2 @kind this) @signature `Lkotlinx/coroutines/scheduling/a;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L18d2dc.  v0:= new `java.lang.IllegalStateException`;
+  #L18d2e0.  v1:= "Close cannot be invoked on LimitingBlockingDispatcher" @kind object;
+  #L18d2e4.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L18d2ea.  v1:= temp @kind object;
+  #L18d2ec.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L18d2f2.  throw v0;
+}
+procedure `void` `dispatch`(`kotlinx.coroutines.scheduling.a` v0 @kind this, `kotlin.coroutines.CoroutineContext` v1 @kind object, `java.lang.Runnable` v2 @kind object) @signature `Lkotlinx/coroutines/scheduling/a;.dispatch:(Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L18d36c.  v1:= 0I;
+  #L18d36e.  call `a`(v0, v2, v1) @signature `Lkotlinx/coroutines/scheduling/a;.a:(Ljava/lang/Runnable;Z)V` @kind direct;
+  #L18d374.  return @kind void;
+}
+procedure `void` `dispatchYield`(`kotlinx.coroutines.scheduling.a` v0 @kind this, `kotlin.coroutines.CoroutineContext` v1 @kind object, `java.lang.Runnable` v2 @kind object) @signature `Lkotlinx/coroutines/scheduling/a;.dispatchYield:(Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L18d388.  v1:= 1I;
+  #L18d38a.  call `a`(v0, v2, v1) @signature `Lkotlinx/coroutines/scheduling/a;.a:(Ljava/lang/Runnable;Z)V` @kind direct;
+  #L18d390.  return @kind void;
+}
+procedure `void` `execute`(`kotlinx.coroutines.scheduling.a` v1 @kind this, `java.lang.Runnable` v2 @kind object) @signature `Lkotlinx/coroutines/scheduling/a;.execute:(Ljava/lang/Runnable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L18d3a4.  v0:= 0I;
+  #L18d3a6.  call `a`(v1, v2, v0) @signature `Lkotlinx/coroutines/scheduling/a;.a:(Ljava/lang/Runnable;Z)V` @kind direct;
+  #L18d3ac.  return @kind void;
+}
+procedure `java.util.concurrent.Executor` `getExecutor`(`kotlinx.coroutines.scheduling.a` v0 @kind this) @signature `Lkotlinx/coroutines/scheduling/a;.getExecutor:()Ljava/util/concurrent/Executor;` @AccessFlag PUBLIC {
+    temp;
+
+  #L18d208.  return v0 @kind object;
+}
+procedure `int` `getTaskMode`(`kotlinx.coroutines.scheduling.a` v1 @kind this) @signature `Lkotlinx/coroutines/scheduling/a;.getTaskMode:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L18d198.  v0:= v1.`kotlinx.coroutines.scheduling.a.d` @type ^`int`;
+  #L18d19c.  return v0;
+}
+procedure `java.lang.String` `toString`(`kotlinx.coroutines.scheduling.a` v2 @kind this) @signature `Lkotlinx/coroutines/scheduling/a;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L18d1b0.  v0:= v2.`kotlinx.coroutines.scheduling.a.c` @type ^`java.lang.String` @kind object;
+  #L18d1b4.  if v0 != 0 then goto L18d1f6;
+  #L18d1b8.  v0:= new `java.lang.StringBuilder`;
+  #L18d1bc.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L18d1c2.  call temp:= `toString`(v2) @signature `Lkotlinx/coroutines/CoroutineDispatcher;.toString:()Ljava/lang/String;` @kind super;
+  #L18d1c8.  v1:= temp @kind object;
+  #L18d1ca.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L18d1d0.  v1:= "[dispatcher = " @kind object;
+  #L18d1d4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L18d1da.  v1:= v2.`kotlinx.coroutines.scheduling.a.a` @type ^`kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher` @kind object;
+  #L18d1de.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L18d1e4.  v1:= 93I;
+  #L18d1e8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L18d1ee.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L18d1f4.  v0:= temp @kind object;
+  #L18d1f6.  return v0 @kind object;
+}

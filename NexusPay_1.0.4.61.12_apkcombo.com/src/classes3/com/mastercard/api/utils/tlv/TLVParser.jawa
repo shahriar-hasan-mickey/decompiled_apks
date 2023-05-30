@@ -1,0 +1,85 @@
+record `com.mastercard.api.utils.tlv.TLVParser` @kind class @AccessFlag PUBLIC {
+}
+global `byte` `@@com.mastercard.api.utils.tlv.TLVParser.BYTE_81` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<init>`(`com.mastercard.api.utils.tlv.TLVParser` v0 @kind this) @signature `Lcom/mastercard/api/utils/tlv/TLVParser;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L3b8404.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3b840a.  return @kind void;
+}
+procedure `int` `getTlvLength`(`byte`[] v2 @kind object, `int` v3 ) @signature `Lcom/mastercard/api/utils/tlv/TLVParser;.getTlvLength:([BI)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L3b83d4.  v0:= v2[v3] @kind byte;
+  #L3b83d8.  v1:= -127I;
+  #L3b83dc.  if v0 != v1 then goto L3b83ee;
+  #L3b83e0.  call temp:= `readShort`(v2, v3) @signature `Lcom/mastercard/api/utils/Utils;.readShort:([BI)S` @kind static;
+  #L3b83e6.  v2:= temp;
+  #L3b83e8.  v2:= v2 ^& 255;
+  #L3b83ec.  return v2;
+  #L3b83ee.  v2:= v2[v3] @kind byte;
+  #L3b83f2.  goto L3b83e8;
+}
+procedure `void` `parseTLV`(`byte`[] v4 @kind object, `int` v5 , `int` v6 , `com.mastercard.api.utils.tlv.TLVHandler` v7 @kind object) @signature `Lcom/mastercard/api/utils/tlv/TLVParser;.parseTLV:([BIILcom/mastercard/api/utils/tlv/TLVHandler;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b841c.  v6:= v6 + v5 @kind int;
+  #L3b841e.  if v5 >= v6 then goto L3b8488;
+  #L3b8422.  v0:= v4[v5] @kind byte;
+  #L3b8426.  v1:= 0I;
+  #L3b8428.  v2:= v0 ^& 31;
+  #L3b842c.  v2:= (`byte`) v2 @kind i2b;
+  #L3b842e.  v3:= 31I;
+  #L3b8432.  if v2 != v3 then goto L3b8444;
+  #L3b8436.  call temp:= `readShort`(v4, v5) @signature `Lcom/mastercard/api/utils/Utils;.readShort:([BI)S` @kind static;
+  #L3b843c.  v1:= temp;
+  #L3b843e.  v5:= v5 + 2;
+  #L3b8442.  goto L3b8448;
+  #L3b8444.  v5:= v5 + 1;
+  #L3b8448.  call temp:= `getTLVLength`(v4, v5) @signature `Lcom/mastercard/api/utils/tlv/BERTLVUtils;.getTLVLength:([BI)I` @kind static;
+  #L3b844e.  v2:= temp;
+  #L3b8450.  call temp:= `getTLVLengthByte`(v4, v5) @signature `Lcom/mastercard/api/utils/tlv/BERTLVUtils;.getTLVLengthByte:([BI)I` @kind static;
+  #L3b8456.  v3:= temp;
+  #L3b8458.  v5:= v5 + v3 @kind int;
+  #L3b845a.  if v1 != 0 then goto L3b8466;
+  #L3b845e.  call `parseTag`(v7, v0, v2, v4, v5) @signature `Lcom/mastercard/api/utils/tlv/TLVHandler;.parseTag:(BI[BI)V` @kind virtual;
+  #L3b8464.  goto L3b846c;
+  #L3b8466.  call `parseTag`(v7, v1, v2, v4, v5) @signature `Lcom/mastercard/api/utils/tlv/TLVHandler;.parseTag:(SI[BI)V` @kind virtual;
+  #L3b846c.  v5:= v5 + v2 @kind int;
+  #L3b846e.  goto L3b841e;
+  #L3b8470.  v4:= new `com.mastercard.api.utils.tlv.ParsingException`;
+  #L3b8474.  call `<init>`(v4) @signature `Lcom/mastercard/api/utils/tlv/ParsingException;.<init>:()V` @kind direct;
+  #L3b847a.  throw v4;
+  #L3b847c.  v4:= new `com.mastercard.api.utils.tlv.ParsingException`;
+  #L3b8480.  call `<init>`(v4) @signature `Lcom/mastercard/api/utils/tlv/ParsingException;.<init>:()V` @kind direct;
+  #L3b8486.  throw v4;
+  #L3b8488.  return @kind void;
+  catch `java.lang.NullPointerException` @[L3b8422..L3b846c] goto L3b847c;
+  catch `java.lang.ArrayIndexOutOfBoundsException` @[L3b8422..L3b846c] goto L3b8470;
+}
+procedure `void` `parseTLVNoExtend`(`byte`[] v3 @kind object, `int` v4 , `int` v5 , `com.mastercard.api.utils.tlv.TLVHandler` v6 @kind object) @signature `Lcom/mastercard/api/utils/tlv/TLVParser;.parseTLVNoExtend:([BIILcom/mastercard/api/utils/tlv/TLVHandler;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3b84ac.  v5:= v5 + v4 @kind int;
+  #L3b84ae.  if v4 >= v5 then goto L3b84d8;
+  #L3b84b2.  v0:= v4 + 1;
+  #L3b84b6.  v4:= v3[v4] @kind byte;
+  #L3b84ba.  call temp:= `getTLVLength`(v3, v0) @signature `Lcom/mastercard/api/utils/tlv/BERTLVUtils;.getTLVLength:([BI)I` @kind static;
+  #L3b84c0.  v1:= temp;
+  #L3b84c2.  call temp:= `getTLVLengthByte`(v3, v0) @signature `Lcom/mastercard/api/utils/tlv/BERTLVUtils;.getTLVLengthByte:([BI)I` @kind static;
+  #L3b84c8.  v2:= temp;
+  #L3b84ca.  v0:= v0 + v2 @kind int;
+  #L3b84cc.  call `parseTag`(v6, v4, v1, v3, v0) @signature `Lcom/mastercard/api/utils/tlv/TLVHandler;.parseTag:(BI[BI)V` @kind virtual;
+  #L3b84d2.  v4:= v0 + v1 @kind int;
+  #L3b84d6.  goto L3b84ae;
+  #L3b84d8.  return @kind void;
+}

@@ -1,0 +1,423 @@
+record `kotlinx.coroutines.CommonPool` @kind class @AccessFlag PUBLIC_FINAL extends `kotlinx.coroutines.ExecutorCoroutineDispatcher` @kind class {
+}
+global `kotlinx.coroutines.CommonPool` `@@kotlinx.coroutines.CommonPool.INSTANCE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@kotlinx.coroutines.CommonPool.a` @AccessFlag PRIVATE_STATIC_FINAL;
+global `boolean` `@@kotlinx.coroutines.CommonPool.b` @AccessFlag PRIVATE_STATIC;
+global `java.util.concurrent.Executor` `@@kotlinx.coroutines.CommonPool.pool` @AccessFlag PRIVATE_STATIC_VOLATILE;
+procedure `void` `<clinit>`() @signature `Lkotlinx/coroutines/CommonPool;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L155344.  v0:= new `kotlinx.coroutines.CommonPool`;
+  #L155348.  call `<init>`(v0) @signature `Lkotlinx/coroutines/CommonPool;.<init>:()V` @kind direct;
+  #L15534e.  `@@kotlinx.coroutines.CommonPool.INSTANCE` @type ^`kotlinx.coroutines.CommonPool` := v0 @kind object;
+  #L155352.  v0:= "kotlinx.coroutines.default.parallelism" @kind object;
+  #L155356.  call temp:= `getProperty`(v0) @signature `Ljava/lang/System;.getProperty:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L15535c.  v0:= temp @kind object;
+  #L15535e.  goto L155362;
+  #L155360.  v0:= 0I;
+  #L155362.  if v0 != 0 then goto L15536a;
+  #L155366.  v0:= -1I;
+  #L155368.  goto L15538c;
+  #L15536a.  call temp:= `toIntOrNull`(v0) @signature `Lkotlin/text/StringsKt;.toIntOrNull:(Ljava/lang/String;)Ljava/lang/Integer;` @kind static;
+  #L155370.  v1:= temp @kind object;
+  #L155372.  if v1 == 0 then goto L155392;
+  #L155376.  call temp:= `intValue`(v1) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L15537c.  v2:= temp;
+  #L15537e.  v3:= 1I;
+  #L155380.  if v2 < v3 then goto L155392;
+  #L155384.  call temp:= `intValue`(v1) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L15538a.  v0:= temp;
+  #L15538c.  `@@kotlinx.coroutines.CommonPool.a` @type ^`int` := v0;
+  #L155390.  return @kind void;
+  #L155392.  v1:= "Expected positive number in kotlinx.coroutines.default.parallelism, but has " @kind object;
+  #L155396.  call temp:= `stringPlus`(v1, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.stringPlus:(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L15539c.  v0:= temp @kind object;
+  #L15539e.  v1:= new `java.lang.IllegalStateException`;
+  #L1553a2.  call temp:= `toString`(v0) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1553a8.  v0:= temp @kind object;
+  #L1553aa.  call `<init>`(v1, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1553b0.  throw v1;
+  catch `java.lang.Throwable` @[L155352..L15535e] goto L155360;
+}
+procedure `void` `<init>`(`kotlinx.coroutines.CommonPool` v0 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L1553d0.  call `<init>`(v0) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.<init>:()V` @kind direct;
+  #L1553d6.  return @kind void;
+}
+procedure `java.util.concurrent.ExecutorService` `a`(`kotlinx.coroutines.CommonPool` v3 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.a:()Ljava/util/concurrent/ExecutorService;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1551ec.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L1551f0.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L1551f6.  call temp:= `e`(v3) @signature `Lkotlinx/coroutines/CommonPool;.e:()I` @kind direct;
+  #L1551fc.  v1:= temp;
+  #L1551fe.  v2:= new `kotlinx.coroutines.a`;
+  #L155202.  call `<init>`(v2, v0) @signature `Lkotlinx/coroutines/a;.<init>:(Ljava/util/concurrent/atomic/AtomicInteger;)V` @kind direct;
+  #L155208.  call temp:= `newFixedThreadPool`(v1, v2) @signature `Ljava/util/concurrent/Executors;.newFixedThreadPool:(ILjava/util/concurrent/ThreadFactory;)Ljava/util/concurrent/ExecutorService;` @kind static;
+  #L15520e.  v0:= temp @kind object;
+  #L155210.  return v0 @kind object;
+}
+procedure `java.lang.Thread` `b`(`java.util.concurrent.atomic.AtomicInteger` v2 @kind object, `java.lang.Runnable` v3 @kind object) @signature `Lkotlinx/coroutines/CommonPool;.b:(Ljava/util/concurrent/atomic/AtomicInteger;Ljava/lang/Runnable;)Ljava/lang/Thread;` @AccessFlag PRIVATE_STATIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L155130.  v0:= new `java.lang.Thread`;
+  #L155134.  call temp:= `incrementAndGet`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.incrementAndGet:()I` @kind virtual;
+  #L15513a.  v2:= temp;
+  #L15513c.  call temp:= `valueOf`(v2) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L155142.  v2:= temp @kind object;
+  #L155144.  v1:= "CommonPool-worker-" @kind object;
+  #L155148.  call temp:= `stringPlus`(v1, v2) @signature `Lkotlin/jvm/internal/Intrinsics;.stringPlus:(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L15514e.  v2:= temp @kind object;
+  #L155150.  call `<init>`(v0, v3, v2) @signature `Ljava/lang/Thread;.<init>:(Ljava/lang/Runnable;Ljava/lang/String;)V` @kind direct;
+  #L155156.  v2:= 1I;
+  #L155158.  call `setDaemon`(v0, v2) @signature `Ljava/lang/Thread;.setDaemon:(Z)V` @kind virtual;
+  #L15515e.  return v0 @kind object;
+}
+procedure `java.util.concurrent.ExecutorService` `c`(`kotlinx.coroutines.CommonPool` v6 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.c:()Ljava/util/concurrent/ExecutorService;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L155224.  call temp:= `getSecurityManager`() @signature `Ljava/lang/System;.getSecurityManager:()Ljava/lang/SecurityManager;` @kind static;
+  #L15522a.  v0:= temp @kind object;
+  #L15522c.  if v0 == 0 then goto L15523a;
+  #L155230.  call temp:= `a`(v6) @signature `Lkotlinx/coroutines/CommonPool;.a:()Ljava/util/concurrent/ExecutorService;` @kind direct;
+  #L155236.  v0:= temp @kind object;
+  #L155238.  return v0 @kind object;
+  #L15523a.  v0:= 0I;
+  #L15523c.  v1:= "java.util.concurrent.ForkJoinPool" @kind object;
+  #L155240.  call temp:= `forName`(v1) @signature `Ljava/lang/Class;.forName:(Ljava/lang/String;)Ljava/lang/Class;` @kind static;
+  #L155246.  v1:= temp @kind object;
+  #L155248.  goto L15524c;
+  #L15524a.  v1:= v0 @kind object;
+  #L15524c.  if v1 != 0 then goto L15525a;
+  #L155250.  call temp:= `a`(v6) @signature `Lkotlinx/coroutines/CommonPool;.a:()Ljava/util/concurrent/ExecutorService;` @kind direct;
+  #L155256.  v0:= temp @kind object;
+  #L155258.  return v0 @kind object;
+  #L15525a.  v2:= `@@kotlinx.coroutines.CommonPool.b` @type ^`boolean` @kind boolean;
+  #L15525e.  v3:= 0I;
+  #L155260.  if v2 != 0 then goto L1552ba;
+  #L155264.  v2:= `@@kotlinx.coroutines.CommonPool.a` @type ^`int`;
+  #L155268.  if v2 >= 0 then goto L1552ba;
+  #L15526c.  v2:= "commonPool" @kind object;
+  #L155270.  v4:= new `java.lang.Class`[v3];
+  #L155274.  call temp:= `getMethod`(v1, v2, v4) @signature `Ljava/lang/Class;.getMethod:(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;` @kind virtual;
+  #L15527a.  v2:= temp @kind object;
+  #L15527c.  v4:= new `java.lang.Object`[v3];
+  #L155280.  call temp:= `invoke`(v2, v0, v4) @signature `Ljava/lang/reflect/Method;.invoke:(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L155286.  v2:= temp @kind object;
+  #L155288.  v4:= instanceof @variable v2 @type ^`java.util.concurrent.ExecutorService` @kind boolean;
+  #L15528c.  if v4 == 0 then goto L155296;
+  #L155290.  v2:= (`java.util.concurrent.ExecutorService`) v2 @kind object;
+  #L155294.  goto L155298;
+  #L155296.  v2:= v0 @kind object;
+  #L155298.  if v2 != 0 then goto L15529e;
+  #L15529c.  goto L1552ba;
+  #L15529e.  v4:= `@@kotlinx.coroutines.CommonPool.INSTANCE` @type ^`kotlinx.coroutines.CommonPool` @kind object;
+  #L1552a2.  call temp:= `isGoodCommonPool$kotlinx_coroutines_core`(v4, v1, v2) @signature `Lkotlinx/coroutines/CommonPool;.isGoodCommonPool$kotlinx_coroutines_core:(Ljava/lang/Class;Ljava/util/concurrent/ExecutorService;)Z` @kind virtual;
+  #L1552a8.  v4:= temp;
+  #L1552aa.  if v4 == 0 then goto L1552b0;
+  #L1552ae.  goto L1552b2;
+  #L1552b0.  v2:= v0 @kind object;
+  #L1552b2.  if v2 != 0 then goto L1552b8;
+  #L1552b6.  goto L1552ba;
+  #L1552b8.  return v2 @kind object;
+  #L1552ba.  v2:= 1I;
+  #L1552bc.  v4:= new `java.lang.Class`[v2];
+  #L1552c0.  v5:= `@@java.lang.Integer.TYPE` @type ^`java.lang.Class` @kind object;
+  #L1552c4.  v4[v3]:= v5 @kind object;
+  #L1552c8.  call temp:= `getConstructor`(v1, v4) @signature `Ljava/lang/Class;.getConstructor:([Ljava/lang/Class;)Ljava/lang/reflect/Constructor;` @kind virtual;
+  #L1552ce.  v1:= temp @kind object;
+  #L1552d0.  v2:= new `java.lang.Object`[v2];
+  #L1552d4.  v4:= `@@kotlinx.coroutines.CommonPool.INSTANCE` @type ^`kotlinx.coroutines.CommonPool` @kind object;
+  #L1552d8.  call temp:= `e`(v4) @signature `Lkotlinx/coroutines/CommonPool;.e:()I` @kind direct;
+  #L1552de.  v4:= temp;
+  #L1552e0.  call temp:= `valueOf`(v4) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L1552e6.  v4:= temp @kind object;
+  #L1552e8.  v2[v3]:= v4 @kind object;
+  #L1552ec.  call temp:= `newInstance`(v1, v2) @signature `Ljava/lang/reflect/Constructor;.newInstance:([Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L1552f2.  v1:= temp @kind object;
+  #L1552f4.  v2:= instanceof @variable v1 @type ^`java.util.concurrent.ExecutorService` @kind boolean;
+  #L1552f8.  if v2 == 0 then goto L155306;
+  #L1552fc.  v1:= (`java.util.concurrent.ExecutorService`) v1 @kind object;
+  #L155300.  v0:= v1 @kind object;
+  #L155302.  goto L155306;
+  #L155304.  
+  #L155306.  if v0 != 0 then goto L155312;
+  #L15530a.  call temp:= `a`(v6) @signature `Lkotlinx/coroutines/CommonPool;.a:()Ljava/util/concurrent/ExecutorService;` @kind direct;
+  #L155310.  v0:= temp @kind object;
+  #L155312.  return v0 @kind object;
+  catch `java.lang.Throwable` @[L15523c..L155248] goto L15524a;
+  catch `java.lang.Throwable` @[L15526c..L155294] goto L155296;
+  catch `java.lang.Throwable` @[L1552bc..L155300] goto L155304;
+}
+procedure `java.util.concurrent.Executor` `d`(`kotlinx.coroutines.CommonPool` v1 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.d:()Ljava/util/concurrent/Executor;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+
+  #L1551b0.  @monitorenter v1
+  #L1551b2.  v0:= `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` @kind object;
+  #L1551b6.  if v0 != 0 then goto L1551c6;
+  #L1551ba.  call temp:= `c`(v1) @signature `Lkotlinx/coroutines/CommonPool;.c:()Ljava/util/concurrent/ExecutorService;` @kind direct;
+  #L1551c0.  v0:= temp @kind object;
+  #L1551c2.  `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` := v0 @kind object;
+  #L1551c6.  @monitorexit v1
+  #L1551c8.  return v0 @kind object;
+  #L1551ca.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1551cc.  @monitorexit v1
+  #L1551ce.  throw v0;
+  catch `java.lang.Throwable` @[L1551b2..L1551c6] goto L1551ca;
+}
+procedure `int` `e`(`kotlinx.coroutines.CommonPool` v3 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.e:()I` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1550b4.  v0:= `@@kotlinx.coroutines.CommonPool.a` @type ^`int`;
+  #L1550b8.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L1550be.  v0:= temp @kind object;
+  #L1550c0.  call temp:= `intValue`(v0) @signature `Ljava/lang/Number;.intValue:()I` @kind virtual;
+  #L1550c6.  v1:= temp;
+  #L1550c8.  v2:= 1I;
+  #L1550ca.  if v1 <= 0 then goto L1550d2;
+  #L1550ce.  v1:= 1I;
+  #L1550d0.  goto L1550d4;
+  #L1550d2.  v1:= 0I;
+  #L1550d4.  if v1 == 0 then goto L1550da;
+  #L1550d8.  goto L1550dc;
+  #L1550da.  v0:= 0I;
+  #L1550dc.  if v0 != 0 then goto L1550fc;
+  #L1550e0.  call temp:= `getRuntime`() @signature `Ljava/lang/Runtime;.getRuntime:()Ljava/lang/Runtime;` @kind static;
+  #L1550e6.  v0:= temp @kind object;
+  #L1550e8.  call temp:= `availableProcessors`(v0) @signature `Ljava/lang/Runtime;.availableProcessors:()I` @kind virtual;
+  #L1550ee.  v0:= temp;
+  #L1550f0.  v0:= v0 - v2 @kind int;
+  #L1550f2.  call temp:= `coerceAtLeast`(v0, v2) @signature `Lkotlin/ranges/RangesKt;.coerceAtLeast:(II)I` @kind static;
+  #L1550f8.  v0:= temp;
+  #L1550fa.  goto L155104;
+  #L1550fc.  call temp:= `intValue`(v0) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L155102.  v0:= temp;
+  #L155104.  return v0;
+}
+procedure `void` `f`() @signature `Lkotlinx/coroutines/CommonPool;.f:()V` @AccessFlag PRIVATE_STATIC_FINAL {
+    temp;
+
+  #L155484.  return @kind void;
+}
+procedure `java.lang.Thread` `g`(`java.util.concurrent.atomic.AtomicInteger` v0 @kind object, `java.lang.Runnable` v1 @kind object) @signature `Lkotlinx/coroutines/CommonPool;.g:(Ljava/util/concurrent/atomic/AtomicInteger;Ljava/lang/Runnable;)Ljava/lang/Thread;` @AccessFlag PUBLIC_STATIC_SYNTHETIC {
+    temp;
+
+  #L155170.  call temp:= `b`(v0, v1) @signature `Lkotlinx/coroutines/CommonPool;.b:(Ljava/util/concurrent/atomic/AtomicInteger;Ljava/lang/Runnable;)Ljava/lang/Thread;` @kind static;
+  #L155176.  v0:= temp @kind object;
+  #L155178.  return v0 @kind object;
+}
+procedure `void` `h`(`java.lang.Runnable` v0 @kind object) @signature `Lkotlinx/coroutines/CommonPool;.h:(Ljava/lang/Runnable;)V` @AccessFlag PUBLIC_STATIC_SYNTHETIC {
+    temp;
+
+  #L155498.  call `j`(v0) @signature `Lkotlinx/coroutines/CommonPool;.j:(Ljava/lang/Runnable;)V` @kind static;
+  #L15549e.  v0:= 0I;
+  #L1554a0.  throw v0;
+}
+procedure `void` `i`() @signature `Lkotlinx/coroutines/CommonPool;.i:()V` @AccessFlag PUBLIC_STATIC_SYNTHETIC {
+    temp;
+
+  #L1554b4.  call `f`() @signature `Lkotlinx/coroutines/CommonPool;.f:()V` @kind static;
+  #L1554ba.  return @kind void;
+}
+procedure `void` `j`(`java.lang.Runnable` v1 @kind object) @signature `Lkotlinx/coroutines/CommonPool;.j:(Ljava/lang/Runnable;)V` @AccessFlag PRIVATE_STATIC_FINAL {
+    temp;
+    v0;
+
+  #L1555a8.  v1:= new `java.util.concurrent.RejectedExecutionException`;
+  #L1555ac.  v0:= "CommonPool was shutdown" @kind object;
+  #L1555b0.  call `<init>`(v1, v0) @signature `Ljava/util/concurrent/RejectedExecutionException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1555b6.  throw v1;
+}
+procedure `void` `close`(`kotlinx.coroutines.CommonPool` v2 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1553e8.  v0:= new `java.lang.IllegalStateException`;
+  #L1553ec.  v1:= "Close cannot be invoked on CommonPool" @kind object;
+  #L1553f0.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1553f6.  v1:= temp @kind object;
+  #L1553f8.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1553fe.  throw v0;
+}
+procedure `void` `dispatch`(`kotlinx.coroutines.CommonPool` v1 @kind this, `kotlin.coroutines.CoroutineContext` v2 @kind object, `java.lang.Runnable` v3 @kind object) @signature `Lkotlinx/coroutines/CommonPool;.dispatch:(Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L155410.  v2:= `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` @kind object;
+  #L155414.  if v2 != 0 then goto L155420;
+  #L155418.  call temp:= `d`(v1) @signature `Lkotlinx/coroutines/CommonPool;.d:()Ljava/util/concurrent/Executor;` @kind direct;
+  #L15541e.  v2:= temp @kind object;
+  #L155420.  call temp:= `getTimeSource`() @signature `Lkotlinx/coroutines/AbstractTimeSourceKt;.getTimeSource:()Lkotlinx/coroutines/AbstractTimeSource;` @kind static;
+  #L155426.  v0:= temp @kind object;
+  #L155428.  if v0 != 0 then goto L155430;
+  #L15542c.  v0:= v3 @kind object;
+  #L15542e.  goto L155438;
+  #L155430.  call temp:= `wrapTask`(v0, v3) @signature `Lkotlinx/coroutines/AbstractTimeSource;.wrapTask:(Ljava/lang/Runnable;)Ljava/lang/Runnable;` @kind virtual;
+  #L155436.  v0:= temp @kind object;
+  #L155438.  call `execute`(v2, v0) @signature `Ljava/util/concurrent/Executor;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L15543e.  goto L155460;
+  #L155440.  
+  #L155442.  call temp:= `getTimeSource`() @signature `Lkotlinx/coroutines/AbstractTimeSourceKt;.getTimeSource:()Lkotlinx/coroutines/AbstractTimeSource;` @kind static;
+  #L155448.  v2:= temp @kind object;
+  #L15544a.  if v2 != 0 then goto L155450;
+  #L15544e.  goto L155456;
+  #L155450.  call `unTrackTask`(v2) @signature `Lkotlinx/coroutines/AbstractTimeSource;.unTrackTask:()V` @kind virtual;
+  #L155456.  v2:= `@@kotlinx.coroutines.DefaultExecutor.INSTANCE` @type ^`kotlinx.coroutines.DefaultExecutor` @kind object;
+  #L15545a.  call `enqueue`(v2, v3) @signature `Lkotlinx/coroutines/EventLoopImplBase;.enqueue:(Ljava/lang/Runnable;)V` @kind virtual;
+  #L155460.  return @kind void;
+  catch `java.util.concurrent.RejectedExecutionException` @[L155410..L15543e] goto L155440;
+}
+procedure `java.util.concurrent.Executor` `getExecutor`(`kotlinx.coroutines.CommonPool` v1 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.getExecutor:()Ljava/util/concurrent/Executor;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L15518c.  v0:= `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` @kind object;
+  #L155190.  if v0 != 0 then goto L15519c;
+  #L155194.  call temp:= `d`(v1) @signature `Lkotlinx/coroutines/CommonPool;.d:()Ljava/util/concurrent/Executor;` @kind direct;
+  #L15519a.  v0:= temp @kind object;
+  #L15519c.  return v0 @kind object;
+}
+procedure `boolean` `isGoodCommonPool$kotlinx_coroutines_core`(`kotlinx.coroutines.CommonPool` v4 @kind this, `java.lang.Class` v5 @kind object, `java.util.concurrent.ExecutorService` v6 @kind object) @signature `Lkotlinx/coroutines/CommonPool;.isGoodCommonPool$kotlinx_coroutines_core:(Ljava/lang/Class;Ljava/util/concurrent/ExecutorService;)Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L155044.  v0:= `@@kotlinx.coroutines.c.a` @type ^`kotlinx.coroutines.c` @kind object;
+  #L155048.  call temp:= `submit`(v6, v0) @signature `Ljava/util/concurrent/ExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L15504e.  v0:= 0I;
+  #L155050.  v1:= 0I;
+  #L155052.  v2:= "getPoolSize" @kind object;
+  #L155056.  v3:= new `java.lang.Class`[v1];
+  #L15505a.  call temp:= `getMethod`(v5, v2, v3) @signature `Ljava/lang/Class;.getMethod:(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;` @kind virtual;
+  #L155060.  v5:= temp @kind object;
+  #L155062.  v2:= new `java.lang.Object`[v1];
+  #L155066.  call temp:= `invoke`(v5, v6, v2) @signature `Ljava/lang/reflect/Method;.invoke:(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L15506c.  v5:= temp @kind object;
+  #L15506e.  v6:= instanceof @variable v5 @type ^`java.lang.Integer` @kind boolean;
+  #L155072.  if v6 == 0 then goto L155080;
+  #L155076.  v5:= (`java.lang.Integer`) v5 @kind object;
+  #L15507a.  v0:= v5 @kind object;
+  #L15507c.  goto L155080;
+  #L15507e.  
+  #L155080.  if v0 != 0 then goto L155086;
+  #L155084.  return v1;
+  #L155086.  call temp:= `intValue`(v0) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L15508c.  v5:= temp;
+  #L15508e.  v6:= 1I;
+  #L155090.  if v5 < v6 then goto L155096;
+  #L155094.  v1:= 1I;
+  #L155096.  return v1;
+  catch `java.lang.Throwable` @[L155052..L15507a] goto L15507e;
+}
+procedure `void` `restore$kotlinx_coroutines_core`(`kotlinx.coroutines.CommonPool` v2 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.restore$kotlinx_coroutines_core:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1554cc.  @monitorenter v2
+  #L1554ce.  v0:= 0L;
+  #L1554d2.  call `shutdown$kotlinx_coroutines_core`(v2, v0) @signature `Lkotlinx/coroutines/CommonPool;.shutdown$kotlinx_coroutines_core:(J)V` @kind virtual;
+  #L1554d8.  v0:= 0I;
+  #L1554da.  `@@kotlinx.coroutines.CommonPool.b` @type ^`boolean` := v0 @kind boolean;
+  #L1554de.  v0:= 0I;
+  #L1554e0.  `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` := v0 @kind object;
+  #L1554e4.  @monitorexit v2
+  #L1554e6.  return @kind void;
+  #L1554e8.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1554ea.  @monitorexit v2
+  #L1554ec.  throw v0;
+  catch `java.lang.Throwable` @[L1554d2..L1554e4] goto L1554e8;
+}
+procedure `void` `shutdown$kotlinx_coroutines_core`(`kotlinx.coroutines.CommonPool` v4 @kind this, `long` v5 ) @signature `Lkotlinx/coroutines/CommonPool;.shutdown$kotlinx_coroutines_core:(J)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L15550c.  @monitorenter v4
+  #L15550e.  v0:= `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` @kind object;
+  #L155512.  v1:= instanceof @variable v0 @type ^`java.util.concurrent.ExecutorService` @kind boolean;
+  #L155516.  if v1 == 0 then goto L155520;
+  #L15551a.  v0:= (`java.util.concurrent.ExecutorService`) v0 @kind object;
+  #L15551e.  goto L155522;
+  #L155520.  v0:= 0I;
+  #L155522.  if v0 != 0 then goto L155528;
+  #L155526.  goto L155578;
+  #L155528.  call `shutdown`(v0) @signature `Ljava/util/concurrent/ExecutorService;.shutdown:()V` @kind interface;
+  #L15552e.  v1:= 0L;
+  #L155532.  v3:= lcmp(v5, v1);
+  #L155536.  if v3 <= 0 then goto L155544;
+  #L15553a.  v1:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L15553e.  call temp:= `awaitTermination`(v0, v5, v1) @signature `Ljava/util/concurrent/ExecutorService;.awaitTermination:(JLjava/util/concurrent/TimeUnit;)Z` @kind interface;
+  #L155544.  call temp:= `shutdownNow`(v0) @signature `Ljava/util/concurrent/ExecutorService;.shutdownNow:()Ljava/util/List;` @kind interface;
+  #L15554a.  v5:= temp @kind object;
+  #L15554c.  call temp:= `iterator`(v5) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L155552.  v5:= temp @kind object;
+  #L155554.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L15555a.  v6:= temp;
+  #L15555c.  if v6 == 0 then goto L155578;
+  #L155560.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L155566.  v6:= temp @kind object;
+  #L155568.  v6:= (`java.lang.Runnable`) v6 @kind object;
+  #L15556c.  v0:= `@@kotlinx.coroutines.DefaultExecutor.INSTANCE` @type ^`kotlinx.coroutines.DefaultExecutor` @kind object;
+  #L155570.  call `enqueue`(v0, v6) @signature `Lkotlinx/coroutines/EventLoopImplBase;.enqueue:(Ljava/lang/Runnable;)V` @kind virtual;
+  #L155576.  goto L155554;
+  #L155578.  v5:= `@@kotlinx.coroutines.b.a` @type ^`kotlinx.coroutines.b` @kind object;
+  #L15557c.  `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` := v5 @kind object;
+  #L155580.  @monitorexit v4
+  #L155582.  return @kind void;
+  #L155584.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L155586.  @monitorexit v4
+  #L155588.  throw v5;
+  catch `java.lang.Throwable` @[L15550e..L155580] goto L155584;
+}
+procedure `java.lang.String` `toString`(`kotlinx.coroutines.CommonPool` v1 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L155118.  v0:= "CommonPool" @kind object;
+  #L15511c.  return v0 @kind object;
+}
+procedure `void` `usePrivatePool$kotlinx_coroutines_core`(`kotlinx.coroutines.CommonPool` v2 @kind this) @signature `Lkotlinx/coroutines/CommonPool;.usePrivatePool$kotlinx_coroutines_core:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1555c8.  @monitorenter v2
+  #L1555ca.  v0:= 0L;
+  #L1555ce.  call `shutdown$kotlinx_coroutines_core`(v2, v0) @signature `Lkotlinx/coroutines/CommonPool;.shutdown$kotlinx_coroutines_core:(J)V` @kind virtual;
+  #L1555d4.  v0:= 1I;
+  #L1555d6.  `@@kotlinx.coroutines.CommonPool.b` @type ^`boolean` := v0 @kind boolean;
+  #L1555da.  v0:= 0I;
+  #L1555dc.  `@@kotlinx.coroutines.CommonPool.pool` @type ^`java.util.concurrent.Executor` := v0 @kind object;
+  #L1555e0.  @monitorexit v2
+  #L1555e2.  return @kind void;
+  #L1555e4.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1555e6.  @monitorexit v2
+  #L1555e8.  throw v0;
+  catch `java.lang.Throwable` @[L1555ce..L1555e0] goto L1555e4;
+}

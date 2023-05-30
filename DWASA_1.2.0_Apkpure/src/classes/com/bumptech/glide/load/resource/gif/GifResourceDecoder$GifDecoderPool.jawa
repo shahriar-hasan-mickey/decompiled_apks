@@ -1,0 +1,48 @@
+record `com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool` @kind class @AccessFlag  {
+  `java.util.Queue` `com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool.pool` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool` v1 @kind this) @signature `Lcom/bumptech/glide/load/resource/gif/GifResourceDecoder$GifDecoderPool;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2c45a0.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2c45a6.  v0:= 0I;
+  #L2c45a8.  call temp:= `createQueue`(v0) @signature `Lcom/bumptech/glide/util/Util;.createQueue:(I)Ljava/util/Queue;` @kind static;
+  #L2c45ae.  v0:= temp @kind object;
+  #L2c45b0.  v1.`com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool.pool` @type ^`java.util.Queue` := v0 @kind object;
+  #L2c45b4.  return @kind void;
+}
+procedure `com.bumptech.glide.gifdecoder.GifDecoder` `obtain`(`com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool` v1 @kind this, `com.bumptech.glide.gifdecoder.GifDecoder$BitmapProvider` v2 @kind object) @signature `Lcom/bumptech/glide/load/resource/gif/GifResourceDecoder$GifDecoderPool;.obtain:(Lcom/bumptech/glide/gifdecoder/GifDecoder$BitmapProvider;)Lcom/bumptech/glide/gifdecoder/GifDecoder;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2c4558.  @monitorenter v1
+  #L2c455a.  v0:= v1.`com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool.pool` @type ^`java.util.Queue` @kind object;
+  #L2c455e.  call temp:= `poll`(v0) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L2c4564.  v0:= temp @kind object;
+  #L2c4566.  v0:= (`com.bumptech.glide.gifdecoder.GifDecoder`) v0 @kind object;
+  #L2c456a.  if v0 != 0 then goto L2c4578;
+  #L2c456e.  v0:= new `com.bumptech.glide.gifdecoder.GifDecoder`;
+  #L2c4572.  call `<init>`(v0, v2) @signature `Lcom/bumptech/glide/gifdecoder/GifDecoder;.<init>:(Lcom/bumptech/glide/gifdecoder/GifDecoder$BitmapProvider;)V` @kind direct;
+  #L2c4578.  @monitorexit v1
+  #L2c457a.  return v0 @kind object;
+  #L2c457c.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2c457e.  @monitorexit v1
+  #L2c4580.  throw v2;
+  catch `java.lang.Throwable` @[L2c455a..L2c4578] goto L2c457c;
+}
+procedure `void` `release`(`com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool` v1 @kind this, `com.bumptech.glide.gifdecoder.GifDecoder` v2 @kind object) @signature `Lcom/bumptech/glide/load/resource/gif/GifResourceDecoder$GifDecoderPool;.release:(Lcom/bumptech/glide/gifdecoder/GifDecoder;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2c45c8.  @monitorenter v1
+  #L2c45ca.  call `clear`(v2) @signature `Lcom/bumptech/glide/gifdecoder/GifDecoder;.clear:()V` @kind virtual;
+  #L2c45d0.  v0:= v1.`com.bumptech.glide.load.resource.gif.GifResourceDecoder$GifDecoderPool.pool` @type ^`java.util.Queue` @kind object;
+  #L2c45d4.  call temp:= `offer`(v0, v2) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L2c45da.  @monitorexit v1
+  #L2c45dc.  return @kind void;
+  #L2c45de.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2c45e0.  @monitorexit v1
+  #L2c45e2.  throw v2;
+  catch `java.lang.Throwable` @[L2c45ca..L2c45da] goto L2c45de;
+}

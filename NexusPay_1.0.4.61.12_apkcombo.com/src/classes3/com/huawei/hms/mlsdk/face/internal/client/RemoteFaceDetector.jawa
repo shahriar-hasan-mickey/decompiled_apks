@@ -1,0 +1,687 @@
+record `com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` @kind class @AccessFlag PUBLIC {
+  `boolean` `com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @AccessFlag PRIVATE;
+}
+global `int` `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.DEFAULT_ERROE_CODE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.Object` `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.lock` @AccessFlag PRIVATE_STATIC_VOLATILE;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L243c98.  v0:= new `java.lang.Object`;
+  #L243c9c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L243ca2.  `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.lock` @type ^`java.lang.Object` := v0 @kind object;
+  #L243ca6.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v1 @kind this) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L243cb8.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L243cbe.  v0:= 0I;
+  #L243cc0.  v1.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` := v0 @kind boolean;
+  #L243cc4.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v0 @kind this, `com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector$1` v1 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.<init>:(Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector$1;)V` @AccessFlag SYNTHETIC_CONSTRUCTOR {
+    temp;
+
+  #L243cd8.  call `<init>`(v0) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.<init>:()V` @kind direct;
+  #L243cde.  return @kind void;
+}
+procedure `boolean` `expectedFace`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v3 @kind this, `com.huawei.hms.ml.common.face.FaceParcel` v4 @kind object, `com.huawei.hms.mlsdk.common.MLFrame` v5 @kind object, `com.huawei.hms.mlsdk.face.MLFaceAnalyzerSetting` v6 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.expectedFace:(Lcom/huawei/hms/ml/common/face/FaceParcel;Lcom/huawei/hms/mlsdk/common/MLFrame;Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L243440.  call temp:= `getKeyPointType`(v6) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getKeyPointType:()I` @kind virtual;
+  #L243446.  v0:= temp;
+  #L243448.  if v0 != 0 then goto L24345a;
+  #L24344c.  v0:= new `java.util.ArrayList`;
+  #L243450.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L243456.  v4.`com.huawei.hms.ml.common.face.FaceParcel.landmarks` @type ^`java.util.List` := v0 @kind object;
+  #L24345a.  call temp:= `getShapeType`(v6) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getShapeType:()I` @kind virtual;
+  #L243460.  v0:= temp;
+  #L243462.  v1:= 3I;
+  #L243464.  if v0 != v1 then goto L243476;
+  #L243468.  v0:= new `java.util.ArrayList`;
+  #L24346c.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L243472.  v4.`com.huawei.hms.ml.common.face.FaceParcel.contours` @type ^`java.util.List` := v0 @kind object;
+  #L243476.  call temp:= `getMinFaceProportion`(v6) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getMinFaceProportion:()F` @kind virtual;
+  #L24347c.  v6:= temp;
+  #L24347e.  v0:= 0I;
+  #L243480.  v1:= fcmpl(v6, v0);
+  #L243484.  if v1 < 0 then goto L2434f4;
+  #L243488.  v1:= 1.0F;
+  #L24348c.  v1:= fcmpg(v6, v1);
+  #L243490.  if v1 > 0 then goto L2434f4;
+  #L243494.  call temp:= `acquireProperty`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L24349a.  v1:= temp @kind object;
+  #L24349c.  call temp:= `getQuadrant`(v1) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getQuadrant:()I` @kind virtual;
+  #L2434a2.  v1:= temp;
+  #L2434a4.  if v1 == 0 then goto L2434f4;
+  #L2434a8.  call temp:= `acquireProperty`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L2434ae.  v1:= temp @kind object;
+  #L2434b0.  call temp:= `getQuadrant`(v1) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getQuadrant:()I` @kind virtual;
+  #L2434b6.  v1:= temp;
+  #L2434b8.  v2:= 2I;
+  #L2434ba.  if v1 == v2 then goto L2434f4;
+  #L2434be.  call temp:= `acquireProperty`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L2434c4.  v5:= temp @kind object;
+  #L2434c6.  call temp:= `getHeight`(v5) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getHeight:()I` @kind virtual;
+  #L2434cc.  v5:= temp;
+  #L2434ce.  v5:= (`float`) v5 @kind i2f;
+  #L2434d0.  v4:= v4.`com.huawei.hms.ml.common.face.FaceParcel.width` @type ^`float`;
+  #L2434d4.  v1:= 0I;
+  #L2434d6.  v2:= fcmpl(v4, v0);
+  #L2434da.  if v2 == 0 then goto L2434f2;
+  #L2434de.  v0:= fcmpl(v5, v0);
+  #L2434e2.  if v0 != 0 then goto L2434e8;
+  #L2434e6.  goto L2434f2;
+  #L2434e8.  v4:= v4 / v5 @kind float;
+  #L2434ea.  v4:= fcmpg(v4, v6);
+  #L2434ee.  if v4 > 0 then goto L2434f4;
+  #L2434f2.  return v1;
+  #L2434f4.  v4:= 1I;
+  #L2434f6.  return v4;
+}
+procedure `com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` `getInstance`() @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.getInstance:()Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2435d0.  v0:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector$Holder.INSTANCE` @type ^`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` @kind object;
+  #L2435d4.  return v0 @kind object;
+}
+procedure `void` `notifyDownloadIfNeeded`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v2 @kind this, `android.content.Context` v3 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.notifyDownloadIfNeeded:(Landroid/content/Context;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L243d9c.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/mlsdk/internal/client/adapter/AvailableAdapterManager;.getInstance:()Lcom/huawei/hms/mlsdk/internal/client/adapter/AvailableAdapterManager;` @kind static;
+  #L243da2.  v0:= temp @kind object;
+  #L243da4.  call temp:= `a`() @signature `Lcom/huawei/hms/mlsdk/mlvision/b;.a:()Lcom/huawei/hms/mlsdk/mlvision/b;` @kind static;
+  #L243daa.  v1:= temp @kind object;
+  #L243dac.  call `notifyDownloadIfNeeded`(v0, v3, v1) @signature `Lcom/huawei/hms/mlsdk/internal/client/adapter/AbstractAdapter;.notifyDownloadIfNeeded:(Landroid/content/Context;Lcom/huawei/hms/mlsdk/dynamic/IInitializer;)V` @kind virtual;
+  #L243db2.  return @kind void;
+}
+procedure `com.huawei.hms.mlsdk.face.MLFaceAnalyzerSetting` `convertSetting`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v13 @kind this, `com.huawei.hms.mlsdk.face.MLFaceAnalyzerSetting` v14 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.convertSetting:(Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;)Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+
+  #L243548.  call temp:= `getFeatureType`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getFeatureType:()I` @kind virtual;
+  #L24354e.  v0:= temp;
+  #L243550.  v1:= 1I;
+  #L243552.  v2:= 2I;
+  #L243554.  if v0 != v1 then goto L24355c;
+  #L243558.  v6:= 2I;
+  #L24355a.  goto L243566;
+  #L24355c.  if v0 != v2 then goto L243564;
+  #L243560.  v6:= 1I;
+  #L243562.  goto L243566;
+  #L243564.  v6:= v0;
+  #L243566.  call temp:= `getPerformanceType`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getPerformanceType:()I` @kind virtual;
+  #L24356c.  v0:= temp;
+  #L24356e.  if v0 != v2 then goto L243576;
+  #L243572.  v7:= 1I;
+  #L243574.  goto L243578;
+  #L243576.  v7:= 2I;
+  #L243578.  v0:= new `com.huawei.hms.mlsdk.face.MLFaceAnalyzerSetting`;
+  #L24357c.  call temp:= `getKeyPointType`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getKeyPointType:()I` @kind virtual;
+  #L243582.  v4:= temp;
+  #L243584.  call temp:= `getShapeType`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getShapeType:()I` @kind virtual;
+  #L24358a.  v5:= temp;
+  #L24358c.  call temp:= `isPoseDisabled`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.isPoseDisabled:()Z` @kind virtual;
+  #L243592.  v8:= temp;
+  #L243594.  call temp:= `isTracingAllowed`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.isTracingAllowed:()Z` @kind virtual;
+  #L24359a.  v9:= temp;
+  #L24359c.  call temp:= `getTracingMode`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getTracingMode:()I` @kind virtual;
+  #L2435a2.  v10:= temp;
+  #L2435a4.  call temp:= `isMaxSizeFaceOnly`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.isMaxSizeFaceOnly:()Z` @kind virtual;
+  #L2435aa.  v11:= temp;
+  #L2435ac.  call temp:= `getMinFaceProportion`(v14) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.getMinFaceProportion:()F` @kind virtual;
+  #L2435b2.  v12:= temp;
+  #L2435b4.  v3:= v0 @kind object;
+  #L2435b6.  call `<init>`(v3, v4, v5, v6, v7, v8, v9, v10, v11, v12) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.<init>:(IIIIZZIZF)V` @kind direct;
+  #L2435bc.  return v0 @kind object;
+}
+procedure `void` `destroy`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v3 @kind this, `android.content.Context` v4 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.destroy:(Landroid/content/Context;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L243cf0.  @monitorenter v3
+  #L243cf2.  v4:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243cf6.  v0:= "Destroy" @kind object;
+  #L243cfa.  call `i`(v4, v0) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243d00.  call temp:= `a`() @signature `Lcom/huawei/hms/mlsdk/mlvision/b;.a:()Lcom/huawei/hms/mlsdk/mlvision/b;` @kind static;
+  #L243d06.  v4:= temp @kind object;
+  #L243d08.  call temp:= `getDynamicDelegate`(v4) @signature `Lcom/huawei/hms/mlsdk/dynamic/IInitializer;.getDynamicDelegate:()Landroid/os/IInterface;` @kind interface;
+  #L243d0e.  v4:= temp @kind object;
+  #L243d10.  if v4 != 0 then goto L243d26;
+  #L243d14.  v4:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243d18.  v0:= "Destroy delegate is null" @kind object;
+  #L243d1c.  call `i`(v4, v0) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243d22.  @monitorexit v3
+  #L243d24.  return @kind void;
+  #L243d26.  v4:= (`com.huawei.hms.ml.common.face.IRemoteFaceDetectorDelegate`) v4 @kind object;
+  #L243d2a.  call temp:= `destroy`(v4) @signature `Lcom/huawei/hms/ml/common/face/IRemoteFaceDetectorDelegate;.destroy:()I` @kind interface;
+  #L243d30.  goto L243d60;
+  #L243d32.  v4:= Exception @type ^`java.lang.Exception` @kind object;
+  #L243d34.  v0:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243d38.  v1:= new `java.lang.StringBuilder`;
+  #L243d3c.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L243d42.  v2:= "Destroy Exception e: " @kind object;
+  #L243d46.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243d4c.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243d52.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L243d58.  v4:= temp @kind object;
+  #L243d5a.  call `e`(v0, v4) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243d60.  @monitorexit v3
+  #L243d62.  return @kind void;
+  #L243d64.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L243d66.  @monitorexit v3
+  #L243d68.  throw v4;
+  catch `java.lang.Throwable` @[L243cf2..L243d22] goto L243d64;
+  catch `java.lang.Exception` @[L243d26..L243d30] goto L243d32;
+  catch `java.lang.Throwable` @[L243d26..L243d30] goto L243d64;
+  catch `java.lang.Throwable` @[L243d34..L243d60] goto L243d64;
+}
+procedure `java.util.List` `detect`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v2 @kind this, `android.content.Context` v3 @kind object, `android.os.Bundle` v4 @kind object, `com.huawei.hms.ml.common.face.FaceFrameParcel` v5 @kind object, `com.huawei.hms.ml.common.face.FaceDetectorOptionsParcel` v6 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.detect:(Landroid/content/Context;Landroid/os/Bundle;Lcom/huawei/hms/ml/common/face/FaceFrameParcel;Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;)Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2436e8.  @monitorenter v2
+  #L2436ea.  v0:= new `java.util.ArrayList`;
+  #L2436ee.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L2436f4.  v1:= v2.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` @kind boolean;
+  #L2436f8.  if v1 != 0 then goto L24370e;
+  #L2436fc.  call temp:= `initialize`(v2, v3, v6) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.initialize:(Landroid/content/Context;Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;)I` @kind virtual;
+  #L243702.  v3:= temp;
+  #L243704.  if v3 < 0 then goto L24370e;
+  #L243708.  v3:= 1I;
+  #L24370a.  v2.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` := v3 @kind boolean;
+  #L24370e.  v3:= v2.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` @kind boolean;
+  #L243712.  if v3 != 0 then goto L243728;
+  #L243716.  v3:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L24371a.  v4:= "Detect Initialed is false" @kind object;
+  #L24371e.  call `i`(v3, v4) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243724.  @monitorexit v2
+  #L243726.  return v0 @kind object;
+  #L243728.  call temp:= `a`() @signature `Lcom/huawei/hms/mlsdk/mlvision/b;.a:()Lcom/huawei/hms/mlsdk/mlvision/b;` @kind static;
+  #L24372e.  v3:= temp @kind object;
+  #L243730.  call temp:= `getDynamicDelegate`(v3) @signature `Lcom/huawei/hms/mlsdk/dynamic/IInitializer;.getDynamicDelegate:()Landroid/os/IInterface;` @kind interface;
+  #L243736.  v3:= temp @kind object;
+  #L243738.  if v3 != 0 then goto L24374e;
+  #L24373c.  v3:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243740.  v4:= "Detect delegate is null" @kind object;
+  #L243744.  call `i`(v3, v4) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L24374a.  @monitorexit v2
+  #L24374c.  return v0 @kind object;
+  #L24374e.  v3:= (`com.huawei.hms.ml.common.face.IRemoteFaceDetectorDelegate`) v3 @kind object;
+  #L243752.  call temp:= `detect`(v3, v4, v5, v6) @signature `Lcom/huawei/hms/ml/common/face/IRemoteFaceDetectorDelegate;.detect:(Landroid/os/Bundle;Lcom/huawei/hms/ml/common/face/FaceFrameParcel;Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;)Ljava/util/List;` @kind interface;
+  #L243758.  v3:= temp @kind object;
+  #L24375a.  @monitorexit v2
+  #L24375c.  return v3 @kind object;
+  #L24375e.  v3:= Exception @type ^`java.lang.Exception` @kind object;
+  #L243760.  v4:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243764.  v5:= new `java.lang.StringBuilder`;
+  #L243768.  call `<init>`(v5) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L24376e.  v6:= "Detect Exception e: " @kind object;
+  #L243772.  call temp:= `append`(v5, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243778.  call temp:= `append`(v5, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L24377e.  call temp:= `toString`(v5) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L243784.  v3:= temp @kind object;
+  #L243786.  call `e`(v4, v3) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L24378c.  @monitorexit v2
+  #L24378e.  return v0 @kind object;
+  #L243790.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L243792.  @monitorexit v2
+  #L243794.  throw v3;
+  catch `java.lang.Throwable` @[L2436ea..L243724] goto L243790;
+  catch `java.lang.Throwable` @[L243728..L24374a] goto L243790;
+  catch `java.lang.Exception` @[L24374e..L24375a] goto L24375e;
+  catch `java.lang.Throwable` @[L24374e..L24375a] goto L243790;
+  catch `java.lang.Throwable` @[L243760..L24378c] goto L243790;
+}
+procedure `java.util.List` `detect3DFromRemote`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v6 @kind this, `com.huawei.hms.mlsdk.common.MLFrame` v7 @kind object, `com.huawei.hms.mlsdk.face.face3d.ML3DFaceAnalyzerSetting` v8 @kind object, `com.huawei.hms.mlsdk.common.MLApplication` v9 @kind object, `java.lang.String` v10 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.detect3DFromRemote:(Lcom/huawei/hms/mlsdk/common/MLFrame;Lcom/huawei/hms/mlsdk/face/face3d/ML3DFaceAnalyzerSetting;Lcom/huawei/hms/mlsdk/common/MLApplication;Ljava/lang/String;)Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L2437d0.  v0:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L2437d4.  v1:= "enter detect3DFromRemote" @kind object;
+  #L2437d8.  call `i`(v0, v1) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2437de.  v0:= new `java.util.ArrayList`;
+  #L2437e2.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L2437e8.  v1:= new `com.huawei.hms.ml.common.face.FaceFrameParcel`;
+  #L2437ec.  call `<init>`(v1) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.<init>:()V` @kind direct;
+  #L2437f2.  call temp:= `getByteBuffer`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.getByteBuffer:()Ljava/nio/ByteBuffer;` @kind virtual;
+  #L2437f8.  v2:= temp @kind object;
+  #L2437fa.  if v2 == 0 then goto L24382a;
+  #L2437fe.  call temp:= `remaining`(v2) @signature `Ljava/nio/ByteBuffer;.remaining:()I` @kind virtual;
+  #L243804.  v3:= temp;
+  #L243806.  if v3 == 0 then goto L24382a;
+  #L24380a.  call temp:= `remaining`(v2) @signature `Ljava/nio/ByteBuffer;.remaining:()I` @kind virtual;
+  #L243810.  v3:= temp;
+  #L243812.  v4:= new `byte`[v3];
+  #L243816.  v5:= 0I;
+  #L243818.  call temp:= `get`(v2, v4, v5, v3) @signature `Ljava/nio/ByteBuffer;.get:([BII)Ljava/nio/ByteBuffer;` @kind virtual;
+  #L24381e.  call `setBytes`(v1, v4) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setBytes:([B)V` @kind virtual;
+  #L243824.  v2:= 17I;
+  #L243828.  goto L24383c;
+  #L24382a.  call temp:= `readBitmap`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.readBitmap:()Landroid/graphics/Bitmap;` @kind virtual;
+  #L243830.  v2:= temp @kind object;
+  #L243832.  call `setBitmap`(v1, v2) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setBitmap:(Landroid/graphics/Bitmap;)V` @kind virtual;
+  #L243838.  v2:= 117I;
+  #L24383c.  call temp:= `acquireProperty`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243842.  v3:= temp @kind object;
+  #L243844.  call temp:= `getTimestamp`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getTimestamp:()J` @kind virtual;
+  #L24384a.  v3:= temp @kind wide;
+  #L24384c.  call `setTimestampMillis`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setTimestampMillis:(J)V` @kind virtual;
+  #L243852.  call temp:= `acquireProperty`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243858.  v3:= temp @kind object;
+  #L24385a.  call temp:= `getQuadrant`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getQuadrant:()I` @kind virtual;
+  #L243860.  v3:= temp;
+  #L243862.  call `setRotation`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setRotation:(I)V` @kind virtual;
+  #L243868.  call temp:= `acquireProperty`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L24386e.  v3:= temp @kind object;
+  #L243870.  call temp:= `getWidth`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getWidth:()I` @kind virtual;
+  #L243876.  v3:= temp;
+  #L243878.  call `setWidth`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setWidth:(I)V` @kind virtual;
+  #L24387e.  call temp:= `acquireProperty`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243884.  v3:= temp @kind object;
+  #L243886.  call temp:= `getHeight`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getHeight:()I` @kind virtual;
+  #L24388c.  v3:= temp;
+  #L24388e.  call `setHeight`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setHeight:(I)V` @kind virtual;
+  #L243894.  call `setFormat`(v1, v2) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setFormat:(I)V` @kind virtual;
+  #L24389a.  call temp:= `acquireProperty`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L2438a0.  v7:= temp @kind object;
+  #L2438a2.  call temp:= `getItemIdentity`(v7) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getItemIdentity:()I` @kind virtual;
+  #L2438a8.  v7:= temp;
+  #L2438aa.  call `setFrameId`(v1, v7) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setFrameId:(I)V` @kind virtual;
+  #L2438b0.  call temp:= `create`(v8) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/FaceHelper;.create:(Lcom/huawei/hms/mlsdk/face/face3d/ML3DFaceAnalyzerSetting;)Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;` @kind static;
+  #L2438b6.  v7:= temp @kind object;
+  #L2438b8.  call temp:= `toBundle`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.toBundle:()Landroid/os/Bundle;` @kind virtual;
+  #L2438be.  v8:= temp @kind object;
+  #L2438c0.  call temp:= `elapsedRealtime`() @signature `Landroid/os/SystemClock;.elapsedRealtime:()J` @kind static;
+  #L2438c6.  v2:= temp @kind wide;
+  #L2438c8.  call temp:= `getAppContext`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.getAppContext:()Landroid/content/Context;` @kind virtual;
+  #L2438ce.  v9:= temp @kind object;
+  #L2438d0.  call temp:= `detect`(v6, v9, v8, v1, v7) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.detect:(Landroid/content/Context;Landroid/os/Bundle;Lcom/huawei/hms/ml/common/face/FaceFrameParcel;Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;)Ljava/util/List;` @kind virtual;
+  #L2438d6.  v7:= temp @kind object;
+  #L2438d8.  call temp:= `elapsedRealtime`() @signature `Landroid/os/SystemClock;.elapsedRealtime:()J` @kind static;
+  #L2438de.  v8:= temp @kind wide;
+  #L2438e0.  v1:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L2438e4.  v4:= new `java.lang.StringBuilder`;
+  #L2438e8.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2438ee.  v5:= "Total duration 06===" @kind object;
+  #L2438f2.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2438f8.  v8:= v8 - v2 @kind long;
+  #L2438fa.  call temp:= `append`(v4, v8) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243900.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L243906.  v8:= temp @kind object;
+  #L243908.  call temp:= `e`(v1, v8) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L24390e.  if v7 != 0 then goto L243922;
+  #L243912.  v7:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243916.  v8:= "detect fail, :  faceParcelList is null" @kind object;
+  #L24391a.  call `e`(v7, v8) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243920.  return v0 @kind object;
+  #L243922.  call temp:= `iterator`(v7) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L243928.  v7:= temp @kind object;
+  #L24392a.  call temp:= `hasNext`(v7) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L243930.  v8:= temp;
+  #L243932.  if v8 == 0 then goto L2439b0;
+  #L243936.  call temp:= `next`(v7) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L24393c.  v8:= temp @kind object;
+  #L24393e.  v8:= (`com.huawei.hms.ml.common.face.FaceParcel`) v8 @kind object;
+  #L243942.  call temp:= `toML3DFace`(v8, v10) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/FaceHelper;.toML3DFace:(Lcom/huawei/hms/ml/common/face/FaceParcel;Ljava/lang/String;)Lcom/huawei/hms/mlsdk/face/face3d/ML3DFace;` @kind static;
+  #L243948.  v8:= temp @kind object;
+  #L24394a.  call temp:= `add`(v0, v8) @signature `Ljava/util/ArrayList;.add:(Ljava/lang/Object;)Z` @kind virtual;
+  #L243950.  goto L24392a;
+  #L243952.  v7:= Exception @type ^`java.lang.Exception` @kind object;
+  #L243954.  v8:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243958.  v9:= "detect exception e:  " @kind object;
+  #L24395c.  call temp:= `a`(v9) @signature `Lcom/huawei/hms/mlsdk/mlvision/a;.a:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind static;
+  #L243962.  v9:= temp @kind object;
+  #L243964.  call temp:= `getMessage`(v7) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L24396a.  v7:= temp @kind object;
+  #L24396c.  call temp:= `append`(v9, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243972.  call temp:= `toString`(v9) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L243978.  v7:= temp @kind object;
+  #L24397a.  call `e`(v8, v7) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243980.  goto L2439b0;
+  #L243982.  v7:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L243984.  v8:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243988.  v9:= "detect exception e: " @kind object;
+  #L24398c.  call temp:= `a`(v9) @signature `Lcom/huawei/hms/mlsdk/mlvision/a;.a:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind static;
+  #L243992.  v9:= temp @kind object;
+  #L243994.  call temp:= `getMessage`(v7) @signature `Ljava/lang/RuntimeException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L24399a.  v7:= temp @kind object;
+  #L24399c.  call temp:= `append`(v9, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2439a2.  call temp:= `toString`(v9) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2439a8.  v7:= temp @kind object;
+  #L2439aa.  call `e`(v8, v7) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2439b0.  return v0 @kind object;
+  catch `java.lang.RuntimeException` @[L2437f2..L243950] goto L243982;
+  catch `java.lang.Exception` @[L2437f2..L243950] goto L243952;
+}
+procedure `java.util.List` `detectFromRemote`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v8 @kind this, `com.huawei.hms.mlsdk.common.MLFrame` v9 @kind object, `com.huawei.hms.mlsdk.face.MLFaceAnalyzerSetting` v10 @kind object, `com.huawei.hms.mlsdk.common.MLApplication` v11 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.detectFromRemote:(Lcom/huawei/hms/mlsdk/common/MLFrame;Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;Lcom/huawei/hms/mlsdk/common/MLApplication;)Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L2439d8.  v0:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L2439dc.  v1:= "enter detect2DFromRemote" @kind object;
+  #L2439e0.  call `i`(v0, v1) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2439e6.  v0:= new `java.util.ArrayList`;
+  #L2439ea.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L2439f0.  v1:= new `com.huawei.hms.ml.common.face.FaceFrameParcel`;
+  #L2439f4.  call `<init>`(v1) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.<init>:()V` @kind direct;
+  #L2439fa.  call temp:= `getByteBuffer`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.getByteBuffer:()Ljava/nio/ByteBuffer;` @kind virtual;
+  #L243a00.  v2:= temp @kind object;
+  #L243a02.  if v2 == 0 then goto L243a32;
+  #L243a06.  call temp:= `remaining`(v2) @signature `Ljava/nio/ByteBuffer;.remaining:()I` @kind virtual;
+  #L243a0c.  v3:= temp;
+  #L243a0e.  if v3 == 0 then goto L243a32;
+  #L243a12.  call temp:= `remaining`(v2) @signature `Ljava/nio/ByteBuffer;.remaining:()I` @kind virtual;
+  #L243a18.  v3:= temp;
+  #L243a1a.  v4:= new `byte`[v3];
+  #L243a1e.  v5:= 0I;
+  #L243a20.  call temp:= `get`(v2, v4, v5, v3) @signature `Ljava/nio/ByteBuffer;.get:([BII)Ljava/nio/ByteBuffer;` @kind virtual;
+  #L243a26.  call `setBytes`(v1, v4) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setBytes:([B)V` @kind virtual;
+  #L243a2c.  v2:= 17I;
+  #L243a30.  goto L243a44;
+  #L243a32.  call temp:= `readBitmap`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.readBitmap:()Landroid/graphics/Bitmap;` @kind virtual;
+  #L243a38.  v2:= temp @kind object;
+  #L243a3a.  call `setBitmap`(v1, v2) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setBitmap:(Landroid/graphics/Bitmap;)V` @kind virtual;
+  #L243a40.  v2:= 117I;
+  #L243a44.  call temp:= `acquireProperty`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243a4a.  v3:= temp @kind object;
+  #L243a4c.  call temp:= `getTimestamp`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getTimestamp:()J` @kind virtual;
+  #L243a52.  v3:= temp @kind wide;
+  #L243a54.  call `setTimestampMillis`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setTimestampMillis:(J)V` @kind virtual;
+  #L243a5a.  call temp:= `acquireProperty`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243a60.  v3:= temp @kind object;
+  #L243a62.  call temp:= `getQuadrant`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getQuadrant:()I` @kind virtual;
+  #L243a68.  v3:= temp;
+  #L243a6a.  call `setRotation`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setRotation:(I)V` @kind virtual;
+  #L243a70.  call temp:= `acquireProperty`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243a76.  v3:= temp @kind object;
+  #L243a78.  call temp:= `getWidth`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getWidth:()I` @kind virtual;
+  #L243a7e.  v3:= temp;
+  #L243a80.  call `setWidth`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setWidth:(I)V` @kind virtual;
+  #L243a86.  call temp:= `acquireProperty`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243a8c.  v3:= temp @kind object;
+  #L243a8e.  call temp:= `getHeight`(v3) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getHeight:()I` @kind virtual;
+  #L243a94.  v3:= temp;
+  #L243a96.  call `setHeight`(v1, v3) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setHeight:(I)V` @kind virtual;
+  #L243a9c.  call `setFormat`(v1, v2) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setFormat:(I)V` @kind virtual;
+  #L243aa2.  call temp:= `acquireProperty`(v9) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame;.acquireProperty:()Lcom/huawei/hms/mlsdk/common/MLFrame$Property;` @kind virtual;
+  #L243aa8.  v2:= temp @kind object;
+  #L243aaa.  call temp:= `getItemIdentity`(v2) @signature `Lcom/huawei/hms/mlsdk/common/MLFrame$Property;.getItemIdentity:()I` @kind virtual;
+  #L243ab0.  v2:= temp;
+  #L243ab2.  call `setFrameId`(v1, v2) @signature `Lcom/huawei/hms/ml/common/face/FaceFrameParcel;.setFrameId:(I)V` @kind virtual;
+  #L243ab8.  call temp:= `convertSetting`(v8, v10) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.convertSetting:(Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;)Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;` @kind virtual;
+  #L243abe.  v2:= temp @kind object;
+  #L243ac0.  call temp:= `create`(v2) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/FaceHelper;.create:(Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;)Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;` @kind static;
+  #L243ac6.  v2:= temp @kind object;
+  #L243ac8.  call temp:= `toBundle`(v11) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.toBundle:()Landroid/os/Bundle;` @kind virtual;
+  #L243ace.  v3:= temp @kind object;
+  #L243ad0.  call temp:= `elapsedRealtime`() @signature `Landroid/os/SystemClock;.elapsedRealtime:()J` @kind static;
+  #L243ad6.  v4:= temp @kind wide;
+  #L243ad8.  call temp:= `getAppContext`(v11) @signature `Lcom/huawei/hms/mlsdk/common/MLApplication;.getAppContext:()Landroid/content/Context;` @kind virtual;
+  #L243ade.  v11:= temp @kind object;
+  #L243ae0.  call temp:= `detect`(v8, v11, v3, v1, v2) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.detect:(Landroid/content/Context;Landroid/os/Bundle;Lcom/huawei/hms/ml/common/face/FaceFrameParcel;Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;)Ljava/util/List;` @kind virtual;
+  #L243ae6.  v11:= temp @kind object;
+  #L243ae8.  call temp:= `elapsedRealtime`() @signature `Landroid/os/SystemClock;.elapsedRealtime:()J` @kind static;
+  #L243aee.  v1:= temp @kind wide;
+  #L243af0.  v3:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243af4.  v6:= new `java.lang.StringBuilder`;
+  #L243af8.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L243afe.  v7:= "Total duration 06===" @kind object;
+  #L243b02.  call temp:= `append`(v6, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243b08.  v1:= v1 - v4 @kind long;
+  #L243b0a.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243b10.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L243b16.  v1:= temp @kind object;
+  #L243b18.  call temp:= `e`(v3, v1) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L243b1e.  if v11 != 0 then goto L243b32;
+  #L243b22.  v9:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243b26.  v10:= "detect fail, :  faceParcelList is null" @kind object;
+  #L243b2a.  call `e`(v9, v10) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243b30.  return v0 @kind object;
+  #L243b32.  call temp:= `iterator`(v11) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L243b38.  v11:= temp @kind object;
+  #L243b3a.  call temp:= `hasNext`(v11) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L243b40.  v1:= temp;
+  #L243b42.  if v1 == 0 then goto L243b6e;
+  #L243b46.  call temp:= `next`(v11) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L243b4c.  v1:= temp @kind object;
+  #L243b4e.  v1:= (`com.huawei.hms.ml.common.face.FaceParcel`) v1 @kind object;
+  #L243b52.  call temp:= `expectedFace`(v8, v1, v9, v10) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.expectedFace:(Lcom/huawei/hms/ml/common/face/FaceParcel;Lcom/huawei/hms/mlsdk/common/MLFrame;Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;)Z` @kind direct;
+  #L243b58.  v2:= temp;
+  #L243b5a.  if v2 == 0 then goto L243b3a;
+  #L243b5e.  call temp:= `toMLFace`(v1) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/FaceHelper;.toMLFace:(Lcom/huawei/hms/ml/common/face/FaceParcel;)Lcom/huawei/hms/mlsdk/face/MLFace;` @kind static;
+  #L243b64.  v1:= temp @kind object;
+  #L243b66.  call temp:= `add`(v0, v1) @signature `Ljava/util/ArrayList;.add:(Ljava/lang/Object;)Z` @kind virtual;
+  #L243b6c.  goto L243b3a;
+  #L243b6e.  call temp:= `isMaxSizeFaceOnly`(v10) @signature `Lcom/huawei/hms/mlsdk/face/MLFaceAnalyzerSetting;.isMaxSizeFaceOnly:()Z` @kind virtual;
+  #L243b74.  v9:= temp;
+  #L243b76.  if v9 == 0 then goto L243c60;
+  #L243b7a.  call temp:= `isEmpty`(v0) @signature `Ljava/util/ArrayList;.isEmpty:()Z` @kind virtual;
+  #L243b80.  v9:= temp;
+  #L243b82.  if v9 != 0 then goto L243c60;
+  #L243b86.  v9:= 0I;
+  #L243b88.  call temp:= `iterator`(v0) @signature `Ljava/util/ArrayList;.iterator:()Ljava/util/Iterator;` @kind virtual;
+  #L243b8e.  v10:= temp @kind object;
+  #L243b90.  call temp:= `hasNext`(v10) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L243b96.  v11:= temp;
+  #L243b98.  if v11 == 0 then goto L243be2;
+  #L243b9c.  call temp:= `next`(v10) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L243ba2.  v11:= temp @kind object;
+  #L243ba4.  v11:= (`com.huawei.hms.mlsdk.face.MLFace`) v11 @kind object;
+  #L243ba8.  if v9 == 0 then goto L243bde;
+  #L243bac.  call temp:= `getWidth`(v9) @signature `Lcom/huawei/hms/mlsdk/face/MLFace;.getWidth:()F` @kind virtual;
+  #L243bb2.  v1:= temp;
+  #L243bb4.  call temp:= `getHeight`(v9) @signature `Lcom/huawei/hms/mlsdk/face/MLFace;.getHeight:()F` @kind virtual;
+  #L243bba.  v2:= temp;
+  #L243bbc.  v1:= v1 * v2 @kind float;
+  #L243bc0.  call temp:= `getWidth`(v11) @signature `Lcom/huawei/hms/mlsdk/face/MLFace;.getWidth:()F` @kind virtual;
+  #L243bc6.  v2:= temp;
+  #L243bc8.  call temp:= `getHeight`(v11) @signature `Lcom/huawei/hms/mlsdk/face/MLFace;.getHeight:()F` @kind virtual;
+  #L243bce.  v3:= temp;
+  #L243bd0.  v2:= v2 * v3 @kind float;
+  #L243bd4.  v1:= fcmpl(v1, v2);
+  #L243bd8.  if v1 <= 0 then goto L243bde;
+  #L243bdc.  goto L243b90;
+  #L243bde.  v9:= v11 @kind object;
+  #L243be0.  goto L243b90;
+  #L243be2.  v10:= new `java.util.ArrayList`;
+  #L243be6.  call `<init>`(v10) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L243bec.  call temp:= `add`(v10, v9) @signature `Ljava/util/ArrayList;.add:(Ljava/lang/Object;)Z` @kind virtual;
+  #L243bf2.  v0:= v10 @kind object;
+  #L243bf4.  goto L243c60;
+  #L243bf6.  v9:= Exception @type ^`java.lang.Exception` @kind object;
+  #L243bf8.  v0:= v10 @kind object;
+  #L243bfa.  goto L243c04;
+  #L243bfc.  v9:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L243bfe.  v0:= v10 @kind object;
+  #L243c00.  goto L243c34;
+  #L243c02.  v9:= Exception @type ^`java.lang.Exception` @kind object;
+  #L243c04.  v10:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243c08.  v11:= "detect exception e:  " @kind object;
+  #L243c0c.  call temp:= `a`(v11) @signature `Lcom/huawei/hms/mlsdk/mlvision/a;.a:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind static;
+  #L243c12.  v11:= temp @kind object;
+  #L243c14.  call temp:= `getMessage`(v9) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L243c1a.  v9:= temp @kind object;
+  #L243c1c.  call temp:= `append`(v11, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243c22.  call temp:= `toString`(v11) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L243c28.  v9:= temp @kind object;
+  #L243c2a.  call `e`(v10, v9) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243c30.  goto L243c60;
+  #L243c32.  v9:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L243c34.  v10:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243c38.  v11:= "detect exception e: " @kind object;
+  #L243c3c.  call temp:= `a`(v11) @signature `Lcom/huawei/hms/mlsdk/mlvision/a;.a:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind static;
+  #L243c42.  v11:= temp @kind object;
+  #L243c44.  call temp:= `getMessage`(v9) @signature `Ljava/lang/RuntimeException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L243c4a.  v9:= temp @kind object;
+  #L243c4c.  call temp:= `append`(v11, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243c52.  call temp:= `toString`(v11) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L243c58.  v9:= temp @kind object;
+  #L243c5a.  call `e`(v10, v9) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243c60.  return v0 @kind object;
+  catch `java.lang.RuntimeException` @[L2439fa..L243bec] goto L243c32;
+  catch `java.lang.Exception` @[L2439fa..L243bec] goto L243c02;
+  catch `java.lang.RuntimeException` @[L243bec..L243bf2] goto L243bfc;
+  catch `java.lang.Exception` @[L243bec..L243bf2] goto L243bf6;
+}
+procedure `int` `initialize`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v3 @kind this, `android.content.Context` v4 @kind object, `com.huawei.hms.ml.common.face.FaceDetectorOptionsParcel` v5 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.initialize:(Landroid/content/Context;Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2435e8.  @monitorenter v3
+  #L2435ea.  v4:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L2435ee.  v0:= "enter initialize" @kind object;
+  #L2435f2.  call `i`(v4, v0) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2435f8.  v4:= v3.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` @kind boolean;
+  #L2435fc.  if v4 == 0 then goto L243606;
+  #L243600.  v4:= 0I;
+  #L243602.  @monitorexit v3
+  #L243604.  return v4;
+  #L243606.  call temp:= `a`() @signature `Lcom/huawei/hms/mlsdk/mlvision/b;.a:()Lcom/huawei/hms/mlsdk/mlvision/b;` @kind static;
+  #L24360c.  v4:= temp @kind object;
+  #L24360e.  call temp:= `getDynamicDelegate`(v4) @signature `Lcom/huawei/hms/mlsdk/dynamic/IInitializer;.getDynamicDelegate:()Landroid/os/IInterface;` @kind interface;
+  #L243614.  v0:= temp @kind object;
+  #L243616.  v1:= -1I;
+  #L243618.  if v0 != 0 then goto L24362e;
+  #L24361c.  v4:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243620.  v5:= "initialize delegate is null" @kind object;
+  #L243624.  call `i`(v4, v5) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L24362a.  @monitorexit v3
+  #L24362c.  return v1;
+  #L24362e.  call temp:= `getDynamicContext`(v4) @signature `Lcom/huawei/hms/mlsdk/dynamic/IInitializer;.getDynamicContext:()Landroid/content/Context;` @kind interface;
+  #L243634.  v4:= temp @kind object;
+  #L243636.  v0:= (`com.huawei.hms.ml.common.face.IRemoteFaceDetectorDelegate`) v0 @kind object;
+  #L24363a.  call temp:= `wrap`(v4) @signature `Lcom/huawei/hms/feature/dynamic/ObjectWrapper;.wrap:(Ljava/lang/Object;)Lcom/huawei/hms/feature/dynamic/IObjectWrapper;` @kind static;
+  #L243640.  v4:= temp @kind object;
+  #L243642.  call temp:= `initialize`(v0, v4, v5) @signature `Lcom/huawei/hms/ml/common/face/IRemoteFaceDetectorDelegate;.initialize:(Lcom/huawei/hms/feature/dynamic/IObjectWrapper;Lcom/huawei/hms/ml/common/face/FaceDetectorOptionsParcel;)I` @kind interface;
+  #L243648.  v4:= temp;
+  #L24364a.  if v4 < 0 then goto L243664;
+  #L24364e.  v5:= 1I;
+  #L243650.  v3.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` := v5 @kind boolean;
+  #L243654.  v5:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243658.  v0:= "initialize success" @kind object;
+  #L24365c.  call `e`(v5, v0) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243662.  goto L243672;
+  #L243664.  v5:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243668.  v0:= "initialize failure" @kind object;
+  #L24366c.  call `e`(v5, v0) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243672.  @monitorexit v3
+  #L243674.  return v4;
+  #L243676.  v4:= Exception @type ^`java.lang.Exception` @kind object;
+  #L243678.  v5:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L24367c.  v0:= new `java.lang.StringBuilder`;
+  #L243680.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L243686.  v2:= "Initialize Exception e: " @kind object;
+  #L24368a.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243690.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L243696.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L24369c.  v4:= temp @kind object;
+  #L24369e.  call `e`(v5, v4) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2436a4.  @monitorexit v3
+  #L2436a6.  return v1;
+  #L2436a8.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2436aa.  @monitorexit v3
+  #L2436ac.  throw v4;
+  catch `java.lang.Throwable` @[L2435ea..L2435fc] goto L2436a8;
+  catch `java.lang.Throwable` @[L243606..L24362a] goto L2436a8;
+  catch `java.lang.Exception` @[L24362e..L243672] goto L243676;
+  catch `java.lang.Throwable` @[L24362e..L243672] goto L2436a8;
+  catch `java.lang.Throwable` @[L243678..L2436a4] goto L2436a8;
+}
+procedure `boolean` `isAvailable`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v2 @kind this, `android.content.Context` v3 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.isAvailable:(Landroid/content/Context;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L243508.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/mlsdk/internal/client/adapter/AvailableAdapterManager;.getInstance:()Lcom/huawei/hms/mlsdk/internal/client/adapter/AvailableAdapterManager;` @kind static;
+  #L24350e.  v0:= temp @kind object;
+  #L243510.  call temp:= `a`() @signature `Lcom/huawei/hms/mlsdk/mlvision/b;.a:()Lcom/huawei/hms/mlsdk/mlvision/b;` @kind static;
+  #L243516.  v1:= temp @kind object;
+  #L243518.  call temp:= `isAvailable`(v0, v3, v1) @signature `Lcom/huawei/hms/mlsdk/internal/client/adapter/AbstractAdapter;.isAvailable:(Landroid/content/Context;Lcom/huawei/hms/mlsdk/dynamic/IInitializer;)Z` @kind virtual;
+  #L24351e.  v3:= temp;
+  #L243520.  return v3;
+}
+procedure `void` `prepare`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v1 @kind this, `android.content.Context` v2 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.prepare:(Landroid/content/Context;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L243dc4.  @monitorenter v1
+  #L243dc6.  call temp:= `a`() @signature `Lcom/huawei/hms/mlsdk/mlvision/b;.a:()Lcom/huawei/hms/mlsdk/mlvision/b;` @kind static;
+  #L243dcc.  v0:= temp @kind object;
+  #L243dce.  call `initial`(v0, v2) @signature `Lcom/huawei/hms/mlsdk/dynamic/IInitializer;.initial:(Landroid/content/Context;)V` @kind interface;
+  #L243dd4.  call `notifyDownloadIfNeeded`(v1, v2) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.notifyDownloadIfNeeded:(Landroid/content/Context;)V` @kind direct;
+  #L243dda.  @monitorexit v1
+  #L243ddc.  return @kind void;
+  #L243dde.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L243de0.  @monitorexit v1
+  #L243de2.  throw v2;
+  catch `java.lang.Throwable` @[L243dc6..L243dda] goto L243dde;
+}
+procedure `void` `release`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v2 @kind this, `android.content.Context` v3 @kind object) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.release:(Landroid/content/Context;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L243e00.  @monitorenter v2
+  #L243e02.  v0:= `@@com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.TAG` @type ^`java.lang.String` @kind object;
+  #L243e06.  v1:= "release" @kind object;
+  #L243e0a.  call `i`(v0, v1) @signature `Lcom/huawei/hms/ml/common/utils/SmartLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L243e10.  v0:= v2.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` @kind boolean;
+  #L243e14.  if v0 == 0 then goto L243e24;
+  #L243e18.  call `destroy`(v2, v3) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.destroy:(Landroid/content/Context;)V` @kind virtual;
+  #L243e1e.  v0:= 0I;
+  #L243e20.  v2.`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector.isInitialed` @type ^`boolean` := v0 @kind boolean;
+  #L243e24.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/mlsdk/internal/client/adapter/AvailableAdapterManager;.getInstance:()Lcom/huawei/hms/mlsdk/internal/client/adapter/AvailableAdapterManager;` @kind static;
+  #L243e2a.  v0:= temp @kind object;
+  #L243e2c.  call `release`(v0, v3) @signature `Lcom/huawei/hms/mlsdk/internal/client/adapter/AbstractAdapter;.release:(Landroid/content/Context;)V` @kind virtual;
+  #L243e32.  @monitorexit v2
+  #L243e34.  return @kind void;
+  #L243e36.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L243e38.  @monitorexit v2
+  #L243e3a.  throw v3;
+  catch `java.lang.Throwable` @[L243e02..L243e32] goto L243e36;
+}
+procedure `boolean` `setFocus`(`com.huawei.hms.mlsdk.face.internal.client.RemoteFaceDetector` v0 @kind this, `int` v1 ) @signature `Lcom/huawei/hms/mlsdk/face/internal/client/RemoteFaceDetector;.setFocus:(I)Z` @AccessFlag PUBLIC {
+    temp;
+
+  #L243534.  v1:= 1I;
+  #L243536.  return v1;
+}

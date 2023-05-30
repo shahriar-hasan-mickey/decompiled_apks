@@ -1,0 +1,99 @@
+record `rx.internal.schedulers.CachedThreadScheduler` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Scheduler` @kind class, `rx.internal.schedulers.SchedulerLifecycle` @kind interface {
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.schedulers.CachedThreadScheduler.pool` @AccessFlag FINAL;
+  `java.util.concurrent.ThreadFactory` `rx.internal.schedulers.CachedThreadScheduler.threadFactory` @AccessFlag FINAL;
+}
+global `long` `@@rx.internal.schedulers.CachedThreadScheduler.KEEP_ALIVE_TIME` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.TimeUnit` `@@rx.internal.schedulers.CachedThreadScheduler.KEEP_ALIVE_UNIT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool` `@@rx.internal.schedulers.CachedThreadScheduler.NONE` @AccessFlag STATIC_FINAL;
+global `rx.internal.schedulers.CachedThreadScheduler$ThreadWorker` `@@rx.internal.schedulers.CachedThreadScheduler.SHUTDOWN_THREADWORKER` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/schedulers/CachedThreadScheduler;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4b228c.  v0:= `@@java.util.concurrent.TimeUnit.SECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4b2290.  `@@rx.internal.schedulers.CachedThreadScheduler.KEEP_ALIVE_UNIT` @type ^`java.util.concurrent.TimeUnit` := v0 @kind object;
+  #L4b2294.  v0:= new `rx.internal.schedulers.CachedThreadScheduler$ThreadWorker`;
+  #L4b2298.  v1:= `@@rx.internal.util.RxThreadFactory.NONE` @type ^`java.util.concurrent.ThreadFactory` @kind object;
+  #L4b229c.  call `<init>`(v0, v1) @signature `Lrx/internal/schedulers/CachedThreadScheduler$ThreadWorker;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L4b22a2.  `@@rx.internal.schedulers.CachedThreadScheduler.SHUTDOWN_THREADWORKER` @type ^`rx.internal.schedulers.CachedThreadScheduler$ThreadWorker` := v0 @kind object;
+  #L4b22a6.  v0:= `@@rx.internal.schedulers.CachedThreadScheduler.SHUTDOWN_THREADWORKER` @type ^`rx.internal.schedulers.CachedThreadScheduler$ThreadWorker` @kind object;
+  #L4b22aa.  call `unsubscribe`(v0) @signature `Lrx/internal/schedulers/CachedThreadScheduler$ThreadWorker;.unsubscribe:()V` @kind virtual;
+  #L4b22b0.  v0:= new `rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool`;
+  #L4b22b4.  v1:= 0I;
+  #L4b22b6.  v2:= 0L;
+  #L4b22ba.  call `<init>`(v0, v1, v2, v1) @signature `Lrx/internal/schedulers/CachedThreadScheduler$CachedWorkerPool;.<init>:(Ljava/util/concurrent/ThreadFactory;JLjava/util/concurrent/TimeUnit;)V` @kind direct;
+  #L4b22c0.  `@@rx.internal.schedulers.CachedThreadScheduler.NONE` @type ^`rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool` := v0 @kind object;
+  #L4b22c4.  v0:= `@@rx.internal.schedulers.CachedThreadScheduler.NONE` @type ^`rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool` @kind object;
+  #L4b22c8.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/CachedThreadScheduler$CachedWorkerPool;.shutdown:()V` @kind virtual;
+  #L4b22ce.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.CachedThreadScheduler` v1 @kind this, `java.util.concurrent.ThreadFactory` v2 @kind object) @signature `Lrx/internal/schedulers/CachedThreadScheduler;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b22e0.  call `<init>`(v1) @signature `Lrx/Scheduler;.<init>:()V` @kind direct;
+  #L4b22e6.  v1.`rx.internal.schedulers.CachedThreadScheduler.threadFactory` @type ^`java.util.concurrent.ThreadFactory` := v2 @kind object;
+  #L4b22ea.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4b22ee.  v0:= `@@rx.internal.schedulers.CachedThreadScheduler.NONE` @type ^`rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool` @kind object;
+  #L4b22f2.  call `<init>`(v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4b22f8.  v1.`rx.internal.schedulers.CachedThreadScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L4b22fc.  call `start`(v1) @signature `Lrx/internal/schedulers/CachedThreadScheduler;.start:()V` @kind virtual;
+  #L4b2302.  return @kind void;
+}
+procedure `rx.Scheduler$Worker` `createWorker`(`rx.internal.schedulers.CachedThreadScheduler` v2 @kind this) @signature `Lrx/internal/schedulers/CachedThreadScheduler;.createWorker:()Lrx/Scheduler$Worker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b2260.  v0:= new `rx.internal.schedulers.CachedThreadScheduler$EventLoopWorker`;
+  #L4b2264.  v1:= v2.`rx.internal.schedulers.CachedThreadScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2268.  call temp:= `get`(v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b226e.  v1:= temp @kind object;
+  #L4b2270.  v1:= (`rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool`) v1 @kind object;
+  #L4b2274.  call `<init>`(v0, v1) @signature `Lrx/internal/schedulers/CachedThreadScheduler$EventLoopWorker;.<init>:(Lrx/internal/schedulers/CachedThreadScheduler$CachedWorkerPool;)V` @kind direct;
+  #L4b227a.  return v0 @kind object;
+}
+procedure `void` `shutdown`(`rx.internal.schedulers.CachedThreadScheduler` v3 @kind this) @signature `Lrx/internal/schedulers/CachedThreadScheduler;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b2314.  v0:= v3.`rx.internal.schedulers.CachedThreadScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2318.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b231e.  v0:= temp @kind object;
+  #L4b2320.  v0:= (`rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool`) v0 @kind object;
+  #L4b2324.  v1:= `@@rx.internal.schedulers.CachedThreadScheduler.NONE` @type ^`rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool` @kind object;
+  #L4b2328.  if v0 != v1 then goto L4b232e;
+  #L4b232c.  return @kind void;
+  #L4b232e.  v2:= v3.`rx.internal.schedulers.CachedThreadScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2332.  call temp:= `compareAndSet`(v2, v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b2338.  v1:= temp;
+  #L4b233a.  if v1 == 0 then goto L4b2314;
+  #L4b233e.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/CachedThreadScheduler$CachedWorkerPool;.shutdown:()V` @kind virtual;
+  #L4b2344.  return @kind void;
+}
+procedure `void` `start`(`rx.internal.schedulers.CachedThreadScheduler` v5 @kind this) @signature `Lrx/internal/schedulers/CachedThreadScheduler;.start:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b2358.  v0:= new `rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool`;
+  #L4b235c.  v1:= v5.`rx.internal.schedulers.CachedThreadScheduler.threadFactory` @type ^`java.util.concurrent.ThreadFactory` @kind object;
+  #L4b2360.  v2:= `@@rx.internal.schedulers.CachedThreadScheduler.KEEP_ALIVE_UNIT` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4b2364.  v3:= 60L;
+  #L4b2368.  call `<init>`(v0, v1, v3, v2) @signature `Lrx/internal/schedulers/CachedThreadScheduler$CachedWorkerPool;.<init>:(Ljava/util/concurrent/ThreadFactory;JLjava/util/concurrent/TimeUnit;)V` @kind direct;
+  #L4b236e.  v1:= v5.`rx.internal.schedulers.CachedThreadScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2372.  v2:= `@@rx.internal.schedulers.CachedThreadScheduler.NONE` @type ^`rx.internal.schedulers.CachedThreadScheduler$CachedWorkerPool` @kind object;
+  #L4b2376.  call temp:= `compareAndSet`(v1, v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b237c.  v1:= temp;
+  #L4b237e.  if v1 != 0 then goto L4b2388;
+  #L4b2382.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/CachedThreadScheduler$CachedWorkerPool;.shutdown:()V` @kind virtual;
+  #L4b2388.  return @kind void;
+}

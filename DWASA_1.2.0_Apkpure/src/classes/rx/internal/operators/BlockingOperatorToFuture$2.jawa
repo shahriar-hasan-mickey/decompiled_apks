@@ -1,0 +1,130 @@
+record `rx.internal.operators.BlockingOperatorToFuture$2` @kind class @AccessFlag FINAL extends `java.util.concurrent.Future` @kind interface {
+  `boolean` `rx.internal.operators.BlockingOperatorToFuture$2.cancelled` @AccessFlag PRIVATE_VOLATILE;
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.operators.BlockingOperatorToFuture$2.val$error` @AccessFlag FINAL_SYNTHETIC;
+  `java.util.concurrent.CountDownLatch` `rx.internal.operators.BlockingOperatorToFuture$2.val$finished` @AccessFlag FINAL_SYNTHETIC;
+  `rx.Subscription` `rx.internal.operators.BlockingOperatorToFuture$2.val$s` @AccessFlag FINAL_SYNTHETIC;
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.operators.BlockingOperatorToFuture$2.val$value` @AccessFlag FINAL_SYNTHETIC;
+}
+procedure `void` `<init>`(`rx.internal.operators.BlockingOperatorToFuture$2` v0 @kind this, `java.util.concurrent.CountDownLatch` v1 @kind object, `rx.Subscription` v2 @kind object, `java.util.concurrent.atomic.AtomicReference` v3 @kind object, `java.util.concurrent.atomic.AtomicReference` v4 @kind object) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.<init>:(Ljava/util/concurrent/CountDownLatch;Lrx/Subscription;Ljava/util/concurrent/atomic/AtomicReference;Ljava/util/concurrent/atomic/AtomicReference;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L49349c.  v0.`rx.internal.operators.BlockingOperatorToFuture$2.val$finished` @type ^`java.util.concurrent.CountDownLatch` := v1 @kind object;
+  #L4934a0.  v0.`rx.internal.operators.BlockingOperatorToFuture$2.val$s` @type ^`rx.Subscription` := v2 @kind object;
+  #L4934a4.  v0.`rx.internal.operators.BlockingOperatorToFuture$2.val$error` @type ^`java.util.concurrent.atomic.AtomicReference` := v3 @kind object;
+  #L4934a8.  v0.`rx.internal.operators.BlockingOperatorToFuture$2.val$value` @type ^`java.util.concurrent.atomic.AtomicReference` := v4 @kind object;
+  #L4934ac.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4934b2.  return @kind void;
+}
+procedure `java.lang.Object` `getValue`(`rx.internal.operators.BlockingOperatorToFuture$2` v3 @kind this) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.getValue:()Ljava/lang/Object;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L493440.  v0:= v3.`rx.internal.operators.BlockingOperatorToFuture$2.val$error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L493444.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L49344a.  v0:= temp @kind object;
+  #L49344c.  v0:= (`java.lang.Throwable`) v0 @kind object;
+  #L493450.  if v0 != 0 then goto L49347a;
+  #L493454.  v0:= v3.`rx.internal.operators.BlockingOperatorToFuture$2.cancelled` @type ^`boolean` @kind boolean;
+  #L493458.  if v0 != 0 then goto L49346a;
+  #L49345c.  v0:= v3.`rx.internal.operators.BlockingOperatorToFuture$2.val$value` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L493460.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L493466.  v0:= temp @kind object;
+  #L493468.  return v0 @kind object;
+  #L49346a.  v0:= new `java.util.concurrent.CancellationException`;
+  #L49346e.  v1:= "Subscription unsubscribed" @kind object;
+  #L493472.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/CancellationException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L493478.  throw v0;
+  #L49347a.  v1:= new `java.util.concurrent.ExecutionException`;
+  #L49347e.  v2:= "Observable onError" @kind object;
+  #L493482.  call `<init>`(v1, v2, v0) @signature `Ljava/util/concurrent/ExecutionException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L493488.  throw v1;
+}
+procedure `boolean` `cancel`(`rx.internal.operators.BlockingOperatorToFuture$2` v4 @kind this, `boolean` v5 ) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.cancel:(Z)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L493320.  v5:= v4.`rx.internal.operators.BlockingOperatorToFuture$2.val$finished` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L493324.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L49332a.  v0:= temp @kind wide;
+  #L49332c.  v2:= 0L;
+  #L493330.  v5:= lcmp(v0, v2);
+  #L493334.  if v5 <= 0 then goto L493354;
+  #L493338.  v5:= 1I;
+  #L49333a.  v4.`rx.internal.operators.BlockingOperatorToFuture$2.cancelled` @type ^`boolean` := v5 @kind boolean;
+  #L49333e.  v0:= v4.`rx.internal.operators.BlockingOperatorToFuture$2.val$s` @type ^`rx.Subscription` @kind object;
+  #L493342.  call `unsubscribe`(v0) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L493348.  v0:= v4.`rx.internal.operators.BlockingOperatorToFuture$2.val$finished` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L49334c.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L493352.  return v5;
+  #L493354.  v5:= 0I;
+  #L493356.  return v5;
+}
+procedure `java.lang.Object` `get`(`rx.internal.operators.BlockingOperatorToFuture$2` v1 @kind this) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.get:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4933b0.  v0:= v1.`rx.internal.operators.BlockingOperatorToFuture$2.val$finished` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4933b4.  call `await`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L4933ba.  call temp:= `getValue`(v1) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.getValue:()Ljava/lang/Object;` @kind direct;
+  #L4933c0.  v0:= temp @kind object;
+  #L4933c2.  return v0 @kind object;
+}
+procedure `java.lang.Object` `get`(`rx.internal.operators.BlockingOperatorToFuture$2` v3 @kind this, `long` v4 , `java.util.concurrent.TimeUnit` v6 @kind object) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.get:(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4933d4.  v0:= v3.`rx.internal.operators.BlockingOperatorToFuture$2.val$finished` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4933d8.  call temp:= `await`(v0, v4, v6) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L4933de.  v0:= temp;
+  #L4933e0.  if v0 == 0 then goto L4933ee;
+  #L4933e4.  call temp:= `getValue`(v3) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.getValue:()Ljava/lang/Object;` @kind direct;
+  #L4933ea.  v4:= temp @kind object;
+  #L4933ec.  return v4 @kind object;
+  #L4933ee.  v0:= new `java.util.concurrent.TimeoutException`;
+  #L4933f2.  v1:= new `java.lang.StringBuilder`;
+  #L4933f6.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4933fc.  v2:= "Timed out after " @kind object;
+  #L493400.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L493406.  call temp:= `toMillis`(v6, v4) @signature `Ljava/util/concurrent/TimeUnit;.toMillis:(J)J` @kind virtual;
+  #L49340c.  v4:= temp @kind wide;
+  #L49340e.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L493414.  v4:= "ms waiting for underlying Observable." @kind object;
+  #L493418.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49341e.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L493424.  v4:= temp @kind object;
+  #L493426.  call `<init>`(v0, v4) @signature `Ljava/util/concurrent/TimeoutException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49342c.  throw v0;
+}
+procedure `boolean` `isCancelled`(`rx.internal.operators.BlockingOperatorToFuture$2` v1 @kind this) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.isCancelled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L493368.  v0:= v1.`rx.internal.operators.BlockingOperatorToFuture$2.cancelled` @type ^`boolean` @kind boolean;
+  #L49336c.  return v0;
+}
+procedure `boolean` `isDone`(`rx.internal.operators.BlockingOperatorToFuture$2` v5 @kind this) @signature `Lrx/internal/operators/BlockingOperatorToFuture$2;.isDone:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L493380.  v0:= v5.`rx.internal.operators.BlockingOperatorToFuture$2.val$finished` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L493384.  call temp:= `getCount`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L49338a.  v0:= temp @kind wide;
+  #L49338c.  v2:= 0L;
+  #L493390.  v4:= lcmp(v0, v2);
+  #L493394.  if v4 != 0 then goto L49339c;
+  #L493398.  v0:= 1I;
+  #L49339a.  goto L49339e;
+  #L49339c.  v0:= 0I;
+  #L49339e.  return v0;
+}

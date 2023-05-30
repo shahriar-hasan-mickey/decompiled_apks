@@ -1,0 +1,855 @@
+record `com.huawei.hms.common.internal.BaseHmsClient` @kind class @AccessFlag PUBLIC_ABSTRACT extends `com.huawei.hms.support.api.client.AidlApiClient` @kind interface {
+  `java.lang.String` `com.huawei.hms.common.internal.BaseHmsClient.mAppID` @AccessFlag PRIVATE;
+  `com.huawei.hms.common.internal.ClientSettings` `com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @AccessFlag PRIVATE_FINAL;
+  `android.os.Handler` `com.huawei.hms.common.internal.BaseHmsClient.mConnectTimeoutHandler` @AccessFlag PRIVATE;
+  `com.huawei.hms.common.internal.BaseHmsClient$ConnectionCallbacks` `com.huawei.hms.common.internal.BaseHmsClient.mConnectionCallbacks` @AccessFlag PRIVATE_FINAL;
+  `com.huawei.hms.common.internal.BaseHmsClient$OnConnectionFailedListener` `com.huawei.hms.common.internal.BaseHmsClient.mConnectionFailedListener` @AccessFlag PRIVATE_FINAL;
+  `android.content.Context` `com.huawei.hms.common.internal.BaseHmsClient.mContext` @AccessFlag PRIVATE_FINAL;
+  `com.huawei.hms.core.aidl.d` `com.huawei.hms.common.internal.BaseHmsClient.mService` @AccessFlag PRIVATE_VOLATILE;
+  `java.lang.String` `com.huawei.hms.common.internal.BaseHmsClient.sessionId` @AccessFlag PROTECTED;
+}
+global `int` `@@com.huawei.hms.common.internal.BaseHmsClient.BINDING` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.huawei.hms.common.internal.BaseHmsClient.CONNECTED` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.atomic.AtomicInteger` `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.huawei.hms.common.internal.BaseHmsClient.DISCONNECTED` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.atomic.AtomicInteger` `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.Object` `@@com.huawei.hms.common.internal.BaseHmsClient.LOCK_CONNECT_TIMEOUT_HANDLER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.huawei.hms.common.internal.BaseHmsClient.MSG_CONN_TIMEOUT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.common.internal.BaseHmsClient.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.huawei.hms.common.internal.BaseHmsClient.TIMEOUT_DISCONNECTED` @AccessFlag PROTECTED_STATIC_FINAL;
+global `com.huawei.hms.adapter.BinderAdapter` `@@com.huawei.hms.common.internal.BaseHmsClient.mInnerBinderAdapter` @AccessFlag PRIVATE_STATIC;
+global `com.huawei.hms.adapter.BinderAdapter` `@@com.huawei.hms.common.internal.BaseHmsClient.mOuterBinderAdapter` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L1f6344.  v0:= new `java.lang.Object`;
+  #L1f6348.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1f634e.  `@@com.huawei.hms.common.internal.BaseHmsClient.LOCK_CONNECT_TIMEOUT_HANDLER` @type ^`java.lang.Object` := v0 @kind object;
+  #L1f6352.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L1f6356.  v1:= 1I;
+  #L1f6358.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:(I)V` @kind direct;
+  #L1f635e.  `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L1f6362.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L1f6366.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:(I)V` @kind direct;
+  #L1f636c.  `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L1f6370.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this, `android.content.Context` v2 @kind object, `com.huawei.hms.common.internal.ClientSettings` v3 @kind object, `com.huawei.hms.common.internal.BaseHmsClient$OnConnectionFailedListener` v4 @kind object, `com.huawei.hms.common.internal.BaseHmsClient$ConnectionCallbacks` v5 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.<init>:(Landroid/content/Context;Lcom/huawei/hms/common/internal/ClientSettings;Lcom/huawei/hms/common/internal/BaseHmsClient$OnConnectionFailedListener;Lcom/huawei/hms/common/internal/BaseHmsClient$ConnectionCallbacks;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1f6384.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1f638a.  v0:= 0I;
+  #L1f638c.  v1.`com.huawei.hms.common.internal.BaseHmsClient.mConnectTimeoutHandler` @type ^`android.os.Handler` := v0 @kind object;
+  #L1f6390.  v1.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` := v2 @kind object;
+  #L1f6394.  v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` := v3 @kind object;
+  #L1f6398.  call temp:= `getAppID`(v3) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getAppID:()Ljava/lang/String;` @kind virtual;
+  #L1f639e.  v2:= temp @kind object;
+  #L1f63a0.  v1.`com.huawei.hms.common.internal.BaseHmsClient.mAppID` @type ^`java.lang.String` := v2 @kind object;
+  #L1f63a4.  v1.`com.huawei.hms.common.internal.BaseHmsClient.mConnectionFailedListener` @type ^`com.huawei.hms.common.internal.BaseHmsClient$OnConnectionFailedListener` := v4 @kind object;
+  #L1f63a8.  v1.`com.huawei.hms.common.internal.BaseHmsClient.mConnectionCallbacks` @type ^`com.huawei.hms.common.internal.BaseHmsClient$ConnectionCallbacks` := v5 @kind object;
+  #L1f63ac.  return @kind void;
+}
+procedure `void` `access$000`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind object, `com.huawei.hms.api.ConnectionResult` v1 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.access$000:(Lcom/huawei/hms/common/internal/BaseHmsClient;Lcom/huawei/hms/api/ConnectionResult;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L1f63c0.  call `notifyFailed`(v0, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(Lcom/huawei/hms/api/ConnectionResult;)V` @kind direct;
+  #L1f63c6.  return @kind void;
+}
+procedure `com.huawei.hms.core.aidl.d` `access$102`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind object, `com.huawei.hms.core.aidl.d` v1 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.access$102:(Lcom/huawei/hms/common/internal/BaseHmsClient;Lcom/huawei/hms/core/aidl/d;)Lcom/huawei/hms/core/aidl/d;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L1f61b8.  v0.`com.huawei.hms.common.internal.BaseHmsClient.mService` @type ^`com.huawei.hms.core.aidl.d` := v1 @kind object;
+  #L1f61bc.  return v1 @kind object;
+}
+procedure `android.content.Context` `access$200`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.access$200:(Lcom/huawei/hms/common/internal/BaseHmsClient;)Landroid/content/Context;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L1f6024.  v0:= v0.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f6028.  return v0 @kind object;
+}
+procedure `com.huawei.hms.common.internal.BaseHmsClient$ConnectionCallbacks` `access$300`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.access$300:(Lcom/huawei/hms/common/internal/BaseHmsClient;)Lcom/huawei/hms/common/internal/BaseHmsClient$ConnectionCallbacks;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L1f6188.  v0:= v0.`com.huawei.hms.common.internal.BaseHmsClient.mConnectionCallbacks` @type ^`com.huawei.hms.common.internal.BaseHmsClient$ConnectionCallbacks` @kind object;
+  #L1f618c.  return v0 @kind object;
+}
+procedure `void` `access$400`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind object, `int` v1 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.access$400:(Lcom/huawei/hms/common/internal/BaseHmsClient;I)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L1f63d8.  call `notifyFailed`(v0, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(I)V` @kind direct;
+  #L1f63de.  return @kind void;
+}
+procedure `void` `bindCoreInternal`(`com.huawei.hms.common.internal.BaseHmsClient` v4 @kind this, `java.lang.String` v5 @kind object, `java.lang.String` v6 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.bindCoreInternal:(Ljava/lang/String;Ljava/lang/String;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1f63f0.  v0:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f63f4.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f63fa.  v0:= temp;
+  #L1f63fc.  v1:= "The binder is already connected." @kind object;
+  #L1f6400.  v2:= "BaseHmsClient" @kind object;
+  #L1f6404.  v3:= 5I;
+  #L1f6406.  if v0 == 0 then goto L1f646c;
+  #L1f640a.  v0:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f640e.  call temp:= `getInstance`(v0, v6, v5) @signature `Lcom/huawei/hms/adapter/InnerBinderAdapter;.getInstance:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Lcom/huawei/hms/adapter/BinderAdapter;` @kind static;
+  #L1f6414.  v5:= temp @kind object;
+  #L1f6416.  `@@com.huawei.hms.common.internal.BaseHmsClient.mInnerBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` := v5 @kind object;
+  #L1f641a.  call temp:= `isConnected`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.isConnected:()Z` @kind virtual;
+  #L1f6420.  v5:= temp;
+  #L1f6422.  if v5 == 0 then goto L1f6452;
+  #L1f6426.  call `i`(v2, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f642c.  call temp:= `getAdapter`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getAdapter:()Lcom/huawei/hms/adapter/BinderAdapter;` @kind virtual;
+  #L1f6432.  v5:= temp @kind object;
+  #L1f6434.  call `updateDelayTask`(v5) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.updateDelayTask:()V` @kind virtual;
+  #L1f643a.  call temp:= `getAdapter`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getAdapter:()Lcom/huawei/hms/adapter/BinderAdapter;` @kind virtual;
+  #L1f6440.  v5:= temp @kind object;
+  #L1f6442.  call temp:= `getServiceBinder`(v5) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.getServiceBinder:()Landroid/os/IBinder;` @kind virtual;
+  #L1f6448.  v5:= temp @kind object;
+  #L1f644a.  call `connectedInternal`(v4, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.connectedInternal:(Landroid/os/IBinder;)V` @kind virtual;
+  #L1f6450.  return @kind void;
+  #L1f6452.  call `setConnectStatus`(v4, v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setConnectStatus:(I)V` @kind virtual;
+  #L1f6458.  v5:= `@@com.huawei.hms.common.internal.BaseHmsClient.mInnerBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f645c.  call temp:= `newBinderCallBack`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.newBinderCallBack:()Lcom/huawei/hms/adapter/BinderAdapter$BinderCallBack;` @kind direct;
+  #L1f6462.  v6:= temp @kind object;
+  #L1f6464.  call `binder`(v5, v6) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.binder:(Lcom/huawei/hms/adapter/BinderAdapter$BinderCallBack;)V` @kind virtual;
+  #L1f646a.  return @kind void;
+  #L1f646c.  v0:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f6470.  call temp:= `getInstance`(v0, v6, v5) @signature `Lcom/huawei/hms/adapter/OuterBinderAdapter;.getInstance:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Lcom/huawei/hms/adapter/BinderAdapter;` @kind static;
+  #L1f6476.  v5:= temp @kind object;
+  #L1f6478.  `@@com.huawei.hms.common.internal.BaseHmsClient.mOuterBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` := v5 @kind object;
+  #L1f647c.  call temp:= `isConnected`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.isConnected:()Z` @kind virtual;
+  #L1f6482.  v5:= temp;
+  #L1f6484.  if v5 == 0 then goto L1f64b4;
+  #L1f6488.  call `i`(v2, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f648e.  call temp:= `getAdapter`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getAdapter:()Lcom/huawei/hms/adapter/BinderAdapter;` @kind virtual;
+  #L1f6494.  v5:= temp @kind object;
+  #L1f6496.  call `updateDelayTask`(v5) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.updateDelayTask:()V` @kind virtual;
+  #L1f649c.  call temp:= `getAdapter`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getAdapter:()Lcom/huawei/hms/adapter/BinderAdapter;` @kind virtual;
+  #L1f64a2.  v5:= temp @kind object;
+  #L1f64a4.  call temp:= `getServiceBinder`(v5) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.getServiceBinder:()Landroid/os/IBinder;` @kind virtual;
+  #L1f64aa.  v5:= temp @kind object;
+  #L1f64ac.  call `connectedInternal`(v4, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.connectedInternal:(Landroid/os/IBinder;)V` @kind virtual;
+  #L1f64b2.  return @kind void;
+  #L1f64b4.  call `setConnectStatus`(v4, v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setConnectStatus:(I)V` @kind virtual;
+  #L1f64ba.  v5:= `@@com.huawei.hms.common.internal.BaseHmsClient.mOuterBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f64be.  call temp:= `newBinderCallBack`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.newBinderCallBack:()Lcom/huawei/hms/adapter/BinderAdapter$BinderCallBack;` @kind direct;
+  #L1f64c4.  v6:= temp @kind object;
+  #L1f64c6.  call `binder`(v5, v6) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.binder:(Lcom/huawei/hms/adapter/BinderAdapter$BinderCallBack;)V` @kind virtual;
+  #L1f64cc.  return @kind void;
+}
+procedure `void` `cancelConnDelayHandle`(`com.huawei.hms.common.internal.BaseHmsClient` v3 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.cancelConnDelayHandle:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1f6548.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.LOCK_CONNECT_TIMEOUT_HANDLER` @type ^`java.lang.Object` @kind object;
+  #L1f654c.  @monitorenter v0
+  #L1f654e.  v1:= v3.`com.huawei.hms.common.internal.BaseHmsClient.mConnectTimeoutHandler` @type ^`android.os.Handler` @kind object;
+  #L1f6552.  if v1 == 0 then goto L1f6568;
+  #L1f6556.  v1:= v3.`com.huawei.hms.common.internal.BaseHmsClient.mConnectTimeoutHandler` @type ^`android.os.Handler` @kind object;
+  #L1f655a.  v2:= 2I;
+  #L1f655c.  call `removeMessages`(v1, v2) @signature `Landroid/os/Handler;.removeMessages:(I)V` @kind virtual;
+  #L1f6562.  v1:= 0I;
+  #L1f6564.  v3.`com.huawei.hms.common.internal.BaseHmsClient.mConnectTimeoutHandler` @type ^`android.os.Handler` := v1 @kind object;
+  #L1f6568.  @monitorexit v0
+  #L1f656a.  return @kind void;
+  #L1f656c.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1f656e.  @monitorexit v0
+  #L1f6570.  throw v1;
+  catch `java.lang.Throwable` @[L1f654e..L1f6570] goto L1f656c;
+}
+procedure `void` `checkAvailabilityAndConnect`(`com.huawei.hms.common.internal.BaseHmsClient` v4 @kind this, `int` v5 , `boolean` v6 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.checkAvailabilityAndConnect:(IZ)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1f6590.  v0:= "BaseHmsClient" @kind object;
+  #L1f6594.  v1:= "====== HMSSDK version: 60400303 ======" @kind object;
+  #L1f6598.  call `i`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f659e.  v1:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f65a2.  call temp:= `isUseInnerHms`(v1) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f65a8.  v1:= temp;
+  #L1f65aa.  if v1 == 0 then goto L1f65b4;
+  #L1f65ae.  v1:= `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f65b2.  goto L1f65b8;
+  #L1f65b4.  v1:= `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f65b8.  call temp:= `get`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L1f65be.  v1:= temp;
+  #L1f65c0.  v2:= new `java.lang.StringBuilder`;
+  #L1f65c4.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f65ca.  v3:= "Enter connect, Connection Status: " @kind object;
+  #L1f65ce.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f65d4.  call temp:= `append`(v2, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f65da.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f65e0.  v2:= temp @kind object;
+  #L1f65e2.  call `i`(v0, v2) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f65e8.  if v6 != 0 then goto L1f65fa;
+  #L1f65ec.  v6:= 3I;
+  #L1f65ee.  if v1 == v6 then goto L1f65f8;
+  #L1f65f2.  v6:= 5I;
+  #L1f65f4.  if v1 != v6 then goto L1f65fa;
+  #L1f65f8.  return @kind void;
+  #L1f65fa.  call temp:= `getMinApkVersion`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getMinApkVersion:()I` @kind virtual;
+  #L1f6600.  v6:= temp;
+  #L1f6602.  if v6 <= v5 then goto L1f660e;
+  #L1f6606.  call temp:= `getMinApkVersion`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getMinApkVersion:()I` @kind virtual;
+  #L1f660c.  v5:= temp;
+  #L1f660e.  v6:= new `java.lang.StringBuilder`;
+  #L1f6612.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f6618.  v1:= "connect minVersion:" @kind object;
+  #L1f661c.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6622.  call temp:= `append`(v6, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6628.  v1:= " packageName:" @kind object;
+  #L1f662c.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6632.  v1:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6636.  call temp:= `getInnerHmsPkg`(v1) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getInnerHmsPkg:()Ljava/lang/String;` @kind virtual;
+  #L1f663c.  v1:= temp @kind object;
+  #L1f663e.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6644.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f664a.  v6:= temp @kind object;
+  #L1f664c.  call `i`(v0, v6) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6652.  v6:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f6656.  call temp:= `getPackageName`(v6) @signature `Landroid/content/Context;.getPackageName:()Ljava/lang/String;` @kind virtual;
+  #L1f665c.  v6:= temp @kind object;
+  #L1f665e.  v1:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6662.  call temp:= `getInnerHmsPkg`(v1) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getInnerHmsPkg:()Ljava/lang/String;` @kind virtual;
+  #L1f6668.  v1:= temp @kind object;
+  #L1f666a.  call temp:= `equals`(v6, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L1f6670.  v6:= temp;
+  #L1f6672.  if v6 == 0 then goto L1f6688;
+  #L1f6676.  v5:= "service packageName is same, bind core service return" @kind object;
+  #L1f667a.  call `i`(v0, v5) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6680.  call `bindCoreService`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.bindCoreService:()V` @kind virtual;
+  #L1f6686.  return @kind void;
+  #L1f6688.  v6:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f668c.  call temp:= `isAvailableLibExist`(v6) @signature `Lcom/huawei/hms/utils/Util;.isAvailableLibExist:(Landroid/content/Context;)Z` @kind static;
+  #L1f6692.  v6:= temp;
+  #L1f6694.  if v6 == 0 then goto L1f6758;
+  #L1f6698.  v6:= new `com.huawei.hms.adapter.AvailableAdapter`;
+  #L1f669c.  call `<init>`(v6, v5) @signature `Lcom/huawei/hms/adapter/AvailableAdapter;.<init>:(I)V` @kind direct;
+  #L1f66a2.  v5:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f66a6.  call temp:= `isHuaweiMobileServicesAvailable`(v6, v5) @signature `Lcom/huawei/hms/adapter/AvailableAdapter;.isHuaweiMobileServicesAvailable:(Landroid/content/Context;)I` @kind virtual;
+  #L1f66ac.  v5:= temp;
+  #L1f66ae.  v1:= new `java.lang.StringBuilder`;
+  #L1f66b2.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f66b8.  v2:= "check available result: " @kind object;
+  #L1f66bc.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f66c2.  call temp:= `append`(v1, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f66c8.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f66ce.  v1:= temp @kind object;
+  #L1f66d0.  call `i`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f66d6.  if v5 != 0 then goto L1f66e2;
+  #L1f66da.  call `bindCoreService`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.bindCoreService:()V` @kind virtual;
+  #L1f66e0.  goto L1f67a6;
+  #L1f66e2.  call temp:= `isUserResolvableError`(v6, v5) @signature `Lcom/huawei/hms/adapter/AvailableAdapter;.isUserResolvableError:(I)Z` @kind virtual;
+  #L1f66e8.  v1:= temp;
+  #L1f66ea.  if v1 == 0 then goto L1f6700;
+  #L1f66ee.  v1:= "bindCoreService3.0 fail, start resolution now." @kind object;
+  #L1f66f2.  call `i`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f66f8.  call `resolution`(v4, v6, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.resolution:(Lcom/huawei/hms/adapter/AvailableAdapter;I)V` @kind direct;
+  #L1f66fe.  goto L1f67a6;
+  #L1f6700.  call temp:= `isUserNoticeError`(v6, v5) @signature `Lcom/huawei/hms/adapter/AvailableAdapter;.isUserNoticeError:(I)Z` @kind virtual;
+  #L1f6706.  v1:= temp;
+  #L1f6708.  if v1 == 0 then goto L1f671e;
+  #L1f670c.  v1:= "bindCoreService3.0 fail, start notice now." @kind object;
+  #L1f6710.  call `i`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6716.  call `notice`(v4, v6, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notice:(Lcom/huawei/hms/adapter/AvailableAdapter;I)V` @kind direct;
+  #L1f671c.  goto L1f67a6;
+  #L1f671e.  v6:= new `java.lang.StringBuilder`;
+  #L1f6722.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f6728.  v1:= "bindCoreService3.0 fail: " @kind object;
+  #L1f672c.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6732.  call temp:= `append`(v6, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6738.  v1:= " is not resolvable." @kind object;
+  #L1f673c.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6742.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f6748.  v6:= temp @kind object;
+  #L1f674a.  call `i`(v0, v6) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6750.  call `notifyFailed`(v4, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(I)V` @kind direct;
+  #L1f6756.  goto L1f67a6;
+  #L1f6758.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/api/HuaweiApiAvailability;.getInstance:()Lcom/huawei/hms/api/HuaweiApiAvailability;` @kind static;
+  #L1f675e.  v6:= temp @kind object;
+  #L1f6760.  v1:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f6764.  call temp:= `isHuaweiMobileServicesAvailable`(v6, v1, v5) @signature `Lcom/huawei/hms/api/HuaweiApiAvailability;.isHuaweiMobileServicesAvailable:(Landroid/content/Context;I)I` @kind virtual;
+  #L1f676a.  v5:= temp;
+  #L1f676c.  v6:= new `java.lang.StringBuilder`;
+  #L1f6770.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f6776.  v1:= "HuaweiApiAvailability check available result: " @kind object;
+  #L1f677a.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6780.  call temp:= `append`(v6, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6786.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f678c.  v6:= temp @kind object;
+  #L1f678e.  call `i`(v0, v6) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6794.  if v5 != 0 then goto L1f67a0;
+  #L1f6798.  call `bindCoreService`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.bindCoreService:()V` @kind virtual;
+  #L1f679e.  goto L1f67a6;
+  #L1f67a0.  call `notifyFailed`(v4, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(I)V` @kind direct;
+  #L1f67a6.  return @kind void;
+}
+procedure `com.huawei.hms.adapter.BinderAdapter$BinderCallBack` `newBinderCallBack`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.newBinderCallBack:()Lcom/huawei/hms/adapter/BinderAdapter$BinderCallBack;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L1f616c.  v0:= new `com.huawei.hms.common.internal.BaseHmsClient$1`;
+  #L1f6170.  call `<init>`(v0, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient$1;.<init>:(Lcom/huawei/hms/common/internal/BaseHmsClient;)V` @kind direct;
+  #L1f6176.  return v0 @kind object;
+}
+procedure `void` `notice`(`com.huawei.hms.common.internal.BaseHmsClient` v3 @kind this, `com.huawei.hms.adapter.AvailableAdapter` v4 @kind object, `int` v5 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notice:(Lcom/huawei/hms/adapter/AvailableAdapter;I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1f6934.  v0:= "BaseHmsClient" @kind object;
+  #L1f6938.  v1:= "enter notice" @kind object;
+  #L1f693c.  call `i`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6942.  call temp:= `getClientSettings`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getClientSettings:()Lcom/huawei/hms/common/internal/ClientSettings;` @kind virtual;
+  #L1f6948.  v0:= temp @kind object;
+  #L1f694a.  call temp:= `isHasActivity`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isHasActivity:()Z` @kind virtual;
+  #L1f6950.  v0:= temp;
+  #L1f6952.  v1:= 26I;
+  #L1f6956.  if v0 != 0 then goto L1f698e;
+  #L1f695a.  v4:= 29I;
+  #L1f695e.  if v5 != v4 then goto L1f6966;
+  #L1f6962.  v5:= 9I;
+  #L1f6966.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/api/HuaweiApiAvailability;.getInstance:()Lcom/huawei/hms/api/HuaweiApiAvailability;` @kind static;
+  #L1f696c.  v4:= temp @kind object;
+  #L1f696e.  v0:= v3.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f6972.  v2:= 0I;
+  #L1f6974.  call temp:= `getErrPendingIntent`(v4, v0, v5, v2) @signature `Lcom/huawei/hms/api/HuaweiApiAvailability;.getErrPendingIntent:(Landroid/content/Context;II)Landroid/app/PendingIntent;` @kind virtual;
+  #L1f697a.  v4:= temp @kind object;
+  #L1f697c.  v5:= new `com.huawei.hms.api.ConnectionResult`;
+  #L1f6980.  call `<init>`(v5, v1, v4) @signature `Lcom/huawei/hms/api/ConnectionResult;.<init>:(ILandroid/app/PendingIntent;)V` @kind direct;
+  #L1f6986.  call `notifyFailed`(v3, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(Lcom/huawei/hms/api/ConnectionResult;)V` @kind direct;
+  #L1f698c.  return @kind void;
+  #L1f698e.  call temp:= `getClientSettings`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getClientSettings:()Lcom/huawei/hms/common/internal/ClientSettings;` @kind virtual;
+  #L1f6994.  v5:= temp @kind object;
+  #L1f6996.  call temp:= `getCpActivity`(v5) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getCpActivity:()Landroid/app/Activity;` @kind virtual;
+  #L1f699c.  v5:= temp @kind object;
+  #L1f699e.  call temp:= `getContext`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L1f69a4.  v0:= temp @kind object;
+  #L1f69a6.  call temp:= `getActiveActivity`(v5, v0) @signature `Lcom/huawei/hms/utils/Util;.getActiveActivity:(Landroid/app/Activity;Landroid/content/Context;)Landroid/app/Activity;` @kind static;
+  #L1f69ac.  v5:= temp @kind object;
+  #L1f69ae.  if v5 == 0 then goto L1f69c4;
+  #L1f69b2.  v0:= new `com.huawei.hms.common.internal.BaseHmsClient$2`;
+  #L1f69b6.  call `<init>`(v0, v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient$2;.<init>:(Lcom/huawei/hms/common/internal/BaseHmsClient;)V` @kind direct;
+  #L1f69bc.  call `startNotice`(v4, v5, v0) @signature `Lcom/huawei/hms/adapter/AvailableAdapter;.startNotice:(Landroid/app/Activity;Lcom/huawei/hms/adapter/AvailableAdapter$AvailableCallBack;)V` @kind virtual;
+  #L1f69c2.  goto L1f69ca;
+  #L1f69c4.  call `notifyFailed`(v3, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(I)V` @kind direct;
+  #L1f69ca.  return @kind void;
+}
+procedure `void` `notifyFailed`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this, `int` v3 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L1f6a5c.  v0:= new `java.lang.StringBuilder`;
+  #L1f6a60.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f6a66.  v1:= "notifyFailed result: " @kind object;
+  #L1f6a6a.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6a70.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6a76.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f6a7c.  v0:= temp @kind object;
+  #L1f6a7e.  v1:= "BaseHmsClient" @kind object;
+  #L1f6a82.  call `i`(v1, v0) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6a88.  v0:= new `android.os.Message`;
+  #L1f6a8c.  call `<init>`(v0) @signature `Landroid/os/Message;.<init>:()V` @kind direct;
+  #L1f6a92.  v1:= 10012I;
+  #L1f6a96.  v0.`android.os.Message.what` @type ^`int` := v1;
+  #L1f6a9a.  v0.`android.os.Message.arg1` @type ^`int` := v3;
+  #L1f6a9e.  call temp:= `getHandler`() @signature `Lcom/huawei/hms/common/internal/RequestManager;.getHandler:()Landroid/os/Handler;` @kind static;
+  #L1f6aa4.  v1:= temp @kind object;
+  #L1f6aa6.  call temp:= `sendMessage`(v1, v0) @signature `Landroid/os/Handler;.sendMessage:(Landroid/os/Message;)Z` @kind virtual;
+  #L1f6aac.  v0:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mConnectionFailedListener` @type ^`com.huawei.hms.common.internal.BaseHmsClient$OnConnectionFailedListener` @kind object;
+  #L1f6ab0.  if v0 == 0 then goto L1f6acc;
+  #L1f6ab4.  v1:= instanceof @variable v0 @type ^`com.huawei.hms.common.HuaweiApi$RequestHandler` @kind boolean;
+  #L1f6ab8.  if v1 != 0 then goto L1f6acc;
+  #L1f6abc.  v1:= new `com.huawei.hms.api.ConnectionResult`;
+  #L1f6ac0.  call `<init>`(v1, v3) @signature `Lcom/huawei/hms/api/ConnectionResult;.<init>:(I)V` @kind direct;
+  #L1f6ac6.  call `onConnectionFailed`(v0, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient$OnConnectionFailedListener;.onConnectionFailed:(Lcom/huawei/hms/api/ConnectionResult;)V` @kind interface;
+  #L1f6acc.  return @kind void;
+}
+procedure `void` `notifyFailed`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this, `com.huawei.hms.api.ConnectionResult` v3 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(Lcom/huawei/hms/api/ConnectionResult;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L1f69dc.  v0:= new `java.lang.StringBuilder`;
+  #L1f69e0.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f69e6.  v1:= "notifyFailed result: " @kind object;
+  #L1f69ea.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f69f0.  call temp:= `getErrorCode`(v3) @signature `Lcom/huawei/hms/api/ConnectionResult;.getErrorCode:()I` @kind virtual;
+  #L1f69f6.  v1:= temp;
+  #L1f69f8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f69fe.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f6a04.  v0:= temp @kind object;
+  #L1f6a06.  v1:= "BaseHmsClient" @kind object;
+  #L1f6a0a.  call `i`(v1, v0) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6a10.  v0:= new `android.os.Message`;
+  #L1f6a14.  call `<init>`(v0) @signature `Landroid/os/Message;.<init>:()V` @kind direct;
+  #L1f6a1a.  v1:= 10012I;
+  #L1f6a1e.  v0.`android.os.Message.what` @type ^`int` := v1;
+  #L1f6a22.  v0.`android.os.Message.obj` @type ^`java.lang.Object` := v3 @kind object;
+  #L1f6a26.  call temp:= `getHandler`() @signature `Lcom/huawei/hms/common/internal/RequestManager;.getHandler:()Landroid/os/Handler;` @kind static;
+  #L1f6a2c.  v1:= temp @kind object;
+  #L1f6a2e.  call temp:= `sendMessage`(v1, v0) @signature `Landroid/os/Handler;.sendMessage:(Landroid/os/Message;)Z` @kind virtual;
+  #L1f6a34.  v0:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mConnectionFailedListener` @type ^`com.huawei.hms.common.internal.BaseHmsClient$OnConnectionFailedListener` @kind object;
+  #L1f6a38.  if v0 == 0 then goto L1f6a4a;
+  #L1f6a3c.  v1:= instanceof @variable v0 @type ^`com.huawei.hms.common.HuaweiApi$RequestHandler` @kind boolean;
+  #L1f6a40.  if v1 != 0 then goto L1f6a4a;
+  #L1f6a44.  call `onConnectionFailed`(v0, v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient$OnConnectionFailedListener;.onConnectionFailed:(Lcom/huawei/hms/api/ConnectionResult;)V` @kind interface;
+  #L1f6a4a.  return @kind void;
+}
+procedure `void` `resolution`(`com.huawei.hms.common.internal.BaseHmsClient` v3 @kind this, `com.huawei.hms.adapter.AvailableAdapter` v4 @kind object, `int` v5 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.resolution:(Lcom/huawei/hms/adapter/AvailableAdapter;I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1f6af8.  v0:= "BaseHmsClient" @kind object;
+  #L1f6afc.  v1:= "enter HmsCore resolution" @kind object;
+  #L1f6b00.  call `i`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6b06.  call temp:= `getClientSettings`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getClientSettings:()Lcom/huawei/hms/common/internal/ClientSettings;` @kind virtual;
+  #L1f6b0c.  v0:= temp @kind object;
+  #L1f6b0e.  call temp:= `isHasActivity`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isHasActivity:()Z` @kind virtual;
+  #L1f6b14.  v0:= temp;
+  #L1f6b16.  v1:= 26I;
+  #L1f6b1a.  if v0 != 0 then goto L1f6b46;
+  #L1f6b1e.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/api/HuaweiApiAvailability;.getInstance:()Lcom/huawei/hms/api/HuaweiApiAvailability;` @kind static;
+  #L1f6b24.  v4:= temp @kind object;
+  #L1f6b26.  v0:= v3.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f6b2a.  v2:= 0I;
+  #L1f6b2c.  call temp:= `getErrPendingIntent`(v4, v0, v5, v2) @signature `Lcom/huawei/hms/api/HuaweiApiAvailability;.getErrPendingIntent:(Landroid/content/Context;II)Landroid/app/PendingIntent;` @kind virtual;
+  #L1f6b32.  v4:= temp @kind object;
+  #L1f6b34.  v5:= new `com.huawei.hms.api.ConnectionResult`;
+  #L1f6b38.  call `<init>`(v5, v1, v4) @signature `Lcom/huawei/hms/api/ConnectionResult;.<init>:(ILandroid/app/PendingIntent;)V` @kind direct;
+  #L1f6b3e.  call `notifyFailed`(v3, v5) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(Lcom/huawei/hms/api/ConnectionResult;)V` @kind direct;
+  #L1f6b44.  return @kind void;
+  #L1f6b46.  call temp:= `getClientSettings`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getClientSettings:()Lcom/huawei/hms/common/internal/ClientSettings;` @kind virtual;
+  #L1f6b4c.  v5:= temp @kind object;
+  #L1f6b4e.  call temp:= `getCpActivity`(v5) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getCpActivity:()Landroid/app/Activity;` @kind virtual;
+  #L1f6b54.  v5:= temp @kind object;
+  #L1f6b56.  call temp:= `getContext`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L1f6b5c.  v0:= temp @kind object;
+  #L1f6b5e.  call temp:= `getActiveActivity`(v5, v0) @signature `Lcom/huawei/hms/utils/Util;.getActiveActivity:(Landroid/app/Activity;Landroid/content/Context;)Landroid/app/Activity;` @kind static;
+  #L1f6b64.  v5:= temp @kind object;
+  #L1f6b66.  if v5 == 0 then goto L1f6b7c;
+  #L1f6b6a.  v0:= new `com.huawei.hms.common.internal.BaseHmsClient$3`;
+  #L1f6b6e.  call `<init>`(v0, v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient$3;.<init>:(Lcom/huawei/hms/common/internal/BaseHmsClient;)V` @kind direct;
+  #L1f6b74.  call `startResolution`(v4, v5, v0) @signature `Lcom/huawei/hms/adapter/AvailableAdapter;.startResolution:(Landroid/app/Activity;Lcom/huawei/hms/adapter/AvailableAdapter$AvailableCallBack;)V` @kind virtual;
+  #L1f6b7a.  goto L1f6b82;
+  #L1f6b7c.  call `notifyFailed`(v3, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(I)V` @kind direct;
+  #L1f6b82.  return @kind void;
+}
+procedure `void` `tryUnBind`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.tryUnBind:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L1f6be4.  v0:= "BaseHmsClient" @kind object;
+  #L1f6be8.  v1:= "Failed to get service as interface, trying to unbind." @kind object;
+  #L1f6bec.  call `w`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.w:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6bf2.  v1:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6bf6.  call temp:= `isUseInnerHms`(v1) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f6bfc.  v1:= temp;
+  #L1f6bfe.  if v1 == 0 then goto L1f6c1e;
+  #L1f6c02.  v1:= `@@com.huawei.hms.common.internal.BaseHmsClient.mInnerBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f6c06.  if v1 != 0 then goto L1f6c16;
+  #L1f6c0a.  v1:= "mInnerBinderAdapter is null." @kind object;
+  #L1f6c0e.  call `w`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.w:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6c14.  return @kind void;
+  #L1f6c16.  call `unBind`(v1) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.unBind:()V` @kind virtual;
+  #L1f6c1c.  goto L1f6c38;
+  #L1f6c1e.  v1:= `@@com.huawei.hms.common.internal.BaseHmsClient.mOuterBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f6c22.  if v1 != 0 then goto L1f6c32;
+  #L1f6c26.  v1:= "mOuterBinderAdapter is null." @kind object;
+  #L1f6c2a.  call `w`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.w:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6c30.  return @kind void;
+  #L1f6c32.  call `unBind`(v1) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.unBind:()V` @kind virtual;
+  #L1f6c38.  v0:= 1I;
+  #L1f6c3a.  call `setConnectStatus`(v2, v0) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setConnectStatus:(I)V` @kind virtual;
+  #L1f6c40.  v0:= 10I;
+  #L1f6c44.  call `notifyFailed`(v2, v0) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.notifyFailed:(I)V` @kind direct;
+  #L1f6c4a.  return @kind void;
+}
+procedure `void` `unBindAdapter`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.unBindAdapter:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L1f6c5c.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6c60.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f6c66.  v0:= temp;
+  #L1f6c68.  if v0 == 0 then goto L1f6c7c;
+  #L1f6c6c.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.mInnerBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f6c70.  if v0 == 0 then goto L1f6c7a;
+  #L1f6c74.  call `unBind`(v0) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.unBind:()V` @kind virtual;
+  #L1f6c7a.  return @kind void;
+  #L1f6c7c.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.mOuterBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f6c80.  if v0 == 0 then goto L1f6c8a;
+  #L1f6c84.  call `unBind`(v0) @signature `Lcom/huawei/hms/adapter/BinderAdapter;.unBind:()V` @kind virtual;
+  #L1f6c8a.  return @kind void;
+}
+procedure `void` `bindCoreService`(`com.huawei.hms.common.internal.BaseHmsClient` v4 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.bindCoreService:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1f64e0.  v0:= v4.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f64e4.  call temp:= `getInnerHmsPkg`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getInnerHmsPkg:()Ljava/lang/String;` @kind virtual;
+  #L1f64ea.  v0:= temp @kind object;
+  #L1f64ec.  call temp:= `getServiceAction`(v4) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getServiceAction:()Ljava/lang/String;` @kind virtual;
+  #L1f64f2.  v1:= temp @kind object;
+  #L1f64f4.  v2:= new `java.lang.StringBuilder`;
+  #L1f64f8.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f64fe.  v3:= "enter bindCoreService, packageName is " @kind object;
+  #L1f6502.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6508.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f650e.  v3:= ", serviceAction is " @kind object;
+  #L1f6512.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6518.  call temp:= `append`(v2, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f651e.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f6524.  v2:= temp @kind object;
+  #L1f6526.  v3:= "BaseHmsClient" @kind object;
+  #L1f652a.  call `i`(v3, v2) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6530.  call `bindCoreInternal`(v4, v0, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.bindCoreInternal:(Ljava/lang/String;Ljava/lang/String;)V` @kind direct;
+  #L1f6536.  return @kind void;
+}
+procedure `void` `checkConnected`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.checkConnected:()V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1f67b8.  call temp:= `isConnected`(v2) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.isConnected:()Z` @kind virtual;
+  #L1f67be.  v0:= temp;
+  #L1f67c0.  if v0 == 0 then goto L1f67c6;
+  #L1f67c4.  return @kind void;
+  #L1f67c6.  v0:= new `java.lang.IllegalStateException`;
+  #L1f67ca.  v1:= "Not connected. Call connect() and wait for onConnected() to be called." @kind object;
+  #L1f67ce.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1f67d4.  throw v0;
+}
+procedure `void` `connect`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this, `int` v2 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.connect:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f67e8.  v0:= 0I;
+  #L1f67ea.  call `checkAvailabilityAndConnect`(v1, v2, v0) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.checkAvailabilityAndConnect:(IZ)V` @kind direct;
+  #L1f67f0.  return @kind void;
+}
+procedure `void` `connect`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind this, `int` v1 , `boolean` v2 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.connect:(IZ)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1f6804.  call `checkAvailabilityAndConnect`(v0, v1, v2) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.checkAvailabilityAndConnect:(IZ)V` @kind direct;
+  #L1f680a.  return @kind void;
+}
+procedure `void` `connectedInternal`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this, `android.os.IBinder` v2 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.connectedInternal:(Landroid/os/IBinder;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f681c.  call temp:= `a`(v2) @signature `Lcom/huawei/hms/core/aidl/d$a;.a:(Landroid/os/IBinder;)Lcom/huawei/hms/core/aidl/d;` @kind static;
+  #L1f6822.  v2:= temp @kind object;
+  #L1f6824.  v1.`com.huawei.hms.common.internal.BaseHmsClient.mService` @type ^`com.huawei.hms.core.aidl.d` := v2 @kind object;
+  #L1f6828.  v2:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mService` @type ^`com.huawei.hms.core.aidl.d` @kind object;
+  #L1f682c.  if v2 != 0 then goto L1f6846;
+  #L1f6830.  v2:= "BaseHmsClient" @kind object;
+  #L1f6834.  v0:= "mService is null, try to unBind." @kind object;
+  #L1f6838.  call `e`(v2, v0) @signature `Lcom/huawei/hms/support/log/HMSLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f683e.  call `tryUnBind`(v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.tryUnBind:()V` @kind direct;
+  #L1f6844.  return @kind void;
+  #L1f6846.  call `onConnecting`(v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.onConnecting:()V` @kind virtual;
+  #L1f684c.  return @kind void;
+}
+procedure `void` `connectionConnected`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.connectionConnected:()V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1f6860.  v0:= 3I;
+  #L1f6862.  call `setConnectStatus`(v2, v0) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setConnectStatus:(I)V` @kind virtual;
+  #L1f6868.  call temp:= `getHandler`() @signature `Lcom/huawei/hms/common/internal/RequestManager;.getHandler:()Landroid/os/Handler;` @kind static;
+  #L1f686e.  v0:= temp @kind object;
+  #L1f6870.  v1:= 10011I;
+  #L1f6874.  call temp:= `sendEmptyMessage`(v0, v1) @signature `Landroid/os/Handler;.sendEmptyMessage:(I)Z` @kind virtual;
+  #L1f687a.  v0:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mConnectionCallbacks` @type ^`com.huawei.hms.common.internal.BaseHmsClient$ConnectionCallbacks` @kind object;
+  #L1f687e.  if v0 == 0 then goto L1f6890;
+  #L1f6882.  v1:= instanceof @variable v0 @type ^`com.huawei.hms.common.HuaweiApi$RequestHandler` @kind boolean;
+  #L1f6886.  if v1 != 0 then goto L1f6890;
+  #L1f688a.  call `onConnected`(v0) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient$ConnectionCallbacks;.onConnected:()V` @kind interface;
+  #L1f6890.  return @kind void;
+}
+procedure `void` `disconnect`(`com.huawei.hms.common.internal.BaseHmsClient` v3 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.disconnect:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1f68a4.  v0:= v3.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f68a8.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f68ae.  v0:= temp;
+  #L1f68b0.  if v0 == 0 then goto L1f68ba;
+  #L1f68b4.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f68b8.  goto L1f68be;
+  #L1f68ba.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f68be.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L1f68c4.  v0:= temp;
+  #L1f68c6.  v1:= new `java.lang.StringBuilder`;
+  #L1f68ca.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f68d0.  v2:= "Enter disconnect, Connection Status: " @kind object;
+  #L1f68d4.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f68da.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f68e0.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f68e6.  v1:= temp @kind object;
+  #L1f68e8.  v2:= "BaseHmsClient" @kind object;
+  #L1f68ec.  call `i`(v2, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f68f2.  v1:= 1I;
+  #L1f68f4.  if v0 == v1 then goto L1f6920;
+  #L1f68f8.  v2:= 3I;
+  #L1f68fa.  if v0 == v2 then goto L1f6914;
+  #L1f68fe.  v2:= 5I;
+  #L1f6900.  if v0 == v2 then goto L1f6906;
+  #L1f6904.  goto L1f6920;
+  #L1f6906.  call `cancelConnDelayHandle`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.cancelConnDelayHandle:()V` @kind direct;
+  #L1f690c.  call `setConnectStatus`(v3, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setConnectStatus:(I)V` @kind virtual;
+  #L1f6912.  goto L1f6920;
+  #L1f6914.  call `unBindAdapter`(v3) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.unBindAdapter:()V` @kind direct;
+  #L1f691a.  call `setConnectStatus`(v3, v1) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setConnectStatus:(I)V` @kind virtual;
+  #L1f6920.  return @kind void;
+}
+procedure `com.huawei.hms.adapter.BinderAdapter` `getAdapter`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getAdapter:()Lcom/huawei/hms/adapter/BinderAdapter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1f60e0.  v0:= new `java.lang.StringBuilder`;
+  #L1f60e4.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1f60ea.  v1:= "getAdapter:isInner:" @kind object;
+  #L1f60ee.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f60f4.  v1:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f60f8.  call temp:= `isUseInnerHms`(v1) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f60fe.  v1:= temp;
+  #L1f6100.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Z)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6106.  v1:= ", mInnerBinderAdapter:" @kind object;
+  #L1f610a.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6110.  v1:= `@@com.huawei.hms.common.internal.BaseHmsClient.mInnerBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f6114.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f611a.  v1:= ", mOuterBinderAdapter:" @kind object;
+  #L1f611e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f6124.  v1:= `@@com.huawei.hms.common.internal.BaseHmsClient.mOuterBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f6128.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1f612e.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1f6134.  v0:= temp @kind object;
+  #L1f6136.  v1:= "BaseHmsClient" @kind object;
+  #L1f613a.  call `i`(v1, v0) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1f6140.  v0:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6144.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f614a.  v0:= temp;
+  #L1f614c.  if v0 == 0 then goto L1f6156;
+  #L1f6150.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.mInnerBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f6154.  goto L1f615a;
+  #L1f6156.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.mOuterBinderAdapter` @type ^`com.huawei.hms.adapter.BinderAdapter` @kind object;
+  #L1f615a.  return v0 @kind object;
+}
+procedure `java.util.List` `getApiNameList`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getApiNameList:()Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f6324.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6328.  call temp:= `getApiName`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getApiName:()Ljava/util/List;` @kind virtual;
+  #L1f632e.  v0:= temp @kind object;
+  #L1f6330.  return v0 @kind object;
+}
+procedure `java.lang.String` `getAppID`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getAppID:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f6254.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mAppID` @type ^`java.lang.String` @kind object;
+  #L1f6258.  return v0 @kind object;
+}
+procedure `com.huawei.hms.common.internal.ClientSettings` `getClientSettings`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getClientSettings:()Lcom/huawei/hms/common/internal/ClientSettings;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L1f61a0.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f61a4.  return v0 @kind object;
+}
+procedure `int` `getConnectionStatus`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getConnectionStatus:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f6208.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f620c.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f6212.  v0:= temp;
+  #L1f6214.  if v0 == 0 then goto L1f621e;
+  #L1f6218.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f621c.  goto L1f6222;
+  #L1f621e.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f6222.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L1f6228.  v0:= temp;
+  #L1f622a.  return v0;
+}
+procedure `android.content.Context` `getContext`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getContext:()Landroid/content/Context;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f603c.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f6040.  return v0 @kind object;
+}
+procedure `java.lang.String` `getCpID`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getCpID:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f626c.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6270.  call temp:= `getCpID`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getCpID:()Ljava/lang/String;` @kind virtual;
+  #L1f6276.  v0:= temp @kind object;
+  #L1f6278.  return v0 @kind object;
+}
+procedure `int` `getMinApkVersion`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getMinApkVersion:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f623c.  v0:= 30000000I;
+  #L1f6242.  return v0;
+}
+procedure `java.lang.String` `getPackageName`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getPackageName:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f628c.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6290.  call temp:= `getClientPackageName`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getClientPackageName:()Ljava/lang/String;` @kind virtual;
+  #L1f6296.  v0:= temp @kind object;
+  #L1f6298.  return v0 @kind object;
+}
+procedure `com.huawei.hms.core.aidl.d` `getService`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getService:()Lcom/huawei/hms/core/aidl/d;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f61d0.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mService` @type ^`com.huawei.hms.core.aidl.d` @kind object;
+  #L1f61d4.  return v0 @kind object;
+}
+procedure `java.lang.String` `getServiceAction`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getServiceAction:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1f62ac.  v0:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mContext` @type ^`android.content.Context` @kind object;
+  #L1f62b0.  call temp:= `getInstance`(v0) @signature `Lcom/huawei/hms/utils/HMSPackageManager;.getInstance:(Landroid/content/Context;)Lcom/huawei/hms/utils/HMSPackageManager;` @kind static;
+  #L1f62b6.  v0:= temp @kind object;
+  #L1f62b8.  v1:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f62bc.  call temp:= `isUseInnerHms`(v1) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f62c2.  v1:= temp;
+  #L1f62c4.  if v1 == 0 then goto L1f62d2;
+  #L1f62c8.  call temp:= `getInnerServiceAction`(v0) @signature `Lcom/huawei/hms/utils/HMSPackageManager;.getInnerServiceAction:()Ljava/lang/String;` @kind virtual;
+  #L1f62ce.  v0:= temp @kind object;
+  #L1f62d0.  goto L1f62da;
+  #L1f62d2.  call temp:= `getServiceAction`(v0) @signature `Lcom/huawei/hms/utils/HMSPackageManager;.getServiceAction:()Ljava/lang/String;` @kind virtual;
+  #L1f62d8.  v0:= temp @kind object;
+  #L1f62da.  return v0 @kind object;
+}
+procedure `java.lang.String` `getSessionId`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getSessionId:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f62ec.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.sessionId` @type ^`java.lang.String` @kind object;
+  #L1f62f0.  return v0 @kind object;
+}
+procedure `com.huawei.hms.support.api.client.SubAppInfo` `getSubAppInfo`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getSubAppInfo:()Lcom/huawei/hms/support/api/client/SubAppInfo;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f61e8.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f61ec.  call temp:= `getSubAppID`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.getSubAppID:()Lcom/huawei/hms/support/api/client/SubAppInfo;` @kind virtual;
+  #L1f61f2.  v0:= temp @kind object;
+  #L1f61f4.  return v0 @kind object;
+}
+procedure `java.lang.String` `getTransportName`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.getTransportName:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1f6304.  v0:= constclass @type ^`com.huawei.hms.api.IPCTransport` @kind object;
+  #L1f6308.  call temp:= `getName`(v0) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L1f630e.  v0:= temp @kind object;
+  #L1f6310.  return v0 @kind object;
+}
+procedure `boolean` `isConnected`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.isConnected:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1f6054.  v0:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6058.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f605e.  v0:= temp;
+  #L1f6060.  v1:= 3I;
+  #L1f6062.  if v0 == 0 then goto L1f6078;
+  #L1f6066.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f606a.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L1f6070.  v0:= temp;
+  #L1f6072.  if v0 != v1 then goto L1f608c;
+  #L1f6076.  goto L1f6088;
+  #L1f6078.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f607c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L1f6082.  v0:= temp;
+  #L1f6084.  if v0 != v1 then goto L1f608c;
+  #L1f6088.  v0:= 1I;
+  #L1f608a.  goto L1f608e;
+  #L1f608c.  v0:= 0I;
+  #L1f608e.  return v0;
+}
+procedure `boolean` `isConnecting`(`com.huawei.hms.common.internal.BaseHmsClient` v2 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.isConnecting:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1f60a0.  v0:= v2.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f60a4.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f60aa.  v0:= temp;
+  #L1f60ac.  if v0 == 0 then goto L1f60b6;
+  #L1f60b0.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f60b4.  goto L1f60ba;
+  #L1f60b6.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f60ba.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L1f60c0.  v0:= temp;
+  #L1f60c2.  v1:= 5I;
+  #L1f60c4.  if v0 != v1 then goto L1f60cc;
+  #L1f60c8.  v0:= 1I;
+  #L1f60ca.  goto L1f60ce;
+  #L1f60cc.  v0:= 0I;
+  #L1f60ce.  return v0;
+}
+procedure `void` `onConnecting`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind this) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.onConnecting:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1f6ae0.  call `connectionConnected`(v0) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.connectionConnected:()V` @kind virtual;
+  #L1f6ae6.  return @kind void;
+}
+procedure `void` `setConnectStatus`(`com.huawei.hms.common.internal.BaseHmsClient` v1 @kind this, `int` v2 ) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setConnectStatus:(I)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L1f6b94.  v0:= v1.`com.huawei.hms.common.internal.BaseHmsClient.mClientSettings` @type ^`com.huawei.hms.common.internal.ClientSettings` @kind object;
+  #L1f6b98.  call temp:= `isUseInnerHms`(v0) @signature `Lcom/huawei/hms/common/internal/ClientSettings;.isUseInnerHms:()Z` @kind virtual;
+  #L1f6b9e.  v0:= temp;
+  #L1f6ba0.  if v0 == 0 then goto L1f6bb0;
+  #L1f6ba4.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.INNER_CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f6ba8.  call `set`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.set:(I)V` @kind virtual;
+  #L1f6bae.  goto L1f6bba;
+  #L1f6bb0.  v0:= `@@com.huawei.hms.common.internal.BaseHmsClient.CONN_STATUS` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L1f6bb4.  call `set`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.set:(I)V` @kind virtual;
+  #L1f6bba.  return @kind void;
+}
+procedure `void` `setService`(`com.huawei.hms.common.internal.BaseHmsClient` v0 @kind this, `com.huawei.hms.core.aidl.d` v1 @kind object) @signature `Lcom/huawei/hms/common/internal/BaseHmsClient;.setService:(Lcom/huawei/hms/core/aidl/d;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1f6bcc.  v0.`com.huawei.hms.common.internal.BaseHmsClient.mService` @type ^`com.huawei.hms.core.aidl.d` := v1 @kind object;
+  #L1f6bd0.  return @kind void;
+}

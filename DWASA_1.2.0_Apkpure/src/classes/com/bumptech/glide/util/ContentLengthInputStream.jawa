@@ -1,0 +1,169 @@
+record `com.bumptech.glide.util.ContentLengthInputStream` @kind class @AccessFlag PUBLIC_FINAL extends `java.io.FilterInputStream` @kind class {
+  `long` `com.bumptech.glide.util.ContentLengthInputStream.contentLength` @AccessFlag PRIVATE_FINAL;
+  `int` `com.bumptech.glide.util.ContentLengthInputStream.readSoFar` @AccessFlag PRIVATE;
+}
+global `java.lang.String` `@@com.bumptech.glide.util.ContentLengthInputStream.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.bumptech.glide.util.ContentLengthInputStream.UNKNOWN` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.bumptech.glide.util.ContentLengthInputStream` v0 @kind this, `java.io.InputStream` v1 @kind object, `long` v2 ) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.<init>:(Ljava/io/InputStream;J)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L2ca7f4.  call `<init>`(v0, v1) @signature `Ljava/io/FilterInputStream;.<init>:(Ljava/io/InputStream;)V` @kind direct;
+  #L2ca7fa.  v0.`com.bumptech.glide.util.ContentLengthInputStream.contentLength` @type ^`long` := v2 @kind wide;
+  #L2ca7fe.  return @kind void;
+}
+procedure `int` `checkReadSoFarOrThrow`(`com.bumptech.glide.util.ContentLengthInputStream` v5 @kind this, `int` v6 ) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.checkReadSoFarOrThrow:(I)I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2ca62c.  if v6 < 0 then goto L2ca63c;
+  #L2ca630.  v0:= v5.`com.bumptech.glide.util.ContentLengthInputStream.readSoFar` @type ^`int`;
+  #L2ca634.  v0:= v0 + v6 @kind int;
+  #L2ca636.  v5.`com.bumptech.glide.util.ContentLengthInputStream.readSoFar` @type ^`int` := v0;
+  #L2ca63a.  goto L2ca654;
+  #L2ca63c.  v0:= v5.`com.bumptech.glide.util.ContentLengthInputStream.contentLength` @type ^`long` @kind wide;
+  #L2ca640.  v2:= v5.`com.bumptech.glide.util.ContentLengthInputStream.readSoFar` @type ^`int`;
+  #L2ca644.  v2:= (`long`) v2 @kind i2l;
+  #L2ca646.  v0:= v0 - v2 @kind long;
+  #L2ca648.  v2:= 0L;
+  #L2ca64c.  v4:= lcmp(v0, v2);
+  #L2ca650.  if v4 > 0 then goto L2ca656;
+  #L2ca654.  return v6;
+  #L2ca656.  v6:= new `java.io.IOException`;
+  #L2ca65a.  v0:= new `java.lang.StringBuilder`;
+  #L2ca65e.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2ca664.  v1:= "Failed to read all expected data, expected: " @kind object;
+  #L2ca668.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2ca66e.  v1:= v5.`com.bumptech.glide.util.ContentLengthInputStream.contentLength` @type ^`long` @kind wide;
+  #L2ca672.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2ca678.  v1:= ", but read: " @kind object;
+  #L2ca67c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2ca682.  v1:= v5.`com.bumptech.glide.util.ContentLengthInputStream.readSoFar` @type ^`int`;
+  #L2ca686.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2ca68c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2ca692.  v0:= temp @kind object;
+  #L2ca694.  call `<init>`(v6, v0) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2ca69a.  throw v6;
+}
+procedure `java.io.InputStream` `obtain`(`java.io.InputStream` v1 @kind object, `long` v2 ) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.obtain:(Ljava/io/InputStream;J)Ljava/io/InputStream;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2ca7d8.  v0:= new `com.bumptech.glide.util.ContentLengthInputStream`;
+  #L2ca7dc.  call `<init>`(v0, v1, v2) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.<init>:(Ljava/io/InputStream;J)V` @kind direct;
+  #L2ca7e2.  return v0 @kind object;
+}
+procedure `java.io.InputStream` `obtain`(`java.io.InputStream` v2 @kind object, `java.lang.String` v3 @kind object) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.obtain:(Ljava/io/InputStream;Ljava/lang/String;)Ljava/io/InputStream;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2ca7b4.  call temp:= `parseContentLength`(v3) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.parseContentLength:(Ljava/lang/String;)I` @kind static;
+  #L2ca7ba.  v3:= temp;
+  #L2ca7bc.  v0:= (`long`) v3 @kind i2l;
+  #L2ca7be.  call temp:= `obtain`(v2, v0) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.obtain:(Ljava/io/InputStream;J)Ljava/io/InputStream;` @kind static;
+  #L2ca7c4.  v2:= temp @kind object;
+  #L2ca7c6.  return v2 @kind object;
+}
+procedure `int` `parseContentLength`(`java.lang.String` v4 @kind object) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.parseContentLength:(Ljava/lang/String;)I` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2ca6ac.  call temp:= `isEmpty`(v4) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L2ca6b2.  v0:= temp;
+  #L2ca6b4.  if v0 != 0 then goto L2ca6fe;
+  #L2ca6b8.  call temp:= `parseInt`(v4) @signature `Ljava/lang/Integer;.parseInt:(Ljava/lang/String;)I` @kind static;
+  #L2ca6be.  v4:= temp;
+  #L2ca6c0.  goto L2ca700;
+  #L2ca6c2.  v0:= Exception @type ^`java.lang.NumberFormatException` @kind object;
+  #L2ca6c4.  v1:= 3I;
+  #L2ca6c6.  v2:= "ContentLengthStream" @kind object;
+  #L2ca6ca.  call temp:= `isLoggable`(v2, v1) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2ca6d0.  v1:= temp;
+  #L2ca6d2.  if v1 == 0 then goto L2ca6fe;
+  #L2ca6d6.  v1:= new `java.lang.StringBuilder`;
+  #L2ca6da.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2ca6e0.  v3:= "failed to parse content length header: " @kind object;
+  #L2ca6e4.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2ca6ea.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2ca6f0.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2ca6f6.  v4:= temp @kind object;
+  #L2ca6f8.  call temp:= `d`(v2, v4, v0) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I` @kind static;
+  #L2ca6fe.  v4:= -1I;
+  #L2ca700.  return v4;
+  catch `java.lang.NumberFormatException` @[L2ca6b8..L2ca6c0] goto L2ca6c2;
+}
+procedure `int` `available`(`com.bumptech.glide.util.ContentLengthInputStream` v4 @kind this) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.available:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2ca5e0.  @monitorenter v4
+  #L2ca5e2.  v0:= v4.`com.bumptech.glide.util.ContentLengthInputStream.contentLength` @type ^`long` @kind wide;
+  #L2ca5e6.  v2:= v4.`com.bumptech.glide.util.ContentLengthInputStream.readSoFar` @type ^`int`;
+  #L2ca5ea.  v2:= (`long`) v2 @kind i2l;
+  #L2ca5ec.  v0:= v0 - v2 @kind long;
+  #L2ca5ee.  v2:= v4.`com.bumptech.glide.util.ContentLengthInputStream.in` @type ^`java.io.InputStream` @kind object;
+  #L2ca5f2.  call temp:= `available`(v2) @signature `Ljava/io/InputStream;.available:()I` @kind virtual;
+  #L2ca5f8.  v2:= temp;
+  #L2ca5fa.  v2:= (`long`) v2 @kind i2l;
+  #L2ca5fc.  call temp:= `max`(v0, v2) @signature `Ljava/lang/Math;.max:(JJ)J` @kind static;
+  #L2ca602.  v0:= temp @kind wide;
+  #L2ca604.  v1:= (`int`) v0 @kind l2i;
+  #L2ca606.  @monitorexit v4
+  #L2ca608.  return v1;
+  #L2ca60a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2ca60c.  @monitorexit v4
+  #L2ca60e.  throw v0;
+  catch `java.lang.Throwable` @[L2ca5e2..L2ca604] goto L2ca60a;
+}
+procedure `int` `read`(`com.bumptech.glide.util.ContentLengthInputStream` v1 @kind this) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.read:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2ca724.  @monitorenter v1
+  #L2ca726.  call temp:= `read`(v1) @signature `Ljava/io/FilterInputStream;.read:()I` @kind super;
+  #L2ca72c.  v0:= temp;
+  #L2ca72e.  call temp:= `checkReadSoFarOrThrow`(v1, v0) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.checkReadSoFarOrThrow:(I)I` @kind direct;
+  #L2ca734.  v0:= temp;
+  #L2ca736.  @monitorexit v1
+  #L2ca738.  return v0;
+  #L2ca73a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2ca73c.  @monitorexit v1
+  #L2ca73e.  throw v0;
+  catch `java.lang.Throwable` @[L2ca726..L2ca736] goto L2ca73a;
+}
+procedure `int` `read`(`com.bumptech.glide.util.ContentLengthInputStream` v2 @kind this, `byte`[] v3 @kind object) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.read:([B)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2ca75c.  v0:= length @variable v3;
+  #L2ca75e.  v1:= 0I;
+  #L2ca760.  call temp:= `read`(v2, v3, v1, v0) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.read:([BII)I` @kind virtual;
+  #L2ca766.  v3:= temp;
+  #L2ca768.  return v3;
+}
+procedure `int` `read`(`com.bumptech.glide.util.ContentLengthInputStream` v0 @kind this, `byte`[] v1 @kind object, `int` v2 , `int` v3 ) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.read:([BII)I` @AccessFlag PUBLIC {
+    temp;
+
+  #L2ca77c.  @monitorenter v0
+  #L2ca77e.  call temp:= `read`(v0, v1, v2, v3) @signature `Ljava/io/FilterInputStream;.read:([BII)I` @kind super;
+  #L2ca784.  v1:= temp;
+  #L2ca786.  call temp:= `checkReadSoFarOrThrow`(v0, v1) @signature `Lcom/bumptech/glide/util/ContentLengthInputStream;.checkReadSoFarOrThrow:(I)I` @kind direct;
+  #L2ca78c.  v1:= temp;
+  #L2ca78e.  @monitorexit v0
+  #L2ca790.  return v1;
+  #L2ca792.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2ca794.  @monitorexit v0
+  #L2ca796.  throw v1;
+  catch `java.lang.Throwable` @[L2ca77e..L2ca78e] goto L2ca792;
+}

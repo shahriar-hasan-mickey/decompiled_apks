@@ -1,0 +1,387 @@
+record `com.bumptech.glide.manager.RequestManagerRetriever` @kind class @AccessFlag PUBLIC extends `android.os.Handler$Callback` @kind interface {
+  `com.bumptech.glide.RequestManager` `com.bumptech.glide.manager.RequestManagerRetriever.applicationManager` @AccessFlag PRIVATE_VOLATILE;
+  `android.os.Handler` `com.bumptech.glide.manager.RequestManagerRetriever.handler` @AccessFlag PRIVATE_FINAL;
+  `java.util.Map` `com.bumptech.glide.manager.RequestManagerRetriever.pendingRequestManagerFragments` @AccessFlag FINAL;
+  `java.util.Map` `com.bumptech.glide.manager.RequestManagerRetriever.pendingSupportRequestManagerFragments` @AccessFlag FINAL;
+}
+global `java.lang.String` `@@com.bumptech.glide.manager.RequestManagerRetriever.FRAGMENT_TAG` @AccessFlag STATIC_FINAL;
+global `int` `@@com.bumptech.glide.manager.RequestManagerRetriever.ID_REMOVE_FRAGMENT_MANAGER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.bumptech.glide.manager.RequestManagerRetriever.ID_REMOVE_SUPPORT_FRAGMENT_MANAGER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `com.bumptech.glide.manager.RequestManagerRetriever` `@@com.bumptech.glide.manager.RequestManagerRetriever.INSTANCE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.manager.RequestManagerRetriever.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2c65b0.  v0:= new `com.bumptech.glide.manager.RequestManagerRetriever`;
+  #L2c65b4.  call `<init>`(v0) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.<init>:()V` @kind direct;
+  #L2c65ba.  `@@com.bumptech.glide.manager.RequestManagerRetriever.INSTANCE` @type ^`com.bumptech.glide.manager.RequestManagerRetriever` := v0 @kind object;
+  #L2c65be.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.manager.RequestManagerRetriever` v2 @kind this) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L2c65d0.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2c65d6.  v0:= new `java.util.HashMap`;
+  #L2c65da.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L2c65e0.  v2.`com.bumptech.glide.manager.RequestManagerRetriever.pendingRequestManagerFragments` @type ^`java.util.Map` := v0 @kind object;
+  #L2c65e4.  v0:= new `java.util.HashMap`;
+  #L2c65e8.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L2c65ee.  v2.`com.bumptech.glide.manager.RequestManagerRetriever.pendingSupportRequestManagerFragments` @type ^`java.util.Map` := v0 @kind object;
+  #L2c65f2.  v0:= new `android.os.Handler`;
+  #L2c65f6.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L2c65fc.  v1:= temp @kind object;
+  #L2c65fe.  call `<init>`(v0, v1, v2) @signature `Landroid/os/Handler;.<init>:(Landroid/os/Looper;Landroid/os/Handler$Callback;)V` @kind direct;
+  #L2c6604.  v2.`com.bumptech.glide.manager.RequestManagerRetriever.handler` @type ^`android.os.Handler` := v0 @kind object;
+  #L2c6608.  return @kind void;
+}
+procedure `void` `assertNotDestroyed`(`android.app.Activity` v2 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.assertNotDestroyed:(Landroid/app/Activity;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c661c.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L2c6620.  v1:= 17I;
+  #L2c6624.  if v0 < v1 then goto L2c6646;
+  #L2c6628.  call temp:= `isDestroyed`(v2) @signature `Landroid/app/Activity;.isDestroyed:()Z` @kind virtual;
+  #L2c662e.  v2:= temp;
+  #L2c6630.  if v2 != 0 then goto L2c6636;
+  #L2c6634.  goto L2c6646;
+  #L2c6636.  v2:= new `java.lang.IllegalArgumentException`;
+  #L2c663a.  v0:= "You cannot start a load for a destroyed activity" @kind object;
+  #L2c663e.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c6644.  throw v2;
+  #L2c6646.  return @kind void;
+}
+procedure `com.bumptech.glide.manager.RequestManagerRetriever` `get`() @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:()Lcom/bumptech/glide/manager/RequestManagerRetriever;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2c6520.  v0:= `@@com.bumptech.glide.manager.RequestManagerRetriever.INSTANCE` @type ^`com.bumptech.glide.manager.RequestManagerRetriever` @kind object;
+  #L2c6524.  return v0 @kind object;
+}
+procedure `com.bumptech.glide.RequestManager` `getApplicationManager`(`com.bumptech.glide.manager.RequestManagerRetriever` v3 @kind this, `android.content.Context` v4 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.getApplicationManager:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2c63f8.  v0:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.applicationManager` @type ^`com.bumptech.glide.RequestManager` @kind object;
+  #L2c63fc.  if v0 != 0 then goto L2c643e;
+  #L2c6400.  @monitorenter v3
+  #L2c6402.  v0:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.applicationManager` @type ^`com.bumptech.glide.RequestManager` @kind object;
+  #L2c6406.  if v0 != 0 then goto L2c6434;
+  #L2c640a.  v0:= new `com.bumptech.glide.RequestManager`;
+  #L2c640e.  call temp:= `getApplicationContext`(v4) @signature `Landroid/content/Context;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L2c6414.  v4:= temp @kind object;
+  #L2c6416.  v1:= new `com.bumptech.glide.manager.ApplicationLifecycle`;
+  #L2c641a.  call `<init>`(v1) @signature `Lcom/bumptech/glide/manager/ApplicationLifecycle;.<init>:()V` @kind direct;
+  #L2c6420.  v2:= new `com.bumptech.glide.manager.EmptyRequestManagerTreeNode`;
+  #L2c6424.  call `<init>`(v2) @signature `Lcom/bumptech/glide/manager/EmptyRequestManagerTreeNode;.<init>:()V` @kind direct;
+  #L2c642a.  call `<init>`(v0, v4, v1, v2) @signature `Lcom/bumptech/glide/RequestManager;.<init>:(Landroid/content/Context;Lcom/bumptech/glide/manager/Lifecycle;Lcom/bumptech/glide/manager/RequestManagerTreeNode;)V` @kind direct;
+  #L2c6430.  v3.`com.bumptech.glide.manager.RequestManagerRetriever.applicationManager` @type ^`com.bumptech.glide.RequestManager` := v0 @kind object;
+  #L2c6434.  @monitorexit v3
+  #L2c6436.  goto L2c643e;
+  #L2c6438.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2c643a.  @monitorexit v3
+  #L2c643c.  throw v4;
+  #L2c643e.  v4:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.applicationManager` @type ^`com.bumptech.glide.RequestManager` @kind object;
+  #L2c6442.  return v4 @kind object;
+  catch `java.lang.Throwable` @[L2c6402..L2c643c] goto L2c6438;
+}
+procedure `com.bumptech.glide.RequestManager` `fragmentGet`(`com.bumptech.glide.manager.RequestManagerRetriever` v3 @kind this, `android.content.Context` v4 @kind object, `android.app.FragmentManager` v5 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.fragmentGet:(Landroid/content/Context;Landroid/app/FragmentManager;)Lcom/bumptech/glide/RequestManager;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2c61a0.  call temp:= `getRequestManagerFragment`(v3, v5) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.getRequestManagerFragment:(Landroid/app/FragmentManager;)Lcom/bumptech/glide/manager/RequestManagerFragment;` @kind virtual;
+  #L2c61a6.  v5:= temp @kind object;
+  #L2c61a8.  call temp:= `getRequestManager`(v5) @signature `Lcom/bumptech/glide/manager/RequestManagerFragment;.getRequestManager:()Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c61ae.  v0:= temp @kind object;
+  #L2c61b0.  if v0 != 0 then goto L2c61d4;
+  #L2c61b4.  v0:= new `com.bumptech.glide.RequestManager`;
+  #L2c61b8.  call temp:= `getLifecycle`(v5) @signature `Lcom/bumptech/glide/manager/RequestManagerFragment;.getLifecycle:()Lcom/bumptech/glide/manager/ActivityFragmentLifecycle;` @kind virtual;
+  #L2c61be.  v1:= temp @kind object;
+  #L2c61c0.  call temp:= `getRequestManagerTreeNode`(v5) @signature `Lcom/bumptech/glide/manager/RequestManagerFragment;.getRequestManagerTreeNode:()Lcom/bumptech/glide/manager/RequestManagerTreeNode;` @kind virtual;
+  #L2c61c6.  v2:= temp @kind object;
+  #L2c61c8.  call `<init>`(v0, v4, v1, v2) @signature `Lcom/bumptech/glide/RequestManager;.<init>:(Landroid/content/Context;Lcom/bumptech/glide/manager/Lifecycle;Lcom/bumptech/glide/manager/RequestManagerTreeNode;)V` @kind direct;
+  #L2c61ce.  call `setRequestManager`(v5, v0) @signature `Lcom/bumptech/glide/manager/RequestManagerFragment;.setRequestManager:(Lcom/bumptech/glide/RequestManager;)V` @kind virtual;
+  #L2c61d4.  return v0 @kind object;
+}
+procedure `com.bumptech.glide.RequestManager` `get`(`com.bumptech.glide.manager.RequestManagerRetriever` v2 @kind this, `android.app.Activity` v3 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/app/Activity;)Lcom/bumptech/glide/RequestManager;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c61e8.  call temp:= `isOnBackgroundThread`() @signature `Lcom/bumptech/glide/util/Util;.isOnBackgroundThread:()Z` @kind static;
+  #L2c61ee.  v0:= temp;
+  #L2c61f0.  if v0 != 0 then goto L2c621a;
+  #L2c61f4.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L2c61f8.  v1:= 11I;
+  #L2c61fc.  if v0 >= v1 then goto L2c6202;
+  #L2c6200.  goto L2c621a;
+  #L2c6202.  call `assertNotDestroyed`(v3) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.assertNotDestroyed:(Landroid/app/Activity;)V` @kind static;
+  #L2c6208.  call temp:= `getFragmentManager`(v3) @signature `Landroid/app/Activity;.getFragmentManager:()Landroid/app/FragmentManager;` @kind virtual;
+  #L2c620e.  v0:= temp @kind object;
+  #L2c6210.  call temp:= `fragmentGet`(v2, v3, v0) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.fragmentGet:(Landroid/content/Context;Landroid/app/FragmentManager;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c6216.  v3:= temp @kind object;
+  #L2c6218.  return v3 @kind object;
+  #L2c621a.  call temp:= `getApplicationContext`(v3) @signature `Landroid/app/Activity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L2c6220.  v3:= temp @kind object;
+  #L2c6222.  call temp:= `get`(v2, v3) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c6228.  v3:= temp @kind object;
+  #L2c622a.  return v3 @kind object;
+}
+procedure `com.bumptech.glide.RequestManager` `get`(`com.bumptech.glide.manager.RequestManagerRetriever` v2 @kind this, `android.app.Fragment` v3 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/app/Fragment;)Lcom/bumptech/glide/RequestManager;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c623c.  call temp:= `getActivity`(v3) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L2c6242.  v0:= temp @kind object;
+  #L2c6244.  if v0 == 0 then goto L2c6296;
+  #L2c6248.  call temp:= `isOnBackgroundThread`() @signature `Lcom/bumptech/glide/util/Util;.isOnBackgroundThread:()Z` @kind static;
+  #L2c624e.  v0:= temp;
+  #L2c6250.  if v0 != 0 then goto L2c627c;
+  #L2c6254.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L2c6258.  v1:= 17I;
+  #L2c625c.  if v0 >= v1 then goto L2c6262;
+  #L2c6260.  goto L2c627c;
+  #L2c6262.  call temp:= `getChildFragmentManager`(v3) @signature `Landroid/app/Fragment;.getChildFragmentManager:()Landroid/app/FragmentManager;` @kind virtual;
+  #L2c6268.  v0:= temp @kind object;
+  #L2c626a.  call temp:= `getActivity`(v3) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L2c6270.  v3:= temp @kind object;
+  #L2c6272.  call temp:= `fragmentGet`(v2, v3, v0) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.fragmentGet:(Landroid/content/Context;Landroid/app/FragmentManager;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c6278.  v3:= temp @kind object;
+  #L2c627a.  return v3 @kind object;
+  #L2c627c.  call temp:= `getActivity`(v3) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L2c6282.  v3:= temp @kind object;
+  #L2c6284.  call temp:= `getApplicationContext`(v3) @signature `Landroid/app/Activity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L2c628a.  v3:= temp @kind object;
+  #L2c628c.  call temp:= `get`(v2, v3) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c6292.  v3:= temp @kind object;
+  #L2c6294.  return v3 @kind object;
+  #L2c6296.  v3:= new `java.lang.IllegalArgumentException`;
+  #L2c629a.  v0:= "You cannot start a load on a fragment before it is attached" @kind object;
+  #L2c629e.  call `<init>`(v3, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c62a4.  throw v3;
+}
+procedure `com.bumptech.glide.RequestManager` `get`(`com.bumptech.glide.manager.RequestManagerRetriever` v1 @kind this, `android.content.Context` v2 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2c62b8.  if v2 == 0 then goto L2c6324;
+  #L2c62bc.  call temp:= `isOnMainThread`() @signature `Lcom/bumptech/glide/util/Util;.isOnMainThread:()Z` @kind static;
+  #L2c62c2.  v0:= temp;
+  #L2c62c4.  if v0 == 0 then goto L2c631a;
+  #L2c62c8.  v0:= instanceof @variable v2 @type ^`android.app.Application` @kind boolean;
+  #L2c62cc.  if v0 != 0 then goto L2c631a;
+  #L2c62d0.  v0:= instanceof @variable v2 @type ^`androidx.fragment.app.FragmentActivity` @kind boolean;
+  #L2c62d4.  if v0 == 0 then goto L2c62e6;
+  #L2c62d8.  v2:= (`androidx.fragment.app.FragmentActivity`) v2 @kind object;
+  #L2c62dc.  call temp:= `get`(v1, v2) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroidx/fragment/app/FragmentActivity;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c62e2.  v2:= temp @kind object;
+  #L2c62e4.  return v2 @kind object;
+  #L2c62e6.  v0:= instanceof @variable v2 @type ^`android.app.Activity` @kind boolean;
+  #L2c62ea.  if v0 == 0 then goto L2c62fc;
+  #L2c62ee.  v2:= (`android.app.Activity`) v2 @kind object;
+  #L2c62f2.  call temp:= `get`(v1, v2) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/app/Activity;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c62f8.  v2:= temp @kind object;
+  #L2c62fa.  return v2 @kind object;
+  #L2c62fc.  v0:= instanceof @variable v2 @type ^`android.content.ContextWrapper` @kind boolean;
+  #L2c6300.  if v0 == 0 then goto L2c631a;
+  #L2c6304.  v2:= (`android.content.ContextWrapper`) v2 @kind object;
+  #L2c6308.  call temp:= `getBaseContext`(v2) @signature `Landroid/content/ContextWrapper;.getBaseContext:()Landroid/content/Context;` @kind virtual;
+  #L2c630e.  v2:= temp @kind object;
+  #L2c6310.  call temp:= `get`(v1, v2) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c6316.  v2:= temp @kind object;
+  #L2c6318.  return v2 @kind object;
+  #L2c631a.  call temp:= `getApplicationManager`(v1, v2) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.getApplicationManager:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @kind direct;
+  #L2c6320.  v2:= temp @kind object;
+  #L2c6322.  return v2 @kind object;
+  #L2c6324.  v2:= new `java.lang.IllegalArgumentException`;
+  #L2c6328.  v0:= "You cannot start a load on a null Context" @kind object;
+  #L2c632c.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c6332.  throw v2;
+}
+procedure `com.bumptech.glide.RequestManager` `get`(`com.bumptech.glide.manager.RequestManagerRetriever` v1 @kind this, `androidx.fragment.app.Fragment` v2 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroidx/fragment/app/Fragment;)Lcom/bumptech/glide/RequestManager;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2c6344.  call temp:= `getActivity`(v2) @signature `Landroidx/fragment/app/Fragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L2c634a.  v0:= temp @kind object;
+  #L2c634c.  if v0 == 0 then goto L2c6390;
+  #L2c6350.  call temp:= `isOnBackgroundThread`() @signature `Lcom/bumptech/glide/util/Util;.isOnBackgroundThread:()Z` @kind static;
+  #L2c6356.  v0:= temp;
+  #L2c6358.  if v0 == 0 then goto L2c6376;
+  #L2c635c.  call temp:= `getActivity`(v2) @signature `Landroidx/fragment/app/Fragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L2c6362.  v2:= temp @kind object;
+  #L2c6364.  call temp:= `getApplicationContext`(v2) @signature `Landroidx/fragment/app/FragmentActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L2c636a.  v2:= temp @kind object;
+  #L2c636c.  call temp:= `get`(v1, v2) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c6372.  v2:= temp @kind object;
+  #L2c6374.  return v2 @kind object;
+  #L2c6376.  call temp:= `getChildFragmentManager`(v2) @signature `Landroidx/fragment/app/Fragment;.getChildFragmentManager:()Landroidx/fragment/app/FragmentManager;` @kind virtual;
+  #L2c637c.  v0:= temp @kind object;
+  #L2c637e.  call temp:= `getActivity`(v2) @signature `Landroidx/fragment/app/Fragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L2c6384.  v2:= temp @kind object;
+  #L2c6386.  call temp:= `supportFragmentGet`(v1, v2, v0) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.supportFragmentGet:(Landroid/content/Context;Landroidx/fragment/app/FragmentManager;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c638c.  v2:= temp @kind object;
+  #L2c638e.  return v2 @kind object;
+  #L2c6390.  v2:= new `java.lang.IllegalArgumentException`;
+  #L2c6394.  v0:= "You cannot start a load on a fragment before it is attached" @kind object;
+  #L2c6398.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c639e.  throw v2;
+}
+procedure `com.bumptech.glide.RequestManager` `get`(`com.bumptech.glide.manager.RequestManagerRetriever` v1 @kind this, `androidx.fragment.app.FragmentActivity` v2 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroidx/fragment/app/FragmentActivity;)Lcom/bumptech/glide/RequestManager;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2c63b0.  call temp:= `isOnBackgroundThread`() @signature `Lcom/bumptech/glide/util/Util;.isOnBackgroundThread:()Z` @kind static;
+  #L2c63b6.  v0:= temp;
+  #L2c63b8.  if v0 == 0 then goto L2c63ce;
+  #L2c63bc.  call temp:= `getApplicationContext`(v2) @signature `Landroidx/fragment/app/FragmentActivity;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L2c63c2.  v2:= temp @kind object;
+  #L2c63c4.  call temp:= `get`(v1, v2) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.get:(Landroid/content/Context;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c63ca.  v2:= temp @kind object;
+  #L2c63cc.  return v2 @kind object;
+  #L2c63ce.  call `assertNotDestroyed`(v2) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.assertNotDestroyed:(Landroid/app/Activity;)V` @kind static;
+  #L2c63d4.  call temp:= `getSupportFragmentManager`(v2) @signature `Landroidx/fragment/app/FragmentActivity;.getSupportFragmentManager:()Landroidx/fragment/app/FragmentManager;` @kind virtual;
+  #L2c63da.  v0:= temp @kind object;
+  #L2c63dc.  call temp:= `supportFragmentGet`(v1, v2, v0) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.supportFragmentGet:(Landroid/content/Context;Landroidx/fragment/app/FragmentManager;)Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c63e2.  v2:= temp @kind object;
+  #L2c63e4.  return v2 @kind object;
+}
+procedure `com.bumptech.glide.manager.RequestManagerFragment` `getRequestManagerFragment`(`com.bumptech.glide.manager.RequestManagerRetriever` v3 @kind this, `android.app.FragmentManager` v4 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.getRequestManagerFragment:(Landroid/app/FragmentManager;)Lcom/bumptech/glide/manager/RequestManagerFragment;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2c64a8.  v0:= "com.bumptech.glide.manager" @kind object;
+  #L2c64ac.  call temp:= `findFragmentByTag`(v4, v0) @signature `Landroid/app/FragmentManager;.findFragmentByTag:(Ljava/lang/String;)Landroid/app/Fragment;` @kind virtual;
+  #L2c64b2.  v1:= temp @kind object;
+  #L2c64b4.  v1:= (`com.bumptech.glide.manager.RequestManagerFragment`) v1 @kind object;
+  #L2c64b8.  if v1 != 0 then goto L2c650e;
+  #L2c64bc.  v1:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.pendingRequestManagerFragments` @type ^`java.util.Map` @kind object;
+  #L2c64c0.  call temp:= `get`(v1, v4) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2c64c6.  v1:= temp @kind object;
+  #L2c64c8.  v1:= (`com.bumptech.glide.manager.RequestManagerFragment`) v1 @kind object;
+  #L2c64cc.  if v1 != 0 then goto L2c650e;
+  #L2c64d0.  v1:= new `com.bumptech.glide.manager.RequestManagerFragment`;
+  #L2c64d4.  call `<init>`(v1) @signature `Lcom/bumptech/glide/manager/RequestManagerFragment;.<init>:()V` @kind direct;
+  #L2c64da.  v2:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.pendingRequestManagerFragments` @type ^`java.util.Map` @kind object;
+  #L2c64de.  call temp:= `put`(v2, v4, v1) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2c64e4.  call temp:= `beginTransaction`(v4) @signature `Landroid/app/FragmentManager;.beginTransaction:()Landroid/app/FragmentTransaction;` @kind virtual;
+  #L2c64ea.  v2:= temp @kind object;
+  #L2c64ec.  call temp:= `add`(v2, v1, v0) @signature `Landroid/app/FragmentTransaction;.add:(Landroid/app/Fragment;Ljava/lang/String;)Landroid/app/FragmentTransaction;` @kind virtual;
+  #L2c64f2.  v0:= temp @kind object;
+  #L2c64f4.  call temp:= `commitAllowingStateLoss`(v0) @signature `Landroid/app/FragmentTransaction;.commitAllowingStateLoss:()I` @kind virtual;
+  #L2c64fa.  v0:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.handler` @type ^`android.os.Handler` @kind object;
+  #L2c64fe.  v2:= 1I;
+  #L2c6500.  call temp:= `obtainMessage`(v0, v2, v4) @signature `Landroid/os/Handler;.obtainMessage:(ILjava/lang/Object;)Landroid/os/Message;` @kind virtual;
+  #L2c6506.  v4:= temp @kind object;
+  #L2c6508.  call `sendToTarget`(v4) @signature `Landroid/os/Message;.sendToTarget:()V` @kind virtual;
+  #L2c650e.  return v1 @kind object;
+}
+procedure `com.bumptech.glide.manager.SupportRequestManagerFragment` `getSupportRequestManagerFragment`(`com.bumptech.glide.manager.RequestManagerRetriever` v3 @kind this, `androidx.fragment.app.FragmentManager` v4 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.getSupportRequestManagerFragment:(Landroidx/fragment/app/FragmentManager;)Lcom/bumptech/glide/manager/SupportRequestManagerFragment;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2c6538.  v0:= "com.bumptech.glide.manager" @kind object;
+  #L2c653c.  call temp:= `findFragmentByTag`(v4, v0) @signature `Landroidx/fragment/app/FragmentManager;.findFragmentByTag:(Ljava/lang/String;)Landroidx/fragment/app/Fragment;` @kind virtual;
+  #L2c6542.  v1:= temp @kind object;
+  #L2c6544.  v1:= (`com.bumptech.glide.manager.SupportRequestManagerFragment`) v1 @kind object;
+  #L2c6548.  if v1 != 0 then goto L2c659e;
+  #L2c654c.  v1:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.pendingSupportRequestManagerFragments` @type ^`java.util.Map` @kind object;
+  #L2c6550.  call temp:= `get`(v1, v4) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2c6556.  v1:= temp @kind object;
+  #L2c6558.  v1:= (`com.bumptech.glide.manager.SupportRequestManagerFragment`) v1 @kind object;
+  #L2c655c.  if v1 != 0 then goto L2c659e;
+  #L2c6560.  v1:= new `com.bumptech.glide.manager.SupportRequestManagerFragment`;
+  #L2c6564.  call `<init>`(v1) @signature `Lcom/bumptech/glide/manager/SupportRequestManagerFragment;.<init>:()V` @kind direct;
+  #L2c656a.  v2:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.pendingSupportRequestManagerFragments` @type ^`java.util.Map` @kind object;
+  #L2c656e.  call temp:= `put`(v2, v4, v1) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2c6574.  call temp:= `beginTransaction`(v4) @signature `Landroidx/fragment/app/FragmentManager;.beginTransaction:()Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L2c657a.  v2:= temp @kind object;
+  #L2c657c.  call temp:= `add`(v2, v1, v0) @signature `Landroidx/fragment/app/FragmentTransaction;.add:(Landroidx/fragment/app/Fragment;Ljava/lang/String;)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L2c6582.  v0:= temp @kind object;
+  #L2c6584.  call temp:= `commitAllowingStateLoss`(v0) @signature `Landroidx/fragment/app/FragmentTransaction;.commitAllowingStateLoss:()I` @kind virtual;
+  #L2c658a.  v0:= v3.`com.bumptech.glide.manager.RequestManagerRetriever.handler` @type ^`android.os.Handler` @kind object;
+  #L2c658e.  v2:= 2I;
+  #L2c6590.  call temp:= `obtainMessage`(v0, v2, v4) @signature `Landroid/os/Handler;.obtainMessage:(ILjava/lang/Object;)Landroid/os/Message;` @kind virtual;
+  #L2c6596.  v4:= temp @kind object;
+  #L2c6598.  call `sendToTarget`(v4) @signature `Landroid/os/Message;.sendToTarget:()V` @kind virtual;
+  #L2c659e.  return v1 @kind object;
+}
+procedure `boolean` `handleMessage`(`com.bumptech.glide.manager.RequestManagerRetriever` v4 @kind this, `android.os.Message` v5 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.handleMessage:(Landroid/os/Message;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2c6104.  v0:= v5.`android.os.Message.what` @type ^`int`;
+  #L2c6108.  v1:= 0I;
+  #L2c610a.  v2:= 1I;
+  #L2c610c.  if v0 == v2 then goto L2c6134;
+  #L2c6110.  v3:= 2I;
+  #L2c6112.  if v0 == v3 then goto L2c611c;
+  #L2c6116.  v2:= 0I;
+  #L2c6118.  v5:= v1 @kind object;
+  #L2c611a.  goto L2c614a;
+  #L2c611c.  v5:= v5.`android.os.Message.obj` @type ^`java.lang.Object` @kind object;
+  #L2c6120.  v1:= v5 @kind object;
+  #L2c6122.  v1:= (`androidx.fragment.app.FragmentManager`) v1 @kind object;
+  #L2c6126.  v5:= v4.`com.bumptech.glide.manager.RequestManagerRetriever.pendingSupportRequestManagerFragments` @type ^`java.util.Map` @kind object;
+  #L2c612a.  call temp:= `remove`(v5, v1) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2c6130.  v5:= temp @kind object;
+  #L2c6132.  goto L2c614a;
+  #L2c6134.  v5:= v5.`android.os.Message.obj` @type ^`java.lang.Object` @kind object;
+  #L2c6138.  v1:= v5 @kind object;
+  #L2c613a.  v1:= (`android.app.FragmentManager`) v1 @kind object;
+  #L2c613e.  v5:= v4.`com.bumptech.glide.manager.RequestManagerRetriever.pendingRequestManagerFragments` @type ^`java.util.Map` @kind object;
+  #L2c6142.  call temp:= `remove`(v5, v1) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2c6148.  v5:= temp @kind object;
+  #L2c614a.  if v2 == 0 then goto L2c618c;
+  #L2c614e.  if v5 != 0 then goto L2c618c;
+  #L2c6152.  v5:= 5I;
+  #L2c6154.  v0:= "RMRetriever" @kind object;
+  #L2c6158.  call temp:= `isLoggable`(v0, v5) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2c615e.  v5:= temp;
+  #L2c6160.  if v5 == 0 then goto L2c618c;
+  #L2c6164.  v5:= new `java.lang.StringBuilder`;
+  #L2c6168.  call `<init>`(v5) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c616e.  v3:= "Failed to remove expected request manager fragment, manager: " @kind object;
+  #L2c6172.  call temp:= `append`(v5, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c6178.  call temp:= `append`(v5, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c617e.  call temp:= `toString`(v5) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c6184.  v5:= temp @kind object;
+  #L2c6186.  call temp:= `w`(v0, v5) @signature `Landroid/util/Log;.w:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2c618c.  return v2;
+}
+procedure `com.bumptech.glide.RequestManager` `supportFragmentGet`(`com.bumptech.glide.manager.RequestManagerRetriever` v3 @kind this, `android.content.Context` v4 @kind object, `androidx.fragment.app.FragmentManager` v5 @kind object) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.supportFragmentGet:(Landroid/content/Context;Landroidx/fragment/app/FragmentManager;)Lcom/bumptech/glide/RequestManager;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2c6460.  call temp:= `getSupportRequestManagerFragment`(v3, v5) @signature `Lcom/bumptech/glide/manager/RequestManagerRetriever;.getSupportRequestManagerFragment:(Landroidx/fragment/app/FragmentManager;)Lcom/bumptech/glide/manager/SupportRequestManagerFragment;` @kind virtual;
+  #L2c6466.  v5:= temp @kind object;
+  #L2c6468.  call temp:= `getRequestManager`(v5) @signature `Lcom/bumptech/glide/manager/SupportRequestManagerFragment;.getRequestManager:()Lcom/bumptech/glide/RequestManager;` @kind virtual;
+  #L2c646e.  v0:= temp @kind object;
+  #L2c6470.  if v0 != 0 then goto L2c6494;
+  #L2c6474.  v0:= new `com.bumptech.glide.RequestManager`;
+  #L2c6478.  call temp:= `getLifecycle`(v5) @signature `Lcom/bumptech/glide/manager/SupportRequestManagerFragment;.getLifecycle:()Lcom/bumptech/glide/manager/ActivityFragmentLifecycle;` @kind virtual;
+  #L2c647e.  v1:= temp @kind object;
+  #L2c6480.  call temp:= `getRequestManagerTreeNode`(v5) @signature `Lcom/bumptech/glide/manager/SupportRequestManagerFragment;.getRequestManagerTreeNode:()Lcom/bumptech/glide/manager/RequestManagerTreeNode;` @kind virtual;
+  #L2c6486.  v2:= temp @kind object;
+  #L2c6488.  call `<init>`(v0, v4, v1, v2) @signature `Lcom/bumptech/glide/RequestManager;.<init>:(Landroid/content/Context;Lcom/bumptech/glide/manager/Lifecycle;Lcom/bumptech/glide/manager/RequestManagerTreeNode;)V` @kind direct;
+  #L2c648e.  call `setRequestManager`(v5, v0) @signature `Lcom/bumptech/glide/manager/SupportRequestManagerFragment;.setRequestManager:(Lcom/bumptech/glide/RequestManager;)V` @kind virtual;
+  #L2c6494.  return v0 @kind object;
+}

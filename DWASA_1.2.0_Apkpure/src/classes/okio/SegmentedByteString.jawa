@@ -1,0 +1,641 @@
+record `okio.SegmentedByteString` @kind class @AccessFlag FINAL extends `okio.ByteString` @kind class {
+  `int`[] `okio.SegmentedByteString.directory` @AccessFlag FINAL_TRANSIENT;
+  `byte`[][] `okio.SegmentedByteString.segments` @AccessFlag FINAL_TRANSIENT;
+}
+procedure `void` `<init>`(`okio.SegmentedByteString` v7 @kind this, `okio.Buffer` v8 @kind object, `int` v9 ) @signature `Lokio/SegmentedByteString;.<init>:(Lokio/Buffer;I)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L48044c.  v0:= 0I;
+  #L48044e.  call `<init>`(v7, v0) @signature `Lokio/ByteString;.<init>:([B)V` @kind direct;
+  #L480454.  v1:= v8.`okio.Buffer.size` @type ^`long` @kind wide;
+  #L480458.  v5:= (`long`) v9 @kind i2l;
+  #L48045a.  v3:= 0L;
+  #L48045e.  call `checkOffsetAndCount`(v1, v3, v5) @signature `Lokio/Util;.checkOffsetAndCount:(JJJ)V` @kind static;
+  #L480464.  v0:= v8.`okio.Buffer.head` @type ^`okio.Segment` @kind object;
+  #L480468.  v1:= 0I;
+  #L48046a.  v3:= v0 @kind object;
+  #L48046c.  v0:= 0I;
+  #L48046e.  v2:= 0I;
+  #L480470.  if v0 >= v9 then goto L4804a6;
+  #L480474.  v4:= v3.`okio.Segment.limit` @type ^`int`;
+  #L480478.  v5:= v3.`okio.Segment.pos` @type ^`int`;
+  #L48047c.  if v4 == v5 then goto L480496;
+  #L480480.  v4:= v3.`okio.Segment.limit` @type ^`int`;
+  #L480484.  v5:= v3.`okio.Segment.pos` @type ^`int`;
+  #L480488.  v4:= v4 - v5 @kind int;
+  #L48048a.  v0:= v0 + v4 @kind int;
+  #L48048c.  v2:= v2 + 1;
+  #L480490.  v3:= v3.`okio.Segment.next` @type ^`okio.Segment` @kind object;
+  #L480494.  goto L480470;
+  #L480496.  v8:= new `java.lang.AssertionError`;
+  #L48049a.  v9:= "s.limit == s.pos" @kind object;
+  #L48049e.  call `<init>`(v8, v9) @signature `Ljava/lang/AssertionError;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4804a4.  throw v8;
+  #L4804a6.  v0:= new `byte`[][v2];
+  #L4804aa.  v7.`okio.SegmentedByteString.segments` @type ^`byte`[][] := v0 @kind object;
+  #L4804ae.  v2:= v2 * 2;
+  #L4804b2.  v0:= new `int`[v2];
+  #L4804b6.  v7.`okio.SegmentedByteString.directory` @type ^`int`[] := v0 @kind object;
+  #L4804ba.  v8:= v8.`okio.Buffer.head` @type ^`okio.Segment` @kind object;
+  #L4804be.  v0:= v8 @kind object;
+  #L4804c0.  v8:= 0I;
+  #L4804c2.  if v1 >= v9 then goto L48050c;
+  #L4804c6.  v2:= v7.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L4804ca.  v3:= v0.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L4804ce.  v2[v8]:= v3 @kind object;
+  #L4804d2.  v2:= v0.`okio.Segment.limit` @type ^`int`;
+  #L4804d6.  v3:= v0.`okio.Segment.pos` @type ^`int`;
+  #L4804da.  v2:= v2 - v3 @kind int;
+  #L4804dc.  v1:= v1 + v2 @kind int;
+  #L4804de.  if v1 <= v9 then goto L4804e4;
+  #L4804e2.  v1:= v9;
+  #L4804e4.  v2:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L4804e8.  v2[v8]:= v1;
+  #L4804ec.  v3:= v7.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L4804f0.  v3:= length @variable v3;
+  #L4804f2.  v3:= v3 + v8 @kind int;
+  #L4804f4.  v4:= v0.`okio.Segment.pos` @type ^`int`;
+  #L4804f8.  v2[v3]:= v4;
+  #L4804fc.  v2:= 1I;
+  #L4804fe.  v0.`okio.Segment.shared` @type ^`boolean` := v2 @kind boolean;
+  #L480502.  v8:= v8 + 1;
+  #L480506.  v0:= v0.`okio.Segment.next` @type ^`okio.Segment` @kind object;
+  #L48050a.  goto L4804c2;
+  #L48050c.  return @kind void;
+}
+procedure `int` `segment`(`okio.SegmentedByteString` v3 @kind this, `int` v4 ) @signature `Lokio/SegmentedByteString;.segment:(I)I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L48016c.  v0:= v3.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L480170.  v1:= v3.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L480174.  v1:= length @variable v1;
+  #L480176.  v4:= v4 + 1;
+  #L48017a.  v2:= 0I;
+  #L48017c.  call temp:= `binarySearch`(v0, v2, v1, v4) @signature `Ljava/util/Arrays;.binarySearch:([IIII)I` @kind static;
+  #L480182.  v4:= temp;
+  #L480184.  if v4 < 0 then goto L48018a;
+  #L480188.  goto L48018e;
+  #L48018a.  v4:= v4 ^~ -1;
+  #L48018e.  return v4;
+}
+procedure `okio.ByteString` `toByteString`(`okio.SegmentedByteString` v2 @kind this) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L480428.  v0:= new `okio.ByteString`;
+  #L48042c.  call temp:= `toByteArray`(v2) @signature `Lokio/SegmentedByteString;.toByteArray:()[B` @kind virtual;
+  #L480432.  v1:= temp @kind object;
+  #L480434.  call `<init>`(v0, v1) @signature `Lokio/ByteString;.<init>:([B)V` @kind direct;
+  #L48043a.  return v0 @kind object;
+}
+procedure `java.lang.Object` `writeReplace`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.writeReplace:()Ljava/lang/Object;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4801c4.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L4801ca.  v0:= temp @kind object;
+  #L4801cc.  return v0 @kind object;
+}
+procedure `java.nio.ByteBuffer` `asByteBuffer`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.asByteBuffer:()Ljava/nio/ByteBuffer;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4802b8.  call temp:= `toByteArray`(v1) @signature `Lokio/SegmentedByteString;.toByteArray:()[B` @kind virtual;
+  #L4802be.  v0:= temp @kind object;
+  #L4802c0.  call temp:= `wrap`(v0) @signature `Ljava/nio/ByteBuffer;.wrap:([B)Ljava/nio/ByteBuffer;` @kind static;
+  #L4802c6.  v0:= temp @kind object;
+  #L4802c8.  call temp:= `asReadOnlyBuffer`(v0) @signature `Ljava/nio/ByteBuffer;.asReadOnlyBuffer:()Ljava/nio/ByteBuffer;` @kind virtual;
+  #L4802ce.  v0:= temp @kind object;
+  #L4802d0.  return v0 @kind object;
+}
+procedure `java.lang.String` `base64`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.base64:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4801e0.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L4801e6.  v0:= temp @kind object;
+  #L4801e8.  call temp:= `base64`(v0) @signature `Lokio/ByteString;.base64:()Ljava/lang/String;` @kind virtual;
+  #L4801ee.  v0:= temp @kind object;
+  #L4801f0.  return v0 @kind object;
+}
+procedure `java.lang.String` `base64Url`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.base64Url:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480204.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48020a.  v0:= temp @kind object;
+  #L48020c.  call temp:= `base64Url`(v0) @signature `Lokio/ByteString;.base64Url:()Ljava/lang/String;` @kind virtual;
+  #L480212.  v0:= temp @kind object;
+  #L480214.  return v0 @kind object;
+}
+procedure `boolean` `equals`(`okio.SegmentedByteString` v4 @kind this, `java.lang.Object` v5 @kind object) @signature `Lokio/SegmentedByteString;.equals:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L47fe44.  v0:= 1I;
+  #L47fe46.  if v5 != v4 then goto L47fe4c;
+  #L47fe4a.  return v0;
+  #L47fe4c.  v1:= instanceof @variable v5 @type ^`okio.ByteString` @kind boolean;
+  #L47fe50.  v2:= 0I;
+  #L47fe52.  if v1 == 0 then goto L47fe84;
+  #L47fe56.  v5:= (`okio.ByteString`) v5 @kind object;
+  #L47fe5a.  call temp:= `size`(v5) @signature `Lokio/ByteString;.size:()I` @kind virtual;
+  #L47fe60.  v1:= temp;
+  #L47fe62.  call temp:= `size`(v4) @signature `Lokio/SegmentedByteString;.size:()I` @kind virtual;
+  #L47fe68.  v3:= temp;
+  #L47fe6a.  if v1 != v3 then goto L47fe84;
+  #L47fe6e.  call temp:= `size`(v4) @signature `Lokio/SegmentedByteString;.size:()I` @kind virtual;
+  #L47fe74.  v1:= temp;
+  #L47fe76.  call temp:= `rangeEquals`(v4, v2, v5, v2, v1) @signature `Lokio/SegmentedByteString;.rangeEquals:(ILokio/ByteString;II)Z` @kind virtual;
+  #L47fe7c.  v5:= temp;
+  #L47fe7e.  if v5 == 0 then goto L47fe84;
+  #L47fe82.  goto L47fe86;
+  #L47fe84.  v0:= 0I;
+  #L47fe86.  return v0;
+}
+procedure `byte` `getByte`(`okio.SegmentedByteString` v7 @kind this, `int` v8 ) @signature `Lokio/SegmentedByteString;.getByte:(I)B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L47ffd4.  v0:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L47ffd8.  v1:= v7.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L47ffdc.  v1:= length @variable v1;
+  #L47ffde.  v1:= v1 + -1;
+  #L47ffe2.  v0:= v0[v1];
+  #L47ffe6.  v1:= (`long`) v0 @kind i2l;
+  #L47ffe8.  v3:= (`long`) v8 @kind i2l;
+  #L47ffea.  v5:= 1L;
+  #L47ffee.  call `checkOffsetAndCount`(v1, v3, v5) @signature `Lokio/Util;.checkOffsetAndCount:(JJJ)V` @kind static;
+  #L47fff4.  call temp:= `segment`(v7, v8) @signature `Lokio/SegmentedByteString;.segment:(I)I` @kind direct;
+  #L47fffa.  v0:= temp;
+  #L47fffc.  if v0 != 0 then goto L480004;
+  #L480000.  v1:= 0I;
+  #L480002.  goto L480010;
+  #L480004.  v1:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L480008.  v2:= v0 + -1;
+  #L48000c.  v1:= v1[v2];
+  #L480010.  v2:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L480014.  v3:= v7.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L480018.  v4:= length @variable v3;
+  #L48001a.  v4:= v4 + v0 @kind int;
+  #L48001c.  v2:= v2[v4];
+  #L480020.  v0:= v3[v0] @kind object;
+  #L480024.  v8:= v8 - v1 @kind int;
+  #L480026.  v8:= v8 + v2 @kind int;
+  #L480028.  v8:= v0[v8] @kind byte;
+  #L48002c.  return v8;
+}
+procedure `int` `hashCode`(`okio.SegmentedByteString` v8 @kind this) @signature `Lokio/SegmentedByteString;.hashCode:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4800b8.  v0:= v8.`okio.SegmentedByteString.hashCode` @type ^`int`;
+  #L4800bc.  if v0 == 0 then goto L4800c2;
+  #L4800c0.  return v0;
+  #L4800c2.  v0:= v8.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L4800c6.  v0:= length @variable v0;
+  #L4800c8.  v1:= 0I;
+  #L4800ca.  v2:= 1I;
+  #L4800cc.  v3:= 0I;
+  #L4800ce.  if v1 >= v0 then goto L48010c;
+  #L4800d2.  v4:= v8.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L4800d6.  v4:= v4[v1] @kind object;
+  #L4800da.  v5:= v8.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L4800de.  v6:= v0 + v1 @kind int;
+  #L4800e2.  v6:= v5[v6];
+  #L4800e6.  v5:= v5[v1];
+  #L4800ea.  v3:= v5 - v3 @kind int;
+  #L4800ee.  v3:= v3 + v6 @kind int;
+  #L4800f0.  if v6 >= v3 then goto L480104;
+  #L4800f4.  v2:= v2 * 31;
+  #L4800f8.  v7:= v4[v6] @kind byte;
+  #L4800fc.  v2:= v2 + v7 @kind int;
+  #L4800fe.  v6:= v6 + 1;
+  #L480102.  goto L4800f0;
+  #L480104.  v1:= v1 + 1;
+  #L480108.  v3:= v5;
+  #L48010a.  goto L4800ce;
+  #L48010c.  v8.`okio.SegmentedByteString.hashCode` @type ^`int` := v2;
+  #L480110.  return v2;
+}
+procedure `java.lang.String` `hex`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.hex:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480228.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48022e.  v0:= temp @kind object;
+  #L480230.  call temp:= `hex`(v0) @signature `Lokio/ByteString;.hex:()Ljava/lang/String;` @kind virtual;
+  #L480236.  v0:= temp @kind object;
+  #L480238.  return v0 @kind object;
+}
+procedure `okio.ByteString` `hmacSha1`(`okio.SegmentedByteString` v1 @kind this, `okio.ByteString` v2 @kind object) @signature `Lokio/SegmentedByteString;.hmacSha1:(Lokio/ByteString;)Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4802e4.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L4802ea.  v0:= temp @kind object;
+  #L4802ec.  call temp:= `hmacSha1`(v0, v2) @signature `Lokio/ByteString;.hmacSha1:(Lokio/ByteString;)Lokio/ByteString;` @kind virtual;
+  #L4802f2.  v2:= temp @kind object;
+  #L4802f4.  return v2 @kind object;
+}
+procedure `okio.ByteString` `hmacSha256`(`okio.SegmentedByteString` v1 @kind this, `okio.ByteString` v2 @kind object) @signature `Lokio/SegmentedByteString;.hmacSha256:(Lokio/ByteString;)Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480308.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48030e.  v0:= temp @kind object;
+  #L480310.  call temp:= `hmacSha256`(v0, v2) @signature `Lokio/ByteString;.hmacSha256:(Lokio/ByteString;)Lokio/ByteString;` @kind virtual;
+  #L480316.  v2:= temp @kind object;
+  #L480318.  return v2 @kind object;
+}
+procedure `int` `indexOf`(`okio.SegmentedByteString` v1 @kind this, `byte`[] v2 @kind object, `int` v3 ) @signature `Lokio/SegmentedByteString;.indexOf:([BI)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480124.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48012a.  v0:= temp @kind object;
+  #L48012c.  call temp:= `indexOf`(v0, v2, v3) @signature `Lokio/ByteString;.indexOf:([BI)I` @kind virtual;
+  #L480132.  v2:= temp;
+  #L480134.  return v2;
+}
+procedure `byte`[] `internalArray`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.internalArray:()[B` @AccessFlag  {
+    temp;
+    v0;
+
+  #L480040.  call temp:= `toByteArray`(v1) @signature `Lokio/SegmentedByteString;.toByteArray:()[B` @kind virtual;
+  #L480046.  v0:= temp @kind object;
+  #L480048.  return v0 @kind object;
+}
+procedure `int` `lastIndexOf`(`okio.SegmentedByteString` v1 @kind this, `byte`[] v2 @kind object, `int` v3 ) @signature `Lokio/SegmentedByteString;.lastIndexOf:([BI)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480148.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48014e.  v0:= temp @kind object;
+  #L480150.  call temp:= `lastIndexOf`(v0, v2, v3) @signature `Lokio/ByteString;.lastIndexOf:([BI)I` @kind virtual;
+  #L480156.  v2:= temp;
+  #L480158.  return v2;
+}
+procedure `okio.ByteString` `md5`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.md5:()Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L48032c.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L480332.  v0:= temp @kind object;
+  #L480334.  call temp:= `md5`(v0) @signature `Lokio/ByteString;.md5:()Lokio/ByteString;` @kind virtual;
+  #L48033a.  v0:= temp @kind object;
+  #L48033c.  return v0 @kind object;
+}
+procedure `boolean` `rangeEquals`(`okio.SegmentedByteString` v7 @kind this, `int` v8 , `okio.ByteString` v9 @kind object, `int` v10 , `int` v11 ) @signature `Lokio/SegmentedByteString;.rangeEquals:(ILokio/ByteString;II)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L47ff3c.  v0:= 0I;
+  #L47ff3e.  if v8 < 0 then goto L47ffc0;
+  #L47ff42.  call temp:= `size`(v7) @signature `Lokio/SegmentedByteString;.size:()I` @kind virtual;
+  #L47ff48.  v1:= temp;
+  #L47ff4a.  v1:= v1 - v11 @kind int;
+  #L47ff4c.  if v8 <= v1 then goto L47ff52;
+  #L47ff50.  goto L47ffc0;
+  #L47ff52.  call temp:= `segment`(v7, v8) @signature `Lokio/SegmentedByteString;.segment:(I)I` @kind direct;
+  #L47ff58.  v1:= temp;
+  #L47ff5a.  if v11 <= 0 then goto L47ffbc;
+  #L47ff5e.  if v1 != 0 then goto L47ff66;
+  #L47ff62.  v2:= 0I;
+  #L47ff64.  goto L47ff72;
+  #L47ff66.  v2:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L47ff6a.  v3:= v1 + -1;
+  #L47ff6e.  v2:= v2[v3];
+  #L47ff72.  v3:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L47ff76.  v3:= v3[v1];
+  #L47ff7a.  v3:= v3 - v2 @kind int;
+  #L47ff7c.  v3:= v3 + v2 @kind int;
+  #L47ff7e.  v3:= v3 - v8 @kind int;
+  #L47ff80.  call temp:= `min`(v11, v3) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L47ff86.  v3:= temp;
+  #L47ff88.  v4:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L47ff8c.  v5:= v7.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L47ff90.  v6:= length @variable v5;
+  #L47ff92.  v6:= v6 + v1 @kind int;
+  #L47ff94.  v4:= v4[v6];
+  #L47ff98.  v2:= v8 - v2 @kind int;
+  #L47ff9c.  v2:= v2 + v4 @kind int;
+  #L47ff9e.  v4:= v5[v1] @kind object;
+  #L47ffa2.  call temp:= `rangeEquals`(v9, v10, v4, v2, v3) @signature `Lokio/ByteString;.rangeEquals:(I[BII)Z` @kind virtual;
+  #L47ffa8.  v2:= temp;
+  #L47ffaa.  if v2 != 0 then goto L47ffb0;
+  #L47ffae.  return v0;
+  #L47ffb0.  v8:= v8 + v3 @kind int;
+  #L47ffb2.  v10:= v10 + v3 @kind int;
+  #L47ffb4.  v11:= v11 - v3 @kind int;
+  #L47ffb6.  v1:= v1 + 1;
+  #L47ffba.  goto L47ff5a;
+  #L47ffbc.  v8:= 1I;
+  #L47ffbe.  return v8;
+  #L47ffc0.  return v0;
+}
+procedure `boolean` `rangeEquals`(`okio.SegmentedByteString` v7 @kind this, `int` v8 , `byte`[] v9 @kind object, `int` v10 , `int` v11 ) @signature `Lokio/SegmentedByteString;.rangeEquals:(I[BII)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L47fe98.  v0:= 0I;
+  #L47fe9a.  if v8 < 0 then goto L47ff28;
+  #L47fe9e.  call temp:= `size`(v7) @signature `Lokio/SegmentedByteString;.size:()I` @kind virtual;
+  #L47fea4.  v1:= temp;
+  #L47fea6.  v1:= v1 - v11 @kind int;
+  #L47fea8.  if v8 > v1 then goto L47ff28;
+  #L47feac.  if v10 < 0 then goto L47ff28;
+  #L47feb0.  v1:= length @variable v9;
+  #L47feb2.  v1:= v1 - v11 @kind int;
+  #L47feb4.  if v10 <= v1 then goto L47feba;
+  #L47feb8.  goto L47ff28;
+  #L47feba.  call temp:= `segment`(v7, v8) @signature `Lokio/SegmentedByteString;.segment:(I)I` @kind direct;
+  #L47fec0.  v1:= temp;
+  #L47fec2.  if v11 <= 0 then goto L47ff24;
+  #L47fec6.  if v1 != 0 then goto L47fece;
+  #L47feca.  v2:= 0I;
+  #L47fecc.  goto L47feda;
+  #L47fece.  v2:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L47fed2.  v3:= v1 + -1;
+  #L47fed6.  v2:= v2[v3];
+  #L47feda.  v3:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L47fede.  v3:= v3[v1];
+  #L47fee2.  v3:= v3 - v2 @kind int;
+  #L47fee4.  v3:= v3 + v2 @kind int;
+  #L47fee6.  v3:= v3 - v8 @kind int;
+  #L47fee8.  call temp:= `min`(v11, v3) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L47feee.  v3:= temp;
+  #L47fef0.  v4:= v7.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L47fef4.  v5:= v7.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L47fef8.  v6:= length @variable v5;
+  #L47fefa.  v6:= v6 + v1 @kind int;
+  #L47fefc.  v4:= v4[v6];
+  #L47ff00.  v2:= v8 - v2 @kind int;
+  #L47ff04.  v2:= v2 + v4 @kind int;
+  #L47ff06.  v4:= v5[v1] @kind object;
+  #L47ff0a.  call temp:= `arrayRangeEquals`(v4, v2, v9, v10, v3) @signature `Lokio/Util;.arrayRangeEquals:([BI[BII)Z` @kind static;
+  #L47ff10.  v2:= temp;
+  #L47ff12.  if v2 != 0 then goto L47ff18;
+  #L47ff16.  return v0;
+  #L47ff18.  v8:= v8 + v3 @kind int;
+  #L47ff1a.  v10:= v10 + v3 @kind int;
+  #L47ff1c.  v11:= v11 - v3 @kind int;
+  #L47ff1e.  v1:= v1 + 1;
+  #L47ff22.  goto L47fec2;
+  #L47ff24.  v8:= 1I;
+  #L47ff26.  return v8;
+  #L47ff28.  return v0;
+}
+procedure `okio.ByteString` `sha1`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.sha1:()Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480350.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L480356.  v0:= temp @kind object;
+  #L480358.  call temp:= `sha1`(v0) @signature `Lokio/ByteString;.sha1:()Lokio/ByteString;` @kind virtual;
+  #L48035e.  v0:= temp @kind object;
+  #L480360.  return v0 @kind object;
+}
+procedure `okio.ByteString` `sha256`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.sha256:()Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480374.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48037a.  v0:= temp @kind object;
+  #L48037c.  call temp:= `sha256`(v0) @signature `Lokio/ByteString;.sha256:()Lokio/ByteString;` @kind virtual;
+  #L480382.  v0:= temp @kind object;
+  #L480384.  return v0 @kind object;
+}
+procedure `int` `size`(`okio.SegmentedByteString` v2 @kind this) @signature `Lokio/SegmentedByteString;.size:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4801a0.  v0:= v2.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L4801a4.  v1:= v2.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L4801a8.  v1:= length @variable v1;
+  #L4801aa.  v1:= v1 + -1;
+  #L4801ae.  v0:= v0[v1];
+  #L4801b2.  return v0;
+}
+procedure `java.lang.String` `string`(`okio.SegmentedByteString` v1 @kind this, `java.nio.charset.Charset` v2 @kind object) @signature `Lokio/SegmentedByteString;.string:(Ljava/nio/charset/Charset;)Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L48024c.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L480252.  v0:= temp @kind object;
+  #L480254.  call temp:= `string`(v0, v2) @signature `Lokio/ByteString;.string:(Ljava/nio/charset/Charset;)Ljava/lang/String;` @kind virtual;
+  #L48025a.  v2:= temp @kind object;
+  #L48025c.  return v2 @kind object;
+}
+procedure `okio.ByteString` `substring`(`okio.SegmentedByteString` v1 @kind this, `int` v2 ) @signature `Lokio/SegmentedByteString;.substring:(I)Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480398.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48039e.  v0:= temp @kind object;
+  #L4803a0.  call temp:= `substring`(v0, v2) @signature `Lokio/ByteString;.substring:(I)Lokio/ByteString;` @kind virtual;
+  #L4803a6.  v2:= temp @kind object;
+  #L4803a8.  return v2 @kind object;
+}
+procedure `okio.ByteString` `substring`(`okio.SegmentedByteString` v1 @kind this, `int` v2 , `int` v3 ) @signature `Lokio/SegmentedByteString;.substring:(II)Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4803bc.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L4803c2.  v0:= temp @kind object;
+  #L4803c4.  call temp:= `substring`(v0, v2, v3) @signature `Lokio/ByteString;.substring:(II)Lokio/ByteString;` @kind virtual;
+  #L4803ca.  v2:= temp @kind object;
+  #L4803cc.  return v2 @kind object;
+}
+procedure `okio.ByteString` `toAsciiLowercase`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.toAsciiLowercase:()Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4803e0.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L4803e6.  v0:= temp @kind object;
+  #L4803e8.  call temp:= `toAsciiLowercase`(v0) @signature `Lokio/ByteString;.toAsciiLowercase:()Lokio/ByteString;` @kind virtual;
+  #L4803ee.  v0:= temp @kind object;
+  #L4803f0.  return v0 @kind object;
+}
+procedure `okio.ByteString` `toAsciiUppercase`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.toAsciiUppercase:()Lokio/ByteString;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480404.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48040a.  v0:= temp @kind object;
+  #L48040c.  call temp:= `toAsciiUppercase`(v0) @signature `Lokio/ByteString;.toAsciiUppercase:()Lokio/ByteString;` @kind virtual;
+  #L480412.  v0:= temp @kind object;
+  #L480414.  return v0 @kind object;
+}
+procedure `byte`[] `toByteArray`(`okio.SegmentedByteString` v8 @kind this) @signature `Lokio/SegmentedByteString;.toByteArray:()[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L48005c.  v0:= v8.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L480060.  v1:= v8.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L480064.  v2:= length @variable v1;
+  #L480066.  v2:= v2 + -1;
+  #L48006a.  v0:= v0[v2];
+  #L48006e.  v0:= new `byte`[v0];
+  #L480072.  v1:= length @variable v1;
+  #L480074.  v2:= 0I;
+  #L480076.  v3:= 0I;
+  #L480078.  if v2 >= v1 then goto L4800a6;
+  #L48007c.  v4:= v8.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L480080.  v5:= v1 + v2 @kind int;
+  #L480084.  v5:= v4[v5];
+  #L480088.  v4:= v4[v2];
+  #L48008c.  v6:= v8.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L480090.  v6:= v6[v2] @kind object;
+  #L480094.  v7:= v4 - v3 @kind int;
+  #L480098.  call `arraycopy`(v6, v5, v0, v3, v7) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L48009e.  v2:= v2 + 1;
+  #L4800a2.  v3:= v4;
+  #L4800a4.  goto L480078;
+  #L4800a6.  return v0 @kind object;
+}
+procedure `java.lang.String` `toString`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480270.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L480276.  v0:= temp @kind object;
+  #L480278.  call temp:= `toString`(v0) @signature `Lokio/ByteString;.toString:()Ljava/lang/String;` @kind virtual;
+  #L48027e.  v0:= temp @kind object;
+  #L480280.  return v0 @kind object;
+}
+procedure `java.lang.String` `utf8`(`okio.SegmentedByteString` v1 @kind this) @signature `Lokio/SegmentedByteString;.utf8:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L480294.  call temp:= `toByteString`(v1) @signature `Lokio/SegmentedByteString;.toByteString:()Lokio/ByteString;` @kind direct;
+  #L48029a.  v0:= temp @kind object;
+  #L48029c.  call temp:= `utf8`(v0) @signature `Lokio/ByteString;.utf8:()Ljava/lang/String;` @kind virtual;
+  #L4802a2.  v0:= temp @kind object;
+  #L4802a4.  return v0 @kind object;
+}
+procedure `void` `write`(`okio.SegmentedByteString` v6 @kind this, `java.io.OutputStream` v7 @kind object) @signature `Lokio/SegmentedByteString;.write:(Ljava/io/OutputStream;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L480520.  if v7 == 0 then goto L48055e;
+  #L480524.  v0:= v6.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L480528.  v0:= length @variable v0;
+  #L48052a.  v1:= 0I;
+  #L48052c.  v2:= 0I;
+  #L48052e.  if v1 >= v0 then goto L48055c;
+  #L480532.  v3:= v6.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L480536.  v4:= v0 + v1 @kind int;
+  #L48053a.  v4:= v3[v4];
+  #L48053e.  v3:= v3[v1];
+  #L480542.  v5:= v6.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L480546.  v5:= v5[v1] @kind object;
+  #L48054a.  v2:= v3 - v2 @kind int;
+  #L48054e.  call `write`(v7, v5, v4, v2) @signature `Ljava/io/OutputStream;.write:([BII)V` @kind virtual;
+  #L480554.  v1:= v1 + 1;
+  #L480558.  v2:= v3;
+  #L48055a.  goto L48052e;
+  #L48055c.  return @kind void;
+  #L48055e.  v7:= new `java.lang.IllegalArgumentException`;
+  #L480562.  v0:= "out == null" @kind object;
+  #L480566.  call `<init>`(v7, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L48056c.  goto L480570;
+  #L48056e.  throw v7;
+  #L480570.  goto L48056e;
+}
+procedure `void` `write`(`okio.SegmentedByteString` v8 @kind this, `okio.Buffer` v9 @kind object) @signature `Lokio/SegmentedByteString;.write:(Lokio/Buffer;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L480584.  v0:= v8.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L480588.  v0:= length @variable v0;
+  #L48058a.  v1:= 0I;
+  #L48058c.  v2:= 0I;
+  #L48058e.  if v1 >= v0 then goto L4805e6;
+  #L480592.  v3:= v8.`okio.SegmentedByteString.directory` @type ^`int`[] @kind object;
+  #L480596.  v4:= v0 + v1 @kind int;
+  #L48059a.  v4:= v3[v4];
+  #L48059e.  v3:= v3[v1];
+  #L4805a2.  v5:= new `okio.Segment`;
+  #L4805a6.  v6:= v8.`okio.SegmentedByteString.segments` @type ^`byte`[][] @kind object;
+  #L4805aa.  v6:= v6[v1] @kind object;
+  #L4805ae.  v7:= v4 + v3 @kind int;
+  #L4805b2.  v7:= v7 - v2 @kind int;
+  #L4805b4.  call `<init>`(v5, v6, v4, v7) @signature `Lokio/Segment;.<init>:([BII)V` @kind direct;
+  #L4805ba.  v2:= v9.`okio.Buffer.head` @type ^`okio.Segment` @kind object;
+  #L4805be.  if v2 != 0 then goto L4805d0;
+  #L4805c2.  v5.`okio.Segment.prev` @type ^`okio.Segment` := v5 @kind object;
+  #L4805c6.  v5.`okio.Segment.next` @type ^`okio.Segment` := v5 @kind object;
+  #L4805ca.  v9.`okio.Buffer.head` @type ^`okio.Segment` := v5 @kind object;
+  #L4805ce.  goto L4805de;
+  #L4805d0.  v2:= v9.`okio.Buffer.head` @type ^`okio.Segment` @kind object;
+  #L4805d4.  v2:= v2.`okio.Segment.prev` @type ^`okio.Segment` @kind object;
+  #L4805d8.  call temp:= `push`(v2, v5) @signature `Lokio/Segment;.push:(Lokio/Segment;)Lokio/Segment;` @kind virtual;
+  #L4805de.  v1:= v1 + 1;
+  #L4805e2.  v2:= v3;
+  #L4805e4.  goto L48058e;
+  #L4805e6.  v0:= v9.`okio.Buffer.size` @type ^`long` @kind wide;
+  #L4805ea.  v2:= (`long`) v2 @kind i2l;
+  #L4805ec.  v0:= v0 + v2 @kind long;
+  #L4805ee.  v9.`okio.Buffer.size` @type ^`long` := v0 @kind wide;
+  #L4805f2.  return @kind void;
+}

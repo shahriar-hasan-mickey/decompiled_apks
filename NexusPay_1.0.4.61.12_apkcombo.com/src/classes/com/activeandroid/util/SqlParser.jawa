@@ -1,0 +1,154 @@
+record `com.activeandroid.util.SqlParser` @kind class @AccessFlag PUBLIC {
+}
+global `int` `@@com.activeandroid.util.SqlParser.STATE_COMMENT` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.activeandroid.util.SqlParser.STATE_COMMENT_BLOCK` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.activeandroid.util.SqlParser.STATE_NONE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.activeandroid.util.SqlParser.STATE_STRING` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<init>`(`com.activeandroid.util.SqlParser` v0 @kind this) @signature `Lcom/activeandroid/util/SqlParser;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L3844c4.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3844ca.  return @kind void;
+}
+procedure `boolean` `isNewLine`(`char` v1 ) @signature `Lcom/activeandroid/util/SqlParser;.isNewLine:(C)Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L3842d8.  v0:= 13I;
+  #L3842dc.  if v1 == v0 then goto L3842ee;
+  #L3842e0.  v0:= 10I;
+  #L3842e4.  if v1 != v0 then goto L3842ea;
+  #L3842e8.  goto L3842ee;
+  #L3842ea.  v1:= 0I;
+  #L3842ec.  goto L3842f0;
+  #L3842ee.  v1:= 1I;
+  #L3842f0.  return v1;
+}
+procedure `boolean` `isWhitespace`(`char` v1 ) @signature `Lcom/activeandroid/util/SqlParser;.isWhitespace:(C)Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L384304.  v0:= 13I;
+  #L384308.  if v1 == v0 then goto L38432a;
+  #L38430c.  v0:= 10I;
+  #L384310.  if v1 == v0 then goto L38432a;
+  #L384314.  v0:= 9I;
+  #L384318.  if v1 == v0 then goto L38432a;
+  #L38431c.  v0:= 32I;
+  #L384320.  if v1 != v0 then goto L384326;
+  #L384324.  goto L38432a;
+  #L384326.  v1:= 0I;
+  #L384328.  goto L38432c;
+  #L38432a.  v1:= 1I;
+  #L38432c.  return v1;
+}
+procedure `java.util.List` `parse`(`java.io.InputStream` v10 @kind object) @signature `Lcom/activeandroid/util/SqlParser;.parse:(Ljava/io/InputStream;)Ljava/util/List;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L384340.  v0:= new `java.io.BufferedInputStream`;
+  #L384344.  call `<init>`(v0, v10) @signature `Ljava/io/BufferedInputStream;.<init>:(Ljava/io/InputStream;)V` @kind direct;
+  #L38434a.  v10:= new `java.util.ArrayList`;
+  #L38434e.  call `<init>`(v10) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L384354.  v1:= new `java.lang.StringBuffer`;
+  #L384358.  call `<init>`(v1) @signature `Ljava/lang/StringBuffer;.<init>:()V` @kind direct;
+  #L38435e.  v2:= new `com.activeandroid.util.Tokenizer`;
+  #L384362.  call `<init>`(v2, v0) @signature `Lcom/activeandroid/util/Tokenizer;.<init>:(Ljava/io/InputStream;)V` @kind direct;
+  #L384368.  v3:= 2I;
+  #L38436a.  v4:= 3I;
+  #L38436c.  v5:= 0I;
+  #L38436e.  v6:= 0I;
+  #L384370.  call temp:= `hasNext`(v2) @signature `Lcom/activeandroid/util/Tokenizer;.hasNext:()Z` @kind virtual;
+  #L384376.  v7:= temp;
+  #L384378.  if v7 == 0 then goto L384474;
+  #L38437c.  call temp:= `next`(v2) @signature `Lcom/activeandroid/util/Tokenizer;.next:()I` @kind virtual;
+  #L384382.  v7:= temp;
+  #L384384.  v7:= (`char`) v7 @kind i2c;
+  #L384386.  if v6 != v4 then goto L38439c;
+  #L38438a.  v7:= "*/" @kind object;
+  #L38438e.  call temp:= `skip`(v2, v7) @signature `Lcom/activeandroid/util/Tokenizer;.skip:(Ljava/lang/String;)Z` @kind virtual;
+  #L384394.  v7:= temp;
+  #L384396.  if v7 == 0 then goto L384370;
+  #L38439a.  goto L3843ac;
+  #L38439c.  if v6 != v3 then goto L3843ae;
+  #L3843a0.  call temp:= `isNewLine`(v7) @signature `Lcom/activeandroid/util/SqlParser;.isNewLine:(C)Z` @kind static;
+  #L3843a6.  v7:= temp;
+  #L3843a8.  if v7 == 0 then goto L384370;
+  #L3843ac.  goto L38436e;
+  #L3843ae.  if v6 != 0 then goto L3843c6;
+  #L3843b2.  v8:= "/*" @kind object;
+  #L3843b6.  call temp:= `skip`(v2, v8) @signature `Lcom/activeandroid/util/Tokenizer;.skip:(Ljava/lang/String;)Z` @kind virtual;
+  #L3843bc.  v8:= temp;
+  #L3843be.  if v8 == 0 then goto L3843c6;
+  #L3843c2.  v6:= 3I;
+  #L3843c4.  goto L384370;
+  #L3843c6.  if v6 != 0 then goto L3843de;
+  #L3843ca.  v8:= "--" @kind object;
+  #L3843ce.  call temp:= `skip`(v2, v8) @signature `Lcom/activeandroid/util/Tokenizer;.skip:(Ljava/lang/String;)Z` @kind virtual;
+  #L3843d4.  v8:= temp;
+  #L3843d6.  if v8 == 0 then goto L3843de;
+  #L3843da.  v6:= 2I;
+  #L3843dc.  goto L384370;
+  #L3843de.  if v6 != 0 then goto L384408;
+  #L3843e2.  v8:= 59I;
+  #L3843e6.  if v7 != v8 then goto L384408;
+  #L3843ea.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuffer;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3843f0.  v7:= temp @kind object;
+  #L3843f2.  call temp:= `trim`(v7) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L3843f8.  v7:= temp @kind object;
+  #L3843fa.  call temp:= `add`(v10, v7) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L384400.  call `setLength`(v1, v5) @signature `Ljava/lang/StringBuffer;.setLength:(I)V` @kind virtual;
+  #L384406.  goto L384370;
+  #L384408.  v8:= 39I;
+  #L38440c.  v9:= 1I;
+  #L38440e.  if v6 != 0 then goto L38441a;
+  #L384412.  if v7 != v8 then goto L38441a;
+  #L384416.  v6:= 1I;
+  #L384418.  goto L384424;
+  #L38441a.  if v6 != v9 then goto L384424;
+  #L38441e.  if v7 != v8 then goto L384424;
+  #L384422.  v6:= 0I;
+  #L384424.  if v6 == 0 then goto L38442c;
+  #L384428.  if v6 != v9 then goto L384370;
+  #L38442c.  if v6 != 0 then goto L38446a;
+  #L384430.  call temp:= `isWhitespace`(v7) @signature `Lcom/activeandroid/util/SqlParser;.isWhitespace:(C)Z` @kind static;
+  #L384436.  v8:= temp;
+  #L384438.  if v8 == 0 then goto L38446a;
+  #L38443c.  call temp:= `length`(v1) @signature `Ljava/lang/StringBuffer;.length:()I` @kind virtual;
+  #L384442.  v7:= temp;
+  #L384444.  if v7 <= 0 then goto L384370;
+  #L384448.  call temp:= `length`(v1) @signature `Ljava/lang/StringBuffer;.length:()I` @kind virtual;
+  #L38444e.  v7:= temp;
+  #L384450.  v7:= v7 - v9 @kind int;
+  #L384452.  call temp:= `charAt`(v1, v7) @signature `Ljava/lang/StringBuffer;.charAt:(I)C` @kind virtual;
+  #L384458.  v7:= temp;
+  #L38445a.  v8:= 32I;
+  #L38445e.  if v7 == v8 then goto L384370;
+  #L384462.  call temp:= `append`(v1, v8) @signature `Ljava/lang/StringBuffer;.append:(C)Ljava/lang/StringBuffer;` @kind virtual;
+  #L384468.  goto L384370;
+  #L38446a.  call temp:= `append`(v1, v7) @signature `Ljava/lang/StringBuffer;.append:(C)Ljava/lang/StringBuffer;` @kind virtual;
+  #L384470.  goto L384370;
+  #L384474.  call `closeQuietly`(v0) @signature `Lcom/activeandroid/util/IOUtils;.closeQuietly:(Ljava/io/Closeable;)V` @kind static;
+  #L38447a.  call temp:= `length`(v1) @signature `Ljava/lang/StringBuffer;.length:()I` @kind virtual;
+  #L384480.  v0:= temp;
+  #L384482.  if v0 <= 0 then goto L38449c;
+  #L384486.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuffer;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38448c.  v0:= temp @kind object;
+  #L38448e.  call temp:= `trim`(v0) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L384494.  v0:= temp @kind object;
+  #L384496.  call temp:= `add`(v10, v0) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L38449c.  return v10 @kind object;
+  #L38449e.  v10:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3844a0.  call `closeQuietly`(v0) @signature `Lcom/activeandroid/util/IOUtils;.closeQuietly:(Ljava/io/Closeable;)V` @kind static;
+  #L3844a6.  throw v10;
+  catch `java.lang.Throwable` @[L38435e..L384470] goto L38449e;
+}

@@ -1,0 +1,428 @@
+record `com.huawei.hms.framework.common.StringUtils` @kind class @AccessFlag PUBLIC {
+}
+global `int` `@@com.huawei.hms.framework.common.StringUtils.INIT_CAPACITY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `boolean` `@@com.huawei.hms.framework.common.StringUtils.IS_AEGIS_STRING_LIBRARY_LOADED` @AccessFlag PRIVATE_STATIC;
+global `java.lang.String` `@@com.huawei.hms.framework.common.StringUtils.SAFE_STRING_PATH` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.framework.common.StringUtils.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/framework/common/StringUtils;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+
+  #L20c0f8.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.framework.common.StringUtils` v0 @kind this) @signature `Lcom/huawei/hms/framework/common/StringUtils;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L20c10c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L20c112.  return @kind void;
+}
+procedure `java.lang.String` `anonymizeMessage`(`java.lang.String` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.anonymizeMessage:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bd24.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20bd2a.  v0:= temp;
+  #L20bd2c.  if v0 == 0 then goto L20bd32;
+  #L20bd30.  return v2 @kind object;
+  #L20bd32.  call temp:= `toCharArray`(v2) @signature `Ljava/lang/String;.toCharArray:()[C` @kind virtual;
+  #L20bd38.  v2:= temp @kind object;
+  #L20bd3a.  v0:= 0I;
+  #L20bd3c.  v1:= length @variable v2;
+  #L20bd3e.  if v0 >= v1 then goto L20bd58;
+  #L20bd42.  v1:= v0 %% 2;
+  #L20bd46.  if v1 == 0 then goto L20bd52;
+  #L20bd4a.  v1:= 42I;
+  #L20bd4e.  v2[v0]:= v1 @kind char;
+  #L20bd52.  v0:= v0 + 1;
+  #L20bd56.  goto L20bd3c;
+  #L20bd58.  v0:= new `java.lang.String`;
+  #L20bd5c.  call `<init>`(v0, v2) @signature `Ljava/lang/String;.<init>:([C)V` @kind direct;
+  #L20bd62.  return v0 @kind object;
+}
+procedure `java.lang.String` `byte2Str`(`byte`[] v3 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.byte2Str:([B)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L20bd74.  v0:= "" @kind object;
+  #L20bd78.  if v3 != 0 then goto L20bd7e;
+  #L20bd7c.  return v0 @kind object;
+  #L20bd7e.  v1:= new `java.lang.String`;
+  #L20bd82.  v2:= "UTF-8" @kind object;
+  #L20bd86.  call `<init>`(v1, v3, v2) @signature `Ljava/lang/String;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L20bd8c.  return v1 @kind object;
+  #L20bd8e.  v3:= Exception @type ^`java.io.UnsupportedEncodingException` @kind object;
+  #L20bd90.  call temp:= `getMessage`(v3) @signature `Ljava/io/UnsupportedEncodingException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L20bd96.  v3:= temp @kind object;
+  #L20bd98.  call temp:= `anonymizeMessage`(v3) @signature `Lcom/huawei/hms/framework/common/StringUtils;.anonymizeMessage:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L20bd9e.  v3:= temp @kind object;
+  #L20bda0.  v1:= "StringUtils.byte2str error: UnsupportedEncodingException" @kind object;
+  #L20bda4.  call `w`(v1, v3) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20bdaa.  return v0 @kind object;
+  catch `java.io.UnsupportedEncodingException` @[L20bd7e..L20bd8c] goto L20bd8e;
+}
+procedure `boolean` `checkCompatible`(`java.lang.String` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.checkCompatible:(Ljava/lang/String;)Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bac4.  v0:= constclass @type ^`com.huawei.hms.framework.common.SecurityBase64Utils` @kind object;
+  #L20bac8.  call temp:= `getClassLoader`(v0) @signature `Ljava/lang/Class;.getClassLoader:()Ljava/lang/ClassLoader;` @kind virtual;
+  #L20bace.  v0:= temp @kind object;
+  #L20bad0.  v1:= 0I;
+  #L20bad2.  if v0 != 0 then goto L20bad8;
+  #L20bad6.  return v1;
+  #L20bad8.  call temp:= `loadClass`(v0, v2) @signature `Ljava/lang/ClassLoader;.loadClass:(Ljava/lang/String;)Ljava/lang/Class;` @kind virtual;
+  #L20bade.  v2:= constclass @type ^`com.huawei.hms.framework.common.StringUtils` @kind object;
+  #L20bae2.  @monitorenter v2
+  #L20bae4.  v0:= 1I;
+  #L20bae6.  `@@com.huawei.hms.framework.common.StringUtils.IS_AEGIS_STRING_LIBRARY_LOADED` @type ^`boolean` := v0 @kind boolean;
+  #L20baea.  @monitorexit v2
+  #L20baec.  return v0;
+  #L20baee.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L20baf0.  @monitorexit v2
+  #L20baf2.  throw v0;
+  #L20baf4.  return v1;
+  catch `java.lang.ClassNotFoundException` @[L20bad8..L20bae4] goto L20baf4;
+  catch `java.lang.Throwable` @[L20bae6..L20baf2] goto L20baee;
+  catch `java.lang.ClassNotFoundException` @[L20baf2..L20baf4] goto L20baf4;
+}
+procedure `java.lang.String` `collection2String`(`java.util.Collection` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.collection2String:(Ljava/util/Collection;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bdcc.  if v2 == 0 then goto L20be38;
+  #L20bdd0.  call temp:= `isEmpty`(v2) @signature `Ljava/util/Collection;.isEmpty:()Z` @kind interface;
+  #L20bdd6.  v0:= temp;
+  #L20bdd8.  if v0 != 0 then goto L20be38;
+  #L20bddc.  v0:= new `java.lang.StringBuilder`;
+  #L20bde0.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L20bde6.  call temp:= `iterator`(v2) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L20bdec.  v2:= temp @kind object;
+  #L20bdee.  call temp:= `hasNext`(v2) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L20bdf4.  v1:= temp;
+  #L20bdf6.  if v1 == 0 then goto L20be18;
+  #L20bdfa.  call temp:= `next`(v2) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L20be00.  v1:= temp @kind object;
+  #L20be02.  v1:= (`java.lang.String`) v1 @kind object;
+  #L20be06.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20be0c.  v1:= ";" @kind object;
+  #L20be10.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20be16.  goto L20bdee;
+  #L20be18.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L20be1e.  v2:= temp @kind object;
+  #L20be20.  v1:= 0I;
+  #L20be22.  call temp:= `length`(v0) @signature `Ljava/lang/StringBuilder;.length:()I` @kind virtual;
+  #L20be28.  v0:= temp;
+  #L20be2a.  v0:= v0 + -1;
+  #L20be2e.  call temp:= `substring`(v2, v1, v0) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L20be34.  v2:= temp @kind object;
+  #L20be36.  return v2 @kind object;
+  #L20be38.  v2:= 0I;
+  #L20be3a.  return v2 @kind object;
+}
+procedure `java.lang.String` `format`(`java.lang.String` v1 @kind object, `java.lang.Object`[] v2 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L20be4c.  if v1 != 0 then goto L20be56;
+  #L20be50.  v1:= "" @kind object;
+  #L20be54.  return v1 @kind object;
+  #L20be56.  v0:= `@@java.util.Locale.ROOT` @type ^`java.util.Locale` @kind object;
+  #L20be5a.  call temp:= `format`(v0, v1, v2) @signature `Ljava/lang/String;.format:(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L20be60.  v1:= temp @kind object;
+  #L20be62.  return v1 @kind object;
+}
+procedure `byte`[] `getBytes`(`long` v0 ) @signature `Lcom/huawei/hms/framework/common/StringUtils;.getBytes:(J)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L20bc24.  call temp:= `valueOf`(v0) @signature `Ljava/lang/String;.valueOf:(J)Ljava/lang/String;` @kind static;
+  #L20bc2a.  v0:= temp @kind object;
+  #L20bc2c.  call temp:= `getBytes`(v0) @signature `Lcom/huawei/hms/framework/common/StringUtils;.getBytes:(Ljava/lang/String;)[B` @kind static;
+  #L20bc32.  v0:= temp @kind object;
+  #L20bc34.  return v0 @kind object;
+}
+procedure `byte`[] `getBytes`(`java.lang.String` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.getBytes:(Ljava/lang/String;)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bbd8.  v0:= 0I;
+  #L20bbda.  v0:= new `byte`[v0];
+  #L20bbde.  if v2 != 0 then goto L20bbe4;
+  #L20bbe2.  return v0 @kind object;
+  #L20bbe4.  v1:= "utf-8" @kind object;
+  #L20bbe8.  call temp:= `getBytes`(v2, v1) @signature `Ljava/lang/String;.getBytes:(Ljava/lang/String;)[B` @kind virtual;
+  #L20bbee.  v0:= temp @kind object;
+  #L20bbf0.  goto L20bc00;
+  #L20bbf2.  v2:= "StringUtils" @kind object;
+  #L20bbf6.  v1:= "the content has error while it is converted to bytes" @kind object;
+  #L20bbfa.  call `w`(v2, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20bc00.  return v0 @kind object;
+  catch `java.io.UnsupportedEncodingException` @[L20bbe4..L20bbf0] goto L20bbf2;
+}
+procedure `java.lang.String` `getTraceInfo`(`java.lang.Throwable` v5 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.getTraceInfo:(Ljava/lang/Throwable;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L20be74.  call temp:= `getStackTrace`(v5) @signature `Ljava/lang/Throwable;.getStackTrace:()[Ljava/lang/StackTraceElement;` @kind virtual;
+  #L20be7a.  v5:= temp @kind object;
+  #L20be7c.  v0:= new `java.lang.StringBuilder`;
+  #L20be80.  v1:= 1024I;
+  #L20be84.  call `<init>`(v0, v1) @signature `Ljava/lang/StringBuilder;.<init>:(I)V` @kind direct;
+  #L20be8a.  v1:= length @variable v5;
+  #L20be8c.  v2:= 0I;
+  #L20be8e.  if v2 >= v1 then goto L20bebe;
+  #L20be92.  v3:= v5[v2] @kind object;
+  #L20be96.  v4:= "at " @kind object;
+  #L20be9a.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20bea0.  call temp:= `toString`(v3) @signature `Ljava/lang/StackTraceElement;.toString:()Ljava/lang/String;` @kind virtual;
+  #L20bea6.  v3:= temp @kind object;
+  #L20bea8.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20beae.  v3:= ";" @kind object;
+  #L20beb2.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20beb8.  v2:= v2 + 1;
+  #L20bebc.  goto L20be8e;
+  #L20bebe.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L20bec4.  v5:= temp @kind object;
+  #L20bec6.  return v5 @kind object;
+}
+procedure `java.lang.String` `replace`(`java.lang.String` v2 @kind object, `java.lang.CharSequence` v3 @kind object, `java.lang.CharSequence` v4 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.replace:(Ljava/lang/String;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bed8.  v0:= `@@com.huawei.hms.framework.common.StringUtils.IS_AEGIS_STRING_LIBRARY_LOADED` @type ^`boolean` @kind boolean;
+  #L20bedc.  if v0 != 0 then goto L20bef0;
+  #L20bee0.  v0:= "com.huawei.secure.android.common.util.SafeString" @kind object;
+  #L20bee4.  call temp:= `checkCompatible`(v0) @signature `Lcom/huawei/hms/framework/common/StringUtils;.checkCompatible:(Ljava/lang/String;)Z` @kind static;
+  #L20beea.  v0:= temp;
+  #L20beec.  if v0 == 0 then goto L20bf08;
+  #L20bef0.  call temp:= `replace`(v2, v3, v4) @signature `Lcom/huawei/secure/android/common/util/SafeString;.replace:(Ljava/lang/String;Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;` @kind static;
+  #L20bef6.  v2:= temp @kind object;
+  #L20bef8.  return v2 @kind object;
+  #L20befa.  v0:= "StringUtils" @kind object;
+  #L20befe.  v1:= "SafeString.substring error" @kind object;
+  #L20bf02.  call `w`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20bf08.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20bf0e.  v0:= temp;
+  #L20bf10.  if v0 != 0 then goto L20bf28;
+  #L20bf14.  call temp:= `isEmpty`(v3) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20bf1a.  v0:= temp;
+  #L20bf1c.  if v0 != 0 then goto L20bf28;
+  #L20bf20.  call temp:= `replace`(v2, v3, v4) @signature `Ljava/lang/String;.replace:(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String;` @kind virtual;
+  #L20bf26.  v2:= temp @kind object;
+  #L20bf28.  return v2 @kind object;
+  catch `java.lang.Throwable` @[L20bef0..L20bef8] goto L20befa;
+  catch `java.lang.Exception` @[L20bf20..L20bf28] goto L20bf28;
+}
+procedure `byte`[] `str2Byte`(`java.lang.String` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.str2Byte:(Ljava/lang/String;)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bc48.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20bc4e.  v0:= temp;
+  #L20bc50.  v1:= 0I;
+  #L20bc52.  if v0 == 0 then goto L20bc5c;
+  #L20bc56.  v2:= new `byte`[v1];
+  #L20bc5a.  return v2 @kind object;
+  #L20bc5c.  v0:= "UTF-8" @kind object;
+  #L20bc60.  call temp:= `getBytes`(v2, v0) @signature `Ljava/lang/String;.getBytes:(Ljava/lang/String;)[B` @kind virtual;
+  #L20bc66.  v2:= temp @kind object;
+  #L20bc68.  return v2 @kind object;
+  #L20bc6a.  v2:= Exception @type ^`java.io.UnsupportedEncodingException` @kind object;
+  #L20bc6c.  call temp:= `getMessage`(v2) @signature `Ljava/io/UnsupportedEncodingException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L20bc72.  v2:= temp @kind object;
+  #L20bc74.  call temp:= `anonymizeMessage`(v2) @signature `Lcom/huawei/hms/framework/common/StringUtils;.anonymizeMessage:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L20bc7a.  v2:= temp @kind object;
+  #L20bc7c.  v0:= "StringUtils.str2Byte error: UnsupportedEncodingException" @kind object;
+  #L20bc80.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20bc86.  v2:= new `byte`[v1];
+  #L20bc8a.  return v2 @kind object;
+  catch `java.io.UnsupportedEncodingException` @[L20bc5c..L20bc68] goto L20bc6a;
+}
+procedure `boolean` `strEquals`(`java.lang.String` v0 @kind object, `java.lang.String` v1 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.strEquals:(Ljava/lang/String;Ljava/lang/String;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L20bb28.  if v0 == v1 then goto L20bb42;
+  #L20bb2c.  if v0 == 0 then goto L20bb3e;
+  #L20bb30.  call temp:= `equals`(v0, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L20bb36.  v0:= temp;
+  #L20bb38.  if v0 == 0 then goto L20bb3e;
+  #L20bb3c.  goto L20bb42;
+  #L20bb3e.  v0:= 0I;
+  #L20bb40.  goto L20bb44;
+  #L20bb42.  v0:= 1I;
+  #L20bb44.  return v0;
+}
+procedure `boolean` `stringToBoolean`(`java.lang.String` v2 @kind object, `boolean` v3 ) @signature `Lcom/huawei/hms/framework/common/StringUtils;.stringToBoolean:(Ljava/lang/String;Z)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bb58.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20bb5e.  v0:= temp;
+  #L20bb60.  if v0 == 0 then goto L20bb66;
+  #L20bb64.  return v3;
+  #L20bb66.  call temp:= `valueOf`(v2) @signature `Ljava/lang/Boolean;.valueOf:(Ljava/lang/String;)Ljava/lang/Boolean;` @kind static;
+  #L20bb6c.  v2:= temp @kind object;
+  #L20bb6e.  call temp:= `booleanValue`(v2) @signature `Ljava/lang/Boolean;.booleanValue:()Z` @kind virtual;
+  #L20bb74.  v2:= temp;
+  #L20bb76.  return v2;
+  #L20bb78.  v2:= Exception @type ^`java.lang.NumberFormatException` @kind object;
+  #L20bb7a.  v0:= new `java.lang.StringBuilder`;
+  #L20bb7e.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L20bb84.  v1:= "String to Integer catch NumberFormatException." @kind object;
+  #L20bb88.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20bb8e.  call temp:= `getMessage`(v2) @signature `Ljava/lang/NumberFormatException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L20bb94.  v2:= temp @kind object;
+  #L20bb96.  call temp:= `anonymizeMessage`(v2) @signature `Lcom/huawei/hms/framework/common/StringUtils;.anonymizeMessage:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L20bb9c.  v2:= temp @kind object;
+  #L20bb9e.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20bba4.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L20bbaa.  v2:= temp @kind object;
+  #L20bbac.  v0:= "StringUtils" @kind object;
+  #L20bbb0.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20bbb6.  return v3;
+  catch `java.lang.NumberFormatException` @[L20bb66..L20bb76] goto L20bb78;
+}
+procedure `int` `stringToInteger`(`java.lang.String` v2 @kind object, `int` v3 ) @signature `Lcom/huawei/hms/framework/common/StringUtils;.stringToInteger:(Ljava/lang/String;I)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bcac.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20bcb2.  v0:= temp;
+  #L20bcb4.  if v0 == 0 then goto L20bcba;
+  #L20bcb8.  return v3;
+  #L20bcba.  call temp:= `parseInt`(v2) @signature `Ljava/lang/Integer;.parseInt:(Ljava/lang/String;)I` @kind static;
+  #L20bcc0.  v3:= temp;
+  #L20bcc2.  goto L20bd02;
+  #L20bcc4.  v2:= Exception @type ^`java.lang.NumberFormatException` @kind object;
+  #L20bcc6.  v0:= new `java.lang.StringBuilder`;
+  #L20bcca.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L20bcd0.  v1:= "String to Integer catch NumberFormatException." @kind object;
+  #L20bcd4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20bcda.  call temp:= `getMessage`(v2) @signature `Ljava/lang/NumberFormatException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L20bce0.  v2:= temp @kind object;
+  #L20bce2.  call temp:= `anonymizeMessage`(v2) @signature `Lcom/huawei/hms/framework/common/StringUtils;.anonymizeMessage:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L20bce8.  v2:= temp @kind object;
+  #L20bcea.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20bcf0.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L20bcf6.  v2:= temp @kind object;
+  #L20bcf8.  v0:= "StringUtils" @kind object;
+  #L20bcfc.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20bd02.  return v3;
+  catch `java.lang.NumberFormatException` @[L20bcba..L20bcc2] goto L20bcc4;
+}
+procedure `long` `stringToLong`(`java.lang.String` v2 @kind object, `long` v3 ) @signature `Lcom/huawei/hms/framework/common/StringUtils;.stringToLong:(Ljava/lang/String;J)J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20c080.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20c086.  v0:= temp;
+  #L20c088.  if v0 == 0 then goto L20c08e;
+  #L20c08c.  return v3 @kind wide;
+  #L20c08e.  call temp:= `parseLong`(v2) @signature `Ljava/lang/Long;.parseLong:(Ljava/lang/String;)J` @kind static;
+  #L20c094.  v3:= temp @kind wide;
+  #L20c096.  goto L20c0d6;
+  #L20c098.  v2:= Exception @type ^`java.lang.NumberFormatException` @kind object;
+  #L20c09a.  v0:= new `java.lang.StringBuilder`;
+  #L20c09e.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L20c0a4.  v1:= "String to Long catch NumberFormatException." @kind object;
+  #L20c0a8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20c0ae.  call temp:= `getMessage`(v2) @signature `Ljava/lang/NumberFormatException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L20c0b4.  v2:= temp @kind object;
+  #L20c0b6.  call temp:= `anonymizeMessage`(v2) @signature `Lcom/huawei/hms/framework/common/StringUtils;.anonymizeMessage:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L20c0bc.  v2:= temp @kind object;
+  #L20c0be.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L20c0c4.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L20c0ca.  v2:= temp @kind object;
+  #L20c0cc.  v0:= "StringUtils" @kind object;
+  #L20c0d0.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20c0d6.  return v3 @kind wide;
+  catch `java.lang.NumberFormatException` @[L20c08e..L20c096] goto L20c098;
+}
+procedure `java.lang.String` `substring`(`java.lang.String` v2 @kind object, `int` v3 ) @signature `Lcom/huawei/hms/framework/common/StringUtils;.substring:(Ljava/lang/String;I)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bf54.  v0:= "com.huawei.secure.android.common.util.SafeString" @kind object;
+  #L20bf58.  call temp:= `checkCompatible`(v0) @signature `Lcom/huawei/hms/framework/common/StringUtils;.checkCompatible:(Ljava/lang/String;)Z` @kind static;
+  #L20bf5e.  v0:= temp;
+  #L20bf60.  if v0 == 0 then goto L20bf7c;
+  #L20bf64.  call temp:= `substring`(v2, v3) @signature `Lcom/huawei/secure/android/common/util/SafeString;.substring:(Ljava/lang/String;I)Ljava/lang/String;` @kind static;
+  #L20bf6a.  v2:= temp @kind object;
+  #L20bf6c.  return v2 @kind object;
+  #L20bf6e.  v0:= "StringUtils" @kind object;
+  #L20bf72.  v1:= "SafeString.substring error" @kind object;
+  #L20bf76.  call `w`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20bf7c.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20bf82.  v0:= temp;
+  #L20bf84.  v1:= "" @kind object;
+  #L20bf88.  if v0 != 0 then goto L20bfa6;
+  #L20bf8c.  call temp:= `length`(v2) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L20bf92.  v0:= temp;
+  #L20bf94.  if v0 < v3 then goto L20bfa6;
+  #L20bf98.  if v3 < 0 then goto L20bfa6;
+  #L20bf9c.  call temp:= `substring`(v2, v3) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L20bfa2.  v2:= temp @kind object;
+  #L20bfa4.  return v2 @kind object;
+  #L20bfa6.  return v1 @kind object;
+  catch `java.lang.Throwable` @[L20bf64..L20bf6c] goto L20bf6e;
+  catch `java.lang.Exception` @[L20bf9c..L20bfa4] goto L20bfa6;
+}
+procedure `java.lang.String` `substring`(`java.lang.String` v2 @kind object, `int` v3 , `int` v4 ) @signature `Lcom/huawei/hms/framework/common/StringUtils;.substring:(Ljava/lang/String;II)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20bfd0.  v0:= `@@com.huawei.hms.framework.common.StringUtils.IS_AEGIS_STRING_LIBRARY_LOADED` @type ^`boolean` @kind boolean;
+  #L20bfd4.  if v0 != 0 then goto L20bfe8;
+  #L20bfd8.  v0:= "com.huawei.secure.android.common.util.SafeString" @kind object;
+  #L20bfdc.  call temp:= `checkCompatible`(v0) @signature `Lcom/huawei/hms/framework/common/StringUtils;.checkCompatible:(Ljava/lang/String;)Z` @kind static;
+  #L20bfe2.  v0:= temp;
+  #L20bfe4.  if v0 == 0 then goto L20c000;
+  #L20bfe8.  call temp:= `substring`(v2, v3, v4) @signature `Lcom/huawei/secure/android/common/util/SafeString;.substring:(Ljava/lang/String;II)Ljava/lang/String;` @kind static;
+  #L20bfee.  v2:= temp @kind object;
+  #L20bff0.  return v2 @kind object;
+  #L20bff2.  v0:= "StringUtils" @kind object;
+  #L20bff6.  v1:= "SafeString.substring error" @kind object;
+  #L20bffa.  call `w`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20c000.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L20c006.  v0:= temp;
+  #L20c008.  v1:= "" @kind object;
+  #L20c00c.  if v0 != 0 then goto L20c02e;
+  #L20c010.  if v3 < 0 then goto L20c02e;
+  #L20c014.  call temp:= `length`(v2) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L20c01a.  v0:= temp;
+  #L20c01c.  if v4 > v0 then goto L20c02e;
+  #L20c020.  if v4 < v3 then goto L20c02e;
+  #L20c024.  call temp:= `substring`(v2, v3, v4) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L20c02a.  v2:= temp @kind object;
+  #L20c02c.  return v2 @kind object;
+  #L20c02e.  return v1 @kind object;
+  catch `java.lang.Throwable` @[L20bfe8..L20bff0] goto L20bff2;
+  catch `java.lang.Exception` @[L20c024..L20c02c] goto L20c02e;
+}
+procedure `java.lang.String` `toLowerCase`(`java.lang.String` v1 @kind object) @signature `Lcom/huawei/hms/framework/common/StringUtils;.toLowerCase:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L20c058.  if v1 != 0 then goto L20c062;
+  #L20c05c.  v1:= "" @kind object;
+  #L20c060.  return v1 @kind object;
+  #L20c062.  v0:= `@@java.util.Locale.ROOT` @type ^`java.util.Locale` @kind object;
+  #L20c066.  call temp:= `toLowerCase`(v1, v0) @signature `Ljava/lang/String;.toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;` @kind virtual;
+  #L20c06c.  v1:= temp @kind object;
+  #L20c06e.  return v1 @kind object;
+}

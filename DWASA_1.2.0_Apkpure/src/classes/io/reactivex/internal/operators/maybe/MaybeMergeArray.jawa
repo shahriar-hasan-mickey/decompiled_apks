@@ -1,0 +1,49 @@
+record `io.reactivex.internal.operators.maybe.MaybeMergeArray` @kind class @AccessFlag PUBLIC_FINAL extends `io.reactivex.Flowable` @kind class {
+  `io.reactivex.MaybeSource`[] `io.reactivex.internal.operators.maybe.MaybeMergeArray.sources` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.internal.operators.maybe.MaybeMergeArray` v0 @kind this, `io.reactivex.MaybeSource`[] v1 @kind object) @signature `Lio/reactivex/internal/operators/maybe/MaybeMergeArray;.<init>:([Lio/reactivex/MaybeSource;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L415014.  call `<init>`(v0) @signature `Lio/reactivex/Flowable;.<init>:()V` @kind direct;
+  #L41501a.  v0.`io.reactivex.internal.operators.maybe.MaybeMergeArray.sources` @type ^`io.reactivex.MaybeSource`[] := v1 @kind object;
+  #L41501e.  return @kind void;
+}
+procedure `void` `subscribeActual`(`io.reactivex.internal.operators.maybe.MaybeMergeArray` v6 @kind this, `org.reactivestreams.Subscriber` v7 @kind object) @signature `Lio/reactivex/internal/operators/maybe/MaybeMergeArray;.subscribeActual:(Lorg/reactivestreams/Subscriber;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L415030.  v0:= v6.`io.reactivex.internal.operators.maybe.MaybeMergeArray.sources` @type ^`io.reactivex.MaybeSource`[] @kind object;
+  #L415034.  v1:= length @variable v0;
+  #L415036.  call temp:= `bufferSize`() @signature `Lio/reactivex/internal/operators/maybe/MaybeMergeArray;.bufferSize:()I` @kind static;
+  #L41503c.  v2:= temp;
+  #L41503e.  if v1 > v2 then goto L41504e;
+  #L415042.  v2:= new `io.reactivex.internal.operators.maybe.MaybeMergeArray$MpscFillOnceSimpleQueue`;
+  #L415046.  call `<init>`(v2, v1) @signature `Lio/reactivex/internal/operators/maybe/MaybeMergeArray$MpscFillOnceSimpleQueue;.<init>:(I)V` @kind direct;
+  #L41504c.  goto L415058;
+  #L41504e.  v2:= new `io.reactivex.internal.operators.maybe.MaybeMergeArray$ClqSimpleQueue`;
+  #L415052.  call `<init>`(v2) @signature `Lio/reactivex/internal/operators/maybe/MaybeMergeArray$ClqSimpleQueue;.<init>:()V` @kind direct;
+  #L415058.  v3:= new `io.reactivex.internal.operators.maybe.MaybeMergeArray$MergeMaybeObserver`;
+  #L41505c.  call `<init>`(v3, v7, v1, v2) @signature `Lio/reactivex/internal/operators/maybe/MaybeMergeArray$MergeMaybeObserver;.<init>:(Lorg/reactivestreams/Subscriber;ILio/reactivex/internal/operators/maybe/MaybeMergeArray$SimpleQueueWithConsumerIndex;)V` @kind direct;
+  #L415062.  call `onSubscribe`(v7, v3) @signature `Lorg/reactivestreams/Subscriber;.onSubscribe:(Lorg/reactivestreams/Subscription;)V` @kind interface;
+  #L415068.  v7:= v3.`io.reactivex.internal.operators.maybe.MaybeMergeArray$MergeMaybeObserver.error` @type ^`io.reactivex.internal.util.AtomicThrowable` @kind object;
+  #L41506c.  v1:= length @variable v0;
+  #L41506e.  v2:= 0I;
+  #L415070.  if v2 >= v1 then goto L41509e;
+  #L415074.  v4:= v0[v2] @kind object;
+  #L415078.  call temp:= `isCancelled`(v3) @signature `Lio/reactivex/internal/operators/maybe/MaybeMergeArray$MergeMaybeObserver;.isCancelled:()Z` @kind virtual;
+  #L41507e.  v5:= temp;
+  #L415080.  if v5 != 0 then goto L41509e;
+  #L415084.  call temp:= `get`(v7) @signature `Lio/reactivex/internal/util/AtomicThrowable;.get:()Ljava/lang/Object;` @kind virtual;
+  #L41508a.  v5:= temp @kind object;
+  #L41508c.  if v5 == 0 then goto L415092;
+  #L415090.  goto L41509e;
+  #L415092.  call `subscribe`(v4, v3) @signature `Lio/reactivex/MaybeSource;.subscribe:(Lio/reactivex/MaybeObserver;)V` @kind interface;
+  #L415098.  v2:= v2 + 1;
+  #L41509c.  goto L415070;
+  #L41509e.  return @kind void;
+}

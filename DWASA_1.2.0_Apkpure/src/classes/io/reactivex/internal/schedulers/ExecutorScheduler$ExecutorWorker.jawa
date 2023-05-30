@@ -1,0 +1,167 @@
+record `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker` @kind class @AccessFlag PUBLIC_FINAL extends `io.reactivex.Scheduler$Worker` @kind class, `java.lang.Runnable` @kind interface {
+  `boolean` `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @AccessFlag VOLATILE;
+  `java.util.concurrent.Executor` `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.executor` @AccessFlag FINAL;
+  `io.reactivex.internal.queue.MpscLinkedQueue` `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.queue` @AccessFlag FINAL;
+  `io.reactivex.disposables.CompositeDisposable` `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.tasks` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.wip` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker` v1 @kind this, `java.util.concurrent.Executor` v2 @kind object) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;.<init>:(Ljava/util/concurrent/Executor;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4402ec.  call `<init>`(v1) @signature `Lio/reactivex/Scheduler$Worker;.<init>:()V` @kind direct;
+  #L4402f2.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4402f6.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4402fc.  v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L440300.  v0:= new `io.reactivex.disposables.CompositeDisposable`;
+  #L440304.  call `<init>`(v0) @signature `Lio/reactivex/disposables/CompositeDisposable;.<init>:()V` @kind direct;
+  #L44030a.  v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.tasks` @type ^`io.reactivex.disposables.CompositeDisposable` := v0 @kind object;
+  #L44030e.  v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.executor` @type ^`java.util.concurrent.Executor` := v2 @kind object;
+  #L440312.  v2:= new `io.reactivex.internal.queue.MpscLinkedQueue`;
+  #L440316.  call `<init>`(v2) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.<init>:()V` @kind direct;
+  #L44031c.  v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.queue` @type ^`io.reactivex.internal.queue.MpscLinkedQueue` := v2 @kind object;
+  #L440320.  return @kind void;
+}
+procedure `void` `dispose`(`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker` v1 @kind this) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;.dispose:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L440334.  v0:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` @kind boolean;
+  #L440338.  if v0 != 0 then goto L440366;
+  #L44033c.  v0:= 1I;
+  #L44033e.  v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` := v0 @kind boolean;
+  #L440342.  v0:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.tasks` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L440346.  call `dispose`(v0) @signature `Lio/reactivex/disposables/CompositeDisposable;.dispose:()V` @kind virtual;
+  #L44034c.  v0:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L440350.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L440356.  v0:= temp;
+  #L440358.  if v0 != 0 then goto L440366;
+  #L44035c.  v0:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.queue` @type ^`io.reactivex.internal.queue.MpscLinkedQueue` @kind object;
+  #L440360.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.clear:()V` @kind virtual;
+  #L440366.  return @kind void;
+}
+procedure `boolean` `isDisposed`(`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker` v1 @kind this) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;.isDisposed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L440170.  v0:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` @kind boolean;
+  #L440174.  return v0;
+}
+procedure `void` `run`(`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker` v3 @kind this) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;.run:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L440378.  v0:= v3.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.queue` @type ^`io.reactivex.internal.queue.MpscLinkedQueue` @kind object;
+  #L44037c.  v1:= 1I;
+  #L44037e.  v2:= v3.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` @kind boolean;
+  #L440382.  if v2 == 0 then goto L44038e;
+  #L440386.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.clear:()V` @kind virtual;
+  #L44038c.  return @kind void;
+  #L44038e.  call temp:= `poll`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L440394.  v2:= temp @kind object;
+  #L440396.  v2:= (`java.lang.Runnable`) v2 @kind object;
+  #L44039a.  if v2 != 0 then goto L4403c2;
+  #L44039e.  v2:= v3.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` @kind boolean;
+  #L4403a2.  if v2 == 0 then goto L4403ae;
+  #L4403a6.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.clear:()V` @kind virtual;
+  #L4403ac.  return @kind void;
+  #L4403ae.  v2:= v3.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4403b2.  v1:= -v1 @kind int;
+  #L4403b4.  call temp:= `addAndGet`(v2, v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.addAndGet:(I)I` @kind virtual;
+  #L4403ba.  v1:= temp;
+  #L4403bc.  if v1 != 0 then goto L44037e;
+  #L4403c0.  return @kind void;
+  #L4403c2.  call `run`(v2) @signature `Ljava/lang/Runnable;.run:()V` @kind interface;
+  #L4403c8.  v2:= v3.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` @kind boolean;
+  #L4403cc.  if v2 == 0 then goto L44038e;
+  #L4403d0.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.clear:()V` @kind virtual;
+  #L4403d6.  return @kind void;
+}
+procedure `io.reactivex.disposables.Disposable` `schedule`(`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker` v1 @kind this, `java.lang.Runnable` v2 @kind object) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;.schedule:(Ljava/lang/Runnable;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L440188.  v0:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` @kind boolean;
+  #L44018c.  if v0 == 0 then goto L440196;
+  #L440190.  v2:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L440194.  return v2 @kind object;
+  #L440196.  call temp:= `onSchedule`(v2) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onSchedule:(Ljava/lang/Runnable;)Ljava/lang/Runnable;` @kind static;
+  #L44019c.  v2:= temp @kind object;
+  #L44019e.  v0:= new `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker$BooleanRunnable`;
+  #L4401a2.  call `<init>`(v0, v2) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker$BooleanRunnable;.<init>:(Ljava/lang/Runnable;)V` @kind direct;
+  #L4401a8.  v2:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.queue` @type ^`io.reactivex.internal.queue.MpscLinkedQueue` @kind object;
+  #L4401ac.  call temp:= `offer`(v2, v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.offer:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4401b2.  v2:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4401b6.  call temp:= `getAndIncrement`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L4401bc.  v2:= temp;
+  #L4401be.  if v2 != 0 then goto L4401ec;
+  #L4401c2.  v2:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.executor` @type ^`java.util.concurrent.Executor` @kind object;
+  #L4401c6.  call `execute`(v2, v1) @signature `Ljava/util/concurrent/Executor;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L4401cc.  goto L4401ec;
+  #L4401ce.  v2:= Exception @type ^`java.util.concurrent.RejectedExecutionException` @kind object;
+  #L4401d0.  v0:= 1I;
+  #L4401d2.  v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` := v0 @kind boolean;
+  #L4401d6.  v0:= v1.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.queue` @type ^`io.reactivex.internal.queue.MpscLinkedQueue` @kind object;
+  #L4401da.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.clear:()V` @kind virtual;
+  #L4401e0.  call `onError`(v2) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4401e6.  v2:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L4401ea.  return v2 @kind object;
+  #L4401ec.  return v0 @kind object;
+  catch `java.util.concurrent.RejectedExecutionException` @[L4401c2..L4401cc] goto L4401ce;
+}
+procedure `io.reactivex.disposables.Disposable` `schedule`(`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker` v4 @kind this, `java.lang.Runnable` v5 @kind object, `long` v6 , `java.util.concurrent.TimeUnit` v8 @kind object) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L440210.  v0:= 0L;
+  #L440214.  v2:= lcmp(v6, v0);
+  #L440218.  if v2 > 0 then goto L440226;
+  #L44021c.  call temp:= `schedule`(v4, v5) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;.schedule:(Ljava/lang/Runnable;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L440222.  v5:= temp @kind object;
+  #L440224.  return v5 @kind object;
+  #L440226.  v0:= v4.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` @kind boolean;
+  #L44022a.  if v0 == 0 then goto L440234;
+  #L44022e.  v5:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L440232.  return v5 @kind object;
+  #L440234.  v0:= new `io.reactivex.internal.disposables.SequentialDisposable`;
+  #L440238.  call `<init>`(v0) @signature `Lio/reactivex/internal/disposables/SequentialDisposable;.<init>:()V` @kind direct;
+  #L44023e.  v1:= new `io.reactivex.internal.disposables.SequentialDisposable`;
+  #L440242.  call `<init>`(v1, v0) @signature `Lio/reactivex/internal/disposables/SequentialDisposable;.<init>:(Lio/reactivex/disposables/Disposable;)V` @kind direct;
+  #L440248.  call temp:= `onSchedule`(v5) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onSchedule:(Ljava/lang/Runnable;)Ljava/lang/Runnable;` @kind static;
+  #L44024e.  v5:= temp @kind object;
+  #L440250.  v2:= new `io.reactivex.internal.schedulers.ScheduledRunnable`;
+  #L440254.  v3:= new `io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker$SequentialDispose`;
+  #L440258.  call `<init>`(v3, v4, v1, v5) @signature `Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker$SequentialDispose;.<init>:(Lio/reactivex/internal/schedulers/ExecutorScheduler$ExecutorWorker;Lio/reactivex/internal/disposables/SequentialDisposable;Ljava/lang/Runnable;)V` @kind direct;
+  #L44025e.  v5:= v4.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.tasks` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L440262.  call `<init>`(v2, v3, v5) @signature `Lio/reactivex/internal/schedulers/ScheduledRunnable;.<init>:(Ljava/lang/Runnable;Lio/reactivex/internal/disposables/DisposableContainer;)V` @kind direct;
+  #L440268.  v5:= v4.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.tasks` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L44026c.  call temp:= `add`(v5, v2) @signature `Lio/reactivex/disposables/CompositeDisposable;.add:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L440272.  v5:= v4.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.executor` @type ^`java.util.concurrent.Executor` @kind object;
+  #L440276.  v3:= instanceof @variable v5 @type ^`java.util.concurrent.ScheduledExecutorService` @kind boolean;
+  #L44027a.  if v3 == 0 then goto L4402a6;
+  #L44027e.  v5:= (`java.util.concurrent.ScheduledExecutorService`) v5 @kind object;
+  #L440282.  call temp:= `schedule`(v5, v2, v6, v8) @signature `Ljava/util/concurrent/ScheduledExecutorService;.schedule:(Ljava/util/concurrent/Callable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L440288.  v5:= temp @kind object;
+  #L44028a.  call `setFuture`(v2, v5) @signature `Lio/reactivex/internal/schedulers/ScheduledRunnable;.setFuture:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L440290.  goto L4402c2;
+  #L440292.  v5:= Exception @type ^`java.util.concurrent.RejectedExecutionException` @kind object;
+  #L440294.  v6:= 1I;
+  #L440296.  v4.`io.reactivex.internal.schedulers.ExecutorScheduler$ExecutorWorker.disposed` @type ^`boolean` := v6 @kind boolean;
+  #L44029a.  call `onError`(v5) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4402a0.  v5:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L4402a4.  return v5 @kind object;
+  #L4402a6.  v5:= `@@io.reactivex.internal.schedulers.ExecutorScheduler.HELPER` @type ^`io.reactivex.Scheduler` @kind object;
+  #L4402aa.  call temp:= `scheduleDirect`(v5, v2, v6, v8) @signature `Lio/reactivex/Scheduler;.scheduleDirect:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L4402b0.  v5:= temp @kind object;
+  #L4402b2.  v6:= new `io.reactivex.internal.schedulers.DisposeOnCancel`;
+  #L4402b6.  call `<init>`(v6, v5) @signature `Lio/reactivex/internal/schedulers/DisposeOnCancel;.<init>:(Lio/reactivex/disposables/Disposable;)V` @kind direct;
+  #L4402bc.  call `setFuture`(v2, v6) @signature `Lio/reactivex/internal/schedulers/ScheduledRunnable;.setFuture:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L4402c2.  call temp:= `replace`(v0, v2) @signature `Lio/reactivex/internal/disposables/SequentialDisposable;.replace:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L4402c8.  return v1 @kind object;
+  catch `java.util.concurrent.RejectedExecutionException` @[L44027e..L440290] goto L440292;
+}

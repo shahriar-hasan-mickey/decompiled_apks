@@ -1,0 +1,87 @@
+record `com.google.crypto.tink.subtle.Hkdf` @kind class @AccessFlag PUBLIC_FINAL {
+}
+procedure `void` `<init>`(`com.google.crypto.tink.subtle.Hkdf` v0 @kind this) @signature `Lcom/google/crypto/tink/subtle/Hkdf;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L49bbf0.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L49bbf6.  return @kind void;
+}
+procedure `byte`[] `computeEciesHkdfSymmetricKey`(`byte`[] v2 @kind object, `byte`[] v3 @kind object, `java.lang.String` v4 @kind object, `byte`[] v5 @kind object, `byte`[] v6 @kind object, `int` v7 ) @signature `Lcom/google/crypto/tink/subtle/Hkdf;.computeEciesHkdfSymmetricKey:([B[BLjava/lang/String;[B[BI)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L49badc.  v0:= 2I;
+  #L49bade.  v0:= new `byte`[][v0];
+  #L49bae2.  v1:= 0I;
+  #L49bae4.  v0[v1]:= v2 @kind object;
+  #L49bae8.  v2:= 1I;
+  #L49baea.  v0[v2]:= v3 @kind object;
+  #L49baee.  call temp:= `concat`(v0) @signature `Lcom/google/crypto/tink/subtle/Bytes;.concat:([[B)[B` @kind static;
+  #L49baf4.  v2:= temp @kind object;
+  #L49baf6.  call temp:= `computeHkdf`(v4, v2, v5, v6, v7) @signature `Lcom/google/crypto/tink/subtle/Hkdf;.computeHkdf:(Ljava/lang/String;[B[B[BI)[B` @kind static;
+  #L49bafc.  v2:= temp @kind object;
+  #L49bafe.  return v2 @kind object;
+}
+procedure `byte`[] `computeHkdf`(`java.lang.String` v4 @kind object, `byte`[] v5 @kind object, `byte`[] v6 @kind object, `byte`[] v7 @kind object, `int` v8 ) @signature `Lcom/google/crypto/tink/subtle/Hkdf;.computeHkdf:(Ljava/lang/String;[B[B[BI)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L49bb10.  v0:= `@@com.google.crypto.tink.subtle.EngineFactory.MAC` @type ^`com.google.crypto.tink.subtle.EngineFactory` @kind object;
+  #L49bb14.  call temp:= `getInstance`(v0, v4) @signature `Lcom/google/crypto/tink/subtle/EngineFactory;.getInstance:(Ljava/lang/String;)Ljava/lang/Object;` @kind virtual;
+  #L49bb1a.  v0:= temp @kind object;
+  #L49bb1c.  v0:= (`javax.crypto.Mac`) v0 @kind object;
+  #L49bb20.  call temp:= `getMacLength`(v0) @signature `Ljavax/crypto/Mac;.getMacLength:()I` @kind virtual;
+  #L49bb26.  v1:= temp;
+  #L49bb28.  v1:= v1 * 255;
+  #L49bb2c.  if v8 > v1 then goto L49bbd0;
+  #L49bb30.  if v6 == 0 then goto L49bb4e;
+  #L49bb34.  v1:= length @variable v6;
+  #L49bb36.  if v1 != 0 then goto L49bb3c;
+  #L49bb3a.  goto L49bb4e;
+  #L49bb3c.  v1:= new `javax.crypto.spec.SecretKeySpec`;
+  #L49bb40.  call `<init>`(v1, v6, v4) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L49bb46.  call `init`(v0, v1) @signature `Ljavax/crypto/Mac;.init:(Ljava/security/Key;)V` @kind virtual;
+  #L49bb4c.  goto L49bb6a;
+  #L49bb4e.  v6:= new `javax.crypto.spec.SecretKeySpec`;
+  #L49bb52.  call temp:= `getMacLength`(v0) @signature `Ljavax/crypto/Mac;.getMacLength:()I` @kind virtual;
+  #L49bb58.  v1:= temp;
+  #L49bb5a.  v1:= new `byte`[v1];
+  #L49bb5e.  call `<init>`(v6, v1, v4) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L49bb64.  call `init`(v0, v6) @signature `Ljavax/crypto/Mac;.init:(Ljava/security/Key;)V` @kind virtual;
+  #L49bb6a.  call temp:= `doFinal`(v0, v5) @signature `Ljavax/crypto/Mac;.doFinal:([B)[B` @kind virtual;
+  #L49bb70.  v5:= temp @kind object;
+  #L49bb72.  v6:= new `byte`[v8];
+  #L49bb76.  v1:= new `javax.crypto.spec.SecretKeySpec`;
+  #L49bb7a.  call `<init>`(v1, v5, v4) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L49bb80.  call `init`(v0, v1) @signature `Ljavax/crypto/Mac;.init:(Ljava/security/Key;)V` @kind virtual;
+  #L49bb86.  v4:= 0I;
+  #L49bb88.  v5:= new `byte`[v4];
+  #L49bb8c.  v1:= 1I;
+  #L49bb8e.  v2:= 0I;
+  #L49bb90.  call `update`(v0, v5) @signature `Ljavax/crypto/Mac;.update:([B)V` @kind virtual;
+  #L49bb96.  call `update`(v0, v7) @signature `Ljavax/crypto/Mac;.update:([B)V` @kind virtual;
+  #L49bb9c.  v5:= (`byte`) v1 @kind i2b;
+  #L49bb9e.  call `update`(v0, v5) @signature `Ljavax/crypto/Mac;.update:(B)V` @kind virtual;
+  #L49bba4.  call temp:= `doFinal`(v0) @signature `Ljavax/crypto/Mac;.doFinal:()[B` @kind virtual;
+  #L49bbaa.  v5:= temp @kind object;
+  #L49bbac.  v3:= length @variable v5;
+  #L49bbae.  v3:= v3 + v2 @kind int;
+  #L49bbb0.  if v3 >= v8 then goto L49bbc6;
+  #L49bbb4.  v3:= length @variable v5;
+  #L49bbb6.  call `arraycopy`(v5, v4, v6, v2, v3) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L49bbbc.  v3:= length @variable v5;
+  #L49bbbe.  v2:= v2 + v3 @kind int;
+  #L49bbc0.  v1:= v1 + 1;
+  #L49bbc4.  goto L49bb90;
+  #L49bbc6.  v8:= v8 - v2 @kind int;
+  #L49bbc8.  call `arraycopy`(v5, v4, v6, v2, v8) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L49bbce.  return v6 @kind object;
+  #L49bbd0.  v4:= new `java.security.GeneralSecurityException`;
+  #L49bbd4.  v5:= "size too large" @kind object;
+  #L49bbd8.  call `<init>`(v4, v5) @signature `Ljava/security/GeneralSecurityException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49bbde.  throw v4;
+}

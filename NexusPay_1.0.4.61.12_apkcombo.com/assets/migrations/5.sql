@@ -1,0 +1,1 @@
+ALTER TABLE  serviceModel ADD COLUMN displayablePan TEXT ;

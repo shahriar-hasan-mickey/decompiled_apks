@@ -1,0 +1,88 @@
+record `com.huawei.hms.utils.FileUtil` @kind class @AccessFlag PUBLIC_ABSTRACT {
+}
+global `java.lang.String` `@@com.huawei.hms.utils.FileUtil.LOCAL_REPORT_FILE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.utils.FileUtil.LOCAL_REPORT_FILE_CONFIG` @AccessFlag PUBLIC_STATIC_FINAL;
+global `long` `@@com.huawei.hms.utils.FileUtil.LOCAL_REPORT_FILE_MAX_SIZE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `boolean` `@@com.huawei.hms.utils.FileUtil.a` @AccessFlag PUBLIC_STATIC;
+global `java.util.concurrent.ScheduledExecutorService` `@@com.huawei.hms.utils.FileUtil.b` @AccessFlag PUBLIC_STATIC;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/utils/FileUtil;.<clinit>:()V` @AccessFlag PUBLIC_STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2cb36c.  call temp:= `newSingleThreadScheduledExecutor`() @signature `Ljava/util/concurrent/Executors;.newSingleThreadScheduledExecutor:()Ljava/util/concurrent/ScheduledExecutorService;` @kind static;
+  #L2cb372.  v0:= temp @kind object;
+  #L2cb374.  `@@com.huawei.hms.utils.FileUtil.b` @type ^`java.util.concurrent.ScheduledExecutorService` := v0 @kind object;
+  #L2cb378.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.utils.FileUtil` v0 @kind this) @signature `Lcom/huawei/hms/utils/FileUtil;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L2cb38c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2cb392.  return @kind void;
+}
+procedure `boolean` `verifyHash`(`java.lang.String` v1 @kind object, `java.io.File` v2 @kind object) @signature `Lcom/huawei/hms/utils/FileUtil;.verifyHash:(Ljava/lang/String;Ljava/io/File;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2cb334.  call temp:= `digest`(v2) @signature `Lcom/huawei/hms/utils/SHA256;.digest:(Ljava/io/File;)[B` @kind static;
+  #L2cb33a.  v2:= temp @kind object;
+  #L2cb33c.  v0:= 1I;
+  #L2cb33e.  if v2 == 0 then goto L2cb358;
+  #L2cb342.  call temp:= `encodeHexString`(v2, v0) @signature `Lcom/huawei/hms/utils/HEX;.encodeHexString:([BZ)Ljava/lang/String;` @kind static;
+  #L2cb348.  v2:= temp @kind object;
+  #L2cb34a.  call temp:= `equalsIgnoreCase`(v2, v1) @signature `Ljava/lang/String;.equalsIgnoreCase:(Ljava/lang/String;)Z` @kind virtual;
+  #L2cb350.  v1:= temp;
+  #L2cb352.  if v1 == 0 then goto L2cb358;
+  #L2cb356.  goto L2cb35a;
+  #L2cb358.  v0:= 0I;
+  #L2cb35a.  return v0;
+}
+procedure `void` `writeFile`(`java.io.File` v2 @kind object, `java.lang.String` v3 @kind object, `long` v4 ) @signature `Lcom/huawei/hms/utils/FileUtil;.writeFile:(Ljava/io/File;Ljava/lang/String;J)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2cb3a4.  v0:= `@@com.huawei.hms.utils.FileUtil.b` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L2cb3a8.  v1:= new `com.huawei.hms.utils.FileUtil$a`;
+  #L2cb3ac.  call `<init>`(v1, v2, v4, v3) @signature `Lcom/huawei/hms/utils/FileUtil$a;.<init>:(Ljava/io/File;JLjava/lang/String;)V` @kind direct;
+  #L2cb3b2.  call `execute`(v0, v1) @signature `Ljava/util/concurrent/ScheduledExecutorService;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L2cb3b8.  return @kind void;
+}
+procedure `void` `writeFileReport`(`android.content.Context` v0 @kind object, `java.io.File` v1 @kind object, `java.io.File` v2 @kind object, `java.lang.String` v3 @kind object, `long` v4 , `int` v6 ) @signature `Lcom/huawei/hms/utils/FileUtil;.writeFileReport:(Landroid/content/Context;Ljava/io/File;Ljava/io/File;Ljava/lang/String;JI)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2cb3cc.  if v1 == 0 then goto L2cb45e;
+  #L2cb3d0.  call temp:= `isFile`(v1) @signature `Ljava/io/File;.isFile:()Z` @kind virtual;
+  #L2cb3d6.  v0:= temp;
+  #L2cb3d8.  if v0 == 0 then goto L2cb45e;
+  #L2cb3dc.  call temp:= `exists`(v1) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2cb3e2.  v0:= temp;
+  #L2cb3e4.  if v0 == 0 then goto L2cb45e;
+  #L2cb3e8.  v0:= `@@com.huawei.hms.utils.FileUtil.a` @type ^`boolean` @kind boolean;
+  #L2cb3ec.  if v0 != 0 then goto L2cb420;
+  #L2cb3f0.  if v2 == 0 then goto L2cb41a;
+  #L2cb3f4.  call temp:= `exists`(v2) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2cb3fa.  v0:= temp;
+  #L2cb3fc.  if v0 == 0 then goto L2cb41a;
+  #L2cb400.  call temp:= `delete`(v2) @signature `Ljava/io/File;.delete:()Z` @kind virtual;
+  #L2cb406.  v0:= temp;
+  #L2cb408.  if v0 != 0 then goto L2cb41a;
+  #L2cb40c.  v0:= "FileUtil" @kind object;
+  #L2cb410.  v1:= "file delete failed." @kind object;
+  #L2cb414.  call `e`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2cb41a.  v0:= 1I;
+  #L2cb41c.  `@@com.huawei.hms.utils.FileUtil.a` @type ^`boolean` := v0 @kind boolean;
+  #L2cb420.  v0:= new `java.lang.StringBuilder`;
+  #L2cb424.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2cb42a.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2cb430.  v1:= "|" @kind object;
+  #L2cb434.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2cb43a.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2cb440.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2cb446.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2cb44c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2cb452.  v0:= temp @kind object;
+  #L2cb454.  v3:= 10240L;
+  #L2cb458.  call `writeFile`(v2, v0, v3) @signature `Lcom/huawei/hms/utils/FileUtil;.writeFile:(Ljava/io/File;Ljava/lang/String;J)V` @kind static;
+  #L2cb45e.  return @kind void;
+}

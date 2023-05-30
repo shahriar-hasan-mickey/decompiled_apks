@@ -1,0 +1,128 @@
+record `okhttp3.internal.cache2.FileOperator` @kind class @AccessFlag FINAL {
+  `byte`[] `okhttp3.internal.cache2.FileOperator.byteArray` @AccessFlag PRIVATE_FINAL;
+  `java.nio.ByteBuffer` `okhttp3.internal.cache2.FileOperator.byteBuffer` @AccessFlag PRIVATE_FINAL;
+  `java.nio.channels.FileChannel` `okhttp3.internal.cache2.FileOperator.fileChannel` @AccessFlag PRIVATE_FINAL;
+}
+global `int` `@@okhttp3.internal.cache2.FileOperator.BUFFER_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`okhttp3.internal.cache2.FileOperator` v1 @kind this, `java.nio.channels.FileChannel` v2 @kind object) @signature `Lokhttp3/internal/cache2/FileOperator;.<init>:(Ljava/nio/channels/FileChannel;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L465c58.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L465c5e.  v0:= 8192I;
+  #L465c62.  v0:= new `byte`[v0];
+  #L465c66.  v1.`okhttp3.internal.cache2.FileOperator.byteArray` @type ^`byte`[] := v0 @kind object;
+  #L465c6a.  v0:= v1.`okhttp3.internal.cache2.FileOperator.byteArray` @type ^`byte`[] @kind object;
+  #L465c6e.  call temp:= `wrap`(v0) @signature `Ljava/nio/ByteBuffer;.wrap:([B)Ljava/nio/ByteBuffer;` @kind static;
+  #L465c74.  v0:= temp @kind object;
+  #L465c76.  v1.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` := v0 @kind object;
+  #L465c7a.  v1.`okhttp3.internal.cache2.FileOperator.fileChannel` @type ^`java.nio.channels.FileChannel` := v2 @kind object;
+  #L465c7e.  return @kind void;
+}
+procedure `void` `read`(`okhttp3.internal.cache2.FileOperator` v5 @kind this, `long` v6 , `okio.Buffer` v8 @kind object, `long` v9 ) @signature `Lokhttp3/internal/cache2/FileOperator;.read:(JLokio/Buffer;J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L465c90.  v0:= 0L;
+  #L465c94.  v2:= lcmp(v9, v0);
+  #L465c98.  if v2 < 0 then goto L465d18;
+  #L465c9c.  v2:= lcmp(v9, v0);
+  #L465ca0.  if v2 <= 0 then goto L465d16;
+  #L465ca4.  v2:= v5.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465ca8.  v3:= 8192L;
+  #L465cac.  call temp:= `min`(v3, v9) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L465cb2.  v3:= temp @kind wide;
+  #L465cb4.  v4:= (`int`) v3 @kind l2i;
+  #L465cb6.  call temp:= `limit`(v2, v4) @signature `Ljava/nio/ByteBuffer;.limit:(I)Ljava/nio/Buffer;` @kind virtual;
+  #L465cbc.  v2:= v5.`okhttp3.internal.cache2.FileOperator.fileChannel` @type ^`java.nio.channels.FileChannel` @kind object;
+  #L465cc0.  v3:= v5.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465cc4.  call temp:= `read`(v2, v3, v6) @signature `Ljava/nio/channels/FileChannel;.read:(Ljava/nio/ByteBuffer;J)I` @kind virtual;
+  #L465cca.  v2:= temp;
+  #L465ccc.  v3:= -1I;
+  #L465cce.  if v2 == v3 then goto L465cfc;
+  #L465cd2.  v2:= v5.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465cd6.  call temp:= `position`(v2) @signature `Ljava/nio/ByteBuffer;.position:()I` @kind virtual;
+  #L465cdc.  v2:= temp;
+  #L465cde.  v3:= v5.`okhttp3.internal.cache2.FileOperator.byteArray` @type ^`byte`[] @kind object;
+  #L465ce2.  v4:= 0I;
+  #L465ce4.  call temp:= `write`(v8, v3, v4, v2) @signature `Lokio/Buffer;.write:([BII)Lokio/Buffer;` @kind virtual;
+  #L465cea.  v2:= (`long`) v2 @kind i2l;
+  #L465cec.  v6:= v6 + v2 @kind long;
+  #L465cee.  v9:= v9 - v2 @kind long;
+  #L465cf0.  v2:= v5.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465cf4.  call temp:= `clear`(v2) @signature `Ljava/nio/ByteBuffer;.clear:()Ljava/nio/Buffer;` @kind virtual;
+  #L465cfa.  goto L465c9c;
+  #L465cfc.  v6:= new `java.io.EOFException`;
+  #L465d00.  call `<init>`(v6) @signature `Ljava/io/EOFException;.<init>:()V` @kind direct;
+  #L465d06.  throw v6;
+  #L465d08.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L465d0a.  v7:= v5.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465d0e.  call temp:= `clear`(v7) @signature `Ljava/nio/ByteBuffer;.clear:()Ljava/nio/Buffer;` @kind virtual;
+  #L465d14.  throw v6;
+  #L465d16.  return @kind void;
+  #L465d18.  v6:= new `java.lang.IndexOutOfBoundsException`;
+  #L465d1c.  call `<init>`(v6) @signature `Ljava/lang/IndexOutOfBoundsException;.<init>:()V` @kind direct;
+  #L465d22.  goto L465d26;
+  #L465d24.  throw v6;
+  #L465d26.  goto L465d24;
+  catch `java.lang.Throwable` @[L465ca4..L465cea] goto L465d08;
+  catch `java.lang.Throwable` @[L465cfc..L465d08] goto L465d08;
+}
+procedure `void` `write`(`okhttp3.internal.cache2.FileOperator` v6 @kind this, `long` v7 , `okio.Buffer` v9 @kind object, `long` v10 ) @signature `Lokhttp3/internal/cache2/FileOperator;.write:(JLokio/Buffer;J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L465d4c.  v0:= 0L;
+  #L465d50.  v2:= lcmp(v10, v0);
+  #L465d54.  if v2 < 0 then goto L465dd8;
+  #L465d58.  call temp:= `size`(v9) @signature `Lokio/Buffer;.size:()J` @kind virtual;
+  #L465d5e.  v2:= temp @kind wide;
+  #L465d60.  v4:= lcmp(v10, v2);
+  #L465d64.  if v4 > 0 then goto L465dd8;
+  #L465d68.  v2:= lcmp(v10, v0);
+  #L465d6c.  if v2 <= 0 then goto L465dd6;
+  #L465d70.  v2:= 8192L;
+  #L465d74.  call temp:= `min`(v2, v10) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L465d7a.  v2:= temp @kind wide;
+  #L465d7c.  v3:= (`int`) v2 @kind l2i;
+  #L465d7e.  v2:= v6.`okhttp3.internal.cache2.FileOperator.byteArray` @type ^`byte`[] @kind object;
+  #L465d82.  v4:= 0I;
+  #L465d84.  call temp:= `read`(v9, v2, v4, v3) @signature `Lokio/Buffer;.read:([BII)I` @kind virtual;
+  #L465d8a.  v2:= v6.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465d8e.  call temp:= `limit`(v2, v3) @signature `Ljava/nio/ByteBuffer;.limit:(I)Ljava/nio/Buffer;` @kind virtual;
+  #L465d94.  v2:= v6.`okhttp3.internal.cache2.FileOperator.fileChannel` @type ^`java.nio.channels.FileChannel` @kind object;
+  #L465d98.  v4:= v6.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465d9c.  call temp:= `write`(v2, v4, v7) @signature `Ljava/nio/channels/FileChannel;.write:(Ljava/nio/ByteBuffer;J)I` @kind virtual;
+  #L465da2.  v2:= temp;
+  #L465da4.  v4:= (`long`) v2 @kind i2l;
+  #L465da6.  v7:= v7 + v4 @kind long;
+  #L465da8.  v2:= v6.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465dac.  call temp:= `hasRemaining`(v2) @signature `Ljava/nio/ByteBuffer;.hasRemaining:()Z` @kind virtual;
+  #L465db2.  v2:= temp;
+  #L465db4.  if v2 != 0 then goto L465d94;
+  #L465db8.  v2:= (`long`) v3 @kind i2l;
+  #L465dba.  v10:= v10 - v2 @kind long;
+  #L465dbc.  v2:= v6.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465dc0.  call temp:= `clear`(v2) @signature `Ljava/nio/ByteBuffer;.clear:()Ljava/nio/Buffer;` @kind virtual;
+  #L465dc6.  goto L465d68;
+  #L465dc8.  v7:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L465dca.  v8:= v6.`okhttp3.internal.cache2.FileOperator.byteBuffer` @type ^`java.nio.ByteBuffer` @kind object;
+  #L465dce.  call temp:= `clear`(v8) @signature `Ljava/nio/ByteBuffer;.clear:()Ljava/nio/Buffer;` @kind virtual;
+  #L465dd4.  throw v7;
+  #L465dd6.  return @kind void;
+  #L465dd8.  v7:= new `java.lang.IndexOutOfBoundsException`;
+  #L465ddc.  call `<init>`(v7) @signature `Ljava/lang/IndexOutOfBoundsException;.<init>:()V` @kind direct;
+  #L465de2.  goto L465de6;
+  #L465de4.  throw v7;
+  #L465de6.  goto L465de4;
+  catch `java.lang.Throwable` @[L465d74..L465db4] goto L465dc8;
+}

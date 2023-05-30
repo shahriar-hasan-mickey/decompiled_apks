@@ -1,0 +1,402 @@
+record `rx.internal.util.IndexedRingBuffer` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Subscription` @kind interface {
+  `rx.internal.util.IndexedRingBuffer$ElementSection` `rx.internal.util.IndexedRingBuffer.elements` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.util.IndexedRingBuffer.index` @AccessFlag FINAL;
+  `rx.internal.util.IndexedRingBuffer$IndexSection` `rx.internal.util.IndexedRingBuffer.removed` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.util.IndexedRingBuffer.removedIndex` @AccessFlag FINAL;
+}
+global `rx.internal.util.ObjectPool` `@@rx.internal.util.IndexedRingBuffer.POOL` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@rx.internal.util.IndexedRingBuffer.SIZE` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/util/IndexedRingBuffer;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4b4e34.  v0:= new `rx.internal.util.IndexedRingBuffer$1`;
+  #L4b4e38.  call `<init>`(v0) @signature `Lrx/internal/util/IndexedRingBuffer$1;.<init>:()V` @kind direct;
+  #L4b4e3e.  `@@rx.internal.util.IndexedRingBuffer.POOL` @type ^`rx.internal.util.ObjectPool` := v0 @kind object;
+  #L4b4e42.  call temp:= `isAndroid`() @signature `Lrx/internal/util/PlatformDependent;.isAndroid:()Z` @kind static;
+  #L4b4e48.  v0:= temp;
+  #L4b4e4a.  if v0 == 0 then goto L4b4e54;
+  #L4b4e4e.  v0:= 8I;
+  #L4b4e52.  goto L4b4e58;
+  #L4b4e54.  v0:= 128I;
+  #L4b4e58.  v1:= "rx.indexed-ring-buffer.size" @kind object;
+  #L4b4e5c.  call temp:= `getProperty`(v1) @signature `Ljava/lang/System;.getProperty:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L4b4e62.  v1:= temp @kind object;
+  #L4b4e64.  if v1 == 0 then goto L4b4eb8;
+  #L4b4e68.  call temp:= `parseInt`(v1) @signature `Ljava/lang/Integer;.parseInt:(Ljava/lang/String;)I` @kind static;
+  #L4b4e6e.  v0:= temp;
+  #L4b4e70.  goto L4b4eb8;
+  #L4b4e72.  v2:= Exception @type ^`java.lang.NumberFormatException` @kind object;
+  #L4b4e74.  v3:= `@@java.lang.System.err` @type ^`java.io.PrintStream` @kind object;
+  #L4b4e78.  v4:= new `java.lang.StringBuilder`;
+  #L4b4e7c.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4b4e82.  v5:= "Failed to set 'rx.indexed-ring-buffer.size' with value " @kind object;
+  #L4b4e86.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4b4e8c.  call temp:= `append`(v4, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4b4e92.  v1:= " => " @kind object;
+  #L4b4e96.  call temp:= `append`(v4, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4b4e9c.  call temp:= `getMessage`(v2) @signature `Ljava/lang/NumberFormatException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L4b4ea2.  v1:= temp @kind object;
+  #L4b4ea4.  call temp:= `append`(v4, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4b4eaa.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4b4eb0.  v1:= temp @kind object;
+  #L4b4eb2.  call `println`(v3, v1) @signature `Ljava/io/PrintStream;.println:(Ljava/lang/String;)V` @kind virtual;
+  #L4b4eb8.  `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int` := v0;
+  #L4b4ebc.  return @kind void;
+  catch `java.lang.NumberFormatException` @[L4b4e68..L4b4e70] goto L4b4e72;
+}
+procedure `void` `<init>`(`rx.internal.util.IndexedRingBuffer` v1 @kind this) @signature `Lrx/internal/util/IndexedRingBuffer;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b4ee0.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b4ee6.  v0:= new `rx.internal.util.IndexedRingBuffer$ElementSection`;
+  #L4b4eea.  call `<init>`(v0) @signature `Lrx/internal/util/IndexedRingBuffer$ElementSection;.<init>:()V` @kind direct;
+  #L4b4ef0.  v1.`rx.internal.util.IndexedRingBuffer.elements` @type ^`rx.internal.util.IndexedRingBuffer$ElementSection` := v0 @kind object;
+  #L4b4ef4.  v0:= new `rx.internal.util.IndexedRingBuffer$IndexSection`;
+  #L4b4ef8.  call `<init>`(v0) @signature `Lrx/internal/util/IndexedRingBuffer$IndexSection;.<init>:()V` @kind direct;
+  #L4b4efe.  v1.`rx.internal.util.IndexedRingBuffer.removed` @type ^`rx.internal.util.IndexedRingBuffer$IndexSection` := v0 @kind object;
+  #L4b4f02.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4b4f06.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4b4f0c.  v1.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L4b4f10.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4b4f14.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4b4f1a.  v1.`rx.internal.util.IndexedRingBuffer.removedIndex` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L4b4f1e.  return @kind void;
+}
+procedure `int` `forEach`(`rx.internal.util.IndexedRingBuffer` v5 @kind this, `rx.functions.Func1` v6 @kind object, `int` v7 , `int` v8 ) @signature `Lrx/internal/util/IndexedRingBuffer;.forEach:(Lrx/functions/Func1;II)I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b4bc0.  v0:= v5.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4bc4.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L4b4bca.  v0:= temp;
+  #L4b4bcc.  v1:= v5.`rx.internal.util.IndexedRingBuffer.elements` @type ^`rx.internal.util.IndexedRingBuffer$ElementSection` @kind object;
+  #L4b4bd0.  v2:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4bd4.  if v7 < v2 then goto L4b4bf0;
+  #L4b4bd8.  call temp:= `getElementSection`(v5, v7) @signature `Lrx/internal/util/IndexedRingBuffer;.getElementSection:(I)Lrx/internal/util/IndexedRingBuffer$ElementSection;` @kind direct;
+  #L4b4bde.  v1:= temp @kind object;
+  #L4b4be0.  v2:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4be4.  v2:= v7 %% v2 @kind int;
+  #L4b4be8.  v4:= v2;
+  #L4b4bea.  v2:= v7;
+  #L4b4bec.  v7:= v4;
+  #L4b4bee.  goto L4b4bf2;
+  #L4b4bf0.  v2:= v7;
+  #L4b4bf2.  if v1 == 0 then goto L4b4c54;
+  #L4b4bf6.  v3:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4bfa.  if v7 >= v3 then goto L4b4c3e;
+  #L4b4bfe.  if v2 >= v0 then goto L4b4c54;
+  #L4b4c02.  if v2 < v8 then goto L4b4c08;
+  #L4b4c06.  goto L4b4c54;
+  #L4b4c08.  v3:= v1.`rx.internal.util.IndexedRingBuffer$ElementSection.array` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b4c0c.  call temp:= `get`(v3, v7) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.get:(I)Ljava/lang/Object;` @kind virtual;
+  #L4b4c12.  v3:= temp @kind object;
+  #L4b4c14.  if v3 != 0 then goto L4b4c1a;
+  #L4b4c18.  goto L4b4c34;
+  #L4b4c1a.  call temp:= `call`(v6, v3) @signature `Lrx/functions/Func1;.call:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4b4c20.  v3:= temp @kind object;
+  #L4b4c22.  v3:= (`java.lang.Boolean`) v3 @kind object;
+  #L4b4c26.  call temp:= `booleanValue`(v3) @signature `Ljava/lang/Boolean;.booleanValue:()Z` @kind virtual;
+  #L4b4c2c.  v3:= temp;
+  #L4b4c2e.  if v3 != 0 then goto L4b4c34;
+  #L4b4c32.  return v2;
+  #L4b4c34.  v7:= v7 + 1;
+  #L4b4c38.  v2:= v2 + 1;
+  #L4b4c3c.  goto L4b4bf6;
+  #L4b4c3e.  v7:= v1.`rx.internal.util.IndexedRingBuffer$ElementSection.next` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b4c42.  call temp:= `get`(v7) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b4c48.  v7:= temp @kind object;
+  #L4b4c4a.  v1:= v7 @kind object;
+  #L4b4c4c.  v1:= (`rx.internal.util.IndexedRingBuffer$ElementSection`) v1 @kind object;
+  #L4b4c50.  v7:= 0I;
+  #L4b4c52.  goto L4b4bf2;
+  #L4b4c54.  return v2;
+}
+procedure `rx.internal.util.IndexedRingBuffer$ElementSection` `getElementSection`(`rx.internal.util.IndexedRingBuffer` v2 @kind this, `int` v3 ) @signature `Lrx/internal/util/IndexedRingBuffer;.getElementSection:(I)Lrx/internal/util/IndexedRingBuffer$ElementSection;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L4b4dbc.  v0:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4dc0.  if v3 >= v0 then goto L4b4dca;
+  #L4b4dc4.  v3:= v2.`rx.internal.util.IndexedRingBuffer.elements` @type ^`rx.internal.util.IndexedRingBuffer$ElementSection` @kind object;
+  #L4b4dc8.  return v3 @kind object;
+  #L4b4dca.  v3:= v3 / v0 @kind int;
+  #L4b4dcc.  v0:= v2.`rx.internal.util.IndexedRingBuffer.elements` @type ^`rx.internal.util.IndexedRingBuffer$ElementSection` @kind object;
+  #L4b4dd0.  v1:= 0I;
+  #L4b4dd2.  if v1 >= v3 then goto L4b4de4;
+  #L4b4dd6.  call temp:= `getNext`(v0) @signature `Lrx/internal/util/IndexedRingBuffer$ElementSection;.getNext:()Lrx/internal/util/IndexedRingBuffer$ElementSection;` @kind virtual;
+  #L4b4ddc.  v0:= temp @kind object;
+  #L4b4dde.  v1:= v1 + 1;
+  #L4b4de2.  goto L4b4dd2;
+  #L4b4de4.  return v0 @kind object;
+}
+procedure `int` `getIndexForAdd`(`rx.internal.util.IndexedRingBuffer` v3 @kind this) @signature `Lrx/internal/util/IndexedRingBuffer;.getIndexForAdd:()I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b4c68.  @monitorenter v3
+  #L4b4c6a.  call temp:= `getIndexFromPreviouslyRemoved`(v3) @signature `Lrx/internal/util/IndexedRingBuffer;.getIndexFromPreviouslyRemoved:()I` @kind direct;
+  #L4b4c70.  v0:= temp;
+  #L4b4c72.  if v0 < 0 then goto L4b4cc2;
+  #L4b4c76.  v1:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4c7a.  v2:= -1I;
+  #L4b4c7c.  if v0 >= v1 then goto L4b4c8e;
+  #L4b4c80.  v1:= v3.`rx.internal.util.IndexedRingBuffer.removed` @type ^`rx.internal.util.IndexedRingBuffer$IndexSection` @kind object;
+  #L4b4c84.  call temp:= `getAndSet`(v1, v0, v2) @signature `Lrx/internal/util/IndexedRingBuffer$IndexSection;.getAndSet:(II)I` @kind virtual;
+  #L4b4c8a.  v0:= temp;
+  #L4b4c8c.  goto L4b4ca6;
+  #L4b4c8e.  v1:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4c92.  v1:= v0 %% v1 @kind int;
+  #L4b4c96.  call temp:= `getIndexSection`(v3, v0) @signature `Lrx/internal/util/IndexedRingBuffer;.getIndexSection:(I)Lrx/internal/util/IndexedRingBuffer$IndexSection;` @kind direct;
+  #L4b4c9c.  v0:= temp @kind object;
+  #L4b4c9e.  call temp:= `getAndSet`(v0, v1, v2) @signature `Lrx/internal/util/IndexedRingBuffer$IndexSection;.getAndSet:(II)I` @kind virtual;
+  #L4b4ca4.  v0:= temp;
+  #L4b4ca6.  v1:= v3.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4caa.  call temp:= `get`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L4b4cb0.  v1:= temp;
+  #L4b4cb2.  if v0 != v1 then goto L4b4cce;
+  #L4b4cb6.  v1:= v3.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4cba.  call temp:= `getAndIncrement`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L4b4cc0.  goto L4b4cce;
+  #L4b4cc2.  v0:= v3.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4cc6.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L4b4ccc.  v0:= temp;
+  #L4b4cce.  @monitorexit v3
+  #L4b4cd0.  return v0;
+  #L4b4cd2.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b4cd4.  @monitorexit v3
+  #L4b4cd6.  throw v0;
+  catch `java.lang.Throwable` @[L4b4c6a..L4b4cce] goto L4b4cd2;
+}
+procedure `int` `getIndexFromPreviouslyRemoved`(`rx.internal.util.IndexedRingBuffer` v3 @kind this) @signature `Lrx/internal/util/IndexedRingBuffer;.getIndexFromPreviouslyRemoved:()I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b4cf4.  @monitorenter v3
+  #L4b4cf6.  v0:= v3.`rx.internal.util.IndexedRingBuffer.removedIndex` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4cfa.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L4b4d00.  v0:= temp;
+  #L4b4d02.  if v0 <= 0 then goto L4b4d1e;
+  #L4b4d06.  v1:= v3.`rx.internal.util.IndexedRingBuffer.removedIndex` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4d0a.  v2:= v0 + -1;
+  #L4b4d0e.  call temp:= `compareAndSet`(v1, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.compareAndSet:(II)Z` @kind virtual;
+  #L4b4d14.  v0:= temp;
+  #L4b4d16.  if v0 == 0 then goto L4b4cf6;
+  #L4b4d1a.  @monitorexit v3
+  #L4b4d1c.  return v2;
+  #L4b4d1e.  v0:= -1I;
+  #L4b4d20.  @monitorexit v3
+  #L4b4d22.  return v0;
+  #L4b4d24.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b4d26.  @monitorexit v3
+  #L4b4d28.  goto L4b4d2c;
+  #L4b4d2a.  throw v0;
+  #L4b4d2c.  goto L4b4d2a;
+  catch `java.lang.Throwable` @[L4b4cf6..L4b4d16] goto L4b4d24;
+}
+procedure `rx.internal.util.IndexedRingBuffer$IndexSection` `getIndexSection`(`rx.internal.util.IndexedRingBuffer` v2 @kind this, `int` v3 ) @signature `Lrx/internal/util/IndexedRingBuffer;.getIndexSection:(I)Lrx/internal/util/IndexedRingBuffer$IndexSection;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L4b4df8.  v0:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4dfc.  if v3 >= v0 then goto L4b4e06;
+  #L4b4e00.  v3:= v2.`rx.internal.util.IndexedRingBuffer.removed` @type ^`rx.internal.util.IndexedRingBuffer$IndexSection` @kind object;
+  #L4b4e04.  return v3 @kind object;
+  #L4b4e06.  v3:= v3 / v0 @kind int;
+  #L4b4e08.  v0:= v2.`rx.internal.util.IndexedRingBuffer.removed` @type ^`rx.internal.util.IndexedRingBuffer$IndexSection` @kind object;
+  #L4b4e0c.  v1:= 0I;
+  #L4b4e0e.  if v1 >= v3 then goto L4b4e20;
+  #L4b4e12.  call temp:= `getNext`(v0) @signature `Lrx/internal/util/IndexedRingBuffer$IndexSection;.getNext:()Lrx/internal/util/IndexedRingBuffer$IndexSection;` @kind virtual;
+  #L4b4e18.  v0:= temp @kind object;
+  #L4b4e1a.  v1:= v1 + 1;
+  #L4b4e1e.  goto L4b4e0e;
+  #L4b4e20.  return v0 @kind object;
+}
+procedure `rx.internal.util.IndexedRingBuffer` `getInstance`() @signature `Lrx/internal/util/IndexedRingBuffer;.getInstance:()Lrx/internal/util/IndexedRingBuffer;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4b4d98.  v0:= `@@rx.internal.util.IndexedRingBuffer.POOL` @type ^`rx.internal.util.ObjectPool` @kind object;
+  #L4b4d9c.  call temp:= `borrowObject`(v0) @signature `Lrx/internal/util/ObjectPool;.borrowObject:()Ljava/lang/Object;` @kind virtual;
+  #L4b4da2.  v0:= temp @kind object;
+  #L4b4da4.  v0:= (`rx.internal.util.IndexedRingBuffer`) v0 @kind object;
+  #L4b4da8.  return v0 @kind object;
+}
+procedure `void` `pushRemovedIndex`(`rx.internal.util.IndexedRingBuffer` v2 @kind this, `int` v3 ) @signature `Lrx/internal/util/IndexedRingBuffer;.pushRemovedIndex:(I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L4b4f30.  @monitorenter v2
+  #L4b4f32.  v0:= v2.`rx.internal.util.IndexedRingBuffer.removedIndex` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4f36.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L4b4f3c.  v0:= temp;
+  #L4b4f3e.  v1:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4f42.  if v0 >= v1 then goto L4b4f52;
+  #L4b4f46.  v1:= v2.`rx.internal.util.IndexedRingBuffer.removed` @type ^`rx.internal.util.IndexedRingBuffer$IndexSection` @kind object;
+  #L4b4f4a.  call `set`(v1, v0, v3) @signature `Lrx/internal/util/IndexedRingBuffer$IndexSection;.set:(II)V` @kind virtual;
+  #L4b4f50.  goto L4b4f68;
+  #L4b4f52.  v1:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4f56.  v1:= v0 %% v1 @kind int;
+  #L4b4f5a.  call temp:= `getIndexSection`(v2, v0) @signature `Lrx/internal/util/IndexedRingBuffer;.getIndexSection:(I)Lrx/internal/util/IndexedRingBuffer$IndexSection;` @kind direct;
+  #L4b4f60.  v0:= temp @kind object;
+  #L4b4f62.  call `set`(v0, v1, v3) @signature `Lrx/internal/util/IndexedRingBuffer$IndexSection;.set:(II)V` @kind virtual;
+  #L4b4f68.  @monitorexit v2
+  #L4b4f6a.  return @kind void;
+  #L4b4f6c.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b4f6e.  @monitorexit v2
+  #L4b4f70.  throw v3;
+  catch `java.lang.Throwable` @[L4b4f32..L4b4f68] goto L4b4f6c;
+}
+procedure `int` `add`(`rx.internal.util.IndexedRingBuffer` v3 @kind this, `java.lang.Object` v4 @kind object) @signature `Lrx/internal/util/IndexedRingBuffer;.add:(Ljava/lang/Object;)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b4b04.  call temp:= `getIndexForAdd`(v3) @signature `Lrx/internal/util/IndexedRingBuffer;.getIndexForAdd:()I` @kind direct;
+  #L4b4b0a.  v0:= temp;
+  #L4b4b0c.  v1:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4b10.  if v0 >= v1 then goto L4b4b24;
+  #L4b4b14.  v1:= v3.`rx.internal.util.IndexedRingBuffer.elements` @type ^`rx.internal.util.IndexedRingBuffer$ElementSection` @kind object;
+  #L4b4b18.  v1:= v1.`rx.internal.util.IndexedRingBuffer$ElementSection.array` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b4b1c.  call `set`(v1, v0, v4) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.set:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b4b22.  return v0;
+  #L4b4b24.  v1:= v0 %% v1 @kind int;
+  #L4b4b28.  call temp:= `getElementSection`(v3, v0) @signature `Lrx/internal/util/IndexedRingBuffer;.getElementSection:(I)Lrx/internal/util/IndexedRingBuffer$ElementSection;` @kind direct;
+  #L4b4b2e.  v2:= temp @kind object;
+  #L4b4b30.  v2:= v2.`rx.internal.util.IndexedRingBuffer$ElementSection.array` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b4b34.  call `set`(v2, v1, v4) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.set:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b4b3a.  return v0;
+}
+procedure `int` `forEach`(`rx.internal.util.IndexedRingBuffer` v1 @kind this, `rx.functions.Func1` v2 @kind object) @signature `Lrx/internal/util/IndexedRingBuffer;.forEach:(Lrx/functions/Func1;)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b4b4c.  v0:= 0I;
+  #L4b4b4e.  call temp:= `forEach`(v1, v2, v0) @signature `Lrx/internal/util/IndexedRingBuffer;.forEach:(Lrx/functions/Func1;I)I` @kind virtual;
+  #L4b4b54.  v2:= temp;
+  #L4b4b56.  return v2;
+}
+procedure `int` `forEach`(`rx.internal.util.IndexedRingBuffer` v3 @kind this, `rx.functions.Func1` v4 @kind object, `int` v5 ) @signature `Lrx/internal/util/IndexedRingBuffer;.forEach:(Lrx/functions/Func1;I)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b4b68.  v0:= v3.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4b6c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L4b4b72.  v0:= temp;
+  #L4b4b74.  call temp:= `forEach`(v3, v4, v5, v0) @signature `Lrx/internal/util/IndexedRingBuffer;.forEach:(Lrx/functions/Func1;II)I` @kind direct;
+  #L4b4b7a.  v0:= temp;
+  #L4b4b7c.  v1:= 0I;
+  #L4b4b7e.  if v5 <= 0 then goto L4b4b9c;
+  #L4b4b82.  v2:= v3.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4b86.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L4b4b8c.  v2:= temp;
+  #L4b4b8e.  if v0 != v2 then goto L4b4b9c;
+  #L4b4b92.  call temp:= `forEach`(v3, v4, v1, v5) @signature `Lrx/internal/util/IndexedRingBuffer;.forEach:(Lrx/functions/Func1;II)I` @kind direct;
+  #L4b4b98.  v0:= temp;
+  #L4b4b9a.  goto L4b4bae;
+  #L4b4b9c.  v4:= v3.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4ba0.  call temp:= `get`(v4) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L4b4ba6.  v4:= temp;
+  #L4b4ba8.  if v0 != v4 then goto L4b4bae;
+  #L4b4bac.  v0:= 0I;
+  #L4b4bae.  return v0;
+}
+procedure `boolean` `isUnsubscribed`(`rx.internal.util.IndexedRingBuffer` v1 @kind this) @signature `Lrx/internal/util/IndexedRingBuffer;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b4af0.  v0:= 0I;
+  #L4b4af2.  return v0;
+}
+procedure `void` `releaseToPool`(`rx.internal.util.IndexedRingBuffer` v7 @kind this) @signature `Lrx/internal/util/IndexedRingBuffer;.releaseToPool:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4b4f90.  v0:= v7.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4f94.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L4b4f9a.  v0:= temp;
+  #L4b4f9c.  v1:= v7.`rx.internal.util.IndexedRingBuffer.elements` @type ^`rx.internal.util.IndexedRingBuffer$ElementSection` @kind object;
+  #L4b4fa0.  v2:= 0I;
+  #L4b4fa2.  v3:= 0I;
+  #L4b4fa4.  if v1 == 0 then goto L4b4fe4;
+  #L4b4fa8.  v4:= v3;
+  #L4b4faa.  v3:= 0I;
+  #L4b4fac.  v5:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4fb0.  if v3 >= v5 then goto L4b4fd0;
+  #L4b4fb4.  if v4 < v0 then goto L4b4fba;
+  #L4b4fb8.  goto L4b4fe4;
+  #L4b4fba.  v5:= v1.`rx.internal.util.IndexedRingBuffer$ElementSection.array` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b4fbe.  v6:= 0I;
+  #L4b4fc0.  call `set`(v5, v3, v6) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.set:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b4fc6.  v3:= v3 + 1;
+  #L4b4fca.  v4:= v4 + 1;
+  #L4b4fce.  goto L4b4fac;
+  #L4b4fd0.  v1:= v1.`rx.internal.util.IndexedRingBuffer$ElementSection.next` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b4fd4.  call temp:= `get`(v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b4fda.  v1:= temp @kind object;
+  #L4b4fdc.  v1:= (`rx.internal.util.IndexedRingBuffer$ElementSection`) v1 @kind object;
+  #L4b4fe0.  v3:= v4;
+  #L4b4fe2.  goto L4b4fa4;
+  #L4b4fe4.  v0:= v7.`rx.internal.util.IndexedRingBuffer.index` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4fe8.  call `set`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.set:(I)V` @kind virtual;
+  #L4b4fee.  v0:= v7.`rx.internal.util.IndexedRingBuffer.removedIndex` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b4ff2.  call `set`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.set:(I)V` @kind virtual;
+  #L4b4ff8.  v0:= `@@rx.internal.util.IndexedRingBuffer.POOL` @type ^`rx.internal.util.ObjectPool` @kind object;
+  #L4b4ffc.  call `returnObject`(v0, v7) @signature `Lrx/internal/util/ObjectPool;.returnObject:(Ljava/lang/Object;)V` @kind virtual;
+  #L4b5002.  return @kind void;
+}
+procedure `java.lang.Object` `remove`(`rx.internal.util.IndexedRingBuffer` v3 @kind this, `int` v4 ) @signature `Lrx/internal/util/IndexedRingBuffer;.remove:(I)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b4d4c.  v0:= `@@rx.internal.util.IndexedRingBuffer.SIZE` @type ^`int`;
+  #L4b4d50.  v1:= 0I;
+  #L4b4d52.  if v4 >= v0 then goto L4b4d68;
+  #L4b4d56.  v0:= v3.`rx.internal.util.IndexedRingBuffer.elements` @type ^`rx.internal.util.IndexedRingBuffer$ElementSection` @kind object;
+  #L4b4d5a.  v0:= v0.`rx.internal.util.IndexedRingBuffer$ElementSection.array` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b4d5e.  call temp:= `getAndSet`(v0, v4, v1) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.getAndSet:(ILjava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4b4d64.  v0:= temp @kind object;
+  #L4b4d66.  goto L4b4d80;
+  #L4b4d68.  v0:= v4 %% v0 @kind int;
+  #L4b4d6c.  call temp:= `getElementSection`(v3, v4) @signature `Lrx/internal/util/IndexedRingBuffer;.getElementSection:(I)Lrx/internal/util/IndexedRingBuffer$ElementSection;` @kind direct;
+  #L4b4d72.  v2:= temp @kind object;
+  #L4b4d74.  v2:= v2.`rx.internal.util.IndexedRingBuffer$ElementSection.array` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b4d78.  call temp:= `getAndSet`(v2, v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.getAndSet:(ILjava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4b4d7e.  v0:= temp @kind object;
+  #L4b4d80.  call `pushRemovedIndex`(v3, v4) @signature `Lrx/internal/util/IndexedRingBuffer;.pushRemovedIndex:(I)V` @kind direct;
+  #L4b4d86.  return v0 @kind object;
+}
+procedure `void` `unsubscribe`(`rx.internal.util.IndexedRingBuffer` v0 @kind this) @signature `Lrx/internal/util/IndexedRingBuffer;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4b5014.  call `releaseToPool`(v0) @signature `Lrx/internal/util/IndexedRingBuffer;.releaseToPool:()V` @kind virtual;
+  #L4b501a.  return @kind void;
+}

@@ -1,0 +1,98 @@
+record `rx.observers.AsyncCompletableSubscriber` @kind class @AccessFlag PUBLIC_ABSTRACT extends `rx.CompletableSubscriber` @kind interface, `rx.Subscription` @kind interface {
+  `java.util.concurrent.atomic.AtomicReference` `rx.observers.AsyncCompletableSubscriber.upstream` @AccessFlag PRIVATE_FINAL;
+}
+global `rx.observers.AsyncCompletableSubscriber$Unsubscribed` `@@rx.observers.AsyncCompletableSubscriber.UNSUBSCRIBED` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/observers/AsyncCompletableSubscriber;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4be2d8.  v0:= new `rx.observers.AsyncCompletableSubscriber$Unsubscribed`;
+  #L4be2dc.  call `<init>`(v0) @signature `Lrx/observers/AsyncCompletableSubscriber$Unsubscribed;.<init>:()V` @kind direct;
+  #L4be2e2.  `@@rx.observers.AsyncCompletableSubscriber.UNSUBSCRIBED` @type ^`rx.observers.AsyncCompletableSubscriber$Unsubscribed` := v0 @kind object;
+  #L4be2e6.  return @kind void;
+}
+procedure `void` `<init>`(`rx.observers.AsyncCompletableSubscriber` v1 @kind this) @signature `Lrx/observers/AsyncCompletableSubscriber;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4be2f8.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4be2fe.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4be302.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L4be308.  v1.`rx.observers.AsyncCompletableSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L4be30c.  return @kind void;
+}
+procedure `void` `clear`(`rx.observers.AsyncCompletableSubscriber` v2 @kind this) @signature `Lrx/observers/AsyncCompletableSubscriber;.clear:()V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4be320.  v0:= v2.`rx.observers.AsyncCompletableSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4be324.  v1:= `@@rx.observers.AsyncCompletableSubscriber.UNSUBSCRIBED` @type ^`rx.observers.AsyncCompletableSubscriber$Unsubscribed` @kind object;
+  #L4be328.  call `set`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.set:(Ljava/lang/Object;)V` @kind virtual;
+  #L4be32e.  return @kind void;
+}
+procedure `boolean` `isUnsubscribed`(`rx.observers.AsyncCompletableSubscriber` v2 @kind this) @signature `Lrx/observers/AsyncCompletableSubscriber;.isUnsubscribed:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4be2ac.  v0:= v2.`rx.observers.AsyncCompletableSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4be2b0.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4be2b6.  v0:= temp @kind object;
+  #L4be2b8.  v1:= `@@rx.observers.AsyncCompletableSubscriber.UNSUBSCRIBED` @type ^`rx.observers.AsyncCompletableSubscriber$Unsubscribed` @kind object;
+  #L4be2bc.  if v0 != v1 then goto L4be2c4;
+  #L4be2c0.  v0:= 1I;
+  #L4be2c2.  goto L4be2c6;
+  #L4be2c4.  v0:= 0I;
+  #L4be2c6.  return v0;
+}
+procedure `void` `onStart`(`rx.observers.AsyncCompletableSubscriber` v0 @kind this) @signature `Lrx/observers/AsyncCompletableSubscriber;.onStart:()V` @AccessFlag PROTECTED {
+    temp;
+
+  #L4be340.  return @kind void;
+}
+procedure `void` `onSubscribe`(`rx.observers.AsyncCompletableSubscriber` v2 @kind this, `rx.Subscription` v3 @kind object) @signature `Lrx/observers/AsyncCompletableSubscriber;.onSubscribe:(Lrx/Subscription;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4be354.  v0:= v2.`rx.observers.AsyncCompletableSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4be358.  v1:= 0I;
+  #L4be35a.  call temp:= `compareAndSet`(v0, v1, v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4be360.  v0:= temp;
+  #L4be362.  if v0 != 0 then goto L4be396;
+  #L4be366.  call `unsubscribe`(v3) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4be36c.  v3:= v2.`rx.observers.AsyncCompletableSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4be370.  call temp:= `get`(v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4be376.  v3:= temp @kind object;
+  #L4be378.  v0:= `@@rx.observers.AsyncCompletableSubscriber.UNSUBSCRIBED` @type ^`rx.observers.AsyncCompletableSubscriber$Unsubscribed` @kind object;
+  #L4be37c.  if v3 == v0 then goto L4be39c;
+  #L4be380.  v3:= new `java.lang.IllegalStateException`;
+  #L4be384.  v0:= "Subscription already set!" @kind object;
+  #L4be388.  call `<init>`(v3, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4be38e.  call `onError`(v3) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4be394.  goto L4be39c;
+  #L4be396.  call `onStart`(v2) @signature `Lrx/observers/AsyncCompletableSubscriber;.onStart:()V` @kind virtual;
+  #L4be39c.  return @kind void;
+}
+procedure `void` `unsubscribe`(`rx.observers.AsyncCompletableSubscriber` v2 @kind this) @signature `Lrx/observers/AsyncCompletableSubscriber;.unsubscribe:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4be3b0.  v0:= v2.`rx.observers.AsyncCompletableSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4be3b4.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4be3ba.  v0:= temp @kind object;
+  #L4be3bc.  v0:= (`rx.Subscription`) v0 @kind object;
+  #L4be3c0.  v1:= `@@rx.observers.AsyncCompletableSubscriber.UNSUBSCRIBED` @type ^`rx.observers.AsyncCompletableSubscriber$Unsubscribed` @kind object;
+  #L4be3c4.  if v0 == v1 then goto L4be3ea;
+  #L4be3c8.  v0:= v2.`rx.observers.AsyncCompletableSubscriber.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4be3cc.  call temp:= `getAndSet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4be3d2.  v0:= temp @kind object;
+  #L4be3d4.  v0:= (`rx.Subscription`) v0 @kind object;
+  #L4be3d8.  if v0 == 0 then goto L4be3ea;
+  #L4be3dc.  v1:= `@@rx.observers.AsyncCompletableSubscriber.UNSUBSCRIBED` @type ^`rx.observers.AsyncCompletableSubscriber$Unsubscribed` @kind object;
+  #L4be3e0.  if v0 == v1 then goto L4be3ea;
+  #L4be3e4.  call `unsubscribe`(v0) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4be3ea.  return @kind void;
+}

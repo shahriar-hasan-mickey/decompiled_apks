@@ -1,0 +1,915 @@
+record `com.bumptech.glide.request.GenericRequest` @kind class @AccessFlag PUBLIC_FINAL extends `com.bumptech.glide.request.Request` @kind interface, `com.bumptech.glide.request.target.SizeReadyCallback` @kind interface, `com.bumptech.glide.request.ResourceCallback` @kind interface {
+  `com.bumptech.glide.request.animation.GlideAnimationFactory` `com.bumptech.glide.request.GenericRequest.animationFactory` @AccessFlag PRIVATE;
+  `android.content.Context` `com.bumptech.glide.request.GenericRequest.context` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.engine.DiskCacheStrategy` `com.bumptech.glide.request.GenericRequest.diskCacheStrategy` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.engine.Engine` `com.bumptech.glide.request.GenericRequest.engine` @AccessFlag PRIVATE;
+  `android.graphics.drawable.Drawable` `com.bumptech.glide.request.GenericRequest.errorDrawable` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.request.GenericRequest.errorResourceId` @AccessFlag PRIVATE;
+  `android.graphics.drawable.Drawable` `com.bumptech.glide.request.GenericRequest.fallbackDrawable` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.request.GenericRequest.fallbackResourceId` @AccessFlag PRIVATE;
+  `boolean` `com.bumptech.glide.request.GenericRequest.isMemoryCacheable` @AccessFlag PRIVATE;
+  `com.bumptech.glide.provider.LoadProvider` `com.bumptech.glide.request.GenericRequest.loadProvider` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.engine.Engine$LoadStatus` `com.bumptech.glide.request.GenericRequest.loadStatus` @AccessFlag PRIVATE;
+  `boolean` `com.bumptech.glide.request.GenericRequest.loadedFromMemoryCache` @AccessFlag PRIVATE;
+  `java.lang.Object` `com.bumptech.glide.request.GenericRequest.model` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.request.GenericRequest.overrideHeight` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.request.GenericRequest.overrideWidth` @AccessFlag PRIVATE;
+  `android.graphics.drawable.Drawable` `com.bumptech.glide.request.GenericRequest.placeholderDrawable` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.request.GenericRequest.placeholderResourceId` @AccessFlag PRIVATE;
+  `com.bumptech.glide.Priority` `com.bumptech.glide.request.GenericRequest.priority` @AccessFlag PRIVATE;
+  `com.bumptech.glide.request.RequestCoordinator` `com.bumptech.glide.request.GenericRequest.requestCoordinator` @AccessFlag PRIVATE;
+  `com.bumptech.glide.request.RequestListener` `com.bumptech.glide.request.GenericRequest.requestListener` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.engine.Resource` `com.bumptech.glide.request.GenericRequest.resource` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.Key` `com.bumptech.glide.request.GenericRequest.signature` @AccessFlag PRIVATE;
+  `float` `com.bumptech.glide.request.GenericRequest.sizeMultiplier` @AccessFlag PRIVATE;
+  `long` `com.bumptech.glide.request.GenericRequest.startTime` @AccessFlag PRIVATE;
+  `com.bumptech.glide.request.GenericRequest$Status` `com.bumptech.glide.request.GenericRequest.status` @AccessFlag PRIVATE;
+  `java.lang.String` `com.bumptech.glide.request.GenericRequest.tag` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.request.target.Target` `com.bumptech.glide.request.GenericRequest.target` @AccessFlag PRIVATE;
+  `java.lang.Class` `com.bumptech.glide.request.GenericRequest.transcodeClass` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.Transformation` `com.bumptech.glide.request.GenericRequest.transformation` @AccessFlag PRIVATE;
+}
+global `java.util.Queue` `@@com.bumptech.glide.request.GenericRequest.REQUEST_POOL` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.request.GenericRequest.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `double` `@@com.bumptech.glide.request.GenericRequest.TO_MEGABYTE` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/bumptech/glide/request/GenericRequest;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2c76a8.  v0:= 0I;
+  #L2c76aa.  call temp:= `createQueue`(v0) @signature `Lcom/bumptech/glide/util/Util;.createQueue:(I)Ljava/util/Queue;` @kind static;
+  #L2c76b0.  v0:= temp @kind object;
+  #L2c76b2.  `@@com.bumptech.glide.request.GenericRequest.REQUEST_POOL` @type ^`java.util.Queue` := v0 @kind object;
+  #L2c76b6.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2c76c8.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2c76ce.  call temp:= `hashCode`(v1) @signature `Ljava/lang/Object;.hashCode:()I` @kind virtual;
+  #L2c76d4.  v0:= temp;
+  #L2c76d6.  call temp:= `valueOf`(v0) @signature `Ljava/lang/String;.valueOf:(I)Ljava/lang/String;` @kind static;
+  #L2c76dc.  v0:= temp @kind object;
+  #L2c76de.  v1.`com.bumptech.glide.request.GenericRequest.tag` @type ^`java.lang.String` := v0 @kind object;
+  #L2c76e2.  return @kind void;
+}
+procedure `boolean` `canNotifyStatusChanged`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.canNotifyStatusChanged:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2c7494.  v0:= v1.`com.bumptech.glide.request.GenericRequest.requestCoordinator` @type ^`com.bumptech.glide.request.RequestCoordinator` @kind object;
+  #L2c7498.  if v0 == 0 then goto L2c74ae;
+  #L2c749c.  call temp:= `canNotifyStatusChanged`(v0, v1) @signature `Lcom/bumptech/glide/request/RequestCoordinator;.canNotifyStatusChanged:(Lcom/bumptech/glide/request/Request;)Z` @kind interface;
+  #L2c74a2.  v0:= temp;
+  #L2c74a4.  if v0 == 0 then goto L2c74aa;
+  #L2c74a8.  goto L2c74ae;
+  #L2c74aa.  v0:= 0I;
+  #L2c74ac.  goto L2c74b0;
+  #L2c74ae.  v0:= 1I;
+  #L2c74b0.  return v0;
+}
+procedure `boolean` `canSetResource`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.canSetResource:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2c74c4.  v0:= v1.`com.bumptech.glide.request.GenericRequest.requestCoordinator` @type ^`com.bumptech.glide.request.RequestCoordinator` @kind object;
+  #L2c74c8.  if v0 == 0 then goto L2c74de;
+  #L2c74cc.  call temp:= `canSetImage`(v0, v1) @signature `Lcom/bumptech/glide/request/RequestCoordinator;.canSetImage:(Lcom/bumptech/glide/request/Request;)Z` @kind interface;
+  #L2c74d2.  v0:= temp;
+  #L2c74d4.  if v0 == 0 then goto L2c74da;
+  #L2c74d8.  goto L2c74de;
+  #L2c74da.  v0:= 0I;
+  #L2c74dc.  goto L2c74e0;
+  #L2c74de.  v0:= 1I;
+  #L2c74e0.  return v0;
+}
+procedure `void` `check`(`java.lang.String` v0 @kind object, `java.lang.Object` v1 @kind object, `java.lang.String` v2 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+
+  #L2c7808.  if v1 != 0 then goto L2c7848;
+  #L2c780c.  v1:= new `java.lang.StringBuilder`;
+  #L2c7810.  call `<init>`(v1, v0) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c7816.  v0:= " must not be null" @kind object;
+  #L2c781a.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7820.  if v2 == 0 then goto L2c7834;
+  #L2c7824.  v0:= ", " @kind object;
+  #L2c7828.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c782e.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7834.  v0:= new `java.lang.NullPointerException`;
+  #L2c7838.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c783e.  v1:= temp @kind object;
+  #L2c7840.  call `<init>`(v0, v1) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c7846.  throw v0;
+  #L2c7848.  return @kind void;
+}
+procedure `android.graphics.drawable.Drawable` `getErrorDrawable`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.getErrorDrawable:()Landroid/graphics/drawable/Drawable;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2c73c8.  v0:= v2.`com.bumptech.glide.request.GenericRequest.errorDrawable` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L2c73cc.  if v0 != 0 then goto L2c73f4;
+  #L2c73d0.  v0:= v2.`com.bumptech.glide.request.GenericRequest.errorResourceId` @type ^`int`;
+  #L2c73d4.  if v0 <= 0 then goto L2c73f4;
+  #L2c73d8.  v0:= v2.`com.bumptech.glide.request.GenericRequest.context` @type ^`android.content.Context` @kind object;
+  #L2c73dc.  call temp:= `getResources`(v0) @signature `Landroid/content/Context;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L2c73e2.  v0:= temp @kind object;
+  #L2c73e4.  v1:= v2.`com.bumptech.glide.request.GenericRequest.errorResourceId` @type ^`int`;
+  #L2c73e8.  call temp:= `getDrawable`(v0, v1) @signature `Landroid/content/res/Resources;.getDrawable:(I)Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L2c73ee.  v0:= temp @kind object;
+  #L2c73f0.  v2.`com.bumptech.glide.request.GenericRequest.errorDrawable` @type ^`android.graphics.drawable.Drawable` := v0 @kind object;
+  #L2c73f4.  v0:= v2.`com.bumptech.glide.request.GenericRequest.errorDrawable` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L2c73f8.  return v0 @kind object;
+}
+procedure `android.graphics.drawable.Drawable` `getFallbackDrawable`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.getFallbackDrawable:()Landroid/graphics/drawable/Drawable;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2c740c.  v0:= v2.`com.bumptech.glide.request.GenericRequest.fallbackDrawable` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L2c7410.  if v0 != 0 then goto L2c7438;
+  #L2c7414.  v0:= v2.`com.bumptech.glide.request.GenericRequest.fallbackResourceId` @type ^`int`;
+  #L2c7418.  if v0 <= 0 then goto L2c7438;
+  #L2c741c.  v0:= v2.`com.bumptech.glide.request.GenericRequest.context` @type ^`android.content.Context` @kind object;
+  #L2c7420.  call temp:= `getResources`(v0) @signature `Landroid/content/Context;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L2c7426.  v0:= temp @kind object;
+  #L2c7428.  v1:= v2.`com.bumptech.glide.request.GenericRequest.fallbackResourceId` @type ^`int`;
+  #L2c742c.  call temp:= `getDrawable`(v0, v1) @signature `Landroid/content/res/Resources;.getDrawable:(I)Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L2c7432.  v0:= temp @kind object;
+  #L2c7434.  v2.`com.bumptech.glide.request.GenericRequest.fallbackDrawable` @type ^`android.graphics.drawable.Drawable` := v0 @kind object;
+  #L2c7438.  v0:= v2.`com.bumptech.glide.request.GenericRequest.fallbackDrawable` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L2c743c.  return v0 @kind object;
+}
+procedure `android.graphics.drawable.Drawable` `getPlaceholderDrawable`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.getPlaceholderDrawable:()Landroid/graphics/drawable/Drawable;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2c7450.  v0:= v2.`com.bumptech.glide.request.GenericRequest.placeholderDrawable` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L2c7454.  if v0 != 0 then goto L2c747c;
+  #L2c7458.  v0:= v2.`com.bumptech.glide.request.GenericRequest.placeholderResourceId` @type ^`int`;
+  #L2c745c.  if v0 <= 0 then goto L2c747c;
+  #L2c7460.  v0:= v2.`com.bumptech.glide.request.GenericRequest.context` @type ^`android.content.Context` @kind object;
+  #L2c7464.  call temp:= `getResources`(v0) @signature `Landroid/content/Context;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L2c746a.  v0:= temp @kind object;
+  #L2c746c.  v1:= v2.`com.bumptech.glide.request.GenericRequest.placeholderResourceId` @type ^`int`;
+  #L2c7470.  call temp:= `getDrawable`(v0, v1) @signature `Landroid/content/res/Resources;.getDrawable:(I)Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L2c7476.  v0:= temp @kind object;
+  #L2c7478.  v2.`com.bumptech.glide.request.GenericRequest.placeholderDrawable` @type ^`android.graphics.drawable.Drawable` := v0 @kind object;
+  #L2c747c.  v0:= v2.`com.bumptech.glide.request.GenericRequest.placeholderDrawable` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L2c7480.  return v0 @kind object;
+}
+procedure `void` `init`(`com.bumptech.glide.request.GenericRequest` v7 @kind this, `com.bumptech.glide.provider.LoadProvider` v8 @kind object, `java.lang.Object` v9 @kind object, `com.bumptech.glide.load.Key` v10 @kind object, `android.content.Context` v11 @kind object, `com.bumptech.glide.Priority` v12 @kind object, `com.bumptech.glide.request.target.Target` v13 @kind object, `float` v14 , `android.graphics.drawable.Drawable` v15 @kind object, `int` v16 , `android.graphics.drawable.Drawable` v17 @kind object, `int` v18 , `android.graphics.drawable.Drawable` v19 @kind object, `int` v20 , `com.bumptech.glide.request.RequestListener` v21 @kind object, `com.bumptech.glide.request.RequestCoordinator` v22 @kind object, `com.bumptech.glide.load.engine.Engine` v23 @kind object, `com.bumptech.glide.load.Transformation` v24 @kind object, `java.lang.Class` v25 @kind object, `boolean` v26 , `com.bumptech.glide.request.animation.GlideAnimationFactory` v27 @kind object, `int` v28 , `int` v29 , `com.bumptech.glide.load.engine.DiskCacheStrategy` v30 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.init:(Lcom/bumptech/glide/provider/LoadProvider;Ljava/lang/Object;Lcom/bumptech/glide/load/Key;Landroid/content/Context;Lcom/bumptech/glide/Priority;Lcom/bumptech/glide/request/target/Target;FLandroid/graphics/drawable/Drawable;ILandroid/graphics/drawable/Drawable;ILandroid/graphics/drawable/Drawable;ILcom/bumptech/glide/request/RequestListener;Lcom/bumptech/glide/request/RequestCoordinator;Lcom/bumptech/glide/load/engine/Engine;Lcom/bumptech/glide/load/Transformation;Ljava/lang/Class;ZLcom/bumptech/glide/request/animation/GlideAnimationFactory;IILcom/bumptech/glide/load/engine/DiskCacheStrategy;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L2c78bc.  v0:= v7 @kind object;
+  #L2c78be.  v1:= v9 @kind object;
+  #L2c78c0.  v2:= v24 @kind object;
+  #L2c78c4.  v3:= v8 @kind object;
+  #L2c78c6.  v0.`com.bumptech.glide.request.GenericRequest.loadProvider` @type ^`com.bumptech.glide.provider.LoadProvider` := v3 @kind object;
+  #L2c78ca.  v0.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` := v1 @kind object;
+  #L2c78ce.  v4:= v10 @kind object;
+  #L2c78d0.  v0.`com.bumptech.glide.request.GenericRequest.signature` @type ^`com.bumptech.glide.load.Key` := v4 @kind object;
+  #L2c78d4.  v4:= v19 @kind object;
+  #L2c78d8.  v0.`com.bumptech.glide.request.GenericRequest.fallbackDrawable` @type ^`android.graphics.drawable.Drawable` := v4 @kind object;
+  #L2c78dc.  v4:= v20;
+  #L2c78e0.  v0.`com.bumptech.glide.request.GenericRequest.fallbackResourceId` @type ^`int` := v4;
+  #L2c78e4.  call temp:= `getApplicationContext`(v11) @signature `Landroid/content/Context;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L2c78ea.  v4:= temp @kind object;
+  #L2c78ec.  v0.`com.bumptech.glide.request.GenericRequest.context` @type ^`android.content.Context` := v4 @kind object;
+  #L2c78f0.  v4:= v12 @kind object;
+  #L2c78f2.  v0.`com.bumptech.glide.request.GenericRequest.priority` @type ^`com.bumptech.glide.Priority` := v4 @kind object;
+  #L2c78f6.  v4:= v13 @kind object;
+  #L2c78f8.  v0.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` := v4 @kind object;
+  #L2c78fc.  v4:= v14;
+  #L2c78fe.  v0.`com.bumptech.glide.request.GenericRequest.sizeMultiplier` @type ^`float` := v4;
+  #L2c7902.  v4:= v15 @kind object;
+  #L2c7904.  v0.`com.bumptech.glide.request.GenericRequest.placeholderDrawable` @type ^`android.graphics.drawable.Drawable` := v4 @kind object;
+  #L2c7908.  v4:= v16;
+  #L2c790c.  v0.`com.bumptech.glide.request.GenericRequest.placeholderResourceId` @type ^`int` := v4;
+  #L2c7910.  v4:= v17 @kind object;
+  #L2c7914.  v0.`com.bumptech.glide.request.GenericRequest.errorDrawable` @type ^`android.graphics.drawable.Drawable` := v4 @kind object;
+  #L2c7918.  v4:= v18;
+  #L2c791c.  v0.`com.bumptech.glide.request.GenericRequest.errorResourceId` @type ^`int` := v4;
+  #L2c7920.  v4:= v21 @kind object;
+  #L2c7924.  v0.`com.bumptech.glide.request.GenericRequest.requestListener` @type ^`com.bumptech.glide.request.RequestListener` := v4 @kind object;
+  #L2c7928.  v4:= v22 @kind object;
+  #L2c792c.  v0.`com.bumptech.glide.request.GenericRequest.requestCoordinator` @type ^`com.bumptech.glide.request.RequestCoordinator` := v4 @kind object;
+  #L2c7930.  v4:= v23 @kind object;
+  #L2c7934.  v0.`com.bumptech.glide.request.GenericRequest.engine` @type ^`com.bumptech.glide.load.engine.Engine` := v4 @kind object;
+  #L2c7938.  v0.`com.bumptech.glide.request.GenericRequest.transformation` @type ^`com.bumptech.glide.load.Transformation` := v2 @kind object;
+  #L2c793c.  v4:= v25 @kind object;
+  #L2c7940.  v0.`com.bumptech.glide.request.GenericRequest.transcodeClass` @type ^`java.lang.Class` := v4 @kind object;
+  #L2c7944.  v4:= v26;
+  #L2c7948.  v0.`com.bumptech.glide.request.GenericRequest.isMemoryCacheable` @type ^`boolean` := v4 @kind boolean;
+  #L2c794c.  v4:= v27 @kind object;
+  #L2c7950.  v0.`com.bumptech.glide.request.GenericRequest.animationFactory` @type ^`com.bumptech.glide.request.animation.GlideAnimationFactory` := v4 @kind object;
+  #L2c7954.  v4:= v28;
+  #L2c7958.  v0.`com.bumptech.glide.request.GenericRequest.overrideWidth` @type ^`int` := v4;
+  #L2c795c.  v4:= v29;
+  #L2c7960.  v0.`com.bumptech.glide.request.GenericRequest.overrideHeight` @type ^`int` := v4;
+  #L2c7964.  v4:= v30 @kind object;
+  #L2c7968.  v0.`com.bumptech.glide.request.GenericRequest.diskCacheStrategy` @type ^`com.bumptech.glide.load.engine.DiskCacheStrategy` := v4 @kind object;
+  #L2c796c.  v5:= `@@com.bumptech.glide.request.GenericRequest$Status.PENDING` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7970.  v0.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v5 @kind object;
+  #L2c7974.  if v1 == 0 then goto L2c7a3c;
+  #L2c7978.  call temp:= `getModelLoader`(v8) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getModelLoader:()Lcom/bumptech/glide/load/model/ModelLoader;` @kind interface;
+  #L2c797e.  v1:= temp @kind object;
+  #L2c7980.  v5:= "ModelLoader" @kind object;
+  #L2c7984.  v6:= "try .using(ModelLoader)" @kind object;
+  #L2c7988.  call `check`(v5, v1, v6) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L2c798e.  call temp:= `getTranscoder`(v8) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getTranscoder:()Lcom/bumptech/glide/load/resource/transcode/ResourceTranscoder;` @kind interface;
+  #L2c7994.  v1:= temp @kind object;
+  #L2c7996.  v5:= "Transcoder" @kind object;
+  #L2c799a.  v6:= "try .as*(Class).transcode(ResourceTranscoder)" @kind object;
+  #L2c799e.  call `check`(v5, v1, v6) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L2c79a4.  v1:= "Transformation" @kind object;
+  #L2c79a8.  v5:= "try .transform(UnitTransformation.get())" @kind object;
+  #L2c79ac.  call `check`(v1, v2, v5) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L2c79b2.  call temp:= `cacheSource`(v30) @signature `Lcom/bumptech/glide/load/engine/DiskCacheStrategy;.cacheSource:()Z` @kind virtual;
+  #L2c79b8.  v1:= temp;
+  #L2c79ba.  if v1 == 0 then goto L2c79d6;
+  #L2c79be.  call temp:= `getSourceEncoder`(v8) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getSourceEncoder:()Lcom/bumptech/glide/load/Encoder;` @kind interface;
+  #L2c79c4.  v1:= temp @kind object;
+  #L2c79c6.  v2:= "SourceEncoder" @kind object;
+  #L2c79ca.  v5:= "try .sourceEncoder(Encoder) or .diskCacheStrategy(NONE/RESULT)" @kind object;
+  #L2c79ce.  call `check`(v2, v1, v5) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L2c79d4.  goto L2c79ec;
+  #L2c79d6.  call temp:= `getSourceDecoder`(v8) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getSourceDecoder:()Lcom/bumptech/glide/load/ResourceDecoder;` @kind interface;
+  #L2c79dc.  v1:= temp @kind object;
+  #L2c79de.  v2:= "SourceDecoder" @kind object;
+  #L2c79e2.  v5:= "try .decoder/.imageDecoder/.videoDecoder(ResourceDecoder) or .diskCacheStrategy(ALL/SOURCE)" @kind object;
+  #L2c79e6.  call `check`(v2, v1, v5) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L2c79ec.  call temp:= `cacheSource`(v30) @signature `Lcom/bumptech/glide/load/engine/DiskCacheStrategy;.cacheSource:()Z` @kind virtual;
+  #L2c79f2.  v1:= temp;
+  #L2c79f4.  if v1 != 0 then goto L2c7a04;
+  #L2c79f8.  call temp:= `cacheResult`(v30) @signature `Lcom/bumptech/glide/load/engine/DiskCacheStrategy;.cacheResult:()Z` @kind virtual;
+  #L2c79fe.  v1:= temp;
+  #L2c7a00.  if v1 == 0 then goto L2c7a1a;
+  #L2c7a04.  call temp:= `getCacheDecoder`(v8) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getCacheDecoder:()Lcom/bumptech/glide/load/ResourceDecoder;` @kind interface;
+  #L2c7a0a.  v1:= temp @kind object;
+  #L2c7a0c.  v2:= "CacheDecoder" @kind object;
+  #L2c7a10.  v5:= "try .cacheDecoder(ResouceDecoder) or .diskCacheStrategy(NONE)" @kind object;
+  #L2c7a14.  call `check`(v2, v1, v5) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L2c7a1a.  call temp:= `cacheResult`(v30) @signature `Lcom/bumptech/glide/load/engine/DiskCacheStrategy;.cacheResult:()Z` @kind virtual;
+  #L2c7a20.  v1:= temp;
+  #L2c7a22.  if v1 == 0 then goto L2c7a3c;
+  #L2c7a26.  call temp:= `getEncoder`(v8) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getEncoder:()Lcom/bumptech/glide/load/ResourceEncoder;` @kind interface;
+  #L2c7a2c.  v1:= temp @kind object;
+  #L2c7a2e.  v2:= "Encoder" @kind object;
+  #L2c7a32.  v3:= "try .encode(ResourceEncoder) or .diskCacheStrategy(NONE/SOURCE)" @kind object;
+  #L2c7a36.  call `check`(v2, v1, v3) @signature `Lcom/bumptech/glide/request/GenericRequest;.check:(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L2c7a3c.  return @kind void;
+}
+procedure `boolean` `isFirstReadyResource`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.isFirstReadyResource:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2c7570.  v0:= v1.`com.bumptech.glide.request.GenericRequest.requestCoordinator` @type ^`com.bumptech.glide.request.RequestCoordinator` @kind object;
+  #L2c7574.  if v0 == 0 then goto L2c758a;
+  #L2c7578.  call temp:= `isAnyResourceSet`(v0) @signature `Lcom/bumptech/glide/request/RequestCoordinator;.isAnyResourceSet:()Z` @kind interface;
+  #L2c757e.  v0:= temp;
+  #L2c7580.  if v0 != 0 then goto L2c7586;
+  #L2c7584.  goto L2c758a;
+  #L2c7586.  v0:= 0I;
+  #L2c7588.  goto L2c758c;
+  #L2c758a.  v0:= 1I;
+  #L2c758c.  return v0;
+}
+procedure `void` `logV`(`com.bumptech.glide.request.GenericRequest` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.logV:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2c7a50.  v0:= new `java.lang.StringBuilder`;
+  #L2c7a54.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7a5a.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7a60.  v2:= " this: " @kind object;
+  #L2c7a64.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7a6a.  v2:= v1.`com.bumptech.glide.request.GenericRequest.tag` @type ^`java.lang.String` @kind object;
+  #L2c7a6e.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7a74.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7a7a.  v2:= temp @kind object;
+  #L2c7a7c.  v0:= "GenericRequest" @kind object;
+  #L2c7a80.  call temp:= `v`(v0, v2) @signature `Landroid/util/Log;.v:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2c7a86.  return @kind void;
+}
+procedure `void` `notifyLoadSuccess`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.notifyLoadSuccess:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2c7a98.  v0:= v1.`com.bumptech.glide.request.GenericRequest.requestCoordinator` @type ^`com.bumptech.glide.request.RequestCoordinator` @kind object;
+  #L2c7a9c.  if v0 == 0 then goto L2c7aa6;
+  #L2c7aa0.  call `onRequestSuccess`(v0, v1) @signature `Lcom/bumptech/glide/request/RequestCoordinator;.onRequestSuccess:(Lcom/bumptech/glide/request/Request;)V` @kind interface;
+  #L2c7aa6.  return @kind void;
+}
+procedure `com.bumptech.glide.request.GenericRequest` `obtain`(`com.bumptech.glide.provider.LoadProvider` v25 @kind object, `java.lang.Object` v26 @kind object, `com.bumptech.glide.load.Key` v27 @kind object, `android.content.Context` v28 @kind object, `com.bumptech.glide.Priority` v29 @kind object, `com.bumptech.glide.request.target.Target` v30 @kind object, `float` v31 , `android.graphics.drawable.Drawable` v32 @kind object, `int` v33 , `android.graphics.drawable.Drawable` v34 @kind object, `int` v35 , `android.graphics.drawable.Drawable` v36 @kind object, `int` v37 , `com.bumptech.glide.request.RequestListener` v38 @kind object, `com.bumptech.glide.request.RequestCoordinator` v39 @kind object, `com.bumptech.glide.load.engine.Engine` v40 @kind object, `com.bumptech.glide.load.Transformation` v41 @kind object, `java.lang.Class` v42 @kind object, `boolean` v43 , `com.bumptech.glide.request.animation.GlideAnimationFactory` v44 @kind object, `int` v45 , `int` v46 , `com.bumptech.glide.load.engine.DiskCacheStrategy` v47 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.obtain:(Lcom/bumptech/glide/provider/LoadProvider;Ljava/lang/Object;Lcom/bumptech/glide/load/Key;Landroid/content/Context;Lcom/bumptech/glide/Priority;Lcom/bumptech/glide/request/target/Target;FLandroid/graphics/drawable/Drawable;ILandroid/graphics/drawable/Drawable;ILandroid/graphics/drawable/Drawable;ILcom/bumptech/glide/request/RequestListener;Lcom/bumptech/glide/request/RequestCoordinator;Lcom/bumptech/glide/load/engine/Engine;Lcom/bumptech/glide/load/Transformation;Ljava/lang/Class;ZLcom/bumptech/glide/request/animation/GlideAnimationFactory;IILcom/bumptech/glide/load/engine/DiskCacheStrategy;)Lcom/bumptech/glide/request/GenericRequest;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+    v19;
+    v20;
+    v21;
+    v22;
+    v23;
+    v24;
+
+  #L2c7614.  v0:= `@@com.bumptech.glide.request.GenericRequest.REQUEST_POOL` @type ^`java.util.Queue` @kind object;
+  #L2c7618.  call temp:= `poll`(v0) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L2c761e.  v0:= temp @kind object;
+  #L2c7620.  v0:= (`com.bumptech.glide.request.GenericRequest`) v0 @kind object;
+  #L2c7624.  if v0 != 0 then goto L2c7632;
+  #L2c7628.  v0:= new `com.bumptech.glide.request.GenericRequest`;
+  #L2c762c.  call `<init>`(v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.<init>:()V` @kind direct;
+  #L2c7632.  v1:= v0 @kind object;
+  #L2c7634.  v2:= v25 @kind object;
+  #L2c7638.  v3:= v26 @kind object;
+  #L2c763c.  v4:= v27 @kind object;
+  #L2c7640.  v5:= v28 @kind object;
+  #L2c7644.  v6:= v29 @kind object;
+  #L2c7648.  v7:= v30 @kind object;
+  #L2c764c.  v8:= v31;
+  #L2c7650.  v9:= v32 @kind object;
+  #L2c7654.  v10:= v33;
+  #L2c7658.  v11:= v34 @kind object;
+  #L2c765c.  v12:= v35;
+  #L2c7660.  v13:= v36 @kind object;
+  #L2c7664.  v14:= v37;
+  #L2c7668.  v15:= v38 @kind object;
+  #L2c766c.  v16:= v39 @kind object;
+  #L2c7670.  v17:= v40 @kind object;
+  #L2c7674.  v18:= v41 @kind object;
+  #L2c7678.  v19:= v42 @kind object;
+  #L2c767c.  v20:= v43;
+  #L2c7680.  v21:= v44 @kind object;
+  #L2c7684.  v22:= v45;
+  #L2c7688.  v23:= v46;
+  #L2c768c.  v24:= v47 @kind object;
+  #L2c7690.  call `init`(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24) @signature `Lcom/bumptech/glide/request/GenericRequest;.init:(Lcom/bumptech/glide/provider/LoadProvider;Ljava/lang/Object;Lcom/bumptech/glide/load/Key;Landroid/content/Context;Lcom/bumptech/glide/Priority;Lcom/bumptech/glide/request/target/Target;FLandroid/graphics/drawable/Drawable;ILandroid/graphics/drawable/Drawable;ILandroid/graphics/drawable/Drawable;ILcom/bumptech/glide/request/RequestListener;Lcom/bumptech/glide/request/RequestCoordinator;Lcom/bumptech/glide/load/engine/Engine;Lcom/bumptech/glide/load/Transformation;Ljava/lang/Class;ZLcom/bumptech/glide/request/animation/GlideAnimationFactory;IILcom/bumptech/glide/load/engine/DiskCacheStrategy;)V` @kind direct;
+  #L2c7696.  return v0 @kind object;
+}
+procedure `void` `onResourceReady`(`com.bumptech.glide.request.GenericRequest` v7 @kind this, `com.bumptech.glide.load.engine.Resource` v8 @kind object, `java.lang.Object` v9 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.onResourceReady:(Lcom/bumptech/glide/load/engine/Resource;Ljava/lang/Object;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L2c7c60.  call temp:= `isFirstReadyResource`(v7) @signature `Lcom/bumptech/glide/request/GenericRequest;.isFirstReadyResource:()Z` @kind direct;
+  #L2c7c66.  v6:= temp;
+  #L2c7c68.  v0:= `@@com.bumptech.glide.request.GenericRequest$Status.COMPLETE` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7c6c.  v7.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v0 @kind object;
+  #L2c7c70.  v7.`com.bumptech.glide.request.GenericRequest.resource` @type ^`com.bumptech.glide.load.engine.Resource` := v8 @kind object;
+  #L2c7c74.  v0:= v7.`com.bumptech.glide.request.GenericRequest.requestListener` @type ^`com.bumptech.glide.request.RequestListener` @kind object;
+  #L2c7c78.  if v0 == 0 then goto L2c7c98;
+  #L2c7c7c.  v2:= v7.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` @kind object;
+  #L2c7c80.  v3:= v7.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` @kind object;
+  #L2c7c84.  v4:= v7.`com.bumptech.glide.request.GenericRequest.loadedFromMemoryCache` @type ^`boolean` @kind boolean;
+  #L2c7c88.  v1:= v9 @kind object;
+  #L2c7c8a.  v5:= v6;
+  #L2c7c8c.  call temp:= `onResourceReady`(v0, v1, v2, v3, v4, v5) @signature `Lcom/bumptech/glide/request/RequestListener;.onResourceReady:(Ljava/lang/Object;Ljava/lang/Object;Lcom/bumptech/glide/request/target/Target;ZZ)Z` @kind interface;
+  #L2c7c92.  v0:= temp;
+  #L2c7c94.  if v0 != 0 then goto L2c7cb2;
+  #L2c7c98.  v0:= v7.`com.bumptech.glide.request.GenericRequest.animationFactory` @type ^`com.bumptech.glide.request.animation.GlideAnimationFactory` @kind object;
+  #L2c7c9c.  v1:= v7.`com.bumptech.glide.request.GenericRequest.loadedFromMemoryCache` @type ^`boolean` @kind boolean;
+  #L2c7ca0.  call temp:= `build`(v0, v1, v6) @signature `Lcom/bumptech/glide/request/animation/GlideAnimationFactory;.build:(ZZ)Lcom/bumptech/glide/request/animation/GlideAnimation;` @kind interface;
+  #L2c7ca6.  v0:= temp @kind object;
+  #L2c7ca8.  v1:= v7.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` @kind object;
+  #L2c7cac.  call `onResourceReady`(v1, v9, v0) @signature `Lcom/bumptech/glide/request/target/Target;.onResourceReady:(Ljava/lang/Object;Lcom/bumptech/glide/request/animation/GlideAnimation;)V` @kind interface;
+  #L2c7cb2.  call `notifyLoadSuccess`(v7) @signature `Lcom/bumptech/glide/request/GenericRequest;.notifyLoadSuccess:()V` @kind direct;
+  #L2c7cb8.  v9:= 2I;
+  #L2c7cba.  v0:= "GenericRequest" @kind object;
+  #L2c7cbe.  call temp:= `isLoggable`(v0, v9) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2c7cc4.  v9:= temp;
+  #L2c7cc6.  if v9 == 0 then goto L2c7d3a;
+  #L2c7cca.  v9:= new `java.lang.StringBuilder`;
+  #L2c7cce.  call `<init>`(v9) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7cd4.  v0:= "Resource ready in " @kind object;
+  #L2c7cd8.  call temp:= `append`(v9, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7cde.  v0:= v7.`com.bumptech.glide.request.GenericRequest.startTime` @type ^`long` @kind wide;
+  #L2c7ce2.  call temp:= `getElapsedMillis`(v0) @signature `Lcom/bumptech/glide/util/LogTime;.getElapsedMillis:(J)D` @kind static;
+  #L2c7ce8.  v0:= temp @kind wide;
+  #L2c7cea.  call temp:= `append`(v9, v0) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7cf0.  v0:= " size: " @kind object;
+  #L2c7cf4.  call temp:= `append`(v9, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7cfa.  call temp:= `getSize`(v8) @signature `Lcom/bumptech/glide/load/engine/Resource;.getSize:()I` @kind interface;
+  #L2c7d00.  v8:= temp;
+  #L2c7d02.  v0:= (`double`) v8 @kind i2d;
+  #L2c7d04.  v2:= 9.5367431640625E-7D;
+  #L2c7d08.  call temp:= `isNaN`(v0) @signature `Ljava/lang/Double;.isNaN:(D)Z` @kind static;
+  #L2c7d0e.  v0:= v0 * v2 @kind double;
+  #L2c7d12.  call temp:= `append`(v9, v0) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7d18.  v8:= " fromCache: " @kind object;
+  #L2c7d1c.  call temp:= `append`(v9, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7d22.  v8:= v7.`com.bumptech.glide.request.GenericRequest.loadedFromMemoryCache` @type ^`boolean` @kind boolean;
+  #L2c7d26.  call temp:= `append`(v9, v8) @signature `Ljava/lang/StringBuilder;.append:(Z)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7d2c.  call temp:= `toString`(v9) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7d32.  v8:= temp @kind object;
+  #L2c7d34.  call `logV`(v7, v8) @signature `Lcom/bumptech/glide/request/GenericRequest;.logV:(Ljava/lang/String;)V` @kind direct;
+  #L2c7d3a.  return @kind void;
+}
+procedure `void` `releaseResource`(`com.bumptech.glide.request.GenericRequest` v1 @kind this, `com.bumptech.glide.load.engine.Resource` v2 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.releaseResource:(Lcom/bumptech/glide/load/engine/Resource;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2c7f8c.  v0:= v1.`com.bumptech.glide.request.GenericRequest.engine` @type ^`com.bumptech.glide.load.engine.Engine` @kind object;
+  #L2c7f90.  call `release`(v0, v2) @signature `Lcom/bumptech/glide/load/engine/Engine;.release:(Lcom/bumptech/glide/load/engine/Resource;)V` @kind virtual;
+  #L2c7f96.  v2:= 0I;
+  #L2c7f98.  v1.`com.bumptech.glide.request.GenericRequest.resource` @type ^`com.bumptech.glide.load.engine.Resource` := v2 @kind object;
+  #L2c7f9c.  return @kind void;
+}
+procedure `void` `setErrorPlaceholder`(`com.bumptech.glide.request.GenericRequest` v2 @kind this, `java.lang.Exception` v3 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.setErrorPlaceholder:(Ljava/lang/Exception;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2c7fb0.  call temp:= `canNotifyStatusChanged`(v2) @signature `Lcom/bumptech/glide/request/GenericRequest;.canNotifyStatusChanged:()Z` @kind direct;
+  #L2c7fb6.  v0:= temp;
+  #L2c7fb8.  if v0 != 0 then goto L2c7fbe;
+  #L2c7fbc.  return @kind void;
+  #L2c7fbe.  v0:= v2.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` @kind object;
+  #L2c7fc2.  if v0 != 0 then goto L2c7fd0;
+  #L2c7fc6.  call temp:= `getFallbackDrawable`(v2) @signature `Lcom/bumptech/glide/request/GenericRequest;.getFallbackDrawable:()Landroid/graphics/drawable/Drawable;` @kind direct;
+  #L2c7fcc.  v0:= temp @kind object;
+  #L2c7fce.  goto L2c7fd2;
+  #L2c7fd0.  v0:= 0I;
+  #L2c7fd2.  if v0 != 0 then goto L2c7fde;
+  #L2c7fd6.  call temp:= `getErrorDrawable`(v2) @signature `Lcom/bumptech/glide/request/GenericRequest;.getErrorDrawable:()Landroid/graphics/drawable/Drawable;` @kind direct;
+  #L2c7fdc.  v0:= temp @kind object;
+  #L2c7fde.  if v0 != 0 then goto L2c7fea;
+  #L2c7fe2.  call temp:= `getPlaceholderDrawable`(v2) @signature `Lcom/bumptech/glide/request/GenericRequest;.getPlaceholderDrawable:()Landroid/graphics/drawable/Drawable;` @kind direct;
+  #L2c7fe8.  v0:= temp @kind object;
+  #L2c7fea.  v1:= v2.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` @kind object;
+  #L2c7fee.  call `onLoadFailed`(v1, v3, v0) @signature `Lcom/bumptech/glide/request/target/Target;.onLoadFailed:(Ljava/lang/Exception;Landroid/graphics/drawable/Drawable;)V` @kind interface;
+  #L2c7ff4.  return @kind void;
+}
+procedure `void` `begin`(`com.bumptech.glide.request.GenericRequest` v3 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.begin:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2c76f4.  call temp:= `getLogTime`() @signature `Lcom/bumptech/glide/util/LogTime;.getLogTime:()J` @kind static;
+  #L2c76fa.  v0:= temp @kind wide;
+  #L2c76fc.  v3.`com.bumptech.glide.request.GenericRequest.startTime` @type ^`long` := v0 @kind wide;
+  #L2c7700.  v0:= v3.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` @kind object;
+  #L2c7704.  if v0 != 0 then goto L2c7712;
+  #L2c7708.  v0:= 0I;
+  #L2c770a.  call `onException`(v3, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.onException:(Ljava/lang/Exception;)V` @kind virtual;
+  #L2c7710.  return @kind void;
+  #L2c7712.  v0:= `@@com.bumptech.glide.request.GenericRequest$Status.WAITING_FOR_SIZE` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7716.  v3.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v0 @kind object;
+  #L2c771a.  v0:= v3.`com.bumptech.glide.request.GenericRequest.overrideWidth` @type ^`int`;
+  #L2c771e.  v1:= v3.`com.bumptech.glide.request.GenericRequest.overrideHeight` @type ^`int`;
+  #L2c7722.  call temp:= `isValidDimensions`(v0, v1) @signature `Lcom/bumptech/glide/util/Util;.isValidDimensions:(II)Z` @kind static;
+  #L2c7728.  v0:= temp;
+  #L2c772a.  if v0 == 0 then goto L2c773e;
+  #L2c772e.  v0:= v3.`com.bumptech.glide.request.GenericRequest.overrideWidth` @type ^`int`;
+  #L2c7732.  v1:= v3.`com.bumptech.glide.request.GenericRequest.overrideHeight` @type ^`int`;
+  #L2c7736.  call `onSizeReady`(v3, v0, v1) @signature `Lcom/bumptech/glide/request/GenericRequest;.onSizeReady:(II)V` @kind virtual;
+  #L2c773c.  goto L2c7748;
+  #L2c773e.  v0:= v3.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` @kind object;
+  #L2c7742.  call `getSize`(v0, v3) @signature `Lcom/bumptech/glide/request/target/Target;.getSize:(Lcom/bumptech/glide/request/target/SizeReadyCallback;)V` @kind interface;
+  #L2c7748.  call temp:= `isComplete`(v3) @signature `Lcom/bumptech/glide/request/GenericRequest;.isComplete:()Z` @kind virtual;
+  #L2c774e.  v0:= temp;
+  #L2c7750.  if v0 != 0 then goto L2c777e;
+  #L2c7754.  call temp:= `isFailed`(v3) @signature `Lcom/bumptech/glide/request/GenericRequest;.isFailed:()Z` @kind virtual;
+  #L2c775a.  v0:= temp;
+  #L2c775c.  if v0 != 0 then goto L2c777e;
+  #L2c7760.  call temp:= `canNotifyStatusChanged`(v3) @signature `Lcom/bumptech/glide/request/GenericRequest;.canNotifyStatusChanged:()Z` @kind direct;
+  #L2c7766.  v0:= temp;
+  #L2c7768.  if v0 == 0 then goto L2c777e;
+  #L2c776c.  v0:= v3.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` @kind object;
+  #L2c7770.  call temp:= `getPlaceholderDrawable`(v3) @signature `Lcom/bumptech/glide/request/GenericRequest;.getPlaceholderDrawable:()Landroid/graphics/drawable/Drawable;` @kind direct;
+  #L2c7776.  v1:= temp @kind object;
+  #L2c7778.  call `onLoadStarted`(v0, v1) @signature `Lcom/bumptech/glide/request/target/Target;.onLoadStarted:(Landroid/graphics/drawable/Drawable;)V` @kind interface;
+  #L2c777e.  v0:= 2I;
+  #L2c7780.  v1:= "GenericRequest" @kind object;
+  #L2c7784.  call temp:= `isLoggable`(v1, v0) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2c778a.  v0:= temp;
+  #L2c778c.  if v0 == 0 then goto L2c77c4;
+  #L2c7790.  v0:= new `java.lang.StringBuilder`;
+  #L2c7794.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c779a.  v1:= "finished run method in " @kind object;
+  #L2c779e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c77a4.  v1:= v3.`com.bumptech.glide.request.GenericRequest.startTime` @type ^`long` @kind wide;
+  #L2c77a8.  call temp:= `getElapsedMillis`(v1) @signature `Lcom/bumptech/glide/util/LogTime;.getElapsedMillis:(J)D` @kind static;
+  #L2c77ae.  v1:= temp @kind wide;
+  #L2c77b0.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c77b6.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c77bc.  v0:= temp @kind object;
+  #L2c77be.  call `logV`(v3, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.logV:(Ljava/lang/String;)V` @kind direct;
+  #L2c77c4.  return @kind void;
+}
+procedure `void` `cancel`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.cancel:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L2c77d8.  v0:= `@@com.bumptech.glide.request.GenericRequest$Status.CANCELLED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c77dc.  v1.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v0 @kind object;
+  #L2c77e0.  v0:= v1.`com.bumptech.glide.request.GenericRequest.loadStatus` @type ^`com.bumptech.glide.load.engine.Engine$LoadStatus` @kind object;
+  #L2c77e4.  if v0 == 0 then goto L2c77f4;
+  #L2c77e8.  call `cancel`(v0) @signature `Lcom/bumptech/glide/load/engine/Engine$LoadStatus;.cancel:()V` @kind virtual;
+  #L2c77ee.  v0:= 0I;
+  #L2c77f0.  v1.`com.bumptech.glide.request.GenericRequest.loadStatus` @type ^`com.bumptech.glide.load.engine.Engine$LoadStatus` := v0 @kind object;
+  #L2c77f4.  return @kind void;
+}
+procedure `void` `clear`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.clear:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c785c.  call `assertMainThread`() @signature `Lcom/bumptech/glide/util/Util;.assertMainThread:()V` @kind static;
+  #L2c7862.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7866.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.CLEARED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c786a.  if v0 != v1 then goto L2c7870;
+  #L2c786e.  return @kind void;
+  #L2c7870.  call `cancel`(v2) @signature `Lcom/bumptech/glide/request/GenericRequest;.cancel:()V` @kind virtual;
+  #L2c7876.  v0:= v2.`com.bumptech.glide.request.GenericRequest.resource` @type ^`com.bumptech.glide.load.engine.Resource` @kind object;
+  #L2c787a.  if v0 == 0 then goto L2c7884;
+  #L2c787e.  call `releaseResource`(v2, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.releaseResource:(Lcom/bumptech/glide/load/engine/Resource;)V` @kind direct;
+  #L2c7884.  call temp:= `canNotifyStatusChanged`(v2) @signature `Lcom/bumptech/glide/request/GenericRequest;.canNotifyStatusChanged:()Z` @kind direct;
+  #L2c788a.  v0:= temp;
+  #L2c788c.  if v0 == 0 then goto L2c78a2;
+  #L2c7890.  v0:= v2.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` @kind object;
+  #L2c7894.  call temp:= `getPlaceholderDrawable`(v2) @signature `Lcom/bumptech/glide/request/GenericRequest;.getPlaceholderDrawable:()Landroid/graphics/drawable/Drawable;` @kind direct;
+  #L2c789a.  v1:= temp @kind object;
+  #L2c789c.  call `onLoadCleared`(v0, v1) @signature `Lcom/bumptech/glide/request/target/Target;.onLoadCleared:(Landroid/graphics/drawable/Drawable;)V` @kind interface;
+  #L2c78a2.  v0:= `@@com.bumptech.glide.request.GenericRequest$Status.CLEARED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c78a6.  v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v0 @kind object;
+  #L2c78aa.  return @kind void;
+}
+procedure `boolean` `isCancelled`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.isCancelled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c74f4.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c74f8.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.CANCELLED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c74fc.  if v0 == v1 then goto L2c7512;
+  #L2c7500.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7504.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.CLEARED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7508.  if v0 != v1 then goto L2c750e;
+  #L2c750c.  goto L2c7512;
+  #L2c750e.  v0:= 0I;
+  #L2c7510.  goto L2c7514;
+  #L2c7512.  v0:= 1I;
+  #L2c7514.  return v0;
+}
+procedure `boolean` `isComplete`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.isComplete:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c7528.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c752c.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.COMPLETE` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7530.  if v0 != v1 then goto L2c7538;
+  #L2c7534.  v0:= 1I;
+  #L2c7536.  goto L2c753a;
+  #L2c7538.  v0:= 0I;
+  #L2c753a.  return v0;
+}
+procedure `boolean` `isFailed`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.isFailed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c754c.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7550.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.FAILED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7554.  if v0 != v1 then goto L2c755c;
+  #L2c7558.  v0:= 1I;
+  #L2c755a.  goto L2c755e;
+  #L2c755c.  v0:= 0I;
+  #L2c755e.  return v0;
+}
+procedure `boolean` `isPaused`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.isPaused:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c75a0.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c75a4.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.PAUSED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c75a8.  if v0 != v1 then goto L2c75b0;
+  #L2c75ac.  v0:= 1I;
+  #L2c75ae.  goto L2c75b2;
+  #L2c75b0.  v0:= 0I;
+  #L2c75b2.  return v0;
+}
+procedure `boolean` `isResourceSet`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.isResourceSet:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2c75c4.  call temp:= `isComplete`(v1) @signature `Lcom/bumptech/glide/request/GenericRequest;.isComplete:()Z` @kind virtual;
+  #L2c75ca.  v0:= temp;
+  #L2c75cc.  return v0;
+}
+procedure `boolean` `isRunning`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.isRunning:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c75e0.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c75e4.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.RUNNING` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c75e8.  if v0 == v1 then goto L2c75fe;
+  #L2c75ec.  v0:= v2.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c75f0.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.WAITING_FOR_SIZE` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c75f4.  if v0 != v1 then goto L2c75fa;
+  #L2c75f8.  goto L2c75fe;
+  #L2c75fa.  v0:= 0I;
+  #L2c75fc.  goto L2c7600;
+  #L2c75fe.  v0:= 1I;
+  #L2c7600.  return v0;
+}
+procedure `void` `onException`(`com.bumptech.glide.request.GenericRequest` v4 @kind this, `java.lang.Exception` v5 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.onException:(Ljava/lang/Exception;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2c7ab8.  v0:= "GenericRequest" @kind object;
+  #L2c7abc.  v1:= 3I;
+  #L2c7abe.  call temp:= `isLoggable`(v0, v1) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2c7ac4.  v1:= temp;
+  #L2c7ac6.  if v1 == 0 then goto L2c7ad4;
+  #L2c7aca.  v1:= "load failed" @kind object;
+  #L2c7ace.  call temp:= `d`(v0, v1, v5) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I` @kind static;
+  #L2c7ad4.  v0:= `@@com.bumptech.glide.request.GenericRequest$Status.FAILED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7ad8.  v4.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v0 @kind object;
+  #L2c7adc.  v0:= v4.`com.bumptech.glide.request.GenericRequest.requestListener` @type ^`com.bumptech.glide.request.RequestListener` @kind object;
+  #L2c7ae0.  if v0 == 0 then goto L2c7b00;
+  #L2c7ae4.  v1:= v4.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` @kind object;
+  #L2c7ae8.  v2:= v4.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` @kind object;
+  #L2c7aec.  call temp:= `isFirstReadyResource`(v4) @signature `Lcom/bumptech/glide/request/GenericRequest;.isFirstReadyResource:()Z` @kind direct;
+  #L2c7af2.  v3:= temp;
+  #L2c7af4.  call temp:= `onException`(v0, v5, v1, v2, v3) @signature `Lcom/bumptech/glide/request/RequestListener;.onException:(Ljava/lang/Exception;Ljava/lang/Object;Lcom/bumptech/glide/request/target/Target;Z)Z` @kind interface;
+  #L2c7afa.  v0:= temp;
+  #L2c7afc.  if v0 != 0 then goto L2c7b06;
+  #L2c7b00.  call `setErrorPlaceholder`(v4, v5) @signature `Lcom/bumptech/glide/request/GenericRequest;.setErrorPlaceholder:(Ljava/lang/Exception;)V` @kind direct;
+  #L2c7b06.  return @kind void;
+}
+procedure `void` `onResourceReady`(`com.bumptech.glide.request.GenericRequest` v5 @kind this, `com.bumptech.glide.load.engine.Resource` v6 @kind object) @signature `Lcom/bumptech/glide/request/GenericRequest;.onResourceReady:(Lcom/bumptech/glide/load/engine/Resource;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2c7b18.  if v6 != 0 then goto L2c7b5e;
+  #L2c7b1c.  v6:= new `java.lang.Exception`;
+  #L2c7b20.  v0:= new `java.lang.StringBuilder`;
+  #L2c7b24.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7b2a.  v1:= "Expected to receive a Resource<R> with an object of " @kind object;
+  #L2c7b2e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7b34.  v1:= v5.`com.bumptech.glide.request.GenericRequest.transcodeClass` @type ^`java.lang.Class` @kind object;
+  #L2c7b38.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7b3e.  v1:= " inside, but instead got null." @kind object;
+  #L2c7b42.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7b48.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7b4e.  v0:= temp @kind object;
+  #L2c7b50.  call `<init>`(v6, v0) @signature `Ljava/lang/Exception;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c7b56.  call `onException`(v5, v6) @signature `Lcom/bumptech/glide/request/GenericRequest;.onException:(Ljava/lang/Exception;)V` @kind virtual;
+  #L2c7b5c.  return @kind void;
+  #L2c7b5e.  call temp:= `get`(v6) @signature `Lcom/bumptech/glide/load/engine/Resource;.get:()Ljava/lang/Object;` @kind interface;
+  #L2c7b64.  v0:= temp @kind object;
+  #L2c7b66.  if v0 == 0 then goto L2c7ba8;
+  #L2c7b6a.  v1:= v5.`com.bumptech.glide.request.GenericRequest.transcodeClass` @type ^`java.lang.Class` @kind object;
+  #L2c7b6e.  call temp:= `getClass`(v0) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L2c7b74.  v2:= temp @kind object;
+  #L2c7b76.  call temp:= `isAssignableFrom`(v1, v2) @signature `Ljava/lang/Class;.isAssignableFrom:(Ljava/lang/Class;)Z` @kind virtual;
+  #L2c7b7c.  v1:= temp;
+  #L2c7b7e.  if v1 != 0 then goto L2c7b84;
+  #L2c7b82.  goto L2c7ba8;
+  #L2c7b84.  call temp:= `canSetResource`(v5) @signature `Lcom/bumptech/glide/request/GenericRequest;.canSetResource:()Z` @kind direct;
+  #L2c7b8a.  v1:= temp;
+  #L2c7b8c.  if v1 != 0 then goto L2c7ba0;
+  #L2c7b90.  call `releaseResource`(v5, v6) @signature `Lcom/bumptech/glide/request/GenericRequest;.releaseResource:(Lcom/bumptech/glide/load/engine/Resource;)V` @kind direct;
+  #L2c7b96.  v6:= `@@com.bumptech.glide.request.GenericRequest$Status.COMPLETE` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7b9a.  v5.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v6 @kind object;
+  #L2c7b9e.  return @kind void;
+  #L2c7ba0.  call `onResourceReady`(v5, v6, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.onResourceReady:(Lcom/bumptech/glide/load/engine/Resource;Ljava/lang/Object;)V` @kind direct;
+  #L2c7ba6.  return @kind void;
+  #L2c7ba8.  call `releaseResource`(v5, v6) @signature `Lcom/bumptech/glide/request/GenericRequest;.releaseResource:(Lcom/bumptech/glide/load/engine/Resource;)V` @kind direct;
+  #L2c7bae.  v1:= new `java.lang.Exception`;
+  #L2c7bb2.  v2:= new `java.lang.StringBuilder`;
+  #L2c7bb6.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7bbc.  v3:= "Expected to receive an object of " @kind object;
+  #L2c7bc0.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7bc6.  v3:= v5.`com.bumptech.glide.request.GenericRequest.transcodeClass` @type ^`java.lang.Class` @kind object;
+  #L2c7bca.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7bd0.  v3:= " but instead got " @kind object;
+  #L2c7bd4.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7bda.  v3:= "" @kind object;
+  #L2c7bde.  if v0 == 0 then goto L2c7bec;
+  #L2c7be2.  call temp:= `getClass`(v0) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L2c7be8.  v4:= temp @kind object;
+  #L2c7bea.  goto L2c7bee;
+  #L2c7bec.  v4:= v3 @kind object;
+  #L2c7bee.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7bf4.  v4:= "{" @kind object;
+  #L2c7bf8.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7bfe.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7c04.  v4:= "}" @kind object;
+  #L2c7c08.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7c0e.  v4:= " inside Resource{" @kind object;
+  #L2c7c12.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7c18.  call temp:= `append`(v2, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7c1e.  v6:= "}." @kind object;
+  #L2c7c22.  call temp:= `append`(v2, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7c28.  if v0 == 0 then goto L2c7c2e;
+  #L2c7c2c.  goto L2c7c32;
+  #L2c7c2e.  v3:= " To indicate failure return a null Resource object, rather than a Resource object containing null data." @kind object;
+  #L2c7c32.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7c38.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7c3e.  v6:= temp @kind object;
+  #L2c7c40.  call `<init>`(v1, v6) @signature `Ljava/lang/Exception;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c7c46.  call `onException`(v5, v1) @signature `Lcom/bumptech/glide/request/GenericRequest;.onException:(Ljava/lang/Exception;)V` @kind virtual;
+  #L2c7c4c.  return @kind void;
+}
+procedure `void` `onSizeReady`(`com.bumptech.glide.request.GenericRequest` v16 @kind this, `int` v17 , `int` v18 ) @signature `Lcom/bumptech/glide/request/GenericRequest;.onSizeReady:(II)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+
+  #L2c7d4c.  v12:= v16 @kind object;
+  #L2c7d50.  v13:= 2I;
+  #L2c7d52.  v14:= "GenericRequest" @kind object;
+  #L2c7d56.  call temp:= `isLoggable`(v14, v13) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2c7d5c.  v0:= temp;
+  #L2c7d5e.  if v0 == 0 then goto L2c7d96;
+  #L2c7d62.  v0:= new `java.lang.StringBuilder`;
+  #L2c7d66.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7d6c.  v1:= "Got onSizeReady in " @kind object;
+  #L2c7d70.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7d76.  v1:= v12.`com.bumptech.glide.request.GenericRequest.startTime` @type ^`long` @kind wide;
+  #L2c7d7a.  call temp:= `getElapsedMillis`(v1) @signature `Lcom/bumptech/glide/util/LogTime;.getElapsedMillis:(J)D` @kind static;
+  #L2c7d80.  v1:= temp @kind wide;
+  #L2c7d82.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7d88.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7d8e.  v0:= temp @kind object;
+  #L2c7d90.  call `logV`(v12, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.logV:(Ljava/lang/String;)V` @kind direct;
+  #L2c7d96.  v0:= v12.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7d9a.  v1:= `@@com.bumptech.glide.request.GenericRequest$Status.WAITING_FOR_SIZE` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7d9e.  if v0 == v1 then goto L2c7da4;
+  #L2c7da2.  return @kind void;
+  #L2c7da4.  v0:= `@@com.bumptech.glide.request.GenericRequest$Status.RUNNING` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7da8.  v12.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v0 @kind object;
+  #L2c7dac.  v0:= v12.`com.bumptech.glide.request.GenericRequest.sizeMultiplier` @type ^`float`;
+  #L2c7db0.  v1:= v17;
+  #L2c7db4.  v1:= (`float`) v1 @kind i2f;
+  #L2c7db6.  v0:= v0 * v1 @kind float;
+  #L2c7dba.  call temp:= `round`(v0) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L2c7dc0.  v2:= temp;
+  #L2c7dc2.  v0:= v12.`com.bumptech.glide.request.GenericRequest.sizeMultiplier` @type ^`float`;
+  #L2c7dc6.  v1:= v18;
+  #L2c7dca.  v1:= (`float`) v1 @kind i2f;
+  #L2c7dcc.  v0:= v0 * v1 @kind float;
+  #L2c7dd0.  call temp:= `round`(v0) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L2c7dd6.  v3:= temp;
+  #L2c7dd8.  v0:= v12.`com.bumptech.glide.request.GenericRequest.loadProvider` @type ^`com.bumptech.glide.provider.LoadProvider` @kind object;
+  #L2c7ddc.  call temp:= `getModelLoader`(v0) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getModelLoader:()Lcom/bumptech/glide/load/model/ModelLoader;` @kind interface;
+  #L2c7de2.  v0:= temp @kind object;
+  #L2c7de4.  v1:= v12.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` @kind object;
+  #L2c7de8.  call temp:= `getResourceFetcher`(v0, v1, v2, v3) @signature `Lcom/bumptech/glide/load/model/ModelLoader;.getResourceFetcher:(Ljava/lang/Object;II)Lcom/bumptech/glide/load/data/DataFetcher;` @kind interface;
+  #L2c7dee.  v4:= temp @kind object;
+  #L2c7df0.  if v4 != 0 then goto L2c7e36;
+  #L2c7df4.  v0:= new `java.lang.Exception`;
+  #L2c7df8.  v1:= new `java.lang.StringBuilder`;
+  #L2c7dfc.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7e02.  v2:= "Failed to load model: '" @kind object;
+  #L2c7e06.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7e0c.  v2:= v12.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` @kind object;
+  #L2c7e10.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7e16.  v2:= "'" @kind object;
+  #L2c7e1a.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7e20.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7e26.  v1:= temp @kind object;
+  #L2c7e28.  call `<init>`(v0, v1) @signature `Ljava/lang/Exception;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2c7e2e.  call `onException`(v12, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.onException:(Ljava/lang/Exception;)V` @kind virtual;
+  #L2c7e34.  return @kind void;
+  #L2c7e36.  v0:= v12.`com.bumptech.glide.request.GenericRequest.loadProvider` @type ^`com.bumptech.glide.provider.LoadProvider` @kind object;
+  #L2c7e3a.  call temp:= `getTranscoder`(v0) @signature `Lcom/bumptech/glide/provider/LoadProvider;.getTranscoder:()Lcom/bumptech/glide/load/resource/transcode/ResourceTranscoder;` @kind interface;
+  #L2c7e40.  v7:= temp @kind object;
+  #L2c7e42.  call temp:= `isLoggable`(v14, v13) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2c7e48.  v0:= temp;
+  #L2c7e4a.  if v0 == 0 then goto L2c7e82;
+  #L2c7e4e.  v0:= new `java.lang.StringBuilder`;
+  #L2c7e52.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7e58.  v1:= "finished setup for calling load in " @kind object;
+  #L2c7e5c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7e62.  v5:= v12.`com.bumptech.glide.request.GenericRequest.startTime` @type ^`long` @kind wide;
+  #L2c7e66.  call temp:= `getElapsedMillis`(v5) @signature `Lcom/bumptech/glide/util/LogTime;.getElapsedMillis:(J)D` @kind static;
+  #L2c7e6c.  v5:= temp @kind wide;
+  #L2c7e6e.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7e74.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7e7a.  v0:= temp @kind object;
+  #L2c7e7c.  call `logV`(v12, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.logV:(Ljava/lang/String;)V` @kind direct;
+  #L2c7e82.  v15:= 1I;
+  #L2c7e84.  v12.`com.bumptech.glide.request.GenericRequest.loadedFromMemoryCache` @type ^`boolean` := v15 @kind boolean;
+  #L2c7e88.  v0:= v12.`com.bumptech.glide.request.GenericRequest.engine` @type ^`com.bumptech.glide.load.engine.Engine` @kind object;
+  #L2c7e8c.  v1:= v12.`com.bumptech.glide.request.GenericRequest.signature` @type ^`com.bumptech.glide.load.Key` @kind object;
+  #L2c7e90.  v5:= v12.`com.bumptech.glide.request.GenericRequest.loadProvider` @type ^`com.bumptech.glide.provider.LoadProvider` @kind object;
+  #L2c7e94.  v6:= v12.`com.bumptech.glide.request.GenericRequest.transformation` @type ^`com.bumptech.glide.load.Transformation` @kind object;
+  #L2c7e98.  v8:= v12.`com.bumptech.glide.request.GenericRequest.priority` @type ^`com.bumptech.glide.Priority` @kind object;
+  #L2c7e9c.  v9:= v12.`com.bumptech.glide.request.GenericRequest.isMemoryCacheable` @type ^`boolean` @kind boolean;
+  #L2c7ea0.  v10:= v12.`com.bumptech.glide.request.GenericRequest.diskCacheStrategy` @type ^`com.bumptech.glide.load.engine.DiskCacheStrategy` @kind object;
+  #L2c7ea4.  v11:= v16 @kind object;
+  #L2c7ea8.  call temp:= `load`(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11) @signature `Lcom/bumptech/glide/load/engine/Engine;.load:(Lcom/bumptech/glide/load/Key;IILcom/bumptech/glide/load/data/DataFetcher;Lcom/bumptech/glide/provider/DataLoadProvider;Lcom/bumptech/glide/load/Transformation;Lcom/bumptech/glide/load/resource/transcode/ResourceTranscoder;Lcom/bumptech/glide/Priority;ZLcom/bumptech/glide/load/engine/DiskCacheStrategy;Lcom/bumptech/glide/request/ResourceCallback;)Lcom/bumptech/glide/load/engine/Engine$LoadStatus;` @kind virtual;
+  #L2c7eae.  v0:= temp @kind object;
+  #L2c7eb0.  v12.`com.bumptech.glide.request.GenericRequest.loadStatus` @type ^`com.bumptech.glide.load.engine.Engine$LoadStatus` := v0 @kind object;
+  #L2c7eb4.  v0:= v12.`com.bumptech.glide.request.GenericRequest.resource` @type ^`com.bumptech.glide.load.engine.Resource` @kind object;
+  #L2c7eb8.  if v0 == 0 then goto L2c7ebe;
+  #L2c7ebc.  goto L2c7ec0;
+  #L2c7ebe.  v15:= 0I;
+  #L2c7ec0.  v12.`com.bumptech.glide.request.GenericRequest.loadedFromMemoryCache` @type ^`boolean` := v15 @kind boolean;
+  #L2c7ec4.  call temp:= `isLoggable`(v14, v13) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2c7eca.  v0:= temp;
+  #L2c7ecc.  if v0 == 0 then goto L2c7f04;
+  #L2c7ed0.  v0:= new `java.lang.StringBuilder`;
+  #L2c7ed4.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2c7eda.  v1:= "finished onSizeReady in " @kind object;
+  #L2c7ede.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7ee4.  v1:= v12.`com.bumptech.glide.request.GenericRequest.startTime` @type ^`long` @kind wide;
+  #L2c7ee8.  call temp:= `getElapsedMillis`(v1) @signature `Lcom/bumptech/glide/util/LogTime;.getElapsedMillis:(J)D` @kind static;
+  #L2c7eee.  v1:= temp @kind wide;
+  #L2c7ef0.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2c7ef6.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2c7efc.  v0:= temp @kind object;
+  #L2c7efe.  call `logV`(v12, v0) @signature `Lcom/bumptech/glide/request/GenericRequest;.logV:(Ljava/lang/String;)V` @kind direct;
+  #L2c7f04.  return @kind void;
+}
+procedure `void` `pause`(`com.bumptech.glide.request.GenericRequest` v1 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.pause:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2c7f18.  call `clear`(v1) @signature `Lcom/bumptech/glide/request/GenericRequest;.clear:()V` @kind virtual;
+  #L2c7f1e.  v0:= `@@com.bumptech.glide.request.GenericRequest$Status.PAUSED` @type ^`com.bumptech.glide.request.GenericRequest$Status` @kind object;
+  #L2c7f22.  v1.`com.bumptech.glide.request.GenericRequest.status` @type ^`com.bumptech.glide.request.GenericRequest$Status` := v0 @kind object;
+  #L2c7f26.  return @kind void;
+}
+procedure `void` `recycle`(`com.bumptech.glide.request.GenericRequest` v2 @kind this) @signature `Lcom/bumptech/glide/request/GenericRequest;.recycle:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2c7f38.  v0:= 0I;
+  #L2c7f3a.  v2.`com.bumptech.glide.request.GenericRequest.loadProvider` @type ^`com.bumptech.glide.provider.LoadProvider` := v0 @kind object;
+  #L2c7f3e.  v2.`com.bumptech.glide.request.GenericRequest.model` @type ^`java.lang.Object` := v0 @kind object;
+  #L2c7f42.  v2.`com.bumptech.glide.request.GenericRequest.context` @type ^`android.content.Context` := v0 @kind object;
+  #L2c7f46.  v2.`com.bumptech.glide.request.GenericRequest.target` @type ^`com.bumptech.glide.request.target.Target` := v0 @kind object;
+  #L2c7f4a.  v2.`com.bumptech.glide.request.GenericRequest.placeholderDrawable` @type ^`android.graphics.drawable.Drawable` := v0 @kind object;
+  #L2c7f4e.  v2.`com.bumptech.glide.request.GenericRequest.errorDrawable` @type ^`android.graphics.drawable.Drawable` := v0 @kind object;
+  #L2c7f52.  v2.`com.bumptech.glide.request.GenericRequest.fallbackDrawable` @type ^`android.graphics.drawable.Drawable` := v0 @kind object;
+  #L2c7f56.  v2.`com.bumptech.glide.request.GenericRequest.requestListener` @type ^`com.bumptech.glide.request.RequestListener` := v0 @kind object;
+  #L2c7f5a.  v2.`com.bumptech.glide.request.GenericRequest.requestCoordinator` @type ^`com.bumptech.glide.request.RequestCoordinator` := v0 @kind object;
+  #L2c7f5e.  v2.`com.bumptech.glide.request.GenericRequest.transformation` @type ^`com.bumptech.glide.load.Transformation` := v0 @kind object;
+  #L2c7f62.  v2.`com.bumptech.glide.request.GenericRequest.animationFactory` @type ^`com.bumptech.glide.request.animation.GlideAnimationFactory` := v0 @kind object;
+  #L2c7f66.  v1:= 0I;
+  #L2c7f68.  v2.`com.bumptech.glide.request.GenericRequest.loadedFromMemoryCache` @type ^`boolean` := v1 @kind boolean;
+  #L2c7f6c.  v2.`com.bumptech.glide.request.GenericRequest.loadStatus` @type ^`com.bumptech.glide.load.engine.Engine$LoadStatus` := v0 @kind object;
+  #L2c7f70.  v0:= `@@com.bumptech.glide.request.GenericRequest.REQUEST_POOL` @type ^`java.util.Queue` @kind object;
+  #L2c7f74.  call temp:= `offer`(v0, v2) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L2c7f7a.  return @kind void;
+}

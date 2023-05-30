@@ -1,0 +1,500 @@
+record `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` @kind class @AccessFlag PUBLIC extends `com.huawei.hms.analytics.core.transport.ITransportHandler` @kind interface {
+  `java.lang.String`[] `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.collectURLs` @AccessFlag PRIVATE;
+  `java.net.HttpURLConnection` `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @AccessFlag PRIVATE;
+  `android.content.Context` `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.context` @AccessFlag PRIVATE;
+  `java.util.Map` `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.headers` @AccessFlag PRIVATE;
+  `byte`[] `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.reportData` @AccessFlag PRIVATE;
+  `java.lang.String` `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.requestMethod` @AccessFlag PRIVATE;
+}
+global `int` `@@com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.RECONNECTION_TIMES` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v0 @kind this) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L1d87b8.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1d87be.  return @kind void;
+}
+procedure `void` `closeConnection`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v1 @kind this) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.closeConnection:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L1d87d0.  v0:= v1.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d87d4.  if v0 == 0 then goto L1d87de;
+  #L1d87d8.  call `disconnect`(v0) @signature `Ljava/net/HttpURLConnection;.disconnect:()V` @kind virtual;
+  #L1d87de.  return @kind void;
+}
+procedure `void` `createConnection`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v4 @kind this, `java.lang.String` v5 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.createConnection:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1d87f0.  v0:= new `java.net.URL`;
+  #L1d87f4.  call `<init>`(v0, v5) @signature `Ljava/net/URL;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d87fa.  call temp:= `openConnection`(v0) @signature `Ljava/net/URL;.openConnection:()Ljava/net/URLConnection;` @kind virtual;
+  #L1d8800.  v5:= temp @kind object;
+  #L1d8802.  v5:= (`java.net.HttpURLConnection`) v5 @kind object;
+  #L1d8806.  v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` := v5 @kind object;
+  #L1d880a.  call `setHttpsConn`(v4) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setHttpsConn:()V` @kind direct;
+  #L1d8810.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d8814.  v0:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.requestMethod` @type ^`java.lang.String` @kind object;
+  #L1d8818.  call `setRequestMethod`(v5, v0) @signature `Ljava/net/HttpURLConnection;.setRequestMethod:(Ljava/lang/String;)V` @kind virtual;
+  #L1d881e.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d8822.  v0:= 15000I;
+  #L1d8826.  call `setConnectTimeout`(v5, v0) @signature `Ljava/net/HttpURLConnection;.setConnectTimeout:(I)V` @kind virtual;
+  #L1d882c.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d8830.  call `setReadTimeout`(v5, v0) @signature `Ljava/net/HttpURLConnection;.setReadTimeout:(I)V` @kind virtual;
+  #L1d8836.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.requestMethod` @type ^`java.lang.String` @kind object;
+  #L1d883a.  v0:= "POST" @kind object;
+  #L1d883e.  call temp:= `equals`(v0, v5) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L1d8844.  v5:= temp;
+  #L1d8846.  if v5 == 0 then goto L1d8856;
+  #L1d884a.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d884e.  v0:= 1I;
+  #L1d8850.  call `setDoOutput`(v5, v0) @signature `Ljava/net/HttpURLConnection;.setDoOutput:(Z)V` @kind virtual;
+  #L1d8856.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d885a.  v0:= "Content-Type" @kind object;
+  #L1d885e.  v1:= "application/json; charset=UTF-8" @kind object;
+  #L1d8862.  call `setRequestProperty`(v5, v0, v1) @signature `Ljava/net/HttpURLConnection;.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L1d8868.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.reportData` @type ^`byte`[] @kind object;
+  #L1d886c.  if v5 != 0 then goto L1d8874;
+  #L1d8870.  v5:= 0I;
+  #L1d8872.  goto L1d8876;
+  #L1d8874.  v5:= length @variable v5;
+  #L1d8876.  v0:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d887a.  call temp:= `valueOf`(v5) @signature `Ljava/lang/String;.valueOf:(I)Ljava/lang/String;` @kind static;
+  #L1d8880.  v5:= temp @kind object;
+  #L1d8882.  v1:= "Content-Length" @kind object;
+  #L1d8886.  call `setRequestProperty`(v0, v1, v5) @signature `Ljava/net/HttpURLConnection;.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L1d888c.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d8890.  v0:= "Connection" @kind object;
+  #L1d8894.  v1:= "close" @kind object;
+  #L1d8898.  call `setRequestProperty`(v5, v0, v1) @signature `Ljava/net/HttpURLConnection;.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L1d889e.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.headers` @type ^`java.util.Map` @kind object;
+  #L1d88a2.  if v5 == 0 then goto L1d8930;
+  #L1d88a6.  call temp:= `size`(v5) @signature `Ljava/util/Map;.size:()I` @kind interface;
+  #L1d88ac.  v5:= temp;
+  #L1d88ae.  if v5 <= 0 then goto L1d8930;
+  #L1d88b2.  v5:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.headers` @type ^`java.util.Map` @kind object;
+  #L1d88b6.  call temp:= `entrySet`(v5) @signature `Ljava/util/Map;.entrySet:()Ljava/util/Set;` @kind interface;
+  #L1d88bc.  v5:= temp @kind object;
+  #L1d88be.  call temp:= `iterator`(v5) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L1d88c4.  v5:= temp @kind object;
+  #L1d88c6.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L1d88cc.  v0:= temp;
+  #L1d88ce.  if v0 == 0 then goto L1d8930;
+  #L1d88d2.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L1d88d8.  v0:= temp @kind object;
+  #L1d88da.  v0:= (`java.util.Map$Entry`) v0 @kind object;
+  #L1d88de.  call temp:= `getKey`(v0) @signature `Ljava/util/Map$Entry;.getKey:()Ljava/lang/Object;` @kind interface;
+  #L1d88e4.  v1:= temp @kind object;
+  #L1d88e6.  v1:= (`java.lang.String`) v1 @kind object;
+  #L1d88ea.  if v1 == 0 then goto L1d88c6;
+  #L1d88ee.  call temp:= `isEmpty`(v1) @signature `Ljava/lang/String;.isEmpty:()Z` @kind virtual;
+  #L1d88f4.  v2:= temp;
+  #L1d88f6.  if v2 != 0 then goto L1d88c6;
+  #L1d88fa.  v2:= v4.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d88fe.  call temp:= `getValue`(v0) @signature `Ljava/util/Map$Entry;.getValue:()Ljava/lang/Object;` @kind interface;
+  #L1d8904.  v3:= temp @kind object;
+  #L1d8906.  if v3 != 0 then goto L1d8910;
+  #L1d890a.  v0:= "" @kind object;
+  #L1d890e.  goto L1d891c;
+  #L1d8910.  call temp:= `getValue`(v0) @signature `Ljava/util/Map$Entry;.getValue:()Ljava/lang/Object;` @kind interface;
+  #L1d8916.  v0:= temp @kind object;
+  #L1d8918.  v0:= (`java.lang.String`) v0 @kind object;
+  #L1d891c.  v3:= "UTF-8" @kind object;
+  #L1d8920.  call temp:= `encode`(v0, v3) @signature `Ljava/net/URLEncoder;.encode:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L1d8926.  v0:= temp @kind object;
+  #L1d8928.  call `setRequestProperty`(v2, v1, v0) @signature `Ljava/net/HttpURLConnection;.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L1d892e.  goto L1d88c6;
+  #L1d8930.  return @kind void;
+}
+procedure `com.huawei.hms.analytics.core.transport.net.Response` `handlerException`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v5 @kind this, `java.lang.Exception` v6 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.handlerException:(Ljava/lang/Exception;)Lcom/huawei/hms/analytics/core/transport/net/Response;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L1d83d4.  v0:= instanceof @variable v6 @type ^`java.lang.SecurityException` @kind boolean;
+  #L1d83d8.  v1:= "" @kind object;
+  #L1d83dc.  v2:= "HttpTransportCommander" @kind object;
+  #L1d83e0.  if v0 == 0 then goto L1d8402;
+  #L1d83e4.  v6:= "NE-003" @kind object;
+  #L1d83e8.  v0:= "No Permission：INTERNET." @kind object;
+  #L1d83ec.  call `e`(v2, v6, v0) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d83f2.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d83f6.  v0:= -101I;
+  #L1d83fa.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d8400.  return v6 @kind object;
+  #L1d8402.  v0:= instanceof @variable v6 @type ^`javax.net.ssl.SSLPeerUnverifiedException` @kind boolean;
+  #L1d8406.  v3:= "NE-002" @kind object;
+  #L1d840a.  if v0 == 0 then goto L1d8428;
+  #L1d840e.  v6:= "Certificate has not been verified,Request is restricted!" @kind object;
+  #L1d8412.  call `e`(v2, v3, v6) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d8418.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d841c.  v0:= -106I;
+  #L1d8420.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d8426.  return v6 @kind object;
+  #L1d8428.  v0:= instanceof @variable v6 @type ^`javax.net.ssl.SSLHandshakeException` @kind boolean;
+  #L1d842c.  if v0 == 0 then goto L1d846a;
+  #L1d8430.  v0:= new `java.lang.StringBuilder`;
+  #L1d8434.  v4:= "SSL Handshake Exception : " @kind object;
+  #L1d8438.  call `<init>`(v0, v4) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d843e.  call temp:= `getMessage`(v6) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L1d8444.  v6:= temp @kind object;
+  #L1d8446.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d844c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d8452.  v6:= temp @kind object;
+  #L1d8454.  call `e`(v2, v3, v6) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d845a.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d845e.  v0:= -109I;
+  #L1d8462.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d8468.  return v6 @kind object;
+  #L1d846a.  v0:= instanceof @variable v6 @type ^`java.net.ConnectException` @kind boolean;
+  #L1d846e.  if v0 == 0 then goto L1d8490;
+  #L1d8472.  v6:= "NE-005" @kind object;
+  #L1d8476.  v0:= "Network is unreachable or Connection refused" @kind object;
+  #L1d847a.  call `e`(v2, v6, v0) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d8480.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d8484.  v0:= -103I;
+  #L1d8488.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d848e.  return v6 @kind object;
+  #L1d8490.  v0:= instanceof @variable v6 @type ^`java.net.UnknownHostException` @kind boolean;
+  #L1d8494.  if v0 == 0 then goto L1d84b6;
+  #L1d8498.  v6:= "NE-006" @kind object;
+  #L1d849c.  v0:= "Invalid URL.No address associated with hostname" @kind object;
+  #L1d84a0.  call `e`(v2, v6, v0) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d84a6.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d84aa.  v0:= -104I;
+  #L1d84ae.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d84b4.  return v6 @kind object;
+  #L1d84b6.  v0:= instanceof @variable v6 @type ^`java.io.IOException` @kind boolean;
+  #L1d84ba.  if v0 == 0 then goto L1d84dc;
+  #L1d84be.  v6:= "NE-004" @kind object;
+  #L1d84c2.  v0:= "post request IO Exception." @kind object;
+  #L1d84c6.  call `e`(v2, v6, v0) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d84cc.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d84d0.  v0:= -102I;
+  #L1d84d4.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d84da.  return v6 @kind object;
+  #L1d84dc.  v0:= instanceof @variable v6 @type ^`com.huawei.hms.analytics.core.transport.a.a` @kind boolean;
+  #L1d84e0.  if v0 == 0 then goto L1d8522;
+  #L1d84e4.  v0:= new `java.lang.StringBuilder`;
+  #L1d84e8.  v3:= "SSLConfigException:" @kind object;
+  #L1d84ec.  call `<init>`(v0, v3) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d84f2.  call temp:= `getMessage`(v6) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L1d84f8.  v6:= temp @kind object;
+  #L1d84fa.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d8500.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d8506.  v6:= temp @kind object;
+  #L1d8508.  v0:= "NE-001" @kind object;
+  #L1d850c.  call `e`(v2, v0, v6) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d8512.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d8516.  v0:= -105I;
+  #L1d851a.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d8520.  return v6 @kind object;
+  #L1d8522.  v0:= instanceof @variable v6 @type ^`java.lang.IllegalAccessException` @kind boolean;
+  #L1d8526.  if v0 == 0 then goto L1d8534;
+  #L1d852a.  call temp:= `getMessage`(v6) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L1d8530.  v6:= temp @kind object;
+  #L1d8532.  goto L1d8558;
+  #L1d8534.  v0:= new `java.lang.StringBuilder`;
+  #L1d8538.  v3:= "other exception: " @kind object;
+  #L1d853c.  call `<init>`(v0, v3) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d8542.  call temp:= `getMessage`(v6) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L1d8548.  v6:= temp @kind object;
+  #L1d854a.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d8550.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d8556.  v6:= temp @kind object;
+  #L1d8558.  call `e`(v2, v6) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d855e.  v6:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d8562.  v0:= -108I;
+  #L1d8566.  call `<init>`(v6, v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d856c.  return v6 @kind object;
+}
+procedure `com.huawei.hms.analytics.core.transport.net.Response` `post`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v5 @kind this, `java.lang.String` v6 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.post:(Ljava/lang/String;)Lcom/huawei/hms/analytics/core/transport/net/Response;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L1d8580.  call `createConnection`(v5, v6) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.createConnection:(Ljava/lang/String;)V` @kind direct;
+  #L1d8586.  v6:= 0I;
+  #L1d8588.  v0:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.reportData` @type ^`byte`[] @kind object;
+  #L1d858c.  if v0 == 0 then goto L1d85c8;
+  #L1d8590.  v0:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.reportData` @type ^`byte`[] @kind object;
+  #L1d8594.  v0:= length @variable v0;
+  #L1d8596.  if v0 <= 0 then goto L1d85c8;
+  #L1d859a.  v0:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d859e.  call temp:= `getOutputStream`(v0) @signature `Ljava/net/HttpURLConnection;.getOutputStream:()Ljava/io/OutputStream;` @kind virtual;
+  #L1d85a4.  v0:= temp @kind object;
+  #L1d85a6.  v1:= new `java.io.BufferedOutputStream`;
+  #L1d85aa.  call `<init>`(v1, v0) @signature `Ljava/io/BufferedOutputStream;.<init>:(Ljava/io/OutputStream;)V` @kind direct;
+  #L1d85b0.  v6:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.reportData` @type ^`byte`[] @kind object;
+  #L1d85b4.  call `write`(v1, v6) @signature `Ljava/io/BufferedOutputStream;.write:([B)V` @kind virtual;
+  #L1d85ba.  call `flush`(v1) @signature `Ljava/io/BufferedOutputStream;.flush:()V` @kind virtual;
+  #L1d85c0.  v6:= v1 @kind object;
+  #L1d85c2.  goto L1d85d8;
+  #L1d85c4.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1d85c6.  goto L1d861c;
+  #L1d85c8.  v0:= "HttpTransportCommander" @kind object;
+  #L1d85cc.  v1:= "report data is empty" @kind object;
+  #L1d85d0.  call `i`(v0, v1) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d85d6.  v0:= v6 @kind object;
+  #L1d85d8.  v1:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d85dc.  call temp:= `getResponseCode`(v1) @signature `Ljava/net/HttpURLConnection;.getResponseCode:()I` @kind virtual;
+  #L1d85e2.  v1:= temp;
+  #L1d85e4.  call temp:= `readResponse`(v5) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.readResponse:()Ljava/lang/String;` @kind direct;
+  #L1d85ea.  v2:= temp @kind object;
+  #L1d85ec.  v3:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d85f0.  call `<init>`(v3, v1, v2) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d85f6.  call `a`(v6) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d85fc.  call `a`(v0) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8602.  call `closeConnection`(v5) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.closeConnection:()V` @kind direct;
+  #L1d8608.  return v3 @kind object;
+  #L1d860a.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1d860c.  v4:= v1 @kind object;
+  #L1d860e.  v1:= v6 @kind object;
+  #L1d8610.  v6:= v4 @kind object;
+  #L1d8612.  goto L1d861c;
+  #L1d8614.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1d8616.  v1:= v6 @kind object;
+  #L1d8618.  v6:= v0 @kind object;
+  #L1d861a.  v0:= v1 @kind object;
+  #L1d861c.  call `a`(v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8622.  call `a`(v0) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8628.  call `closeConnection`(v5) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.closeConnection:()V` @kind direct;
+  #L1d862e.  throw v6;
+  catch `java.lang.Throwable` @[L1d8588..L1d85a6] goto L1d8614;
+  catch `java.lang.Throwable` @[L1d85a6..L1d85b0] goto L1d860a;
+  catch `java.lang.Throwable` @[L1d85b0..L1d85c0] goto L1d85c4;
+  catch `java.lang.Throwable` @[L1d85c8..L1d85d6] goto L1d8614;
+  catch `java.lang.Throwable` @[L1d85d8..L1d85f6] goto L1d860a;
+}
+procedure `java.lang.String` `readResponse`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v6 @kind this) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.readResponse:()Ljava/lang/String;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L1d86d8.  v0:= 0I;
+  #L1d86da.  v1:= v6.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d86de.  call temp:= `getInputStream`(v1) @signature `Ljava/net/HttpURLConnection;.getInputStream:()Ljava/io/InputStream;` @kind virtual;
+  #L1d86e4.  v1:= temp @kind object;
+  #L1d86e6.  v2:= new `java.io.ByteArrayOutputStream`;
+  #L1d86ea.  call `<init>`(v2) @signature `Ljava/io/ByteArrayOutputStream;.<init>:()V` @kind direct;
+  #L1d86f0.  v0:= 1024I;
+  #L1d86f4.  v0:= new `byte`[v0];
+  #L1d86f8.  call temp:= `read`(v1, v0) @signature `Ljava/io/InputStream;.read:([B)I` @kind virtual;
+  #L1d86fe.  v3:= temp;
+  #L1d8700.  v4:= -1I;
+  #L1d8702.  if v3 == v4 then goto L1d8710;
+  #L1d8706.  v4:= 0I;
+  #L1d8708.  call `write`(v2, v0, v4, v3) @signature `Ljava/io/ByteArrayOutputStream;.write:([BII)V` @kind virtual;
+  #L1d870e.  goto L1d86f8;
+  #L1d8710.  v0:= "UTF-8" @kind object;
+  #L1d8714.  call temp:= `toString`(v2, v0) @signature `Ljava/io/ByteArrayOutputStream;.toString:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L1d871a.  v0:= temp @kind object;
+  #L1d871c.  call `a`(v2) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8722.  call `a`(v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8728.  return v0 @kind object;
+  #L1d872a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1d872c.  goto L1d8766;
+  #L1d872e.  v0:= v2 @kind object;
+  #L1d8730.  goto L1d873e;
+  #L1d8732.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1d8734.  v2:= v0 @kind object;
+  #L1d8736.  v0:= v1 @kind object;
+  #L1d8738.  v1:= v2 @kind object;
+  #L1d873a.  goto L1d8766;
+  #L1d873c.  v1:= v0 @kind object;
+  #L1d873e.  v2:= "HttpTransportCommander" @kind object;
+  #L1d8742.  v3:= "stream read IOException!" @kind object;
+  #L1d8746.  call `e`(v2, v3) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d874c.  call `a`(v0) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8752.  call `a`(v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8758.  v0:= "" @kind object;
+  #L1d875c.  return v0 @kind object;
+  #L1d875e.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1d8760.  v5:= v2 @kind object;
+  #L1d8762.  v2:= v0 @kind object;
+  #L1d8764.  v0:= v5 @kind object;
+  #L1d8766.  call `a`(v2) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d876c.  call `a`(v1) @signature `Lcom/huawei/hms/analytics/core/transport/net/a;.a:(Ljava/io/Closeable;)V` @kind static;
+  #L1d8772.  throw v0;
+  catch `java.io.IOException` @[L1d86da..L1d86e6] goto L1d873c;
+  catch `java.lang.Throwable` @[L1d86da..L1d86e6] goto L1d8732;
+  catch `java.io.IOException` @[L1d86e6..L1d86f0] goto L1d873e;
+  catch `java.lang.Throwable` @[L1d86e6..L1d86f0] goto L1d875e;
+  catch `java.io.IOException` @[L1d86f4..L1d871c] goto L1d872e;
+  catch `java.lang.Throwable` @[L1d86f4..L1d871c] goto L1d872a;
+  catch `java.lang.Throwable` @[L1d873e..L1d874c] goto L1d875e;
+}
+procedure `com.huawei.hms.analytics.core.transport.net.Response` `reconnection`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v4 @kind this, `java.lang.String` v5 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.reconnection:(Ljava/lang/String;)Lcom/huawei/hms/analytics/core/transport/net/Response;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1d8670.  v0:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d8674.  v1:= -108I;
+  #L1d8678.  v2:= "" @kind object;
+  #L1d867c.  call `<init>`(v0, v1, v2) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d8682.  v1:= 0I;
+  #L1d8684.  v2:= 3I;
+  #L1d8686.  if v1 >= v2 then goto L1d86b6;
+  #L1d868a.  call temp:= `post`(v4, v5) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.post:(Ljava/lang/String;)Lcom/huawei/hms/analytics/core/transport/net/Response;` @kind direct;
+  #L1d8690.  v5:= temp @kind object;
+  #L1d8692.  return v5 @kind object;
+  #L1d8694.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L1d8696.  call temp:= `handlerException`(v4, v0) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.handlerException:(Ljava/lang/Exception;)Lcom/huawei/hms/analytics/core/transport/net/Response;` @kind direct;
+  #L1d869c.  v0:= temp @kind object;
+  #L1d869e.  call temp:= `getHttpCode`(v0) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.getHttpCode:()I` @kind virtual;
+  #L1d86a4.  v2:= temp;
+  #L1d86a6.  v3:= -104I;
+  #L1d86aa.  if v2 == v3 then goto L1d86b0;
+  #L1d86ae.  return v0 @kind object;
+  #L1d86b0.  v1:= v1 + 1;
+  #L1d86b4.  goto L1d8684;
+  #L1d86b6.  return v0 @kind object;
+  catch `java.lang.Exception` @[L1d868a..L1d8692] goto L1d8694;
+}
+procedure `void` `setHttpsConn`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v2 @kind this) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setHttpsConn:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L1d89a0.  v0:= v2.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.connection` @type ^`java.net.HttpURLConnection` @kind object;
+  #L1d89a4.  v1:= instanceof @variable v0 @type ^`javax.net.ssl.HttpsURLConnection` @kind boolean;
+  #L1d89a8.  if v1 == 0 then goto L1d89e4;
+  #L1d89ac.  v0:= (`javax.net.ssl.HttpsURLConnection`) v0 @kind object;
+  #L1d89b0.  v1:= v2.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.context` @type ^`android.content.Context` @kind object;
+  #L1d89b4.  call temp:= `getInstance`(v1) @signature `Lcom/huawei/secure/android/common/ssl/SecureSSLSocketFactoryNew;.getInstance:(Landroid/content/Context;)Lcom/huawei/secure/android/common/ssl/SecureSSLSocketFactoryNew;` @kind static;
+  #L1d89ba.  v1:= temp @kind object;
+  #L1d89bc.  call `setSSLSocketFactory`(v0, v1) @signature `Ljavax/net/ssl/HttpsURLConnection;.setSSLSocketFactory:(Ljavax/net/ssl/SSLSocketFactory;)V` @kind virtual;
+  #L1d89c2.  v1:= new `com.huawei.secure.android.common.ssl.hostname.StrictHostnameVerifier`;
+  #L1d89c6.  call `<init>`(v1) @signature `Lcom/huawei/secure/android/common/ssl/hostname/StrictHostnameVerifier;.<init>:()V` @kind direct;
+  #L1d89cc.  call `setHostnameVerifier`(v0, v1) @signature `Ljavax/net/ssl/HttpsURLConnection;.setHostnameVerifier:(Ljavax/net/ssl/HostnameVerifier;)V` @kind virtual;
+  #L1d89d2.  return @kind void;
+  #L1d89d4.  v0:= new `com.huawei.hms.analytics.core.transport.a.a`;
+  #L1d89d8.  v1:= "No ssl socket factory set" @kind object;
+  #L1d89dc.  call `<init>`(v0, v1) @signature `Lcom/huawei/hms/analytics/core/transport/a/a;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d89e2.  throw v0;
+  #L1d89e4.  return @kind void;
+  catch `java.lang.Exception` @[L1d89b0..L1d89d2] goto L1d89d4;
+}
+procedure `com.huawei.hms.analytics.core.transport.net.Response` `execute`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v5 @kind this) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.execute:()Lcom/huawei/hms/analytics/core/transport/net/Response;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L1d833c.  v0:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.collectURLs` @type ^`java.lang.String`[] @kind object;
+  #L1d8340.  v1:= "HttpTransportCommander" @kind object;
+  #L1d8344.  if v0 == 0 then goto L1d83a6;
+  #L1d8348.  v0:= length @variable v0;
+  #L1d834a.  if v0 != 0 then goto L1d8350;
+  #L1d834e.  goto L1d83a6;
+  #L1d8350.  v0:= 0I;
+  #L1d8352.  v2:= 0I;
+  #L1d8354.  if v2 == 0 then goto L1d8376;
+  #L1d8358.  call temp:= `getHttpCode`(v2) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.getHttpCode:()I` @kind virtual;
+  #L1d835e.  v3:= temp;
+  #L1d8360.  v4:= -104I;
+  #L1d8364.  if v3 != v4 then goto L1d8374;
+  #L1d8368.  v3:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.collectURLs` @type ^`java.lang.String`[] @kind object;
+  #L1d836c.  v3:= length @variable v3;
+  #L1d836e.  if v0 >= v3 then goto L1d8374;
+  #L1d8372.  goto L1d8376;
+  #L1d8374.  return v2 @kind object;
+  #L1d8376.  v2:= v5.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.collectURLs` @type ^`java.lang.String`[] @kind object;
+  #L1d837a.  v2:= v2[v0] @kind object;
+  #L1d837e.  call temp:= `reconnection`(v5, v2) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.reconnection:(Ljava/lang/String;)Lcom/huawei/hms/analytics/core/transport/net/Response;` @kind direct;
+  #L1d8384.  v2:= temp @kind object;
+  #L1d8386.  v0:= v0 + 1;
+  #L1d838a.  call temp:= `valueOf`(v0) @signature `Ljava/lang/String;.valueOf:(I)Ljava/lang/String;` @kind static;
+  #L1d8390.  v3:= temp @kind object;
+  #L1d8392.  v4:= "request times: " @kind object;
+  #L1d8396.  call temp:= `concat`(v4, v3) @signature `Ljava/lang/String;.concat:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L1d839c.  v3:= temp @kind object;
+  #L1d839e.  call `d`(v1, v3) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.d:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d83a4.  goto L1d8354;
+  #L1d83a6.  v0:= "collectUrls is empty" @kind object;
+  #L1d83aa.  call `e`(v1, v0) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d83b0.  v0:= new `com.huawei.hms.analytics.core.transport.net.Response`;
+  #L1d83b4.  v1:= -100I;
+  #L1d83b8.  v2:= "" @kind object;
+  #L1d83bc.  call `<init>`(v0, v1, v2) @signature `Lcom/huawei/hms/analytics/core/transport/net/Response;.<init>:(ILjava/lang/String;)V` @kind direct;
+  #L1d83c2.  return v0 @kind object;
+}
+procedure `void` `execute`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v2 @kind this, `com.huawei.hms.analytics.core.transport.CallbackListener` v3 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.execute:(Lcom/huawei/hms/analytics/core/transport/CallbackListener;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1d8944.  v0:= new `java.lang.Thread`;
+  #L1d8948.  v1:= new `com.huawei.hms.analytics.core.transport.net.HttpTransportHandler$1`;
+  #L1d894c.  call `<init>`(v1, v2, v3) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler$1;.<init>:(Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;Lcom/huawei/hms/analytics/core/transport/CallbackListener;)V` @kind direct;
+  #L1d8952.  call `<init>`(v0, v1) @signature `Ljava/lang/Thread;.<init>:(Ljava/lang/Runnable;)V` @kind direct;
+  #L1d8958.  call `start`(v0) @signature `Ljava/lang/Thread;.start:()V` @kind virtual;
+  #L1d895e.  return @kind void;
+}
+procedure `void` `setContext`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v0 @kind this, `android.content.Context` v1 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setContext:(Landroid/content/Context;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1d8970.  v0.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.context` @type ^`android.content.Context` := v1 @kind object;
+  #L1d8974.  return @kind void;
+}
+procedure `void` `setHttpHeaders`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v0 @kind this, `java.util.Map` v1 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setHttpHeaders:(Ljava/util/Map;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1d8988.  v0.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.headers` @type ^`java.util.Map` := v1 @kind object;
+  #L1d898c.  return @kind void;
+}
+procedure `void` `setReportData`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v0 @kind this, `java.lang.String` v1 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setReportData:(Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1d8a38.  return @kind void;
+}
+procedure `void` `setReportData`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v0 @kind this, `byte`[] v1 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setReportData:([B)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1d8a08.  if v1 == 0 then goto L1d8a1a;
+  #L1d8a0c.  call temp:= `clone`(v1) @signature `[B.clone:()Ljava/lang/Object;` @kind virtual;
+  #L1d8a12.  v1:= temp @kind object;
+  #L1d8a14.  v1:= (`byte`[]) v1 @kind object;
+  #L1d8a18.  goto L1d8a20;
+  #L1d8a1a.  v1:= 0I;
+  #L1d8a1c.  v1:= new `byte`[v1];
+  #L1d8a20.  v0.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.reportData` @type ^`byte`[] := v1 @kind object;
+  #L1d8a24.  return @kind void;
+}
+procedure `void` `setRequestMethod`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v0 @kind this, `java.lang.String` v1 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setRequestMethod:(Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1d8a4c.  v0.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.requestMethod` @type ^`java.lang.String` := v1 @kind object;
+  #L1d8a50.  return @kind void;
+}
+procedure `void` `setUrls`(`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler` v0 @kind this, `java.lang.String`[] v1 @kind object) @signature `Lcom/huawei/hms/analytics/core/transport/net/HttpTransportHandler;.setUrls:([Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1d8a64.  if v1 == 0 then goto L1d8a76;
+  #L1d8a68.  call temp:= `clone`(v1) @signature `[Ljava/lang/String;.clone:()Ljava/lang/Object;` @kind virtual;
+  #L1d8a6e.  v1:= temp @kind object;
+  #L1d8a70.  v1:= (`java.lang.String`[]) v1 @kind object;
+  #L1d8a74.  goto L1d8a78;
+  #L1d8a76.  v1:= 0I;
+  #L1d8a78.  v0.`com.huawei.hms.analytics.core.transport.net.HttpTransportHandler.collectURLs` @type ^`java.lang.String`[] := v1 @kind object;
+  #L1d8a7c.  return @kind void;
+}

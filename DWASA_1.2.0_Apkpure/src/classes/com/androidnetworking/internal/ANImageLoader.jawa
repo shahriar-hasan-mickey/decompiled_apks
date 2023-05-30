@@ -1,0 +1,376 @@
+record `com.androidnetworking.internal.ANImageLoader` @kind class @AccessFlag PUBLIC {
+  `int` `com.androidnetworking.internal.ANImageLoader.mBatchResponseDelayMs` @AccessFlag PRIVATE;
+  `java.util.HashMap` `com.androidnetworking.internal.ANImageLoader.mBatchedResponses` @AccessFlag PRIVATE_FINAL;
+  `android.graphics.BitmapFactory$Options` `com.androidnetworking.internal.ANImageLoader.mBitmapOptions` @AccessFlag PRIVATE;
+  `com.androidnetworking.internal.ANImageLoader$ImageCache` `com.androidnetworking.internal.ANImageLoader.mCache` @AccessFlag PRIVATE_FINAL;
+  `android.os.Handler` `com.androidnetworking.internal.ANImageLoader.mHandler` @AccessFlag PRIVATE_FINAL;
+  `java.util.HashMap` `com.androidnetworking.internal.ANImageLoader.mInFlightRequests` @AccessFlag PRIVATE_FINAL;
+  `java.lang.Runnable` `com.androidnetworking.internal.ANImageLoader.mRunnable` @AccessFlag PRIVATE;
+}
+global `int` `@@com.androidnetworking.internal.ANImageLoader.cacheSize` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.androidnetworking.internal.ANImageLoader.maxMemory` @AccessFlag PRIVATE_STATIC_FINAL;
+global `com.androidnetworking.internal.ANImageLoader` `@@com.androidnetworking.internal.ANImageLoader.sInstance` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lcom/androidnetworking/internal/ANImageLoader;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2aaf8c.  call temp:= `getRuntime`() @signature `Ljava/lang/Runtime;.getRuntime:()Ljava/lang/Runtime;` @kind static;
+  #L2aaf92.  v0:= temp @kind object;
+  #L2aaf94.  call temp:= `maxMemory`(v0) @signature `Ljava/lang/Runtime;.maxMemory:()J` @kind virtual;
+  #L2aaf9a.  v0:= temp @kind wide;
+  #L2aaf9c.  v2:= 1024L;
+  #L2aafa0.  v0:= v0 / v2 @kind long;
+  #L2aafa2.  v1:= (`int`) v0 @kind l2i;
+  #L2aafa4.  `@@com.androidnetworking.internal.ANImageLoader.maxMemory` @type ^`int` := v1;
+  #L2aafa8.  v0:= `@@com.androidnetworking.internal.ANImageLoader.maxMemory` @type ^`int`;
+  #L2aafac.  v0:= v0 / 8;
+  #L2aafb0.  `@@com.androidnetworking.internal.ANImageLoader.cacheSize` @type ^`int` := v0;
+  #L2aafb4.  return @kind void;
+}
+procedure `void` `<init>`(`com.androidnetworking.internal.ANImageLoader` v2 @kind this, `com.androidnetworking.internal.ANImageLoader$ImageCache` v3 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.<init>:(Lcom/androidnetworking/internal/ANImageLoader$ImageCache;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L2aafc8.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2aafce.  v0:= 100I;
+  #L2aafd2.  v2.`com.androidnetworking.internal.ANImageLoader.mBatchResponseDelayMs` @type ^`int` := v0;
+  #L2aafd6.  v0:= new `java.util.HashMap`;
+  #L2aafda.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L2aafe0.  v2.`com.androidnetworking.internal.ANImageLoader.mInFlightRequests` @type ^`java.util.HashMap` := v0 @kind object;
+  #L2aafe4.  v0:= new `java.util.HashMap`;
+  #L2aafe8.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L2aafee.  v2.`com.androidnetworking.internal.ANImageLoader.mBatchedResponses` @type ^`java.util.HashMap` := v0 @kind object;
+  #L2aaff2.  v0:= new `android.os.Handler`;
+  #L2aaff6.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L2aaffc.  v1:= temp @kind object;
+  #L2aaffe.  call `<init>`(v0, v1) @signature `Landroid/os/Handler;.<init>:(Landroid/os/Looper;)V` @kind direct;
+  #L2ab004.  v2.`com.androidnetworking.internal.ANImageLoader.mHandler` @type ^`android.os.Handler` := v0 @kind object;
+  #L2ab008.  v0:= new `android.graphics.BitmapFactory$Options`;
+  #L2ab00c.  call `<init>`(v0) @signature `Landroid/graphics/BitmapFactory$Options;.<init>:()V` @kind direct;
+  #L2ab012.  v2.`com.androidnetworking.internal.ANImageLoader.mBitmapOptions` @type ^`android.graphics.BitmapFactory$Options` := v0 @kind object;
+  #L2ab016.  v2.`com.androidnetworking.internal.ANImageLoader.mCache` @type ^`com.androidnetworking.internal.ANImageLoader$ImageCache` := v3 @kind object;
+  #L2ab01a.  return @kind void;
+}
+procedure `java.util.HashMap` `access$100`(`com.androidnetworking.internal.ANImageLoader` v0 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.access$100:(Lcom/androidnetworking/internal/ANImageLoader;)Ljava/util/HashMap;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2aaf5c.  v0:= v0.`com.androidnetworking.internal.ANImageLoader.mInFlightRequests` @type ^`java.util.HashMap` @kind object;
+  #L2aaf60.  return v0 @kind object;
+}
+procedure `java.util.HashMap` `access$200`(`com.androidnetworking.internal.ANImageLoader` v0 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.access$200:(Lcom/androidnetworking/internal/ANImageLoader;)Ljava/util/HashMap;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2aaf74.  v0:= v0.`com.androidnetworking.internal.ANImageLoader.mBatchedResponses` @type ^`java.util.HashMap` @kind object;
+  #L2aaf78.  return v0 @kind object;
+}
+procedure `java.lang.Runnable` `access$602`(`com.androidnetworking.internal.ANImageLoader` v0 @kind object, `java.lang.Runnable` v1 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.access$602:(Lcom/androidnetworking/internal/ANImageLoader;Ljava/lang/Runnable;)Ljava/lang/Runnable;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2aaed4.  v0.`com.androidnetworking.internal.ANImageLoader.mRunnable` @type ^`java.lang.Runnable` := v1 @kind object;
+  #L2aaed8.  return v1 @kind object;
+}
+procedure `void` `batchResponse`(`com.androidnetworking.internal.ANImageLoader` v2 @kind this, `java.lang.String` v3 @kind object, `com.androidnetworking.internal.ANImageLoader$BatchedImageRequest` v4 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.batchResponse:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2ab02c.  v0:= v2.`com.androidnetworking.internal.ANImageLoader.mBatchedResponses` @type ^`java.util.HashMap` @kind object;
+  #L2ab030.  call temp:= `put`(v0, v3, v4) @signature `Ljava/util/HashMap;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2ab036.  v3:= v2.`com.androidnetworking.internal.ANImageLoader.mRunnable` @type ^`java.lang.Runnable` @kind object;
+  #L2ab03a.  if v3 != 0 then goto L2ab060;
+  #L2ab03e.  v3:= new `com.androidnetworking.internal.ANImageLoader$3`;
+  #L2ab042.  call `<init>`(v3, v2) @signature `Lcom/androidnetworking/internal/ANImageLoader$3;.<init>:(Lcom/androidnetworking/internal/ANImageLoader;)V` @kind direct;
+  #L2ab048.  v2.`com.androidnetworking.internal.ANImageLoader.mRunnable` @type ^`java.lang.Runnable` := v3 @kind object;
+  #L2ab04c.  v3:= v2.`com.androidnetworking.internal.ANImageLoader.mHandler` @type ^`android.os.Handler` @kind object;
+  #L2ab050.  v4:= v2.`com.androidnetworking.internal.ANImageLoader.mRunnable` @type ^`java.lang.Runnable` @kind object;
+  #L2ab054.  v0:= v2.`com.androidnetworking.internal.ANImageLoader.mBatchResponseDelayMs` @type ^`int`;
+  #L2ab058.  v0:= (`long`) v0 @kind i2l;
+  #L2ab05a.  call temp:= `postDelayed`(v3, v4, v0) @signature `Landroid/os/Handler;.postDelayed:(Ljava/lang/Runnable;J)Z` @kind virtual;
+  #L2ab060.  return @kind void;
+}
+procedure `java.lang.String` `getCacheKey`(`java.lang.String` v2 @kind object, `int` v3 , `int` v4 , `android.widget.ImageView$ScaleType` v5 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.getCacheKey:(Ljava/lang/String;IILandroid/widget/ImageView$ScaleType;)Ljava/lang/String;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2aaeec.  v0:= new `java.lang.StringBuilder`;
+  #L2aaef0.  call temp:= `length`(v2) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L2aaef6.  v1:= temp;
+  #L2aaef8.  v1:= v1 + 12;
+  #L2aaefc.  call `<init>`(v0, v1) @signature `Ljava/lang/StringBuilder;.<init>:(I)V` @kind direct;
+  #L2aaf02.  v1:= "#W" @kind object;
+  #L2aaf06.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2aaf0c.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2aaf12.  v3:= "#H" @kind object;
+  #L2aaf16.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2aaf1c.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2aaf22.  v3:= "#S" @kind object;
+  #L2aaf26.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2aaf2c.  call temp:= `ordinal`(v5) @signature `Landroid/widget/ImageView$ScaleType;.ordinal:()I` @kind virtual;
+  #L2aaf32.  v3:= temp;
+  #L2aaf34.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2aaf3a.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2aaf40.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2aaf46.  v2:= temp @kind object;
+  #L2aaf48.  return v2 @kind object;
+}
+procedure `com.androidnetworking.internal.ANImageLoader$ImageListener` `getImageListener`(`android.widget.ImageView` v1 @kind object, `int` v2 , `int` v3 ) @signature `Lcom/androidnetworking/internal/ANImageLoader;.getImageListener:(Landroid/widget/ImageView;II)Lcom/androidnetworking/internal/ANImageLoader$ImageListener;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2aaeb8.  v0:= new `com.androidnetworking.internal.ANImageLoader$1`;
+  #L2aaebc.  call `<init>`(v0, v1, v2, v3) @signature `Lcom/androidnetworking/internal/ANImageLoader$1;.<init>:(Landroid/widget/ImageView;II)V` @kind direct;
+  #L2aaec2.  return v0 @kind object;
+}
+procedure `com.androidnetworking.internal.ANImageLoader` `getInstance`() @signature `Lcom/androidnetworking/internal/ANImageLoader;.getInstance:()Lcom/androidnetworking/internal/ANImageLoader;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2aad28.  v0:= `@@com.androidnetworking.internal.ANImageLoader.sInstance` @type ^`com.androidnetworking.internal.ANImageLoader` @kind object;
+  #L2aad2c.  if v0 != 0 then goto L2aad64;
+  #L2aad30.  v0:= constclass @type ^`com.androidnetworking.internal.ANImageLoader` @kind object;
+  #L2aad34.  @monitorenter v0
+  #L2aad36.  v1:= `@@com.androidnetworking.internal.ANImageLoader.sInstance` @type ^`com.androidnetworking.internal.ANImageLoader` @kind object;
+  #L2aad3a.  if v1 != 0 then goto L2aad5a;
+  #L2aad3e.  v1:= new `com.androidnetworking.internal.ANImageLoader`;
+  #L2aad42.  v2:= new `com.androidnetworking.cache.LruBitmapCache`;
+  #L2aad46.  v3:= `@@com.androidnetworking.internal.ANImageLoader.cacheSize` @type ^`int`;
+  #L2aad4a.  call `<init>`(v2, v3) @signature `Lcom/androidnetworking/cache/LruBitmapCache;.<init>:(I)V` @kind direct;
+  #L2aad50.  call `<init>`(v1, v2) @signature `Lcom/androidnetworking/internal/ANImageLoader;.<init>:(Lcom/androidnetworking/internal/ANImageLoader$ImageCache;)V` @kind direct;
+  #L2aad56.  `@@com.androidnetworking.internal.ANImageLoader.sInstance` @type ^`com.androidnetworking.internal.ANImageLoader` := v1 @kind object;
+  #L2aad5a.  @monitorexit v0
+  #L2aad5c.  goto L2aad64;
+  #L2aad5e.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2aad60.  @monitorexit v0
+  #L2aad62.  throw v1;
+  #L2aad64.  v0:= `@@com.androidnetworking.internal.ANImageLoader.sInstance` @type ^`com.androidnetworking.internal.ANImageLoader` @kind object;
+  #L2aad68.  return v0 @kind object;
+  catch `java.lang.Throwable` @[L2aad36..L2aad62] goto L2aad5e;
+}
+procedure `void` `initialize`() @signature `Lcom/androidnetworking/internal/ANImageLoader;.initialize:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2ab074.  call temp:= `getInstance`() @signature `Lcom/androidnetworking/internal/ANImageLoader;.getInstance:()Lcom/androidnetworking/internal/ANImageLoader;` @kind static;
+  #L2ab07a.  return @kind void;
+}
+procedure `void` `throwIfNotOnMainThread`(`com.androidnetworking.internal.ANImageLoader` v2 @kind this) @signature `Lcom/androidnetworking/internal/ANImageLoader;.throwIfNotOnMainThread:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2ab12c.  call temp:= `myLooper`() @signature `Landroid/os/Looper;.myLooper:()Landroid/os/Looper;` @kind static;
+  #L2ab132.  v0:= temp @kind object;
+  #L2ab134.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L2ab13a.  v1:= temp @kind object;
+  #L2ab13c.  if v0 != v1 then goto L2ab142;
+  #L2ab140.  return @kind void;
+  #L2ab142.  v0:= new `java.lang.IllegalStateException`;
+  #L2ab146.  v1:= "ImageLoader must be invoked from the main thread." @kind object;
+  #L2ab14a.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2ab150.  throw v0;
+}
+procedure `com.androidnetworking.internal.ANImageLoader$ImageContainer` `get`(`com.androidnetworking.internal.ANImageLoader` v1 @kind this, `java.lang.String` v2 @kind object, `com.androidnetworking.internal.ANImageLoader$ImageListener` v3 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.get:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$ImageListener;)Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2aada0.  v0:= 0I;
+  #L2aada2.  call temp:= `get`(v1, v2, v3, v0, v0) @signature `Lcom/androidnetworking/internal/ANImageLoader;.get:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$ImageListener;II)Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;` @kind virtual;
+  #L2aada8.  v2:= temp @kind object;
+  #L2aadaa.  return v2 @kind object;
+}
+procedure `com.androidnetworking.internal.ANImageLoader$ImageContainer` `get`(`com.androidnetworking.internal.ANImageLoader` v6 @kind this, `java.lang.String` v7 @kind object, `com.androidnetworking.internal.ANImageLoader$ImageListener` v8 @kind object, `int` v9 , `int` v10 ) @signature `Lcom/androidnetworking/internal/ANImageLoader;.get:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$ImageListener;II)Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L2aadbc.  v5:= `@@android.widget.ImageView$ScaleType.CENTER_INSIDE` @type ^`android.widget.ImageView$ScaleType` @kind object;
+  #L2aadc0.  v0:= v6 @kind object;
+  #L2aadc2.  v1:= v7 @kind object;
+  #L2aadc4.  v2:= v8 @kind object;
+  #L2aadc6.  v3:= v9;
+  #L2aadc8.  v4:= v10;
+  #L2aadca.  call temp:= `get`(v0, v1, v2, v3, v4, v5) @signature `Lcom/androidnetworking/internal/ANImageLoader;.get:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$ImageListener;IILandroid/widget/ImageView$ScaleType;)Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;` @kind virtual;
+  #L2aadd0.  v7:= temp @kind object;
+  #L2aadd2.  return v7 @kind object;
+}
+procedure `com.androidnetworking.internal.ANImageLoader$ImageContainer` `get`(`com.androidnetworking.internal.ANImageLoader` v15 @kind this, `java.lang.String` v16 @kind object, `com.androidnetworking.internal.ANImageLoader$ImageListener` v17 @kind object, `int` v18 , `int` v19 , `android.widget.ImageView$ScaleType` v20 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.get:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$ImageListener;IILandroid/widget/ImageView$ScaleType;)Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+
+  #L2aade4.  v6:= v15 @kind object;
+  #L2aade6.  v7:= v17 @kind object;
+  #L2aadea.  call `throwIfNotOnMainThread`(v15) @signature `Lcom/androidnetworking/internal/ANImageLoader;.throwIfNotOnMainThread:()V` @kind direct;
+  #L2aadf0.  v8:= v16 @kind object;
+  #L2aadf4.  v9:= v18;
+  #L2aadf8.  v10:= v19;
+  #L2aadfc.  v11:= v20 @kind object;
+  #L2aae00.  call temp:= `getCacheKey`(v8, v9, v10, v11) @signature `Lcom/androidnetworking/internal/ANImageLoader;.getCacheKey:(Ljava/lang/String;IILandroid/widget/ImageView$ScaleType;)Ljava/lang/String;` @kind static;
+  #L2aae06.  v12:= temp @kind object;
+  #L2aae08.  v0:= v6.`com.androidnetworking.internal.ANImageLoader.mCache` @type ^`com.androidnetworking.internal.ANImageLoader$ImageCache` @kind object;
+  #L2aae0c.  call temp:= `getBitmap`(v0, v12) @signature `Lcom/androidnetworking/internal/ANImageLoader$ImageCache;.getBitmap:(Ljava/lang/String;)Landroid/graphics/Bitmap;` @kind interface;
+  #L2aae12.  v2:= temp @kind object;
+  #L2aae14.  v13:= 1I;
+  #L2aae16.  if v2 == 0 then goto L2aae38;
+  #L2aae1a.  v9:= new `com.androidnetworking.internal.ANImageLoader$ImageContainer`;
+  #L2aae1e.  v4:= 0I;
+  #L2aae20.  v5:= 0I;
+  #L2aae22.  v0:= v9 @kind object;
+  #L2aae24.  v1:= v15 @kind object;
+  #L2aae26.  v3:= v16 @kind object;
+  #L2aae2a.  call `<init>`(v0, v1, v2, v3, v4, v5) @signature `Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;.<init>:(Lcom/androidnetworking/internal/ANImageLoader;Landroid/graphics/Bitmap;Ljava/lang/String;Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$ImageListener;)V` @kind direct;
+  #L2aae30.  call `onResponse`(v7, v9, v13) @signature `Lcom/androidnetworking/internal/ANImageLoader$ImageListener;.onResponse:(Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;Z)V` @kind interface;
+  #L2aae36.  return v9 @kind object;
+  #L2aae38.  v14:= new `com.androidnetworking.internal.ANImageLoader$ImageContainer`;
+  #L2aae3c.  v2:= 0I;
+  #L2aae3e.  v0:= v14 @kind object;
+  #L2aae40.  v1:= v15 @kind object;
+  #L2aae42.  v3:= v16 @kind object;
+  #L2aae46.  v4:= v12 @kind object;
+  #L2aae48.  v5:= v17 @kind object;
+  #L2aae4c.  call `<init>`(v0, v1, v2, v3, v4, v5) @signature `Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;.<init>:(Lcom/androidnetworking/internal/ANImageLoader;Landroid/graphics/Bitmap;Ljava/lang/String;Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$ImageListener;)V` @kind direct;
+  #L2aae52.  call `onResponse`(v7, v14, v13) @signature `Lcom/androidnetworking/internal/ANImageLoader$ImageListener;.onResponse:(Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;Z)V` @kind interface;
+  #L2aae58.  v0:= v6.`com.androidnetworking.internal.ANImageLoader.mInFlightRequests` @type ^`java.util.HashMap` @kind object;
+  #L2aae5c.  call temp:= `get`(v0, v12) @signature `Ljava/util/HashMap;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2aae62.  v0:= temp @kind object;
+  #L2aae64.  v0:= (`com.androidnetworking.internal.ANImageLoader$BatchedImageRequest`) v0 @kind object;
+  #L2aae68.  if v0 == 0 then goto L2aae74;
+  #L2aae6c.  call `addContainer`(v0, v14) @signature `Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;.addContainer:(Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;)V` @kind virtual;
+  #L2aae72.  return v14 @kind object;
+  #L2aae74.  v0:= v15 @kind object;
+  #L2aae76.  v1:= v16 @kind object;
+  #L2aae7a.  v2:= v18;
+  #L2aae7e.  v3:= v19;
+  #L2aae82.  v4:= v20 @kind object;
+  #L2aae86.  v5:= v12 @kind object;
+  #L2aae88.  call temp:= `makeImageRequest`(v0, v1, v2, v3, v4, v5) @signature `Lcom/androidnetworking/internal/ANImageLoader;.makeImageRequest:(Ljava/lang/String;IILandroid/widget/ImageView$ScaleType;Ljava/lang/String;)Lcom/androidnetworking/common/ANRequest;` @kind virtual;
+  #L2aae8e.  v0:= temp @kind object;
+  #L2aae90.  v1:= v6.`com.androidnetworking.internal.ANImageLoader.mInFlightRequests` @type ^`java.util.HashMap` @kind object;
+  #L2aae94.  v2:= new `com.androidnetworking.internal.ANImageLoader$BatchedImageRequest`;
+  #L2aae98.  call `<init>`(v2, v15, v0, v14) @signature `Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;.<init>:(Lcom/androidnetworking/internal/ANImageLoader;Lcom/androidnetworking/common/ANRequest;Lcom/androidnetworking/internal/ANImageLoader$ImageContainer;)V` @kind direct;
+  #L2aae9e.  call temp:= `put`(v1, v12, v2) @signature `Ljava/util/HashMap;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2aaea4.  return v14 @kind object;
+}
+procedure `com.androidnetworking.internal.ANImageLoader$ImageCache` `getImageCache`(`com.androidnetworking.internal.ANImageLoader` v1 @kind this) @signature `Lcom/androidnetworking/internal/ANImageLoader;.getImageCache:()Lcom/androidnetworking/internal/ANImageLoader$ImageCache;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2aad88.  v0:= v1.`com.androidnetworking.internal.ANImageLoader.mCache` @type ^`com.androidnetworking.internal.ANImageLoader$ImageCache` @kind object;
+  #L2aad8c.  return v0 @kind object;
+}
+procedure `boolean` `isCached`(`com.androidnetworking.internal.ANImageLoader` v1 @kind this, `java.lang.String` v2 @kind object, `int` v3 , `int` v4 ) @signature `Lcom/androidnetworking/internal/ANImageLoader;.isCached:(Ljava/lang/String;II)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2aac60.  v0:= `@@android.widget.ImageView$ScaleType.CENTER_INSIDE` @type ^`android.widget.ImageView$ScaleType` @kind object;
+  #L2aac64.  call temp:= `isCached`(v1, v2, v3, v4, v0) @signature `Lcom/androidnetworking/internal/ANImageLoader;.isCached:(Ljava/lang/String;IILandroid/widget/ImageView$ScaleType;)Z` @kind virtual;
+  #L2aac6a.  v2:= temp;
+  #L2aac6c.  return v2;
+}
+procedure `boolean` `isCached`(`com.androidnetworking.internal.ANImageLoader` v0 @kind this, `java.lang.String` v1 @kind object, `int` v2 , `int` v3 , `android.widget.ImageView$ScaleType` v4 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.isCached:(Ljava/lang/String;IILandroid/widget/ImageView$ScaleType;)Z` @AccessFlag PUBLIC {
+    temp;
+
+  #L2aac80.  call `throwIfNotOnMainThread`(v0) @signature `Lcom/androidnetworking/internal/ANImageLoader;.throwIfNotOnMainThread:()V` @kind direct;
+  #L2aac86.  call temp:= `getCacheKey`(v1, v2, v3, v4) @signature `Lcom/androidnetworking/internal/ANImageLoader;.getCacheKey:(Ljava/lang/String;IILandroid/widget/ImageView$ScaleType;)Ljava/lang/String;` @kind static;
+  #L2aac8c.  v1:= temp @kind object;
+  #L2aac8e.  v2:= v0.`com.androidnetworking.internal.ANImageLoader.mCache` @type ^`com.androidnetworking.internal.ANImageLoader$ImageCache` @kind object;
+  #L2aac92.  call temp:= `getBitmap`(v2, v1) @signature `Lcom/androidnetworking/internal/ANImageLoader$ImageCache;.getBitmap:(Ljava/lang/String;)Landroid/graphics/Bitmap;` @kind interface;
+  #L2aac98.  v1:= temp @kind object;
+  #L2aac9a.  if v1 == 0 then goto L2aaca2;
+  #L2aac9e.  v1:= 1I;
+  #L2aaca0.  goto L2aaca4;
+  #L2aaca2.  v1:= 0I;
+  #L2aaca4.  return v1;
+}
+procedure `com.androidnetworking.common.ANRequest` `makeImageRequest`(`com.androidnetworking.internal.ANImageLoader` v1 @kind this, `java.lang.String` v2 @kind object, `int` v3 , `int` v4 , `android.widget.ImageView$ScaleType` v5 @kind object, `java.lang.String` v6 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.makeImageRequest:(Ljava/lang/String;IILandroid/widget/ImageView$ScaleType;Ljava/lang/String;)Lcom/androidnetworking/common/ANRequest;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L2aacb8.  call temp:= `get`(v2) @signature `Lcom/androidnetworking/AndroidNetworking;.get:(Ljava/lang/String;)Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;` @kind static;
+  #L2aacbe.  v2:= temp @kind object;
+  #L2aacc0.  v0:= "ImageRequestTag" @kind object;
+  #L2aacc4.  call temp:= `setTag`(v2, v0) @signature `Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;.setTag:(Ljava/lang/Object;)Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;` @kind virtual;
+  #L2aacca.  v2:= temp @kind object;
+  #L2aaccc.  call temp:= `setBitmapMaxHeight`(v2, v4) @signature `Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;.setBitmapMaxHeight:(I)Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;` @kind virtual;
+  #L2aacd2.  v2:= temp @kind object;
+  #L2aacd4.  call temp:= `setBitmapMaxWidth`(v2, v3) @signature `Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;.setBitmapMaxWidth:(I)Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;` @kind virtual;
+  #L2aacda.  v2:= temp @kind object;
+  #L2aacdc.  call temp:= `setImageScaleType`(v2, v5) @signature `Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;.setImageScaleType:(Landroid/widget/ImageView$ScaleType;)Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;` @kind virtual;
+  #L2aace2.  v2:= temp @kind object;
+  #L2aace4.  v3:= `@@android.graphics.Bitmap$Config.RGB_565` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L2aace8.  call temp:= `setBitmapConfig`(v2, v3) @signature `Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;.setBitmapConfig:(Landroid/graphics/Bitmap$Config;)Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;` @kind virtual;
+  #L2aacee.  v2:= temp @kind object;
+  #L2aacf0.  v3:= v1.`com.androidnetworking.internal.ANImageLoader.mBitmapOptions` @type ^`android.graphics.BitmapFactory$Options` @kind object;
+  #L2aacf4.  call temp:= `setBitmapOptions`(v2, v3) @signature `Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;.setBitmapOptions:(Landroid/graphics/BitmapFactory$Options;)Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;` @kind virtual;
+  #L2aacfa.  v2:= temp @kind object;
+  #L2aacfc.  call temp:= `build`(v2) @signature `Lcom/androidnetworking/common/ANRequest$GetRequestBuilder;.build:()Lcom/androidnetworking/common/ANRequest;` @kind virtual;
+  #L2aad02.  v2:= temp @kind object;
+  #L2aad04.  v3:= new `com.androidnetworking.internal.ANImageLoader$2`;
+  #L2aad08.  call `<init>`(v3, v1, v6) @signature `Lcom/androidnetworking/internal/ANImageLoader$2;.<init>:(Lcom/androidnetworking/internal/ANImageLoader;Ljava/lang/String;)V` @kind direct;
+  #L2aad0e.  call `getAsBitmap`(v2, v3) @signature `Lcom/androidnetworking/common/ANRequest;.getAsBitmap:(Lcom/androidnetworking/interfaces/BitmapRequestListener;)V` @kind virtual;
+  #L2aad14.  return v2 @kind object;
+}
+procedure `void` `onGetImageError`(`com.androidnetworking.internal.ANImageLoader` v1 @kind this, `java.lang.String` v2 @kind object, `com.androidnetworking.error.ANError` v3 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.onGetImageError:(Ljava/lang/String;Lcom/androidnetworking/error/ANError;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L2ab08c.  v0:= v1.`com.androidnetworking.internal.ANImageLoader.mInFlightRequests` @type ^`java.util.HashMap` @kind object;
+  #L2ab090.  call temp:= `remove`(v0, v2) @signature `Ljava/util/HashMap;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2ab096.  v0:= temp @kind object;
+  #L2ab098.  v0:= (`com.androidnetworking.internal.ANImageLoader$BatchedImageRequest`) v0 @kind object;
+  #L2ab09c.  if v0 == 0 then goto L2ab0ac;
+  #L2ab0a0.  call `setError`(v0, v3) @signature `Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;.setError:(Lcom/androidnetworking/error/ANError;)V` @kind virtual;
+  #L2ab0a6.  call `batchResponse`(v1, v2, v0) @signature `Lcom/androidnetworking/internal/ANImageLoader;.batchResponse:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;)V` @kind direct;
+  #L2ab0ac.  return @kind void;
+}
+procedure `void` `onGetImageSuccess`(`com.androidnetworking.internal.ANImageLoader` v1 @kind this, `java.lang.String` v2 @kind object, `android.graphics.Bitmap` v3 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.onGetImageSuccess:(Ljava/lang/String;Landroid/graphics/Bitmap;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L2ab0c0.  v0:= v1.`com.androidnetworking.internal.ANImageLoader.mCache` @type ^`com.androidnetworking.internal.ANImageLoader$ImageCache` @kind object;
+  #L2ab0c4.  call `putBitmap`(v0, v2, v3) @signature `Lcom/androidnetworking/internal/ANImageLoader$ImageCache;.putBitmap:(Ljava/lang/String;Landroid/graphics/Bitmap;)V` @kind interface;
+  #L2ab0ca.  v0:= v1.`com.androidnetworking.internal.ANImageLoader.mInFlightRequests` @type ^`java.util.HashMap` @kind object;
+  #L2ab0ce.  call temp:= `remove`(v0, v2) @signature `Ljava/util/HashMap;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2ab0d4.  v0:= temp @kind object;
+  #L2ab0d6.  v0:= (`com.androidnetworking.internal.ANImageLoader$BatchedImageRequest`) v0 @kind object;
+  #L2ab0da.  if v0 == 0 then goto L2ab0ea;
+  #L2ab0de.  call temp:= `access$002`(v0, v3) @signature `Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;.access$002:(Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;Landroid/graphics/Bitmap;)Landroid/graphics/Bitmap;` @kind static;
+  #L2ab0e4.  call `batchResponse`(v1, v2, v0) @signature `Lcom/androidnetworking/internal/ANImageLoader;.batchResponse:(Ljava/lang/String;Lcom/androidnetworking/internal/ANImageLoader$BatchedImageRequest;)V` @kind direct;
+  #L2ab0ea.  return @kind void;
+}
+procedure `void` `setBatchedResponseDelay`(`com.androidnetworking.internal.ANImageLoader` v0 @kind this, `int` v1 ) @signature `Lcom/androidnetworking/internal/ANImageLoader;.setBatchedResponseDelay:(I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L2ab0fc.  v0.`com.androidnetworking.internal.ANImageLoader.mBatchResponseDelayMs` @type ^`int` := v1;
+  #L2ab100.  return @kind void;
+}
+procedure `void` `setBitmapDecodeOptions`(`com.androidnetworking.internal.ANImageLoader` v0 @kind this, `android.graphics.BitmapFactory$Options` v1 @kind object) @signature `Lcom/androidnetworking/internal/ANImageLoader;.setBitmapDecodeOptions:(Landroid/graphics/BitmapFactory$Options;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L2ab114.  v0.`com.androidnetworking.internal.ANImageLoader.mBitmapOptions` @type ^`android.graphics.BitmapFactory$Options` := v1 @kind object;
+  #L2ab118.  return @kind void;
+}

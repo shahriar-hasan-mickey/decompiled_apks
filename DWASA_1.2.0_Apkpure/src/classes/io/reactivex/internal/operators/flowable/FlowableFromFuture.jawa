@@ -1,0 +1,53 @@
+record `io.reactivex.internal.operators.flowable.FlowableFromFuture` @kind class @AccessFlag PUBLIC_FINAL extends `io.reactivex.Flowable` @kind class {
+  `java.util.concurrent.Future` `io.reactivex.internal.operators.flowable.FlowableFromFuture.future` @AccessFlag FINAL;
+  `long` `io.reactivex.internal.operators.flowable.FlowableFromFuture.timeout` @AccessFlag FINAL;
+  `java.util.concurrent.TimeUnit` `io.reactivex.internal.operators.flowable.FlowableFromFuture.unit` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.internal.operators.flowable.FlowableFromFuture` v0 @kind this, `java.util.concurrent.Future` v1 @kind object, `long` v2 , `java.util.concurrent.TimeUnit` v4 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableFromFuture;.<init>:(Ljava/util/concurrent/Future;JLjava/util/concurrent/TimeUnit;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L3fa7f4.  call `<init>`(v0) @signature `Lio/reactivex/Flowable;.<init>:()V` @kind direct;
+  #L3fa7fa.  v0.`io.reactivex.internal.operators.flowable.FlowableFromFuture.future` @type ^`java.util.concurrent.Future` := v1 @kind object;
+  #L3fa7fe.  v0.`io.reactivex.internal.operators.flowable.FlowableFromFuture.timeout` @type ^`long` := v2 @kind wide;
+  #L3fa802.  v0.`io.reactivex.internal.operators.flowable.FlowableFromFuture.unit` @type ^`java.util.concurrent.TimeUnit` := v4 @kind object;
+  #L3fa806.  return @kind void;
+}
+procedure `void` `subscribeActual`(`io.reactivex.internal.operators.flowable.FlowableFromFuture` v5 @kind this, `org.reactivestreams.Subscriber` v6 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableFromFuture;.subscribeActual:(Lorg/reactivestreams/Subscriber;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3fa818.  v0:= new `io.reactivex.internal.subscriptions.DeferredScalarSubscription`;
+  #L3fa81c.  call `<init>`(v0, v6) @signature `Lio/reactivex/internal/subscriptions/DeferredScalarSubscription;.<init>:(Lorg/reactivestreams/Subscriber;)V` @kind direct;
+  #L3fa822.  call `onSubscribe`(v6, v0) @signature `Lorg/reactivestreams/Subscriber;.onSubscribe:(Lorg/reactivestreams/Subscription;)V` @kind interface;
+  #L3fa828.  v1:= v5.`io.reactivex.internal.operators.flowable.FlowableFromFuture.unit` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L3fa82c.  if v1 == 0 then goto L3fa846;
+  #L3fa830.  v1:= v5.`io.reactivex.internal.operators.flowable.FlowableFromFuture.future` @type ^`java.util.concurrent.Future` @kind object;
+  #L3fa834.  v2:= v5.`io.reactivex.internal.operators.flowable.FlowableFromFuture.timeout` @type ^`long` @kind wide;
+  #L3fa838.  v4:= v5.`io.reactivex.internal.operators.flowable.FlowableFromFuture.unit` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L3fa83c.  call temp:= `get`(v1, v2, v4) @signature `Ljava/util/concurrent/Future;.get:(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;` @kind interface;
+  #L3fa842.  v1:= temp @kind object;
+  #L3fa844.  goto L3fa852;
+  #L3fa846.  v1:= v5.`io.reactivex.internal.operators.flowable.FlowableFromFuture.future` @type ^`java.util.concurrent.Future` @kind object;
+  #L3fa84a.  call temp:= `get`(v1) @signature `Ljava/util/concurrent/Future;.get:()Ljava/lang/Object;` @kind interface;
+  #L3fa850.  v1:= temp @kind object;
+  #L3fa852.  if v1 != 0 then goto L3fa86c;
+  #L3fa856.  v0:= new `java.lang.NullPointerException`;
+  #L3fa85a.  v1:= "The future returned null" @kind object;
+  #L3fa85e.  call `<init>`(v0, v1) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3fa864.  call `onError`(v6, v0) @signature `Lorg/reactivestreams/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L3fa86a.  goto L3fa872;
+  #L3fa86c.  call `complete`(v0, v1) @signature `Lio/reactivex/internal/subscriptions/DeferredScalarSubscription;.complete:(Ljava/lang/Object;)V` @kind virtual;
+  #L3fa872.  return @kind void;
+  #L3fa874.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3fa876.  call `throwIfFatal`(v1) @signature `Lio/reactivex/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L3fa87c.  call temp:= `isCancelled`(v0) @signature `Lio/reactivex/internal/subscriptions/DeferredScalarSubscription;.isCancelled:()Z` @kind virtual;
+  #L3fa882.  v0:= temp;
+  #L3fa884.  if v0 != 0 then goto L3fa88e;
+  #L3fa888.  call `onError`(v6, v1) @signature `Lorg/reactivestreams/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L3fa88e.  return @kind void;
+  catch `java.lang.Throwable` @[L3fa828..L3fa852] goto L3fa874;
+}

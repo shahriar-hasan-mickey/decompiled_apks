@@ -1,0 +1,76 @@
+record `io.reactivex.internal.util.BlockingHelper` @kind class @AccessFlag PUBLIC_FINAL {
+}
+procedure `void` `<init>`(`io.reactivex.internal.util.BlockingHelper` v2 @kind this) @signature `Lio/reactivex/internal/util/BlockingHelper;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L489a74.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L489a7a.  v0:= new `java.lang.IllegalStateException`;
+  #L489a7e.  v1:= "No instances!" @kind object;
+  #L489a82.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L489a88.  throw v0;
+}
+procedure `void` `awaitForComplete`(`java.util.concurrent.CountDownLatch` v5 @kind object, `io.reactivex.disposables.Disposable` v6 @kind object) @signature `Lio/reactivex/internal/util/BlockingHelper;.awaitForComplete:(Ljava/util/concurrent/CountDownLatch;Lio/reactivex/disposables/Disposable;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L489a9c.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L489aa2.  v0:= temp @kind wide;
+  #L489aa4.  v2:= 0L;
+  #L489aa8.  v4:= lcmp(v0, v2);
+  #L489aac.  if v4 != 0 then goto L489ab2;
+  #L489ab0.  return @kind void;
+  #L489ab2.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L489ab8.  call `await`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L489abe.  return @kind void;
+  #L489ac0.  v5:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L489ac2.  call `dispose`(v6) @signature `Lio/reactivex/disposables/Disposable;.dispose:()V` @kind interface;
+  #L489ac8.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L489ace.  v6:= temp @kind object;
+  #L489ad0.  call `interrupt`(v6) @signature `Ljava/lang/Thread;.interrupt:()V` @kind virtual;
+  #L489ad6.  v6:= new `java.lang.IllegalStateException`;
+  #L489ada.  v0:= "Interrupted while waiting for subscription to complete." @kind object;
+  #L489ade.  call `<init>`(v6, v0, v5) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L489ae4.  throw v6;
+  catch `java.lang.InterruptedException` @[L489ab2..L489abe] goto L489ac0;
+}
+procedure `void` `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L489b08.  call temp:= `isFailOnNonBlockingScheduler`() @signature `Lio/reactivex/plugins/RxJavaPlugins;.isFailOnNonBlockingScheduler:()Z` @kind static;
+  #L489b0e.  v0:= temp;
+  #L489b10.  if v0 == 0 then goto L489b7a;
+  #L489b14.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L489b1a.  v0:= temp @kind object;
+  #L489b1c.  v0:= instanceof @variable v0 @type ^`io.reactivex.internal.schedulers.NonBlockingThread` @kind boolean;
+  #L489b20.  if v0 != 0 then goto L489b32;
+  #L489b24.  call temp:= `onBeforeBlocking`() @signature `Lio/reactivex/plugins/RxJavaPlugins;.onBeforeBlocking:()Z` @kind static;
+  #L489b2a.  v0:= temp;
+  #L489b2c.  if v0 != 0 then goto L489b32;
+  #L489b30.  goto L489b7a;
+  #L489b32.  v0:= new `java.lang.IllegalStateException`;
+  #L489b36.  v1:= new `java.lang.StringBuilder`;
+  #L489b3a.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L489b40.  v2:= "Attempt to block on a Scheduler " @kind object;
+  #L489b44.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L489b4a.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L489b50.  v2:= temp @kind object;
+  #L489b52.  call temp:= `getName`(v2) @signature `Ljava/lang/Thread;.getName:()Ljava/lang/String;` @kind virtual;
+  #L489b58.  v2:= temp @kind object;
+  #L489b5a.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L489b60.  v2:= " that doesn't support blocking operators as they may lead to deadlock" @kind object;
+  #L489b64.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L489b6a.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L489b70.  v1:= temp @kind object;
+  #L489b72.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L489b78.  throw v0;
+  #L489b7a.  return @kind void;
+}

@@ -1,0 +1,109 @@
+record `org.greenrobot.eventbus.HandlerPoster` @kind class @AccessFlag PUBLIC extends `android.os.Handler` @kind class, `org.greenrobot.eventbus.Poster` @kind interface {
+  `org.greenrobot.eventbus.EventBus` `org.greenrobot.eventbus.HandlerPoster.eventBus` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.HandlerPoster.handlerActive` @AccessFlag PRIVATE;
+  `int` `org.greenrobot.eventbus.HandlerPoster.maxMillisInsideHandleMessage` @AccessFlag PRIVATE_FINAL;
+  `org.greenrobot.eventbus.PendingPostQueue` `org.greenrobot.eventbus.HandlerPoster.queue` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`org.greenrobot.eventbus.HandlerPoster` v0 @kind this, `org.greenrobot.eventbus.EventBus` v1 @kind object, `android.os.Looper` v2 @kind object, `int` v3 ) @signature `Lorg/greenrobot/eventbus/HandlerPoster;.<init>:(Lorg/greenrobot/eventbus/EventBus;Landroid/os/Looper;I)V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+
+  #L48246c.  call `<init>`(v0, v2) @signature `Landroid/os/Handler;.<init>:(Landroid/os/Looper;)V` @kind direct;
+  #L482472.  v0.`org.greenrobot.eventbus.HandlerPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` := v1 @kind object;
+  #L482476.  v0.`org.greenrobot.eventbus.HandlerPoster.maxMillisInsideHandleMessage` @type ^`int` := v3;
+  #L48247a.  v1:= new `org.greenrobot.eventbus.PendingPostQueue`;
+  #L48247e.  call `<init>`(v1) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.<init>:()V` @kind direct;
+  #L482484.  v0.`org.greenrobot.eventbus.HandlerPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` := v1 @kind object;
+  #L482488.  return @kind void;
+}
+procedure `void` `enqueue`(`org.greenrobot.eventbus.HandlerPoster` v0 @kind this, `org.greenrobot.eventbus.Subscription` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lorg/greenrobot/eventbus/HandlerPoster;.enqueue:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L48249c.  call temp:= `obtainPendingPost`(v1, v2) @signature `Lorg/greenrobot/eventbus/PendingPost;.obtainPendingPost:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)Lorg/greenrobot/eventbus/PendingPost;` @kind static;
+  #L4824a2.  v1:= temp @kind object;
+  #L4824a4.  @monitorenter v0
+  #L4824a6.  v2:= v0.`org.greenrobot.eventbus.HandlerPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L4824aa.  call `enqueue`(v2, v1) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.enqueue:(Lorg/greenrobot/eventbus/PendingPost;)V` @kind virtual;
+  #L4824b0.  v1:= v0.`org.greenrobot.eventbus.HandlerPoster.handlerActive` @type ^`boolean` @kind boolean;
+  #L4824b4.  if v1 != 0 then goto L4824e4;
+  #L4824b8.  v1:= 1I;
+  #L4824ba.  v0.`org.greenrobot.eventbus.HandlerPoster.handlerActive` @type ^`boolean` := v1 @kind boolean;
+  #L4824be.  call temp:= `obtainMessage`(v0) @signature `Lorg/greenrobot/eventbus/HandlerPoster;.obtainMessage:()Landroid/os/Message;` @kind virtual;
+  #L4824c4.  v1:= temp @kind object;
+  #L4824c6.  call temp:= `sendMessage`(v0, v1) @signature `Lorg/greenrobot/eventbus/HandlerPoster;.sendMessage:(Landroid/os/Message;)Z` @kind virtual;
+  #L4824cc.  v1:= temp;
+  #L4824ce.  if v1 == 0 then goto L4824d4;
+  #L4824d2.  goto L4824e4;
+  #L4824d4.  v1:= new `org.greenrobot.eventbus.EventBusException`;
+  #L4824d8.  v2:= "Could not send handler message" @kind object;
+  #L4824dc.  call `<init>`(v1, v2) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4824e2.  throw v1;
+  #L4824e4.  @monitorexit v0
+  #L4824e6.  return @kind void;
+  #L4824e8.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4824ea.  @monitorexit v0
+  #L4824ec.  throw v1;
+  catch `java.lang.Throwable` @[L4824a6..L4824ec] goto L4824e8;
+}
+procedure `void` `handleMessage`(`org.greenrobot.eventbus.HandlerPoster` v7 @kind this, `android.os.Message` v8 @kind object) @signature `Lorg/greenrobot/eventbus/HandlerPoster;.handleMessage:(Landroid/os/Message;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L48250c.  v8:= 0I;
+  #L48250e.  call temp:= `uptimeMillis`() @signature `Landroid/os/SystemClock;.uptimeMillis:()J` @kind static;
+  #L482514.  v0:= temp @kind wide;
+  #L482516.  v2:= v7.`org.greenrobot.eventbus.HandlerPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L48251a.  call temp:= `poll`(v2) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:()Lorg/greenrobot/eventbus/PendingPost;` @kind virtual;
+  #L482520.  v2:= temp @kind object;
+  #L482522.  if v2 != 0 then goto L48254e;
+  #L482526.  @monitorenter v7
+  #L482528.  v2:= v7.`org.greenrobot.eventbus.HandlerPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L48252c.  call temp:= `poll`(v2) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:()Lorg/greenrobot/eventbus/PendingPost;` @kind virtual;
+  #L482532.  v2:= temp @kind object;
+  #L482534.  if v2 != 0 then goto L482544;
+  #L482538.  v7.`org.greenrobot.eventbus.HandlerPoster.handlerActive` @type ^`boolean` := v8 @kind boolean;
+  #L48253c.  @monitorexit v7
+  #L48253e.  v7.`org.greenrobot.eventbus.HandlerPoster.handlerActive` @type ^`boolean` := v8 @kind boolean;
+  #L482542.  return @kind void;
+  #L482544.  @monitorexit v7
+  #L482546.  goto L48254e;
+  #L482548.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L48254a.  @monitorexit v7
+  #L48254c.  throw v0;
+  #L48254e.  v3:= v7.`org.greenrobot.eventbus.HandlerPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L482552.  call `invokeSubscriber`(v3, v2) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/PendingPost;)V` @kind virtual;
+  #L482558.  call temp:= `uptimeMillis`() @signature `Landroid/os/SystemClock;.uptimeMillis:()J` @kind static;
+  #L48255e.  v2:= temp @kind wide;
+  #L482560.  v2:= v2 - v0 @kind long;
+  #L482562.  v4:= v7.`org.greenrobot.eventbus.HandlerPoster.maxMillisInsideHandleMessage` @type ^`int`;
+  #L482566.  v4:= (`long`) v4 @kind i2l;
+  #L482568.  v6:= lcmp(v2, v4);
+  #L48256c.  if v6 < 0 then goto L482516;
+  #L482570.  call temp:= `obtainMessage`(v7) @signature `Lorg/greenrobot/eventbus/HandlerPoster;.obtainMessage:()Landroid/os/Message;` @kind virtual;
+  #L482576.  v0:= temp @kind object;
+  #L482578.  call temp:= `sendMessage`(v7, v0) @signature `Lorg/greenrobot/eventbus/HandlerPoster;.sendMessage:(Landroid/os/Message;)Z` @kind virtual;
+  #L48257e.  v0:= temp;
+  #L482580.  if v0 == 0 then goto L48258c;
+  #L482584.  v8:= 1I;
+  #L482586.  v7.`org.greenrobot.eventbus.HandlerPoster.handlerActive` @type ^`boolean` := v8 @kind boolean;
+  #L48258a.  return @kind void;
+  #L48258c.  v0:= new `org.greenrobot.eventbus.EventBusException`;
+  #L482590.  v1:= "Could not send handler message" @kind object;
+  #L482594.  call `<init>`(v0, v1) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L48259a.  throw v0;
+  #L48259c.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L48259e.  v7.`org.greenrobot.eventbus.HandlerPoster.handlerActive` @type ^`boolean` := v8 @kind boolean;
+  #L4825a2.  goto L4825a6;
+  #L4825a4.  throw v0;
+  #L4825a6.  goto L4825a4;
+  catch `java.lang.Throwable` @[L48250e..L482528] goto L48259c;
+  catch `java.lang.Throwable` @[L482528..L48253e] goto L482548;
+  catch `java.lang.Throwable` @[L482544..L48254c] goto L482548;
+  catch `java.lang.Throwable` @[L48254c..L482580] goto L48259c;
+  catch `java.lang.Throwable` @[L48258c..L48259c] goto L48259c;
+}

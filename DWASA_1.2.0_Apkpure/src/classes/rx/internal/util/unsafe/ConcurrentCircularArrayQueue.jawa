@@ -1,0 +1,185 @@
+record `rx.internal.util.unsafe.ConcurrentCircularArrayQueue` @kind class @AccessFlag PUBLIC_ABSTRACT extends `rx.internal.util.unsafe.ConcurrentCircularArrayQueueL0Pad` @kind class {
+  `java.lang.Object`[] `rx.internal.util.unsafe.ConcurrentCircularArrayQueue.buffer` @AccessFlag PROTECTED_FINAL;
+  `long` `rx.internal.util.unsafe.ConcurrentCircularArrayQueue.mask` @AccessFlag PROTECTED_FINAL;
+}
+global `int` `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.BUFFER_PAD` @AccessFlag PROTECTED_STATIC_FINAL;
+global `long` `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ARRAY_BASE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ELEMENT_SHIFT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.SPARSE_SHIFT` @AccessFlag PROTECTED_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4b98f0.  v0:= "sparse.shift" @kind object;
+  #L4b98f4.  v1:= 0I;
+  #L4b98f6.  call temp:= `getInteger`(v0, v1) @signature `Ljava/lang/Integer;.getInteger:(Ljava/lang/String;I)Ljava/lang/Integer;` @kind static;
+  #L4b98fc.  v0:= temp @kind object;
+  #L4b98fe.  call temp:= `intValue`(v0) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L4b9904.  v0:= temp;
+  #L4b9906.  `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.SPARSE_SHIFT` @type ^`int` := v0;
+  #L4b990a.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4b990e.  v1:= constclass @type ^`java.lang.Object`[] @kind object;
+  #L4b9912.  call temp:= `arrayIndexScale`(v0, v1) @signature `Lsun/misc/Unsafe;.arrayIndexScale:(Ljava/lang/Class;)I` @kind virtual;
+  #L4b9918.  v0:= temp;
+  #L4b991a.  v1:= 4I;
+  #L4b991c.  if v1 != v0 then goto L4b992e;
+  #L4b9920.  v0:= `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.SPARSE_SHIFT` @type ^`int`;
+  #L4b9924.  v0:= v0 + 2;
+  #L4b9928.  `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ELEMENT_SHIFT` @type ^`int` := v0;
+  #L4b992c.  goto L4b9942;
+  #L4b992e.  v1:= 8I;
+  #L4b9932.  if v1 != v0 then goto L4b996c;
+  #L4b9936.  v0:= `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.SPARSE_SHIFT` @type ^`int`;
+  #L4b993a.  v0:= v0 + 3;
+  #L4b993e.  `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ELEMENT_SHIFT` @type ^`int` := v0;
+  #L4b9942.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4b9946.  v1:= constclass @type ^`java.lang.Object`[] @kind object;
+  #L4b994a.  call temp:= `arrayBaseOffset`(v0, v1) @signature `Lsun/misc/Unsafe;.arrayBaseOffset:(Ljava/lang/Class;)I` @kind virtual;
+  #L4b9950.  v0:= temp;
+  #L4b9952.  v1:= 32I;
+  #L4b9956.  v2:= `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ELEMENT_SHIFT` @type ^`int`;
+  #L4b995a.  v3:= `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.SPARSE_SHIFT` @type ^`int`;
+  #L4b995e.  v2:= v2 - v3 @kind int;
+  #L4b9960.  v1:= v1 ^< v2 @kind int;
+  #L4b9962.  v0:= v0 + v1 @kind int;
+  #L4b9964.  v0:= (`long`) v0 @kind i2l;
+  #L4b9966.  `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ARRAY_BASE` @type ^`long` := v0 @kind wide;
+  #L4b996a.  return @kind void;
+  #L4b996c.  v0:= new `java.lang.IllegalStateException`;
+  #L4b9970.  v1:= "Unknown pointer size" @kind object;
+  #L4b9974.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b997a.  throw v0;
+}
+procedure `void` `<init>`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v2 @kind this, `int` v3 ) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4b998c.  call `<init>`(v2) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueueL0Pad;.<init>:()V` @kind direct;
+  #L4b9992.  call temp:= `roundToPowerOfTwo`(v3) @signature `Lrx/internal/util/unsafe/Pow2;.roundToPowerOfTwo:(I)I` @kind static;
+  #L4b9998.  v3:= temp;
+  #L4b999a.  v0:= v3 + -1;
+  #L4b999e.  v0:= (`long`) v0 @kind i2l;
+  #L4b99a0.  v2.`rx.internal.util.unsafe.ConcurrentCircularArrayQueue.mask` @type ^`long` := v0 @kind wide;
+  #L4b99a4.  v0:= `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.SPARSE_SHIFT` @type ^`int`;
+  #L4b99a8.  v3:= v3 ^< v0 @kind int;
+  #L4b99aa.  v3:= v3 + 64;
+  #L4b99ae.  v3:= new `java.lang.Object`[v3];
+  #L4b99b2.  v3:= (`java.lang.Object`[]) v3 @kind object;
+  #L4b99b6.  v2.`rx.internal.util.unsafe.ConcurrentCircularArrayQueue.buffer` @type ^`java.lang.Object`[] := v3 @kind object;
+  #L4b99ba.  return @kind void;
+}
+procedure `long` `calcElementOffset`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v2 @kind this, `long` v3 ) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.calcElementOffset:(J)J` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4b98b0.  v0:= v2.`rx.internal.util.unsafe.ConcurrentCircularArrayQueue.mask` @type ^`long` @kind wide;
+  #L4b98b4.  call temp:= `calcElementOffset`(v2, v3, v0) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.calcElementOffset:(JJ)J` @kind virtual;
+  #L4b98ba.  v3:= temp @kind wide;
+  #L4b98bc.  return v3 @kind wide;
+}
+procedure `long` `calcElementOffset`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v2 @kind this, `long` v3 , `long` v5 ) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.calcElementOffset:(JJ)J` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4b98d0.  v0:= `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ARRAY_BASE` @type ^`long` @kind wide;
+  #L4b98d4.  v3:= v3 ^& v5 @kind long;
+  #L4b98d6.  v5:= `@@rx.internal.util.unsafe.ConcurrentCircularArrayQueue.REF_ELEMENT_SHIFT` @type ^`int`;
+  #L4b98da.  v3:= v3 ^< v5 @kind long;
+  #L4b98dc.  v0:= v0 + v3 @kind long;
+  #L4b98de.  return v0 @kind wide;
+}
+procedure `void` `clear`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.clear:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b99cc.  call temp:= `poll`(v1) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L4b99d2.  v0:= temp @kind object;
+  #L4b99d4.  if v0 != 0 then goto L4b99cc;
+  #L4b99d8.  call temp:= `isEmpty`(v1) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.isEmpty:()Z` @kind virtual;
+  #L4b99de.  v0:= temp;
+  #L4b99e0.  if v0 != 0 then goto L4b99e6;
+  #L4b99e4.  goto L4b99cc;
+  #L4b99e6.  return @kind void;
+}
+procedure `java.util.Iterator` `iterator`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.iterator:()Ljava/util/Iterator;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b9894.  v0:= new `java.lang.UnsupportedOperationException`;
+  #L4b9898.  call `<init>`(v0) @signature `Ljava/lang/UnsupportedOperationException;.<init>:()V` @kind direct;
+  #L4b989e.  throw v0;
+}
+procedure `java.lang.Object` `lpElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `long` v2 ) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.lpElement:(J)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b9834.  v0:= v1.`rx.internal.util.unsafe.ConcurrentCircularArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4b9838.  call temp:= `lpElement`(v1, v0, v2) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.lpElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4b983e.  v2:= temp @kind object;
+  #L4b9840.  return v2 @kind object;
+}
+procedure `java.lang.Object` `lpElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `java.lang.Object`[] v2 @kind object, `long` v3 ) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.lpElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b9814.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4b9818.  call temp:= `getObject`(v0, v2, v3) @signature `Lsun/misc/Unsafe;.getObject:(Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4b981e.  v2:= temp @kind object;
+  #L4b9820.  return v2 @kind object;
+}
+procedure `java.lang.Object` `lvElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `long` v2 ) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.lvElement:(J)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b9874.  v0:= v1.`rx.internal.util.unsafe.ConcurrentCircularArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4b9878.  call temp:= `lvElement`(v1, v0, v2) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.lvElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4b987e.  v2:= temp @kind object;
+  #L4b9880.  return v2 @kind object;
+}
+procedure `java.lang.Object` `lvElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `java.lang.Object`[] v2 @kind object, `long` v3 ) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.lvElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b9854.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4b9858.  call temp:= `getObjectVolatile`(v0, v2, v3) @signature `Lsun/misc/Unsafe;.getObjectVolatile:(Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4b985e.  v2:= temp @kind object;
+  #L4b9860.  return v2 @kind object;
+}
+procedure `void` `soElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `long` v2 , `java.lang.Object` v4 @kind object) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.soElement:(JLjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b9a14.  v0:= v1.`rx.internal.util.unsafe.ConcurrentCircularArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4b9a18.  call `soElement`(v1, v0, v2, v4) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.soElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4b9a1e.  return @kind void;
+}
+procedure `void` `soElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `java.lang.Object`[] v2 @kind object, `long` v3 , `java.lang.Object` v5 @kind object) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.soElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b99f8.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4b99fc.  call `putOrderedObject`(v0, v2, v3, v5) @signature `Lsun/misc/Unsafe;.putOrderedObject:(Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4b9a02.  return @kind void;
+}
+procedure `void` `spElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `long` v2 , `java.lang.Object` v4 @kind object) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.spElement:(JLjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b9a4c.  v0:= v1.`rx.internal.util.unsafe.ConcurrentCircularArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4b9a50.  call `spElement`(v1, v0, v2, v4) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.spElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4b9a56.  return @kind void;
+}
+procedure `void` `spElement`(`rx.internal.util.unsafe.ConcurrentCircularArrayQueue` v1 @kind this, `java.lang.Object`[] v2 @kind object, `long` v3 , `java.lang.Object` v5 @kind object) @signature `Lrx/internal/util/unsafe/ConcurrentCircularArrayQueue;.spElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b9a30.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4b9a34.  call `putObject`(v0, v2, v3, v5) @signature `Lsun/misc/Unsafe;.putObject:(Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4b9a3a.  return @kind void;
+}

@@ -1,0 +1,298 @@
+record `io.reactivex.internal.subscriptions.SubscriptionArbiter` @kind class @AccessFlag PUBLIC extends `java.util.concurrent.atomic.AtomicInteger` @kind class, `org.reactivestreams.Subscription` @kind interface {
+  `org.reactivestreams.Subscription` `io.reactivex.internal.subscriptions.SubscriptionArbiter.actual` @AccessFlag ;
+  `boolean` `io.reactivex.internal.subscriptions.SubscriptionArbiter.cancelled` @AccessFlag VOLATILE;
+  `java.util.concurrent.atomic.AtomicLong` `io.reactivex.internal.subscriptions.SubscriptionArbiter.missedProduced` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicLong` `io.reactivex.internal.subscriptions.SubscriptionArbiter.missedRequested` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `io.reactivex.internal.subscriptions.SubscriptionArbiter.missedSubscription` @AccessFlag FINAL;
+  `long` `io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @AccessFlag ;
+  `boolean` `io.reactivex.internal.subscriptions.SubscriptionArbiter.unbounded` @AccessFlag PROTECTED;
+}
+global `long` `@@io.reactivex.internal.subscriptions.SubscriptionArbiter.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v1 @kind this) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L444be4.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L444bea.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L444bee.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L444bf4.  v1.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedSubscription` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L444bf8.  v0:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L444bfc.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L444c02.  v1.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedRequested` @type ^`java.util.concurrent.atomic.AtomicLong` := v0 @kind object;
+  #L444c06.  v0:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L444c0a.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L444c10.  v1.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedProduced` @type ^`java.util.concurrent.atomic.AtomicLong` := v0 @kind object;
+  #L444c14.  return @kind void;
+}
+procedure `void` `cancel`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v1 @kind this) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.cancel:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L444c28.  v0:= v1.`io.reactivex.internal.subscriptions.SubscriptionArbiter.cancelled` @type ^`boolean` @kind boolean;
+  #L444c2c.  if v0 != 0 then goto L444c3c;
+  #L444c30.  v0:= 1I;
+  #L444c32.  v1.`io.reactivex.internal.subscriptions.SubscriptionArbiter.cancelled` @type ^`boolean` := v0 @kind boolean;
+  #L444c36.  call `drain`(v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drain:()V` @kind virtual;
+  #L444c3c.  return @kind void;
+}
+procedure `void` `drain`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v1 @kind this) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drain:()V` @AccessFlag FINAL {
+    temp;
+    v0;
+
+  #L444c50.  call temp:= `getAndIncrement`(v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.getAndIncrement:()I` @kind virtual;
+  #L444c56.  v0:= temp;
+  #L444c58.  if v0 == 0 then goto L444c5e;
+  #L444c5c.  return @kind void;
+  #L444c5e.  call `drainLoop`(v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drainLoop:()V` @kind virtual;
+  #L444c64.  return @kind void;
+}
+procedure `void` `drainLoop`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v19 @kind this) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drainLoop:()V` @AccessFlag FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+
+  #L444c78.  v0:= v19 @kind object;
+  #L444c7c.  v1:= 0I;
+  #L444c7e.  v2:= 0L;
+  #L444c82.  v4:= 1I;
+  #L444c84.  v7:= v1 @kind object;
+  #L444c86.  v4:= v2 @kind wide;
+  #L444c88.  v6:= 1I;
+  #L444c8a.  v8:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedSubscription` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L444c8e.  call temp:= `get`(v8) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L444c94.  v8:= temp @kind object;
+  #L444c96.  v8:= (`org.reactivestreams.Subscription`) v8 @kind object;
+  #L444c9a.  if v8 == 0 then goto L444cae;
+  #L444c9e.  v8:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedSubscription` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L444ca2.  call temp:= `getAndSet`(v8, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L444ca8.  v8:= temp @kind object;
+  #L444caa.  v8:= (`org.reactivestreams.Subscription`) v8 @kind object;
+  #L444cae.  v9:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedRequested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L444cb2.  call temp:= `get`(v9) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L444cb8.  v9:= temp @kind wide;
+  #L444cba.  v11:= lcmp(v9, v2);
+  #L444cbe.  if v11 == 0 then goto L444cce;
+  #L444cc2.  v9:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedRequested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L444cc6.  call temp:= `getAndSet`(v9, v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.getAndSet:(J)J` @kind virtual;
+  #L444ccc.  v9:= temp @kind wide;
+  #L444cce.  v11:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedProduced` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L444cd2.  call temp:= `get`(v11) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L444cd8.  v11:= temp @kind wide;
+  #L444cda.  v13:= lcmp(v11, v2);
+  #L444cde.  if v13 == 0 then goto L444cee;
+  #L444ce2.  v11:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedProduced` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L444ce6.  call temp:= `getAndSet`(v11, v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.getAndSet:(J)J` @kind virtual;
+  #L444cec.  v11:= temp @kind wide;
+  #L444cee.  v13:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.actual` @type ^`org.reactivestreams.Subscription` @kind object;
+  #L444cf2.  v14:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.cancelled` @type ^`boolean` @kind boolean;
+  #L444cf6.  if v14 == 0 then goto L444d14;
+  #L444cfa.  if v13 == 0 then goto L444d08;
+  #L444cfe.  call `cancel`(v13) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L444d04.  v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.actual` @type ^`org.reactivestreams.Subscription` := v1 @kind object;
+  #L444d08.  if v8 == 0 then goto L444d90;
+  #L444d0c.  call `cancel`(v8) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L444d12.  goto L444d90;
+  #L444d14.  v14:= v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @type ^`long` @kind wide;
+  #L444d18.  v16:= 9223372036854775807L;
+  #L444d22.  v18:= lcmp(v14, v16);
+  #L444d26.  if v18 == 0 then goto L444d54;
+  #L444d2a.  call temp:= `addCap`(v14, v9) @signature `Lio/reactivex/internal/util/BackpressureHelper;.addCap:(JJ)J` @kind static;
+  #L444d30.  v14:= temp @kind wide;
+  #L444d32.  v18:= lcmp(v14, v16);
+  #L444d36.  if v18 == 0 then goto L444d50;
+  #L444d3a.  v11:= v14 - v11 @kind long;
+  #L444d3e.  v14:= lcmp(v11, v2);
+  #L444d42.  if v14 >= 0 then goto L444d4e;
+  #L444d46.  call `reportMoreProduced`(v11) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.reportMoreProduced:(J)V` @kind static;
+  #L444d4c.  v11:= v2 @kind wide;
+  #L444d4e.  v14:= v11 @kind wide;
+  #L444d50.  v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @type ^`long` := v14 @kind wide;
+  #L444d54.  if v8 == 0 then goto L444d7a;
+  #L444d58.  if v13 == 0 then goto L444d62;
+  #L444d5c.  call `cancel`(v13) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L444d62.  v0.`io.reactivex.internal.subscriptions.SubscriptionArbiter.actual` @type ^`org.reactivestreams.Subscription` := v8 @kind object;
+  #L444d66.  v9:= lcmp(v14, v2);
+  #L444d6a.  if v9 == 0 then goto L444d90;
+  #L444d6e.  call temp:= `addCap`(v4, v14) @signature `Lio/reactivex/internal/util/BackpressureHelper;.addCap:(JJ)J` @kind static;
+  #L444d74.  v4:= temp @kind wide;
+  #L444d76.  v7:= v8 @kind object;
+  #L444d78.  goto L444d90;
+  #L444d7a.  if v13 == 0 then goto L444d90;
+  #L444d7e.  v8:= lcmp(v9, v2);
+  #L444d82.  if v8 == 0 then goto L444d90;
+  #L444d86.  call temp:= `addCap`(v4, v9) @signature `Lio/reactivex/internal/util/BackpressureHelper;.addCap:(JJ)J` @kind static;
+  #L444d8c.  v4:= temp @kind wide;
+  #L444d8e.  v7:= v13 @kind object;
+  #L444d90.  v6:= -v6 @kind int;
+  #L444d92.  call temp:= `addAndGet`(v0, v6) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.addAndGet:(I)I` @kind virtual;
+  #L444d98.  v6:= temp;
+  #L444d9a.  if v6 != 0 then goto L444c8a;
+  #L444d9e.  v1:= lcmp(v4, v2);
+  #L444da2.  if v1 == 0 then goto L444dac;
+  #L444da6.  call `request`(v7, v4) @signature `Lorg/reactivestreams/Subscription;.request:(J)V` @kind interface;
+  #L444dac.  return @kind void;
+}
+procedure `boolean` `isCancelled`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v1 @kind this) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.isCancelled:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L444bb4.  v0:= v1.`io.reactivex.internal.subscriptions.SubscriptionArbiter.cancelled` @type ^`boolean` @kind boolean;
+  #L444bb8.  return v0;
+}
+procedure `boolean` `isUnbounded`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v1 @kind this) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.isUnbounded:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L444bcc.  v0:= v1.`io.reactivex.internal.subscriptions.SubscriptionArbiter.unbounded` @type ^`boolean` @kind boolean;
+  #L444bd0.  return v0;
+}
+procedure `void` `produced`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v5 @kind this, `long` v6 ) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.produced:(J)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L444dc0.  v0:= v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.unbounded` @type ^`boolean` @kind boolean;
+  #L444dc4.  if v0 == 0 then goto L444dca;
+  #L444dc8.  return @kind void;
+  #L444dca.  call temp:= `get`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.get:()I` @kind virtual;
+  #L444dd0.  v0:= temp;
+  #L444dd2.  if v0 != 0 then goto L444e2e;
+  #L444dd6.  v0:= 0I;
+  #L444dd8.  v1:= 1I;
+  #L444dda.  call temp:= `compareAndSet`(v5, v0, v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.compareAndSet:(II)Z` @kind virtual;
+  #L444de0.  v0:= temp;
+  #L444de2.  if v0 == 0 then goto L444e2e;
+  #L444de6.  v0:= v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @type ^`long` @kind wide;
+  #L444dea.  v2:= 9223372036854775807L;
+  #L444df4.  v4:= lcmp(v0, v2);
+  #L444df8.  if v4 == 0 then goto L444e18;
+  #L444dfc.  v0:= v0 - v6 @kind long;
+  #L444dfe.  v6:= 0L;
+  #L444e02.  v2:= lcmp(v0, v6);
+  #L444e06.  if v2 >= 0 then goto L444e12;
+  #L444e0a.  call `reportMoreProduced`(v0) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.reportMoreProduced:(J)V` @kind static;
+  #L444e10.  goto L444e14;
+  #L444e12.  v6:= v0 @kind wide;
+  #L444e14.  v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @type ^`long` := v6 @kind wide;
+  #L444e18.  call temp:= `decrementAndGet`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.decrementAndGet:()I` @kind virtual;
+  #L444e1e.  v6:= temp;
+  #L444e20.  if v6 != 0 then goto L444e26;
+  #L444e24.  return @kind void;
+  #L444e26.  call `drainLoop`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drainLoop:()V` @kind virtual;
+  #L444e2c.  return @kind void;
+  #L444e2e.  v0:= v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedProduced` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L444e32.  call temp:= `add`(v0, v6) @signature `Lio/reactivex/internal/util/BackpressureHelper;.add:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L444e38.  call `drain`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drain:()V` @kind virtual;
+  #L444e3e.  return @kind void;
+}
+procedure `void` `request`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v6 @kind this, `long` v7 ) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.request:(J)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L444e50.  call temp:= `validate`(v7) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.validate:(J)Z` @kind static;
+  #L444e56.  v0:= temp;
+  #L444e58.  if v0 == 0 then goto L444ee2;
+  #L444e5c.  v0:= v6.`io.reactivex.internal.subscriptions.SubscriptionArbiter.unbounded` @type ^`boolean` @kind boolean;
+  #L444e60.  if v0 == 0 then goto L444e66;
+  #L444e64.  return @kind void;
+  #L444e66.  call temp:= `get`(v6) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.get:()I` @kind virtual;
+  #L444e6c.  v0:= temp;
+  #L444e6e.  if v0 != 0 then goto L444ed2;
+  #L444e72.  v0:= 0I;
+  #L444e74.  v1:= 1I;
+  #L444e76.  call temp:= `compareAndSet`(v6, v0, v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.compareAndSet:(II)Z` @kind virtual;
+  #L444e7c.  v0:= temp;
+  #L444e7e.  if v0 == 0 then goto L444ed2;
+  #L444e82.  v2:= v6.`io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @type ^`long` @kind wide;
+  #L444e86.  v4:= 9223372036854775807L;
+  #L444e90.  v0:= lcmp(v2, v4);
+  #L444e94.  if v0 == 0 then goto L444eb0;
+  #L444e98.  call temp:= `addCap`(v2, v7) @signature `Lio/reactivex/internal/util/BackpressureHelper;.addCap:(JJ)J` @kind static;
+  #L444e9e.  v2:= temp @kind wide;
+  #L444ea0.  v6.`io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @type ^`long` := v2 @kind wide;
+  #L444ea4.  v0:= lcmp(v2, v4);
+  #L444ea8.  if v0 != 0 then goto L444eb0;
+  #L444eac.  v6.`io.reactivex.internal.subscriptions.SubscriptionArbiter.unbounded` @type ^`boolean` := v1 @kind boolean;
+  #L444eb0.  v0:= v6.`io.reactivex.internal.subscriptions.SubscriptionArbiter.actual` @type ^`org.reactivestreams.Subscription` @kind object;
+  #L444eb4.  call temp:= `decrementAndGet`(v6) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.decrementAndGet:()I` @kind virtual;
+  #L444eba.  v1:= temp;
+  #L444ebc.  if v1 == 0 then goto L444ec6;
+  #L444ec0.  call `drainLoop`(v6) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drainLoop:()V` @kind virtual;
+  #L444ec6.  if v0 == 0 then goto L444ed0;
+  #L444eca.  call `request`(v0, v7) @signature `Lorg/reactivestreams/Subscription;.request:(J)V` @kind interface;
+  #L444ed0.  return @kind void;
+  #L444ed2.  v0:= v6.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedRequested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L444ed6.  call temp:= `add`(v0, v7) @signature `Lio/reactivex/internal/util/BackpressureHelper;.add:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L444edc.  call `drain`(v6) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drain:()V` @kind virtual;
+  #L444ee2.  return @kind void;
+}
+procedure `void` `setSubscription`(`io.reactivex.internal.subscriptions.SubscriptionArbiter` v5 @kind this, `org.reactivestreams.Subscription` v6 @kind object) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.setSubscription:(Lorg/reactivestreams/Subscription;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L444ef4.  v0:= v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.cancelled` @type ^`boolean` @kind boolean;
+  #L444ef8.  if v0 == 0 then goto L444f04;
+  #L444efc.  call `cancel`(v6) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L444f02.  return @kind void;
+  #L444f04.  v0:= "s is null" @kind object;
+  #L444f08.  call temp:= `requireNonNull`(v6, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L444f0e.  call temp:= `get`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.get:()I` @kind virtual;
+  #L444f14.  v0:= temp;
+  #L444f16.  if v0 != 0 then goto L444f66;
+  #L444f1a.  v0:= 0I;
+  #L444f1c.  v1:= 1I;
+  #L444f1e.  call temp:= `compareAndSet`(v5, v0, v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.compareAndSet:(II)Z` @kind virtual;
+  #L444f24.  v0:= temp;
+  #L444f26.  if v0 == 0 then goto L444f66;
+  #L444f2a.  v0:= v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.actual` @type ^`org.reactivestreams.Subscription` @kind object;
+  #L444f2e.  if v0 == 0 then goto L444f38;
+  #L444f32.  call `cancel`(v0) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L444f38.  v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.actual` @type ^`org.reactivestreams.Subscription` := v6 @kind object;
+  #L444f3c.  v0:= v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.requested` @type ^`long` @kind wide;
+  #L444f40.  call temp:= `decrementAndGet`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.decrementAndGet:()I` @kind virtual;
+  #L444f46.  v2:= temp;
+  #L444f48.  if v2 == 0 then goto L444f52;
+  #L444f4c.  call `drainLoop`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drainLoop:()V` @kind virtual;
+  #L444f52.  v2:= 0L;
+  #L444f56.  v4:= lcmp(v0, v2);
+  #L444f5a.  if v4 == 0 then goto L444f64;
+  #L444f5e.  call `request`(v6, v0) @signature `Lorg/reactivestreams/Subscription;.request:(J)V` @kind interface;
+  #L444f64.  return @kind void;
+  #L444f66.  v0:= v5.`io.reactivex.internal.subscriptions.SubscriptionArbiter.missedSubscription` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L444f6a.  call temp:= `getAndSet`(v0, v6) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L444f70.  v6:= temp @kind object;
+  #L444f72.  v6:= (`org.reactivestreams.Subscription`) v6 @kind object;
+  #L444f76.  if v6 == 0 then goto L444f80;
+  #L444f7a.  call `cancel`(v6) @signature `Lorg/reactivestreams/Subscription;.cancel:()V` @kind interface;
+  #L444f80.  call `drain`(v5) @signature `Lio/reactivex/internal/subscriptions/SubscriptionArbiter;.drain:()V` @kind virtual;
+  #L444f86.  return @kind void;
+}

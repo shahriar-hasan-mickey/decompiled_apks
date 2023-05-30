@@ -1,0 +1,155 @@
+record `rx.internal.operators.OperatorMaterialize$ParentSubscriber` @kind class @AccessFlag  extends `rx.Subscriber` @kind class {
+  `boolean` `rx.internal.operators.OperatorMaterialize$ParentSubscriber.busy` @AccessFlag PRIVATE;
+  `rx.Subscriber` `rx.internal.operators.OperatorMaterialize$ParentSubscriber.child` @AccessFlag PRIVATE_FINAL;
+  `boolean` `rx.internal.operators.OperatorMaterialize$ParentSubscriber.missed` @AccessFlag PRIVATE;
+  `java.util.concurrent.atomic.AtomicLong` `rx.internal.operators.OperatorMaterialize$ParentSubscriber.requested` @AccessFlag PRIVATE_FINAL;
+  `rx.Notification` `rx.internal.operators.OperatorMaterialize$ParentSubscriber.terminalNotification` @AccessFlag PRIVATE_VOLATILE;
+}
+procedure `void` `<init>`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v1 @kind this, `rx.Subscriber` v2 @kind object) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.<init>:(Lrx/Subscriber;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4a2834.  call `<init>`(v1) @signature `Lrx/Subscriber;.<init>:()V` @kind direct;
+  #L4a283a.  v0:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L4a283e.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4a2844.  v1.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` := v0 @kind object;
+  #L4a2848.  v1.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.child` @type ^`rx.Subscriber` := v2 @kind object;
+  #L4a284c.  return @kind void;
+}
+procedure `void` `decrementRequested`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v6 @kind this) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.decrementRequested:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4a2860.  v0:= v6.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a2864.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4a286a.  v1:= temp @kind wide;
+  #L4a286c.  v3:= 9223372036854775807L;
+  #L4a2876.  v5:= lcmp(v1, v3);
+  #L4a287a.  if v5 != 0 then goto L4a2880;
+  #L4a287e.  return @kind void;
+  #L4a2880.  v3:= 1L;
+  #L4a2884.  v3:= v1 - v3 @kind long;
+  #L4a2888.  call temp:= `compareAndSet`(v0, v1, v3) @signature `Ljava/util/concurrent/atomic/AtomicLong;.compareAndSet:(JJ)Z` @kind virtual;
+  #L4a288e.  v1:= temp;
+  #L4a2890.  if v1 == 0 then goto L4a2864;
+  #L4a2894.  return @kind void;
+}
+procedure `void` `drain`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v7 @kind this) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.drain:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4a28a8.  @monitorenter v7
+  #L4a28aa.  v0:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.busy` @type ^`boolean` @kind boolean;
+  #L4a28ae.  if v0 == 0 then goto L4a28bc;
+  #L4a28b2.  v0:= 1I;
+  #L4a28b4.  v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.missed` @type ^`boolean` := v0 @kind boolean;
+  #L4a28b8.  @monitorexit v7
+  #L4a28ba.  return @kind void;
+  #L4a28bc.  @monitorexit v7
+  #L4a28be.  v0:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a28c2.  v1:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a28c6.  call temp:= `isUnsubscribed`(v1) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4a28cc.  v1:= temp;
+  #L4a28ce.  if v1 != 0 then goto L4a2938;
+  #L4a28d2.  v1:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.terminalNotification` @type ^`rx.Notification` @kind object;
+  #L4a28d6.  if v1 == 0 then goto L4a291a;
+  #L4a28da.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4a28e0.  v2:= temp @kind wide;
+  #L4a28e2.  v4:= 0L;
+  #L4a28e6.  v6:= lcmp(v2, v4);
+  #L4a28ea.  if v6 <= 0 then goto L4a291a;
+  #L4a28ee.  v0:= 0I;
+  #L4a28f0.  v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.terminalNotification` @type ^`rx.Notification` := v0 @kind object;
+  #L4a28f4.  v0:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a28f8.  call `onNext`(v0, v1) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4a28fe.  v0:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a2902.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4a2908.  v0:= temp;
+  #L4a290a.  if v0 != 0 then goto L4a2918;
+  #L4a290e.  v0:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a2912.  call `onCompleted`(v0) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4a2918.  return @kind void;
+  #L4a291a.  @monitorenter v7
+  #L4a291c.  v1:= v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.missed` @type ^`boolean` @kind boolean;
+  #L4a2920.  if v1 != 0 then goto L4a292e;
+  #L4a2924.  v0:= 0I;
+  #L4a2926.  v7.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.busy` @type ^`boolean` := v0 @kind boolean;
+  #L4a292a.  @monitorexit v7
+  #L4a292c.  return @kind void;
+  #L4a292e.  @monitorexit v7
+  #L4a2930.  goto L4a28c2;
+  #L4a2932.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a2934.  @monitorexit v7
+  #L4a2936.  throw v0;
+  #L4a2938.  return @kind void;
+  #L4a293a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a293c.  @monitorexit v7
+  #L4a293e.  goto L4a2942;
+  #L4a2940.  throw v0;
+  #L4a2942.  goto L4a2940;
+  catch `java.lang.Throwable` @[L4a28aa..L4a28be] goto L4a293a;
+  catch `java.lang.Throwable` @[L4a291c..L4a2936] goto L4a2932;
+  catch `java.lang.Throwable` @[L4a293c..L4a293e] goto L4a293a;
+}
+procedure `void` `onCompleted`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v1 @kind this) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a2974.  call temp:= `createOnCompleted`() @signature `Lrx/Notification;.createOnCompleted:()Lrx/Notification;` @kind static;
+  #L4a297a.  v0:= temp @kind object;
+  #L4a297c.  v1.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.terminalNotification` @type ^`rx.Notification` := v0 @kind object;
+  #L4a2980.  call `drain`(v1) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.drain:()V` @kind direct;
+  #L4a2986.  return @kind void;
+}
+procedure `void` `onError`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a2998.  call temp:= `createOnError`(v2) @signature `Lrx/Notification;.createOnError:(Ljava/lang/Throwable;)Lrx/Notification;` @kind static;
+  #L4a299e.  v0:= temp @kind object;
+  #L4a29a0.  v1.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.terminalNotification` @type ^`rx.Notification` := v0 @kind object;
+  #L4a29a4.  call `onError`(v2) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4a29aa.  call `drain`(v1) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.drain:()V` @kind direct;
+  #L4a29b0.  return @kind void;
+}
+procedure `void` `onNext`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a29c4.  v0:= v1.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a29c8.  call temp:= `createOnNext`(v2) @signature `Lrx/Notification;.createOnNext:(Ljava/lang/Object;)Lrx/Notification;` @kind static;
+  #L4a29ce.  v2:= temp @kind object;
+  #L4a29d0.  call `onNext`(v0, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4a29d6.  call `decrementRequested`(v1) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.decrementRequested:()V` @kind direct;
+  #L4a29dc.  return @kind void;
+}
+procedure `void` `onStart`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v2 @kind this) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.onStart:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4a29f0.  v0:= 0L;
+  #L4a29f4.  call `request`(v2, v0) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.request:(J)V` @kind virtual;
+  #L4a29fa.  return @kind void;
+}
+procedure `void` `requestMore`(`rx.internal.operators.OperatorMaterialize$ParentSubscriber` v1 @kind this, `long` v2 ) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.requestMore:(J)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4a2a0c.  v0:= v1.`rx.internal.operators.OperatorMaterialize$ParentSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a2a10.  call temp:= `getAndAddRequest`(v0, v2) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L4a2a16.  call `request`(v1, v2) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.request:(J)V` @kind virtual;
+  #L4a2a1c.  call `drain`(v1) @signature `Lrx/internal/operators/OperatorMaterialize$ParentSubscriber;.drain:()V` @kind direct;
+  #L4a2a22.  return @kind void;
+}

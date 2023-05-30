@@ -1,0 +1,174 @@
+record `com.huawei.hms.framework.common.LimitQueue` @kind class @AccessFlag PUBLIC extends `java.util.concurrent.ConcurrentLinkedQueue` @kind class {
+  `boolean` `com.huawei.hms.framework.common.LimitQueue.deduplication` @AccessFlag PRIVATE;
+  `int` `com.huawei.hms.framework.common.LimitQueue.limit` @AccessFlag PRIVATE;
+}
+global `java.lang.String` `@@com.huawei.hms.framework.common.LimitQueue.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `long` `@@com.huawei.hms.framework.common.LimitQueue.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.huawei.hms.framework.common.LimitQueue` v1 @kind this, `int` v2 ) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L207f48.  call `<init>`(v1) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.<init>:()V` @kind direct;
+  #L207f4e.  v0:= 0I;
+  #L207f50.  v1.`com.huawei.hms.framework.common.LimitQueue.deduplication` @type ^`boolean` := v0 @kind boolean;
+  #L207f54.  v1.`com.huawei.hms.framework.common.LimitQueue.limit` @type ^`int` := v2;
+  #L207f58.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.framework.common.LimitQueue` v1 @kind this, `int` v2 , `boolean` v3 ) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.<init>:(IZ)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L207f6c.  call `<init>`(v1) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.<init>:()V` @kind direct;
+  #L207f72.  v0:= 0I;
+  #L207f74.  v1.`com.huawei.hms.framework.common.LimitQueue.deduplication` @type ^`boolean` := v0 @kind boolean;
+  #L207f78.  v1.`com.huawei.hms.framework.common.LimitQueue.limit` @type ^`int` := v2;
+  #L207f7c.  v1.`com.huawei.hms.framework.common.LimitQueue.deduplication` @type ^`boolean` := v3 @kind boolean;
+  #L207f80.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.framework.common.LimitQueue` v1 @kind this, `java.util.Collection` v2 @kind object, `boolean` v3 ) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.<init>:(Ljava/util/Collection;Z)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L207f94.  call temp:= `size`(v2) @signature `Ljava/util/Collection;.size:()I` @kind interface;
+  #L207f9a.  v0:= temp;
+  #L207f9c.  call `<init>`(v1, v0, v3) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.<init>:(IZ)V` @kind direct;
+  #L207fa2.  call temp:= `addAll`(v1, v2) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.addAll:(Ljava/util/Collection;)Z` @kind virtual;
+  #L207fa8.  return @kind void;
+}
+procedure `boolean` `add`(`com.huawei.hms.framework.common.LimitQueue` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.add:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L207d84.  v0:= v2.`com.huawei.hms.framework.common.LimitQueue.deduplication` @type ^`boolean` @kind boolean;
+  #L207d88.  if v0 == 0 then goto L207d92;
+  #L207d8c.  call temp:= `remove`(v2, v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.remove:(Ljava/lang/Object;)Z` @kind super;
+  #L207d92.  call temp:= `size`(v2) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.size:()I` @kind super;
+  #L207d98.  v0:= temp;
+  #L207d9a.  v1:= v2.`com.huawei.hms.framework.common.LimitQueue.limit` @type ^`int`;
+  #L207d9e.  if v0 < v1 then goto L207da8;
+  #L207da2.  call temp:= `poll`(v2) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind super;
+  #L207da8.  call temp:= `add`(v2, v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.add:(Ljava/lang/Object;)Z` @kind super;
+  #L207dae.  v3:= temp;
+  #L207db0.  return v3;
+}
+procedure `boolean` `addAll`(`com.huawei.hms.framework.common.LimitQueue` v2 @kind this, `java.util.Collection` v3 @kind object) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.addAll:(Ljava/util/Collection;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L207dc4.  call temp:= `size`(v3) @signature `Ljava/util/Collection;.size:()I` @kind interface;
+  #L207dca.  v0:= temp;
+  #L207dcc.  v1:= v2.`com.huawei.hms.framework.common.LimitQueue.limit` @type ^`int`;
+  #L207dd0.  if v0 <= v1 then goto L207dd8;
+  #L207dd4.  v3:= 0I;
+  #L207dd6.  return v3;
+  #L207dd8.  v0:= v2.`com.huawei.hms.framework.common.LimitQueue.deduplication` @type ^`boolean` @kind boolean;
+  #L207ddc.  if v0 == 0 then goto L207de6;
+  #L207de0.  call temp:= `removeAll`(v2, v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.removeAll:(Ljava/util/Collection;)Z` @kind super;
+  #L207de6.  call temp:= `size`(v3) @signature `Ljava/util/Collection;.size:()I` @kind interface;
+  #L207dec.  v0:= temp;
+  #L207dee.  call temp:= `size`(v2) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.size:()I` @kind super;
+  #L207df4.  v1:= temp;
+  #L207df6.  v0:= v0 + v1 @kind int;
+  #L207df8.  v1:= v2.`com.huawei.hms.framework.common.LimitQueue.limit` @type ^`int`;
+  #L207dfc.  v0:= v0 - v1 @kind int;
+  #L207dfe.  if v0 <= 0 then goto L207e0e;
+  #L207e02.  call temp:= `poll`(v2) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind super;
+  #L207e08.  v0:= v0 + -1;
+  #L207e0c.  goto L207dfe;
+  #L207e0e.  call temp:= `addAll`(v2, v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.addAll:(Ljava/util/Collection;)Z` @kind super;
+  #L207e14.  v3:= temp;
+  #L207e16.  return v3;
+}
+procedure `void` `clear`(`com.huawei.hms.framework.common.LimitQueue` v0 @kind this) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.clear:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L207fbc.  call `clear`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.clear:()V` @kind super;
+  #L207fc2.  return @kind void;
+}
+procedure `java.lang.Object` `get`(`com.huawei.hms.framework.common.LimitQueue` v4 @kind this, `int` v5 ) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.get:(I)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L207e80.  call temp:= `iterator`(v4) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.iterator:()Ljava/util/Iterator;` @kind virtual;
+  #L207e86.  v0:= temp @kind object;
+  #L207e88.  v1:= 0I;
+  #L207e8a.  v2:= 0I;
+  #L207e8c.  if v2 > v5 then goto L207eaa;
+  #L207e90.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L207e96.  v3:= temp;
+  #L207e98.  if v3 == 0 then goto L207eaa;
+  #L207e9c.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L207ea2.  v1:= temp @kind object;
+  #L207ea4.  v2:= v2 + 1;
+  #L207ea8.  goto L207e8c;
+  #L207eaa.  return v1 @kind object;
+}
+procedure `int` `getLimit`(`com.huawei.hms.framework.common.LimitQueue` v1 @kind this) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.getLimit:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L207e68.  v0:= v1.`com.huawei.hms.framework.common.LimitQueue.limit` @type ^`int`;
+  #L207e6c.  return v0;
+}
+procedure `boolean` `offer`(`com.huawei.hms.framework.common.LimitQueue` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.offer:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L207e28.  v0:= v2.`com.huawei.hms.framework.common.LimitQueue.deduplication` @type ^`boolean` @kind boolean;
+  #L207e2c.  if v0 == 0 then goto L207e36;
+  #L207e30.  call temp:= `remove`(v2, v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.remove:(Ljava/lang/Object;)Z` @kind super;
+  #L207e36.  call temp:= `size`(v2) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.size:()I` @kind super;
+  #L207e3c.  v0:= temp;
+  #L207e3e.  v1:= v2.`com.huawei.hms.framework.common.LimitQueue.limit` @type ^`int`;
+  #L207e42.  if v0 < v1 then goto L207e4c;
+  #L207e46.  call temp:= `poll`(v2) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind super;
+  #L207e4c.  call temp:= `offer`(v2, v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.offer:(Ljava/lang/Object;)Z` @kind super;
+  #L207e52.  v3:= temp;
+  #L207e54.  return v3;
+}
+procedure `java.lang.Object` `peekLast`(`com.huawei.hms.framework.common.LimitQueue` v3 @kind this) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.peekLast:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L207ebc.  call temp:= `iterator`(v3) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.iterator:()Ljava/util/Iterator;` @kind virtual;
+  #L207ec2.  v0:= temp @kind object;
+  #L207ec4.  v1:= 0I;
+  #L207ec6.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L207ecc.  v2:= temp;
+  #L207ece.  if v2 == 0 then goto L207edc;
+  #L207ed2.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L207ed8.  v1:= temp @kind object;
+  #L207eda.  goto L207ec6;
+  #L207edc.  return v1 @kind object;
+}
+procedure `java.lang.Object` `poll`(`com.huawei.hms.framework.common.LimitQueue` v1 @kind this) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.poll:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L207ef0.  call temp:= `poll`(v1) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind super;
+  #L207ef6.  v0:= temp @kind object;
+  #L207ef8.  return v0 @kind object;
+}
+procedure `java.lang.Object` `remove`(`com.huawei.hms.framework.common.LimitQueue` v2 @kind this) @signature `Lcom/huawei/hms/framework/common/LimitQueue;.remove:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L207f0c.  call temp:= `remove`(v2) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.remove:()Ljava/lang/Object;` @kind super;
+  #L207f12.  v0:= temp @kind object;
+  #L207f14.  return v0 @kind object;
+  #L207f16.  v0:= "LimitQueue" @kind object;
+  #L207f1a.  v1:= "remove failed, limitQueue is empty" @kind object;
+  #L207f1e.  call `w`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L207f24.  v0:= 0I;
+  #L207f26.  return v0 @kind object;
+  catch `java.util.NoSuchElementException` @[L207f0c..L207f14] goto L207f16;
+}

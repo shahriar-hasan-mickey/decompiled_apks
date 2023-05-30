@@ -1,0 +1,862 @@
+record `rx.observers.TestSubscriber` @kind class @AccessFlag PUBLIC extends `rx.Subscriber` @kind class {
+  `int` `rx.observers.TestSubscriber.completions` @AccessFlag PRIVATE;
+  `rx.Observer` `rx.observers.TestSubscriber.delegate` @AccessFlag PRIVATE_FINAL;
+  `java.util.List` `rx.observers.TestSubscriber.errors` @AccessFlag PRIVATE_FINAL;
+  `java.lang.Thread` `rx.observers.TestSubscriber.lastSeenThread` @AccessFlag PRIVATE_VOLATILE;
+  `java.util.concurrent.CountDownLatch` `rx.observers.TestSubscriber.latch` @AccessFlag PRIVATE_FINAL;
+  `int` `rx.observers.TestSubscriber.valueCount` @AccessFlag PRIVATE_VOLATILE;
+  `java.util.List` `rx.observers.TestSubscriber.values` @AccessFlag PRIVATE_FINAL;
+}
+global `rx.Observer` `@@rx.observers.TestSubscriber.INERT` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/observers/TestSubscriber;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4bf9bc.  v0:= new `rx.observers.TestSubscriber$1`;
+  #L4bf9c0.  call `<init>`(v0) @signature `Lrx/observers/TestSubscriber$1;.<init>:()V` @kind direct;
+  #L4bf9c6.  `@@rx.observers.TestSubscriber.INERT` @type ^`rx.Observer` := v0 @kind object;
+  #L4bf9ca.  return @kind void;
+}
+procedure `void` `<init>`(`rx.observers.TestSubscriber` v2 @kind this) @signature `Lrx/observers/TestSubscriber;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4bf9dc.  v0:= -1L;
+  #L4bf9e0.  call `<init>`(v2, v0) @signature `Lrx/observers/TestSubscriber;.<init>:(J)V` @kind direct;
+  #L4bf9e6.  return @kind void;
+}
+procedure `void` `<init>`(`rx.observers.TestSubscriber` v1 @kind this, `long` v2 ) @signature `Lrx/observers/TestSubscriber;.<init>:(J)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4bf9f8.  v0:= `@@rx.observers.TestSubscriber.INERT` @type ^`rx.Observer` @kind object;
+  #L4bf9fc.  call `<init>`(v1, v0, v2) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Observer;J)V` @kind direct;
+  #L4bfa02.  return @kind void;
+}
+procedure `void` `<init>`(`rx.observers.TestSubscriber` v2 @kind this, `rx.Observer` v3 @kind object) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Observer;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4bfa14.  v0:= -1L;
+  #L4bfa18.  call `<init>`(v2, v3, v0) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Observer;J)V` @kind direct;
+  #L4bfa1e.  return @kind void;
+}
+procedure `void` `<init>`(`rx.observers.TestSubscriber` v2 @kind this, `rx.Observer` v3 @kind object, `long` v4 ) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Observer;J)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4bfa30.  call `<init>`(v2) @signature `Lrx/Subscriber;.<init>:()V` @kind direct;
+  #L4bfa36.  v0:= new `java.util.concurrent.CountDownLatch`;
+  #L4bfa3a.  v1:= 1I;
+  #L4bfa3c.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/CountDownLatch;.<init>:(I)V` @kind direct;
+  #L4bfa42.  v2.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` := v0 @kind object;
+  #L4bfa46.  if v3 == 0 then goto L4bfa7e;
+  #L4bfa4a.  v2.`rx.observers.TestSubscriber.delegate` @type ^`rx.Observer` := v3 @kind object;
+  #L4bfa4e.  v0:= 0L;
+  #L4bfa52.  v3:= lcmp(v4, v0);
+  #L4bfa56.  if v3 < 0 then goto L4bfa60;
+  #L4bfa5a.  call `request`(v2, v4) @signature `Lrx/observers/TestSubscriber;.request:(J)V` @kind virtual;
+  #L4bfa60.  v3:= new `java.util.ArrayList`;
+  #L4bfa64.  call `<init>`(v3) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4bfa6a.  v2.`rx.observers.TestSubscriber.values` @type ^`java.util.List` := v3 @kind object;
+  #L4bfa6e.  v3:= new `java.util.ArrayList`;
+  #L4bfa72.  call `<init>`(v3) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4bfa78.  v2.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` := v3 @kind object;
+  #L4bfa7c.  return @kind void;
+  #L4bfa7e.  v3:= new `java.lang.NullPointerException`;
+  #L4bfa82.  call `<init>`(v3) @signature `Ljava/lang/NullPointerException;.<init>:()V` @kind direct;
+  #L4bfa88.  throw v3;
+}
+procedure `void` `<init>`(`rx.observers.TestSubscriber` v2 @kind this, `rx.Subscriber` v3 @kind object) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Subscriber;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4bfa9c.  v0:= -1L;
+  #L4bfaa0.  call `<init>`(v2, v3, v0) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Observer;J)V` @kind direct;
+  #L4bfaa6.  return @kind void;
+}
+procedure `void` `assertItem`(`rx.observers.TestSubscriber` v3 @kind this, `java.lang.Object` v4 @kind object, `int` v5 ) @signature `Lrx/observers/TestSubscriber;.assertItem:(Ljava/lang/Object;I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4bfc9c.  v0:= v3.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4bfca0.  call temp:= `get`(v0, v5) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4bfca6.  v0:= temp @kind object;
+  #L4bfca8.  v1:= "Value at index: " @kind object;
+  #L4bfcac.  if v4 != 0 then goto L4bfcf4;
+  #L4bfcb0.  if v0 == 0 then goto L4bfd94;
+  #L4bfcb4.  v4:= new `java.lang.StringBuilder`;
+  #L4bfcb8.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfcbe.  call temp:= `append`(v4, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfcc4.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfcca.  v5:= " expected to be [null] but was: [" @kind object;
+  #L4bfcce.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfcd4.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfcda.  v5:= "]\n" @kind object;
+  #L4bfcde.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfce4.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfcea.  v4:= temp @kind object;
+  #L4bfcec.  call `assertionError`(v3, v4) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfcf2.  goto L4bfd94;
+  #L4bfcf4.  call temp:= `equals`(v4, v0) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4bfcfa.  v2:= temp;
+  #L4bfcfc.  if v2 != 0 then goto L4bfd94;
+  #L4bfd00.  v2:= new `java.lang.StringBuilder`;
+  #L4bfd04.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfd0a.  call temp:= `append`(v2, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd10.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd16.  v5:= " expected to be [" @kind object;
+  #L4bfd1a.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd20.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd26.  v5:= "] (" @kind object;
+  #L4bfd2a.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd30.  call temp:= `getClass`(v4) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L4bfd36.  v4:= temp @kind object;
+  #L4bfd38.  call temp:= `getSimpleName`(v4) @signature `Ljava/lang/Class;.getSimpleName:()Ljava/lang/String;` @kind virtual;
+  #L4bfd3e.  v4:= temp @kind object;
+  #L4bfd40.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd46.  v4:= ") but was: [" @kind object;
+  #L4bfd4a.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd50.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd56.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd5c.  if v0 == 0 then goto L4bfd72;
+  #L4bfd60.  call temp:= `getClass`(v0) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L4bfd66.  v4:= temp @kind object;
+  #L4bfd68.  call temp:= `getSimpleName`(v4) @signature `Ljava/lang/Class;.getSimpleName:()Ljava/lang/String;` @kind virtual;
+  #L4bfd6e.  v4:= temp @kind object;
+  #L4bfd70.  goto L4bfd76;
+  #L4bfd72.  v4:= "null" @kind object;
+  #L4bfd76.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd7c.  v4:= ")\n" @kind object;
+  #L4bfd80.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfd86.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfd8c.  v4:= temp @kind object;
+  #L4bfd8e.  call `assertionError`(v3, v4) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfd94.  return @kind void;
+}
+procedure `rx.observers.TestSubscriber` `create`() @signature `Lrx/observers/TestSubscriber;.create:()Lrx/observers/TestSubscriber;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4bf930.  v0:= new `rx.observers.TestSubscriber`;
+  #L4bf934.  call `<init>`(v0) @signature `Lrx/observers/TestSubscriber;.<init>:()V` @kind direct;
+  #L4bf93a.  return v0 @kind object;
+}
+procedure `rx.observers.TestSubscriber` `create`(`long` v1 ) @signature `Lrx/observers/TestSubscriber;.create:(J)Lrx/observers/TestSubscriber;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4bf94c.  v0:= new `rx.observers.TestSubscriber`;
+  #L4bf950.  call `<init>`(v0, v1) @signature `Lrx/observers/TestSubscriber;.<init>:(J)V` @kind direct;
+  #L4bf956.  return v0 @kind object;
+}
+procedure `rx.observers.TestSubscriber` `create`(`rx.Observer` v1 @kind object) @signature `Lrx/observers/TestSubscriber;.create:(Lrx/Observer;)Lrx/observers/TestSubscriber;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4bf968.  v0:= new `rx.observers.TestSubscriber`;
+  #L4bf96c.  call `<init>`(v0, v1) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Observer;)V` @kind direct;
+  #L4bf972.  return v0 @kind object;
+}
+procedure `rx.observers.TestSubscriber` `create`(`rx.Observer` v1 @kind object, `long` v2 ) @signature `Lrx/observers/TestSubscriber;.create:(Lrx/Observer;J)Lrx/observers/TestSubscriber;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4bf984.  v0:= new `rx.observers.TestSubscriber`;
+  #L4bf988.  call `<init>`(v0, v1, v2) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Observer;J)V` @kind direct;
+  #L4bf98e.  return v0 @kind object;
+}
+procedure `rx.observers.TestSubscriber` `create`(`rx.Subscriber` v1 @kind object) @signature `Lrx/observers/TestSubscriber;.create:(Lrx/Subscriber;)Lrx/observers/TestSubscriber;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4bf9a0.  v0:= new `rx.observers.TestSubscriber`;
+  #L4bf9a4.  call `<init>`(v0, v1) @signature `Lrx/observers/TestSubscriber;.<init>:(Lrx/Subscriber;)V` @kind direct;
+  #L4bf9aa.  return v0 @kind object;
+}
+procedure `void` `assertCompleted`(`rx.observers.TestSubscriber` v3 @kind this) @signature `Lrx/observers/TestSubscriber;.assertCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4bfab8.  v0:= v3.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4bfabc.  if v0 != 0 then goto L4bfacc;
+  #L4bfac0.  v0:= "Not completed!" @kind object;
+  #L4bfac4.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfaca.  goto L4bfafa;
+  #L4bfacc.  v1:= 1I;
+  #L4bface.  if v0 <= v1 then goto L4bfafa;
+  #L4bfad2.  v1:= new `java.lang.StringBuilder`;
+  #L4bfad6.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfadc.  v2:= "Completed multiple times: " @kind object;
+  #L4bfae0.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfae6.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfaec.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfaf2.  v0:= temp @kind object;
+  #L4bfaf4.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfafa.  return @kind void;
+}
+procedure `void` `assertError`(`rx.observers.TestSubscriber` v5 @kind this, `java.lang.Class` v6 @kind object) @signature `Lrx/observers/TestSubscriber;.assertError:(Ljava/lang/Class;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4bfb0c.  v0:= v5.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4bfb10.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4bfb16.  v1:= temp;
+  #L4bfb18.  if v1 == 0 then goto L4bfb28;
+  #L4bfb1c.  v6:= "No errors" @kind object;
+  #L4bfb20.  call `assertionError`(v5, v6) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfb26.  goto L4bfb4c;
+  #L4bfb28.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfb2e.  v1:= temp;
+  #L4bfb30.  v2:= 1I;
+  #L4bfb32.  if v1 > v2 then goto L4bfba6;
+  #L4bfb36.  v1:= 0I;
+  #L4bfb38.  call temp:= `get`(v0, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4bfb3e.  v2:= temp @kind object;
+  #L4bfb40.  call temp:= `isInstance`(v6, v2) @signature `Ljava/lang/Class;.isInstance:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4bfb46.  v2:= temp;
+  #L4bfb48.  if v2 == 0 then goto L4bfb4e;
+  #L4bfb4c.  return @kind void;
+  #L4bfb4e.  v2:= new `java.lang.AssertionError`;
+  #L4bfb52.  v3:= new `java.lang.StringBuilder`;
+  #L4bfb56.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfb5c.  v4:= "Exceptions differ; expected: " @kind object;
+  #L4bfb60.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfb66.  call temp:= `append`(v3, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfb6c.  v6:= ", actual: " @kind object;
+  #L4bfb70.  call temp:= `append`(v3, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfb76.  call temp:= `get`(v0, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4bfb7c.  v6:= temp @kind object;
+  #L4bfb7e.  call temp:= `append`(v3, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfb84.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfb8a.  v6:= temp @kind object;
+  #L4bfb8c.  call `<init>`(v2, v6) @signature `Ljava/lang/AssertionError;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4bfb92.  call temp:= `get`(v0, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4bfb98.  v6:= temp @kind object;
+  #L4bfb9a.  v6:= (`java.lang.Throwable`) v6 @kind object;
+  #L4bfb9e.  call temp:= `initCause`(v2, v6) @signature `Ljava/lang/AssertionError;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L4bfba4.  throw v2;
+  #L4bfba6.  v6:= new `java.lang.AssertionError`;
+  #L4bfbaa.  v1:= new `java.lang.StringBuilder`;
+  #L4bfbae.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfbb4.  v2:= "Multiple errors: " @kind object;
+  #L4bfbb8.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfbbe.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfbc4.  v2:= temp;
+  #L4bfbc6.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfbcc.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfbd2.  v1:= temp @kind object;
+  #L4bfbd4.  call `<init>`(v6, v1) @signature `Ljava/lang/AssertionError;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4bfbda.  v1:= new `rx.exceptions.CompositeException`;
+  #L4bfbde.  call `<init>`(v1, v0) @signature `Lrx/exceptions/CompositeException;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L4bfbe4.  call temp:= `initCause`(v6, v1) @signature `Ljava/lang/AssertionError;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L4bfbea.  throw v6;
+}
+procedure `void` `assertError`(`rx.observers.TestSubscriber` v4 @kind this, `java.lang.Throwable` v5 @kind object) @signature `Lrx/observers/TestSubscriber;.assertError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4bfbfc.  v0:= v4.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4bfc00.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4bfc06.  v1:= temp;
+  #L4bfc08.  if v1 == 0 then goto L4bfc18;
+  #L4bfc0c.  v5:= "No errors" @kind object;
+  #L4bfc10.  call `assertionError`(v4, v5) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfc16.  goto L4bfc88;
+  #L4bfc18.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfc1e.  v1:= temp;
+  #L4bfc20.  v2:= 1I;
+  #L4bfc22.  if v1 <= v2 then goto L4bfc32;
+  #L4bfc26.  v5:= "Multiple errors" @kind object;
+  #L4bfc2a.  call `assertionError`(v4, v5) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfc30.  goto L4bfc88;
+  #L4bfc32.  v1:= 0I;
+  #L4bfc34.  call temp:= `get`(v0, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4bfc3a.  v2:= temp @kind object;
+  #L4bfc3c.  call temp:= `equals`(v5, v2) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4bfc42.  v2:= temp;
+  #L4bfc44.  if v2 != 0 then goto L4bfc88;
+  #L4bfc48.  v2:= new `java.lang.StringBuilder`;
+  #L4bfc4c.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfc52.  v3:= "Exceptions differ; expected: " @kind object;
+  #L4bfc56.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfc5c.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfc62.  v5:= ", actual: " @kind object;
+  #L4bfc66.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfc6c.  call temp:= `get`(v0, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4bfc72.  v5:= temp @kind object;
+  #L4bfc74.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfc7a.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfc80.  v5:= temp @kind object;
+  #L4bfc82.  call `assertionError`(v4, v5) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfc88.  return @kind void;
+}
+procedure `void` `assertNoErrors`(`rx.observers.TestSubscriber` v1 @kind this) @signature `Lrx/observers/TestSubscriber;.assertNoErrors:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4bfda8.  call temp:= `getOnErrorEvents`(v1) @signature `Lrx/observers/TestSubscriber;.getOnErrorEvents:()Ljava/util/List;` @kind virtual;
+  #L4bfdae.  v0:= temp @kind object;
+  #L4bfdb0.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4bfdb6.  v0:= temp;
+  #L4bfdb8.  if v0 != 0 then goto L4bfdc6;
+  #L4bfdbc.  v0:= "Unexpected onError events" @kind object;
+  #L4bfdc0.  call `assertionError`(v1, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfdc6.  return @kind void;
+}
+procedure `void` `assertNoTerminalEvent`(`rx.observers.TestSubscriber` v7 @kind this) @signature `Lrx/observers/TestSubscriber;.assertNoTerminalEvent:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4bfdd8.  v0:= v7.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4bfddc.  v1:= v7.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4bfde0.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4bfde6.  v2:= temp;
+  #L4bfde8.  if v2 == 0 then goto L4bfdf0;
+  #L4bfdec.  if v1 <= 0 then goto L4bfed4;
+  #L4bfdf0.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4bfdf6.  v2:= temp;
+  #L4bfdf8.  v3:= " completion events instead of none" @kind object;
+  #L4bfdfc.  v4:= " errors and " @kind object;
+  #L4bfe00.  v5:= "Found " @kind object;
+  #L4bfe04.  if v2 == 0 then goto L4bfe48;
+  #L4bfe08.  v2:= new `java.lang.StringBuilder`;
+  #L4bfe0c.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfe12.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe18.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfe1e.  v0:= temp;
+  #L4bfe20.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe26.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe2c.  call temp:= `append`(v2, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe32.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe38.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfe3e.  v0:= temp @kind object;
+  #L4bfe40.  call `assertionError`(v7, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfe46.  goto L4bfed4;
+  #L4bfe48.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfe4e.  v2:= temp;
+  #L4bfe50.  v6:= 1I;
+  #L4bfe52.  if v2 != v6 then goto L4bfe96;
+  #L4bfe56.  v2:= new `java.lang.StringBuilder`;
+  #L4bfe5a.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfe60.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe66.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfe6c.  v0:= temp;
+  #L4bfe6e.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe74.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe7a.  call temp:= `append`(v2, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe80.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfe86.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfe8c.  v0:= temp @kind object;
+  #L4bfe8e.  call `assertionError`(v7, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfe94.  goto L4bfed4;
+  #L4bfe96.  v2:= new `java.lang.StringBuilder`;
+  #L4bfe9a.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bfea0.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfea6.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfeac.  v0:= temp;
+  #L4bfeae.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfeb4.  call temp:= `append`(v2, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfeba.  call temp:= `append`(v2, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfec0.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfec6.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bfecc.  v0:= temp @kind object;
+  #L4bfece.  call `assertionError`(v7, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bfed4.  return @kind void;
+}
+procedure `void` `assertNoValues`(`rx.observers.TestSubscriber` v3 @kind this) @signature `Lrx/observers/TestSubscriber;.assertNoValues:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4bfee8.  v0:= v3.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4bfeec.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bfef2.  v0:= temp;
+  #L4bfef4.  if v0 == 0 then goto L4bff20;
+  #L4bfef8.  v1:= new `java.lang.StringBuilder`;
+  #L4bfefc.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bff02.  v2:= "No onNext events expected yet some received: " @kind object;
+  #L4bff06.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bff0c.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bff12.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bff18.  v0:= temp @kind object;
+  #L4bff1a.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bff20.  return @kind void;
+}
+procedure `void` `assertNotCompleted`(`rx.observers.TestSubscriber` v3 @kind this) @signature `Lrx/observers/TestSubscriber;.assertNotCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4bff34.  v0:= v3.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4bff38.  v1:= 1I;
+  #L4bff3a.  if v0 != v1 then goto L4bff4a;
+  #L4bff3e.  v0:= "Completed!" @kind object;
+  #L4bff42.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bff48.  goto L4bff76;
+  #L4bff4a.  if v0 <= v1 then goto L4bff76;
+  #L4bff4e.  v1:= new `java.lang.StringBuilder`;
+  #L4bff52.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bff58.  v2:= "Completed multiple times: " @kind object;
+  #L4bff5c.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bff62.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bff68.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4bff6e.  v0:= temp @kind object;
+  #L4bff70.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4bff76.  return @kind void;
+}
+procedure `void` `assertReceivedOnNext`(`rx.observers.TestSubscriber` v3 @kind this, `java.util.List` v4 @kind object) @signature `Lrx/observers/TestSubscriber;.assertReceivedOnNext:(Ljava/util/List;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4bff88.  v0:= v3.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4bff8c.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bff92.  v0:= temp;
+  #L4bff94.  call temp:= `size`(v4) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bff9a.  v1:= temp;
+  #L4bff9c.  if v0 == v1 then goto L4c002a;
+  #L4bffa0.  v0:= new `java.lang.StringBuilder`;
+  #L4bffa4.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4bffaa.  v1:= "Number of items does not match. Provided: " @kind object;
+  #L4bffae.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bffb4.  call temp:= `size`(v4) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bffba.  v1:= temp;
+  #L4bffbc.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bffc2.  v1:= "  Actual: " @kind object;
+  #L4bffc6.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bffcc.  v1:= v3.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4bffd0.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4bffd6.  v1:= temp;
+  #L4bffd8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bffde.  v1:= ".\n" @kind object;
+  #L4bffe2.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bffe8.  v1:= "Provided values: " @kind object;
+  #L4bffec.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfff2.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4bfff8.  v1:= "\n" @kind object;
+  #L4bfffc.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0002.  v2:= "Actual values: " @kind object;
+  #L4c0006.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c000c.  v2:= v3.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4c0010.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0016.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c001c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4c0022.  v0:= temp @kind object;
+  #L4c0024.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4c002a.  v0:= 0I;
+  #L4c002c.  call temp:= `size`(v4) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c0032.  v1:= temp;
+  #L4c0034.  if v0 >= v1 then goto L4c004c;
+  #L4c0038.  call temp:= `get`(v4, v0) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4c003e.  v1:= temp @kind object;
+  #L4c0040.  call `assertItem`(v3, v1, v0) @signature `Lrx/observers/TestSubscriber;.assertItem:(Ljava/lang/Object;I)V` @kind direct;
+  #L4c0046.  v0:= v0 + 1;
+  #L4c004a.  goto L4c002c;
+  #L4c004c.  return @kind void;
+}
+procedure `void` `assertTerminalEvent`(`rx.observers.TestSubscriber` v3 @kind this) @signature `Lrx/observers/TestSubscriber;.assertTerminalEvent:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c0060.  v0:= v3.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c0064.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c006a.  v0:= temp;
+  #L4c006c.  v1:= 1I;
+  #L4c006e.  if v0 <= v1 then goto L4c00a6;
+  #L4c0072.  v0:= new `java.lang.StringBuilder`;
+  #L4c0076.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4c007c.  v2:= "Too many onError events: " @kind object;
+  #L4c0080.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0086.  v2:= v3.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c008a.  call temp:= `size`(v2) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c0090.  v2:= temp;
+  #L4c0092.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0098.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4c009e.  v0:= temp @kind object;
+  #L4c00a0.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4c00a6.  v0:= v3.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4c00aa.  if v0 <= v1 then goto L4c00da;
+  #L4c00ae.  v0:= new `java.lang.StringBuilder`;
+  #L4c00b2.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4c00b8.  v2:= "Too many onCompleted events: " @kind object;
+  #L4c00bc.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c00c2.  v2:= v3.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4c00c6.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c00cc.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4c00d2.  v0:= temp @kind object;
+  #L4c00d4.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4c00da.  v0:= v3.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4c00de.  if v0 != v1 then goto L4c00fc;
+  #L4c00e2.  v0:= v3.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c00e6.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c00ec.  v0:= temp;
+  #L4c00ee.  if v0 != v1 then goto L4c00fc;
+  #L4c00f2.  v0:= "Received both an onError and onCompleted. Should be one or the other." @kind object;
+  #L4c00f6.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4c00fc.  v0:= v3.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4c0100.  if v0 != 0 then goto L4c011e;
+  #L4c0104.  v0:= v3.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c0108.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4c010e.  v0:= temp;
+  #L4c0110.  if v0 == 0 then goto L4c011e;
+  #L4c0114.  v0:= "No terminal events received." @kind object;
+  #L4c0118.  call `assertionError`(v3, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4c011e.  return @kind void;
+}
+procedure `void` `assertUnsubscribed`(`rx.observers.TestSubscriber` v1 @kind this) @signature `Lrx/observers/TestSubscriber;.assertUnsubscribed:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c0130.  call temp:= `isUnsubscribed`(v1) @signature `Lrx/observers/TestSubscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4c0136.  v0:= temp;
+  #L4c0138.  if v0 != 0 then goto L4c0146;
+  #L4c013c.  v0:= "Not unsubscribed." @kind object;
+  #L4c0140.  call `assertionError`(v1, v0) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4c0146.  return @kind void;
+}
+procedure `void` `assertValue`(`rx.observers.TestSubscriber` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/observers/TestSubscriber;.assertValue:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4c0158.  call temp:= `singletonList`(v1) @signature `Ljava/util/Collections;.singletonList:(Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L4c015e.  v1:= temp @kind object;
+  #L4c0160.  call `assertReceivedOnNext`(v0, v1) @signature `Lrx/observers/TestSubscriber;.assertReceivedOnNext:(Ljava/util/List;)V` @kind virtual;
+  #L4c0166.  return @kind void;
+}
+procedure `void` `assertValueCount`(`rx.observers.TestSubscriber` v3 @kind this, `int` v4 ) @signature `Lrx/observers/TestSubscriber;.assertValueCount:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c0178.  v0:= v3.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4c017c.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c0182.  v0:= temp;
+  #L4c0184.  if v0 == v4 then goto L4c01c0;
+  #L4c0188.  v1:= new `java.lang.StringBuilder`;
+  #L4c018c.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4c0192.  v2:= "Number of onNext events differ; expected: " @kind object;
+  #L4c0196.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c019c.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c01a2.  v4:= ", actual: " @kind object;
+  #L4c01a6.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c01ac.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c01b2.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4c01b8.  v4:= temp @kind object;
+  #L4c01ba.  call `assertionError`(v3, v4) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @kind virtual;
+  #L4c01c0.  return @kind void;
+}
+procedure `void` `assertValues`(`rx.observers.TestSubscriber` v0 @kind this, `java.lang.Object`[] v1 @kind object) @signature `Lrx/observers/TestSubscriber;.assertValues:([Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4c01d4.  call temp:= `asList`(v1) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L4c01da.  v1:= temp @kind object;
+  #L4c01dc.  call `assertReceivedOnNext`(v0, v1) @signature `Lrx/observers/TestSubscriber;.assertReceivedOnNext:(Ljava/util/List;)V` @kind virtual;
+  #L4c01e2.  return @kind void;
+}
+procedure `void` `assertValuesAndClear`(`rx.observers.TestSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object, `java.lang.Object`[] v3 @kind object) @signature `Lrx/observers/TestSubscriber;.assertValuesAndClear:(Ljava/lang/Object;[Ljava/lang/Object;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L4c01f4.  v0:= length @variable v3;
+  #L4c01f6.  v0:= v0 + 1;
+  #L4c01fa.  call `assertValueCount`(v1, v0) @signature `Lrx/observers/TestSubscriber;.assertValueCount:(I)V` @kind virtual;
+  #L4c0200.  v0:= 0I;
+  #L4c0202.  call `assertItem`(v1, v2, v0) @signature `Lrx/observers/TestSubscriber;.assertItem:(Ljava/lang/Object;I)V` @kind direct;
+  #L4c0208.  v2:= length @variable v3;
+  #L4c020a.  if v0 >= v2 then goto L4c021e;
+  #L4c020e.  v2:= v3[v0] @kind object;
+  #L4c0212.  v0:= v0 + 1;
+  #L4c0216.  call `assertItem`(v1, v2, v0) @signature `Lrx/observers/TestSubscriber;.assertItem:(Ljava/lang/Object;I)V` @kind direct;
+  #L4c021c.  goto L4c0208;
+  #L4c021e.  v2:= v1.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4c0222.  call `clear`(v2) @signature `Ljava/util/List;.clear:()V` @kind interface;
+  #L4c0228.  return @kind void;
+}
+procedure `void` `assertionError`(`rx.observers.TestSubscriber` v5 @kind this, `java.lang.String` v6 @kind object) @signature `Lrx/observers/TestSubscriber;.assertionError:(Ljava/lang/String;)V` @AccessFlag FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4c023c.  v0:= new `java.lang.StringBuilder`;
+  #L4c0240.  call temp:= `length`(v6) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L4c0246.  v1:= temp;
+  #L4c0248.  v1:= v1 + 32;
+  #L4c024c.  call `<init>`(v0, v1) @signature `Ljava/lang/StringBuilder;.<init>:(I)V` @kind direct;
+  #L4c0252.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0258.  v6:= " (" @kind object;
+  #L4c025c.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0262.  v6:= v5.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4c0266.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c026c.  v1:= " completion" @kind object;
+  #L4c0270.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0276.  v1:= 115I;
+  #L4c027a.  v2:= 1I;
+  #L4c027c.  if v6 == v2 then goto L4c0286;
+  #L4c0280.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0286.  v6:= 41I;
+  #L4c028a.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c0290.  v3:= v5.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c0294.  call temp:= `isEmpty`(v3) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4c029a.  v3:= temp;
+  #L4c029c.  if v3 != 0 then goto L4c02d6;
+  #L4c02a0.  v3:= v5.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c02a4.  call temp:= `size`(v3) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c02aa.  v3:= temp;
+  #L4c02ac.  v4:= " (+" @kind object;
+  #L4c02b0.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c02b6.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c02bc.  v4:= " error" @kind object;
+  #L4c02c0.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c02c6.  if v3 == v2 then goto L4c02d0;
+  #L4c02ca.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c02d0.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c02d6.  v6:= new `java.lang.AssertionError`;
+  #L4c02da.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4c02e0.  v0:= temp @kind object;
+  #L4c02e2.  call `<init>`(v6, v0) @signature `Ljava/lang/AssertionError;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4c02e8.  v0:= v5.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c02ec.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4c02f2.  v0:= temp;
+  #L4c02f4.  if v0 != 0 then goto L4c0336;
+  #L4c02f8.  v0:= v5.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c02fc.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c0302.  v0:= temp;
+  #L4c0304.  if v0 != v2 then goto L4c0322;
+  #L4c0308.  v0:= v5.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c030c.  v1:= 0I;
+  #L4c030e.  call temp:= `get`(v0, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4c0314.  v0:= temp @kind object;
+  #L4c0316.  v0:= (`java.lang.Throwable`) v0 @kind object;
+  #L4c031a.  call temp:= `initCause`(v6, v0) @signature `Ljava/lang/AssertionError;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L4c0320.  goto L4c0336;
+  #L4c0322.  v0:= new `rx.exceptions.CompositeException`;
+  #L4c0326.  v1:= v5.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c032a.  call `<init>`(v0, v1) @signature `Lrx/exceptions/CompositeException;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L4c0330.  call temp:= `initCause`(v6, v0) @signature `Ljava/lang/AssertionError;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L4c0336.  throw v6;
+}
+procedure `void` `awaitTerminalEvent`(`rx.observers.TestSubscriber` v3 @kind this) @signature `Lrx/observers/TestSubscriber;.awaitTerminalEvent:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c0348.  v0:= v3.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4c034c.  call `await`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L4c0352.  return @kind void;
+  #L4c0354.  v0:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L4c0356.  v1:= new `java.lang.IllegalStateException`;
+  #L4c035a.  v2:= "Interrupted" @kind object;
+  #L4c035e.  call `<init>`(v1, v2, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L4c0364.  throw v1;
+  catch `java.lang.InterruptedException` @[L4c0348..L4c0352] goto L4c0354;
+}
+procedure `void` `awaitTerminalEvent`(`rx.observers.TestSubscriber` v1 @kind this, `long` v2 , `java.util.concurrent.TimeUnit` v4 @kind object) @signature `Lrx/observers/TestSubscriber;.awaitTerminalEvent:(JLjava/util/concurrent/TimeUnit;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c0388.  v0:= v1.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4c038c.  call temp:= `await`(v0, v2, v4) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L4c0392.  return @kind void;
+  #L4c0394.  v2:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L4c0396.  v3:= new `java.lang.IllegalStateException`;
+  #L4c039a.  v4:= "Interrupted" @kind object;
+  #L4c039e.  call `<init>`(v3, v4, v2) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L4c03a4.  throw v3;
+  catch `java.lang.InterruptedException` @[L4c0388..L4c0392] goto L4c0394;
+}
+procedure `void` `awaitTerminalEventAndUnsubscribeOnTimeout`(`rx.observers.TestSubscriber` v1 @kind this, `long` v2 , `java.util.concurrent.TimeUnit` v4 @kind object) @signature `Lrx/observers/TestSubscriber;.awaitTerminalEventAndUnsubscribeOnTimeout:(JLjava/util/concurrent/TimeUnit;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c03c8.  v0:= v1.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4c03cc.  call temp:= `await`(v0, v2, v4) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L4c03d2.  v2:= temp;
+  #L4c03d4.  if v2 != 0 then goto L4c03e6;
+  #L4c03d8.  call `unsubscribe`(v1) @signature `Lrx/observers/TestSubscriber;.unsubscribe:()V` @kind virtual;
+  #L4c03de.  goto L4c03e6;
+  #L4c03e0.  call `unsubscribe`(v1) @signature `Lrx/observers/TestSubscriber;.unsubscribe:()V` @kind virtual;
+  #L4c03e6.  return @kind void;
+  catch `java.lang.InterruptedException` @[L4c03c8..L4c03de] goto L4c03e0;
+}
+procedure `boolean` `awaitValueCount`(`rx.observers.TestSubscriber` v3 @kind this, `int` v4 , `long` v5 , `java.util.concurrent.TimeUnit` v7 @kind object) @signature `Lrx/observers/TestSubscriber;.awaitValueCount:(IJLjava/util/concurrent/TimeUnit;)Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4bf810.  v0:= 0L;
+  #L4bf814.  v2:= lcmp(v5, v0);
+  #L4bf818.  if v2 == 0 then goto L4bf844;
+  #L4bf81c.  v0:= v3.`rx.observers.TestSubscriber.valueCount` @type ^`int`;
+  #L4bf820.  if v0 >= v4 then goto L4bf844;
+  #L4bf824.  v0:= 1L;
+  #L4bf828.  call `sleep`(v7, v0) @signature `Ljava/util/concurrent/TimeUnit;.sleep:(J)V` @kind virtual;
+  #L4bf82e.  v5:= v5 - v0 @kind long;
+  #L4bf830.  goto L4bf810;
+  #L4bf832.  v4:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L4bf834.  v5:= new `java.lang.IllegalStateException`;
+  #L4bf838.  v6:= "Interrupted" @kind object;
+  #L4bf83c.  call `<init>`(v5, v6, v4) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L4bf842.  throw v5;
+  #L4bf844.  v5:= v3.`rx.observers.TestSubscriber.valueCount` @type ^`int`;
+  #L4bf848.  if v5 < v4 then goto L4bf850;
+  #L4bf84c.  v4:= 1I;
+  #L4bf84e.  goto L4bf852;
+  #L4bf850.  v4:= 0I;
+  #L4bf852.  return v4;
+  catch `java.lang.InterruptedException` @[L4bf828..L4bf82e] goto L4bf832;
+}
+procedure `int` `getCompletions`(`rx.observers.TestSubscriber` v1 @kind this) @signature `Lrx/observers/TestSubscriber;.getCompletions:()I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L4bf874.  v0:= v1.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4bf878.  return v0;
+}
+procedure `java.lang.Thread` `getLastSeenThread`(`rx.observers.TestSubscriber` v1 @kind this) @signature `Lrx/observers/TestSubscriber;.getLastSeenThread:()Ljava/lang/Thread;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4bf8a4.  v0:= v1.`rx.observers.TestSubscriber.lastSeenThread` @type ^`java.lang.Thread` @kind object;
+  #L4bf8a8.  return v0 @kind object;
+}
+procedure `java.util.List` `getOnCompletedEvents`(`rx.observers.TestSubscriber` v4 @kind this) @signature `Lrx/observers/TestSubscriber;.getOnCompletedEvents:()Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4bf8bc.  v0:= v4.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4bf8c0.  v1:= new `java.util.ArrayList`;
+  #L4bf8c4.  if v0 == 0 then goto L4bf8cc;
+  #L4bf8c8.  v2:= v0;
+  #L4bf8ca.  goto L4bf8ce;
+  #L4bf8cc.  v2:= 1I;
+  #L4bf8ce.  call `<init>`(v1, v2) @signature `Ljava/util/ArrayList;.<init>:(I)V` @kind direct;
+  #L4bf8d4.  v2:= 0I;
+  #L4bf8d6.  if v2 >= v0 then goto L4bf8ee;
+  #L4bf8da.  call temp:= `createOnCompleted`() @signature `Lrx/Notification;.createOnCompleted:()Lrx/Notification;` @kind static;
+  #L4bf8e0.  v3:= temp @kind object;
+  #L4bf8e2.  call temp:= `add`(v1, v3) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4bf8e8.  v2:= v2 + 1;
+  #L4bf8ec.  goto L4bf8d6;
+  #L4bf8ee.  return v1 @kind object;
+}
+procedure `java.util.List` `getOnErrorEvents`(`rx.observers.TestSubscriber` v1 @kind this) @signature `Lrx/observers/TestSubscriber;.getOnErrorEvents:()Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4bf900.  v0:= v1.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4bf904.  return v0 @kind object;
+}
+procedure `java.util.List` `getOnNextEvents`(`rx.observers.TestSubscriber` v1 @kind this) @signature `Lrx/observers/TestSubscriber;.getOnNextEvents:()Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4bf918.  v0:= v1.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4bf91c.  return v0 @kind object;
+}
+procedure `int` `getValueCount`(`rx.observers.TestSubscriber` v1 @kind this) @signature `Lrx/observers/TestSubscriber;.getValueCount:()I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L4bf88c.  v0:= v1.`rx.observers.TestSubscriber.valueCount` @type ^`int`;
+  #L4bf890.  return v0;
+}
+procedure `void` `onCompleted`(`rx.observers.TestSubscriber` v2 @kind this) @signature `Lrx/observers/TestSubscriber;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c0408.  v0:= v2.`rx.observers.TestSubscriber.completions` @type ^`int`;
+  #L4c040c.  v0:= v0 + 1;
+  #L4c0410.  v2.`rx.observers.TestSubscriber.completions` @type ^`int` := v0;
+  #L4c0414.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L4c041a.  v0:= temp @kind object;
+  #L4c041c.  v2.`rx.observers.TestSubscriber.lastSeenThread` @type ^`java.lang.Thread` := v0 @kind object;
+  #L4c0420.  v0:= v2.`rx.observers.TestSubscriber.delegate` @type ^`rx.Observer` @kind object;
+  #L4c0424.  call `onCompleted`(v0) @signature `Lrx/Observer;.onCompleted:()V` @kind interface;
+  #L4c042a.  v0:= v2.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4c042e.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L4c0434.  return @kind void;
+  #L4c0436.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c0438.  v1:= v2.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4c043c.  call `countDown`(v1) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L4c0442.  throw v0;
+  catch `java.lang.Throwable` @[L4c0408..L4c042a] goto L4c0436;
+}
+procedure `void` `onError`(`rx.observers.TestSubscriber` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/observers/TestSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c0460.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L4c0466.  v0:= temp @kind object;
+  #L4c0468.  v1.`rx.observers.TestSubscriber.lastSeenThread` @type ^`java.lang.Thread` := v0 @kind object;
+  #L4c046c.  v0:= v1.`rx.observers.TestSubscriber.errors` @type ^`java.util.List` @kind object;
+  #L4c0470.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c0476.  v0:= v1.`rx.observers.TestSubscriber.delegate` @type ^`rx.Observer` @kind object;
+  #L4c047a.  call `onError`(v0, v2) @signature `Lrx/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L4c0480.  v2:= v1.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4c0484.  call `countDown`(v2) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L4c048a.  return @kind void;
+  #L4c048c.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c048e.  v0:= v1.`rx.observers.TestSubscriber.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L4c0492.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L4c0498.  throw v2;
+  catch `java.lang.Throwable` @[L4c0460..L4c0480] goto L4c048c;
+}
+procedure `void` `onNext`(`rx.observers.TestSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/observers/TestSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c04b8.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L4c04be.  v0:= temp @kind object;
+  #L4c04c0.  v1.`rx.observers.TestSubscriber.lastSeenThread` @type ^`java.lang.Thread` := v0 @kind object;
+  #L4c04c4.  v0:= v1.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4c04c8.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c04ce.  v0:= v1.`rx.observers.TestSubscriber.values` @type ^`java.util.List` @kind object;
+  #L4c04d2.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4c04d8.  v0:= temp;
+  #L4c04da.  v1.`rx.observers.TestSubscriber.valueCount` @type ^`int` := v0;
+  #L4c04de.  v0:= v1.`rx.observers.TestSubscriber.delegate` @type ^`rx.Observer` @kind object;
+  #L4c04e2.  call `onNext`(v0, v2) @signature `Lrx/Observer;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L4c04e8.  return @kind void;
+}
+procedure `void` `requestMore`(`rx.observers.TestSubscriber` v0 @kind this, `long` v1 ) @signature `Lrx/observers/TestSubscriber;.requestMore:(J)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4c04fc.  call `request`(v0, v1) @signature `Lrx/observers/TestSubscriber;.request:(J)V` @kind virtual;
+  #L4c0502.  return @kind void;
+}

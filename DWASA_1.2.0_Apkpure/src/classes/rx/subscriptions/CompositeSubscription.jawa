@@ -1,0 +1,244 @@
+record `rx.subscriptions.CompositeSubscription` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Subscription` @kind interface {
+  `java.util.Set` `rx.subscriptions.CompositeSubscription.subscriptions` @AccessFlag PRIVATE;
+  `boolean` `rx.subscriptions.CompositeSubscription.unsubscribed` @AccessFlag PRIVATE_VOLATILE;
+}
+procedure `void` `<init>`(`rx.subscriptions.CompositeSubscription` v0 @kind this) @signature `Lrx/subscriptions/CompositeSubscription;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4c6274.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4c627a.  return @kind void;
+}
+procedure `void` `<init>`(`rx.subscriptions.CompositeSubscription` v1 @kind this, `rx.Subscription`[] v2 @kind object) @signature `Lrx/subscriptions/CompositeSubscription;.<init>:([Lrx/Subscription;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4c628c.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4c6292.  v0:= new `java.util.HashSet`;
+  #L4c6296.  call temp:= `asList`(v2) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L4c629c.  v2:= temp @kind object;
+  #L4c629e.  call `<init>`(v0, v2) @signature `Ljava/util/HashSet;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L4c62a4.  v1.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` := v0 @kind object;
+  #L4c62a8.  return @kind void;
+}
+procedure `void` `unsubscribeFromAll`(`java.util.Collection` v2 @kind object) @signature `Lrx/subscriptions/CompositeSubscription;.unsubscribeFromAll:(Ljava/util/Collection;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c64e8.  if v2 != 0 then goto L4c64ee;
+  #L4c64ec.  return @kind void;
+  #L4c64ee.  v0:= 0I;
+  #L4c64f0.  call temp:= `iterator`(v2) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L4c64f6.  v2:= temp @kind object;
+  #L4c64f8.  call temp:= `hasNext`(v2) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4c64fe.  v1:= temp;
+  #L4c6500.  if v1 == 0 then goto L4c6530;
+  #L4c6504.  call temp:= `next`(v2) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4c650a.  v1:= temp @kind object;
+  #L4c650c.  v1:= (`rx.Subscription`) v1 @kind object;
+  #L4c6510.  call `unsubscribe`(v1) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4c6516.  goto L4c64f8;
+  #L4c6518.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c651a.  if v0 != 0 then goto L4c6528;
+  #L4c651e.  v0:= new `java.util.ArrayList`;
+  #L4c6522.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4c6528.  call temp:= `add`(v0, v1) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c652e.  goto L4c64f8;
+  #L4c6530.  call `throwIfAny`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfAny:(Ljava/util/List;)V` @kind static;
+  #L4c6536.  return @kind void;
+  catch `java.lang.Throwable` @[L4c6510..L4c6516] goto L4c6518;
+}
+procedure `void` `add`(`rx.subscriptions.CompositeSubscription` v2 @kind this, `rx.Subscription` v3 @kind object) @signature `Lrx/subscriptions/CompositeSubscription;.add:(Lrx/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c62bc.  call temp:= `isUnsubscribed`(v3) @signature `Lrx/Subscription;.isUnsubscribed:()Z` @kind interface;
+  #L4c62c2.  v0:= temp;
+  #L4c62c4.  if v0 == 0 then goto L4c62ca;
+  #L4c62c8.  return @kind void;
+  #L4c62ca.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c62ce.  if v0 != 0 then goto L4c630c;
+  #L4c62d2.  @monitorenter v2
+  #L4c62d4.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c62d8.  if v0 != 0 then goto L4c6302;
+  #L4c62dc.  v0:= v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c62e0.  if v0 != 0 then goto L4c62f4;
+  #L4c62e4.  v0:= new `java.util.HashSet`;
+  #L4c62e8.  v1:= 4I;
+  #L4c62ea.  call `<init>`(v0, v1) @signature `Ljava/util/HashSet;.<init>:(I)V` @kind direct;
+  #L4c62f0.  v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` := v0 @kind object;
+  #L4c62f4.  v0:= v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c62f8.  call temp:= `add`(v0, v3) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c62fe.  @monitorexit v2
+  #L4c6300.  return @kind void;
+  #L4c6302.  @monitorexit v2
+  #L4c6304.  goto L4c630c;
+  #L4c6306.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c6308.  @monitorexit v2
+  #L4c630a.  throw v3;
+  #L4c630c.  call `unsubscribe`(v3) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4c6312.  return @kind void;
+  catch `java.lang.Throwable` @[L4c62d4..L4c630a] goto L4c6306;
+}
+procedure `void` `addAll`(`rx.subscriptions.CompositeSubscription` v4 @kind this, `rx.Subscription`[] v5 @kind object) @signature `Lrx/subscriptions/CompositeSubscription;.addAll:([Lrx/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4c6330.  v0:= v4.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6334.  v1:= 0I;
+  #L4c6336.  if v0 != 0 then goto L4c6390;
+  #L4c633a.  @monitorenter v4
+  #L4c633c.  v0:= v4.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6340.  if v0 != 0 then goto L4c6386;
+  #L4c6344.  v0:= v4.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c6348.  if v0 != 0 then goto L4c635c;
+  #L4c634c.  v0:= new `java.util.HashSet`;
+  #L4c6350.  v2:= length @variable v5;
+  #L4c6352.  call `<init>`(v0, v2) @signature `Ljava/util/HashSet;.<init>:(I)V` @kind direct;
+  #L4c6358.  v4.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` := v0 @kind object;
+  #L4c635c.  v0:= length @variable v5;
+  #L4c635e.  if v1 >= v0 then goto L4c6382;
+  #L4c6362.  v2:= v5[v1] @kind object;
+  #L4c6366.  call temp:= `isUnsubscribed`(v2) @signature `Lrx/Subscription;.isUnsubscribed:()Z` @kind interface;
+  #L4c636c.  v3:= temp;
+  #L4c636e.  if v3 != 0 then goto L4c637c;
+  #L4c6372.  v3:= v4.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c6376.  call temp:= `add`(v3, v2) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c637c.  v1:= v1 + 1;
+  #L4c6380.  goto L4c635e;
+  #L4c6382.  @monitorexit v4
+  #L4c6384.  return @kind void;
+  #L4c6386.  @monitorexit v4
+  #L4c6388.  goto L4c6390;
+  #L4c638a.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c638c.  @monitorexit v4
+  #L4c638e.  throw v5;
+  #L4c6390.  v0:= length @variable v5;
+  #L4c6392.  if v1 >= v0 then goto L4c63a6;
+  #L4c6396.  v2:= v5[v1] @kind object;
+  #L4c639a.  call `unsubscribe`(v2) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4c63a0.  v1:= v1 + 1;
+  #L4c63a4.  goto L4c6392;
+  #L4c63a6.  return @kind void;
+  catch `java.lang.Throwable` @[L4c633c..L4c638e] goto L4c638a;
+}
+procedure `void` `clear`(`rx.subscriptions.CompositeSubscription` v2 @kind this) @signature `Lrx/subscriptions/CompositeSubscription;.clear:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c63c4.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c63c8.  if v0 != 0 then goto L4c63fe;
+  #L4c63cc.  @monitorenter v2
+  #L4c63ce.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c63d2.  if v0 != 0 then goto L4c63f4;
+  #L4c63d6.  v0:= v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c63da.  if v0 != 0 then goto L4c63e0;
+  #L4c63de.  goto L4c63f4;
+  #L4c63e0.  v0:= v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c63e4.  v1:= 0I;
+  #L4c63e6.  v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` := v1 @kind object;
+  #L4c63ea.  @monitorexit v2
+  #L4c63ec.  call `unsubscribeFromAll`(v0) @signature `Lrx/subscriptions/CompositeSubscription;.unsubscribeFromAll:(Ljava/util/Collection;)V` @kind static;
+  #L4c63f2.  goto L4c63fe;
+  #L4c63f4.  @monitorexit v2
+  #L4c63f6.  return @kind void;
+  #L4c63f8.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c63fa.  @monitorexit v2
+  #L4c63fc.  throw v0;
+  #L4c63fe.  return @kind void;
+  catch `java.lang.Throwable` @[L4c63ce..L4c63ec] goto L4c63f8;
+  catch `java.lang.Throwable` @[L4c63f4..L4c63fc] goto L4c63f8;
+}
+procedure `boolean` `hasSubscriptions`(`rx.subscriptions.CompositeSubscription` v2 @kind this) @signature `Lrx/subscriptions/CompositeSubscription;.hasSubscriptions:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c6204.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6208.  v1:= 0I;
+  #L4c620a.  if v0 != 0 then goto L4c623c;
+  #L4c620e.  @monitorenter v2
+  #L4c6210.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6214.  if v0 != 0 then goto L4c6232;
+  #L4c6218.  v0:= v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c621c.  if v0 == 0 then goto L4c6232;
+  #L4c6220.  v0:= v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c6224.  call temp:= `isEmpty`(v0) @signature `Ljava/util/Set;.isEmpty:()Z` @kind interface;
+  #L4c622a.  v0:= temp;
+  #L4c622c.  if v0 != 0 then goto L4c6232;
+  #L4c6230.  v1:= 1I;
+  #L4c6232.  @monitorexit v2
+  #L4c6234.  return v1;
+  #L4c6236.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c6238.  @monitorexit v2
+  #L4c623a.  throw v0;
+  #L4c623c.  return v1;
+  catch `java.lang.Throwable` @[L4c6210..L4c623a] goto L4c6236;
+}
+procedure `boolean` `isUnsubscribed`(`rx.subscriptions.CompositeSubscription` v1 @kind this) @signature `Lrx/subscriptions/CompositeSubscription;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c625c.  v0:= v1.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6260.  return v0;
+}
+procedure `void` `remove`(`rx.subscriptions.CompositeSubscription` v1 @kind this, `rx.Subscription` v2 @kind object) @signature `Lrx/subscriptions/CompositeSubscription;.remove:(Lrx/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c6424.  v0:= v1.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6428.  if v0 != 0 then goto L4c6464;
+  #L4c642c.  @monitorenter v1
+  #L4c642e.  v0:= v1.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6432.  if v0 != 0 then goto L4c645a;
+  #L4c6436.  v0:= v1.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c643a.  if v0 != 0 then goto L4c6440;
+  #L4c643e.  goto L4c645a;
+  #L4c6440.  v0:= v1.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c6444.  call temp:= `remove`(v0, v2) @signature `Ljava/util/Set;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c644a.  v0:= temp;
+  #L4c644c.  @monitorexit v1
+  #L4c644e.  if v0 == 0 then goto L4c6464;
+  #L4c6452.  call `unsubscribe`(v2) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4c6458.  goto L4c6464;
+  #L4c645a.  @monitorexit v1
+  #L4c645c.  return @kind void;
+  #L4c645e.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c6460.  @monitorexit v1
+  #L4c6462.  throw v2;
+  #L4c6464.  return @kind void;
+  catch `java.lang.Throwable` @[L4c642e..L4c644e] goto L4c645e;
+  catch `java.lang.Throwable` @[L4c645a..L4c6462] goto L4c645e;
+}
+procedure `void` `unsubscribe`(`rx.subscriptions.CompositeSubscription` v2 @kind this) @signature `Lrx/subscriptions/CompositeSubscription;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c648c.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6490.  if v0 != 0 then goto L4c64c2;
+  #L4c6494.  @monitorenter v2
+  #L4c6496.  v0:= v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4c649a.  if v0 == 0 then goto L4c64a2;
+  #L4c649e.  @monitorexit v2
+  #L4c64a0.  return @kind void;
+  #L4c64a2.  v0:= 1I;
+  #L4c64a4.  v2.`rx.subscriptions.CompositeSubscription.unsubscribed` @type ^`boolean` := v0 @kind boolean;
+  #L4c64a8.  v0:= v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` @kind object;
+  #L4c64ac.  v1:= 0I;
+  #L4c64ae.  v2.`rx.subscriptions.CompositeSubscription.subscriptions` @type ^`java.util.Set` := v1 @kind object;
+  #L4c64b2.  @monitorexit v2
+  #L4c64b4.  call `unsubscribeFromAll`(v0) @signature `Lrx/subscriptions/CompositeSubscription;.unsubscribeFromAll:(Ljava/util/Collection;)V` @kind static;
+  #L4c64ba.  goto L4c64c2;
+  #L4c64bc.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c64be.  @monitorexit v2
+  #L4c64c0.  throw v0;
+  #L4c64c2.  return @kind void;
+  catch `java.lang.Throwable` @[L4c6496..L4c64b4] goto L4c64bc;
+  catch `java.lang.Throwable` @[L4c64be..L4c64c0] goto L4c64bc;
+}

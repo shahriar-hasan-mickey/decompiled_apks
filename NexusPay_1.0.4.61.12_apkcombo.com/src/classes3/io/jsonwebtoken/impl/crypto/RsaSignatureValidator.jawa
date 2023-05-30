@@ -1,0 +1,76 @@
+record `io.jsonwebtoken.impl.crypto.RsaSignatureValidator` @kind class @AccessFlag PUBLIC extends `io.jsonwebtoken.impl.crypto.RsaProvider` @kind class, `io.jsonwebtoken.impl.crypto.SignatureValidator` @kind interface {
+  `io.jsonwebtoken.impl.crypto.RsaSigner` `io.jsonwebtoken.impl.crypto.RsaSignatureValidator.b` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`io.jsonwebtoken.impl.crypto.RsaSignatureValidator` v3 @kind this, `io.jsonwebtoken.SignatureAlgorithm` v4 @kind object, `java.security.Key` v5 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/RsaSignatureValidator;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L40fa48.  call `<init>`(v3, v4, v5) @signature `Lio/jsonwebtoken/impl/crypto/RsaProvider;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @kind direct;
+  #L40fa4e.  v0:= instanceof @variable v5 @type ^`java.security.interfaces.RSAPrivateKey` @kind boolean;
+  #L40fa52.  if v0 != 0 then goto L40fa64;
+  #L40fa56.  v1:= instanceof @variable v5 @type ^`java.security.interfaces.RSAPublicKey` @kind boolean;
+  #L40fa5a.  if v1 == 0 then goto L40fa60;
+  #L40fa5e.  goto L40fa64;
+  #L40fa60.  v1:= 0I;
+  #L40fa62.  goto L40fa66;
+  #L40fa64.  v1:= 1I;
+  #L40fa66.  v2:= "RSA Signature validation requires either a RSAPublicKey or RSAPrivateKey instance." @kind object;
+  #L40fa6a.  call `isTrue`(v1, v2) @signature `Lio/jsonwebtoken/lang/Assert;.isTrue:(ZLjava/lang/String;)V` @kind static;
+  #L40fa70.  if v0 == 0 then goto L40fa80;
+  #L40fa74.  v0:= new `io.jsonwebtoken.impl.crypto.RsaSigner`;
+  #L40fa78.  call `<init>`(v0, v4, v5) @signature `Lio/jsonwebtoken/impl/crypto/RsaSigner;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @kind direct;
+  #L40fa7e.  goto L40fa82;
+  #L40fa80.  v0:= 0I;
+  #L40fa82.  v3.`io.jsonwebtoken.impl.crypto.RsaSignatureValidator.b` @type ^`io.jsonwebtoken.impl.crypto.RsaSigner` := v0 @kind object;
+  #L40fa86.  return @kind void;
+}
+procedure `boolean` `doVerify`(`io.jsonwebtoken.impl.crypto.RsaSignatureValidator` v0 @kind this, `java.security.Signature` v1 @kind object, `java.security.PublicKey` v2 @kind object, `byte`[] v3 @kind object, `byte`[] v4 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/RsaSignatureValidator;.doVerify:(Ljava/security/Signature;Ljava/security/PublicKey;[B[B)Z` @AccessFlag PROTECTED {
+    temp;
+
+  #L40f97c.  call `initVerify`(v1, v2) @signature `Ljava/security/Signature;.initVerify:(Ljava/security/PublicKey;)V` @kind virtual;
+  #L40f982.  call `update`(v1, v3) @signature `Ljava/security/Signature;.update:([B)V` @kind virtual;
+  #L40f988.  call temp:= `verify`(v1, v4) @signature `Ljava/security/Signature;.verify:([B)Z` @kind virtual;
+  #L40f98e.  v1:= temp;
+  #L40f990.  return v1;
+}
+procedure `boolean` `isValid`(`io.jsonwebtoken.impl.crypto.RsaSignatureValidator` v2 @kind this, `byte`[] v3 @kind object, `byte`[] v4 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/RsaSignatureValidator;.isValid:([B[B)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L40f9a4.  v0:= v2.`io.jsonwebtoken.impl.crypto.a.key` @type ^`java.security.Key` @kind object;
+  #L40f9a8.  v0:= instanceof @variable v0 @type ^`java.security.PublicKey` @kind boolean;
+  #L40f9ac.  if v0 == 0 then goto L40fa02;
+  #L40f9b0.  call temp:= `createSignatureInstance`(v2) @signature `Lio/jsonwebtoken/impl/crypto/RsaProvider;.createSignatureInstance:()Ljava/security/Signature;` @kind virtual;
+  #L40f9b6.  v0:= temp @kind object;
+  #L40f9b8.  v1:= v2.`io.jsonwebtoken.impl.crypto.a.key` @type ^`java.security.Key` @kind object;
+  #L40f9bc.  v1:= (`java.security.PublicKey`) v1 @kind object;
+  #L40f9c0.  call temp:= `doVerify`(v2, v0, v1, v3, v4) @signature `Lio/jsonwebtoken/impl/crypto/RsaSignatureValidator;.doVerify:(Ljava/security/Signature;Ljava/security/PublicKey;[B[B)Z` @kind virtual;
+  #L40f9c6.  v3:= temp;
+  #L40f9c8.  return v3;
+  #L40f9ca.  v3:= Exception @type ^`java.lang.Exception` @kind object;
+  #L40f9cc.  v4:= new `java.lang.StringBuilder`;
+  #L40f9d0.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40f9d6.  v0:= "Unable to verify RSA signature using configured PublicKey. " @kind object;
+  #L40f9da.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f9e0.  call temp:= `getMessage`(v3) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L40f9e6.  v0:= temp @kind object;
+  #L40f9e8.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f9ee.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40f9f4.  v4:= temp @kind object;
+  #L40f9f6.  v0:= new `io.jsonwebtoken.SignatureException`;
+  #L40f9fa.  call `<init>`(v0, v4, v3) @signature `Lio/jsonwebtoken/SignatureException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40fa00.  throw v0;
+  #L40fa02.  v0:= v2.`io.jsonwebtoken.impl.crypto.RsaSignatureValidator.b` @type ^`io.jsonwebtoken.impl.crypto.RsaSigner` @kind object;
+  #L40fa06.  v1:= "RSA Signer instance cannot be null.  This is a bug.  Please report it." @kind object;
+  #L40fa0a.  call `notNull`(v0, v1) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40fa10.  v0:= v2.`io.jsonwebtoken.impl.crypto.RsaSignatureValidator.b` @type ^`io.jsonwebtoken.impl.crypto.RsaSigner` @kind object;
+  #L40fa14.  call temp:= `sign`(v0, v3) @signature `Lio/jsonwebtoken/impl/crypto/RsaSigner;.sign:([B)[B` @kind virtual;
+  #L40fa1a.  v3:= temp @kind object;
+  #L40fa1c.  call temp:= `equals`(v3, v4) @signature `Ljava/util/Arrays;.equals:([B[B)Z` @kind static;
+  #L40fa22.  v3:= temp;
+  #L40fa24.  return v3;
+  catch `java.lang.Exception` @[L40f9c0..L40f9c8] goto L40f9ca;
+}

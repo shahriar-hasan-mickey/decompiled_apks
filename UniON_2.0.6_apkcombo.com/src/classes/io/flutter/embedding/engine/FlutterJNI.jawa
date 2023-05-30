@@ -1,0 +1,1067 @@
+record `io.flutter.embedding.engine.FlutterJNI` @kind class @AccessFlag PUBLIC {
+  `io.flutter.embedding.engine.FlutterJNI$a` `io.flutter.embedding.engine.FlutterJNI.accessibilityDelegate` @AccessFlag PRIVATE;
+  `java.util.Set` `io.flutter.embedding.engine.FlutterJNI.engineLifecycleListeners` @AccessFlag PRIVATE_FINAL;
+  `java.util.Set` `io.flutter.embedding.engine.FlutterJNI.flutterUiDisplayListeners` @AccessFlag PRIVATE_FINAL;
+  `h.a.c.b.a` `io.flutter.embedding.engine.FlutterJNI.localizationPlugin` @AccessFlag PRIVATE;
+  `android.os.Looper` `io.flutter.embedding.engine.FlutterJNI.mainLooper` @AccessFlag PRIVATE_FINAL;
+  `java.lang.Long` `io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @AccessFlag PRIVATE;
+  `io.flutter.embedding.engine.e.c` `io.flutter.embedding.engine.FlutterJNI.platformMessageHandler` @AccessFlag PRIVATE;
+  `io.flutter.plugin.platform.k` `io.flutter.embedding.engine.FlutterJNI.platformViewsController` @AccessFlag PRIVATE;
+}
+global `java.lang.String` `@@io.flutter.embedding.engine.FlutterJNI.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `io.flutter.embedding.engine.FlutterJNI$b` `@@io.flutter.embedding.engine.FlutterJNI.asyncWaitForVsyncDelegate` @AccessFlag PRIVATE_STATIC;
+global `java.lang.String` `@@io.flutter.embedding.engine.FlutterJNI.observatoryUri` @AccessFlag PRIVATE_STATIC;
+global `float` `@@io.flutter.embedding.engine.FlutterJNI.refreshRateFPS` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lio/flutter/embedding/engine/FlutterJNI;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+
+  #L3aacc8.  return @kind void;
+}
+procedure `void` `<init>`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3aacdc.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3aace2.  v0:= new `java.util.concurrent.CopyOnWriteArraySet`;
+  #L3aace6.  call `<init>`(v0) @signature `Ljava/util/concurrent/CopyOnWriteArraySet;.<init>:()V` @kind direct;
+  #L3aacec.  v1.`io.flutter.embedding.engine.FlutterJNI.engineLifecycleListeners` @type ^`java.util.Set` := v0 @kind object;
+  #L3aacf0.  v0:= new `java.util.concurrent.CopyOnWriteArraySet`;
+  #L3aacf4.  call `<init>`(v0) @signature `Ljava/util/concurrent/CopyOnWriteArraySet;.<init>:()V` @kind direct;
+  #L3aacfa.  v1.`io.flutter.embedding.engine.FlutterJNI.flutterUiDisplayListeners` @type ^`java.util.Set` := v0 @kind object;
+  #L3aacfe.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L3aad04.  v0:= temp @kind object;
+  #L3aad06.  v1.`io.flutter.embedding.engine.FlutterJNI.mainLooper` @type ^`android.os.Looper` := v0 @kind object;
+  #L3aad0a.  return @kind void;
+}
+procedure `void` `asyncWaitForVsync`(`long` v1 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.asyncWaitForVsync:(J)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L3aad64.  v0:= `@@io.flutter.embedding.engine.FlutterJNI.asyncWaitForVsyncDelegate` @type ^`io.flutter.embedding.engine.FlutterJNI$b` @kind object;
+  #L3aad68.  if v0 == 0 then goto L3aad74;
+  #L3aad6c.  call `a`(v0, v1) @signature `Lio/flutter/embedding/engine/FlutterJNI$b;.a:(J)V` @kind interface;
+  #L3aad72.  return @kind void;
+  #L3aad74.  v1:= new `java.lang.IllegalStateException`;
+  #L3aad78.  v2:= "An AsyncWaitForVsyncDelegate must be registered with FlutterJNI before asyncWaitForVsync() is invoked." @kind object;
+  #L3aad7c.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3aad82.  throw v1;
+}
+procedure `void` `ensureAttachedToNative`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3aaff4.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aaff8.  if v0 == 0 then goto L3aaffe;
+  #L3aaffc.  return @kind void;
+  #L3aaffe.  v0:= new `java.lang.RuntimeException`;
+  #L3ab002.  v1:= "Cannot execute operation because FlutterJNI is not attached to native." @kind object;
+  #L3ab006.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3ab00c.  throw v0;
+}
+procedure `void` `ensureNotAttachedToNative`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureNotAttachedToNative:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3ab020.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab024.  if v0 != 0 then goto L3ab02a;
+  #L3ab028.  return @kind void;
+  #L3ab02a.  v0:= new `java.lang.RuntimeException`;
+  #L3ab02e.  v1:= "Cannot execute operation because FlutterJNI is attached to native." @kind object;
+  #L3ab032.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3ab038.  throw v0;
+}
+procedure `void` `ensureRunningOnMainThread`(`io.flutter.embedding.engine.FlutterJNI` v3 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3ab04c.  call temp:= `myLooper`() @signature `Landroid/os/Looper;.myLooper:()Landroid/os/Looper;` @kind static;
+  #L3ab052.  v0:= temp @kind object;
+  #L3ab054.  v1:= v3.`io.flutter.embedding.engine.FlutterJNI.mainLooper` @type ^`android.os.Looper` @kind object;
+  #L3ab058.  if v0 != v1 then goto L3ab05e;
+  #L3ab05c.  return @kind void;
+  #L3ab05e.  v0:= new `java.lang.RuntimeException`;
+  #L3ab062.  v1:= new `java.lang.StringBuilder`;
+  #L3ab066.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3ab06c.  v2:= "Methods marked with @UiThread must be executed on the main thread. Current thread: " @kind object;
+  #L3ab070.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ab076.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L3ab07c.  v2:= temp @kind object;
+  #L3ab07e.  call temp:= `getName`(v2) @signature `Ljava/lang/Thread;.getName:()Ljava/lang/String;` @kind virtual;
+  #L3ab084.  v2:= temp @kind object;
+  #L3ab086.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ab08c.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ab092.  v1:= temp @kind object;
+  #L3ab094.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3ab09a.  throw v0;
+}
+procedure `java.lang.String` `getObservatoryUri`() @signature `Lio/flutter/embedding/engine/FlutterJNI;.getObservatoryUri:()Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L3aab80.  v0:= `@@io.flutter.embedding.engine.FlutterJNI.observatoryUri` @type ^`java.lang.String` @kind object;
+  #L3aab84.  return v0 @kind object;
+}
+procedure `void` `handlePlatformMessageResponse`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `int` v2 , `byte`[] v3 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.handlePlatformMessageResponse:(I[B)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3ab0cc.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.platformMessageHandler` @type ^`io.flutter.embedding.engine.e.c` @kind object;
+  #L3ab0d0.  if v0 == 0 then goto L3ab0da;
+  #L3ab0d4.  call `a`(v0, v2, v3) @signature `Lio/flutter/embedding/engine/e/c;.a:(I[B)V` @kind interface;
+  #L3ab0da.  return @kind void;
+}
+procedure `long` `nativeAttach`(`io.flutter.embedding.engine.FlutterJNI` v0 @kind object, `boolean` v1 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeAttach:(Lio/flutter/embedding/engine/FlutterJNI;Z)J` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeDestroy`(`long` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDestroy:(J)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeDispatchEmptyPlatformMessage`(`long` v0 , `java.lang.String` v2 @kind object, `int` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchEmptyPlatformMessage:(JLjava/lang/String;I)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeDispatchPlatformMessage`(`long` v0 , `java.lang.String` v2 @kind object, `java.nio.ByteBuffer` v3 @kind object, `int` v4 , `int` v5 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchPlatformMessage:(JLjava/lang/String;Ljava/nio/ByteBuffer;II)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeDispatchPointerDataPacket`(`long` v0 , `java.nio.ByteBuffer` v2 @kind object, `int` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchPointerDataPacket:(JLjava/nio/ByteBuffer;I)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeDispatchSemanticsAction`(`long` v0 , `int` v2 , `int` v3 , `java.nio.ByteBuffer` v4 @kind object, `int` v5 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchSemanticsAction:(JIILjava/nio/ByteBuffer;I)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `android.graphics.Bitmap` `nativeGetBitmap`(`long` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeGetBitmap:(J)Landroid/graphics/Bitmap;` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `boolean` `nativeGetIsSoftwareRenderingEnabled`() @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeGetIsSoftwareRenderingEnabled:()Z` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeInit`(`android.content.Context` v0 @kind object, `java.lang.String`[] v1 @kind object, `java.lang.String` v2 @kind object, `java.lang.String` v3 @kind object, `java.lang.String` v4 @kind object, `long` v5 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeInit:(Landroid/content/Context;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V` @AccessFlag PUBLIC_STATIC_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeInvokePlatformMessageEmptyResponseCallback`(`long` v0 , `int` v2 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeInvokePlatformMessageEmptyResponseCallback:(JI)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeInvokePlatformMessageResponseCallback`(`long` v0 , `int` v2 , `java.nio.ByteBuffer` v3 @kind object, `int` v4 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeInvokePlatformMessageResponseCallback:(JILjava/nio/ByteBuffer;I)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `io.flutter.view.FlutterCallbackInformation` `nativeLookupCallbackInformation`(`long` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeLookupCallbackInformation:(J)Lio/flutter/view/FlutterCallbackInformation;` @AccessFlag PUBLIC_STATIC_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeMarkTextureFrameAvailable`(`long` v0 , `long` v2 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeMarkTextureFrameAvailable:(JJ)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeNotifyLowMemoryWarning`(`long` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeNotifyLowMemoryWarning:(J)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeOnVsync`(`long` v0 , `long` v2 , `long` v4 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeOnVsync:(JJJ)V` @AccessFlag PUBLIC_STATIC_NATIVE {
+
+  # return;
+}
+procedure `void` `nativePrefetchDefaultFontManager`() @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativePrefetchDefaultFontManager:()V` @AccessFlag PUBLIC_STATIC_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeRegisterTexture`(`long` v0 , `long` v2 , `android.graphics.SurfaceTexture` v4 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeRegisterTexture:(JJLandroid/graphics/SurfaceTexture;)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeRunBundleAndSnapshotFromLibrary`(`long` v0 , `java.lang.String` v2 @kind object, `java.lang.String` v3 @kind object, `java.lang.String` v4 @kind object, `android.content.res.AssetManager` v5 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeRunBundleAndSnapshotFromLibrary:(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/res/AssetManager;)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeSetAccessibilityFeatures`(`long` v0 , `int` v2 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSetAccessibilityFeatures:(JI)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeSetSemanticsEnabled`(`long` v0 , `boolean` v2 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSetSemanticsEnabled:(JZ)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeSetViewportMetrics`(`long` v0 , `float` v2 , `int` v3 , `int` v4 , `int` v5 , `int` v6 , `int` v7 , `int` v8 , `int` v9 , `int` v10 , `int` v11 , `int` v12 , `int` v13 , `int` v14 , `int` v15 , `int` v16 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSetViewportMetrics:(JFIIIIIIIIIIIIII)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeSurfaceChanged`(`long` v0 , `int` v2 , `int` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceChanged:(JII)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeSurfaceCreated`(`long` v0 , `android.view.Surface` v2 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceCreated:(JLandroid/view/Surface;)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeSurfaceDestroyed`(`long` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceDestroyed:(J)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeSurfaceWindowChanged`(`long` v0 , `android.view.Surface` v2 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceWindowChanged:(JLandroid/view/Surface;)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `nativeUnregisterTexture`(`long` v0 , `long` v2 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeUnregisterTexture:(JJ)V` @AccessFlag PRIVATE_NATIVE {
+
+  # return;
+}
+procedure `void` `onPreEngineRestart`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onPreEngineRestart:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3ab360.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.engineLifecycleListeners` @type ^`java.util.Set` @kind object;
+  #L3ab364.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L3ab36a.  v0:= temp @kind object;
+  #L3ab36c.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L3ab372.  v1:= temp;
+  #L3ab374.  if v1 == 0 then goto L3ab38c;
+  #L3ab378.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L3ab37e.  v1:= temp @kind object;
+  #L3ab380.  v1:= (`io.flutter.embedding.engine.a$b`) v1 @kind object;
+  #L3ab384.  call `a`(v1) @signature `Lio/flutter/embedding/engine/a$b;.a:()V` @kind interface;
+  #L3ab38a.  goto L3ab36c;
+  #L3ab38c.  return @kind void;
+}
+procedure `void` `setAsyncWaitForVsyncDelegate`(`io.flutter.embedding.engine.FlutterJNI$b` v0 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setAsyncWaitForVsyncDelegate:(Lio/flutter/embedding/engine/FlutterJNI$b;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L3ab5b4.  `@@io.flutter.embedding.engine.FlutterJNI.asyncWaitForVsyncDelegate` @type ^`io.flutter.embedding.engine.FlutterJNI$b` := v0 @kind object;
+  #L3ab5b8.  return @kind void;
+}
+procedure `void` `setRefreshRateFPS`(`float` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setRefreshRateFPS:(F)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L3ab620.  `@@io.flutter.embedding.engine.FlutterJNI.refreshRateFPS` @type ^`float` := v0;
+  #L3ab624.  return @kind void;
+}
+procedure `void` `updateCustomAccessibilityActions`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `java.nio.ByteBuffer` v2 @kind object, `java.lang.String`[] v3 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.updateCustomAccessibilityActions:(Ljava/nio/ByteBuffer;[Ljava/lang/String;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3ab710.  call `ensureRunningOnMainThread`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab716.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.accessibilityDelegate` @type ^`io.flutter.embedding.engine.FlutterJNI$a` @kind object;
+  #L3ab71a.  if v0 == 0 then goto L3ab724;
+  #L3ab71e.  call `a`(v0, v2, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI$a;.a:(Ljava/nio/ByteBuffer;[Ljava/lang/String;)V` @kind interface;
+  #L3ab724.  return @kind void;
+}
+procedure `void` `updateSemantics`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `java.nio.ByteBuffer` v2 @kind object, `java.lang.String`[] v3 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.updateSemantics:(Ljava/nio/ByteBuffer;[Ljava/lang/String;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3ab738.  call `ensureRunningOnMainThread`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab73e.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.accessibilityDelegate` @type ^`io.flutter.embedding.engine.FlutterJNI$a` @kind object;
+  #L3ab742.  if v0 == 0 then goto L3ab74c;
+  #L3ab746.  call `b`(v0, v2, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI$a;.b:(Ljava/nio/ByteBuffer;[Ljava/lang/String;)V` @kind interface;
+  #L3ab74c.  return @kind void;
+}
+procedure `void` `addEngineLifecycleListener`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `io.flutter.embedding.engine.a$b` v2 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.addEngineLifecycleListener:(Lio/flutter/embedding/engine/a$b;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3aad1c.  call `ensureRunningOnMainThread`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aad22.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.engineLifecycleListeners` @type ^`java.util.Set` @kind object;
+  #L3aad26.  call temp:= `add`(v0, v2) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L3aad2c.  return @kind void;
+}
+procedure `void` `addIsDisplayingFlutterUiListener`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `io.flutter.embedding.engine.h.b` v2 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.addIsDisplayingFlutterUiListener:(Lio/flutter/embedding/engine/h/b;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3aad40.  call `ensureRunningOnMainThread`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aad46.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.flutterUiDisplayListeners` @type ^`java.util.Set` @kind object;
+  #L3aad4a.  call temp:= `add`(v0, v2) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L3aad50.  return @kind void;
+}
+procedure `void` `attachToNative`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `boolean` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.attachToNative:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3aad94.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aad9a.  call `ensureNotAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureNotAttachedToNative:()V` @kind direct;
+  #L3aada0.  call temp:= `performNativeAttach`(v2, v2, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.performNativeAttach:(Lio/flutter/embedding/engine/FlutterJNI;Z)J` @kind virtual;
+  #L3aada6.  v0:= temp @kind wide;
+  #L3aada8.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Long;.valueOf:(J)Ljava/lang/Long;` @kind static;
+  #L3aadae.  v3:= temp @kind object;
+  #L3aadb0.  v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` := v3 @kind object;
+  #L3aadb4.  return @kind void;
+}
+procedure `java.lang.String`[] `computePlatformResolvedLocale`(`io.flutter.embedding.engine.FlutterJNI` v8 @kind this, `java.lang.String`[] v9 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.computePlatformResolvedLocale:([Ljava/lang/String;)[Ljava/lang/String;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3aab98.  v0:= v8.`io.flutter.embedding.engine.FlutterJNI.localizationPlugin` @type ^`h.a.c.b.a` @kind object;
+  #L3aab9c.  v1:= 0I;
+  #L3aab9e.  if v0 != 0 then goto L3aaba8;
+  #L3aaba2.  v9:= new `java.lang.String`[v1];
+  #L3aaba6.  return v9 @kind object;
+  #L3aaba8.  v0:= new `java.util.ArrayList`;
+  #L3aabac.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L3aabb2.  v2:= 0I;
+  #L3aabb4.  v3:= length @variable v9;
+  #L3aabb6.  v4:= 21I;
+  #L3aabba.  if v2 >= v3 then goto L3aac44;
+  #L3aabbe.  v3:= v2 + 0;
+  #L3aabc2.  v3:= v9[v3] @kind object;
+  #L3aabc6.  v5:= v2 + 1;
+  #L3aabca.  v5:= v9[v5] @kind object;
+  #L3aabce.  v6:= v2 + 2;
+  #L3aabd2.  v6:= v9[v6] @kind object;
+  #L3aabd6.  v7:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3aabda.  if v7 < v4 then goto L3aac2e;
+  #L3aabde.  v4:= new `java.util.Locale$Builder`;
+  #L3aabe2.  call `<init>`(v4) @signature `Ljava/util/Locale$Builder;.<init>:()V` @kind direct;
+  #L3aabe8.  call temp:= `isEmpty`(v3) @signature `Ljava/lang/String;.isEmpty:()Z` @kind virtual;
+  #L3aabee.  v7:= temp;
+  #L3aabf0.  if v7 != 0 then goto L3aabfa;
+  #L3aabf4.  call temp:= `setLanguage`(v4, v3) @signature `Ljava/util/Locale$Builder;.setLanguage:(Ljava/lang/String;)Ljava/util/Locale$Builder;` @kind virtual;
+  #L3aabfa.  call temp:= `isEmpty`(v5) @signature `Ljava/lang/String;.isEmpty:()Z` @kind virtual;
+  #L3aac00.  v3:= temp;
+  #L3aac02.  if v3 != 0 then goto L3aac0c;
+  #L3aac06.  call temp:= `setRegion`(v4, v5) @signature `Ljava/util/Locale$Builder;.setRegion:(Ljava/lang/String;)Ljava/util/Locale$Builder;` @kind virtual;
+  #L3aac0c.  call temp:= `isEmpty`(v6) @signature `Ljava/lang/String;.isEmpty:()Z` @kind virtual;
+  #L3aac12.  v3:= temp;
+  #L3aac14.  if v3 != 0 then goto L3aac1e;
+  #L3aac18.  call temp:= `setScript`(v4, v6) @signature `Ljava/util/Locale$Builder;.setScript:(Ljava/lang/String;)Ljava/util/Locale$Builder;` @kind virtual;
+  #L3aac1e.  call temp:= `build`(v4) @signature `Ljava/util/Locale$Builder;.build:()Ljava/util/Locale;` @kind virtual;
+  #L3aac24.  v3:= temp @kind object;
+  #L3aac26.  call temp:= `add`(v0, v3) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L3aac2c.  goto L3aac3e;
+  #L3aac2e.  v4:= new `java.util.Locale`;
+  #L3aac32.  call `<init>`(v4, v3, v5) @signature `Ljava/util/Locale;.<init>:(Ljava/lang/String;Ljava/lang/String;)V` @kind direct;
+  #L3aac38.  call temp:= `add`(v0, v4) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L3aac3e.  v2:= v2 + 3;
+  #L3aac42.  goto L3aabb4;
+  #L3aac44.  v9:= v8.`io.flutter.embedding.engine.FlutterJNI.localizationPlugin` @type ^`h.a.c.b.a` @kind object;
+  #L3aac48.  call temp:= `a`(v9, v0) @signature `Lh/a/c/b/a;.a:(Ljava/util/List;)Ljava/util/Locale;` @kind virtual;
+  #L3aac4e.  v9:= temp @kind object;
+  #L3aac50.  if v9 != 0 then goto L3aac5a;
+  #L3aac54.  v9:= new `java.lang.String`[v1];
+  #L3aac58.  return v9 @kind object;
+  #L3aac5a.  v0:= 3I;
+  #L3aac5c.  v0:= new `java.lang.String`[v0];
+  #L3aac60.  call temp:= `getLanguage`(v9) @signature `Ljava/util/Locale;.getLanguage:()Ljava/lang/String;` @kind virtual;
+  #L3aac66.  v2:= temp @kind object;
+  #L3aac68.  v0[v1]:= v2 @kind object;
+  #L3aac6c.  call temp:= `getCountry`(v9) @signature `Ljava/util/Locale;.getCountry:()Ljava/lang/String;` @kind virtual;
+  #L3aac72.  v1:= temp @kind object;
+  #L3aac74.  v2:= 1I;
+  #L3aac76.  v0[v2]:= v1 @kind object;
+  #L3aac7a.  v1:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3aac7e.  v2:= 2I;
+  #L3aac80.  if v1 < v4 then goto L3aac92;
+  #L3aac84.  call temp:= `getScript`(v9) @signature `Ljava/util/Locale;.getScript:()Ljava/lang/String;` @kind virtual;
+  #L3aac8a.  v9:= temp @kind object;
+  #L3aac8c.  v0[v2]:= v9 @kind object;
+  #L3aac90.  goto L3aac9a;
+  #L3aac92.  v9:= "" @kind object;
+  #L3aac96.  v0[v2]:= v9 @kind object;
+  #L3aac9a.  return v0 @kind object;
+}
+procedure `io.flutter.embedding.engine.FlutterOverlaySurface` `createOverlaySurface`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.createOverlaySurface:()Lio/flutter/embedding/engine/FlutterOverlaySurface;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3aab48.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aab4e.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.platformViewsController` @type ^`io.flutter.plugin.platform.k` @kind object;
+  #L3aab52.  if v0 == 0 then goto L3aab60;
+  #L3aab56.  call temp:= `b`(v0) @signature `Lio/flutter/plugin/platform/k;.b:()Lio/flutter/embedding/engine/FlutterOverlaySurface;` @kind virtual;
+  #L3aab5c.  v0:= temp @kind object;
+  #L3aab5e.  return v0 @kind object;
+  #L3aab60.  v0:= new `java.lang.RuntimeException`;
+  #L3aab64.  v1:= "platformViewsController must be set before attempting to position an overlay surface" @kind object;
+  #L3aab68.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3aab6e.  throw v0;
+}
+procedure `void` `destroyOverlaySurfaces`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.destroyOverlaySurfaces:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3aadc8.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aadce.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.platformViewsController` @type ^`io.flutter.plugin.platform.k` @kind object;
+  #L3aadd2.  if v0 == 0 then goto L3aadde;
+  #L3aadd6.  call `c`(v0) @signature `Lio/flutter/plugin/platform/k;.c:()V` @kind virtual;
+  #L3aaddc.  return @kind void;
+  #L3aadde.  v0:= new `java.lang.RuntimeException`;
+  #L3aade2.  v1:= "platformViewsController must be set before attempting to destroy an overlay surface" @kind object;
+  #L3aade6.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3aadec.  throw v0;
+}
+procedure `void` `detachFromNativeAndReleaseResources`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.detachFromNativeAndReleaseResources:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3aae00.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aae06.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3aae0c.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aae10.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3aae16.  v0:= temp @kind wide;
+  #L3aae18.  call `nativeDestroy`(v2, v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDestroy:(J)V` @kind direct;
+  #L3aae1e.  v0:= 0I;
+  #L3aae20.  v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` := v0 @kind object;
+  #L3aae24.  return @kind void;
+}
+procedure `void` `dispatchEmptyPlatformMessage`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `java.lang.String` v3 @kind object, `int` v4 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchEmptyPlatformMessage:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3aae38.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aae3e.  call temp:= `isAttached`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.isAttached:()Z` @kind virtual;
+  #L3aae44.  v0:= temp;
+  #L3aae46.  if v0 == 0 then goto L3aae5e;
+  #L3aae4a.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aae4e.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3aae54.  v0:= temp @kind wide;
+  #L3aae56.  call `nativeDispatchEmptyPlatformMessage`(v2, v0, v3, v4) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchEmptyPlatformMessage:(JLjava/lang/String;I)V` @kind direct;
+  #L3aae5c.  goto L3aae9a;
+  #L3aae5e.  v0:= new `java.lang.StringBuilder`;
+  #L3aae62.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3aae68.  v1:= "Tried to send a platform message to Flutter, but FlutterJNI was detached from native C++. Could not send. Channel: " @kind object;
+  #L3aae6c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aae72.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aae78.  v3:= ". Response ID: " @kind object;
+  #L3aae7c.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aae82.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aae88.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3aae8e.  v3:= temp @kind object;
+  #L3aae90.  v4:= "FlutterJNI" @kind object;
+  #L3aae94.  call `d`(v4, v3) @signature `Lh/a/b;.d:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L3aae9a.  return @kind void;
+}
+procedure `void` `dispatchPlatformMessage`(`io.flutter.embedding.engine.FlutterJNI` v8 @kind this, `java.lang.String` v9 @kind object, `java.nio.ByteBuffer` v10 @kind object, `int` v11 , `int` v12 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchPlatformMessage:(Ljava/lang/String;Ljava/nio/ByteBuffer;II)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3aaeac.  call `ensureRunningOnMainThread`(v8) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aaeb2.  call temp:= `isAttached`(v8) @signature `Lio/flutter/embedding/engine/FlutterJNI;.isAttached:()Z` @kind virtual;
+  #L3aaeb8.  v0:= temp;
+  #L3aaeba.  if v0 == 0 then goto L3aaedc;
+  #L3aaebe.  v0:= v8.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aaec2.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3aaec8.  v2:= temp @kind wide;
+  #L3aaeca.  v1:= v8 @kind object;
+  #L3aaecc.  v4:= v9 @kind object;
+  #L3aaece.  v5:= v10 @kind object;
+  #L3aaed0.  v6:= v11;
+  #L3aaed2.  v7:= v12;
+  #L3aaed4.  call `nativeDispatchPlatformMessage`(v1, v2, v4, v5, v6, v7) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchPlatformMessage:(JLjava/lang/String;Ljava/nio/ByteBuffer;II)V` @kind direct;
+  #L3aaeda.  goto L3aaf18;
+  #L3aaedc.  v10:= new `java.lang.StringBuilder`;
+  #L3aaee0.  call `<init>`(v10) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3aaee6.  v11:= "Tried to send a platform message to Flutter, but FlutterJNI was detached from native C++. Could not send. Channel: " @kind object;
+  #L3aaeea.  call temp:= `append`(v10, v11) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aaef0.  call temp:= `append`(v10, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aaef6.  v9:= ". Response ID: " @kind object;
+  #L3aaefa.  call temp:= `append`(v10, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aaf00.  call temp:= `append`(v10, v12) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3aaf06.  call temp:= `toString`(v10) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3aaf0c.  v9:= temp @kind object;
+  #L3aaf0e.  v10:= "FlutterJNI" @kind object;
+  #L3aaf12.  call `d`(v10, v9) @signature `Lh/a/b;.d:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L3aaf18.  return @kind void;
+}
+procedure `void` `dispatchPointerDataPacket`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `java.nio.ByteBuffer` v3 @kind object, `int` v4 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchPointerDataPacket:(Ljava/nio/ByteBuffer;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3aaf2c.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aaf32.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3aaf38.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aaf3c.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3aaf42.  v0:= temp @kind wide;
+  #L3aaf44.  call `nativeDispatchPointerDataPacket`(v2, v0, v3, v4) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchPointerDataPacket:(JLjava/nio/ByteBuffer;I)V` @kind direct;
+  #L3aaf4a.  return @kind void;
+}
+procedure `void` `dispatchSemanticsAction`(`io.flutter.embedding.engine.FlutterJNI` v8 @kind this, `int` v9 , `int` v10 , `java.nio.ByteBuffer` v11 @kind object, `int` v12 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchSemanticsAction:(IILjava/nio/ByteBuffer;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3aaf5c.  call `ensureRunningOnMainThread`(v8) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aaf62.  call `ensureAttachedToNative`(v8) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3aaf68.  v0:= v8.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aaf6c.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3aaf72.  v2:= temp @kind wide;
+  #L3aaf74.  v1:= v8 @kind object;
+  #L3aaf76.  v4:= v9;
+  #L3aaf78.  v5:= v10;
+  #L3aaf7a.  v6:= v11 @kind object;
+  #L3aaf7c.  v7:= v12;
+  #L3aaf7e.  call `nativeDispatchSemanticsAction`(v1, v2, v4, v5, v6, v7) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeDispatchSemanticsAction:(JIILjava/nio/ByteBuffer;I)V` @kind direct;
+  #L3aaf84.  return @kind void;
+}
+procedure `void` `dispatchSemanticsAction`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `int` v2 , `io.flutter.view.c$f` v3 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchSemanticsAction:(ILio/flutter/view/c$f;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3aaf98.  v0:= 0I;
+  #L3aaf9a.  call `dispatchSemanticsAction`(v1, v2, v3, v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchSemanticsAction:(ILio/flutter/view/c$f;Ljava/lang/Object;)V` @kind virtual;
+  #L3aafa0.  return @kind void;
+}
+procedure `void` `dispatchSemanticsAction`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `int` v2 , `io.flutter.view.c$f` v3 @kind object, `java.lang.Object` v4 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchSemanticsAction:(ILio/flutter/view/c$f;Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3aafb4.  call `ensureAttachedToNative`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3aafba.  if v4 == 0 then goto L3aafd4;
+  #L3aafbe.  v0:= `@@h.a.c.a.m.a` @type ^`h.a.c.a.m` @kind object;
+  #L3aafc2.  call temp:= `a`(v0, v4) @signature `Lh/a/c/a/m;.a:(Ljava/lang/Object;)Ljava/nio/ByteBuffer;` @kind virtual;
+  #L3aafc8.  v4:= temp @kind object;
+  #L3aafca.  call temp:= `position`(v4) @signature `Ljava/nio/ByteBuffer;.position:()I` @kind virtual;
+  #L3aafd0.  v0:= temp;
+  #L3aafd2.  goto L3aafd8;
+  #L3aafd4.  v4:= 0I;
+  #L3aafd6.  v0:= 0I;
+  #L3aafd8.  v3:= v3.`io.flutter.view.c$f.b` @type ^`int`;
+  #L3aafdc.  call `dispatchSemanticsAction`(v1, v2, v3, v4, v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.dispatchSemanticsAction:(IILjava/nio/ByteBuffer;I)V` @kind virtual;
+  #L3aafe2.  return @kind void;
+}
+procedure `android.graphics.Bitmap` `getBitmap`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.getBitmap:()Landroid/graphics/Bitmap;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3aaad8.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3aaade.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3aaae4.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aaae8.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3aaaee.  v0:= temp @kind wide;
+  #L3aaaf0.  call temp:= `nativeGetBitmap`(v2, v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeGetBitmap:(J)Landroid/graphics/Bitmap;` @kind direct;
+  #L3aaaf6.  v0:= temp @kind object;
+  #L3aaaf8.  return v0 @kind object;
+}
+procedure `boolean` `getIsSoftwareRenderingEnabled`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.getIsSoftwareRenderingEnabled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3aab0c.  call temp:= `nativeGetIsSoftwareRenderingEnabled`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeGetIsSoftwareRenderingEnabled:()Z` @kind direct;
+  #L3aab12.  v0:= temp;
+  #L3aab14.  return v0;
+}
+procedure `void` `handlePlatformMessage`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `java.lang.String` v2 @kind object, `byte`[] v3 @kind object, `int` v4 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.handlePlatformMessage:(Ljava/lang/String;[BI)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3ab0ac.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.platformMessageHandler` @type ^`io.flutter.embedding.engine.e.c` @kind object;
+  #L3ab0b0.  if v0 == 0 then goto L3ab0ba;
+  #L3ab0b4.  call `a`(v0, v2, v3, v4) @signature `Lio/flutter/embedding/engine/e/c;.a:(Ljava/lang/String;[BI)V` @kind interface;
+  #L3ab0ba.  return @kind void;
+}
+procedure `void` `invokePlatformMessageEmptyResponseCallback`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `int` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.invokePlatformMessageEmptyResponseCallback:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab0ec.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab0f2.  call temp:= `isAttached`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.isAttached:()Z` @kind virtual;
+  #L3ab0f8.  v0:= temp;
+  #L3ab0fa.  if v0 == 0 then goto L3ab112;
+  #L3ab0fe.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab102.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab108.  v0:= temp @kind wide;
+  #L3ab10a.  call `nativeInvokePlatformMessageEmptyResponseCallback`(v2, v0, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeInvokePlatformMessageEmptyResponseCallback:(JI)V` @kind direct;
+  #L3ab110.  goto L3ab13e;
+  #L3ab112.  v0:= new `java.lang.StringBuilder`;
+  #L3ab116.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3ab11c.  v1:= "Tried to send a platform message response, but FlutterJNI was detached from native C++. Could not send. Response ID: " @kind object;
+  #L3ab120.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ab126.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ab12c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ab132.  v3:= temp @kind object;
+  #L3ab134.  v0:= "FlutterJNI" @kind object;
+  #L3ab138.  call `d`(v0, v3) @signature `Lh/a/b;.d:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L3ab13e.  return @kind void;
+}
+procedure `void` `invokePlatformMessageResponseCallback`(`io.flutter.embedding.engine.FlutterJNI` v7 @kind this, `int` v8 , `java.nio.ByteBuffer` v9 @kind object, `int` v10 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.invokePlatformMessageResponseCallback:(ILjava/nio/ByteBuffer;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L3ab150.  call `ensureRunningOnMainThread`(v7) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab156.  call temp:= `isAttached`(v7) @signature `Lio/flutter/embedding/engine/FlutterJNI;.isAttached:()Z` @kind virtual;
+  #L3ab15c.  v0:= temp;
+  #L3ab15e.  if v0 == 0 then goto L3ab17e;
+  #L3ab162.  v0:= v7.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab166.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab16c.  v2:= temp @kind wide;
+  #L3ab16e.  v1:= v7 @kind object;
+  #L3ab170.  v4:= v8;
+  #L3ab172.  v5:= v9 @kind object;
+  #L3ab174.  v6:= v10;
+  #L3ab176.  call `nativeInvokePlatformMessageResponseCallback`(v1, v2, v4, v5, v6) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeInvokePlatformMessageResponseCallback:(JILjava/nio/ByteBuffer;I)V` @kind direct;
+  #L3ab17c.  goto L3ab1aa;
+  #L3ab17e.  v9:= new `java.lang.StringBuilder`;
+  #L3ab182.  call `<init>`(v9) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3ab188.  v10:= "Tried to send a platform message response, but FlutterJNI was detached from native C++. Could not send. Response ID: " @kind object;
+  #L3ab18c.  call temp:= `append`(v9, v10) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ab192.  call temp:= `append`(v9, v8) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3ab198.  call temp:= `toString`(v9) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3ab19e.  v8:= temp @kind object;
+  #L3ab1a0.  v9:= "FlutterJNI" @kind object;
+  #L3ab1a4.  call `d`(v9, v8) @signature `Lh/a/b;.d:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L3ab1aa.  return @kind void;
+}
+procedure `boolean` `isAttached`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.isAttached:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3aab28.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3aab2c.  if v0 == 0 then goto L3aab34;
+  #L3aab30.  v0:= 1I;
+  #L3aab32.  goto L3aab36;
+  #L3aab34.  v0:= 0I;
+  #L3aab36.  return v0;
+}
+procedure `void` `markTextureFrameAvailable`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `long` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.markTextureFrameAvailable:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab1bc.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab1c2.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab1c8.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab1cc.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab1d2.  v0:= temp @kind wide;
+  #L3ab1d4.  call `nativeMarkTextureFrameAvailable`(v2, v0, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeMarkTextureFrameAvailable:(JJ)V` @kind direct;
+  #L3ab1da.  return @kind void;
+}
+procedure `boolean` `nativeFlutterTextUtilsIsEmoji`(`int` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeFlutterTextUtilsIsEmoji:(I)Z` @AccessFlag PUBLIC_NATIVE {
+
+  # return;
+}
+procedure `boolean` `nativeFlutterTextUtilsIsEmojiModifier`(`int` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeFlutterTextUtilsIsEmojiModifier:(I)Z` @AccessFlag PUBLIC_NATIVE {
+
+  # return;
+}
+procedure `boolean` `nativeFlutterTextUtilsIsEmojiModifierBase`(`int` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeFlutterTextUtilsIsEmojiModifierBase:(I)Z` @AccessFlag PUBLIC_NATIVE {
+
+  # return;
+}
+procedure `boolean` `nativeFlutterTextUtilsIsRegionalIndicator`(`int` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeFlutterTextUtilsIsRegionalIndicator:(I)Z` @AccessFlag PUBLIC_NATIVE {
+
+  # return;
+}
+procedure `boolean` `nativeFlutterTextUtilsIsVariationSelector`(`int` v0 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeFlutterTextUtilsIsVariationSelector:(I)Z` @AccessFlag PUBLIC_NATIVE {
+
+  # return;
+}
+procedure `void` `notifyLowMemoryWarning`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.notifyLowMemoryWarning:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab1ec.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab1f2.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab1f8.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab1fc.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab202.  v0:= temp @kind wide;
+  #L3ab204.  call `nativeNotifyLowMemoryWarning`(v2, v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeNotifyLowMemoryWarning:(J)V` @kind direct;
+  #L3ab20a.  return @kind void;
+}
+procedure `void` `onBeginFrame`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onBeginFrame:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab21c.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab222.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.platformViewsController` @type ^`io.flutter.plugin.platform.k` @kind object;
+  #L3ab226.  if v0 == 0 then goto L3ab232;
+  #L3ab22a.  call `j`(v0) @signature `Lio/flutter/plugin/platform/k;.j:()V` @kind virtual;
+  #L3ab230.  return @kind void;
+  #L3ab232.  v0:= new `java.lang.RuntimeException`;
+  #L3ab236.  v1:= "platformViewsController must be set before attempting to begin the frame" @kind object;
+  #L3ab23a.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3ab240.  throw v0;
+}
+procedure `void` `onDisplayOverlaySurface`(`io.flutter.embedding.engine.FlutterJNI` v6 @kind this, `int` v7 , `int` v8 , `int` v9 , `int` v10 , `int` v11 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onDisplayOverlaySurface:(IIIII)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L3ab254.  call `ensureRunningOnMainThread`(v6) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab25a.  v0:= v6.`io.flutter.embedding.engine.FlutterJNI.platformViewsController` @type ^`io.flutter.plugin.platform.k` @kind object;
+  #L3ab25e.  if v0 == 0 then goto L3ab274;
+  #L3ab262.  v1:= v7;
+  #L3ab264.  v2:= v8;
+  #L3ab266.  v3:= v9;
+  #L3ab268.  v4:= v10;
+  #L3ab26a.  v5:= v11;
+  #L3ab26c.  call `a`(v0, v1, v2, v3, v4, v5) @signature `Lio/flutter/plugin/platform/k;.a:(IIIII)V` @kind virtual;
+  #L3ab272.  return @kind void;
+  #L3ab274.  v7:= new `java.lang.RuntimeException`;
+  #L3ab278.  v8:= "platformViewsController must be set before attempting to position an overlay surface" @kind object;
+  #L3ab27c.  call `<init>`(v7, v8) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3ab282.  throw v7;
+}
+procedure `void` `onDisplayPlatformView`(`io.flutter.embedding.engine.FlutterJNI` v10 @kind this, `int` v11 , `int` v12 , `int` v13 , `int` v14 , `int` v15 , `int` v16 , `int` v17 , `io.flutter.embedding.engine.mutatorsstack.FlutterMutatorsStack` v18 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onDisplayPlatformView:(IIIIIIILio/flutter/embedding/engine/mutatorsstack/FlutterMutatorsStack;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L3ab294.  call `ensureRunningOnMainThread`(v10) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab29a.  v0:= v10 @kind object;
+  #L3ab29c.  v1:= v0.`io.flutter.embedding.engine.FlutterJNI.platformViewsController` @type ^`io.flutter.plugin.platform.k` @kind object;
+  #L3ab2a0.  if v1 == 0 then goto L3ab2c2;
+  #L3ab2a4.  v2:= v11;
+  #L3ab2a6.  v3:= v12;
+  #L3ab2a8.  v4:= v13;
+  #L3ab2aa.  v5:= v14;
+  #L3ab2ac.  v6:= v15;
+  #L3ab2ae.  v7:= v16;
+  #L3ab2b2.  v8:= v17;
+  #L3ab2b6.  v9:= v18 @kind object;
+  #L3ab2ba.  call `a`(v1, v2, v3, v4, v5, v6, v7, v8, v9) @signature `Lio/flutter/plugin/platform/k;.a:(IIIIIIILio/flutter/embedding/engine/mutatorsstack/FlutterMutatorsStack;)V` @kind virtual;
+  #L3ab2c0.  return @kind void;
+  #L3ab2c2.  v1:= new `java.lang.RuntimeException`;
+  #L3ab2c6.  v2:= "platformViewsController must be set before attempting to position a platform view" @kind object;
+  #L3ab2ca.  call `<init>`(v1, v2) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3ab2d0.  throw v1;
+}
+procedure `void` `onEndFrame`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onEndFrame:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab2e4.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab2ea.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.platformViewsController` @type ^`io.flutter.plugin.platform.k` @kind object;
+  #L3ab2ee.  if v0 == 0 then goto L3ab2fa;
+  #L3ab2f2.  call `l`(v0) @signature `Lio/flutter/plugin/platform/k;.l:()V` @kind virtual;
+  #L3ab2f8.  return @kind void;
+  #L3ab2fa.  v0:= new `java.lang.RuntimeException`;
+  #L3ab2fe.  v1:= "platformViewsController must be set before attempting to end the frame" @kind object;
+  #L3ab302.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3ab308.  throw v0;
+}
+procedure `void` `onFirstFrame`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onFirstFrame:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab31c.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab322.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.flutterUiDisplayListeners` @type ^`java.util.Set` @kind object;
+  #L3ab326.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L3ab32c.  v0:= temp @kind object;
+  #L3ab32e.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L3ab334.  v1:= temp;
+  #L3ab336.  if v1 == 0 then goto L3ab34e;
+  #L3ab33a.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L3ab340.  v1:= temp @kind object;
+  #L3ab342.  v1:= (`io.flutter.embedding.engine.h.b`) v1 @kind object;
+  #L3ab346.  call `c`(v1) @signature `Lio/flutter/embedding/engine/h/b;.c:()V` @kind interface;
+  #L3ab34c.  goto L3ab32e;
+  #L3ab34e.  return @kind void;
+}
+procedure `void` `onRenderingStopped`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onRenderingStopped:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3ab3a0.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab3a6.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.flutterUiDisplayListeners` @type ^`java.util.Set` @kind object;
+  #L3ab3aa.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L3ab3b0.  v0:= temp @kind object;
+  #L3ab3b2.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L3ab3b8.  v1:= temp;
+  #L3ab3ba.  if v1 == 0 then goto L3ab3d2;
+  #L3ab3be.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L3ab3c4.  v1:= temp @kind object;
+  #L3ab3c6.  v1:= (`io.flutter.embedding.engine.h.b`) v1 @kind object;
+  #L3ab3ca.  call `b`(v1) @signature `Lio/flutter/embedding/engine/h/b;.b:()V` @kind interface;
+  #L3ab3d0.  goto L3ab3b2;
+  #L3ab3d2.  return @kind void;
+}
+procedure `void` `onSurfaceChanged`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `int` v3 , `int` v4 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onSurfaceChanged:(II)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab3e4.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab3ea.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab3f0.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab3f4.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab3fa.  v0:= temp @kind wide;
+  #L3ab3fc.  call `nativeSurfaceChanged`(v2, v0, v3, v4) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceChanged:(JII)V` @kind direct;
+  #L3ab402.  return @kind void;
+}
+procedure `void` `onSurfaceCreated`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `android.view.Surface` v3 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onSurfaceCreated:(Landroid/view/Surface;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab414.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab41a.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab420.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab424.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab42a.  v0:= temp @kind wide;
+  #L3ab42c.  call `nativeSurfaceCreated`(v2, v0, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceCreated:(JLandroid/view/Surface;)V` @kind direct;
+  #L3ab432.  return @kind void;
+}
+procedure `void` `onSurfaceDestroyed`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onSurfaceDestroyed:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab444.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab44a.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab450.  call `onRenderingStopped`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onRenderingStopped:()V` @kind virtual;
+  #L3ab456.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab45a.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab460.  v0:= temp @kind wide;
+  #L3ab462.  call `nativeSurfaceDestroyed`(v2, v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceDestroyed:(J)V` @kind direct;
+  #L3ab468.  return @kind void;
+}
+procedure `void` `onSurfaceWindowChanged`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `android.view.Surface` v3 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.onSurfaceWindowChanged:(Landroid/view/Surface;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab47c.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab482.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab488.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab48c.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab492.  v0:= temp @kind wide;
+  #L3ab494.  call `nativeSurfaceWindowChanged`(v2, v0, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSurfaceWindowChanged:(JLandroid/view/Surface;)V` @kind direct;
+  #L3ab49a.  return @kind void;
+}
+procedure `long` `performNativeAttach`(`io.flutter.embedding.engine.FlutterJNI` v0 @kind this, `io.flutter.embedding.engine.FlutterJNI` v1 @kind object, `boolean` v2 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.performNativeAttach:(Lio/flutter/embedding/engine/FlutterJNI;Z)J` @AccessFlag PUBLIC {
+    temp;
+
+  #L3aacac.  call temp:= `nativeAttach`(v0, v1, v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeAttach:(Lio/flutter/embedding/engine/FlutterJNI;Z)J` @kind direct;
+  #L3aacb2.  v1:= temp @kind wide;
+  #L3aacb4.  return v1 @kind wide;
+}
+procedure `void` `registerTexture`(`io.flutter.embedding.engine.FlutterJNI` v7 @kind this, `long` v8 , `android.graphics.SurfaceTexture` v10 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.registerTexture:(JLandroid/graphics/SurfaceTexture;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L3ab4ac.  call `ensureRunningOnMainThread`(v7) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab4b2.  call `ensureAttachedToNative`(v7) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab4b8.  v0:= v7.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab4bc.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab4c2.  v2:= temp @kind wide;
+  #L3ab4c4.  v1:= v7 @kind object;
+  #L3ab4c6.  v4:= v8 @kind wide;
+  #L3ab4c8.  v6:= v10 @kind object;
+  #L3ab4ca.  call `nativeRegisterTexture`(v1, v2, v4, v6) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeRegisterTexture:(JJLandroid/graphics/SurfaceTexture;)V` @kind direct;
+  #L3ab4d0.  return @kind void;
+}
+procedure `void` `removeEngineLifecycleListener`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `io.flutter.embedding.engine.a$b` v2 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.removeEngineLifecycleListener:(Lio/flutter/embedding/engine/a$b;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3ab4e4.  call `ensureRunningOnMainThread`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab4ea.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.engineLifecycleListeners` @type ^`java.util.Set` @kind object;
+  #L3ab4ee.  call temp:= `remove`(v0, v2) @signature `Ljava/util/Set;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L3ab4f4.  return @kind void;
+}
+procedure `void` `removeIsDisplayingFlutterUiListener`(`io.flutter.embedding.engine.FlutterJNI` v1 @kind this, `io.flutter.embedding.engine.h.b` v2 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.removeIsDisplayingFlutterUiListener:(Lio/flutter/embedding/engine/h/b;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3ab508.  call `ensureRunningOnMainThread`(v1) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab50e.  v0:= v1.`io.flutter.embedding.engine.FlutterJNI.flutterUiDisplayListeners` @type ^`java.util.Set` @kind object;
+  #L3ab512.  call temp:= `remove`(v0, v2) @signature `Ljava/util/Set;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L3ab518.  return @kind void;
+}
+procedure `void` `runBundleAndSnapshotFromLibrary`(`io.flutter.embedding.engine.FlutterJNI` v8 @kind this, `java.lang.String` v9 @kind object, `java.lang.String` v10 @kind object, `java.lang.String` v11 @kind object, `android.content.res.AssetManager` v12 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.runBundleAndSnapshotFromLibrary:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/res/AssetManager;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3ab52c.  call `ensureRunningOnMainThread`(v8) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab532.  call `ensureAttachedToNative`(v8) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab538.  v0:= v8.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab53c.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab542.  v2:= temp @kind wide;
+  #L3ab544.  v1:= v8 @kind object;
+  #L3ab546.  v4:= v9 @kind object;
+  #L3ab548.  v5:= v10 @kind object;
+  #L3ab54a.  v6:= v11 @kind object;
+  #L3ab54c.  v7:= v12 @kind object;
+  #L3ab54e.  call `nativeRunBundleAndSnapshotFromLibrary`(v1, v2, v4, v5, v6, v7) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeRunBundleAndSnapshotFromLibrary:(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/res/AssetManager;)V` @kind direct;
+  #L3ab554.  return @kind void;
+}
+procedure `void` `setAccessibilityDelegate`(`io.flutter.embedding.engine.FlutterJNI` v0 @kind this, `io.flutter.embedding.engine.FlutterJNI$a` v1 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setAccessibilityDelegate:(Lio/flutter/embedding/engine/FlutterJNI$a;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3ab568.  call `ensureRunningOnMainThread`(v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab56e.  v0.`io.flutter.embedding.engine.FlutterJNI.accessibilityDelegate` @type ^`io.flutter.embedding.engine.FlutterJNI$a` := v1 @kind object;
+  #L3ab572.  return @kind void;
+}
+procedure `void` `setAccessibilityFeatures`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `int` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setAccessibilityFeatures:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab584.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab58a.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab590.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab594.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab59a.  v0:= temp @kind wide;
+  #L3ab59c.  call `nativeSetAccessibilityFeatures`(v2, v0, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSetAccessibilityFeatures:(JI)V` @kind direct;
+  #L3ab5a2.  return @kind void;
+}
+procedure `void` `setLocalizationPlugin`(`io.flutter.embedding.engine.FlutterJNI` v0 @kind this, `h.a.c.b.a` v1 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setLocalizationPlugin:(Lh/a/c/b/a;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3ab5cc.  call `ensureRunningOnMainThread`(v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab5d2.  v0.`io.flutter.embedding.engine.FlutterJNI.localizationPlugin` @type ^`h.a.c.b.a` := v1 @kind object;
+  #L3ab5d6.  return @kind void;
+}
+procedure `void` `setPlatformMessageHandler`(`io.flutter.embedding.engine.FlutterJNI` v0 @kind this, `io.flutter.embedding.engine.e.c` v1 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setPlatformMessageHandler:(Lio/flutter/embedding/engine/e/c;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3ab5e8.  call `ensureRunningOnMainThread`(v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab5ee.  v0.`io.flutter.embedding.engine.FlutterJNI.platformMessageHandler` @type ^`io.flutter.embedding.engine.e.c` := v1 @kind object;
+  #L3ab5f2.  return @kind void;
+}
+procedure `void` `setPlatformViewsController`(`io.flutter.embedding.engine.FlutterJNI` v0 @kind this, `io.flutter.plugin.platform.k` v1 @kind object) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setPlatformViewsController:(Lio/flutter/plugin/platform/k;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3ab604.  call `ensureRunningOnMainThread`(v0) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab60a.  v0.`io.flutter.embedding.engine.FlutterJNI.platformViewsController` @type ^`io.flutter.plugin.platform.k` := v1 @kind object;
+  #L3ab60e.  return @kind void;
+}
+procedure `void` `setSemanticsEnabled`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `boolean` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setSemanticsEnabled:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab638.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab63e.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab644.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab648.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab64e.  v0:= temp @kind wide;
+  #L3ab650.  call `nativeSetSemanticsEnabled`(v2, v0, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSetSemanticsEnabled:(JZ)V` @kind direct;
+  #L3ab656.  return @kind void;
+}
+procedure `void` `setViewportMetrics`(`io.flutter.embedding.engine.FlutterJNI` v20 @kind this, `float` v21 , `int` v22 , `int` v23 , `int` v24 , `int` v25 , `int` v26 , `int` v27 , `int` v28 , `int` v29 , `int` v30 , `int` v31 , `int` v32 , `int` v33 , `int` v34 , `int` v35 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.setViewportMetrics:(FIIIIIIIIIIIIII)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+    v19;
+
+  #L3ab668.  v0:= v20 @kind object;
+  #L3ab66c.  v3:= v21;
+  #L3ab670.  v4:= v22;
+  #L3ab674.  v5:= v23;
+  #L3ab678.  v6:= v24;
+  #L3ab67c.  v7:= v25;
+  #L3ab680.  v8:= v26;
+  #L3ab684.  v9:= v27;
+  #L3ab688.  v10:= v28;
+  #L3ab68c.  v11:= v29;
+  #L3ab690.  v12:= v30;
+  #L3ab694.  v13:= v31;
+  #L3ab698.  v14:= v32;
+  #L3ab69c.  v15:= v33;
+  #L3ab6a0.  v16:= v34;
+  #L3ab6a4.  v17:= v35;
+  #L3ab6a8.  call `ensureRunningOnMainThread`(v20) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab6ae.  call `ensureAttachedToNative`(v20) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab6b4.  v1:= v20 @kind object;
+  #L3ab6b8.  v2:= v1.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab6bc.  call temp:= `longValue`(v2) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab6c2.  v18:= temp @kind wide;
+  #L3ab6c4.  v1:= v18 @kind wide;
+  #L3ab6c8.  call `nativeSetViewportMetrics`(v0, v1, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeSetViewportMetrics:(JFIIIIIIIIIIIIII)V` @kind direct;
+  #L3ab6ce.  return @kind void;
+}
+procedure `void` `unregisterTexture`(`io.flutter.embedding.engine.FlutterJNI` v2 @kind this, `long` v3 ) @signature `Lio/flutter/embedding/engine/FlutterJNI;.unregisterTexture:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3ab6e0.  call `ensureRunningOnMainThread`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureRunningOnMainThread:()V` @kind direct;
+  #L3ab6e6.  call `ensureAttachedToNative`(v2) @signature `Lio/flutter/embedding/engine/FlutterJNI;.ensureAttachedToNative:()V` @kind direct;
+  #L3ab6ec.  v0:= v2.`io.flutter.embedding.engine.FlutterJNI.nativePlatformViewId` @type ^`java.lang.Long` @kind object;
+  #L3ab6f0.  call temp:= `longValue`(v0) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3ab6f6.  v0:= temp @kind wide;
+  #L3ab6f8.  call `nativeUnregisterTexture`(v2, v0, v3) @signature `Lio/flutter/embedding/engine/FlutterJNI;.nativeUnregisterTexture:(JJ)V` @kind direct;
+  #L3ab6fe.  return @kind void;
+}

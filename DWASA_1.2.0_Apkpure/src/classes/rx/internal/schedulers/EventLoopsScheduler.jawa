@@ -1,0 +1,125 @@
+record `rx.internal.schedulers.EventLoopsScheduler` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Scheduler` @kind class, `rx.internal.schedulers.SchedulerLifecycle` @kind interface {
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.schedulers.EventLoopsScheduler.pool` @AccessFlag FINAL;
+  `java.util.concurrent.ThreadFactory` `rx.internal.schedulers.EventLoopsScheduler.threadFactory` @AccessFlag FINAL;
+}
+global `java.lang.String` `@@rx.internal.schedulers.EventLoopsScheduler.KEY_MAX_THREADS` @AccessFlag STATIC_FINAL;
+global `int` `@@rx.internal.schedulers.EventLoopsScheduler.MAX_THREADS` @AccessFlag STATIC_FINAL;
+global `rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` `@@rx.internal.schedulers.EventLoopsScheduler.NONE` @AccessFlag STATIC_FINAL;
+global `rx.internal.schedulers.EventLoopsScheduler$PoolWorker` `@@rx.internal.schedulers.EventLoopsScheduler.SHUTDOWN_WORKER` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/schedulers/EventLoopsScheduler;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b26a0.  v0:= 0I;
+  #L4b26a2.  v1:= "rx.scheduler.max-computation-threads" @kind object;
+  #L4b26a6.  call temp:= `getInteger`(v1, v0) @signature `Ljava/lang/Integer;.getInteger:(Ljava/lang/String;I)Ljava/lang/Integer;` @kind static;
+  #L4b26ac.  v1:= temp @kind object;
+  #L4b26ae.  call temp:= `intValue`(v1) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L4b26b4.  v1:= temp;
+  #L4b26b6.  call temp:= `getRuntime`() @signature `Ljava/lang/Runtime;.getRuntime:()Ljava/lang/Runtime;` @kind static;
+  #L4b26bc.  v2:= temp @kind object;
+  #L4b26be.  call temp:= `availableProcessors`(v2) @signature `Ljava/lang/Runtime;.availableProcessors:()I` @kind virtual;
+  #L4b26c4.  v2:= temp;
+  #L4b26c6.  if v1 <= 0 then goto L4b26ce;
+  #L4b26ca.  if v1 <= v2 then goto L4b26d0;
+  #L4b26ce.  v1:= v2;
+  #L4b26d0.  `@@rx.internal.schedulers.EventLoopsScheduler.MAX_THREADS` @type ^`int` := v1;
+  #L4b26d4.  v1:= new `rx.internal.schedulers.EventLoopsScheduler$PoolWorker`;
+  #L4b26d8.  v2:= `@@rx.internal.util.RxThreadFactory.NONE` @type ^`java.util.concurrent.ThreadFactory` @kind object;
+  #L4b26dc.  call `<init>`(v1, v2) @signature `Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L4b26e2.  `@@rx.internal.schedulers.EventLoopsScheduler.SHUTDOWN_WORKER` @type ^`rx.internal.schedulers.EventLoopsScheduler$PoolWorker` := v1 @kind object;
+  #L4b26e6.  v1:= `@@rx.internal.schedulers.EventLoopsScheduler.SHUTDOWN_WORKER` @type ^`rx.internal.schedulers.EventLoopsScheduler$PoolWorker` @kind object;
+  #L4b26ea.  call `unsubscribe`(v1) @signature `Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;.unsubscribe:()V` @kind virtual;
+  #L4b26f0.  v1:= new `rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool`;
+  #L4b26f4.  v2:= 0I;
+  #L4b26f6.  call `<init>`(v1, v2, v0) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.<init>:(Ljava/util/concurrent/ThreadFactory;I)V` @kind direct;
+  #L4b26fc.  `@@rx.internal.schedulers.EventLoopsScheduler.NONE` @type ^`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` := v1 @kind object;
+  #L4b2700.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.EventLoopsScheduler` v1 @kind this, `java.util.concurrent.ThreadFactory` v2 @kind object) @signature `Lrx/internal/schedulers/EventLoopsScheduler;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b2714.  call `<init>`(v1) @signature `Lrx/Scheduler;.<init>:()V` @kind direct;
+  #L4b271a.  v1.`rx.internal.schedulers.EventLoopsScheduler.threadFactory` @type ^`java.util.concurrent.ThreadFactory` := v2 @kind object;
+  #L4b271e.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4b2722.  v0:= `@@rx.internal.schedulers.EventLoopsScheduler.NONE` @type ^`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` @kind object;
+  #L4b2726.  call `<init>`(v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4b272c.  v1.`rx.internal.schedulers.EventLoopsScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L4b2730.  call `start`(v1) @signature `Lrx/internal/schedulers/EventLoopsScheduler;.start:()V` @kind virtual;
+  #L4b2736.  return @kind void;
+}
+procedure `rx.Scheduler$Worker` `createWorker`(`rx.internal.schedulers.EventLoopsScheduler` v2 @kind this) @signature `Lrx/internal/schedulers/EventLoopsScheduler;.createWorker:()Lrx/Scheduler$Worker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b2630.  v0:= new `rx.internal.schedulers.EventLoopsScheduler$EventLoopWorker`;
+  #L4b2634.  v1:= v2.`rx.internal.schedulers.EventLoopsScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2638.  call temp:= `get`(v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b263e.  v1:= temp @kind object;
+  #L4b2640.  v1:= (`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool`) v1 @kind object;
+  #L4b2644.  call temp:= `getEventLoop`(v1) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.getEventLoop:()Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;` @kind virtual;
+  #L4b264a.  v1:= temp @kind object;
+  #L4b264c.  call `<init>`(v0, v1) @signature `Lrx/internal/schedulers/EventLoopsScheduler$EventLoopWorker;.<init>:(Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;)V` @kind direct;
+  #L4b2652.  return v0 @kind object;
+}
+procedure `rx.Subscription` `scheduleDirect`(`rx.internal.schedulers.EventLoopsScheduler` v4 @kind this, `rx.functions.Action0` v5 @kind object) @signature `Lrx/internal/schedulers/EventLoopsScheduler;.scheduleDirect:(Lrx/functions/Action0;)Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4b2664.  v0:= v4.`rx.internal.schedulers.EventLoopsScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2668.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b266e.  v0:= temp @kind object;
+  #L4b2670.  v0:= (`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool`) v0 @kind object;
+  #L4b2674.  call temp:= `getEventLoop`(v0) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.getEventLoop:()Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;` @kind virtual;
+  #L4b267a.  v0:= temp @kind object;
+  #L4b267c.  v1:= `@@java.util.concurrent.TimeUnit.NANOSECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4b2680.  v2:= -1L;
+  #L4b2684.  call temp:= `scheduleActual`(v0, v5, v2, v1) @signature `Lrx/internal/schedulers/EventLoopsScheduler$PoolWorker;.scheduleActual:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;)Lrx/internal/schedulers/ScheduledAction;` @kind virtual;
+  #L4b268a.  v5:= temp @kind object;
+  #L4b268c.  return v5 @kind object;
+}
+procedure `void` `shutdown`(`rx.internal.schedulers.EventLoopsScheduler` v3 @kind this) @signature `Lrx/internal/schedulers/EventLoopsScheduler;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b2748.  v0:= v3.`rx.internal.schedulers.EventLoopsScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b274c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b2752.  v0:= temp @kind object;
+  #L4b2754.  v0:= (`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool`) v0 @kind object;
+  #L4b2758.  v1:= `@@rx.internal.schedulers.EventLoopsScheduler.NONE` @type ^`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` @kind object;
+  #L4b275c.  if v0 != v1 then goto L4b2762;
+  #L4b2760.  return @kind void;
+  #L4b2762.  v2:= v3.`rx.internal.schedulers.EventLoopsScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b2766.  call temp:= `compareAndSet`(v2, v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b276c.  v1:= temp;
+  #L4b276e.  if v1 == 0 then goto L4b2748;
+  #L4b2772.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.shutdown:()V` @kind virtual;
+  #L4b2778.  return @kind void;
+}
+procedure `void` `start`(`rx.internal.schedulers.EventLoopsScheduler` v3 @kind this) @signature `Lrx/internal/schedulers/EventLoopsScheduler;.start:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b278c.  v0:= new `rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool`;
+  #L4b2790.  v1:= v3.`rx.internal.schedulers.EventLoopsScheduler.threadFactory` @type ^`java.util.concurrent.ThreadFactory` @kind object;
+  #L4b2794.  v2:= `@@rx.internal.schedulers.EventLoopsScheduler.MAX_THREADS` @type ^`int`;
+  #L4b2798.  call `<init>`(v0, v1, v2) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.<init>:(Ljava/util/concurrent/ThreadFactory;I)V` @kind direct;
+  #L4b279e.  v1:= v3.`rx.internal.schedulers.EventLoopsScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b27a2.  v2:= `@@rx.internal.schedulers.EventLoopsScheduler.NONE` @type ^`rx.internal.schedulers.EventLoopsScheduler$FixedSchedulerPool` @kind object;
+  #L4b27a6.  call temp:= `compareAndSet`(v1, v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b27ac.  v1:= temp;
+  #L4b27ae.  if v1 != 0 then goto L4b27b8;
+  #L4b27b2.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/EventLoopsScheduler$FixedSchedulerPool;.shutdown:()V` @kind virtual;
+  #L4b27b8.  return @kind void;
+}

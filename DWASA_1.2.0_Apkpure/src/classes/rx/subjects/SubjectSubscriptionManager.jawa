@@ -1,0 +1,163 @@
+record `rx.subjects.SubjectSubscriptionManager` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicReference` @kind class, `rx.Observable$OnSubscribe` @kind interface {
+  `boolean` `rx.subjects.SubjectSubscriptionManager.active` @AccessFlag ;
+  `java.lang.Object` `rx.subjects.SubjectSubscriptionManager.latest` @AccessFlag VOLATILE;
+  `rx.functions.Action1` `rx.subjects.SubjectSubscriptionManager.onAdded` @AccessFlag ;
+  `rx.functions.Action1` `rx.subjects.SubjectSubscriptionManager.onStart` @AccessFlag ;
+  `rx.functions.Action1` `rx.subjects.SubjectSubscriptionManager.onTerminated` @AccessFlag ;
+}
+global `long` `@@rx.subjects.SubjectSubscriptionManager.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.subjects.SubjectSubscriptionManager` v1 @kind this) @signature `Lrx/subjects/SubjectSubscriptionManager;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4c5580.  v0:= `@@rx.subjects.SubjectSubscriptionManager$State.EMPTY` @type ^`rx.subjects.SubjectSubscriptionManager$State` @kind object;
+  #L4c5584.  call `<init>`(v1, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4c558a.  v0:= 1I;
+  #L4c558c.  v1.`rx.subjects.SubjectSubscriptionManager.active` @type ^`boolean` := v0 @kind boolean;
+  #L4c5590.  call temp:= `empty`() @signature `Lrx/functions/Actions;.empty:()Lrx/functions/Actions$EmptyAction;` @kind static;
+  #L4c5596.  v0:= temp @kind object;
+  #L4c5598.  v1.`rx.subjects.SubjectSubscriptionManager.onStart` @type ^`rx.functions.Action1` := v0 @kind object;
+  #L4c559c.  call temp:= `empty`() @signature `Lrx/functions/Actions;.empty:()Lrx/functions/Actions$EmptyAction;` @kind static;
+  #L4c55a2.  v0:= temp @kind object;
+  #L4c55a4.  v1.`rx.subjects.SubjectSubscriptionManager.onAdded` @type ^`rx.functions.Action1` := v0 @kind object;
+  #L4c55a8.  call temp:= `empty`() @signature `Lrx/functions/Actions;.empty:()Lrx/functions/Actions$EmptyAction;` @kind static;
+  #L4c55ae.  v0:= temp @kind object;
+  #L4c55b0.  v1.`rx.subjects.SubjectSubscriptionManager.onTerminated` @type ^`rx.functions.Action1` := v0 @kind object;
+  #L4c55b4.  return @kind void;
+}
+procedure `boolean` `add`(`rx.subjects.SubjectSubscriptionManager` v2 @kind this, `rx.subjects.SubjectSubscriptionManager$SubjectObserver` v3 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.add:(Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)Z` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L4c547c.  call temp:= `get`(v2) @signature `Lrx/subjects/SubjectSubscriptionManager;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c5482.  v0:= temp @kind object;
+  #L4c5484.  v0:= (`rx.subjects.SubjectSubscriptionManager$State`) v0 @kind object;
+  #L4c5488.  v1:= v0.`rx.subjects.SubjectSubscriptionManager$State.terminated` @type ^`boolean` @kind boolean;
+  #L4c548c.  if v1 == 0 then goto L4c549e;
+  #L4c5490.  v0:= v2.`rx.subjects.SubjectSubscriptionManager.onTerminated` @type ^`rx.functions.Action1` @kind object;
+  #L4c5494.  call `call`(v0, v3) @signature `Lrx/functions/Action1;.call:(Ljava/lang/Object;)V` @kind interface;
+  #L4c549a.  v3:= 0I;
+  #L4c549c.  return v3;
+  #L4c549e.  call temp:= `add`(v0, v3) @signature `Lrx/subjects/SubjectSubscriptionManager$State;.add:(Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)Lrx/subjects/SubjectSubscriptionManager$State;` @kind virtual;
+  #L4c54a4.  v1:= temp @kind object;
+  #L4c54a6.  call temp:= `compareAndSet`(v2, v0, v1) @signature `Lrx/subjects/SubjectSubscriptionManager;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4c54ac.  v0:= temp;
+  #L4c54ae.  if v0 == 0 then goto L4c547c;
+  #L4c54b2.  v0:= v2.`rx.subjects.SubjectSubscriptionManager.onAdded` @type ^`rx.functions.Action1` @kind object;
+  #L4c54b6.  call `call`(v0, v3) @signature `Lrx/functions/Action1;.call:(Ljava/lang/Object;)V` @kind interface;
+  #L4c54bc.  v3:= 1I;
+  #L4c54be.  return v3;
+}
+procedure `void` `addUnsubscriber`(`rx.subjects.SubjectSubscriptionManager` v1 @kind this, `rx.Subscriber` v2 @kind object, `rx.subjects.SubjectSubscriptionManager$SubjectObserver` v3 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.addUnsubscriber:(Lrx/Subscriber;Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c55c8.  v0:= new `rx.subjects.SubjectSubscriptionManager$1`;
+  #L4c55cc.  call `<init>`(v0, v1, v3) @signature `Lrx/subjects/SubjectSubscriptionManager$1;.<init>:(Lrx/subjects/SubjectSubscriptionManager;Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)V` @kind direct;
+  #L4c55d2.  call temp:= `create`(v0) @signature `Lrx/subscriptions/Subscriptions;.create:(Lrx/functions/Action0;)Lrx/Subscription;` @kind static;
+  #L4c55d8.  v3:= temp @kind object;
+  #L4c55da.  call `add`(v2, v3) @signature `Lrx/Subscriber;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L4c55e0.  return @kind void;
+}
+procedure `void` `call`(`rx.subjects.SubjectSubscriptionManager` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.call:(Ljava/lang/Object;)V` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+
+  #L4c55f4.  v1:= (`rx.Subscriber`) v1 @kind object;
+  #L4c55f8.  call `call`(v0, v1) @signature `Lrx/subjects/SubjectSubscriptionManager;.call:(Lrx/Subscriber;)V` @kind virtual;
+  #L4c55fe.  return @kind void;
+}
+procedure `void` `call`(`rx.subjects.SubjectSubscriptionManager` v2 @kind this, `rx.Subscriber` v3 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.call:(Lrx/Subscriber;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c5610.  v0:= new `rx.subjects.SubjectSubscriptionManager$SubjectObserver`;
+  #L4c5614.  call `<init>`(v0, v3) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.<init>:(Lrx/Subscriber;)V` @kind direct;
+  #L4c561a.  call `addUnsubscriber`(v2, v3, v0) @signature `Lrx/subjects/SubjectSubscriptionManager;.addUnsubscriber:(Lrx/Subscriber;Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)V` @kind virtual;
+  #L4c5620.  v1:= v2.`rx.subjects.SubjectSubscriptionManager.onStart` @type ^`rx.functions.Action1` @kind object;
+  #L4c5624.  call `call`(v1, v0) @signature `Lrx/functions/Action1;.call:(Ljava/lang/Object;)V` @kind interface;
+  #L4c562a.  call temp:= `isUnsubscribed`(v3) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4c5630.  v1:= temp;
+  #L4c5632.  if v1 != 0 then goto L4c5654;
+  #L4c5636.  call temp:= `add`(v2, v0) @signature `Lrx/subjects/SubjectSubscriptionManager;.add:(Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)Z` @kind virtual;
+  #L4c563c.  v1:= temp;
+  #L4c563e.  if v1 == 0 then goto L4c5654;
+  #L4c5642.  call temp:= `isUnsubscribed`(v3) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4c5648.  v3:= temp;
+  #L4c564a.  if v3 == 0 then goto L4c5654;
+  #L4c564e.  call `remove`(v2, v0) @signature `Lrx/subjects/SubjectSubscriptionManager;.remove:(Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)V` @kind virtual;
+  #L4c5654.  return @kind void;
+}
+procedure `java.lang.Object` `getLatest`(`rx.subjects.SubjectSubscriptionManager` v1 @kind this) @signature `Lrx/subjects/SubjectSubscriptionManager;.getLatest:()Ljava/lang/Object;` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c54d0.  v0:= v1.`rx.subjects.SubjectSubscriptionManager.latest` @type ^`java.lang.Object` @kind object;
+  #L4c54d4.  return v0 @kind object;
+}
+procedure `rx.subjects.SubjectSubscriptionManager$SubjectObserver`[] `next`(`rx.subjects.SubjectSubscriptionManager` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.next:(Ljava/lang/Object;)[Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;` @AccessFlag  {
+    temp;
+
+  #L4c54e8.  call `setLatest`(v0, v1) @signature `Lrx/subjects/SubjectSubscriptionManager;.setLatest:(Ljava/lang/Object;)V` @kind virtual;
+  #L4c54ee.  call temp:= `get`(v0) @signature `Lrx/subjects/SubjectSubscriptionManager;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c54f4.  v1:= temp @kind object;
+  #L4c54f6.  v1:= (`rx.subjects.SubjectSubscriptionManager$State`) v1 @kind object;
+  #L4c54fa.  v1:= v1.`rx.subjects.SubjectSubscriptionManager$State.observers` @type ^`rx.subjects.SubjectSubscriptionManager$SubjectObserver`[] @kind object;
+  #L4c54fe.  return v1 @kind object;
+}
+procedure `rx.subjects.SubjectSubscriptionManager$SubjectObserver`[] `observers`(`rx.subjects.SubjectSubscriptionManager` v1 @kind this) @signature `Lrx/subjects/SubjectSubscriptionManager;.observers:()[Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c5510.  call temp:= `get`(v1) @signature `Lrx/subjects/SubjectSubscriptionManager;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c5516.  v0:= temp @kind object;
+  #L4c5518.  v0:= (`rx.subjects.SubjectSubscriptionManager$State`) v0 @kind object;
+  #L4c551c.  v0:= v0.`rx.subjects.SubjectSubscriptionManager$State.observers` @type ^`rx.subjects.SubjectSubscriptionManager$SubjectObserver`[] @kind object;
+  #L4c5520.  return v0 @kind object;
+}
+procedure `void` `remove`(`rx.subjects.SubjectSubscriptionManager` v2 @kind this, `rx.subjects.SubjectSubscriptionManager$SubjectObserver` v3 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.remove:(Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L4c5668.  call temp:= `get`(v2) @signature `Lrx/subjects/SubjectSubscriptionManager;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c566e.  v0:= temp @kind object;
+  #L4c5670.  v0:= (`rx.subjects.SubjectSubscriptionManager$State`) v0 @kind object;
+  #L4c5674.  v1:= v0.`rx.subjects.SubjectSubscriptionManager$State.terminated` @type ^`boolean` @kind boolean;
+  #L4c5678.  if v1 == 0 then goto L4c567e;
+  #L4c567c.  return @kind void;
+  #L4c567e.  call temp:= `remove`(v0, v3) @signature `Lrx/subjects/SubjectSubscriptionManager$State;.remove:(Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;)Lrx/subjects/SubjectSubscriptionManager$State;` @kind virtual;
+  #L4c5684.  v1:= temp @kind object;
+  #L4c5686.  if v1 == v0 then goto L4c5696;
+  #L4c568a.  call temp:= `compareAndSet`(v2, v0, v1) @signature `Lrx/subjects/SubjectSubscriptionManager;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4c5690.  v0:= temp;
+  #L4c5692.  if v0 == 0 then goto L4c5668;
+  #L4c5696.  return @kind void;
+}
+procedure `void` `setLatest`(`rx.subjects.SubjectSubscriptionManager` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.setLatest:(Ljava/lang/Object;)V` @AccessFlag  {
+    temp;
+
+  #L4c56a8.  v0.`rx.subjects.SubjectSubscriptionManager.latest` @type ^`java.lang.Object` := v1 @kind object;
+  #L4c56ac.  return @kind void;
+}
+procedure `rx.subjects.SubjectSubscriptionManager$SubjectObserver`[] `terminate`(`rx.subjects.SubjectSubscriptionManager` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager;.terminate:(Ljava/lang/Object;)[Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;` @AccessFlag  {
+    temp;
+
+  #L4c5534.  call `setLatest`(v0, v1) @signature `Lrx/subjects/SubjectSubscriptionManager;.setLatest:(Ljava/lang/Object;)V` @kind virtual;
+  #L4c553a.  v1:= 0I;
+  #L4c553c.  v0.`rx.subjects.SubjectSubscriptionManager.active` @type ^`boolean` := v1 @kind boolean;
+  #L4c5540.  call temp:= `get`(v0) @signature `Lrx/subjects/SubjectSubscriptionManager;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c5546.  v1:= temp @kind object;
+  #L4c5548.  v1:= (`rx.subjects.SubjectSubscriptionManager$State`) v1 @kind object;
+  #L4c554c.  v1:= v1.`rx.subjects.SubjectSubscriptionManager$State.terminated` @type ^`boolean` @kind boolean;
+  #L4c5550.  if v1 == 0 then goto L4c555a;
+  #L4c5554.  v1:= `@@rx.subjects.SubjectSubscriptionManager$State.NO_OBSERVERS` @type ^`rx.subjects.SubjectSubscriptionManager$SubjectObserver`[] @kind object;
+  #L4c5558.  return v1 @kind object;
+  #L4c555a.  v1:= `@@rx.subjects.SubjectSubscriptionManager$State.TERMINATED` @type ^`rx.subjects.SubjectSubscriptionManager$State` @kind object;
+  #L4c555e.  call temp:= `getAndSet`(v0, v1) @signature `Lrx/subjects/SubjectSubscriptionManager;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4c5564.  v1:= temp @kind object;
+  #L4c5566.  v1:= (`rx.subjects.SubjectSubscriptionManager$State`) v1 @kind object;
+  #L4c556a.  v1:= v1.`rx.subjects.SubjectSubscriptionManager$State.observers` @type ^`rx.subjects.SubjectSubscriptionManager$SubjectObserver`[] @kind object;
+  #L4c556e.  return v1 @kind object;
+}

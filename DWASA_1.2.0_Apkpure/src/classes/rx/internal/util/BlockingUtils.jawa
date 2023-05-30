@@ -1,0 +1,35 @@
+record `rx.internal.util.BlockingUtils` @kind class @AccessFlag PUBLIC_FINAL {
+}
+procedure `void` `<init>`(`rx.internal.util.BlockingUtils` v0 @kind this) @signature `Lrx/internal/util/BlockingUtils;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L4b4718.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b471e.  return @kind void;
+}
+procedure `void` `awaitForComplete`(`java.util.concurrent.CountDownLatch` v5 @kind object, `rx.Subscription` v6 @kind object) @signature `Lrx/internal/util/BlockingUtils;.awaitForComplete:(Ljava/util/concurrent/CountDownLatch;Lrx/Subscription;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b4730.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L4b4736.  v0:= temp @kind wide;
+  #L4b4738.  v2:= 0L;
+  #L4b473c.  v4:= lcmp(v0, v2);
+  #L4b4740.  if v4 != 0 then goto L4b4746;
+  #L4b4744.  return @kind void;
+  #L4b4746.  call `await`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L4b474c.  return @kind void;
+  #L4b474e.  v5:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L4b4750.  call `unsubscribe`(v6) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4b4756.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L4b475c.  v6:= temp @kind object;
+  #L4b475e.  call `interrupt`(v6) @signature `Ljava/lang/Thread;.interrupt:()V` @kind virtual;
+  #L4b4764.  v6:= new `java.lang.IllegalStateException`;
+  #L4b4768.  v0:= "Interrupted while waiting for subscription to complete." @kind object;
+  #L4b476c.  call `<init>`(v6, v0, v5) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L4b4772.  throw v6;
+  catch `java.lang.InterruptedException` @[L4b4746..L4b474c] goto L4b474e;
+}

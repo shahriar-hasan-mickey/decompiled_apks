@@ -1,0 +1,299 @@
+record `com.huawei.secure.android.common.encrypt.aes.CipherUtil` @kind class @AccessFlag PUBLIC {
+}
+procedure `void` `<init>`(`com.huawei.secure.android.common.encrypt.aes.CipherUtil` v0 @kind this) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L2d3298.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2d329e.  return @kind void;
+}
+procedure `int` `a`(`javax.crypto.Cipher` v0 @kind object, `byte`[] v1 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.a:(Ljavax/crypto/Cipher;[B)I` @AccessFlag PRIVATE_STATIC {
+    temp;
+
+  #L2d2edc.  if v0 == 0 then goto L2d2ef0;
+  #L2d2ee0.  if v1 == 0 then goto L2d2ef0;
+  #L2d2ee4.  v1:= length @variable v1;
+  #L2d2ee6.  call temp:= `getOutputSize`(v0, v1) @signature `Ljavax/crypto/Cipher;.getOutputSize:(I)I` @kind virtual;
+  #L2d2eec.  v0:= temp;
+  #L2d2eee.  return v0;
+  #L2d2ef0.  v0:= -1I;
+  #L2d2ef2.  return v0;
+}
+procedure `javax.crypto.Cipher` `b`(`byte`[] v1 @kind object, `byte`[] v2 @kind object, `int` v3 ) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.b:([B[BI)Ljavax/crypto/Cipher;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L2d3048.  v0:= "AES/CBC/PKCS5Padding" @kind object;
+  #L2d304c.  call temp:= `c`(v1, v2, v3, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.c:([B[BILjava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L2d3052.  v1:= temp @kind object;
+  #L2d3054.  return v1 @kind object;
+}
+procedure `javax.crypto.Cipher` `c`(`byte`[] v4 @kind object, `byte`[] v5 @kind object, `int` v6 , `java.lang.String` v7 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.c:([B[BILjava/lang/String;)Ljavax/crypto/Cipher;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2d3068.  v0:= 0I;
+  #L2d306a.  v1:= "CipherUtil" @kind object;
+  #L2d306e.  if v4 == 0 then goto L2d3110;
+  #L2d3072.  v2:= length @variable v4;
+  #L2d3074.  v3:= 16I;
+  #L2d3078.  if v2 < v3 then goto L2d3110;
+  #L2d307c.  if v5 == 0 then goto L2d3110;
+  #L2d3080.  v2:= length @variable v5;
+  #L2d3082.  v3:= 12I;
+  #L2d3086.  if v2 < v3 then goto L2d3110;
+  #L2d308a.  call temp:= `isBuildVersionHigherThan19`() @signature `Lcom/huawei/secure/android/common/encrypt/aes/AesGcm;.isBuildVersionHigherThan19:()Z` @kind static;
+  #L2d3090.  v2:= temp;
+  #L2d3092.  if v2 != 0 then goto L2d3098;
+  #L2d3096.  goto L2d3110;
+  #L2d3098.  v2:= new `javax.crypto.spec.SecretKeySpec`;
+  #L2d309c.  v3:= "AES" @kind object;
+  #L2d30a0.  call `<init>`(v2, v4, v3) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L2d30a6.  call temp:= `getInstance`(v7) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L2d30ac.  v4:= temp @kind object;
+  #L2d30ae.  v3:= "AES/GCM/NoPadding" @kind object;
+  #L2d30b2.  call temp:= `equals`(v3, v7) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2d30b8.  v7:= temp;
+  #L2d30ba.  if v7 == 0 then goto L2d30c8;
+  #L2d30be.  call temp:= `getGcmAlgorithmParams`(v5) @signature `Lcom/huawei/secure/android/common/encrypt/aes/AesGcm;.getGcmAlgorithmParams:([B)Ljava/security/spec/AlgorithmParameterSpec;` @kind static;
+  #L2d30c4.  v5:= temp @kind object;
+  #L2d30c6.  goto L2d30d4;
+  #L2d30c8.  v7:= new `javax.crypto.spec.IvParameterSpec`;
+  #L2d30cc.  call `<init>`(v7, v5) @signature `Ljavax/crypto/spec/IvParameterSpec;.<init>:([B)V` @kind direct;
+  #L2d30d2.  v5:= v7 @kind object;
+  #L2d30d4.  call `init`(v4, v6, v2, v5) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/Key;Ljava/security/spec/AlgorithmParameterSpec;)V` @kind virtual;
+  #L2d30da.  return v4 @kind object;
+  #L2d30dc.  v4:= Exception @type ^`java.security.GeneralSecurityException` @kind object;
+  #L2d30de.  v5:= new `java.lang.StringBuilder`;
+  #L2d30e2.  call `<init>`(v5) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2d30e8.  v6:= "GCM encrypt data error" @kind object;
+  #L2d30ec.  call temp:= `append`(v5, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2d30f2.  call temp:= `getMessage`(v4) @signature `Ljava/security/GeneralSecurityException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L2d30f8.  v4:= temp @kind object;
+  #L2d30fa.  call temp:= `append`(v5, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2d3100.  call temp:= `toString`(v5) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2d3106.  v4:= temp @kind object;
+  #L2d3108.  call `b`(v1, v4) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d310e.  return v0 @kind object;
+  #L2d3110.  v4:= "gcm encrypt param is not right" @kind object;
+  #L2d3114.  call `b`(v1, v4) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d311a.  return v0 @kind object;
+  catch `java.security.GeneralSecurityException` @[L2d3098..L2d30da] goto L2d30dc;
+}
+procedure `javax.crypto.Cipher` `d`(`byte`[] v1 @kind object, `byte`[] v2 @kind object, `int` v3 ) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.d:([B[BI)Ljavax/crypto/Cipher;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L2d313c.  v0:= "AES/GCM/NoPadding" @kind object;
+  #L2d3140.  call temp:= `c`(v1, v2, v3, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.c:([B[BILjava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L2d3146.  v1:= temp @kind object;
+  #L2d3148.  return v1 @kind object;
+}
+procedure `javax.crypto.Cipher` `getAesCbcDecryptCipher`(`byte`[] v0 @kind object, `javax.crypto.Cipher` v1 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcDecryptCipher:([BLjavax/crypto/Cipher;)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2d3178.  call temp:= `getIV`(v1) @signature `Ljavax/crypto/Cipher;.getIV:()[B` @kind virtual;
+  #L2d317e.  v1:= temp @kind object;
+  #L2d3180.  call temp:= `getAesCbcDecryptCipher`(v0, v1) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcDecryptCipher:([B[B)Ljavax/crypto/Cipher;` @kind static;
+  #L2d3186.  v0:= temp @kind object;
+  #L2d3188.  return v0 @kind object;
+}
+procedure `javax.crypto.Cipher` `getAesCbcDecryptCipher`(`byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcDecryptCipher:([B[B)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2d315c.  v0:= 2I;
+  #L2d315e.  call temp:= `b`(v1, v2, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.b:([B[BI)Ljavax/crypto/Cipher;` @kind static;
+  #L2d3164.  v1:= temp @kind object;
+  #L2d3166.  return v1 @kind object;
+}
+procedure `javax.crypto.Cipher` `getAesCbcEncryptCipher`(`byte`[] v1 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcEncryptCipher:([B)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2d319c.  v0:= 16I;
+  #L2d31a0.  call temp:= `generateSecureRandom`(v0) @signature `Lcom/huawei/secure/android/common/encrypt/utils/EncryptUtil;.generateSecureRandom:(I)[B` @kind static;
+  #L2d31a6.  v0:= temp @kind object;
+  #L2d31a8.  call temp:= `getAesCbcEncryptCipher`(v1, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcEncryptCipher:([B[B)Ljavax/crypto/Cipher;` @kind static;
+  #L2d31ae.  v1:= temp @kind object;
+  #L2d31b0.  return v1 @kind object;
+}
+procedure `javax.crypto.Cipher` `getAesCbcEncryptCipher`(`byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcEncryptCipher:([B[B)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2d31c4.  v0:= 1I;
+  #L2d31c6.  call temp:= `b`(v1, v2, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.b:([B[BI)Ljavax/crypto/Cipher;` @kind static;
+  #L2d31cc.  v1:= temp @kind object;
+  #L2d31ce.  return v1 @kind object;
+}
+procedure `int` `getAesCbcEncryptContentLen`(`byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcEncryptContentLen:([B[B)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2d2f04.  v0:= 16I;
+  #L2d2f08.  call temp:= `generateSecureRandom`(v0) @signature `Lcom/huawei/secure/android/common/encrypt/utils/EncryptUtil;.generateSecureRandom:(I)[B` @kind static;
+  #L2d2f0e.  v0:= temp @kind object;
+  #L2d2f10.  call temp:= `getAesCbcEncryptContentLen`(v1, v2, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcEncryptContentLen:([B[B[B)I` @kind static;
+  #L2d2f16.  v1:= temp;
+  #L2d2f18.  return v1;
+}
+procedure `int` `getAesCbcEncryptContentLen`(`byte`[] v0 @kind object, `byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcEncryptContentLen:([B[B[B)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2d2f2c.  call temp:= `getAesCbcEncryptCipher`(v1, v2) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesCbcEncryptCipher:([B[B)Ljavax/crypto/Cipher;` @kind static;
+  #L2d2f32.  v1:= temp @kind object;
+  #L2d2f34.  call temp:= `a`(v1, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.a:(Ljavax/crypto/Cipher;[B)I` @kind static;
+  #L2d2f3a.  v0:= temp;
+  #L2d2f3c.  return v0;
+}
+procedure `javax.crypto.Cipher` `getAesGcmDecryptCipher`(`byte`[] v0 @kind object, `javax.crypto.Cipher` v1 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmDecryptCipher:([BLjavax/crypto/Cipher;)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2d31fc.  call temp:= `getIV`(v1) @signature `Ljavax/crypto/Cipher;.getIV:()[B` @kind virtual;
+  #L2d3202.  v1:= temp @kind object;
+  #L2d3204.  call temp:= `getAesGcmDecryptCipher`(v0, v1) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmDecryptCipher:([B[B)Ljavax/crypto/Cipher;` @kind static;
+  #L2d320a.  v0:= temp @kind object;
+  #L2d320c.  return v0 @kind object;
+}
+procedure `javax.crypto.Cipher` `getAesGcmDecryptCipher`(`byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmDecryptCipher:([B[B)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2d31e0.  v0:= 2I;
+  #L2d31e2.  call temp:= `d`(v1, v2, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.d:([B[BI)Ljavax/crypto/Cipher;` @kind static;
+  #L2d31e8.  v1:= temp @kind object;
+  #L2d31ea.  return v1 @kind object;
+}
+procedure `javax.crypto.Cipher` `getAesGcmEncryptCipher`(`byte`[] v3 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmEncryptCipher:([B)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2d3220.  v0:= 12I;
+  #L2d3224.  call temp:= `generateSecureRandom`(v0) @signature `Lcom/huawei/secure/android/common/encrypt/utils/EncryptUtil;.generateSecureRandom:(I)[B` @kind static;
+  #L2d322a.  v0:= temp @kind object;
+  #L2d322c.  v1:= new `java.lang.StringBuilder`;
+  #L2d3230.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2d3236.  v2:= "getEncryptCipher: iv is : " @kind object;
+  #L2d323a.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2d3240.  call temp:= `byteArray2HexStr`(v0) @signature `Lcom/huawei/secure/android/common/encrypt/utils/HexUtil;.byteArray2HexStr:([B)Ljava/lang/String;` @kind static;
+  #L2d3246.  v2:= temp @kind object;
+  #L2d3248.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2d324e.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2d3254.  v1:= temp @kind object;
+  #L2d3256.  v2:= "CipherUtil" @kind object;
+  #L2d325a.  call `a`(v2, v1) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.a:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d3260.  call temp:= `getAesGcmEncryptCipher`(v3, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmEncryptCipher:([B[B)Ljavax/crypto/Cipher;` @kind static;
+  #L2d3266.  v3:= temp @kind object;
+  #L2d3268.  return v3 @kind object;
+}
+procedure `javax.crypto.Cipher` `getAesGcmEncryptCipher`(`byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmEncryptCipher:([B[B)Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2d327c.  v0:= 1I;
+  #L2d327e.  call temp:= `d`(v1, v2, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.d:([B[BI)Ljavax/crypto/Cipher;` @kind static;
+  #L2d3284.  v1:= temp @kind object;
+  #L2d3286.  return v1 @kind object;
+}
+procedure `int` `getAesGcmEncryptContentLen`(`byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmEncryptContentLen:([B[B)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2d2f50.  v0:= 12I;
+  #L2d2f54.  call temp:= `generateSecureRandom`(v0) @signature `Lcom/huawei/secure/android/common/encrypt/utils/EncryptUtil;.generateSecureRandom:(I)[B` @kind static;
+  #L2d2f5a.  v0:= temp @kind object;
+  #L2d2f5c.  call temp:= `getAesGcmEncryptContentLen`(v1, v2, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmEncryptContentLen:([B[B[B)I` @kind static;
+  #L2d2f62.  v1:= temp;
+  #L2d2f64.  return v1;
+}
+procedure `int` `getAesGcmEncryptContentLen`(`byte`[] v0 @kind object, `byte`[] v1 @kind object, `byte`[] v2 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmEncryptContentLen:([B[B[B)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2d2f78.  call temp:= `getAesGcmEncryptCipher`(v1, v2) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getAesGcmEncryptCipher:([B[B)Ljavax/crypto/Cipher;` @kind static;
+  #L2d2f7e.  v1:= temp @kind object;
+  #L2d2f80.  call temp:= `a`(v1, v0) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.a:(Ljavax/crypto/Cipher;[B)I` @kind static;
+  #L2d2f86.  v0:= temp;
+  #L2d2f88.  return v0;
+}
+procedure `int` `getContent`(`javax.crypto.Cipher` v0 @kind object, `byte`[] v1 @kind object, `int` v2 , `int` v3 , `byte`[] v4 @kind object, `int` v5 ) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getContent:(Ljavax/crypto/Cipher;[BII[BI)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2d3010.  if v0 == 0 then goto L2d3024;
+  #L2d3014.  if v1 != 0 then goto L2d301a;
+  #L2d3018.  goto L2d3024;
+  #L2d301a.  call temp:= `doFinal`(v0, v1, v2, v3, v4, v5) @signature `Ljavax/crypto/Cipher;.doFinal:([BII[BI)I` @kind virtual;
+  #L2d3020.  v0:= temp;
+  #L2d3022.  return v0;
+  #L2d3024.  v0:= "CipherUtil" @kind object;
+  #L2d3028.  v1:= "getEncryptCOntent: cipher is null or content is null" @kind object;
+  #L2d302c.  call `b`(v0, v1) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d3032.  v0:= -1I;
+  #L2d3034.  return v0;
+}
+procedure `int` `getContent`(`javax.crypto.Cipher` v4 @kind object, `byte`[] v5 @kind object, `byte`[] v6 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getContent:(Ljavax/crypto/Cipher;[B[B)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2d2f9c.  v0:= -1I;
+  #L2d2f9e.  v1:= "CipherUtil" @kind object;
+  #L2d2fa2.  if v4 == 0 then goto L2d2fde;
+  #L2d2fa6.  if v5 != 0 then goto L2d2fac;
+  #L2d2faa.  goto L2d2fde;
+  #L2d2fac.  v2:= 0I;
+  #L2d2fae.  v3:= length @variable v5;
+  #L2d2fb0.  call temp:= `doFinal`(v4, v5, v2, v3, v6) @signature `Ljavax/crypto/Cipher;.doFinal:([BII[B)I` @kind virtual;
+  #L2d2fb6.  v4:= temp;
+  #L2d2fb8.  return v4;
+  #L2d2fba.  v4:= "getContent: ShortBufferException" @kind object;
+  #L2d2fbe.  call `b`(v1, v4) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d2fc4.  goto L2d2fdc;
+  #L2d2fc6.  v4:= "getContent: IllegalBlockSizeException" @kind object;
+  #L2d2fca.  call `b`(v1, v4) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d2fd0.  goto L2d2fdc;
+  #L2d2fd2.  v4:= "getContent: BadPaddingException" @kind object;
+  #L2d2fd6.  call `b`(v1, v4) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d2fdc.  return v0;
+  #L2d2fde.  v4:= "getEncryptCOntent: cipher is null or content is null" @kind object;
+  #L2d2fe2.  call `b`(v1, v4) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d2fe8.  return v0;
+  catch `javax.crypto.BadPaddingException` @[L2d2fae..L2d2fb8] goto L2d2fd2;
+  catch `javax.crypto.IllegalBlockSizeException` @[L2d2fae..L2d2fb8] goto L2d2fc6;
+  catch `javax.crypto.ShortBufferException` @[L2d2fae..L2d2fb8] goto L2d2fba;
+}
+procedure `byte`[] `getContent`(`javax.crypto.Cipher` v3 @kind object, `byte`[] v4 @kind object) @signature `Lcom/huawei/secure/android/common/encrypt/aes/CipherUtil;.getContent:(Ljavax/crypto/Cipher;[B)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2d2e74.  v0:= 0I;
+  #L2d2e76.  v1:= "CipherUtil" @kind object;
+  #L2d2e7a.  if v3 == 0 then goto L2d2eac;
+  #L2d2e7e.  if v4 != 0 then goto L2d2e84;
+  #L2d2e82.  goto L2d2eac;
+  #L2d2e84.  v2:= length @variable v4;
+  #L2d2e86.  call temp:= `doFinal`(v3, v4, v0, v2) @signature `Ljavax/crypto/Cipher;.doFinal:([BII)[B` @kind virtual;
+  #L2d2e8c.  v3:= temp @kind object;
+  #L2d2e8e.  return v3 @kind object;
+  #L2d2e90.  v3:= "getContent: IllegalBlockSizeException" @kind object;
+  #L2d2e94.  call `b`(v1, v3) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d2e9a.  goto L2d2ea6;
+  #L2d2e9c.  v3:= "getContent: BadPaddingException" @kind object;
+  #L2d2ea0.  call `b`(v1, v3) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d2ea6.  v3:= new `byte`[v0];
+  #L2d2eaa.  return v3 @kind object;
+  #L2d2eac.  v3:= "getEncryptCOntent: cipher is null or content is null" @kind object;
+  #L2d2eb0.  call `b`(v1, v3) @signature `Lcom/huawei/secure/android/common/encrypt/utils/b;.b:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2d2eb6.  v3:= new `byte`[v0];
+  #L2d2eba.  return v3 @kind object;
+  catch `javax.crypto.BadPaddingException` @[L2d2e84..L2d2e8e] goto L2d2e9c;
+  catch `javax.crypto.IllegalBlockSizeException` @[L2d2e84..L2d2e8e] goto L2d2e90;
+}

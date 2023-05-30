@@ -1,0 +1,331 @@
+record `com.bumptech.glide.load.engine.EngineJob` @kind class @AccessFlag  extends `com.bumptech.glide.load.engine.EngineRunnable$EngineRunnableManager` @kind interface {
+  `java.util.List` `com.bumptech.glide.load.engine.EngineJob.cbs` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.ExecutorService` `com.bumptech.glide.load.engine.EngineJob.diskCacheService` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.EngineResource` `com.bumptech.glide.load.engine.EngineJob.engineResource` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory` `com.bumptech.glide.load.engine.EngineJob.engineResourceFactory` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.EngineRunnable` `com.bumptech.glide.load.engine.EngineJob.engineRunnable` @AccessFlag PRIVATE;
+  `java.lang.Exception` `com.bumptech.glide.load.engine.EngineJob.exception` @AccessFlag PRIVATE;
+  `java.util.concurrent.Future` `com.bumptech.glide.load.engine.EngineJob.future` @AccessFlag PRIVATE_VOLATILE;
+  `boolean` `com.bumptech.glide.load.engine.EngineJob.hasException` @AccessFlag PRIVATE;
+  `boolean` `com.bumptech.glide.load.engine.EngineJob.hasResource` @AccessFlag PRIVATE;
+  `java.util.Set` `com.bumptech.glide.load.engine.EngineJob.ignoredCallbacks` @AccessFlag PRIVATE;
+  `boolean` `com.bumptech.glide.load.engine.EngineJob.isCacheable` @AccessFlag PRIVATE_FINAL;
+  `boolean` `com.bumptech.glide.load.engine.EngineJob.isCancelled` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.Key` `com.bumptech.glide.load.engine.EngineJob.key` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.EngineJobListener` `com.bumptech.glide.load.engine.EngineJob.listener` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.Resource` `com.bumptech.glide.load.engine.EngineJob.resource` @AccessFlag PRIVATE;
+  `java.util.concurrent.ExecutorService` `com.bumptech.glide.load.engine.EngineJob.sourceService` @AccessFlag PRIVATE_FINAL;
+}
+global `com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory` `@@com.bumptech.glide.load.engine.EngineJob.DEFAULT_FACTORY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `android.os.Handler` `@@com.bumptech.glide.load.engine.EngineJob.MAIN_THREAD_HANDLER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.bumptech.glide.load.engine.EngineJob.MSG_COMPLETE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.bumptech.glide.load.engine.EngineJob.MSG_EXCEPTION` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/bumptech/glide/load/engine/EngineJob;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2b8d40.  v0:= new `com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory`;
+  #L2b8d44.  call `<init>`(v0) @signature `Lcom/bumptech/glide/load/engine/EngineJob$EngineResourceFactory;.<init>:()V` @kind direct;
+  #L2b8d4a.  `@@com.bumptech.glide.load.engine.EngineJob.DEFAULT_FACTORY` @type ^`com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory` := v0 @kind object;
+  #L2b8d4e.  v0:= new `android.os.Handler`;
+  #L2b8d52.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L2b8d58.  v1:= temp @kind object;
+  #L2b8d5a.  v2:= new `com.bumptech.glide.load.engine.EngineJob$MainThreadCallback`;
+  #L2b8d5e.  v3:= 0I;
+  #L2b8d60.  call `<init>`(v2, v3) @signature `Lcom/bumptech/glide/load/engine/EngineJob$MainThreadCallback;.<init>:(Lcom/bumptech/glide/load/engine/EngineJob$1;)V` @kind direct;
+  #L2b8d66.  call `<init>`(v0, v1, v2) @signature `Landroid/os/Handler;.<init>:(Landroid/os/Looper;Landroid/os/Handler$Callback;)V` @kind direct;
+  #L2b8d6c.  `@@com.bumptech.glide.load.engine.EngineJob.MAIN_THREAD_HANDLER` @type ^`android.os.Handler` := v0 @kind object;
+  #L2b8d70.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.EngineJob` v7 @kind this, `com.bumptech.glide.load.Key` v8 @kind object, `java.util.concurrent.ExecutorService` v9 @kind object, `java.util.concurrent.ExecutorService` v10 @kind object, `boolean` v11 , `com.bumptech.glide.load.engine.EngineJobListener` v12 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.<init>:(Lcom/bumptech/glide/load/Key;Ljava/util/concurrent/ExecutorService;Ljava/util/concurrent/ExecutorService;ZLcom/bumptech/glide/load/engine/EngineJobListener;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L2b8d84.  v6:= `@@com.bumptech.glide.load.engine.EngineJob.DEFAULT_FACTORY` @type ^`com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory` @kind object;
+  #L2b8d88.  v0:= v7 @kind object;
+  #L2b8d8a.  v1:= v8 @kind object;
+  #L2b8d8c.  v2:= v9 @kind object;
+  #L2b8d8e.  v3:= v10 @kind object;
+  #L2b8d90.  v4:= v11;
+  #L2b8d92.  v5:= v12 @kind object;
+  #L2b8d94.  call `<init>`(v0, v1, v2, v3, v4, v5, v6) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.<init>:(Lcom/bumptech/glide/load/Key;Ljava/util/concurrent/ExecutorService;Ljava/util/concurrent/ExecutorService;ZLcom/bumptech/glide/load/engine/EngineJobListener;Lcom/bumptech/glide/load/engine/EngineJob$EngineResourceFactory;)V` @kind direct;
+  #L2b8d9a.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.load.Key` v2 @kind object, `java.util.concurrent.ExecutorService` v3 @kind object, `java.util.concurrent.ExecutorService` v4 @kind object, `boolean` v5 , `com.bumptech.glide.load.engine.EngineJobListener` v6 @kind object, `com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory` v7 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.<init>:(Lcom/bumptech/glide/load/Key;Ljava/util/concurrent/ExecutorService;Ljava/util/concurrent/ExecutorService;ZLcom/bumptech/glide/load/engine/EngineJobListener;Lcom/bumptech/glide/load/engine/EngineJob$EngineResourceFactory;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2b8dac.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2b8db2.  v0:= new `java.util.ArrayList`;
+  #L2b8db6.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L2b8dbc.  v1.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` := v0 @kind object;
+  #L2b8dc0.  v1.`com.bumptech.glide.load.engine.EngineJob.key` @type ^`com.bumptech.glide.load.Key` := v2 @kind object;
+  #L2b8dc4.  v1.`com.bumptech.glide.load.engine.EngineJob.diskCacheService` @type ^`java.util.concurrent.ExecutorService` := v3 @kind object;
+  #L2b8dc8.  v1.`com.bumptech.glide.load.engine.EngineJob.sourceService` @type ^`java.util.concurrent.ExecutorService` := v4 @kind object;
+  #L2b8dcc.  v1.`com.bumptech.glide.load.engine.EngineJob.isCacheable` @type ^`boolean` := v5 @kind boolean;
+  #L2b8dd0.  v1.`com.bumptech.glide.load.engine.EngineJob.listener` @type ^`com.bumptech.glide.load.engine.EngineJobListener` := v6 @kind object;
+  #L2b8dd4.  v1.`com.bumptech.glide.load.engine.EngineJob.engineResourceFactory` @type ^`com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory` := v7 @kind object;
+  #L2b8dd8.  return @kind void;
+}
+procedure `void` `access$100`(`com.bumptech.glide.load.engine.EngineJob` v0 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.access$100:(Lcom/bumptech/glide/load/engine/EngineJob;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b8dec.  call `handleResultOnMainThread`(v0) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.handleResultOnMainThread:()V` @kind direct;
+  #L2b8df2.  return @kind void;
+}
+procedure `void` `access$200`(`com.bumptech.glide.load.engine.EngineJob` v0 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.access$200:(Lcom/bumptech/glide/load/engine/EngineJob;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b8e04.  call `handleExceptionOnMainThread`(v0) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.handleExceptionOnMainThread:()V` @kind direct;
+  #L2b8e0a.  return @kind void;
+}
+procedure `void` `addIgnoredCallback`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.request.ResourceCallback` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.addIgnoredCallback:(Lcom/bumptech/glide/request/ResourceCallback;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2b8e68.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.ignoredCallbacks` @type ^`java.util.Set` @kind object;
+  #L2b8e6c.  if v0 != 0 then goto L2b8e7e;
+  #L2b8e70.  v0:= new `java.util.HashSet`;
+  #L2b8e74.  call `<init>`(v0) @signature `Ljava/util/HashSet;.<init>:()V` @kind direct;
+  #L2b8e7a.  v1.`com.bumptech.glide.load.engine.EngineJob.ignoredCallbacks` @type ^`java.util.Set` := v0 @kind object;
+  #L2b8e7e.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.ignoredCallbacks` @type ^`java.util.Set` @kind object;
+  #L2b8e82.  call temp:= `add`(v0, v2) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2b8e88.  return @kind void;
+}
+procedure `void` `handleExceptionOnMainThread`(`com.bumptech.glide.load.engine.EngineJob` v3 @kind this) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.handleExceptionOnMainThread:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2b8ef4.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.isCancelled` @type ^`boolean` @kind boolean;
+  #L2b8ef8.  if v0 == 0 then goto L2b8efe;
+  #L2b8efc.  return @kind void;
+  #L2b8efe.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` @kind object;
+  #L2b8f02.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L2b8f08.  v0:= temp;
+  #L2b8f0a.  if v0 != 0 then goto L2b8f62;
+  #L2b8f0e.  v0:= 1I;
+  #L2b8f10.  v3.`com.bumptech.glide.load.engine.EngineJob.hasException` @type ^`boolean` := v0 @kind boolean;
+  #L2b8f14.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.listener` @type ^`com.bumptech.glide.load.engine.EngineJobListener` @kind object;
+  #L2b8f18.  v1:= v3.`com.bumptech.glide.load.engine.EngineJob.key` @type ^`com.bumptech.glide.load.Key` @kind object;
+  #L2b8f1c.  v2:= 0I;
+  #L2b8f1e.  call `onEngineJobComplete`(v0, v1, v2) @signature `Lcom/bumptech/glide/load/engine/EngineJobListener;.onEngineJobComplete:(Lcom/bumptech/glide/load/Key;Lcom/bumptech/glide/load/engine/EngineResource;)V` @kind interface;
+  #L2b8f24.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` @kind object;
+  #L2b8f28.  call temp:= `iterator`(v0) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2b8f2e.  v0:= temp @kind object;
+  #L2b8f30.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2b8f36.  v1:= temp;
+  #L2b8f38.  if v1 == 0 then goto L2b8f60;
+  #L2b8f3c.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2b8f42.  v1:= temp @kind object;
+  #L2b8f44.  v1:= (`com.bumptech.glide.request.ResourceCallback`) v1 @kind object;
+  #L2b8f48.  call temp:= `isInIgnoredCallbacks`(v3, v1) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.isInIgnoredCallbacks:(Lcom/bumptech/glide/request/ResourceCallback;)Z` @kind direct;
+  #L2b8f4e.  v2:= temp;
+  #L2b8f50.  if v2 != 0 then goto L2b8f30;
+  #L2b8f54.  v2:= v3.`com.bumptech.glide.load.engine.EngineJob.exception` @type ^`java.lang.Exception` @kind object;
+  #L2b8f58.  call `onException`(v1, v2) @signature `Lcom/bumptech/glide/request/ResourceCallback;.onException:(Ljava/lang/Exception;)V` @kind interface;
+  #L2b8f5e.  goto L2b8f30;
+  #L2b8f60.  return @kind void;
+  #L2b8f62.  v0:= new `java.lang.IllegalStateException`;
+  #L2b8f66.  v1:= "Received an exception without any callbacks to notify" @kind object;
+  #L2b8f6a.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b8f70.  goto L2b8f74;
+  #L2b8f72.  throw v0;
+  #L2b8f74.  goto L2b8f72;
+}
+procedure `void` `handleResultOnMainThread`(`com.bumptech.glide.load.engine.EngineJob` v3 @kind this) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.handleResultOnMainThread:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2b8f88.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.isCancelled` @type ^`boolean` @kind boolean;
+  #L2b8f8c.  if v0 == 0 then goto L2b8f9c;
+  #L2b8f90.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.resource` @type ^`com.bumptech.glide.load.engine.Resource` @kind object;
+  #L2b8f94.  call `recycle`(v0) @signature `Lcom/bumptech/glide/load/engine/Resource;.recycle:()V` @kind interface;
+  #L2b8f9a.  return @kind void;
+  #L2b8f9c.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` @kind object;
+  #L2b8fa0.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L2b8fa6.  v0:= temp;
+  #L2b8fa8.  if v0 != 0 then goto L2b9038;
+  #L2b8fac.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.engineResourceFactory` @type ^`com.bumptech.glide.load.engine.EngineJob$EngineResourceFactory` @kind object;
+  #L2b8fb0.  v1:= v3.`com.bumptech.glide.load.engine.EngineJob.resource` @type ^`com.bumptech.glide.load.engine.Resource` @kind object;
+  #L2b8fb4.  v2:= v3.`com.bumptech.glide.load.engine.EngineJob.isCacheable` @type ^`boolean` @kind boolean;
+  #L2b8fb8.  call temp:= `build`(v0, v1, v2) @signature `Lcom/bumptech/glide/load/engine/EngineJob$EngineResourceFactory;.build:(Lcom/bumptech/glide/load/engine/Resource;Z)Lcom/bumptech/glide/load/engine/EngineResource;` @kind virtual;
+  #L2b8fbe.  v0:= temp @kind object;
+  #L2b8fc0.  v3.`com.bumptech.glide.load.engine.EngineJob.engineResource` @type ^`com.bumptech.glide.load.engine.EngineResource` := v0 @kind object;
+  #L2b8fc4.  v0:= 1I;
+  #L2b8fc6.  v3.`com.bumptech.glide.load.engine.EngineJob.hasResource` @type ^`boolean` := v0 @kind boolean;
+  #L2b8fca.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.engineResource` @type ^`com.bumptech.glide.load.engine.EngineResource` @kind object;
+  #L2b8fce.  call `acquire`(v0) @signature `Lcom/bumptech/glide/load/engine/EngineResource;.acquire:()V` @kind virtual;
+  #L2b8fd4.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.listener` @type ^`com.bumptech.glide.load.engine.EngineJobListener` @kind object;
+  #L2b8fd8.  v1:= v3.`com.bumptech.glide.load.engine.EngineJob.key` @type ^`com.bumptech.glide.load.Key` @kind object;
+  #L2b8fdc.  v2:= v3.`com.bumptech.glide.load.engine.EngineJob.engineResource` @type ^`com.bumptech.glide.load.engine.EngineResource` @kind object;
+  #L2b8fe0.  call `onEngineJobComplete`(v0, v1, v2) @signature `Lcom/bumptech/glide/load/engine/EngineJobListener;.onEngineJobComplete:(Lcom/bumptech/glide/load/Key;Lcom/bumptech/glide/load/engine/EngineResource;)V` @kind interface;
+  #L2b8fe6.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` @kind object;
+  #L2b8fea.  call temp:= `iterator`(v0) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2b8ff0.  v0:= temp @kind object;
+  #L2b8ff2.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2b8ff8.  v1:= temp;
+  #L2b8ffa.  if v1 == 0 then goto L2b902c;
+  #L2b8ffe.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2b9004.  v1:= temp @kind object;
+  #L2b9006.  v1:= (`com.bumptech.glide.request.ResourceCallback`) v1 @kind object;
+  #L2b900a.  call temp:= `isInIgnoredCallbacks`(v3, v1) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.isInIgnoredCallbacks:(Lcom/bumptech/glide/request/ResourceCallback;)Z` @kind direct;
+  #L2b9010.  v2:= temp;
+  #L2b9012.  if v2 != 0 then goto L2b8ff2;
+  #L2b9016.  v2:= v3.`com.bumptech.glide.load.engine.EngineJob.engineResource` @type ^`com.bumptech.glide.load.engine.EngineResource` @kind object;
+  #L2b901a.  call `acquire`(v2) @signature `Lcom/bumptech/glide/load/engine/EngineResource;.acquire:()V` @kind virtual;
+  #L2b9020.  v2:= v3.`com.bumptech.glide.load.engine.EngineJob.engineResource` @type ^`com.bumptech.glide.load.engine.EngineResource` @kind object;
+  #L2b9024.  call `onResourceReady`(v1, v2) @signature `Lcom/bumptech/glide/request/ResourceCallback;.onResourceReady:(Lcom/bumptech/glide/load/engine/Resource;)V` @kind interface;
+  #L2b902a.  goto L2b8ff2;
+  #L2b902c.  v0:= v3.`com.bumptech.glide.load.engine.EngineJob.engineResource` @type ^`com.bumptech.glide.load.engine.EngineResource` @kind object;
+  #L2b9030.  call `release`(v0) @signature `Lcom/bumptech/glide/load/engine/EngineResource;.release:()V` @kind virtual;
+  #L2b9036.  return @kind void;
+  #L2b9038.  v0:= new `java.lang.IllegalStateException`;
+  #L2b903c.  v1:= "Received a resource without any callbacks to notify" @kind object;
+  #L2b9040.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b9046.  goto L2b904a;
+  #L2b9048.  throw v0;
+  #L2b904a.  goto L2b9048;
+}
+procedure `boolean` `isInIgnoredCallbacks`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.request.ResourceCallback` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.isInIgnoredCallbacks:(Lcom/bumptech/glide/request/ResourceCallback;)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2b8d14.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.ignoredCallbacks` @type ^`java.util.Set` @kind object;
+  #L2b8d18.  if v0 == 0 then goto L2b8d2c;
+  #L2b8d1c.  call temp:= `contains`(v0, v2) @signature `Ljava/util/Set;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L2b8d22.  v2:= temp;
+  #L2b8d24.  if v2 == 0 then goto L2b8d2c;
+  #L2b8d28.  v2:= 1I;
+  #L2b8d2a.  goto L2b8d2e;
+  #L2b8d2c.  v2:= 0I;
+  #L2b8d2e.  return v2;
+}
+procedure `void` `addCallback`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.request.ResourceCallback` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.addCallback:(Lcom/bumptech/glide/request/ResourceCallback;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b8e1c.  call `assertMainThread`() @signature `Lcom/bumptech/glide/util/Util;.assertMainThread:()V` @kind static;
+  #L2b8e22.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.hasResource` @type ^`boolean` @kind boolean;
+  #L2b8e26.  if v0 == 0 then goto L2b8e36;
+  #L2b8e2a.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.engineResource` @type ^`com.bumptech.glide.load.engine.EngineResource` @kind object;
+  #L2b8e2e.  call `onResourceReady`(v2, v0) @signature `Lcom/bumptech/glide/request/ResourceCallback;.onResourceReady:(Lcom/bumptech/glide/load/engine/Resource;)V` @kind interface;
+  #L2b8e34.  goto L2b8e54;
+  #L2b8e36.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.hasException` @type ^`boolean` @kind boolean;
+  #L2b8e3a.  if v0 == 0 then goto L2b8e4a;
+  #L2b8e3e.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.exception` @type ^`java.lang.Exception` @kind object;
+  #L2b8e42.  call `onException`(v2, v0) @signature `Lcom/bumptech/glide/request/ResourceCallback;.onException:(Ljava/lang/Exception;)V` @kind interface;
+  #L2b8e48.  goto L2b8e54;
+  #L2b8e4a.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` @kind object;
+  #L2b8e4e.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2b8e54.  return @kind void;
+}
+procedure `void` `cancel`(`com.bumptech.glide.load.engine.EngineJob` v2 @kind this) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.cancel:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L2b8e9c.  v0:= v2.`com.bumptech.glide.load.engine.EngineJob.hasException` @type ^`boolean` @kind boolean;
+  #L2b8ea0.  if v0 != 0 then goto L2b8ee2;
+  #L2b8ea4.  v0:= v2.`com.bumptech.glide.load.engine.EngineJob.hasResource` @type ^`boolean` @kind boolean;
+  #L2b8ea8.  if v0 != 0 then goto L2b8ee2;
+  #L2b8eac.  v0:= v2.`com.bumptech.glide.load.engine.EngineJob.isCancelled` @type ^`boolean` @kind boolean;
+  #L2b8eb0.  if v0 == 0 then goto L2b8eb6;
+  #L2b8eb4.  goto L2b8ee2;
+  #L2b8eb6.  v0:= v2.`com.bumptech.glide.load.engine.EngineJob.engineRunnable` @type ^`com.bumptech.glide.load.engine.EngineRunnable` @kind object;
+  #L2b8eba.  call `cancel`(v0) @signature `Lcom/bumptech/glide/load/engine/EngineRunnable;.cancel:()V` @kind virtual;
+  #L2b8ec0.  v0:= v2.`com.bumptech.glide.load.engine.EngineJob.future` @type ^`java.util.concurrent.Future` @kind object;
+  #L2b8ec4.  v1:= 1I;
+  #L2b8ec6.  if v0 == 0 then goto L2b8ed0;
+  #L2b8eca.  call temp:= `cancel`(v0, v1) @signature `Ljava/util/concurrent/Future;.cancel:(Z)Z` @kind interface;
+  #L2b8ed0.  v2.`com.bumptech.glide.load.engine.EngineJob.isCancelled` @type ^`boolean` := v1 @kind boolean;
+  #L2b8ed4.  v0:= v2.`com.bumptech.glide.load.engine.EngineJob.listener` @type ^`com.bumptech.glide.load.engine.EngineJobListener` @kind object;
+  #L2b8ed8.  v1:= v2.`com.bumptech.glide.load.engine.EngineJob.key` @type ^`com.bumptech.glide.load.Key` @kind object;
+  #L2b8edc.  call `onEngineJobCancelled`(v0, v2, v1) @signature `Lcom/bumptech/glide/load/engine/EngineJobListener;.onEngineJobCancelled:(Lcom/bumptech/glide/load/engine/EngineJob;Lcom/bumptech/glide/load/Key;)V` @kind interface;
+  #L2b8ee2.  return @kind void;
+}
+procedure `boolean` `isCancelled`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.isCancelled:()Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L2b8cfc.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.isCancelled` @type ^`boolean` @kind boolean;
+  #L2b8d00.  return v0;
+}
+procedure `void` `onException`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `java.lang.Exception` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.onException:(Ljava/lang/Exception;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b905c.  v1.`com.bumptech.glide.load.engine.EngineJob.exception` @type ^`java.lang.Exception` := v2 @kind object;
+  #L2b9060.  v2:= `@@com.bumptech.glide.load.engine.EngineJob.MAIN_THREAD_HANDLER` @type ^`android.os.Handler` @kind object;
+  #L2b9064.  v0:= 2I;
+  #L2b9066.  call temp:= `obtainMessage`(v2, v0, v1) @signature `Landroid/os/Handler;.obtainMessage:(ILjava/lang/Object;)Landroid/os/Message;` @kind virtual;
+  #L2b906c.  v2:= temp @kind object;
+  #L2b906e.  call `sendToTarget`(v2) @signature `Landroid/os/Message;.sendToTarget:()V` @kind virtual;
+  #L2b9074.  return @kind void;
+}
+procedure `void` `onResourceReady`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.load.engine.Resource` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.onResourceReady:(Lcom/bumptech/glide/load/engine/Resource;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b9088.  v1.`com.bumptech.glide.load.engine.EngineJob.resource` @type ^`com.bumptech.glide.load.engine.Resource` := v2 @kind object;
+  #L2b908c.  v2:= `@@com.bumptech.glide.load.engine.EngineJob.MAIN_THREAD_HANDLER` @type ^`android.os.Handler` @kind object;
+  #L2b9090.  v0:= 1I;
+  #L2b9092.  call temp:= `obtainMessage`(v2, v0, v1) @signature `Landroid/os/Handler;.obtainMessage:(ILjava/lang/Object;)Landroid/os/Message;` @kind virtual;
+  #L2b9098.  v2:= temp @kind object;
+  #L2b909a.  call `sendToTarget`(v2) @signature `Landroid/os/Message;.sendToTarget:()V` @kind virtual;
+  #L2b90a0.  return @kind void;
+}
+procedure `void` `removeCallback`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.request.ResourceCallback` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.removeCallback:(Lcom/bumptech/glide/request/ResourceCallback;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b90b4.  call `assertMainThread`() @signature `Lcom/bumptech/glide/util/Util;.assertMainThread:()V` @kind static;
+  #L2b90ba.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.hasResource` @type ^`boolean` @kind boolean;
+  #L2b90be.  if v0 != 0 then goto L2b90ee;
+  #L2b90c2.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.hasException` @type ^`boolean` @kind boolean;
+  #L2b90c6.  if v0 == 0 then goto L2b90cc;
+  #L2b90ca.  goto L2b90ee;
+  #L2b90cc.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` @kind object;
+  #L2b90d0.  call temp:= `remove`(v0, v2) @signature `Ljava/util/List;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L2b90d6.  v2:= v1.`com.bumptech.glide.load.engine.EngineJob.cbs` @type ^`java.util.List` @kind object;
+  #L2b90da.  call temp:= `isEmpty`(v2) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L2b90e0.  v2:= temp;
+  #L2b90e2.  if v2 == 0 then goto L2b90f4;
+  #L2b90e6.  call `cancel`(v1) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.cancel:()V` @kind virtual;
+  #L2b90ec.  goto L2b90f4;
+  #L2b90ee.  call `addIgnoredCallback`(v1, v2) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.addIgnoredCallback:(Lcom/bumptech/glide/request/ResourceCallback;)V` @kind direct;
+  #L2b90f4.  return @kind void;
+}
+procedure `void` `start`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.load.engine.EngineRunnable` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.start:(Lcom/bumptech/glide/load/engine/EngineRunnable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b9108.  v1.`com.bumptech.glide.load.engine.EngineJob.engineRunnable` @type ^`com.bumptech.glide.load.engine.EngineRunnable` := v2 @kind object;
+  #L2b910c.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.diskCacheService` @type ^`java.util.concurrent.ExecutorService` @kind object;
+  #L2b9110.  call temp:= `submit`(v0, v2) @signature `Ljava/util/concurrent/ExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L2b9116.  v2:= temp @kind object;
+  #L2b9118.  v1.`com.bumptech.glide.load.engine.EngineJob.future` @type ^`java.util.concurrent.Future` := v2 @kind object;
+  #L2b911c.  return @kind void;
+}
+procedure `void` `submitForSource`(`com.bumptech.glide.load.engine.EngineJob` v1 @kind this, `com.bumptech.glide.load.engine.EngineRunnable` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/EngineJob;.submitForSource:(Lcom/bumptech/glide/load/engine/EngineRunnable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b9130.  v0:= v1.`com.bumptech.glide.load.engine.EngineJob.sourceService` @type ^`java.util.concurrent.ExecutorService` @kind object;
+  #L2b9134.  call temp:= `submit`(v0, v2) @signature `Ljava/util/concurrent/ExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L2b913a.  v2:= temp @kind object;
+  #L2b913c.  v1.`com.bumptech.glide.load.engine.EngineJob.future` @type ^`java.util.concurrent.Future` := v2 @kind object;
+  #L2b9140.  return @kind void;
+}

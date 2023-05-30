@@ -1,0 +1,141 @@
+record `rx.internal.util.ObjectPool` @kind class @AccessFlag PUBLIC_ABSTRACT extends `rx.internal.schedulers.SchedulerLifecycle` @kind interface {
+  `int` `rx.internal.util.ObjectPool.maxSize` @AccessFlag FINAL;
+  `int` `rx.internal.util.ObjectPool.minSize` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.util.ObjectPool.periodicTask` @AccessFlag PRIVATE_FINAL;
+  `java.util.Queue` `rx.internal.util.ObjectPool.pool` @AccessFlag ;
+  `long` `rx.internal.util.ObjectPool.validationInterval` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`rx.internal.util.ObjectPool` v3 @kind this) @signature `Lrx/internal/util/ObjectPool;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b5b40.  v0:= 0I;
+  #L4b5b42.  v1:= 67L;
+  #L4b5b46.  call `<init>`(v3, v0, v0, v1) @signature `Lrx/internal/util/ObjectPool;.<init>:(IIJ)V` @kind direct;
+  #L4b5b4c.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.util.ObjectPool` v0 @kind this, `int` v1 , `int` v2 , `long` v3 ) @signature `Lrx/internal/util/ObjectPool;.<init>:(IIJ)V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L4b5b60.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b5b66.  v0.`rx.internal.util.ObjectPool.minSize` @type ^`int` := v1;
+  #L4b5b6a.  v0.`rx.internal.util.ObjectPool.maxSize` @type ^`int` := v2;
+  #L4b5b6e.  v0.`rx.internal.util.ObjectPool.validationInterval` @type ^`long` := v3 @kind wide;
+  #L4b5b72.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4b5b76.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L4b5b7c.  v0.`rx.internal.util.ObjectPool.periodicTask` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L4b5b80.  call `initialize`(v0, v1) @signature `Lrx/internal/util/ObjectPool;.initialize:(I)V` @kind direct;
+  #L4b5b86.  call `start`(v0) @signature `Lrx/internal/util/ObjectPool;.start:()V` @kind virtual;
+  #L4b5b8c.  return @kind void;
+}
+procedure `void` `initialize`(`rx.internal.util.ObjectPool` v3 @kind this, `int` v4 ) @signature `Lrx/internal/util/ObjectPool;.initialize:(I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b5ba0.  call temp:= `isUnsafeAvailable`() @signature `Lrx/internal/util/unsafe/UnsafeAccess;.isUnsafeAvailable:()Z` @kind static;
+  #L4b5ba6.  v0:= temp;
+  #L4b5ba8.  if v0 == 0 then goto L4b5bcc;
+  #L4b5bac.  v0:= new `rx.internal.util.unsafe.MpmcArrayQueue`;
+  #L4b5bb0.  v1:= v3.`rx.internal.util.ObjectPool.maxSize` @type ^`int`;
+  #L4b5bb4.  v2:= 1024I;
+  #L4b5bb8.  call temp:= `max`(v1, v2) @signature `Ljava/lang/Math;.max:(II)I` @kind static;
+  #L4b5bbe.  v1:= temp;
+  #L4b5bc0.  call `<init>`(v0, v1) @signature `Lrx/internal/util/unsafe/MpmcArrayQueue;.<init>:(I)V` @kind direct;
+  #L4b5bc6.  v3.`rx.internal.util.ObjectPool.pool` @type ^`java.util.Queue` := v0 @kind object;
+  #L4b5bca.  goto L4b5bda;
+  #L4b5bcc.  v0:= new `java.util.concurrent.ConcurrentLinkedQueue`;
+  #L4b5bd0.  call `<init>`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.<init>:()V` @kind direct;
+  #L4b5bd6.  v3.`rx.internal.util.ObjectPool.pool` @type ^`java.util.Queue` := v0 @kind object;
+  #L4b5bda.  v0:= 0I;
+  #L4b5bdc.  if v0 >= v4 then goto L4b5bf8;
+  #L4b5be0.  v1:= v3.`rx.internal.util.ObjectPool.pool` @type ^`java.util.Queue` @kind object;
+  #L4b5be4.  call temp:= `createObject`(v3) @signature `Lrx/internal/util/ObjectPool;.createObject:()Ljava/lang/Object;` @kind virtual;
+  #L4b5bea.  v2:= temp @kind object;
+  #L4b5bec.  call temp:= `add`(v1, v2) @signature `Ljava/util/Queue;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b5bf2.  v0:= v0 + 1;
+  #L4b5bf6.  goto L4b5bdc;
+  #L4b5bf8.  return @kind void;
+}
+procedure `java.lang.Object` `borrowObject`(`rx.internal.util.ObjectPool` v1 @kind this) @signature `Lrx/internal/util/ObjectPool;.borrowObject:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b5b14.  v0:= v1.`rx.internal.util.ObjectPool.pool` @type ^`java.util.Queue` @kind object;
+  #L4b5b18.  call temp:= `poll`(v0) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L4b5b1e.  v0:= temp @kind object;
+  #L4b5b20.  if v0 != 0 then goto L4b5b2c;
+  #L4b5b24.  call temp:= `createObject`(v1) @signature `Lrx/internal/util/ObjectPool;.createObject:()Ljava/lang/Object;` @kind virtual;
+  #L4b5b2a.  v0:= temp @kind object;
+  #L4b5b2c.  return v0 @kind object;
+}
+procedure `java.lang.Object` `createObject`() @signature `Lrx/internal/util/ObjectPool;.createObject:()Ljava/lang/Object;` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `void` `returnObject`(`rx.internal.util.ObjectPool` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/util/ObjectPool;.returnObject:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b5c0c.  if v2 != 0 then goto L4b5c12;
+  #L4b5c10.  return @kind void;
+  #L4b5c12.  v0:= v1.`rx.internal.util.ObjectPool.pool` @type ^`java.util.Queue` @kind object;
+  #L4b5c16.  call temp:= `offer`(v0, v2) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b5c1c.  return @kind void;
+}
+procedure `void` `shutdown`(`rx.internal.util.ObjectPool` v2 @kind this) @signature `Lrx/internal/util/ObjectPool;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b5c30.  v0:= v2.`rx.internal.util.ObjectPool.periodicTask` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b5c34.  v1:= 0I;
+  #L4b5c36.  call temp:= `getAndSet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4b5c3c.  v0:= temp @kind object;
+  #L4b5c3e.  v0:= (`java.util.concurrent.Future`) v0 @kind object;
+  #L4b5c42.  if v0 == 0 then goto L4b5c4e;
+  #L4b5c46.  v1:= 0I;
+  #L4b5c48.  call temp:= `cancel`(v0, v1) @signature `Ljava/util/concurrent/Future;.cancel:(Z)Z` @kind interface;
+  #L4b5c4e.  return @kind void;
+}
+procedure `void` `start`(`rx.internal.util.ObjectPool` v8 @kind this) @signature `Lrx/internal/util/ObjectPool;.start:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4b5c60.  v0:= v8.`rx.internal.util.ObjectPool.periodicTask` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b5c64.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b5c6a.  v0:= temp @kind object;
+  #L4b5c6c.  if v0 == 0 then goto L4b5c72;
+  #L4b5c70.  return @kind void;
+  #L4b5c72.  call temp:= `getInstance`() @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.getInstance:()Ljava/util/concurrent/ScheduledExecutorService;` @kind static;
+  #L4b5c78.  v1:= temp @kind object;
+  #L4b5c7a.  v2:= new `rx.internal.util.ObjectPool$1`;
+  #L4b5c7e.  call `<init>`(v2, v8) @signature `Lrx/internal/util/ObjectPool$1;.<init>:(Lrx/internal/util/ObjectPool;)V` @kind direct;
+  #L4b5c84.  v3:= v8.`rx.internal.util.ObjectPool.validationInterval` @type ^`long` @kind wide;
+  #L4b5c88.  v5:= v8.`rx.internal.util.ObjectPool.validationInterval` @type ^`long` @kind wide;
+  #L4b5c8c.  v7:= `@@java.util.concurrent.TimeUnit.SECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4b5c90.  call temp:= `scheduleAtFixedRate`(v1, v2, v3, v5, v7) @signature `Ljava/util/concurrent/ScheduledExecutorService;.scheduleAtFixedRate:(Ljava/lang/Runnable;JJLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L4b5c96.  v0:= temp @kind object;
+  #L4b5c98.  v1:= v8.`rx.internal.util.ObjectPool.periodicTask` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b5c9c.  v2:= 0I;
+  #L4b5c9e.  call temp:= `compareAndSet`(v1, v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b5ca4.  v1:= temp;
+  #L4b5ca6.  if v1 != 0 then goto L4b5cbc;
+  #L4b5caa.  v1:= 0I;
+  #L4b5cac.  call temp:= `cancel`(v0, v1) @signature `Ljava/util/concurrent/Future;.cancel:(Z)Z` @kind interface;
+  #L4b5cb2.  goto L4b5c60;
+  #L4b5cb4.  v0:= Exception @type ^`java.util.concurrent.RejectedExecutionException` @kind object;
+  #L4b5cb6.  call `onError`(v0) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b5cbc.  return @kind void;
+  catch `java.util.concurrent.RejectedExecutionException` @[L4b5c7a..L4b5c98] goto L4b5cb4;
+}

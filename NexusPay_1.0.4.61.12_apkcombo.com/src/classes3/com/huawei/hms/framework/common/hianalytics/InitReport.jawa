@@ -1,0 +1,127 @@
+record `com.huawei.hms.framework.common.hianalytics.InitReport` @kind class @AccessFlag PUBLIC {
+}
+global `int` `@@com.huawei.hms.framework.common.hianalytics.InitReport.EVENT_LIMIT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.framework.common.hianalytics.InitReport.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.List` `@@com.huawei.hms.framework.common.hianalytics.InitReport.eventsToReport` @AccessFlag PRIVATE_STATIC;
+global `boolean` `@@com.huawei.hms.framework.common.hianalytics.InitReport.hasConnectNet` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L20cfb4.  v0:= new `java.util.concurrent.CopyOnWriteArrayList`;
+  #L20cfb8.  call `<init>`(v0) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.<init>:()V` @kind direct;
+  #L20cfbe.  `@@com.huawei.hms.framework.common.hianalytics.InitReport.eventsToReport` @type ^`java.util.List` := v0 @kind object;
+  #L20cfc2.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.framework.common.hianalytics.InitReport` v0 @kind this) @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L20cfd4.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L20cfda.  return @kind void;
+}
+procedure `void` `access$000`() @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport;.access$000:()V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L20cfec.  call `submitAllEvents`() @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport;.submitAllEvents:()V` @kind static;
+  #L20cff2.  return @kind void;
+}
+procedure `void` `enableConnectNet`() @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport;.enableConnectNet:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L20d004.  v0:= "HaReport" @kind object;
+  #L20d008.  v1:= 1I;
+  #L20d00a.  `@@com.huawei.hms.framework.common.hianalytics.InitReport.hasConnectNet` @type ^`boolean` := v1 @kind boolean;
+  #L20d00e.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getInstance:()Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;` @kind static;
+  #L20d014.  v1:= temp @kind object;
+  #L20d016.  call temp:= `getReportExecutor`(v1) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getReportExecutor:()Ljava/util/concurrent/ExecutorService;` @kind virtual;
+  #L20d01c.  v1:= temp @kind object;
+  #L20d01e.  v2:= new `com.huawei.hms.framework.common.hianalytics.InitReport$1`;
+  #L20d022.  call `<init>`(v2) @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport$1;.<init>:()V` @kind direct;
+  #L20d028.  call temp:= `submit`(v1, v2) @signature `Ljava/util/concurrent/ExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L20d02e.  goto L20d046;
+  #L20d030.  v1:= "the thread submit has fatal error!" @kind object;
+  #L20d034.  call `e`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d03a.  goto L20d046;
+  #L20d03c.  v1:= "the thread submit has rejectedExecutionException!" @kind object;
+  #L20d040.  call `e`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d046.  return @kind void;
+  catch `java.util.concurrent.RejectedExecutionException` @[L20d00e..L20d02e] goto L20d03c;
+  catch `java.lang.Throwable` @[L20d00e..L20d02e] goto L20d030;
+}
+procedure `void` `reportWhenInit`(`java.lang.Runnable` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport;.reportWhenInit:(Ljava/lang/Runnable;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20d068.  v0:= "HaReport" @kind object;
+  #L20d06c.  v1:= `@@com.huawei.hms.framework.common.hianalytics.InitReport.hasConnectNet` @type ^`boolean` @kind boolean;
+  #L20d070.  if v1 == 0 then goto L20d0a4;
+  #L20d074.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getInstance:()Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;` @kind static;
+  #L20d07a.  v1:= temp @kind object;
+  #L20d07c.  call temp:= `getReportExecutor`(v1) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getReportExecutor:()Ljava/util/concurrent/ExecutorService;` @kind virtual;
+  #L20d082.  v1:= temp @kind object;
+  #L20d084.  call `execute`(v1, v2) @signature `Ljava/util/concurrent/ExecutorService;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L20d08a.  goto L20d0a2;
+  #L20d08c.  v2:= "the thread submit has fatal error!" @kind object;
+  #L20d090.  call `e`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d096.  goto L20d0a2;
+  #L20d098.  v2:= "the thread submit has rejectedExecutionException!" @kind object;
+  #L20d09c.  call `e`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d0a2.  return @kind void;
+  #L20d0a4.  v0:= `@@com.huawei.hms.framework.common.hianalytics.InitReport.eventsToReport` @type ^`java.util.List` @kind object;
+  #L20d0a8.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L20d0ae.  v0:= temp;
+  #L20d0b0.  v1:= 10I;
+  #L20d0b4.  if v0 <= v1 then goto L20d0c8;
+  #L20d0b8.  v2:= "TAG" @kind object;
+  #L20d0bc.  v0:= "the event to be report when init exceed the limit!" @kind object;
+  #L20d0c0.  call `e`(v2, v0) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d0c6.  return @kind void;
+  #L20d0c8.  v0:= `@@com.huawei.hms.framework.common.hianalytics.InitReport.eventsToReport` @type ^`java.util.List` @kind object;
+  #L20d0cc.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L20d0d2.  return @kind void;
+  catch `java.util.concurrent.RejectedExecutionException` @[L20d074..L20d08a] goto L20d098;
+  catch `java.lang.Throwable` @[L20d074..L20d08a] goto L20d08c;
+}
+procedure `void` `submitAllEvents`() @signature `Lcom/huawei/hms/framework/common/hianalytics/InitReport;.submitAllEvents:()V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L20d0f4.  v0:= "HaReport" @kind object;
+  #L20d0f8.  v1:= `@@com.huawei.hms.framework.common.hianalytics.InitReport.eventsToReport` @type ^`java.util.List` @kind object;
+  #L20d0fc.  call temp:= `iterator`(v1) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L20d102.  v1:= temp @kind object;
+  #L20d104.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L20d10a.  v2:= temp;
+  #L20d10c.  if v2 == 0 then goto L20d134;
+  #L20d110.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L20d116.  v2:= temp @kind object;
+  #L20d118.  v2:= (`java.lang.Runnable`) v2 @kind object;
+  #L20d11c.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getInstance:()Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;` @kind static;
+  #L20d122.  v3:= temp @kind object;
+  #L20d124.  call temp:= `getReportExecutor`(v3) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getReportExecutor:()Ljava/util/concurrent/ExecutorService;` @kind virtual;
+  #L20d12a.  v3:= temp @kind object;
+  #L20d12c.  call temp:= `submit`(v3, v2) @signature `Ljava/util/concurrent/ExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L20d132.  goto L20d104;
+  #L20d134.  v1:= `@@com.huawei.hms.framework.common.hianalytics.InitReport.eventsToReport` @type ^`java.util.List` @kind object;
+  #L20d138.  call `clear`(v1) @signature `Ljava/util/List;.clear:()V` @kind interface;
+  #L20d13e.  goto L20d162;
+  #L20d140.  v1:= "submit failed because of some exception" @kind object;
+  #L20d144.  call `e`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d14a.  goto L20d162;
+  #L20d14c.  v1:= "event is null occured" @kind object;
+  #L20d150.  call `e`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d156.  goto L20d162;
+  #L20d158.  v1:= "submit failed of rejected execution exception" @kind object;
+  #L20d15c.  call `e`(v0, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20d162.  return @kind void;
+  catch `java.util.concurrent.RejectedExecutionException` @[L20d0f8..L20d13e] goto L20d158;
+  catch `java.lang.NullPointerException` @[L20d0f8..L20d13e] goto L20d14c;
+  catch `java.lang.Exception` @[L20d0f8..L20d13e] goto L20d140;
+}

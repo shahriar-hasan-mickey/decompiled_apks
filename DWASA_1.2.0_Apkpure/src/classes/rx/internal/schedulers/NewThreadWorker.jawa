@@ -1,0 +1,354 @@
+record `rx.internal.schedulers.NewThreadWorker` @kind class @AccessFlag PUBLIC extends `rx.Scheduler$Worker` @kind class, `rx.Subscription` @kind interface {
+  `java.util.concurrent.ScheduledExecutorService` `rx.internal.schedulers.NewThreadWorker.executor` @AccessFlag PRIVATE_FINAL;
+  `boolean` `rx.internal.schedulers.NewThreadWorker.isUnsubscribed` @AccessFlag VOLATILE;
+}
+global `java.util.concurrent.ConcurrentHashMap` `@@rx.internal.schedulers.NewThreadWorker.EXECUTORS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@rx.internal.schedulers.NewThreadWorker.FREQUENCY_KEY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.atomic.AtomicReference` `@@rx.internal.schedulers.NewThreadWorker.PURGE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@rx.internal.schedulers.NewThreadWorker.PURGE_FORCE_KEY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@rx.internal.schedulers.NewThreadWorker.PURGE_FREQUENCY` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.lang.String` `@@rx.internal.schedulers.NewThreadWorker.PURGE_THREAD_PREFIX` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.Object` `@@rx.internal.schedulers.NewThreadWorker.SET_REMOVE_ON_CANCEL_POLICY_METHOD_NOT_SUPPORTED` @AccessFlag PRIVATE_STATIC_FINAL;
+global `boolean` `@@rx.internal.schedulers.NewThreadWorker.SHOULD_TRY_ENABLE_CANCEL_POLICY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.Object` `@@rx.internal.schedulers.NewThreadWorker.cachedSetRemoveOnCancelPolicyMethod` @AccessFlag PRIVATE_STATIC_VOLATILE;
+procedure `void` `<clinit>`() @signature `Lrx/internal/schedulers/NewThreadWorker;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4b321c.  v0:= new `java.lang.Object`;
+  #L4b3220.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b3226.  `@@rx.internal.schedulers.NewThreadWorker.SET_REMOVE_ON_CANCEL_POLICY_METHOD_NOT_SUPPORTED` @type ^`java.lang.Object` := v0 @kind object;
+  #L4b322a.  v0:= new `java.util.concurrent.ConcurrentHashMap`;
+  #L4b322e.  call `<init>`(v0) @signature `Ljava/util/concurrent/ConcurrentHashMap;.<init>:()V` @kind direct;
+  #L4b3234.  `@@rx.internal.schedulers.NewThreadWorker.EXECUTORS` @type ^`java.util.concurrent.ConcurrentHashMap` := v0 @kind object;
+  #L4b3238.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4b323c.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L4b3242.  `@@rx.internal.schedulers.NewThreadWorker.PURGE` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L4b3246.  v0:= "rx.scheduler.jdk6.purge-frequency-millis" @kind object;
+  #L4b324a.  v1:= 1000I;
+  #L4b324e.  call temp:= `getInteger`(v0, v1) @signature `Ljava/lang/Integer;.getInteger:(Ljava/lang/String;I)Ljava/lang/Integer;` @kind static;
+  #L4b3254.  v0:= temp @kind object;
+  #L4b3256.  call temp:= `intValue`(v0) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L4b325c.  v0:= temp;
+  #L4b325e.  `@@rx.internal.schedulers.NewThreadWorker.PURGE_FREQUENCY` @type ^`int` := v0;
+  #L4b3262.  v0:= "rx.scheduler.jdk6.purge-force" @kind object;
+  #L4b3266.  call temp:= `getBoolean`(v0) @signature `Ljava/lang/Boolean;.getBoolean:(Ljava/lang/String;)Z` @kind static;
+  #L4b326c.  v0:= temp;
+  #L4b326e.  call temp:= `getAndroidApiVersion`() @signature `Lrx/internal/util/PlatformDependent;.getAndroidApiVersion:()I` @kind static;
+  #L4b3274.  v1:= temp;
+  #L4b3276.  if v0 != 0 then goto L4b328a;
+  #L4b327a.  if v1 == 0 then goto L4b3286;
+  #L4b327e.  v0:= 21I;
+  #L4b3282.  if v1 < v0 then goto L4b328a;
+  #L4b3286.  v0:= 1I;
+  #L4b3288.  goto L4b328c;
+  #L4b328a.  v0:= 0I;
+  #L4b328c.  `@@rx.internal.schedulers.NewThreadWorker.SHOULD_TRY_ENABLE_CANCEL_POLICY` @type ^`boolean` := v0 @kind boolean;
+  #L4b3290.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.NewThreadWorker` v1 @kind this, `java.util.concurrent.ThreadFactory` v2 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b32a4.  call `<init>`(v1) @signature `Lrx/Scheduler$Worker;.<init>:()V` @kind direct;
+  #L4b32aa.  v0:= 1I;
+  #L4b32ac.  call temp:= `newScheduledThreadPool`(v0, v2) @signature `Ljava/util/concurrent/Executors;.newScheduledThreadPool:(ILjava/util/concurrent/ThreadFactory;)Ljava/util/concurrent/ScheduledExecutorService;` @kind static;
+  #L4b32b2.  v2:= temp @kind object;
+  #L4b32b4.  call temp:= `tryEnableCancelPolicy`(v2) @signature `Lrx/internal/schedulers/NewThreadWorker;.tryEnableCancelPolicy:(Ljava/util/concurrent/ScheduledExecutorService;)Z` @kind static;
+  #L4b32ba.  v0:= temp;
+  #L4b32bc.  if v0 != 0 then goto L4b32d4;
+  #L4b32c0.  v0:= instanceof @variable v2 @type ^`java.util.concurrent.ScheduledThreadPoolExecutor` @kind boolean;
+  #L4b32c4.  if v0 == 0 then goto L4b32d4;
+  #L4b32c8.  v0:= v2 @kind object;
+  #L4b32ca.  v0:= (`java.util.concurrent.ScheduledThreadPoolExecutor`) v0 @kind object;
+  #L4b32ce.  call `registerExecutor`(v0) @signature `Lrx/internal/schedulers/NewThreadWorker;.registerExecutor:(Ljava/util/concurrent/ScheduledThreadPoolExecutor;)V` @kind static;
+  #L4b32d4.  v1.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` := v2 @kind object;
+  #L4b32d8.  return @kind void;
+}
+procedure `void` `deregisterExecutor`(`java.util.concurrent.ScheduledExecutorService` v1 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.deregisterExecutor:(Ljava/util/concurrent/ScheduledExecutorService;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4b32ec.  v0:= `@@rx.internal.schedulers.NewThreadWorker.EXECUTORS` @type ^`java.util.concurrent.ConcurrentHashMap` @kind object;
+  #L4b32f0.  call temp:= `remove`(v0, v1) @signature `Ljava/util/concurrent/ConcurrentHashMap;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4b32f6.  return @kind void;
+}
+procedure `java.lang.reflect.Method` `findSetRemoveOnCancelPolicyMethod`(`java.util.concurrent.ScheduledExecutorService` v7 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.findSetRemoveOnCancelPolicyMethod:(Ljava/util/concurrent/ScheduledExecutorService;)Ljava/lang/reflect/Method;` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4b3060.  call temp:= `getClass`(v7) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L4b3066.  v7:= temp @kind object;
+  #L4b3068.  call temp:= `getMethods`(v7) @signature `Ljava/lang/Class;.getMethods:()[Ljava/lang/reflect/Method;` @kind virtual;
+  #L4b306e.  v7:= temp @kind object;
+  #L4b3070.  v0:= length @variable v7;
+  #L4b3072.  v1:= 0I;
+  #L4b3074.  v2:= 0I;
+  #L4b3076.  if v2 >= v0 then goto L4b30ba;
+  #L4b307a.  v3:= v7[v2] @kind object;
+  #L4b307e.  call temp:= `getName`(v3) @signature `Ljava/lang/reflect/Method;.getName:()Ljava/lang/String;` @kind virtual;
+  #L4b3084.  v4:= temp @kind object;
+  #L4b3086.  v5:= "setRemoveOnCancelPolicy" @kind object;
+  #L4b308a.  call temp:= `equals`(v4, v5) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4b3090.  v4:= temp;
+  #L4b3092.  if v4 == 0 then goto L4b30b4;
+  #L4b3096.  call temp:= `getParameterTypes`(v3) @signature `Ljava/lang/reflect/Method;.getParameterTypes:()[Ljava/lang/Class;` @kind virtual;
+  #L4b309c.  v4:= temp @kind object;
+  #L4b309e.  v5:= length @variable v4;
+  #L4b30a0.  v6:= 1I;
+  #L4b30a2.  if v5 != v6 then goto L4b30b4;
+  #L4b30a6.  v4:= v4[v1] @kind object;
+  #L4b30aa.  v5:= `@@java.lang.Boolean.TYPE` @type ^`java.lang.Class` @kind object;
+  #L4b30ae.  if v4 != v5 then goto L4b30b4;
+  #L4b30b2.  return v3 @kind object;
+  #L4b30b4.  v2:= v2 + 1;
+  #L4b30b8.  goto L4b3076;
+  #L4b30ba.  v7:= 0I;
+  #L4b30bc.  return v7 @kind object;
+}
+procedure `void` `purgeExecutors`() @signature `Lrx/internal/schedulers/NewThreadWorker;.purgeExecutors:()V` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b3308.  v0:= `@@rx.internal.schedulers.NewThreadWorker.EXECUTORS` @type ^`java.util.concurrent.ConcurrentHashMap` @kind object;
+  #L4b330c.  call temp:= `keySet`(v0) @signature `Ljava/util/concurrent/ConcurrentHashMap;.keySet:()Ljava/util/Set;` @kind virtual;
+  #L4b3312.  v0:= temp @kind object;
+  #L4b3314.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L4b331a.  v0:= temp @kind object;
+  #L4b331c.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4b3322.  v1:= temp;
+  #L4b3324.  if v1 == 0 then goto L4b335e;
+  #L4b3328.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4b332e.  v1:= temp @kind object;
+  #L4b3330.  v1:= (`java.util.concurrent.ScheduledThreadPoolExecutor`) v1 @kind object;
+  #L4b3334.  call temp:= `isShutdown`(v1) @signature `Ljava/util/concurrent/ScheduledThreadPoolExecutor;.isShutdown:()Z` @kind virtual;
+  #L4b333a.  v2:= temp;
+  #L4b333c.  if v2 != 0 then goto L4b3348;
+  #L4b3340.  call `purge`(v1) @signature `Ljava/util/concurrent/ScheduledThreadPoolExecutor;.purge:()V` @kind virtual;
+  #L4b3346.  goto L4b331c;
+  #L4b3348.  call `remove`(v0) @signature `Ljava/util/Iterator;.remove:()V` @kind interface;
+  #L4b334e.  goto L4b331c;
+  #L4b3350.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b3352.  call `throwIfFatal`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b3358.  call `onError`(v0) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b335e.  return @kind void;
+  catch `java.lang.Throwable` @[L4b3308..L4b334e] goto L4b3350;
+}
+procedure `void` `registerExecutor`(`java.util.concurrent.ScheduledThreadPoolExecutor` v10 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.registerExecutor:(Ljava/util/concurrent/ScheduledThreadPoolExecutor;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L4b337c.  v0:= `@@rx.internal.schedulers.NewThreadWorker.PURGE` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b3380.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4b3386.  v0:= temp @kind object;
+  #L4b3388.  v0:= (`java.util.concurrent.ScheduledExecutorService`) v0 @kind object;
+  #L4b338c.  if v0 == 0 then goto L4b3392;
+  #L4b3390.  goto L4b33d8;
+  #L4b3392.  v0:= 1I;
+  #L4b3394.  v1:= new `rx.internal.util.RxThreadFactory`;
+  #L4b3398.  v2:= "RxSchedulerPurge-" @kind object;
+  #L4b339c.  call `<init>`(v1, v2) @signature `Lrx/internal/util/RxThreadFactory;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b33a2.  call temp:= `newScheduledThreadPool`(v0, v1) @signature `Ljava/util/concurrent/Executors;.newScheduledThreadPool:(ILjava/util/concurrent/ThreadFactory;)Ljava/util/concurrent/ScheduledExecutorService;` @kind static;
+  #L4b33a8.  v3:= temp @kind object;
+  #L4b33aa.  v0:= `@@rx.internal.schedulers.NewThreadWorker.PURGE` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4b33ae.  v1:= 0I;
+  #L4b33b0.  call temp:= `compareAndSet`(v0, v1, v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4b33b6.  v0:= temp;
+  #L4b33b8.  if v0 == 0 then goto L4b33e4;
+  #L4b33bc.  v4:= new `rx.internal.schedulers.NewThreadWorker$1`;
+  #L4b33c0.  call `<init>`(v4) @signature `Lrx/internal/schedulers/NewThreadWorker$1;.<init>:()V` @kind direct;
+  #L4b33c6.  v0:= `@@rx.internal.schedulers.NewThreadWorker.PURGE_FREQUENCY` @type ^`int`;
+  #L4b33ca.  v5:= (`long`) v0 @kind i2l;
+  #L4b33cc.  v7:= (`long`) v0 @kind i2l;
+  #L4b33ce.  v9:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4b33d2.  call temp:= `scheduleAtFixedRate`(v3, v4, v5, v7, v9) @signature `Ljava/util/concurrent/ScheduledExecutorService;.scheduleAtFixedRate:(Ljava/lang/Runnable;JJLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L4b33d8.  v0:= `@@rx.internal.schedulers.NewThreadWorker.EXECUTORS` @type ^`java.util.concurrent.ConcurrentHashMap` @kind object;
+  #L4b33dc.  call temp:= `putIfAbsent`(v0, v10, v10) @signature `Ljava/util/concurrent/ConcurrentHashMap;.putIfAbsent:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4b33e2.  return @kind void;
+  #L4b33e4.  call temp:= `shutdownNow`(v3) @signature `Ljava/util/concurrent/ScheduledExecutorService;.shutdownNow:()Ljava/util/List;` @kind interface;
+  #L4b33ea.  goto L4b337c;
+}
+procedure `boolean` `tryEnableCancelPolicy`(`java.util.concurrent.ScheduledExecutorService` v5 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.tryEnableCancelPolicy:(Ljava/util/concurrent/ScheduledExecutorService;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b2fb4.  v0:= `@@rx.internal.schedulers.NewThreadWorker.SHOULD_TRY_ENABLE_CANCEL_POLICY` @type ^`boolean` @kind boolean;
+  #L4b2fb8.  v1:= 0I;
+  #L4b2fba.  if v0 == 0 then goto L4b303a;
+  #L4b2fbe.  v0:= instanceof @variable v5 @type ^`java.util.concurrent.ScheduledThreadPoolExecutor` @kind boolean;
+  #L4b2fc2.  if v0 == 0 then goto L4b2ff8;
+  #L4b2fc6.  v0:= `@@rx.internal.schedulers.NewThreadWorker.cachedSetRemoveOnCancelPolicyMethod` @type ^`java.lang.Object` @kind object;
+  #L4b2fca.  v2:= `@@rx.internal.schedulers.NewThreadWorker.SET_REMOVE_ON_CANCEL_POLICY_METHOD_NOT_SUPPORTED` @type ^`java.lang.Object` @kind object;
+  #L4b2fce.  if v0 != v2 then goto L4b2fd4;
+  #L4b2fd2.  return v1;
+  #L4b2fd4.  if v0 != 0 then goto L4b2ff2;
+  #L4b2fd8.  call temp:= `findSetRemoveOnCancelPolicyMethod`(v5) @signature `Lrx/internal/schedulers/NewThreadWorker;.findSetRemoveOnCancelPolicyMethod:(Ljava/util/concurrent/ScheduledExecutorService;)Ljava/lang/reflect/Method;` @kind static;
+  #L4b2fde.  v0:= temp @kind object;
+  #L4b2fe0.  if v0 == 0 then goto L4b2fe8;
+  #L4b2fe4.  v2:= v0 @kind object;
+  #L4b2fe6.  goto L4b2fec;
+  #L4b2fe8.  v2:= `@@rx.internal.schedulers.NewThreadWorker.SET_REMOVE_ON_CANCEL_POLICY_METHOD_NOT_SUPPORTED` @type ^`java.lang.Object` @kind object;
+  #L4b2fec.  `@@rx.internal.schedulers.NewThreadWorker.cachedSetRemoveOnCancelPolicyMethod` @type ^`java.lang.Object` := v2 @kind object;
+  #L4b2ff0.  goto L4b3000;
+  #L4b2ff2.  v0:= (`java.lang.reflect.Method`) v0 @kind object;
+  #L4b2ff6.  goto L4b3000;
+  #L4b2ff8.  call temp:= `findSetRemoveOnCancelPolicyMethod`(v5) @signature `Lrx/internal/schedulers/NewThreadWorker;.findSetRemoveOnCancelPolicyMethod:(Ljava/util/concurrent/ScheduledExecutorService;)Ljava/lang/reflect/Method;` @kind static;
+  #L4b2ffe.  v0:= temp @kind object;
+  #L4b3000.  if v0 == 0 then goto L4b303a;
+  #L4b3004.  v2:= 1I;
+  #L4b3006.  v3:= new `java.lang.Object`[v2];
+  #L4b300a.  call temp:= `valueOf`(v2) @signature `Ljava/lang/Boolean;.valueOf:(Z)Ljava/lang/Boolean;` @kind static;
+  #L4b3010.  v4:= temp @kind object;
+  #L4b3012.  v3[v1]:= v4 @kind object;
+  #L4b3016.  call temp:= `invoke`(v0, v5, v3) @signature `Ljava/lang/reflect/Method;.invoke:(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4b301c.  return v2;
+  #L4b301e.  v5:= Exception @type ^`java.lang.IllegalArgumentException` @kind object;
+  #L4b3020.  call `onError`(v5) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b3026.  goto L4b303a;
+  #L4b3028.  v5:= Exception @type ^`java.lang.IllegalAccessException` @kind object;
+  #L4b302a.  call `onError`(v5) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b3030.  goto L4b303a;
+  #L4b3032.  v5:= Exception @type ^`java.lang.reflect.InvocationTargetException` @kind object;
+  #L4b3034.  call `onError`(v5) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b303a.  return v1;
+  catch `java.lang.reflect.InvocationTargetException` @[L4b3006..L4b301c] goto L4b3032;
+  catch `java.lang.IllegalAccessException` @[L4b3006..L4b301c] goto L4b3028;
+  catch `java.lang.IllegalArgumentException` @[L4b3006..L4b301c] goto L4b301e;
+}
+procedure `boolean` `isUnsubscribed`(`rx.internal.schedulers.NewThreadWorker` v1 @kind this) @signature `Lrx/internal/schedulers/NewThreadWorker;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b2f9c.  v0:= v1.`rx.internal.schedulers.NewThreadWorker.isUnsubscribed` @type ^`boolean` @kind boolean;
+  #L4b2fa0.  return v0;
+}
+procedure `rx.Subscription` `schedule`(`rx.internal.schedulers.NewThreadWorker` v3 @kind this, `rx.functions.Action0` v4 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.schedule:(Lrx/functions/Action0;)Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b30d0.  v0:= 0L;
+  #L4b30d4.  v2:= 0I;
+  #L4b30d6.  call temp:= `schedule`(v3, v4, v0, v2) @signature `Lrx/internal/schedulers/NewThreadWorker;.schedule:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;)Lrx/Subscription;` @kind virtual;
+  #L4b30dc.  v4:= temp @kind object;
+  #L4b30de.  return v4 @kind object;
+}
+procedure `rx.Subscription` `schedule`(`rx.internal.schedulers.NewThreadWorker` v1 @kind this, `rx.functions.Action0` v2 @kind object, `long` v3 , `java.util.concurrent.TimeUnit` v5 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.schedule:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;)Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b30f0.  v0:= v1.`rx.internal.schedulers.NewThreadWorker.isUnsubscribed` @type ^`boolean` @kind boolean;
+  #L4b30f4.  if v0 == 0 then goto L4b3102;
+  #L4b30f8.  call temp:= `unsubscribed`() @signature `Lrx/subscriptions/Subscriptions;.unsubscribed:()Lrx/Subscription;` @kind static;
+  #L4b30fe.  v2:= temp @kind object;
+  #L4b3100.  return v2 @kind object;
+  #L4b3102.  call temp:= `scheduleActual`(v1, v2, v3, v5) @signature `Lrx/internal/schedulers/NewThreadWorker;.scheduleActual:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;)Lrx/internal/schedulers/ScheduledAction;` @kind virtual;
+  #L4b3108.  v2:= temp @kind object;
+  #L4b310a.  return v2 @kind object;
+}
+procedure `rx.internal.schedulers.ScheduledAction` `scheduleActual`(`rx.internal.schedulers.NewThreadWorker` v3 @kind this, `rx.functions.Action0` v4 @kind object, `long` v5 , `java.util.concurrent.TimeUnit` v7 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.scheduleActual:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;)Lrx/internal/schedulers/ScheduledAction;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b311c.  call temp:= `onScheduledAction`(v4) @signature `Lrx/plugins/RxJavaHooks;.onScheduledAction:(Lrx/functions/Action0;)Lrx/functions/Action0;` @kind static;
+  #L4b3122.  v4:= temp @kind object;
+  #L4b3124.  v0:= new `rx.internal.schedulers.ScheduledAction`;
+  #L4b3128.  call `<init>`(v0, v4) @signature `Lrx/internal/schedulers/ScheduledAction;.<init>:(Lrx/functions/Action0;)V` @kind direct;
+  #L4b312e.  v1:= 0L;
+  #L4b3132.  v4:= lcmp(v5, v1);
+  #L4b3136.  if v4 > 0 then goto L4b3148;
+  #L4b313a.  v4:= v3.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b313e.  call temp:= `submit`(v4, v0) @signature `Ljava/util/concurrent/ScheduledExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L4b3144.  v4:= temp @kind object;
+  #L4b3146.  goto L4b3154;
+  #L4b3148.  v4:= v3.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b314c.  call temp:= `schedule`(v4, v0, v5, v7) @signature `Ljava/util/concurrent/ScheduledExecutorService;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L4b3152.  v4:= temp @kind object;
+  #L4b3154.  call `add`(v0, v4) @signature `Lrx/internal/schedulers/ScheduledAction;.add:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L4b315a.  return v0 @kind object;
+}
+procedure `rx.internal.schedulers.ScheduledAction` `scheduleActual`(`rx.internal.schedulers.NewThreadWorker` v3 @kind this, `rx.functions.Action0` v4 @kind object, `long` v5 , `java.util.concurrent.TimeUnit` v7 @kind object, `rx.internal.util.SubscriptionList` v8 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.scheduleActual:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;Lrx/internal/util/SubscriptionList;)Lrx/internal/schedulers/ScheduledAction;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b316c.  call temp:= `onScheduledAction`(v4) @signature `Lrx/plugins/RxJavaHooks;.onScheduledAction:(Lrx/functions/Action0;)Lrx/functions/Action0;` @kind static;
+  #L4b3172.  v4:= temp @kind object;
+  #L4b3174.  v0:= new `rx.internal.schedulers.ScheduledAction`;
+  #L4b3178.  call `<init>`(v0, v4, v8) @signature `Lrx/internal/schedulers/ScheduledAction;.<init>:(Lrx/functions/Action0;Lrx/internal/util/SubscriptionList;)V` @kind direct;
+  #L4b317e.  call `add`(v8, v0) @signature `Lrx/internal/util/SubscriptionList;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L4b3184.  v1:= 0L;
+  #L4b3188.  v4:= lcmp(v5, v1);
+  #L4b318c.  if v4 > 0 then goto L4b319e;
+  #L4b3190.  v4:= v3.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b3194.  call temp:= `submit`(v4, v0) @signature `Ljava/util/concurrent/ScheduledExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L4b319a.  v4:= temp @kind object;
+  #L4b319c.  goto L4b31aa;
+  #L4b319e.  v4:= v3.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b31a2.  call temp:= `schedule`(v4, v0, v5, v7) @signature `Ljava/util/concurrent/ScheduledExecutorService;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L4b31a8.  v4:= temp @kind object;
+  #L4b31aa.  call `add`(v0, v4) @signature `Lrx/internal/schedulers/ScheduledAction;.add:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L4b31b0.  return v0 @kind object;
+}
+procedure `rx.internal.schedulers.ScheduledAction` `scheduleActual`(`rx.internal.schedulers.NewThreadWorker` v3 @kind this, `rx.functions.Action0` v4 @kind object, `long` v5 , `java.util.concurrent.TimeUnit` v7 @kind object, `rx.subscriptions.CompositeSubscription` v8 @kind object) @signature `Lrx/internal/schedulers/NewThreadWorker;.scheduleActual:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;Lrx/subscriptions/CompositeSubscription;)Lrx/internal/schedulers/ScheduledAction;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b31c4.  call temp:= `onScheduledAction`(v4) @signature `Lrx/plugins/RxJavaHooks;.onScheduledAction:(Lrx/functions/Action0;)Lrx/functions/Action0;` @kind static;
+  #L4b31ca.  v4:= temp @kind object;
+  #L4b31cc.  v0:= new `rx.internal.schedulers.ScheduledAction`;
+  #L4b31d0.  call `<init>`(v0, v4, v8) @signature `Lrx/internal/schedulers/ScheduledAction;.<init>:(Lrx/functions/Action0;Lrx/subscriptions/CompositeSubscription;)V` @kind direct;
+  #L4b31d6.  call `add`(v8, v0) @signature `Lrx/subscriptions/CompositeSubscription;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L4b31dc.  v1:= 0L;
+  #L4b31e0.  v4:= lcmp(v5, v1);
+  #L4b31e4.  if v4 > 0 then goto L4b31f6;
+  #L4b31e8.  v4:= v3.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b31ec.  call temp:= `submit`(v4, v0) @signature `Ljava/util/concurrent/ScheduledExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L4b31f2.  v4:= temp @kind object;
+  #L4b31f4.  goto L4b3202;
+  #L4b31f6.  v4:= v3.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b31fa.  call temp:= `schedule`(v4, v0, v5, v7) @signature `Ljava/util/concurrent/ScheduledExecutorService;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L4b3200.  v4:= temp @kind object;
+  #L4b3202.  call `add`(v0, v4) @signature `Lrx/internal/schedulers/ScheduledAction;.add:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L4b3208.  return v0 @kind object;
+}
+procedure `void` `unsubscribe`(`rx.internal.schedulers.NewThreadWorker` v1 @kind this) @signature `Lrx/internal/schedulers/NewThreadWorker;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b33fc.  v0:= 1I;
+  #L4b33fe.  v1.`rx.internal.schedulers.NewThreadWorker.isUnsubscribed` @type ^`boolean` := v0 @kind boolean;
+  #L4b3402.  v0:= v1.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b3406.  call temp:= `shutdownNow`(v0) @signature `Ljava/util/concurrent/ScheduledExecutorService;.shutdownNow:()Ljava/util/List;` @kind interface;
+  #L4b340c.  v0:= v1.`rx.internal.schedulers.NewThreadWorker.executor` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b3410.  call `deregisterExecutor`(v0) @signature `Lrx/internal/schedulers/NewThreadWorker;.deregisterExecutor:(Ljava/util/concurrent/ScheduledExecutorService;)V` @kind static;
+  #L4b3416.  return @kind void;
+}

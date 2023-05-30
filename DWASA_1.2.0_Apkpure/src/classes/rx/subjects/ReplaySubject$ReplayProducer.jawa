@@ -1,0 +1,66 @@
+record `rx.subjects.ReplaySubject$ReplayProducer` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicInteger` @kind class, `rx.Producer` @kind interface, `rx.Subscription` @kind interface {
+  `rx.Subscriber` `rx.subjects.ReplaySubject$ReplayProducer.actual` @AccessFlag FINAL;
+  `int` `rx.subjects.ReplaySubject$ReplayProducer.index` @AccessFlag ;
+  `java.lang.Object` `rx.subjects.ReplaySubject$ReplayProducer.node` @AccessFlag ;
+  `java.util.concurrent.atomic.AtomicLong` `rx.subjects.ReplaySubject$ReplayProducer.requested` @AccessFlag FINAL;
+  `rx.subjects.ReplaySubject$ReplayState` `rx.subjects.ReplaySubject$ReplayProducer.state` @AccessFlag FINAL;
+  `int` `rx.subjects.ReplaySubject$ReplayProducer.tailIndex` @AccessFlag ;
+}
+global `long` `@@rx.subjects.ReplaySubject$ReplayProducer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.subjects.ReplaySubject$ReplayProducer` v0 @kind this, `rx.Subscriber` v1 @kind object, `rx.subjects.ReplaySubject$ReplayState` v2 @kind object) @signature `Lrx/subjects/ReplaySubject$ReplayProducer;.<init>:(Lrx/Subscriber;Lrx/subjects/ReplaySubject$ReplayState;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4c3cf4.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4c3cfa.  v0.`rx.subjects.ReplaySubject$ReplayProducer.actual` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4c3cfe.  v1:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L4c3d02.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4c3d08.  v0.`rx.subjects.ReplaySubject$ReplayProducer.requested` @type ^`java.util.concurrent.atomic.AtomicLong` := v1 @kind object;
+  #L4c3d0c.  v0.`rx.subjects.ReplaySubject$ReplayProducer.state` @type ^`rx.subjects.ReplaySubject$ReplayState` := v2 @kind object;
+  #L4c3d10.  return @kind void;
+}
+procedure `boolean` `isUnsubscribed`(`rx.subjects.ReplaySubject$ReplayProducer` v1 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplayProducer;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c3cd4.  v0:= v1.`rx.subjects.ReplaySubject$ReplayProducer.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c3cd8.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4c3cde.  v0:= temp;
+  #L4c3ce0.  return v0;
+}
+procedure `void` `request`(`rx.subjects.ReplaySubject$ReplayProducer` v3 @kind this, `long` v4 ) @signature `Lrx/subjects/ReplaySubject$ReplayProducer;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c3d24.  v0:= 0L;
+  #L4c3d28.  v2:= lcmp(v4, v0);
+  #L4c3d2c.  if v2 <= 0 then goto L4c3d4a;
+  #L4c3d30.  v0:= v3.`rx.subjects.ReplaySubject$ReplayProducer.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4c3d34.  call temp:= `getAndAddRequest`(v0, v4) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L4c3d3a.  v4:= v3.`rx.subjects.ReplaySubject$ReplayProducer.state` @type ^`rx.subjects.ReplaySubject$ReplayState` @kind object;
+  #L4c3d3e.  v4:= v4.`rx.subjects.ReplaySubject$ReplayState.buffer` @type ^`rx.subjects.ReplaySubject$ReplayBuffer` @kind object;
+  #L4c3d42.  call `drain`(v4, v3) @signature `Lrx/subjects/ReplaySubject$ReplayBuffer;.drain:(Lrx/subjects/ReplaySubject$ReplayProducer;)V` @kind interface;
+  #L4c3d48.  goto L4c3d52;
+  #L4c3d4a.  v2:= lcmp(v4, v0);
+  #L4c3d4e.  if v2 < 0 then goto L4c3d54;
+  #L4c3d52.  return @kind void;
+  #L4c3d54.  v0:= new `java.lang.IllegalArgumentException`;
+  #L4c3d58.  v1:= new `java.lang.StringBuilder`;
+  #L4c3d5c.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4c3d62.  v2:= "n >= required but it was " @kind object;
+  #L4c3d66.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c3d6c.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4c3d72.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4c3d78.  v4:= temp @kind object;
+  #L4c3d7a.  call `<init>`(v0, v4) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4c3d80.  throw v0;
+}
+procedure `void` `unsubscribe`(`rx.subjects.ReplaySubject$ReplayProducer` v1 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplayProducer;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c3d94.  v0:= v1.`rx.subjects.ReplaySubject$ReplayProducer.state` @type ^`rx.subjects.ReplaySubject$ReplayState` @kind object;
+  #L4c3d98.  call `remove`(v0, v1) @signature `Lrx/subjects/ReplaySubject$ReplayState;.remove:(Lrx/subjects/ReplaySubject$ReplayProducer;)V` @kind virtual;
+  #L4c3d9e.  return @kind void;
+}

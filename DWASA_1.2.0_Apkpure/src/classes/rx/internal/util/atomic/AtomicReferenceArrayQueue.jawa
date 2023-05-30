@@ -1,0 +1,120 @@
+record `rx.internal.util.atomic.AtomicReferenceArrayQueue` @kind class @AccessFlag ABSTRACT extends `java.util.AbstractQueue` @kind class {
+  `java.util.concurrent.atomic.AtomicReferenceArray` `rx.internal.util.atomic.AtomicReferenceArrayQueue.buffer` @AccessFlag PROTECTED_FINAL;
+  `int` `rx.internal.util.atomic.AtomicReferenceArrayQueue.mask` @AccessFlag PROTECTED_FINAL;
+}
+procedure `void` `<init>`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v1 @kind this, `int` v2 ) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b7cd8.  call `<init>`(v1) @signature `Ljava/util/AbstractQueue;.<init>:()V` @kind direct;
+  #L4b7cde.  call temp:= `roundToPowerOfTwo`(v2) @signature `Lrx/internal/util/unsafe/Pow2;.roundToPowerOfTwo:(I)I` @kind static;
+  #L4b7ce4.  v2:= temp;
+  #L4b7ce6.  v0:= v2 + -1;
+  #L4b7cea.  v1.`rx.internal.util.atomic.AtomicReferenceArrayQueue.mask` @type ^`int` := v0;
+  #L4b7cee.  v0:= new `java.util.concurrent.atomic.AtomicReferenceArray`;
+  #L4b7cf2.  call `<init>`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.<init>:(I)V` @kind direct;
+  #L4b7cf8.  v1.`rx.internal.util.atomic.AtomicReferenceArrayQueue.buffer` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` := v0 @kind object;
+  #L4b7cfc.  return @kind void;
+}
+procedure `int` `calcElementOffset`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v0 @kind this, `long` v1 ) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.calcElementOffset:(J)I` @AccessFlag PROTECTED_FINAL {
+    temp;
+
+  #L4b7c10.  v2:= (`int`) v1 @kind l2i;
+  #L4b7c12.  v1:= v0.`rx.internal.util.atomic.AtomicReferenceArrayQueue.mask` @type ^`int`;
+  #L4b7c16.  v1:= v1 ^& v2 @kind int;
+  #L4b7c18.  return v1;
+}
+procedure `int` `calcElementOffset`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v0 @kind this, `long` v1 , `int` v3 ) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.calcElementOffset:(JI)I` @AccessFlag PROTECTED_FINAL {
+    temp;
+
+  #L4b7c2c.  v2:= (`int`) v1 @kind l2i;
+  #L4b7c2e.  v1:= v2 ^& v3 @kind int;
+  #L4b7c32.  return v1;
+}
+procedure `void` `clear`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v1 @kind this) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.clear:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b7d10.  call temp:= `poll`(v1) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L4b7d16.  v0:= temp @kind object;
+  #L4b7d18.  if v0 != 0 then goto L4b7d10;
+  #L4b7d1c.  call temp:= `isEmpty`(v1) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.isEmpty:()Z` @kind virtual;
+  #L4b7d22.  v0:= temp;
+  #L4b7d24.  if v0 != 0 then goto L4b7d2a;
+  #L4b7d28.  goto L4b7d10;
+  #L4b7d2a.  return @kind void;
+}
+procedure `java.util.Iterator` `iterator`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v1 @kind this) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.iterator:()Ljava/util/Iterator;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b7cbc.  v0:= new `java.lang.UnsupportedOperationException`;
+  #L4b7cc0.  call `<init>`(v0) @signature `Ljava/lang/UnsupportedOperationException;.<init>:()V` @kind direct;
+  #L4b7cc6.  throw v0;
+}
+procedure `java.lang.Object` `lpElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v1 @kind this, `int` v2 ) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.lpElement:(I)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b7c44.  v0:= v1.`rx.internal.util.atomic.AtomicReferenceArrayQueue.buffer` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b7c48.  call temp:= `get`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.get:(I)Ljava/lang/Object;` @kind virtual;
+  #L4b7c4e.  v2:= temp @kind object;
+  #L4b7c50.  return v2 @kind object;
+}
+procedure `java.lang.Object` `lpElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v0 @kind this, `java.util.concurrent.atomic.AtomicReferenceArray` v1 @kind object, `int` v2 ) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.lpElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;I)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+
+  #L4b7c64.  call temp:= `get`(v1, v2) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.get:(I)Ljava/lang/Object;` @kind virtual;
+  #L4b7c6a.  v1:= temp @kind object;
+  #L4b7c6c.  return v1 @kind object;
+}
+procedure `java.lang.Object` `lvElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v1 @kind this, `int` v2 ) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.lvElement:(I)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b7c80.  v0:= v1.`rx.internal.util.atomic.AtomicReferenceArrayQueue.buffer` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b7c84.  call temp:= `lvElement`(v1, v0, v2) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.lvElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;I)Ljava/lang/Object;` @kind virtual;
+  #L4b7c8a.  v2:= temp @kind object;
+  #L4b7c8c.  return v2 @kind object;
+}
+procedure `java.lang.Object` `lvElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v0 @kind this, `java.util.concurrent.atomic.AtomicReferenceArray` v1 @kind object, `int` v2 ) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.lvElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;I)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+
+  #L4b7ca0.  call temp:= `get`(v1, v2) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.get:(I)Ljava/lang/Object;` @kind virtual;
+  #L4b7ca6.  v1:= temp @kind object;
+  #L4b7ca8.  return v1 @kind object;
+}
+procedure `void` `soElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v1 @kind this, `int` v2 , `java.lang.Object` v3 @kind object) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.soElement:(ILjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b7d3c.  v0:= v1.`rx.internal.util.atomic.AtomicReferenceArrayQueue.buffer` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b7d40.  call `lazySet`(v0, v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.lazySet:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b7d46.  return @kind void;
+}
+procedure `void` `soElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v0 @kind this, `java.util.concurrent.atomic.AtomicReferenceArray` v1 @kind object, `int` v2 , `java.lang.Object` v3 @kind object) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.soElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;ILjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+
+  #L4b7d58.  call `lazySet`(v1, v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.lazySet:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b7d5e.  return @kind void;
+}
+procedure `void` `spElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v1 @kind this, `int` v2 , `java.lang.Object` v3 @kind object) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.spElement:(ILjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L4b7d70.  v0:= v1.`rx.internal.util.atomic.AtomicReferenceArrayQueue.buffer` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L4b7d74.  call `lazySet`(v0, v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.lazySet:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b7d7a.  return @kind void;
+}
+procedure `void` `spElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v0 @kind this, `java.util.concurrent.atomic.AtomicReferenceArray` v1 @kind object, `int` v2 , `java.lang.Object` v3 @kind object) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.spElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;ILjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+
+  #L4b7d8c.  call `lazySet`(v1, v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.lazySet:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b7d92.  return @kind void;
+}
+procedure `void` `svElement`(`rx.internal.util.atomic.AtomicReferenceArrayQueue` v0 @kind this, `java.util.concurrent.atomic.AtomicReferenceArray` v1 @kind object, `int` v2 , `java.lang.Object` v3 @kind object) @signature `Lrx/internal/util/atomic/AtomicReferenceArrayQueue;.svElement:(Ljava/util/concurrent/atomic/AtomicReferenceArray;ILjava/lang/Object;)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+
+  #L4b7da4.  call `set`(v1, v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.set:(ILjava/lang/Object;)V` @kind virtual;
+  #L4b7daa.  return @kind void;
+}

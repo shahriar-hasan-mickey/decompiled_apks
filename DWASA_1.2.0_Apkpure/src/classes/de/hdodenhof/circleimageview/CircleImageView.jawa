@@ -1,0 +1,782 @@
+record `de.hdodenhof.circleimageview.CircleImageView` @kind class @AccessFlag PUBLIC extends `android.widget.ImageView` @kind class {
+  `android.graphics.Bitmap` `de.hdodenhof.circleimageview.CircleImageView.mBitmap` @AccessFlag PRIVATE;
+  `int` `de.hdodenhof.circleimageview.CircleImageView.mBitmapHeight` @AccessFlag PRIVATE;
+  `android.graphics.Paint` `de.hdodenhof.circleimageview.CircleImageView.mBitmapPaint` @AccessFlag PRIVATE_FINAL;
+  `android.graphics.BitmapShader` `de.hdodenhof.circleimageview.CircleImageView.mBitmapShader` @AccessFlag PRIVATE;
+  `int` `de.hdodenhof.circleimageview.CircleImageView.mBitmapWidth` @AccessFlag PRIVATE;
+  `int` `de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @AccessFlag PRIVATE;
+  `boolean` `de.hdodenhof.circleimageview.CircleImageView.mBorderOverlay` @AccessFlag PRIVATE;
+  `android.graphics.Paint` `de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @AccessFlag PRIVATE_FINAL;
+  `float` `de.hdodenhof.circleimageview.CircleImageView.mBorderRadius` @AccessFlag PRIVATE;
+  `android.graphics.RectF` `de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @AccessFlag PRIVATE_FINAL;
+  `int` `de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @AccessFlag PRIVATE;
+  `int` `de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @AccessFlag PRIVATE;
+  `android.graphics.Paint` `de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @AccessFlag PRIVATE_FINAL;
+  `android.graphics.ColorFilter` `de.hdodenhof.circleimageview.CircleImageView.mColorFilter` @AccessFlag PRIVATE;
+  `boolean` `de.hdodenhof.circleimageview.CircleImageView.mDisableCircularTransformation` @AccessFlag PRIVATE;
+  `float` `de.hdodenhof.circleimageview.CircleImageView.mDrawableRadius` @AccessFlag PRIVATE;
+  `android.graphics.RectF` `de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @AccessFlag PRIVATE_FINAL;
+  `boolean` `de.hdodenhof.circleimageview.CircleImageView.mReady` @AccessFlag PRIVATE;
+  `boolean` `de.hdodenhof.circleimageview.CircleImageView.mSetupPending` @AccessFlag PRIVATE;
+  `android.graphics.Matrix` `de.hdodenhof.circleimageview.CircleImageView.mShaderMatrix` @AccessFlag PRIVATE_FINAL;
+}
+global `android.graphics.Bitmap$Config` `@@de.hdodenhof.circleimageview.CircleImageView.BITMAP_CONFIG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@de.hdodenhof.circleimageview.CircleImageView.COLORDRAWABLE_DIMENSION` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@de.hdodenhof.circleimageview.CircleImageView.DEFAULT_BORDER_COLOR` @AccessFlag PRIVATE_STATIC_FINAL;
+global `boolean` `@@de.hdodenhof.circleimageview.CircleImageView.DEFAULT_BORDER_OVERLAY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@de.hdodenhof.circleimageview.CircleImageView.DEFAULT_BORDER_WIDTH` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@de.hdodenhof.circleimageview.CircleImageView.DEFAULT_CIRCLE_BACKGROUND_COLOR` @AccessFlag PRIVATE_STATIC_FINAL;
+global `android.widget.ImageView$ScaleType` `@@de.hdodenhof.circleimageview.CircleImageView.SCALE_TYPE` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lde/hdodenhof/circleimageview/CircleImageView;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L366940.  v0:= `@@android.widget.ImageView$ScaleType.CENTER_CROP` @type ^`android.widget.ImageView$ScaleType` @kind object;
+  #L366944.  `@@de.hdodenhof.circleimageview.CircleImageView.SCALE_TYPE` @type ^`android.widget.ImageView$ScaleType` := v0 @kind object;
+  #L366948.  v0:= `@@android.graphics.Bitmap$Config.ARGB_8888` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L36694c.  `@@de.hdodenhof.circleimageview.CircleImageView.BITMAP_CONFIG` @type ^`android.graphics.Bitmap$Config` := v0 @kind object;
+  #L366950.  return @kind void;
+}
+procedure `void` `<init>`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `android.content.Context` v1 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.<init>:(Landroid/content/Context;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L366964.  call `<init>`(v0, v1) @signature `Landroid/widget/ImageView;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L36696a.  v1:= new `android.graphics.RectF`;
+  #L36696e.  call `<init>`(v1) @signature `Landroid/graphics/RectF;.<init>:()V` @kind direct;
+  #L366974.  v0.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` := v1 @kind object;
+  #L366978.  v1:= new `android.graphics.RectF`;
+  #L36697c.  call `<init>`(v1) @signature `Landroid/graphics/RectF;.<init>:()V` @kind direct;
+  #L366982.  v0.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` := v1 @kind object;
+  #L366986.  v1:= new `android.graphics.Matrix`;
+  #L36698a.  call `<init>`(v1) @signature `Landroid/graphics/Matrix;.<init>:()V` @kind direct;
+  #L366990.  v0.`de.hdodenhof.circleimageview.CircleImageView.mShaderMatrix` @type ^`android.graphics.Matrix` := v1 @kind object;
+  #L366994.  v1:= new `android.graphics.Paint`;
+  #L366998.  call `<init>`(v1) @signature `Landroid/graphics/Paint;.<init>:()V` @kind direct;
+  #L36699e.  v0.`de.hdodenhof.circleimageview.CircleImageView.mBitmapPaint` @type ^`android.graphics.Paint` := v1 @kind object;
+  #L3669a2.  v1:= new `android.graphics.Paint`;
+  #L3669a6.  call `<init>`(v1) @signature `Landroid/graphics/Paint;.<init>:()V` @kind direct;
+  #L3669ac.  v0.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` := v1 @kind object;
+  #L3669b0.  v1:= new `android.graphics.Paint`;
+  #L3669b4.  call `<init>`(v1) @signature `Landroid/graphics/Paint;.<init>:()V` @kind direct;
+  #L3669ba.  v0.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @type ^`android.graphics.Paint` := v1 @kind object;
+  #L3669be.  v1:= -16777216I;
+  #L3669c2.  v0.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int` := v1;
+  #L3669c6.  v1:= 0I;
+  #L3669c8.  v0.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int` := v1;
+  #L3669cc.  v0.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int` := v1;
+  #L3669d0.  call `init`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.init:()V` @kind direct;
+  #L3669d6.  return @kind void;
+}
+procedure `void` `<init>`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `android.content.Context` v2 @kind object, `android.util.AttributeSet` v3 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3669e8.  v0:= 0I;
+  #L3669ea.  call `<init>`(v1, v2, v3, v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @kind direct;
+  #L3669f0.  return @kind void;
+}
+procedure `void` `<init>`(`de.hdodenhof.circleimageview.CircleImageView` v3 @kind this, `android.content.Context` v4 @kind object, `android.util.AttributeSet` v5 @kind object, `int` v6 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L366a04.  call `<init>`(v3, v4, v5, v6) @signature `Landroid/widget/ImageView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @kind direct;
+  #L366a0a.  v0:= new `android.graphics.RectF`;
+  #L366a0e.  call `<init>`(v0) @signature `Landroid/graphics/RectF;.<init>:()V` @kind direct;
+  #L366a14.  v3.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` := v0 @kind object;
+  #L366a18.  v0:= new `android.graphics.RectF`;
+  #L366a1c.  call `<init>`(v0) @signature `Landroid/graphics/RectF;.<init>:()V` @kind direct;
+  #L366a22.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` := v0 @kind object;
+  #L366a26.  v0:= new `android.graphics.Matrix`;
+  #L366a2a.  call `<init>`(v0) @signature `Landroid/graphics/Matrix;.<init>:()V` @kind direct;
+  #L366a30.  v3.`de.hdodenhof.circleimageview.CircleImageView.mShaderMatrix` @type ^`android.graphics.Matrix` := v0 @kind object;
+  #L366a34.  v0:= new `android.graphics.Paint`;
+  #L366a38.  call `<init>`(v0) @signature `Landroid/graphics/Paint;.<init>:()V` @kind direct;
+  #L366a3e.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBitmapPaint` @type ^`android.graphics.Paint` := v0 @kind object;
+  #L366a42.  v0:= new `android.graphics.Paint`;
+  #L366a46.  call `<init>`(v0) @signature `Landroid/graphics/Paint;.<init>:()V` @kind direct;
+  #L366a4c.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` := v0 @kind object;
+  #L366a50.  v0:= new `android.graphics.Paint`;
+  #L366a54.  call `<init>`(v0) @signature `Landroid/graphics/Paint;.<init>:()V` @kind direct;
+  #L366a5a.  v3.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @type ^`android.graphics.Paint` := v0 @kind object;
+  #L366a5e.  v0:= -16777216I;
+  #L366a62.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int` := v0;
+  #L366a66.  v1:= 0I;
+  #L366a68.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int` := v1;
+  #L366a6c.  v3.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int` := v1;
+  #L366a70.  v2:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView` @type ^`int`[] @kind object;
+  #L366a74.  call temp:= `obtainStyledAttributes`(v4, v5, v2, v6, v1) @signature `Landroid/content/Context;.obtainStyledAttributes:(Landroid/util/AttributeSet;[III)Landroid/content/res/TypedArray;` @kind virtual;
+  #L366a7a.  v4:= temp @kind object;
+  #L366a7c.  v5:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView_civ_border_width` @type ^`int`;
+  #L366a80.  call temp:= `getDimensionPixelSize`(v4, v5, v1) @signature `Landroid/content/res/TypedArray;.getDimensionPixelSize:(II)I` @kind virtual;
+  #L366a86.  v5:= temp;
+  #L366a88.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int` := v5;
+  #L366a8c.  v5:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView_civ_border_color` @type ^`int`;
+  #L366a90.  call temp:= `getColor`(v4, v5, v0) @signature `Landroid/content/res/TypedArray;.getColor:(II)I` @kind virtual;
+  #L366a96.  v5:= temp;
+  #L366a98.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int` := v5;
+  #L366a9c.  v5:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView_civ_border_overlay` @type ^`int`;
+  #L366aa0.  call temp:= `getBoolean`(v4, v5, v1) @signature `Landroid/content/res/TypedArray;.getBoolean:(IZ)Z` @kind virtual;
+  #L366aa6.  v5:= temp;
+  #L366aa8.  v3.`de.hdodenhof.circleimageview.CircleImageView.mBorderOverlay` @type ^`boolean` := v5 @kind boolean;
+  #L366aac.  v5:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView_civ_circle_background_color` @type ^`int`;
+  #L366ab0.  call temp:= `hasValue`(v4, v5) @signature `Landroid/content/res/TypedArray;.hasValue:(I)Z` @kind virtual;
+  #L366ab6.  v5:= temp;
+  #L366ab8.  if v5 == 0 then goto L366ace;
+  #L366abc.  v5:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView_civ_circle_background_color` @type ^`int`;
+  #L366ac0.  call temp:= `getColor`(v4, v5, v1) @signature `Landroid/content/res/TypedArray;.getColor:(II)I` @kind virtual;
+  #L366ac6.  v5:= temp;
+  #L366ac8.  v3.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int` := v5;
+  #L366acc.  goto L366aee;
+  #L366ace.  v5:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView_civ_fill_color` @type ^`int`;
+  #L366ad2.  call temp:= `hasValue`(v4, v5) @signature `Landroid/content/res/TypedArray;.hasValue:(I)Z` @kind virtual;
+  #L366ad8.  v5:= temp;
+  #L366ada.  if v5 == 0 then goto L366aee;
+  #L366ade.  v5:= `@@de.hdodenhof.circleimageview.R$styleable.CircleImageView_civ_fill_color` @type ^`int`;
+  #L366ae2.  call temp:= `getColor`(v4, v5, v1) @signature `Landroid/content/res/TypedArray;.getColor:(II)I` @kind virtual;
+  #L366ae8.  v5:= temp;
+  #L366aea.  v3.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int` := v5;
+  #L366aee.  call `recycle`(v4) @signature `Landroid/content/res/TypedArray;.recycle:()V` @kind virtual;
+  #L366af4.  call `init`(v3) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.init:()V` @kind direct;
+  #L366afa.  return @kind void;
+}
+procedure `android.graphics.RectF` `access$100`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.access$100:(Lde/hdodenhof/circleimageview/CircleImageView;)Landroid/graphics/RectF;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L3667f0.  v0:= v0.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` @kind object;
+  #L3667f4.  return v0 @kind object;
+}
+procedure `void` `applyColorFilter`(`de.hdodenhof.circleimageview.CircleImageView` v2 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.applyColorFilter:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L366b0c.  v0:= v2.`de.hdodenhof.circleimageview.CircleImageView.mBitmapPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366b10.  if v0 == 0 then goto L366b1e;
+  #L366b14.  v1:= v2.`de.hdodenhof.circleimageview.CircleImageView.mColorFilter` @type ^`android.graphics.ColorFilter` @kind object;
+  #L366b18.  call temp:= `setColorFilter`(v0, v1) @signature `Landroid/graphics/Paint;.setColorFilter:(Landroid/graphics/ColorFilter;)Landroid/graphics/ColorFilter;` @kind virtual;
+  #L366b1e.  return @kind void;
+}
+procedure `android.graphics.RectF` `calculateBounds`(`de.hdodenhof.circleimageview.CircleImageView` v5 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.calculateBounds:()Landroid/graphics/RectF;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L366808.  call temp:= `getWidth`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getWidth:()I` @kind virtual;
+  #L36680e.  v0:= temp;
+  #L366810.  call temp:= `getPaddingLeft`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getPaddingLeft:()I` @kind virtual;
+  #L366816.  v1:= temp;
+  #L366818.  v0:= v0 - v1 @kind int;
+  #L36681a.  call temp:= `getPaddingRight`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getPaddingRight:()I` @kind virtual;
+  #L366820.  v1:= temp;
+  #L366822.  v0:= v0 - v1 @kind int;
+  #L366824.  call temp:= `getHeight`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getHeight:()I` @kind virtual;
+  #L36682a.  v1:= temp;
+  #L36682c.  call temp:= `getPaddingTop`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getPaddingTop:()I` @kind virtual;
+  #L366832.  v2:= temp;
+  #L366834.  v1:= v1 - v2 @kind int;
+  #L366836.  call temp:= `getPaddingBottom`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getPaddingBottom:()I` @kind virtual;
+  #L36683c.  v2:= temp;
+  #L36683e.  v1:= v1 - v2 @kind int;
+  #L366840.  call temp:= `min`(v0, v1) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L366846.  v2:= temp;
+  #L366848.  call temp:= `getPaddingLeft`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getPaddingLeft:()I` @kind virtual;
+  #L36684e.  v3:= temp;
+  #L366850.  v3:= (`float`) v3 @kind i2f;
+  #L366852.  v0:= v0 - v2 @kind int;
+  #L366854.  v0:= (`float`) v0 @kind i2f;
+  #L366856.  v4:= 2.0F;
+  #L36685a.  v0:= v0 / v4 @kind float;
+  #L36685c.  v3:= v3 + v0 @kind float;
+  #L36685e.  call temp:= `getPaddingTop`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getPaddingTop:()I` @kind virtual;
+  #L366864.  v0:= temp;
+  #L366866.  v0:= (`float`) v0 @kind i2f;
+  #L366868.  v1:= v1 - v2 @kind int;
+  #L36686a.  v1:= (`float`) v1 @kind i2f;
+  #L36686c.  v1:= v1 / v4 @kind float;
+  #L36686e.  v0:= v0 + v1 @kind float;
+  #L366870.  v1:= new `android.graphics.RectF`;
+  #L366874.  v2:= (`float`) v2 @kind i2f;
+  #L366876.  v4:= v3 + v2 @kind float;
+  #L36687a.  v2:= v2 + v0 @kind float;
+  #L36687c.  call `<init>`(v1, v3, v0, v4, v2) @signature `Landroid/graphics/RectF;.<init>:(FFFF)V` @kind direct;
+  #L366882.  return v1 @kind object;
+}
+procedure `android.graphics.Bitmap` `getBitmapFromDrawable`(`de.hdodenhof.circleimageview.CircleImageView` v6 @kind this, `android.graphics.drawable.Drawable` v7 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getBitmapFromDrawable:(Landroid/graphics/drawable/Drawable;)Landroid/graphics/Bitmap;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L366730.  v0:= 0I;
+  #L366732.  if v7 != 0 then goto L366738;
+  #L366736.  return v0 @kind object;
+  #L366738.  v1:= instanceof @variable v7 @type ^`android.graphics.drawable.BitmapDrawable` @kind boolean;
+  #L36673c.  if v1 == 0 then goto L36674e;
+  #L366740.  v7:= (`android.graphics.drawable.BitmapDrawable`) v7 @kind object;
+  #L366744.  call temp:= `getBitmap`(v7) @signature `Landroid/graphics/drawable/BitmapDrawable;.getBitmap:()Landroid/graphics/Bitmap;` @kind virtual;
+  #L36674a.  v7:= temp @kind object;
+  #L36674c.  return v7 @kind object;
+  #L36674e.  v1:= instanceof @variable v7 @type ^`android.graphics.drawable.ColorDrawable` @kind boolean;
+  #L366752.  if v1 == 0 then goto L366766;
+  #L366756.  v1:= `@@de.hdodenhof.circleimageview.CircleImageView.BITMAP_CONFIG` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L36675a.  v2:= 2I;
+  #L36675c.  call temp:= `createBitmap`(v2, v2, v1) @signature `Landroid/graphics/Bitmap;.createBitmap:(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;` @kind static;
+  #L366762.  v1:= temp @kind object;
+  #L366764.  goto L366782;
+  #L366766.  call temp:= `getIntrinsicWidth`(v7) @signature `Landroid/graphics/drawable/Drawable;.getIntrinsicWidth:()I` @kind virtual;
+  #L36676c.  v1:= temp;
+  #L36676e.  call temp:= `getIntrinsicHeight`(v7) @signature `Landroid/graphics/drawable/Drawable;.getIntrinsicHeight:()I` @kind virtual;
+  #L366774.  v2:= temp;
+  #L366776.  v3:= `@@de.hdodenhof.circleimageview.CircleImageView.BITMAP_CONFIG` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L36677a.  call temp:= `createBitmap`(v1, v2, v3) @signature `Landroid/graphics/Bitmap;.createBitmap:(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;` @kind static;
+  #L366780.  v1:= temp @kind object;
+  #L366782.  v2:= new `android.graphics.Canvas`;
+  #L366786.  call `<init>`(v2, v1) @signature `Landroid/graphics/Canvas;.<init>:(Landroid/graphics/Bitmap;)V` @kind direct;
+  #L36678c.  call temp:= `getWidth`(v2) @signature `Landroid/graphics/Canvas;.getWidth:()I` @kind virtual;
+  #L366792.  v3:= temp;
+  #L366794.  call temp:= `getHeight`(v2) @signature `Landroid/graphics/Canvas;.getHeight:()I` @kind virtual;
+  #L36679a.  v4:= temp;
+  #L36679c.  v5:= 0I;
+  #L36679e.  call `setBounds`(v7, v5, v5, v3, v4) @signature `Landroid/graphics/drawable/Drawable;.setBounds:(IIII)V` @kind virtual;
+  #L3667a4.  call `draw`(v7, v2) @signature `Landroid/graphics/drawable/Drawable;.draw:(Landroid/graphics/Canvas;)V` @kind virtual;
+  #L3667aa.  return v1 @kind object;
+  #L3667ac.  v7:= Exception @type ^`java.lang.Exception` @kind object;
+  #L3667ae.  call `printStackTrace`(v7) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L3667b4.  return v0 @kind object;
+  catch `java.lang.Exception` @[L36674e..L3667aa] goto L3667ac;
+}
+procedure `void` `init`(`de.hdodenhof.circleimageview.CircleImageView` v2 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.init:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L366b30.  v0:= `@@de.hdodenhof.circleimageview.CircleImageView.SCALE_TYPE` @type ^`android.widget.ImageView$ScaleType` @kind object;
+  #L366b34.  call `setScaleType`(v2, v0) @signature `Landroid/widget/ImageView;.setScaleType:(Landroid/widget/ImageView$ScaleType;)V` @kind super;
+  #L366b3a.  v0:= 1I;
+  #L366b3c.  v2.`de.hdodenhof.circleimageview.CircleImageView.mReady` @type ^`boolean` := v0 @kind boolean;
+  #L366b40.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L366b44.  v1:= 21I;
+  #L366b48.  if v0 < v1 then goto L366b5e;
+  #L366b4c.  v0:= new `de.hdodenhof.circleimageview.CircleImageView$OutlineProvider`;
+  #L366b50.  v1:= 0I;
+  #L366b52.  call `<init>`(v0, v2, v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView$OutlineProvider;.<init>:(Lde/hdodenhof/circleimageview/CircleImageView;Lde/hdodenhof/circleimageview/CircleImageView$1;)V` @kind direct;
+  #L366b58.  call `setOutlineProvider`(v2, v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setOutlineProvider:(Landroid/view/ViewOutlineProvider;)V` @kind virtual;
+  #L366b5e.  v0:= v2.`de.hdodenhof.circleimageview.CircleImageView.mSetupPending` @type ^`boolean` @kind boolean;
+  #L366b62.  if v0 == 0 then goto L366b72;
+  #L366b66.  call `setup`(v2) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @kind direct;
+  #L366b6c.  v0:= 0I;
+  #L366b6e.  v2.`de.hdodenhof.circleimageview.CircleImageView.mSetupPending` @type ^`boolean` := v0 @kind boolean;
+  #L366b72.  return @kind void;
+}
+procedure `void` `initializeBitmap`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.initializeBitmap:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L366b84.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mDisableCircularTransformation` @type ^`boolean` @kind boolean;
+  #L366b88.  if v0 == 0 then goto L366b94;
+  #L366b8c.  v0:= 0I;
+  #L366b8e.  v1.`de.hdodenhof.circleimageview.CircleImageView.mBitmap` @type ^`android.graphics.Bitmap` := v0 @kind object;
+  #L366b92.  goto L366ba8;
+  #L366b94.  call temp:= `getDrawable`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L366b9a.  v0:= temp @kind object;
+  #L366b9c.  call temp:= `getBitmapFromDrawable`(v1, v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getBitmapFromDrawable:(Landroid/graphics/drawable/Drawable;)Landroid/graphics/Bitmap;` @kind direct;
+  #L366ba2.  v0:= temp @kind object;
+  #L366ba4.  v1.`de.hdodenhof.circleimageview.CircleImageView.mBitmap` @type ^`android.graphics.Bitmap` := v0 @kind object;
+  #L366ba8.  call `setup`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @kind direct;
+  #L366bae.  return @kind void;
+}
+procedure `void` `setup`(`de.hdodenhof.circleimageview.CircleImageView` v5 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L366f50.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mReady` @type ^`boolean` @kind boolean;
+  #L366f54.  v1:= 1I;
+  #L366f56.  if v0 != 0 then goto L366f60;
+  #L366f5a.  v5.`de.hdodenhof.circleimageview.CircleImageView.mSetupPending` @type ^`boolean` := v1 @kind boolean;
+  #L366f5e.  return @kind void;
+  #L366f60.  call temp:= `getWidth`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getWidth:()I` @kind virtual;
+  #L366f66.  v0:= temp;
+  #L366f68.  if v0 != 0 then goto L366f7a;
+  #L366f6c.  call temp:= `getHeight`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getHeight:()I` @kind virtual;
+  #L366f72.  v0:= temp;
+  #L366f74.  if v0 != 0 then goto L366f7a;
+  #L366f78.  return @kind void;
+  #L366f7a.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmap` @type ^`android.graphics.Bitmap` @kind object;
+  #L366f7e.  if v0 != 0 then goto L366f8a;
+  #L366f82.  call `invalidate`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.invalidate:()V` @kind virtual;
+  #L366f88.  return @kind void;
+  #L366f8a.  v2:= new `android.graphics.BitmapShader`;
+  #L366f8e.  v3:= `@@android.graphics.Shader$TileMode.CLAMP` @type ^`android.graphics.Shader$TileMode` @kind object;
+  #L366f92.  v4:= `@@android.graphics.Shader$TileMode.CLAMP` @type ^`android.graphics.Shader$TileMode` @kind object;
+  #L366f96.  call `<init>`(v2, v0, v3, v4) @signature `Landroid/graphics/BitmapShader;.<init>:(Landroid/graphics/Bitmap;Landroid/graphics/Shader$TileMode;Landroid/graphics/Shader$TileMode;)V` @kind direct;
+  #L366f9c.  v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapShader` @type ^`android.graphics.BitmapShader` := v2 @kind object;
+  #L366fa0.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366fa4.  call `setAntiAlias`(v0, v1) @signature `Landroid/graphics/Paint;.setAntiAlias:(Z)V` @kind virtual;
+  #L366faa.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366fae.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapShader` @type ^`android.graphics.BitmapShader` @kind object;
+  #L366fb2.  call temp:= `setShader`(v0, v2) @signature `Landroid/graphics/Paint;.setShader:(Landroid/graphics/Shader;)Landroid/graphics/Shader;` @kind virtual;
+  #L366fb8.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366fbc.  v2:= `@@android.graphics.Paint$Style.STROKE` @type ^`android.graphics.Paint$Style` @kind object;
+  #L366fc0.  call `setStyle`(v0, v2) @signature `Landroid/graphics/Paint;.setStyle:(Landroid/graphics/Paint$Style;)V` @kind virtual;
+  #L366fc6.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366fca.  call `setAntiAlias`(v0, v1) @signature `Landroid/graphics/Paint;.setAntiAlias:(Z)V` @kind virtual;
+  #L366fd0.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366fd4.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int`;
+  #L366fd8.  call `setColor`(v0, v2) @signature `Landroid/graphics/Paint;.setColor:(I)V` @kind virtual;
+  #L366fde.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366fe2.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int`;
+  #L366fe6.  v2:= (`float`) v2 @kind i2f;
+  #L366fe8.  call `setStrokeWidth`(v0, v2) @signature `Landroid/graphics/Paint;.setStrokeWidth:(F)V` @kind virtual;
+  #L366fee.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366ff2.  v2:= `@@android.graphics.Paint$Style.FILL` @type ^`android.graphics.Paint$Style` @kind object;
+  #L366ff6.  call `setStyle`(v0, v2) @signature `Landroid/graphics/Paint;.setStyle:(Landroid/graphics/Paint$Style;)V` @kind virtual;
+  #L366ffc.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @type ^`android.graphics.Paint` @kind object;
+  #L367000.  call `setAntiAlias`(v0, v1) @signature `Landroid/graphics/Paint;.setAntiAlias:(Z)V` @kind virtual;
+  #L367006.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @type ^`android.graphics.Paint` @kind object;
+  #L36700a.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int`;
+  #L36700e.  call `setColor`(v0, v1) @signature `Landroid/graphics/Paint;.setColor:(I)V` @kind virtual;
+  #L367014.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmap` @type ^`android.graphics.Bitmap` @kind object;
+  #L367018.  call temp:= `getHeight`(v0) @signature `Landroid/graphics/Bitmap;.getHeight:()I` @kind virtual;
+  #L36701e.  v0:= temp;
+  #L367020.  v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapHeight` @type ^`int` := v0;
+  #L367024.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmap` @type ^`android.graphics.Bitmap` @kind object;
+  #L367028.  call temp:= `getWidth`(v0) @signature `Landroid/graphics/Bitmap;.getWidth:()I` @kind virtual;
+  #L36702e.  v0:= temp;
+  #L367030.  v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapWidth` @type ^`int` := v0;
+  #L367034.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` @kind object;
+  #L367038.  call temp:= `calculateBounds`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.calculateBounds:()Landroid/graphics/RectF;` @kind direct;
+  #L36703e.  v1:= temp @kind object;
+  #L367040.  call `set`(v0, v1) @signature `Landroid/graphics/RectF;.set:(Landroid/graphics/RectF;)V` @kind virtual;
+  #L367046.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` @kind object;
+  #L36704a.  call temp:= `height`(v0) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L367050.  v0:= temp;
+  #L367052.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int`;
+  #L367056.  v1:= (`float`) v1 @kind i2f;
+  #L367058.  v0:= v0 - v1 @kind float;
+  #L36705a.  v1:= 2.0F;
+  #L36705e.  v0:= v0 / v1 @kind float;
+  #L367060.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` @kind object;
+  #L367064.  call temp:= `width`(v2) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L36706a.  v2:= temp;
+  #L36706c.  v3:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int`;
+  #L367070.  v3:= (`float`) v3 @kind i2f;
+  #L367072.  v2:= v2 - v3 @kind float;
+  #L367074.  v2:= v2 / v1 @kind float;
+  #L367076.  call temp:= `min`(v0, v2) @signature `Ljava/lang/Math;.min:(FF)F` @kind static;
+  #L36707c.  v0:= temp;
+  #L36707e.  v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderRadius` @type ^`float` := v0;
+  #L367082.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L367086.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` @kind object;
+  #L36708a.  call `set`(v0, v2) @signature `Landroid/graphics/RectF;.set:(Landroid/graphics/RectF;)V` @kind virtual;
+  #L367090.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderOverlay` @type ^`boolean` @kind boolean;
+  #L367094.  if v0 != 0 then goto L3670b6;
+  #L367098.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int`;
+  #L36709c.  if v0 <= 0 then goto L3670b6;
+  #L3670a0.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L3670a4.  v3:= (`float`) v0 @kind i2f;
+  #L3670a6.  v4:= 1.0F;
+  #L3670aa.  v3:= v3 - v4 @kind float;
+  #L3670ac.  v0:= (`float`) v0 @kind i2f;
+  #L3670ae.  v0:= v0 - v4 @kind float;
+  #L3670b0.  call `inset`(v2, v3, v0) @signature `Landroid/graphics/RectF;.inset:(FF)V` @kind virtual;
+  #L3670b6.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L3670ba.  call temp:= `height`(v0) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L3670c0.  v0:= temp;
+  #L3670c2.  v0:= v0 / v1 @kind float;
+  #L3670c4.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L3670c8.  call temp:= `width`(v2) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L3670ce.  v2:= temp;
+  #L3670d0.  v2:= v2 / v1 @kind float;
+  #L3670d2.  call temp:= `min`(v0, v2) @signature `Ljava/lang/Math;.min:(FF)F` @kind static;
+  #L3670d8.  v0:= temp;
+  #L3670da.  v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRadius` @type ^`float` := v0;
+  #L3670de.  call `applyColorFilter`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.applyColorFilter:()V` @kind direct;
+  #L3670e4.  call `updateShaderMatrix`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.updateShaderMatrix:()V` @kind direct;
+  #L3670ea.  call `invalidate`(v5) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.invalidate:()V` @kind virtual;
+  #L3670f0.  return @kind void;
+}
+procedure `void` `updateShaderMatrix`(`de.hdodenhof.circleimageview.CircleImageView` v5 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.updateShaderMatrix:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L367104.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mShaderMatrix` @type ^`android.graphics.Matrix` @kind object;
+  #L367108.  v1:= 0I;
+  #L36710a.  call `set`(v0, v1) @signature `Landroid/graphics/Matrix;.set:(Landroid/graphics/Matrix;)V` @kind virtual;
+  #L367110.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapWidth` @type ^`int`;
+  #L367114.  v0:= (`float`) v0 @kind i2f;
+  #L367116.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L36711a.  call temp:= `height`(v1) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L367120.  v1:= temp;
+  #L367122.  v0:= v0 * v1 @kind float;
+  #L367126.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L36712a.  call temp:= `width`(v1) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L367130.  v1:= temp;
+  #L367132.  v2:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapHeight` @type ^`int`;
+  #L367136.  v2:= (`float`) v2 @kind i2f;
+  #L367138.  v1:= v1 * v2 @kind float;
+  #L36713c.  v2:= 0I;
+  #L36713e.  v3:= 0.5F;
+  #L367142.  v0:= fcmpl(v0, v1);
+  #L367146.  if v0 <= 0 then goto L36717c;
+  #L36714a.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L36714e.  call temp:= `height`(v0) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L367154.  v0:= temp;
+  #L367156.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapHeight` @type ^`int`;
+  #L36715a.  v1:= (`float`) v1 @kind i2f;
+  #L36715c.  v0:= v0 / v1 @kind float;
+  #L36715e.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L367162.  call temp:= `width`(v1) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L367168.  v1:= temp;
+  #L36716a.  v4:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapWidth` @type ^`int`;
+  #L36716e.  v4:= (`float`) v4 @kind i2f;
+  #L367170.  v4:= v4 * v0 @kind float;
+  #L367174.  v1:= v1 - v4 @kind float;
+  #L367176.  v1:= v1 * v3 @kind float;
+  #L36717a.  goto L3671b0;
+  #L36717c.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L367180.  call temp:= `width`(v0) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L367186.  v0:= temp;
+  #L367188.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapWidth` @type ^`int`;
+  #L36718c.  v1:= (`float`) v1 @kind i2f;
+  #L36718e.  v0:= v0 / v1 @kind float;
+  #L367190.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L367194.  call temp:= `height`(v1) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L36719a.  v1:= temp;
+  #L36719c.  v4:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapHeight` @type ^`int`;
+  #L3671a0.  v4:= (`float`) v4 @kind i2f;
+  #L3671a2.  v4:= v4 * v0 @kind float;
+  #L3671a6.  v1:= v1 - v4 @kind float;
+  #L3671a8.  v1:= v1 * v3 @kind float;
+  #L3671ac.  v2:= v1;
+  #L3671ae.  v1:= 0I;
+  #L3671b0.  v4:= v5.`de.hdodenhof.circleimageview.CircleImageView.mShaderMatrix` @type ^`android.graphics.Matrix` @kind object;
+  #L3671b4.  call `setScale`(v4, v0, v0) @signature `Landroid/graphics/Matrix;.setScale:(FF)V` @kind virtual;
+  #L3671ba.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mShaderMatrix` @type ^`android.graphics.Matrix` @kind object;
+  #L3671be.  v1:= v1 + v3 @kind float;
+  #L3671c0.  v1:= (`int`) v1 @kind f2i;
+  #L3671c2.  v1:= (`float`) v1 @kind i2f;
+  #L3671c4.  v4:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L3671c8.  v4:= v4.`android.graphics.RectF.left` @type ^`float`;
+  #L3671cc.  v1:= v1 + v4 @kind float;
+  #L3671ce.  v2:= v2 + v3 @kind float;
+  #L3671d0.  v2:= (`int`) v2 @kind f2i;
+  #L3671d2.  v2:= (`float`) v2 @kind i2f;
+  #L3671d4.  v3:= v5.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L3671d8.  v3:= v3.`android.graphics.RectF.top` @type ^`float`;
+  #L3671dc.  v2:= v2 + v3 @kind float;
+  #L3671de.  call temp:= `postTranslate`(v0, v1, v2) @signature `Landroid/graphics/Matrix;.postTranslate:(FF)Z` @kind virtual;
+  #L3671e4.  v0:= v5.`de.hdodenhof.circleimageview.CircleImageView.mBitmapShader` @type ^`android.graphics.BitmapShader` @kind object;
+  #L3671e8.  v1:= v5.`de.hdodenhof.circleimageview.CircleImageView.mShaderMatrix` @type ^`android.graphics.Matrix` @kind object;
+  #L3671ec.  call `setLocalMatrix`(v0, v1) @signature `Landroid/graphics/BitmapShader;.setLocalMatrix:(Landroid/graphics/Matrix;)V` @kind virtual;
+  #L3671f2.  return @kind void;
+}
+procedure `int` `getBorderColor`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getBorderColor:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3668dc.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int`;
+  #L3668e0.  return v0;
+}
+procedure `int` `getBorderWidth`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getBorderWidth:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3668f4.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int`;
+  #L3668f8.  return v0;
+}
+procedure `int` `getCircleBackgroundColor`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getCircleBackgroundColor:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L36690c.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int`;
+  #L366910.  return v0;
+}
+procedure `android.graphics.ColorFilter` `getColorFilter`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getColorFilter:()Landroid/graphics/ColorFilter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3667d8.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mColorFilter` @type ^`android.graphics.ColorFilter` @kind object;
+  #L3667dc.  return v0 @kind object;
+}
+procedure `int` `getFillColor`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getFillColor:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366924.  call temp:= `getCircleBackgroundColor`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getCircleBackgroundColor:()I` @kind virtual;
+  #L36692a.  v0:= temp;
+  #L36692c.  return v0;
+}
+procedure `android.widget.ImageView$ScaleType` `getScaleType`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getScaleType:()Landroid/widget/ImageView$ScaleType;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366894.  v0:= `@@de.hdodenhof.circleimageview.CircleImageView.SCALE_TYPE` @type ^`android.widget.ImageView$ScaleType` @kind object;
+  #L366898.  return v0 @kind object;
+}
+procedure `boolean` `isBorderOverlay`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.isBorderOverlay:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3668ac.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderOverlay` @type ^`boolean` @kind boolean;
+  #L3668b0.  return v0;
+}
+procedure `boolean` `isDisableCircularTransformation`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.isDisableCircularTransformation:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3668c4.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mDisableCircularTransformation` @type ^`boolean` @kind boolean;
+  #L3668c8.  return v0;
+}
+procedure `void` `onDraw`(`de.hdodenhof.circleimageview.CircleImageView` v4 @kind this, `android.graphics.Canvas` v5 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.onDraw:(Landroid/graphics/Canvas;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L366bc0.  v0:= v4.`de.hdodenhof.circleimageview.CircleImageView.mDisableCircularTransformation` @type ^`boolean` @kind boolean;
+  #L366bc4.  if v0 == 0 then goto L366bd0;
+  #L366bc8.  call `onDraw`(v4, v5) @signature `Landroid/widget/ImageView;.onDraw:(Landroid/graphics/Canvas;)V` @kind super;
+  #L366bce.  return @kind void;
+  #L366bd0.  v0:= v4.`de.hdodenhof.circleimageview.CircleImageView.mBitmap` @type ^`android.graphics.Bitmap` @kind object;
+  #L366bd4.  if v0 != 0 then goto L366bda;
+  #L366bd8.  return @kind void;
+  #L366bda.  v0:= v4.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int`;
+  #L366bde.  if v0 == 0 then goto L366c08;
+  #L366be2.  v0:= v4.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L366be6.  call temp:= `centerX`(v0) @signature `Landroid/graphics/RectF;.centerX:()F` @kind virtual;
+  #L366bec.  v0:= temp;
+  #L366bee.  v1:= v4.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L366bf2.  call temp:= `centerY`(v1) @signature `Landroid/graphics/RectF;.centerY:()F` @kind virtual;
+  #L366bf8.  v1:= temp;
+  #L366bfa.  v2:= v4.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRadius` @type ^`float`;
+  #L366bfe.  v3:= v4.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366c02.  call `drawCircle`(v5, v0, v1, v2, v3) @signature `Landroid/graphics/Canvas;.drawCircle:(FFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L366c08.  v0:= v4.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L366c0c.  call temp:= `centerX`(v0) @signature `Landroid/graphics/RectF;.centerX:()F` @kind virtual;
+  #L366c12.  v0:= temp;
+  #L366c14.  v1:= v4.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRect` @type ^`android.graphics.RectF` @kind object;
+  #L366c18.  call temp:= `centerY`(v1) @signature `Landroid/graphics/RectF;.centerY:()F` @kind virtual;
+  #L366c1e.  v1:= temp;
+  #L366c20.  v2:= v4.`de.hdodenhof.circleimageview.CircleImageView.mDrawableRadius` @type ^`float`;
+  #L366c24.  v3:= v4.`de.hdodenhof.circleimageview.CircleImageView.mBitmapPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366c28.  call `drawCircle`(v5, v0, v1, v2, v3) @signature `Landroid/graphics/Canvas;.drawCircle:(FFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L366c2e.  v0:= v4.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int`;
+  #L366c32.  if v0 <= 0 then goto L366c5c;
+  #L366c36.  v0:= v4.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` @kind object;
+  #L366c3a.  call temp:= `centerX`(v0) @signature `Landroid/graphics/RectF;.centerX:()F` @kind virtual;
+  #L366c40.  v0:= temp;
+  #L366c42.  v1:= v4.`de.hdodenhof.circleimageview.CircleImageView.mBorderRect` @type ^`android.graphics.RectF` @kind object;
+  #L366c46.  call temp:= `centerY`(v1) @signature `Landroid/graphics/RectF;.centerY:()F` @kind virtual;
+  #L366c4c.  v1:= temp;
+  #L366c4e.  v2:= v4.`de.hdodenhof.circleimageview.CircleImageView.mBorderRadius` @type ^`float`;
+  #L366c52.  v3:= v4.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366c56.  call `drawCircle`(v5, v0, v1, v2, v3) @signature `Landroid/graphics/Canvas;.drawCircle:(FFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L366c5c.  return @kind void;
+}
+procedure `void` `onSizeChanged`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `int` v1 , `int` v2 , `int` v3 , `int` v4 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.onSizeChanged:(IIII)V` @AccessFlag PROTECTED {
+    temp;
+
+  #L366c70.  call `onSizeChanged`(v0, v1, v2, v3, v4) @signature `Landroid/widget/ImageView;.onSizeChanged:(IIII)V` @kind super;
+  #L366c76.  call `setup`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @kind direct;
+  #L366c7c.  return @kind void;
+}
+procedure `void` `setAdjustViewBounds`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `boolean` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setAdjustViewBounds:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366c90.  if v2 != 0 then goto L366c96;
+  #L366c94.  return @kind void;
+  #L366c96.  v2:= new `java.lang.IllegalArgumentException`;
+  #L366c9a.  v0:= "adjustViewBounds not supported." @kind object;
+  #L366c9e.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L366ca4.  throw v2;
+}
+procedure `void` `setBorderColor`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `int` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setBorderColor:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366cb8.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int`;
+  #L366cbc.  if v2 != v0 then goto L366cc2;
+  #L366cc0.  return @kind void;
+  #L366cc2.  v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int` := v2;
+  #L366cc6.  v2:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366cca.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderColor` @type ^`int`;
+  #L366cce.  call `setColor`(v2, v0) @signature `Landroid/graphics/Paint;.setColor:(I)V` @kind virtual;
+  #L366cd4.  call `invalidate`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.invalidate:()V` @kind virtual;
+  #L366cda.  return @kind void;
+}
+procedure `void` `setBorderColorResource`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `int` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setBorderColorResource:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366cec.  call temp:= `getContext`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L366cf2.  v0:= temp @kind object;
+  #L366cf4.  call temp:= `getResources`(v0) @signature `Landroid/content/Context;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L366cfa.  v0:= temp @kind object;
+  #L366cfc.  call temp:= `getColor`(v0, v2) @signature `Landroid/content/res/Resources;.getColor:(I)I` @kind virtual;
+  #L366d02.  v2:= temp;
+  #L366d04.  call `setBorderColor`(v1, v2) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setBorderColor:(I)V` @kind virtual;
+  #L366d0a.  return @kind void;
+}
+procedure `void` `setBorderOverlay`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `boolean` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setBorderOverlay:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366d1c.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderOverlay` @type ^`boolean` @kind boolean;
+  #L366d20.  if v2 != v0 then goto L366d26;
+  #L366d24.  return @kind void;
+  #L366d26.  v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderOverlay` @type ^`boolean` := v2 @kind boolean;
+  #L366d2a.  call `setup`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @kind direct;
+  #L366d30.  return @kind void;
+}
+procedure `void` `setBorderWidth`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `int` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setBorderWidth:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366d44.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int`;
+  #L366d48.  if v2 != v0 then goto L366d4e;
+  #L366d4c.  return @kind void;
+  #L366d4e.  v1.`de.hdodenhof.circleimageview.CircleImageView.mBorderWidth` @type ^`int` := v2;
+  #L366d52.  call `setup`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @kind direct;
+  #L366d58.  return @kind void;
+}
+procedure `void` `setCircleBackgroundColor`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `int` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setCircleBackgroundColor:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366d6c.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int`;
+  #L366d70.  if v2 != v0 then goto L366d76;
+  #L366d74.  return @kind void;
+  #L366d76.  v1.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundColor` @type ^`int` := v2;
+  #L366d7a.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mCircleBackgroundPaint` @type ^`android.graphics.Paint` @kind object;
+  #L366d7e.  call `setColor`(v0, v2) @signature `Landroid/graphics/Paint;.setColor:(I)V` @kind virtual;
+  #L366d84.  call `invalidate`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.invalidate:()V` @kind virtual;
+  #L366d8a.  return @kind void;
+}
+procedure `void` `setCircleBackgroundColorResource`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `int` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setCircleBackgroundColorResource:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366d9c.  call temp:= `getContext`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L366da2.  v0:= temp @kind object;
+  #L366da4.  call temp:= `getResources`(v0) @signature `Landroid/content/Context;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L366daa.  v0:= temp @kind object;
+  #L366dac.  call temp:= `getColor`(v0, v2) @signature `Landroid/content/res/Resources;.getColor:(I)I` @kind virtual;
+  #L366db2.  v2:= temp;
+  #L366db4.  call `setCircleBackgroundColor`(v1, v2) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setCircleBackgroundColor:(I)V` @kind virtual;
+  #L366dba.  return @kind void;
+}
+procedure `void` `setColorFilter`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `android.graphics.ColorFilter` v2 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setColorFilter:(Landroid/graphics/ColorFilter;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366dcc.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mColorFilter` @type ^`android.graphics.ColorFilter` @kind object;
+  #L366dd0.  if v2 != v0 then goto L366dd6;
+  #L366dd4.  return @kind void;
+  #L366dd6.  v1.`de.hdodenhof.circleimageview.CircleImageView.mColorFilter` @type ^`android.graphics.ColorFilter` := v2 @kind object;
+  #L366dda.  call `applyColorFilter`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.applyColorFilter:()V` @kind direct;
+  #L366de0.  call `invalidate`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.invalidate:()V` @kind virtual;
+  #L366de6.  return @kind void;
+}
+procedure `void` `setDisableCircularTransformation`(`de.hdodenhof.circleimageview.CircleImageView` v1 @kind this, `boolean` v2 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setDisableCircularTransformation:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L366df8.  v0:= v1.`de.hdodenhof.circleimageview.CircleImageView.mDisableCircularTransformation` @type ^`boolean` @kind boolean;
+  #L366dfc.  if v0 != v2 then goto L366e02;
+  #L366e00.  return @kind void;
+  #L366e02.  v1.`de.hdodenhof.circleimageview.CircleImageView.mDisableCircularTransformation` @type ^`boolean` := v2 @kind boolean;
+  #L366e06.  call `initializeBitmap`(v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.initializeBitmap:()V` @kind direct;
+  #L366e0c.  return @kind void;
+}
+procedure `void` `setFillColor`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `int` v1 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setFillColor:(I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366e20.  call `setCircleBackgroundColor`(v0, v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setCircleBackgroundColor:(I)V` @kind virtual;
+  #L366e26.  return @kind void;
+}
+procedure `void` `setFillColorResource`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `int` v1 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setFillColorResource:(I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366e38.  call `setCircleBackgroundColorResource`(v0, v1) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setCircleBackgroundColorResource:(I)V` @kind virtual;
+  #L366e3e.  return @kind void;
+}
+procedure `void` `setImageBitmap`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `android.graphics.Bitmap` v1 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setImageBitmap:(Landroid/graphics/Bitmap;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366e50.  call `setImageBitmap`(v0, v1) @signature `Landroid/widget/ImageView;.setImageBitmap:(Landroid/graphics/Bitmap;)V` @kind super;
+  #L366e56.  call `initializeBitmap`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.initializeBitmap:()V` @kind direct;
+  #L366e5c.  return @kind void;
+}
+procedure `void` `setImageDrawable`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `android.graphics.drawable.Drawable` v1 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setImageDrawable:(Landroid/graphics/drawable/Drawable;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366e70.  call `setImageDrawable`(v0, v1) @signature `Landroid/widget/ImageView;.setImageDrawable:(Landroid/graphics/drawable/Drawable;)V` @kind super;
+  #L366e76.  call `initializeBitmap`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.initializeBitmap:()V` @kind direct;
+  #L366e7c.  return @kind void;
+}
+procedure `void` `setImageResource`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `int` v1 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setImageResource:(I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366e90.  call `setImageResource`(v0, v1) @signature `Landroid/widget/ImageView;.setImageResource:(I)V` @kind super;
+  #L366e96.  call `initializeBitmap`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.initializeBitmap:()V` @kind direct;
+  #L366e9c.  return @kind void;
+}
+procedure `void` `setImageURI`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `android.net.Uri` v1 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setImageURI:(Landroid/net/Uri;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366eb0.  call `setImageURI`(v0, v1) @signature `Landroid/widget/ImageView;.setImageURI:(Landroid/net/Uri;)V` @kind super;
+  #L366eb6.  call `initializeBitmap`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.initializeBitmap:()V` @kind direct;
+  #L366ebc.  return @kind void;
+}
+procedure `void` `setPadding`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `int` v1 , `int` v2 , `int` v3 , `int` v4 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setPadding:(IIII)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366ed0.  call `setPadding`(v0, v1, v2, v3, v4) @signature `Landroid/widget/ImageView;.setPadding:(IIII)V` @kind super;
+  #L366ed6.  call `setup`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @kind direct;
+  #L366edc.  return @kind void;
+}
+procedure `void` `setPaddingRelative`(`de.hdodenhof.circleimageview.CircleImageView` v0 @kind this, `int` v1 , `int` v2 , `int` v3 , `int` v4 ) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setPaddingRelative:(IIII)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L366ef0.  call `setPaddingRelative`(v0, v1, v2, v3, v4) @signature `Landroid/widget/ImageView;.setPaddingRelative:(IIII)V` @kind super;
+  #L366ef6.  call `setup`(v0) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setup:()V` @kind direct;
+  #L366efc.  return @kind void;
+}
+procedure `void` `setScaleType`(`de.hdodenhof.circleimageview.CircleImageView` v3 @kind this, `android.widget.ImageView$ScaleType` v4 @kind object) @signature `Lde/hdodenhof/circleimageview/CircleImageView;.setScaleType:(Landroid/widget/ImageView$ScaleType;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L366f10.  v0:= `@@de.hdodenhof.circleimageview.CircleImageView.SCALE_TYPE` @type ^`android.widget.ImageView$ScaleType` @kind object;
+  #L366f14.  if v4 != v0 then goto L366f1a;
+  #L366f18.  return @kind void;
+  #L366f1a.  v0:= new `java.lang.IllegalArgumentException`;
+  #L366f1e.  v1:= 1I;
+  #L366f20.  v1:= new `java.lang.Object`[v1];
+  #L366f24.  v2:= 0I;
+  #L366f26.  v1[v2]:= v4 @kind object;
+  #L366f2a.  v4:= "ScaleType %s not supported." @kind object;
+  #L366f2e.  call temp:= `format`(v4, v1) @signature `Ljava/lang/String;.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L366f34.  v4:= temp @kind object;
+  #L366f36.  call `<init>`(v0, v4) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L366f3c.  throw v0;
+}

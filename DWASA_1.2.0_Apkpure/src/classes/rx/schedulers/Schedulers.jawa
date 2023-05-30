@@ -1,0 +1,255 @@
+record `rx.schedulers.Schedulers` @kind class @AccessFlag PUBLIC_FINAL {
+  `rx.Scheduler` `rx.schedulers.Schedulers.computationScheduler` @AccessFlag PRIVATE_FINAL;
+  `rx.Scheduler` `rx.schedulers.Schedulers.ioScheduler` @AccessFlag PRIVATE_FINAL;
+  `rx.Scheduler` `rx.schedulers.Schedulers.newThreadScheduler` @AccessFlag PRIVATE_FINAL;
+}
+global `java.util.concurrent.atomic.AtomicReference` `@@rx.schedulers.Schedulers.INSTANCE` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/schedulers/Schedulers;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4c24d0.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4c24d4.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L4c24da.  `@@rx.schedulers.Schedulers.INSTANCE` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L4c24de.  return @kind void;
+}
+procedure `void` `<init>`(`rx.schedulers.Schedulers` v2 @kind this) @signature `Lrx/schedulers/Schedulers;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4c24f0.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4c24f6.  call temp:= `getInstance`() @signature `Lrx/plugins/RxJavaPlugins;.getInstance:()Lrx/plugins/RxJavaPlugins;` @kind static;
+  #L4c24fc.  v0:= temp @kind object;
+  #L4c24fe.  call temp:= `getSchedulersHook`(v0) @signature `Lrx/plugins/RxJavaPlugins;.getSchedulersHook:()Lrx/plugins/RxJavaSchedulersHook;` @kind virtual;
+  #L4c2504.  v0:= temp @kind object;
+  #L4c2506.  call temp:= `getComputationScheduler`(v0) @signature `Lrx/plugins/RxJavaSchedulersHook;.getComputationScheduler:()Lrx/Scheduler;` @kind virtual;
+  #L4c250c.  v1:= temp @kind object;
+  #L4c250e.  if v1 == 0 then goto L4c2518;
+  #L4c2512.  v2.`rx.schedulers.Schedulers.computationScheduler` @type ^`rx.Scheduler` := v1 @kind object;
+  #L4c2516.  goto L4c2524;
+  #L4c2518.  call temp:= `createComputationScheduler`() @signature `Lrx/plugins/RxJavaSchedulersHook;.createComputationScheduler:()Lrx/Scheduler;` @kind static;
+  #L4c251e.  v1:= temp @kind object;
+  #L4c2520.  v2.`rx.schedulers.Schedulers.computationScheduler` @type ^`rx.Scheduler` := v1 @kind object;
+  #L4c2524.  call temp:= `getIOScheduler`(v0) @signature `Lrx/plugins/RxJavaSchedulersHook;.getIOScheduler:()Lrx/Scheduler;` @kind virtual;
+  #L4c252a.  v1:= temp @kind object;
+  #L4c252c.  if v1 == 0 then goto L4c2536;
+  #L4c2530.  v2.`rx.schedulers.Schedulers.ioScheduler` @type ^`rx.Scheduler` := v1 @kind object;
+  #L4c2534.  goto L4c2542;
+  #L4c2536.  call temp:= `createIoScheduler`() @signature `Lrx/plugins/RxJavaSchedulersHook;.createIoScheduler:()Lrx/Scheduler;` @kind static;
+  #L4c253c.  v1:= temp @kind object;
+  #L4c253e.  v2.`rx.schedulers.Schedulers.ioScheduler` @type ^`rx.Scheduler` := v1 @kind object;
+  #L4c2542.  call temp:= `getNewThreadScheduler`(v0) @signature `Lrx/plugins/RxJavaSchedulersHook;.getNewThreadScheduler:()Lrx/Scheduler;` @kind virtual;
+  #L4c2548.  v0:= temp @kind object;
+  #L4c254a.  if v0 == 0 then goto L4c2554;
+  #L4c254e.  v2.`rx.schedulers.Schedulers.newThreadScheduler` @type ^`rx.Scheduler` := v0 @kind object;
+  #L4c2552.  goto L4c2560;
+  #L4c2554.  call temp:= `createNewThreadScheduler`() @signature `Lrx/plugins/RxJavaSchedulersHook;.createNewThreadScheduler:()Lrx/Scheduler;` @kind static;
+  #L4c255a.  v0:= temp @kind object;
+  #L4c255c.  v2.`rx.schedulers.Schedulers.newThreadScheduler` @type ^`rx.Scheduler` := v0 @kind object;
+  #L4c2560.  return @kind void;
+}
+procedure `rx.Scheduler` `computation`() @signature `Lrx/schedulers/Schedulers;.computation:()Lrx/Scheduler;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4c23a4.  call temp:= `getInstance`() @signature `Lrx/schedulers/Schedulers;.getInstance:()Lrx/schedulers/Schedulers;` @kind static;
+  #L4c23aa.  v0:= temp @kind object;
+  #L4c23ac.  v0:= v0.`rx.schedulers.Schedulers.computationScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c23b0.  call temp:= `onComputationScheduler`(v0) @signature `Lrx/plugins/RxJavaHooks;.onComputationScheduler:(Lrx/Scheduler;)Lrx/Scheduler;` @kind static;
+  #L4c23b6.  v0:= temp @kind object;
+  #L4c23b8.  return v0 @kind object;
+}
+procedure `rx.Scheduler` `from`(`java.util.concurrent.Executor` v1 @kind object) @signature `Lrx/schedulers/Schedulers;.from:(Ljava/util/concurrent/Executor;)Lrx/Scheduler;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4c23cc.  v0:= new `rx.internal.schedulers.ExecutorScheduler`;
+  #L4c23d0.  call `<init>`(v0, v1) @signature `Lrx/internal/schedulers/ExecutorScheduler;.<init>:(Ljava/util/concurrent/Executor;)V` @kind direct;
+  #L4c23d6.  return v0 @kind object;
+}
+procedure `rx.schedulers.Schedulers` `getInstance`() @signature `Lrx/schedulers/Schedulers;.getInstance:()Lrx/schedulers/Schedulers;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c2468.  v0:= `@@rx.schedulers.Schedulers.INSTANCE` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4c246c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c2472.  v0:= temp @kind object;
+  #L4c2474.  v0:= (`rx.schedulers.Schedulers`) v0 @kind object;
+  #L4c2478.  if v0 == 0 then goto L4c247e;
+  #L4c247c.  return v0 @kind object;
+  #L4c247e.  v0:= new `rx.schedulers.Schedulers`;
+  #L4c2482.  call `<init>`(v0) @signature `Lrx/schedulers/Schedulers;.<init>:()V` @kind direct;
+  #L4c2488.  v1:= `@@rx.schedulers.Schedulers.INSTANCE` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4c248c.  v2:= 0I;
+  #L4c248e.  call temp:= `compareAndSet`(v1, v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4c2494.  v1:= temp;
+  #L4c2496.  if v1 == 0 then goto L4c249c;
+  #L4c249a.  return v0 @kind object;
+  #L4c249c.  call `shutdownInstance`(v0) @signature `Lrx/schedulers/Schedulers;.shutdownInstance:()V` @kind virtual;
+  #L4c24a2.  goto L4c2468;
+}
+procedure `rx.Scheduler` `immediate`() @signature `Lrx/schedulers/Schedulers;.immediate:()Lrx/Scheduler;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4c23e8.  v0:= `@@rx.internal.schedulers.ImmediateScheduler.INSTANCE` @type ^`rx.internal.schedulers.ImmediateScheduler` @kind object;
+  #L4c23ec.  return v0 @kind object;
+}
+procedure `rx.Scheduler` `io`() @signature `Lrx/schedulers/Schedulers;.io:()Lrx/Scheduler;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4c2400.  call temp:= `getInstance`() @signature `Lrx/schedulers/Schedulers;.getInstance:()Lrx/schedulers/Schedulers;` @kind static;
+  #L4c2406.  v0:= temp @kind object;
+  #L4c2408.  v0:= v0.`rx.schedulers.Schedulers.ioScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c240c.  call temp:= `onIOScheduler`(v0) @signature `Lrx/plugins/RxJavaHooks;.onIOScheduler:(Lrx/Scheduler;)Lrx/Scheduler;` @kind static;
+  #L4c2412.  v0:= temp @kind object;
+  #L4c2414.  return v0 @kind object;
+}
+procedure `rx.Scheduler` `newThread`() @signature `Lrx/schedulers/Schedulers;.newThread:()Lrx/Scheduler;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4c2428.  call temp:= `getInstance`() @signature `Lrx/schedulers/Schedulers;.getInstance:()Lrx/schedulers/Schedulers;` @kind static;
+  #L4c242e.  v0:= temp @kind object;
+  #L4c2430.  v0:= v0.`rx.schedulers.Schedulers.newThreadScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c2434.  call temp:= `onNewThreadScheduler`(v0) @signature `Lrx/plugins/RxJavaHooks;.onNewThreadScheduler:(Lrx/Scheduler;)Lrx/Scheduler;` @kind static;
+  #L4c243a.  v0:= temp @kind object;
+  #L4c243c.  return v0 @kind object;
+}
+procedure `void` `reset`() @signature `Lrx/schedulers/Schedulers;.reset:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c2574.  v0:= `@@rx.schedulers.Schedulers.INSTANCE` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4c2578.  v1:= 0I;
+  #L4c257a.  call temp:= `getAndSet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4c2580.  v0:= temp @kind object;
+  #L4c2582.  v0:= (`rx.schedulers.Schedulers`) v0 @kind object;
+  #L4c2586.  if v0 == 0 then goto L4c2590;
+  #L4c258a.  call `shutdownInstance`(v0) @signature `Lrx/schedulers/Schedulers;.shutdownInstance:()V` @kind virtual;
+  #L4c2590.  return @kind void;
+}
+procedure `void` `shutdown`() @signature `Lrx/schedulers/Schedulers;.shutdown:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c25a4.  call temp:= `getInstance`() @signature `Lrx/schedulers/Schedulers;.getInstance:()Lrx/schedulers/Schedulers;` @kind static;
+  #L4c25aa.  v0:= temp @kind object;
+  #L4c25ac.  call `shutdownInstance`(v0) @signature `Lrx/schedulers/Schedulers;.shutdownInstance:()V` @kind virtual;
+  #L4c25b2.  @monitorenter v0
+  #L4c25b4.  v1:= `@@rx.internal.schedulers.GenericScheduledExecutorService.INSTANCE` @type ^`rx.internal.schedulers.GenericScheduledExecutorService` @kind object;
+  #L4c25b8.  call `shutdown`(v1) @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.shutdown:()V` @kind virtual;
+  #L4c25be.  v1:= `@@rx.internal.util.RxRingBuffer.SPSC_POOL` @type ^`rx.internal.util.ObjectPool` @kind object;
+  #L4c25c2.  call `shutdown`(v1) @signature `Lrx/internal/util/ObjectPool;.shutdown:()V` @kind virtual;
+  #L4c25c8.  v1:= `@@rx.internal.util.RxRingBuffer.SPMC_POOL` @type ^`rx.internal.util.ObjectPool` @kind object;
+  #L4c25cc.  call `shutdown`(v1) @signature `Lrx/internal/util/ObjectPool;.shutdown:()V` @kind virtual;
+  #L4c25d2.  @monitorexit v0
+  #L4c25d4.  return @kind void;
+  #L4c25d6.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c25d8.  @monitorexit v0
+  #L4c25da.  throw v1;
+  catch `java.lang.Throwable` @[L4c25b4..L4c25da] goto L4c25d6;
+}
+procedure `void` `start`() @signature `Lrx/schedulers/Schedulers;.start:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c2670.  call temp:= `getInstance`() @signature `Lrx/schedulers/Schedulers;.getInstance:()Lrx/schedulers/Schedulers;` @kind static;
+  #L4c2676.  v0:= temp @kind object;
+  #L4c2678.  call `startInstance`(v0) @signature `Lrx/schedulers/Schedulers;.startInstance:()V` @kind virtual;
+  #L4c267e.  @monitorenter v0
+  #L4c2680.  v1:= `@@rx.internal.schedulers.GenericScheduledExecutorService.INSTANCE` @type ^`rx.internal.schedulers.GenericScheduledExecutorService` @kind object;
+  #L4c2684.  call `start`(v1) @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.start:()V` @kind virtual;
+  #L4c268a.  v1:= `@@rx.internal.util.RxRingBuffer.SPSC_POOL` @type ^`rx.internal.util.ObjectPool` @kind object;
+  #L4c268e.  call `start`(v1) @signature `Lrx/internal/util/ObjectPool;.start:()V` @kind virtual;
+  #L4c2694.  v1:= `@@rx.internal.util.RxRingBuffer.SPMC_POOL` @type ^`rx.internal.util.ObjectPool` @kind object;
+  #L4c2698.  call `start`(v1) @signature `Lrx/internal/util/ObjectPool;.start:()V` @kind virtual;
+  #L4c269e.  @monitorexit v0
+  #L4c26a0.  return @kind void;
+  #L4c26a2.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c26a4.  @monitorexit v0
+  #L4c26a6.  throw v1;
+  catch `java.lang.Throwable` @[L4c2680..L4c26a6] goto L4c26a2;
+}
+procedure `rx.schedulers.TestScheduler` `test`() @signature `Lrx/schedulers/Schedulers;.test:()Lrx/schedulers/TestScheduler;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4c24b4.  v0:= new `rx.schedulers.TestScheduler`;
+  #L4c24b8.  call `<init>`(v0) @signature `Lrx/schedulers/TestScheduler;.<init>:()V` @kind direct;
+  #L4c24be.  return v0 @kind object;
+}
+procedure `rx.Scheduler` `trampoline`() @signature `Lrx/schedulers/Schedulers;.trampoline:()Lrx/Scheduler;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4c2450.  v0:= `@@rx.internal.schedulers.TrampolineScheduler.INSTANCE` @type ^`rx.internal.schedulers.TrampolineScheduler` @kind object;
+  #L4c2454.  return v0 @kind object;
+}
+procedure `void` `shutdownInstance`(`rx.schedulers.Schedulers` v1 @kind this) @signature `Lrx/schedulers/Schedulers;.shutdownInstance:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c25f8.  @monitorenter v1
+  #L4c25fa.  v0:= v1.`rx.schedulers.Schedulers.computationScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c25fe.  v0:= instanceof @variable v0 @type ^`rx.internal.schedulers.SchedulerLifecycle` @kind boolean;
+  #L4c2602.  if v0 == 0 then goto L4c2614;
+  #L4c2606.  v0:= v1.`rx.schedulers.Schedulers.computationScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c260a.  v0:= (`rx.internal.schedulers.SchedulerLifecycle`) v0 @kind object;
+  #L4c260e.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/SchedulerLifecycle;.shutdown:()V` @kind interface;
+  #L4c2614.  v0:= v1.`rx.schedulers.Schedulers.ioScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c2618.  v0:= instanceof @variable v0 @type ^`rx.internal.schedulers.SchedulerLifecycle` @kind boolean;
+  #L4c261c.  if v0 == 0 then goto L4c262e;
+  #L4c2620.  v0:= v1.`rx.schedulers.Schedulers.ioScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c2624.  v0:= (`rx.internal.schedulers.SchedulerLifecycle`) v0 @kind object;
+  #L4c2628.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/SchedulerLifecycle;.shutdown:()V` @kind interface;
+  #L4c262e.  v0:= v1.`rx.schedulers.Schedulers.newThreadScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c2632.  v0:= instanceof @variable v0 @type ^`rx.internal.schedulers.SchedulerLifecycle` @kind boolean;
+  #L4c2636.  if v0 == 0 then goto L4c2648;
+  #L4c263a.  v0:= v1.`rx.schedulers.Schedulers.newThreadScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c263e.  v0:= (`rx.internal.schedulers.SchedulerLifecycle`) v0 @kind object;
+  #L4c2642.  call `shutdown`(v0) @signature `Lrx/internal/schedulers/SchedulerLifecycle;.shutdown:()V` @kind interface;
+  #L4c2648.  @monitorexit v1
+  #L4c264a.  return @kind void;
+  #L4c264c.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c264e.  @monitorexit v1
+  #L4c2650.  throw v0;
+  catch `java.lang.Throwable` @[L4c25fa..L4c2648] goto L4c264c;
+}
+procedure `void` `startInstance`(`rx.schedulers.Schedulers` v1 @kind this) @signature `Lrx/schedulers/Schedulers;.startInstance:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c26c4.  @monitorenter v1
+  #L4c26c6.  v0:= v1.`rx.schedulers.Schedulers.computationScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c26ca.  v0:= instanceof @variable v0 @type ^`rx.internal.schedulers.SchedulerLifecycle` @kind boolean;
+  #L4c26ce.  if v0 == 0 then goto L4c26e0;
+  #L4c26d2.  v0:= v1.`rx.schedulers.Schedulers.computationScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c26d6.  v0:= (`rx.internal.schedulers.SchedulerLifecycle`) v0 @kind object;
+  #L4c26da.  call `start`(v0) @signature `Lrx/internal/schedulers/SchedulerLifecycle;.start:()V` @kind interface;
+  #L4c26e0.  v0:= v1.`rx.schedulers.Schedulers.ioScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c26e4.  v0:= instanceof @variable v0 @type ^`rx.internal.schedulers.SchedulerLifecycle` @kind boolean;
+  #L4c26e8.  if v0 == 0 then goto L4c26fa;
+  #L4c26ec.  v0:= v1.`rx.schedulers.Schedulers.ioScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c26f0.  v0:= (`rx.internal.schedulers.SchedulerLifecycle`) v0 @kind object;
+  #L4c26f4.  call `start`(v0) @signature `Lrx/internal/schedulers/SchedulerLifecycle;.start:()V` @kind interface;
+  #L4c26fa.  v0:= v1.`rx.schedulers.Schedulers.newThreadScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c26fe.  v0:= instanceof @variable v0 @type ^`rx.internal.schedulers.SchedulerLifecycle` @kind boolean;
+  #L4c2702.  if v0 == 0 then goto L4c2714;
+  #L4c2706.  v0:= v1.`rx.schedulers.Schedulers.newThreadScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c270a.  v0:= (`rx.internal.schedulers.SchedulerLifecycle`) v0 @kind object;
+  #L4c270e.  call `start`(v0) @signature `Lrx/internal/schedulers/SchedulerLifecycle;.start:()V` @kind interface;
+  #L4c2714.  @monitorexit v1
+  #L4c2716.  return @kind void;
+  #L4c2718.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c271a.  @monitorexit v1
+  #L4c271c.  throw v0;
+  catch `java.lang.Throwable` @[L4c26c6..L4c2714] goto L4c2718;
+}

@@ -1,0 +1,1257 @@
+record `com.bumptech.glide.disklrucache.DiskLruCache` @kind class @AccessFlag PUBLIC_FINAL extends `java.io.Closeable` @kind interface {
+  `int` `com.bumptech.glide.disklrucache.DiskLruCache.appVersion` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.Callable` `com.bumptech.glide.disklrucache.DiskLruCache.cleanupCallable` @AccessFlag PRIVATE_FINAL;
+  `java.io.File` `com.bumptech.glide.disklrucache.DiskLruCache.directory` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.ThreadPoolExecutor` `com.bumptech.glide.disklrucache.DiskLruCache.executorService` @AccessFlag FINAL;
+  `java.io.File` `com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @AccessFlag PRIVATE_FINAL;
+  `java.io.File` `com.bumptech.glide.disklrucache.DiskLruCache.journalFileBackup` @AccessFlag PRIVATE_FINAL;
+  `java.io.File` `com.bumptech.glide.disklrucache.DiskLruCache.journalFileTmp` @AccessFlag PRIVATE_FINAL;
+  `java.io.Writer` `com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @AccessFlag PRIVATE;
+  `java.util.LinkedHashMap` `com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @AccessFlag PRIVATE_FINAL;
+  `long` `com.bumptech.glide.disklrucache.DiskLruCache.maxSize` @AccessFlag PRIVATE;
+  `long` `com.bumptech.glide.disklrucache.DiskLruCache.nextSequenceNumber` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @AccessFlag PRIVATE;
+  `long` `com.bumptech.glide.disklrucache.DiskLruCache.size` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @AccessFlag PRIVATE_FINAL;
+}
+global `long` `@@com.bumptech.glide.disklrucache.DiskLruCache.ANY_SEQUENCE_NUMBER` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.CLEAN` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.DIRTY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.JOURNAL_FILE` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.JOURNAL_FILE_BACKUP` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.JOURNAL_FILE_TEMP` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.MAGIC` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.READ` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.REMOVE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.disklrucache.DiskLruCache.VERSION_1` @AccessFlag STATIC_FINAL;
+procedure `void` `<init>`(`com.bumptech.glide.disklrucache.DiskLruCache` v15 @kind this, `java.io.File` v16 @kind object, `int` v17 , `int` v18 , `long` v19 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.<init>:(Ljava/io/File;IIJ)V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+
+  #L2b3398.  v0:= v15 @kind object;
+  #L2b339a.  v1:= v16 @kind object;
+  #L2b339e.  call `<init>`(v15) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2b33a4.  v2:= 0L;
+  #L2b33a8.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` := v2 @kind wide;
+  #L2b33ac.  v4:= new `java.util.LinkedHashMap`;
+  #L2b33b0.  v5:= 0I;
+  #L2b33b2.  v6:= 0.75F;
+  #L2b33b6.  v7:= 1I;
+  #L2b33b8.  call `<init>`(v4, v5, v6, v7) @signature `Ljava/util/LinkedHashMap;.<init>:(IFZ)V` @kind direct;
+  #L2b33be.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` := v4 @kind object;
+  #L2b33c2.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.nextSequenceNumber` @type ^`long` := v2 @kind wide;
+  #L2b33c6.  v2:= new `java.util.concurrent.ThreadPoolExecutor`;
+  #L2b33ca.  v13:= `@@java.util.concurrent.TimeUnit.SECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L2b33ce.  v14:= new `java.util.concurrent.LinkedBlockingQueue`;
+  #L2b33d2.  call `<init>`(v14) @signature `Ljava/util/concurrent/LinkedBlockingQueue;.<init>:()V` @kind direct;
+  #L2b33d8.  v9:= 0I;
+  #L2b33da.  v10:= 1I;
+  #L2b33dc.  v11:= 60L;
+  #L2b33e0.  v8:= v2 @kind object;
+  #L2b33e2.  call `<init>`(v8, v9, v10, v11, v13, v14) @signature `Ljava/util/concurrent/ThreadPoolExecutor;.<init>:(IIJLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/BlockingQueue;)V` @kind direct;
+  #L2b33e8.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.executorService` @type ^`java.util.concurrent.ThreadPoolExecutor` := v2 @kind object;
+  #L2b33ec.  v2:= new `com.bumptech.glide.disklrucache.DiskLruCache$1`;
+  #L2b33f0.  call `<init>`(v2, v15) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$1;.<init>:(Lcom/bumptech/glide/disklrucache/DiskLruCache;)V` @kind direct;
+  #L2b33f6.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.cleanupCallable` @type ^`java.util.concurrent.Callable` := v2 @kind object;
+  #L2b33fa.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.directory` @type ^`java.io.File` := v1 @kind object;
+  #L2b33fe.  v2:= v17;
+  #L2b3402.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.appVersion` @type ^`int` := v2;
+  #L2b3406.  v2:= new `java.io.File`;
+  #L2b340a.  v3:= "journal" @kind object;
+  #L2b340e.  call `<init>`(v2, v1, v3) @signature `Ljava/io/File;.<init>:(Ljava/io/File;Ljava/lang/String;)V` @kind direct;
+  #L2b3414.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` := v2 @kind object;
+  #L2b3418.  v2:= new `java.io.File`;
+  #L2b341c.  v3:= "journal.tmp" @kind object;
+  #L2b3420.  call `<init>`(v2, v1, v3) @signature `Ljava/io/File;.<init>:(Ljava/io/File;Ljava/lang/String;)V` @kind direct;
+  #L2b3426.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.journalFileTmp` @type ^`java.io.File` := v2 @kind object;
+  #L2b342a.  v2:= new `java.io.File`;
+  #L2b342e.  v3:= "journal.bkp" @kind object;
+  #L2b3432.  call `<init>`(v2, v1, v3) @signature `Ljava/io/File;.<init>:(Ljava/io/File;Ljava/lang/String;)V` @kind direct;
+  #L2b3438.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.journalFileBackup` @type ^`java.io.File` := v2 @kind object;
+  #L2b343c.  v1:= v18;
+  #L2b3440.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int` := v1;
+  #L2b3444.  v1:= v19 @kind wide;
+  #L2b3448.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.maxSize` @type ^`long` := v1 @kind wide;
+  #L2b344c.  return @kind void;
+}
+procedure `java.io.Writer` `access$000`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$000:(Lcom/bumptech/glide/disklrucache/DiskLruCache;)Ljava/io/Writer;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b32e4.  v0:= v0.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b32e8.  return v0 @kind object;
+}
+procedure `void` `access$100`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$100:(Lcom/bumptech/glide/disklrucache/DiskLruCache;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b3460.  call `trimToSize`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.trimToSize:()V` @kind direct;
+  #L2b3466.  return @kind void;
+}
+procedure `com.bumptech.glide.disklrucache.DiskLruCache$Editor` `access$1600`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object, `java.lang.String` v1 @kind object, `long` v2 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$1600:(Lcom/bumptech/glide/disklrucache/DiskLruCache;Ljava/lang/String;J)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b3040.  call temp:= `edit`(v0, v1, v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.edit:(Ljava/lang/String;J)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind direct;
+  #L2b3046.  v0:= temp @kind object;
+  #L2b3048.  return v0 @kind object;
+}
+procedure `java.lang.String` `access$1700`(`java.io.InputStream` v0 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$1700:(Ljava/io/InputStream;)Ljava/lang/String;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b32fc.  call temp:= `inputStreamToString`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.inputStreamToString:(Ljava/io/InputStream;)Ljava/lang/String;` @kind static;
+  #L2b3302.  v0:= temp @kind object;
+  #L2b3304.  return v0 @kind object;
+}
+procedure `int` `access$1800`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$1800:(Lcom/bumptech/glide/disklrucache/DiskLruCache;)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b3284.  v0:= v0.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b3288.  return v0;
+}
+procedure `java.io.File` `access$1900`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$1900:(Lcom/bumptech/glide/disklrucache/DiskLruCache;)Ljava/io/File;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b32b4.  v0:= v0.`com.bumptech.glide.disklrucache.DiskLruCache.directory` @type ^`java.io.File` @kind object;
+  #L2b32b8.  return v0 @kind object;
+}
+procedure `boolean` `access$200`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$200:(Lcom/bumptech/glide/disklrucache/DiskLruCache;)Z` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b2d34.  call temp:= `journalRebuildRequired`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.journalRebuildRequired:()Z` @kind direct;
+  #L2b2d3a.  v0:= temp;
+  #L2b2d3c.  return v0;
+}
+procedure `void` `access$2000`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object, `com.bumptech.glide.disklrucache.DiskLruCache$Editor` v1 @kind object, `boolean` v2 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$2000:(Lcom/bumptech/glide/disklrucache/DiskLruCache;Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;Z)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b3478.  call `completeEdit`(v0, v1, v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.completeEdit:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;Z)V` @kind direct;
+  #L2b347e.  return @kind void;
+}
+procedure `void` `access$300`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$300:(Lcom/bumptech/glide/disklrucache/DiskLruCache;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b3490.  call `rebuildJournal`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.rebuildJournal:()V` @kind direct;
+  #L2b3496.  return @kind void;
+}
+procedure `int` `access$402`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind object, `int` v1 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.access$402:(Lcom/bumptech/glide/disklrucache/DiskLruCache;I)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2b329c.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int` := v1;
+  #L2b32a0.  return v1;
+}
+procedure `void` `checkNotClosed`(`com.bumptech.glide.disklrucache.DiskLruCache` v2 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.checkNotClosed:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2b34a8.  v0:= v2.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b34ac.  if v0 == 0 then goto L2b34b2;
+  #L2b34b0.  return @kind void;
+  #L2b34b2.  v0:= new `java.lang.IllegalStateException`;
+  #L2b34b6.  v1:= "cache is closed" @kind object;
+  #L2b34ba.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b34c0.  throw v0;
+}
+procedure `void` `completeEdit`(`com.bumptech.glide.disklrucache.DiskLruCache` v9 @kind this, `com.bumptech.glide.disklrucache.DiskLruCache$Editor` v10 @kind object, `boolean` v11 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.completeEdit:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;Z)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L2b357c.  @monitorenter v9
+  #L2b357e.  call temp:= `access$1400`(v10) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;.access$1400:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;` @kind static;
+  #L2b3584.  v0:= temp @kind object;
+  #L2b3586.  call temp:= `access$700`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$700:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b358c.  v1:= temp @kind object;
+  #L2b358e.  if v1 != v10 then goto L2b378c;
+  #L2b3592.  v1:= 0I;
+  #L2b3594.  if v11 == 0 then goto L2b3616;
+  #L2b3598.  call temp:= `access$600`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$600:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Z` @kind static;
+  #L2b359e.  v2:= temp;
+  #L2b35a0.  if v2 != 0 then goto L2b3616;
+  #L2b35a4.  v2:= 0I;
+  #L2b35a6.  v3:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b35aa.  if v2 >= v3 then goto L2b3616;
+  #L2b35ae.  call temp:= `access$1500`(v10) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;.access$1500:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;)[Z` @kind static;
+  #L2b35b4.  v3:= temp @kind object;
+  #L2b35b6.  v3:= v3[v2] @kind boolean;
+  #L2b35ba.  if v3 == 0 then goto L2b35e2;
+  #L2b35be.  call temp:= `getDirtyFile`(v0, v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getDirtyFile:(I)Ljava/io/File;` @kind virtual;
+  #L2b35c4.  v3:= temp @kind object;
+  #L2b35c6.  call temp:= `exists`(v3) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b35cc.  v3:= temp;
+  #L2b35ce.  if v3 != 0 then goto L2b35dc;
+  #L2b35d2.  call `abort`(v10) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;.abort:()V` @kind virtual;
+  #L2b35d8.  @monitorexit v9
+  #L2b35da.  return @kind void;
+  #L2b35dc.  v2:= v2 + 1;
+  #L2b35e0.  goto L2b35a6;
+  #L2b35e2.  call `abort`(v10) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;.abort:()V` @kind virtual;
+  #L2b35e8.  v10:= new `java.lang.IllegalStateException`;
+  #L2b35ec.  v11:= new `java.lang.StringBuilder`;
+  #L2b35f0.  call `<init>`(v11) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b35f6.  v0:= "Newly created entry didn't create value for index " @kind object;
+  #L2b35fa.  call temp:= `append`(v11, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3600.  call temp:= `append`(v11, v2) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3606.  call temp:= `toString`(v11) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b360c.  v11:= temp @kind object;
+  #L2b360e.  call `<init>`(v10, v11) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b3614.  throw v10;
+  #L2b3616.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b361a.  if v1 >= v10 then goto L2b367e;
+  #L2b361e.  call temp:= `getDirtyFile`(v0, v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getDirtyFile:(I)Ljava/io/File;` @kind virtual;
+  #L2b3624.  v10:= temp @kind object;
+  #L2b3626.  if v11 == 0 then goto L2b3672;
+  #L2b362a.  call temp:= `exists`(v10) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b3630.  v2:= temp;
+  #L2b3632.  if v2 == 0 then goto L2b3678;
+  #L2b3636.  call temp:= `getCleanFile`(v0, v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getCleanFile:(I)Ljava/io/File;` @kind virtual;
+  #L2b363c.  v2:= temp @kind object;
+  #L2b363e.  call temp:= `renameTo`(v10, v2) @signature `Ljava/io/File;.renameTo:(Ljava/io/File;)Z` @kind virtual;
+  #L2b3644.  call temp:= `access$1000`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1000:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)[J` @kind static;
+  #L2b364a.  v10:= temp @kind object;
+  #L2b364c.  v3:= v10[v1] @kind wide;
+  #L2b3650.  call temp:= `length`(v2) @signature `Ljava/io/File;.length:()J` @kind virtual;
+  #L2b3656.  v5:= temp @kind wide;
+  #L2b3658.  call temp:= `access$1000`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1000:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)[J` @kind static;
+  #L2b365e.  v10:= temp @kind object;
+  #L2b3660.  v10[v1]:= v5 @kind wide;
+  #L2b3664.  v7:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` @kind wide;
+  #L2b3668.  v7:= v7 - v3 @kind long;
+  #L2b366a.  v7:= v7 + v5 @kind long;
+  #L2b366c.  v9.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` := v7 @kind wide;
+  #L2b3670.  goto L2b3678;
+  #L2b3672.  call `deleteIfExists`(v10) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.deleteIfExists:(Ljava/io/File;)V` @kind static;
+  #L2b3678.  v1:= v1 + 1;
+  #L2b367c.  goto L2b3616;
+  #L2b367e.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int`;
+  #L2b3682.  v1:= 1I;
+  #L2b3684.  v10:= v10 + v1 @kind int;
+  #L2b3686.  v9.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int` := v10;
+  #L2b368a.  v10:= 0I;
+  #L2b368c.  call temp:= `access$702`(v0, v10) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$702:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b3692.  call temp:= `access$600`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$600:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Z` @kind static;
+  #L2b3698.  v10:= temp;
+  #L2b369a.  v10:= v10 ^| v11 @kind int;
+  #L2b369c.  v2:= 10I;
+  #L2b36a0.  v3:= 32I;
+  #L2b36a4.  if v10 == 0 then goto L2b370e;
+  #L2b36a8.  call temp:= `access$602`(v0, v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$602:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Z)Z` @kind static;
+  #L2b36ae.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b36b2.  v1:= "CLEAN" @kind object;
+  #L2b36b6.  call temp:= `append`(v10, v1) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b36bc.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b36c0.  call temp:= `append`(v10, v3) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b36c6.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b36ca.  call temp:= `access$1100`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1100:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Ljava/lang/String;` @kind static;
+  #L2b36d0.  v1:= temp @kind object;
+  #L2b36d2.  call temp:= `append`(v10, v1) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b36d8.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b36dc.  call temp:= `getLengths`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getLengths:()Ljava/lang/String;` @kind virtual;
+  #L2b36e2.  v1:= temp @kind object;
+  #L2b36e4.  call temp:= `append`(v10, v1) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b36ea.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b36ee.  call temp:= `append`(v10, v2) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b36f4.  if v11 == 0 then goto L2b3754;
+  #L2b36f8.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.nextSequenceNumber` @type ^`long` @kind wide;
+  #L2b36fc.  v1:= 1L;
+  #L2b3700.  v1:= v1 + v10 @kind long;
+  #L2b3702.  v9.`com.bumptech.glide.disklrucache.DiskLruCache.nextSequenceNumber` @type ^`long` := v1 @kind wide;
+  #L2b3706.  call temp:= `access$1202`(v0, v10) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1202:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;J)J` @kind static;
+  #L2b370c.  goto L2b3754;
+  #L2b370e.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3712.  call temp:= `access$1100`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1100:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Ljava/lang/String;` @kind static;
+  #L2b3718.  v11:= temp @kind object;
+  #L2b371a.  call temp:= `remove`(v10, v11) @signature `Ljava/util/LinkedHashMap;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b3720.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b3724.  v11:= "REMOVE" @kind object;
+  #L2b3728.  call temp:= `append`(v10, v11) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b372e.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b3732.  call temp:= `append`(v10, v3) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b3738.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b373c.  call temp:= `access$1100`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1100:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Ljava/lang/String;` @kind static;
+  #L2b3742.  v11:= temp @kind object;
+  #L2b3744.  call temp:= `append`(v10, v11) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b374a.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b374e.  call temp:= `append`(v10, v2) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b3754.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b3758.  call `flush`(v10) @signature `Ljava/io/Writer;.flush:()V` @kind virtual;
+  #L2b375e.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` @kind wide;
+  #L2b3762.  v0:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.maxSize` @type ^`long` @kind wide;
+  #L2b3766.  v2:= lcmp(v10, v0);
+  #L2b376a.  if v2 > 0 then goto L2b377a;
+  #L2b376e.  call temp:= `journalRebuildRequired`(v9) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.journalRebuildRequired:()Z` @kind direct;
+  #L2b3774.  v10:= temp;
+  #L2b3776.  if v10 == 0 then goto L2b3788;
+  #L2b377a.  v10:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.executorService` @type ^`java.util.concurrent.ThreadPoolExecutor` @kind object;
+  #L2b377e.  v11:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.cleanupCallable` @type ^`java.util.concurrent.Callable` @kind object;
+  #L2b3782.  call temp:= `submit`(v10, v11) @signature `Ljava/util/concurrent/ThreadPoolExecutor;.submit:(Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Future;` @kind virtual;
+  #L2b3788.  @monitorexit v9
+  #L2b378a.  return @kind void;
+  #L2b378c.  v10:= new `java.lang.IllegalStateException`;
+  #L2b3790.  call `<init>`(v10) @signature `Ljava/lang/IllegalStateException;.<init>:()V` @kind direct;
+  #L2b3796.  throw v10;
+  #L2b3798.  v10:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b379a.  @monitorexit v9
+  #L2b379c.  goto L2b37a0;
+  #L2b379e.  throw v10;
+  #L2b37a0.  goto L2b379e;
+  catch `java.lang.Throwable` @[L2b357e..L2b35d8] goto L2b3798;
+  catch `java.lang.Throwable` @[L2b35e2..L2b3788] goto L2b3798;
+  catch `java.lang.Throwable` @[L2b378c..L2b3798] goto L2b3798;
+}
+procedure `void` `deleteIfExists`(`java.io.File` v1 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.deleteIfExists:(Ljava/io/File;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L2b37f4.  call temp:= `exists`(v1) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b37fa.  v0:= temp;
+  #L2b37fc.  if v0 == 0 then goto L2b381a;
+  #L2b3800.  call temp:= `delete`(v1) @signature `Ljava/io/File;.delete:()Z` @kind virtual;
+  #L2b3806.  v1:= temp;
+  #L2b3808.  if v1 == 0 then goto L2b380e;
+  #L2b380c.  goto L2b381a;
+  #L2b380e.  v1:= new `java.io.IOException`;
+  #L2b3812.  call `<init>`(v1) @signature `Ljava/io/IOException;.<init>:()V` @kind direct;
+  #L2b3818.  throw v1;
+  #L2b381a.  return @kind void;
+}
+procedure `com.bumptech.glide.disklrucache.DiskLruCache$Editor` `edit`(`com.bumptech.glide.disklrucache.DiskLruCache` v5 @kind this, `java.lang.String` v6 @kind object, `long` v7 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.edit:(Ljava/lang/String;J)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2b307c.  @monitorenter v5
+  #L2b307e.  call `checkNotClosed`(v5) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.checkNotClosed:()V` @kind direct;
+  #L2b3084.  v0:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3088.  call temp:= `get`(v0, v6) @signature `Ljava/util/LinkedHashMap;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b308e.  v0:= temp @kind object;
+  #L2b3090.  v0:= (`com.bumptech.glide.disklrucache.DiskLruCache$Entry`) v0 @kind object;
+  #L2b3094.  v1:= -1L;
+  #L2b3098.  v3:= 0I;
+  #L2b309a.  v4:= lcmp(v7, v1);
+  #L2b309e.  if v4 == 0 then goto L2b30ba;
+  #L2b30a2.  if v0 == 0 then goto L2b30b6;
+  #L2b30a6.  call temp:= `access$1200`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1200:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)J` @kind static;
+  #L2b30ac.  v1:= temp @kind wide;
+  #L2b30ae.  v4:= lcmp(v1, v7);
+  #L2b30b2.  if v4 == 0 then goto L2b30ba;
+  #L2b30b6.  @monitorexit v5
+  #L2b30b8.  return v3 @kind object;
+  #L2b30ba.  if v0 != 0 then goto L2b30d4;
+  #L2b30be.  v0:= new `com.bumptech.glide.disklrucache.DiskLruCache$Entry`;
+  #L2b30c2.  call `<init>`(v0, v5, v6, v3) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.<init>:(Lcom/bumptech/glide/disklrucache/DiskLruCache;Ljava/lang/String;Lcom/bumptech/glide/disklrucache/DiskLruCache$1;)V` @kind direct;
+  #L2b30c8.  v7:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b30cc.  call temp:= `put`(v7, v6, v0) @signature `Ljava/util/LinkedHashMap;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b30d2.  goto L2b30e4;
+  #L2b30d4.  call temp:= `access$700`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$700:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b30da.  v7:= temp @kind object;
+  #L2b30dc.  if v7 == 0 then goto L2b30e4;
+  #L2b30e0.  @monitorexit v5
+  #L2b30e2.  return v3 @kind object;
+  #L2b30e4.  v7:= new `com.bumptech.glide.disklrucache.DiskLruCache$Editor`;
+  #L2b30e8.  call `<init>`(v7, v5, v0, v3) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;.<init>:(Lcom/bumptech/glide/disklrucache/DiskLruCache;Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Lcom/bumptech/glide/disklrucache/DiskLruCache$1;)V` @kind direct;
+  #L2b30ee.  call temp:= `access$702`(v0, v7) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$702:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b30f4.  v8:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b30f8.  v0:= "DIRTY" @kind object;
+  #L2b30fc.  call temp:= `append`(v8, v0) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b3102.  v8:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b3106.  v0:= 32I;
+  #L2b310a.  call temp:= `append`(v8, v0) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b3110.  v8:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b3114.  call temp:= `append`(v8, v6) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b311a.  v6:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b311e.  v8:= 10I;
+  #L2b3122.  call temp:= `append`(v6, v8) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b3128.  v6:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b312c.  call `flush`(v6) @signature `Ljava/io/Writer;.flush:()V` @kind virtual;
+  #L2b3132.  @monitorexit v5
+  #L2b3134.  return v7 @kind object;
+  #L2b3136.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3138.  @monitorexit v5
+  #L2b313a.  throw v6;
+  catch `java.lang.Throwable` @[L2b307e..L2b30ae] goto L2b3136;
+  catch `java.lang.Throwable` @[L2b30be..L2b30dc] goto L2b3136;
+  catch `java.lang.Throwable` @[L2b30e4..L2b3132] goto L2b3136;
+}
+procedure `java.lang.String` `inputStreamToString`(`java.io.InputStream` v2 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.inputStreamToString:(Ljava/io/InputStream;)Ljava/lang/String;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2b3318.  v0:= new `java.io.InputStreamReader`;
+  #L2b331c.  v1:= `@@com.bumptech.glide.disklrucache.Util.UTF_8` @type ^`java.nio.charset.Charset` @kind object;
+  #L2b3320.  call `<init>`(v0, v2, v1) @signature `Ljava/io/InputStreamReader;.<init>:(Ljava/io/InputStream;Ljava/nio/charset/Charset;)V` @kind direct;
+  #L2b3326.  call temp:= `readFully`(v0) @signature `Lcom/bumptech/glide/disklrucache/Util;.readFully:(Ljava/io/Reader;)Ljava/lang/String;` @kind static;
+  #L2b332c.  v2:= temp @kind object;
+  #L2b332e.  return v2 @kind object;
+}
+procedure `boolean` `journalRebuildRequired`(`com.bumptech.glide.disklrucache.DiskLruCache` v2 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.journalRebuildRequired:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2b2d88.  v0:= v2.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int`;
+  #L2b2d8c.  v1:= 2000I;
+  #L2b2d90.  if v0 < v1 then goto L2b2da8;
+  #L2b2d94.  v1:= v2.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b2d98.  call temp:= `size`(v1) @signature `Ljava/util/LinkedHashMap;.size:()I` @kind virtual;
+  #L2b2d9e.  v1:= temp;
+  #L2b2da0.  if v0 < v1 then goto L2b2da8;
+  #L2b2da4.  v0:= 1I;
+  #L2b2da6.  goto L2b2daa;
+  #L2b2da8.  v0:= 0I;
+  #L2b2daa.  return v0;
+}
+procedure `com.bumptech.glide.disklrucache.DiskLruCache` `open`(`java.io.File` v9 @kind object, `int` v10 , `int` v11 , `long` v12 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.open:(Ljava/io/File;IIJ)Lcom/bumptech/glide/disklrucache/DiskLruCache;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L2b2f00.  v0:= 0L;
+  #L2b2f04.  v2:= lcmp(v12, v0);
+  #L2b2f08.  if v2 <= 0 then goto L2b300e;
+  #L2b2f0c.  if v11 <= 0 then goto L2b2ffe;
+  #L2b2f10.  v0:= new `java.io.File`;
+  #L2b2f14.  v1:= "journal.bkp" @kind object;
+  #L2b2f18.  call `<init>`(v0, v9, v1) @signature `Ljava/io/File;.<init>:(Ljava/io/File;Ljava/lang/String;)V` @kind direct;
+  #L2b2f1e.  call temp:= `exists`(v0) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b2f24.  v1:= temp;
+  #L2b2f26.  if v1 == 0 then goto L2b2f54;
+  #L2b2f2a.  v1:= new `java.io.File`;
+  #L2b2f2e.  v2:= "journal" @kind object;
+  #L2b2f32.  call `<init>`(v1, v9, v2) @signature `Ljava/io/File;.<init>:(Ljava/io/File;Ljava/lang/String;)V` @kind direct;
+  #L2b2f38.  call temp:= `exists`(v1) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b2f3e.  v2:= temp;
+  #L2b2f40.  if v2 == 0 then goto L2b2f4c;
+  #L2b2f44.  call temp:= `delete`(v0) @signature `Ljava/io/File;.delete:()Z` @kind virtual;
+  #L2b2f4a.  goto L2b2f54;
+  #L2b2f4c.  v2:= 0I;
+  #L2b2f4e.  call `renameTo`(v0, v1, v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.renameTo:(Ljava/io/File;Ljava/io/File;Z)V` @kind static;
+  #L2b2f54.  v0:= new `com.bumptech.glide.disklrucache.DiskLruCache`;
+  #L2b2f58.  v3:= v0 @kind object;
+  #L2b2f5a.  v4:= v9 @kind object;
+  #L2b2f5c.  v5:= v10;
+  #L2b2f5e.  v6:= v11;
+  #L2b2f60.  v7:= v12 @kind wide;
+  #L2b2f62.  call `<init>`(v3, v4, v5, v6, v7) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.<init>:(Ljava/io/File;IIJ)V` @kind direct;
+  #L2b2f68.  v1:= v0.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` @kind object;
+  #L2b2f6c.  call temp:= `exists`(v1) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b2f72.  v1:= temp;
+  #L2b2f74.  if v1 == 0 then goto L2b2fdc;
+  #L2b2f78.  call `readJournal`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.readJournal:()V` @kind direct;
+  #L2b2f7e.  call `processJournal`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.processJournal:()V` @kind direct;
+  #L2b2f84.  return v0 @kind object;
+  #L2b2f86.  v1:= Exception @type ^`java.io.IOException` @kind object;
+  #L2b2f88.  v2:= `@@java.lang.System.out` @type ^`java.io.PrintStream` @kind object;
+  #L2b2f8c.  v3:= new `java.lang.StringBuilder`;
+  #L2b2f90.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b2f96.  v4:= "DiskLruCache " @kind object;
+  #L2b2f9a.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b2fa0.  call temp:= `append`(v3, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b2fa6.  v4:= " is corrupt: " @kind object;
+  #L2b2faa.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b2fb0.  call temp:= `getMessage`(v1) @signature `Ljava/io/IOException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L2b2fb6.  v1:= temp @kind object;
+  #L2b2fb8.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b2fbe.  v1:= ", removing" @kind object;
+  #L2b2fc2.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b2fc8.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b2fce.  v1:= temp @kind object;
+  #L2b2fd0.  call `println`(v2, v1) @signature `Ljava/io/PrintStream;.println:(Ljava/lang/String;)V` @kind virtual;
+  #L2b2fd6.  call `delete`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.delete:()V` @kind virtual;
+  #L2b2fdc.  call temp:= `mkdirs`(v9) @signature `Ljava/io/File;.mkdirs:()Z` @kind virtual;
+  #L2b2fe2.  v0:= new `com.bumptech.glide.disklrucache.DiskLruCache`;
+  #L2b2fe6.  v3:= v0 @kind object;
+  #L2b2fe8.  v4:= v9 @kind object;
+  #L2b2fea.  v5:= v10;
+  #L2b2fec.  v6:= v11;
+  #L2b2fee.  v7:= v12 @kind wide;
+  #L2b2ff0.  call `<init>`(v3, v4, v5, v6, v7) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.<init>:(Ljava/io/File;IIJ)V` @kind direct;
+  #L2b2ff6.  call `rebuildJournal`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.rebuildJournal:()V` @kind direct;
+  #L2b2ffc.  return v0 @kind object;
+  #L2b2ffe.  v9:= new `java.lang.IllegalArgumentException`;
+  #L2b3002.  v10:= "valueCount <= 0" @kind object;
+  #L2b3006.  call `<init>`(v9, v10) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b300c.  throw v9;
+  #L2b300e.  v9:= new `java.lang.IllegalArgumentException`;
+  #L2b3012.  v10:= "maxSize <= 0" @kind object;
+  #L2b3016.  call `<init>`(v9, v10) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b301c.  throw v9;
+  catch `java.io.IOException` @[L2b2f78..L2b2f84] goto L2b2f86;
+}
+procedure `void` `processJournal`(`com.bumptech.glide.disklrucache.DiskLruCache` v8 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.processJournal:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L2b386c.  v0:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.journalFileTmp` @type ^`java.io.File` @kind object;
+  #L2b3870.  call `deleteIfExists`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.deleteIfExists:(Ljava/io/File;)V` @kind static;
+  #L2b3876.  v0:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b387a.  call temp:= `values`(v0) @signature `Ljava/util/LinkedHashMap;.values:()Ljava/util/Collection;` @kind virtual;
+  #L2b3880.  v0:= temp @kind object;
+  #L2b3882.  call temp:= `iterator`(v0) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2b3888.  v0:= temp @kind object;
+  #L2b388a.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2b3890.  v1:= temp;
+  #L2b3892.  if v1 == 0 then goto L2b390e;
+  #L2b3896.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2b389c.  v1:= temp @kind object;
+  #L2b389e.  v1:= (`com.bumptech.glide.disklrucache.DiskLruCache$Entry`) v1 @kind object;
+  #L2b38a2.  call temp:= `access$700`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$700:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b38a8.  v2:= temp @kind object;
+  #L2b38aa.  v3:= 0I;
+  #L2b38ac.  if v2 != 0 then goto L2b38d4;
+  #L2b38b0.  v2:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b38b4.  if v3 >= v2 then goto L2b388a;
+  #L2b38b8.  v4:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` @kind wide;
+  #L2b38bc.  call temp:= `access$1000`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1000:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)[J` @kind static;
+  #L2b38c2.  v2:= temp @kind object;
+  #L2b38c4.  v6:= v2[v3] @kind wide;
+  #L2b38c8.  v4:= v4 + v6 @kind long;
+  #L2b38ca.  v8.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` := v4 @kind wide;
+  #L2b38ce.  v3:= v3 + 1;
+  #L2b38d2.  goto L2b38b0;
+  #L2b38d4.  v2:= 0I;
+  #L2b38d6.  call temp:= `access$702`(v1, v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$702:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b38dc.  v2:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b38e0.  if v3 >= v2 then goto L2b3906;
+  #L2b38e4.  call temp:= `getCleanFile`(v1, v3) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getCleanFile:(I)Ljava/io/File;` @kind virtual;
+  #L2b38ea.  v2:= temp @kind object;
+  #L2b38ec.  call `deleteIfExists`(v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.deleteIfExists:(Ljava/io/File;)V` @kind static;
+  #L2b38f2.  call temp:= `getDirtyFile`(v1, v3) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getDirtyFile:(I)Ljava/io/File;` @kind virtual;
+  #L2b38f8.  v2:= temp @kind object;
+  #L2b38fa.  call `deleteIfExists`(v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.deleteIfExists:(Ljava/io/File;)V` @kind static;
+  #L2b3900.  v3:= v3 + 1;
+  #L2b3904.  goto L2b38dc;
+  #L2b3906.  call `remove`(v0) @signature `Ljava/util/Iterator;.remove:()V` @kind interface;
+  #L2b390c.  goto L2b388a;
+  #L2b390e.  return @kind void;
+}
+procedure `void` `readJournal`(`com.bumptech.glide.disklrucache.DiskLruCache` v9 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.readJournal:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L2b3920.  v0:= ", " @kind object;
+  #L2b3924.  v1:= new `com.bumptech.glide.disklrucache.StrictLineReader`;
+  #L2b3928.  v2:= new `java.io.FileInputStream`;
+  #L2b392c.  v3:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` @kind object;
+  #L2b3930.  call `<init>`(v2, v3) @signature `Ljava/io/FileInputStream;.<init>:(Ljava/io/File;)V` @kind direct;
+  #L2b3936.  v3:= `@@com.bumptech.glide.disklrucache.Util.US_ASCII` @type ^`java.nio.charset.Charset` @kind object;
+  #L2b393a.  call `<init>`(v1, v2, v3) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.<init>:(Ljava/io/InputStream;Ljava/nio/charset/Charset;)V` @kind direct;
+  #L2b3940.  call temp:= `readLine`(v1) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.readLine:()Ljava/lang/String;` @kind virtual;
+  #L2b3946.  v2:= temp @kind object;
+  #L2b3948.  call temp:= `readLine`(v1) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.readLine:()Ljava/lang/String;` @kind virtual;
+  #L2b394e.  v3:= temp @kind object;
+  #L2b3950.  call temp:= `readLine`(v1) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.readLine:()Ljava/lang/String;` @kind virtual;
+  #L2b3956.  v4:= temp @kind object;
+  #L2b3958.  call temp:= `readLine`(v1) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.readLine:()Ljava/lang/String;` @kind virtual;
+  #L2b395e.  v5:= temp @kind object;
+  #L2b3960.  call temp:= `readLine`(v1) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.readLine:()Ljava/lang/String;` @kind virtual;
+  #L2b3966.  v6:= temp @kind object;
+  #L2b3968.  v7:= "libcore.io.DiskLruCache" @kind object;
+  #L2b396c.  call temp:= `equals`(v7, v2) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2b3972.  v7:= temp;
+  #L2b3974.  if v7 == 0 then goto L2b3a38;
+  #L2b3978.  v7:= "1" @kind object;
+  #L2b397c.  call temp:= `equals`(v7, v3) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2b3982.  v7:= temp;
+  #L2b3984.  if v7 == 0 then goto L2b3a38;
+  #L2b3988.  v7:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.appVersion` @type ^`int`;
+  #L2b398c.  call temp:= `toString`(v7) @signature `Ljava/lang/Integer;.toString:(I)Ljava/lang/String;` @kind static;
+  #L2b3992.  v7:= temp @kind object;
+  #L2b3994.  call temp:= `equals`(v7, v4) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2b399a.  v4:= temp;
+  #L2b399c.  if v4 == 0 then goto L2b3a38;
+  #L2b39a0.  v4:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b39a4.  call temp:= `toString`(v4) @signature `Ljava/lang/Integer;.toString:(I)Ljava/lang/String;` @kind static;
+  #L2b39aa.  v4:= temp @kind object;
+  #L2b39ac.  call temp:= `equals`(v4, v5) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2b39b2.  v4:= temp;
+  #L2b39b4.  if v4 == 0 then goto L2b3a38;
+  #L2b39b8.  v4:= "" @kind object;
+  #L2b39bc.  call temp:= `equals`(v4, v6) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2b39c2.  v4:= temp;
+  #L2b39c4.  if v4 == 0 then goto L2b3a38;
+  #L2b39c8.  v0:= 0I;
+  #L2b39ca.  call temp:= `readLine`(v1) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.readLine:()Ljava/lang/String;` @kind virtual;
+  #L2b39d0.  v2:= temp @kind object;
+  #L2b39d2.  call `readJournalLine`(v9, v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.readJournalLine:(Ljava/lang/String;)V` @kind direct;
+  #L2b39d8.  v0:= v0 + 1;
+  #L2b39dc.  goto L2b39ca;
+  #L2b39de.  v2:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b39e2.  call temp:= `size`(v2) @signature `Ljava/util/LinkedHashMap;.size:()I` @kind virtual;
+  #L2b39e8.  v2:= temp;
+  #L2b39ea.  v0:= v0 - v2 @kind int;
+  #L2b39ec.  v9.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int` := v0;
+  #L2b39f0.  call temp:= `hasUnterminatedLine`(v1) @signature `Lcom/bumptech/glide/disklrucache/StrictLineReader;.hasUnterminatedLine:()Z` @kind virtual;
+  #L2b39f6.  v0:= temp;
+  #L2b39f8.  if v0 == 0 then goto L2b3a04;
+  #L2b39fc.  call `rebuildJournal`(v9) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.rebuildJournal:()V` @kind direct;
+  #L2b3a02.  goto L2b3a30;
+  #L2b3a04.  v0:= new `java.io.BufferedWriter`;
+  #L2b3a08.  v2:= new `java.io.OutputStreamWriter`;
+  #L2b3a0c.  v3:= new `java.io.FileOutputStream`;
+  #L2b3a10.  v4:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` @kind object;
+  #L2b3a14.  v5:= 1I;
+  #L2b3a16.  call `<init>`(v3, v4, v5) @signature `Ljava/io/FileOutputStream;.<init>:(Ljava/io/File;Z)V` @kind direct;
+  #L2b3a1c.  v4:= `@@com.bumptech.glide.disklrucache.Util.US_ASCII` @type ^`java.nio.charset.Charset` @kind object;
+  #L2b3a20.  call `<init>`(v2, v3, v4) @signature `Ljava/io/OutputStreamWriter;.<init>:(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V` @kind direct;
+  #L2b3a26.  call `<init>`(v0, v2) @signature `Ljava/io/BufferedWriter;.<init>:(Ljava/io/Writer;)V` @kind direct;
+  #L2b3a2c.  v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` := v0 @kind object;
+  #L2b3a30.  call `closeQuietly`(v1) @signature `Lcom/bumptech/glide/disklrucache/Util;.closeQuietly:(Ljava/io/Closeable;)V` @kind static;
+  #L2b3a36.  return @kind void;
+  #L2b3a38.  v4:= new `java.io.IOException`;
+  #L2b3a3c.  v7:= new `java.lang.StringBuilder`;
+  #L2b3a40.  call `<init>`(v7) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b3a46.  v8:= "unexpected journal header: [" @kind object;
+  #L2b3a4a.  call temp:= `append`(v7, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a50.  call temp:= `append`(v7, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a56.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a5c.  call temp:= `append`(v7, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a62.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a68.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a6e.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a74.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a7a.  v0:= "]" @kind object;
+  #L2b3a7e.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3a84.  call temp:= `toString`(v7) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b3a8a.  v0:= temp @kind object;
+  #L2b3a8c.  call `<init>`(v4, v0) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b3a92.  throw v4;
+  #L2b3a94.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3a96.  call `closeQuietly`(v1) @signature `Lcom/bumptech/glide/disklrucache/Util;.closeQuietly:(Ljava/io/Closeable;)V` @kind static;
+  #L2b3a9c.  goto L2b3aa0;
+  #L2b3a9e.  throw v0;
+  #L2b3aa0.  goto L2b3a9e;
+  catch `java.lang.Throwable` @[L2b3940..L2b39c4] goto L2b3a94;
+  catch `java.io.EOFException` @[L2b39ca..L2b39d8] goto L2b39de;
+  catch `java.lang.Throwable` @[L2b39ca..L2b39d8] goto L2b3a94;
+  catch `java.lang.Throwable` @[L2b39de..L2b3a30] goto L2b3a94;
+  catch `java.lang.Throwable` @[L2b3a38..L2b3a94] goto L2b3a94;
+}
+procedure `void` `readJournalLine`(`com.bumptech.glide.disklrucache.DiskLruCache` v8 @kind this, `java.lang.String` v9 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.readJournalLine:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L2b3ae0.  v0:= 32I;
+  #L2b3ae4.  call temp:= `indexOf`(v9, v0) @signature `Ljava/lang/String;.indexOf:(I)I` @kind virtual;
+  #L2b3aea.  v1:= temp;
+  #L2b3aec.  v2:= "unexpected journal line: " @kind object;
+  #L2b3af0.  v3:= -1I;
+  #L2b3af2.  if v1 == v3 then goto L2b3c18;
+  #L2b3af6.  v4:= v1 + 1;
+  #L2b3afa.  call temp:= `indexOf`(v9, v0, v4) @signature `Ljava/lang/String;.indexOf:(II)I` @kind virtual;
+  #L2b3b00.  v0:= temp;
+  #L2b3b02.  if v0 != v3 then goto L2b3b30;
+  #L2b3b06.  call temp:= `substring`(v9, v4) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L2b3b0c.  v4:= temp @kind object;
+  #L2b3b0e.  v5:= 6I;
+  #L2b3b10.  if v1 != v5 then goto L2b3b38;
+  #L2b3b14.  v5:= "REMOVE" @kind object;
+  #L2b3b18.  call temp:= `startsWith`(v9, v5) @signature `Ljava/lang/String;.startsWith:(Ljava/lang/String;)Z` @kind virtual;
+  #L2b3b1e.  v5:= temp;
+  #L2b3b20.  if v5 == 0 then goto L2b3b38;
+  #L2b3b24.  v9:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3b28.  call temp:= `remove`(v9, v4) @signature `Ljava/util/LinkedHashMap;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b3b2e.  return @kind void;
+  #L2b3b30.  call temp:= `substring`(v9, v4, v0) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L2b3b36.  v4:= temp @kind object;
+  #L2b3b38.  v5:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3b3c.  call temp:= `get`(v5, v4) @signature `Ljava/util/LinkedHashMap;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b3b42.  v5:= temp @kind object;
+  #L2b3b44.  v5:= (`com.bumptech.glide.disklrucache.DiskLruCache$Entry`) v5 @kind object;
+  #L2b3b48.  v6:= 0I;
+  #L2b3b4a.  if v5 != 0 then goto L2b3b62;
+  #L2b3b4e.  v5:= new `com.bumptech.glide.disklrucache.DiskLruCache$Entry`;
+  #L2b3b52.  call `<init>`(v5, v8, v4, v6) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.<init>:(Lcom/bumptech/glide/disklrucache/DiskLruCache;Ljava/lang/String;Lcom/bumptech/glide/disklrucache/DiskLruCache$1;)V` @kind direct;
+  #L2b3b58.  v7:= v8.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3b5c.  call temp:= `put`(v7, v4, v5) @signature `Ljava/util/LinkedHashMap;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b3b62.  v4:= 5I;
+  #L2b3b64.  if v0 == v3 then goto L2b3ba8;
+  #L2b3b68.  if v1 != v4 then goto L2b3ba8;
+  #L2b3b6c.  v7:= "CLEAN" @kind object;
+  #L2b3b70.  call temp:= `startsWith`(v9, v7) @signature `Ljava/lang/String;.startsWith:(Ljava/lang/String;)Z` @kind virtual;
+  #L2b3b76.  v7:= temp;
+  #L2b3b78.  if v7 == 0 then goto L2b3ba8;
+  #L2b3b7c.  v1:= 1I;
+  #L2b3b7e.  v0:= v0 + v1 @kind int;
+  #L2b3b80.  call temp:= `substring`(v9, v0) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L2b3b86.  v9:= temp @kind object;
+  #L2b3b88.  v0:= " " @kind object;
+  #L2b3b8c.  call temp:= `split`(v9, v0) @signature `Ljava/lang/String;.split:(Ljava/lang/String;)[Ljava/lang/String;` @kind virtual;
+  #L2b3b92.  v9:= temp @kind object;
+  #L2b3b94.  call temp:= `access$602`(v5, v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$602:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Z)Z` @kind static;
+  #L2b3b9a.  call temp:= `access$702`(v5, v6) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$702:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b3ba0.  call `access$800`(v5, v9) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$800:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;[Ljava/lang/String;)V` @kind static;
+  #L2b3ba6.  goto L2b3bec;
+  #L2b3ba8.  if v0 != v3 then goto L2b3bd2;
+  #L2b3bac.  if v1 != v4 then goto L2b3bd2;
+  #L2b3bb0.  v4:= "DIRTY" @kind object;
+  #L2b3bb4.  call temp:= `startsWith`(v9, v4) @signature `Ljava/lang/String;.startsWith:(Ljava/lang/String;)Z` @kind virtual;
+  #L2b3bba.  v4:= temp;
+  #L2b3bbc.  if v4 == 0 then goto L2b3bd2;
+  #L2b3bc0.  v9:= new `com.bumptech.glide.disklrucache.DiskLruCache$Editor`;
+  #L2b3bc4.  call `<init>`(v9, v8, v5, v6) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;.<init>:(Lcom/bumptech/glide/disklrucache/DiskLruCache;Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Lcom/bumptech/glide/disklrucache/DiskLruCache$1;)V` @kind direct;
+  #L2b3bca.  call temp:= `access$702`(v5, v9) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$702:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b3bd0.  goto L2b3bec;
+  #L2b3bd2.  if v0 != v3 then goto L2b3bee;
+  #L2b3bd6.  v0:= 4I;
+  #L2b3bd8.  if v1 != v0 then goto L2b3bee;
+  #L2b3bdc.  v0:= "READ" @kind object;
+  #L2b3be0.  call temp:= `startsWith`(v9, v0) @signature `Ljava/lang/String;.startsWith:(Ljava/lang/String;)Z` @kind virtual;
+  #L2b3be6.  v0:= temp;
+  #L2b3be8.  if v0 == 0 then goto L2b3bee;
+  #L2b3bec.  return @kind void;
+  #L2b3bee.  v0:= new `java.io.IOException`;
+  #L2b3bf2.  v1:= new `java.lang.StringBuilder`;
+  #L2b3bf6.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b3bfc.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3c02.  call temp:= `append`(v1, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3c08.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b3c0e.  v9:= temp @kind object;
+  #L2b3c10.  call `<init>`(v0, v9) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b3c16.  throw v0;
+  #L2b3c18.  v0:= new `java.io.IOException`;
+  #L2b3c1c.  v1:= new `java.lang.StringBuilder`;
+  #L2b3c20.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b3c26.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3c2c.  call temp:= `append`(v1, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3c32.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b3c38.  v9:= temp @kind object;
+  #L2b3c3a.  call `<init>`(v0, v9) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b3c40.  throw v0;
+}
+procedure `void` `rebuildJournal`(`com.bumptech.glide.disklrucache.DiskLruCache` v6 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.rebuildJournal:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L2b3c54.  @monitorenter v6
+  #L2b3c56.  v0:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b3c5a.  if v0 == 0 then goto L2b3c68;
+  #L2b3c5e.  v0:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b3c62.  call `close`(v0) @signature `Ljava/io/Writer;.close:()V` @kind virtual;
+  #L2b3c68.  v0:= new `java.io.BufferedWriter`;
+  #L2b3c6c.  v1:= new `java.io.OutputStreamWriter`;
+  #L2b3c70.  v2:= new `java.io.FileOutputStream`;
+  #L2b3c74.  v3:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFileTmp` @type ^`java.io.File` @kind object;
+  #L2b3c78.  call `<init>`(v2, v3) @signature `Ljava/io/FileOutputStream;.<init>:(Ljava/io/File;)V` @kind direct;
+  #L2b3c7e.  v3:= `@@com.bumptech.glide.disklrucache.Util.US_ASCII` @type ^`java.nio.charset.Charset` @kind object;
+  #L2b3c82.  call `<init>`(v1, v2, v3) @signature `Ljava/io/OutputStreamWriter;.<init>:(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V` @kind direct;
+  #L2b3c88.  call `<init>`(v0, v1) @signature `Ljava/io/BufferedWriter;.<init>:(Ljava/io/Writer;)V` @kind direct;
+  #L2b3c8e.  v1:= "libcore.io.DiskLruCache" @kind object;
+  #L2b3c92.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3c98.  v1:= "\n" @kind object;
+  #L2b3c9c.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3ca2.  v1:= "1" @kind object;
+  #L2b3ca6.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3cac.  v1:= "\n" @kind object;
+  #L2b3cb0.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3cb6.  v1:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.appVersion` @type ^`int`;
+  #L2b3cba.  call temp:= `toString`(v1) @signature `Ljava/lang/Integer;.toString:(I)Ljava/lang/String;` @kind static;
+  #L2b3cc0.  v1:= temp @kind object;
+  #L2b3cc2.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3cc8.  v1:= "\n" @kind object;
+  #L2b3ccc.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3cd2.  v1:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b3cd6.  call temp:= `toString`(v1) @signature `Ljava/lang/Integer;.toString:(I)Ljava/lang/String;` @kind static;
+  #L2b3cdc.  v1:= temp @kind object;
+  #L2b3cde.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3ce4.  v1:= "\n" @kind object;
+  #L2b3ce8.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3cee.  v1:= "\n" @kind object;
+  #L2b3cf2.  call `write`(v0, v1) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3cf8.  v1:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3cfc.  call temp:= `values`(v1) @signature `Ljava/util/LinkedHashMap;.values:()Ljava/util/Collection;` @kind virtual;
+  #L2b3d02.  v1:= temp @kind object;
+  #L2b3d04.  call temp:= `iterator`(v1) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2b3d0a.  v1:= temp @kind object;
+  #L2b3d0c.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2b3d12.  v2:= temp;
+  #L2b3d14.  if v2 == 0 then goto L2b3db2;
+  #L2b3d18.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2b3d1e.  v2:= temp @kind object;
+  #L2b3d20.  v2:= (`com.bumptech.glide.disklrucache.DiskLruCache$Entry`) v2 @kind object;
+  #L2b3d24.  call temp:= `access$700`(v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$700:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b3d2a.  v3:= temp @kind object;
+  #L2b3d2c.  v4:= 10I;
+  #L2b3d30.  if v3 == 0 then goto L2b3d6c;
+  #L2b3d34.  v3:= new `java.lang.StringBuilder`;
+  #L2b3d38.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b3d3e.  v5:= "DIRTY " @kind object;
+  #L2b3d42.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3d48.  call temp:= `access$1100`(v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1100:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Ljava/lang/String;` @kind static;
+  #L2b3d4e.  v2:= temp @kind object;
+  #L2b3d50.  call temp:= `append`(v3, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3d56.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3d5c.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b3d62.  v2:= temp @kind object;
+  #L2b3d64.  call `write`(v0, v2) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3d6a.  goto L2b3d0c;
+  #L2b3d6c.  v3:= new `java.lang.StringBuilder`;
+  #L2b3d70.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b3d76.  v5:= "CLEAN " @kind object;
+  #L2b3d7a.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3d80.  call temp:= `access$1100`(v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1100:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Ljava/lang/String;` @kind static;
+  #L2b3d86.  v5:= temp @kind object;
+  #L2b3d88.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3d8e.  call temp:= `getLengths`(v2) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getLengths:()Ljava/lang/String;` @kind virtual;
+  #L2b3d94.  v2:= temp @kind object;
+  #L2b3d96.  call temp:= `append`(v3, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3d9c.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b3da2.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b3da8.  v2:= temp @kind object;
+  #L2b3daa.  call `write`(v0, v2) @signature `Ljava/io/Writer;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L2b3db0.  goto L2b3d0c;
+  #L2b3db2.  call `close`(v0) @signature `Ljava/io/Writer;.close:()V` @kind virtual;
+  #L2b3db8.  v0:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` @kind object;
+  #L2b3dbc.  call temp:= `exists`(v0) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b3dc2.  v0:= temp;
+  #L2b3dc4.  v1:= 1I;
+  #L2b3dc6.  if v0 == 0 then goto L2b3dd8;
+  #L2b3dca.  v0:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` @kind object;
+  #L2b3dce.  v2:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFileBackup` @type ^`java.io.File` @kind object;
+  #L2b3dd2.  call `renameTo`(v0, v2, v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.renameTo:(Ljava/io/File;Ljava/io/File;Z)V` @kind static;
+  #L2b3dd8.  v0:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFileTmp` @type ^`java.io.File` @kind object;
+  #L2b3ddc.  v2:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` @kind object;
+  #L2b3de0.  v3:= 0I;
+  #L2b3de2.  call `renameTo`(v0, v2, v3) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.renameTo:(Ljava/io/File;Ljava/io/File;Z)V` @kind static;
+  #L2b3de8.  v0:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFileBackup` @type ^`java.io.File` @kind object;
+  #L2b3dec.  call temp:= `delete`(v0) @signature `Ljava/io/File;.delete:()Z` @kind virtual;
+  #L2b3df2.  v0:= new `java.io.BufferedWriter`;
+  #L2b3df6.  v2:= new `java.io.OutputStreamWriter`;
+  #L2b3dfa.  v3:= new `java.io.FileOutputStream`;
+  #L2b3dfe.  v4:= v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalFile` @type ^`java.io.File` @kind object;
+  #L2b3e02.  call `<init>`(v3, v4, v1) @signature `Ljava/io/FileOutputStream;.<init>:(Ljava/io/File;Z)V` @kind direct;
+  #L2b3e08.  v1:= `@@com.bumptech.glide.disklrucache.Util.US_ASCII` @type ^`java.nio.charset.Charset` @kind object;
+  #L2b3e0c.  call `<init>`(v2, v3, v1) @signature `Ljava/io/OutputStreamWriter;.<init>:(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V` @kind direct;
+  #L2b3e12.  call `<init>`(v0, v2) @signature `Ljava/io/BufferedWriter;.<init>:(Ljava/io/Writer;)V` @kind direct;
+  #L2b3e18.  v6.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` := v0 @kind object;
+  #L2b3e1c.  @monitorexit v6
+  #L2b3e1e.  return @kind void;
+  #L2b3e20.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3e22.  call `close`(v0) @signature `Ljava/io/Writer;.close:()V` @kind virtual;
+  #L2b3e28.  throw v1;
+  #L2b3e2a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3e2c.  @monitorexit v6
+  #L2b3e2e.  goto L2b3e32;
+  #L2b3e30.  throw v0;
+  #L2b3e32.  goto L2b3e30;
+  catch `java.lang.Throwable` @[L2b3c56..L2b3c8e] goto L2b3e2a;
+  catch `java.lang.Throwable` @[L2b3c8e..L2b3db0] goto L2b3e20;
+  catch `java.lang.Throwable` @[L2b3db2..L2b3e1c] goto L2b3e2a;
+  catch `java.lang.Throwable` @[L2b3e22..L2b3e2a] goto L2b3e2a;
+}
+procedure `void` `renameTo`(`java.io.File` v0 @kind object, `java.io.File` v1 @kind object, `boolean` v2 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.renameTo:(Ljava/io/File;Ljava/io/File;Z)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+
+  #L2b3e6c.  if v2 == 0 then goto L2b3e76;
+  #L2b3e70.  call `deleteIfExists`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.deleteIfExists:(Ljava/io/File;)V` @kind static;
+  #L2b3e76.  call temp:= `renameTo`(v0, v1) @signature `Ljava/io/File;.renameTo:(Ljava/io/File;)Z` @kind virtual;
+  #L2b3e7c.  v0:= temp;
+  #L2b3e7e.  if v0 == 0 then goto L2b3e84;
+  #L2b3e82.  return @kind void;
+  #L2b3e84.  v0:= new `java.io.IOException`;
+  #L2b3e88.  call `<init>`(v0) @signature `Ljava/io/IOException;.<init>:()V` @kind direct;
+  #L2b3e8e.  throw v0;
+}
+procedure `void` `trimToSize`(`com.bumptech.glide.disklrucache.DiskLruCache` v5 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.trimToSize:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2b3edc.  v0:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` @kind wide;
+  #L2b3ee0.  v2:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.maxSize` @type ^`long` @kind wide;
+  #L2b3ee4.  v4:= lcmp(v0, v2);
+  #L2b3ee8.  if v4 <= 0 then goto L2b3f20;
+  #L2b3eec.  v0:= v5.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3ef0.  call temp:= `entrySet`(v0) @signature `Ljava/util/LinkedHashMap;.entrySet:()Ljava/util/Set;` @kind virtual;
+  #L2b3ef6.  v0:= temp @kind object;
+  #L2b3ef8.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2b3efe.  v0:= temp @kind object;
+  #L2b3f00.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2b3f06.  v0:= temp @kind object;
+  #L2b3f08.  v0:= (`java.util.Map$Entry`) v0 @kind object;
+  #L2b3f0c.  call temp:= `getKey`(v0) @signature `Ljava/util/Map$Entry;.getKey:()Ljava/lang/Object;` @kind interface;
+  #L2b3f12.  v0:= temp @kind object;
+  #L2b3f14.  v0:= (`java.lang.String`) v0 @kind object;
+  #L2b3f18.  call temp:= `remove`(v5, v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.remove:(Ljava/lang/String;)Z` @kind virtual;
+  #L2b3f1e.  goto L2b3edc;
+  #L2b3f20.  return @kind void;
+}
+procedure `void` `close`(`com.bumptech.glide.disklrucache.DiskLruCache` v3 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2b34d4.  @monitorenter v3
+  #L2b34d6.  v0:= v3.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b34da.  if v0 != 0 then goto L2b34e2;
+  #L2b34de.  @monitorexit v3
+  #L2b34e0.  return @kind void;
+  #L2b34e2.  v0:= new `java.util.ArrayList`;
+  #L2b34e6.  v1:= v3.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b34ea.  call temp:= `values`(v1) @signature `Ljava/util/LinkedHashMap;.values:()Ljava/util/Collection;` @kind virtual;
+  #L2b34f0.  v1:= temp @kind object;
+  #L2b34f2.  call `<init>`(v0, v1) @signature `Ljava/util/ArrayList;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L2b34f8.  call temp:= `iterator`(v0) @signature `Ljava/util/ArrayList;.iterator:()Ljava/util/Iterator;` @kind virtual;
+  #L2b34fe.  v0:= temp @kind object;
+  #L2b3500.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2b3506.  v1:= temp;
+  #L2b3508.  if v1 == 0 then goto L2b3534;
+  #L2b350c.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2b3512.  v1:= temp @kind object;
+  #L2b3514.  v1:= (`com.bumptech.glide.disklrucache.DiskLruCache$Entry`) v1 @kind object;
+  #L2b3518.  call temp:= `access$700`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$700:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b351e.  v2:= temp @kind object;
+  #L2b3520.  if v2 == 0 then goto L2b3500;
+  #L2b3524.  call temp:= `access$700`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$700:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b352a.  v1:= temp @kind object;
+  #L2b352c.  call `abort`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;.abort:()V` @kind virtual;
+  #L2b3532.  goto L2b3500;
+  #L2b3534.  call `trimToSize`(v3) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.trimToSize:()V` @kind direct;
+  #L2b353a.  v0:= v3.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b353e.  call `close`(v0) @signature `Ljava/io/Writer;.close:()V` @kind virtual;
+  #L2b3544.  v0:= 0I;
+  #L2b3546.  v3.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` := v0 @kind object;
+  #L2b354a.  @monitorexit v3
+  #L2b354c.  return @kind void;
+  #L2b354e.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3550.  @monitorexit v3
+  #L2b3552.  goto L2b3556;
+  #L2b3554.  throw v0;
+  #L2b3556.  goto L2b3554;
+  catch `java.lang.Throwable` @[L2b34d6..L2b34da] goto L2b354e;
+  catch `java.lang.Throwable` @[L2b34e2..L2b354a] goto L2b354e;
+}
+procedure `void` `delete`(`com.bumptech.glide.disklrucache.DiskLruCache` v1 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.delete:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b37d0.  call `close`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.close:()V` @kind virtual;
+  #L2b37d6.  v0:= v1.`com.bumptech.glide.disklrucache.DiskLruCache.directory` @type ^`java.io.File` @kind object;
+  #L2b37da.  call `deleteContents`(v0) @signature `Lcom/bumptech/glide/disklrucache/Util;.deleteContents:(Ljava/io/File;)V` @kind static;
+  #L2b37e0.  return @kind void;
+}
+procedure `com.bumptech.glide.disklrucache.DiskLruCache$Editor` `edit`(`com.bumptech.glide.disklrucache.DiskLruCache` v2 @kind this, `java.lang.String` v3 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.edit:(Ljava/lang/String;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2b305c.  v0:= -1L;
+  #L2b3060.  call temp:= `edit`(v2, v3, v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.edit:(Ljava/lang/String;J)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind direct;
+  #L2b3066.  v3:= temp @kind object;
+  #L2b3068.  return v3 @kind object;
+}
+procedure `void` `flush`(`com.bumptech.glide.disklrucache.DiskLruCache` v1 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.flush:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b382c.  @monitorenter v1
+  #L2b382e.  call `checkNotClosed`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.checkNotClosed:()V` @kind direct;
+  #L2b3834.  call `trimToSize`(v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.trimToSize:()V` @kind direct;
+  #L2b383a.  v0:= v1.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b383e.  call `flush`(v0) @signature `Ljava/io/Writer;.flush:()V` @kind virtual;
+  #L2b3844.  @monitorexit v1
+  #L2b3846.  return @kind void;
+  #L2b3848.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b384a.  @monitorexit v1
+  #L2b384c.  throw v0;
+  catch `java.lang.Throwable` @[L2b382e..L2b3844] goto L2b3848;
+}
+procedure `com.bumptech.glide.disklrucache.DiskLruCache$Value` `get`(`com.bumptech.glide.disklrucache.DiskLruCache` v9 @kind this, `java.lang.String` v10 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.get:(Ljava/lang/String;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Value;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L2b3168.  @monitorenter v9
+  #L2b316a.  call `checkNotClosed`(v9) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.checkNotClosed:()V` @kind direct;
+  #L2b3170.  v0:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b3174.  call temp:= `get`(v0, v10) @signature `Ljava/util/LinkedHashMap;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b317a.  v0:= temp @kind object;
+  #L2b317c.  v0:= (`com.bumptech.glide.disklrucache.DiskLruCache$Entry`) v0 @kind object;
+  #L2b3180.  v1:= 0I;
+  #L2b3182.  if v0 != 0 then goto L2b318a;
+  #L2b3186.  @monitorexit v9
+  #L2b3188.  return v1 @kind object;
+  #L2b318a.  call temp:= `access$600`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$600:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Z` @kind static;
+  #L2b3190.  v2:= temp;
+  #L2b3192.  if v2 != 0 then goto L2b319a;
+  #L2b3196.  @monitorexit v9
+  #L2b3198.  return v1 @kind object;
+  #L2b319a.  v2:= v0.`com.bumptech.glide.disklrucache.DiskLruCache$Entry.cleanFiles` @type ^`java.io.File`[] @kind object;
+  #L2b319e.  v3:= length @variable v2;
+  #L2b31a0.  v4:= 0I;
+  #L2b31a2.  if v4 >= v3 then goto L2b31c0;
+  #L2b31a6.  v5:= v2[v4] @kind object;
+  #L2b31aa.  call temp:= `exists`(v5) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b31b0.  v5:= temp;
+  #L2b31b2.  if v5 != 0 then goto L2b31ba;
+  #L2b31b6.  @monitorexit v9
+  #L2b31b8.  return v1 @kind object;
+  #L2b31ba.  v4:= v4 + 1;
+  #L2b31be.  goto L2b31a2;
+  #L2b31c0.  v1:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int`;
+  #L2b31c4.  v1:= v1 + 1;
+  #L2b31c8.  v9.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int` := v1;
+  #L2b31cc.  v1:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b31d0.  v2:= "READ" @kind object;
+  #L2b31d4.  call temp:= `append`(v1, v2) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b31da.  v1:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b31de.  v2:= 32I;
+  #L2b31e2.  call temp:= `append`(v1, v2) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b31e8.  v1:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b31ec.  call temp:= `append`(v1, v10) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b31f2.  v1:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b31f6.  v2:= 10I;
+  #L2b31fa.  call temp:= `append`(v1, v2) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b3200.  call temp:= `journalRebuildRequired`(v9) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.journalRebuildRequired:()Z` @kind direct;
+  #L2b3206.  v1:= temp;
+  #L2b3208.  if v1 == 0 then goto L2b321a;
+  #L2b320c.  v1:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.executorService` @type ^`java.util.concurrent.ThreadPoolExecutor` @kind object;
+  #L2b3210.  v2:= v9.`com.bumptech.glide.disklrucache.DiskLruCache.cleanupCallable` @type ^`java.util.concurrent.Callable` @kind object;
+  #L2b3214.  call temp:= `submit`(v1, v2) @signature `Ljava/util/concurrent/ThreadPoolExecutor;.submit:(Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Future;` @kind virtual;
+  #L2b321a.  v8:= new `com.bumptech.glide.disklrucache.DiskLruCache$Value`;
+  #L2b321e.  call temp:= `access$1200`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1200:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)J` @kind static;
+  #L2b3224.  v3:= temp @kind wide;
+  #L2b3226.  v5:= v0.`com.bumptech.glide.disklrucache.DiskLruCache$Entry.cleanFiles` @type ^`java.io.File`[] @kind object;
+  #L2b322a.  call temp:= `access$1000`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1000:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)[J` @kind static;
+  #L2b3230.  v6:= temp @kind object;
+  #L2b3232.  v7:= 0I;
+  #L2b3234.  v0:= v8 @kind object;
+  #L2b3236.  v1:= v9 @kind object;
+  #L2b3238.  v2:= v10 @kind object;
+  #L2b323a.  call `<init>`(v0, v1, v2, v3, v5, v6, v7) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Value;.<init>:(Lcom/bumptech/glide/disklrucache/DiskLruCache;Ljava/lang/String;J[Ljava/io/File;[JLcom/bumptech/glide/disklrucache/DiskLruCache$1;)V` @kind direct;
+  #L2b3240.  @monitorexit v9
+  #L2b3242.  return v8 @kind object;
+  #L2b3244.  v10:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3246.  @monitorexit v9
+  #L2b3248.  goto L2b324c;
+  #L2b324a.  throw v10;
+  #L2b324c.  goto L2b324a;
+  catch `java.lang.Throwable` @[L2b316a..L2b3180] goto L2b3244;
+  catch `java.lang.Throwable` @[L2b318a..L2b3192] goto L2b3244;
+  catch `java.lang.Throwable` @[L2b319a..L2b31b2] goto L2b3244;
+  catch `java.lang.Throwable` @[L2b31c0..L2b3240] goto L2b3244;
+}
+procedure `java.io.File` `getDirectory`(`com.bumptech.glide.disklrucache.DiskLruCache` v1 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.getDirectory:()Ljava/io/File;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b32cc.  v0:= v1.`com.bumptech.glide.disklrucache.DiskLruCache.directory` @type ^`java.io.File` @kind object;
+  #L2b32d0.  return v0 @kind object;
+}
+procedure `long` `getMaxSize`(`com.bumptech.glide.disklrucache.DiskLruCache` v2 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.getMaxSize:()J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2b3340.  @monitorenter v2
+  #L2b3342.  v0:= v2.`com.bumptech.glide.disklrucache.DiskLruCache.maxSize` @type ^`long` @kind wide;
+  #L2b3346.  @monitorexit v2
+  #L2b3348.  return v0 @kind wide;
+  #L2b334a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b334c.  @monitorexit v2
+  #L2b334e.  throw v0;
+  catch `java.lang.Throwable` @[L2b3342..L2b3346] goto L2b334a;
+}
+procedure `boolean` `isClosed`(`com.bumptech.glide.disklrucache.DiskLruCache` v1 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.isClosed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2b2d50.  @monitorenter v1
+  #L2b2d52.  v0:= v1.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b2d56.  if v0 != 0 then goto L2b2d5e;
+  #L2b2d5a.  v0:= 1I;
+  #L2b2d5c.  goto L2b2d60;
+  #L2b2d5e.  v0:= 0I;
+  #L2b2d60.  @monitorexit v1
+  #L2b2d62.  return v0;
+  #L2b2d64.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b2d66.  @monitorexit v1
+  #L2b2d68.  throw v0;
+  catch `java.lang.Throwable` @[L2b2d52..L2b2d56] goto L2b2d64;
+}
+procedure `boolean` `remove`(`com.bumptech.glide.disklrucache.DiskLruCache` v7 @kind this, `java.lang.String` v8 @kind object) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.remove:(Ljava/lang/String;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L2b2dbc.  @monitorenter v7
+  #L2b2dbe.  call `checkNotClosed`(v7) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.checkNotClosed:()V` @kind direct;
+  #L2b2dc4.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b2dc8.  call temp:= `get`(v0, v8) @signature `Ljava/util/LinkedHashMap;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b2dce.  v0:= temp @kind object;
+  #L2b2dd0.  v0:= (`com.bumptech.glide.disklrucache.DiskLruCache$Entry`) v0 @kind object;
+  #L2b2dd4.  v1:= 0I;
+  #L2b2dd6.  if v0 == 0 then goto L2b2ed6;
+  #L2b2dda.  call temp:= `access$700`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$700:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)Lcom/bumptech/glide/disklrucache/DiskLruCache$Editor;` @kind static;
+  #L2b2de0.  v2:= temp @kind object;
+  #L2b2de2.  if v2 == 0 then goto L2b2dea;
+  #L2b2de6.  goto L2b2ed6;
+  #L2b2dea.  v2:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.valueCount` @type ^`int`;
+  #L2b2dee.  if v1 >= v2 then goto L2b2e6e;
+  #L2b2df2.  call temp:= `getCleanFile`(v0, v1) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.getCleanFile:(I)Ljava/io/File;` @kind virtual;
+  #L2b2df8.  v2:= temp @kind object;
+  #L2b2dfa.  call temp:= `exists`(v2) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L2b2e00.  v3:= temp;
+  #L2b2e02.  if v3 == 0 then goto L2b2e42;
+  #L2b2e06.  call temp:= `delete`(v2) @signature `Ljava/io/File;.delete:()Z` @kind virtual;
+  #L2b2e0c.  v3:= temp;
+  #L2b2e0e.  if v3 == 0 then goto L2b2e14;
+  #L2b2e12.  goto L2b2e42;
+  #L2b2e14.  v8:= new `java.io.IOException`;
+  #L2b2e18.  v0:= new `java.lang.StringBuilder`;
+  #L2b2e1c.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2b2e22.  v1:= "failed to delete " @kind object;
+  #L2b2e26.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b2e2c.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2b2e32.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2b2e38.  v0:= temp @kind object;
+  #L2b2e3a.  call `<init>`(v8, v0) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2b2e40.  throw v8;
+  #L2b2e42.  v2:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` @kind wide;
+  #L2b2e46.  call temp:= `access$1000`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1000:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)[J` @kind static;
+  #L2b2e4c.  v4:= temp @kind object;
+  #L2b2e4e.  v5:= v4[v1] @kind wide;
+  #L2b2e52.  v2:= v2 - v5 @kind long;
+  #L2b2e54.  v7.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` := v2 @kind wide;
+  #L2b2e58.  call temp:= `access$1000`(v0) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;.access$1000:(Lcom/bumptech/glide/disklrucache/DiskLruCache$Entry;)[J` @kind static;
+  #L2b2e5e.  v2:= temp @kind object;
+  #L2b2e60.  v3:= 0L;
+  #L2b2e64.  v2[v1]:= v3 @kind wide;
+  #L2b2e68.  v1:= v1 + 1;
+  #L2b2e6c.  goto L2b2dea;
+  #L2b2e6e.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int`;
+  #L2b2e72.  v1:= 1I;
+  #L2b2e74.  v0:= v0 + v1 @kind int;
+  #L2b2e76.  v7.`com.bumptech.glide.disklrucache.DiskLruCache.redundantOpCount` @type ^`int` := v0;
+  #L2b2e7a.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b2e7e.  v2:= "REMOVE" @kind object;
+  #L2b2e82.  call temp:= `append`(v0, v2) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b2e88.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b2e8c.  v2:= 32I;
+  #L2b2e90.  call temp:= `append`(v0, v2) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b2e96.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b2e9a.  call temp:= `append`(v0, v8) @signature `Ljava/io/Writer;.append:(Ljava/lang/CharSequence;)Ljava/io/Writer;` @kind virtual;
+  #L2b2ea0.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.journalWriter` @type ^`java.io.Writer` @kind object;
+  #L2b2ea4.  v2:= 10I;
+  #L2b2ea8.  call temp:= `append`(v0, v2) @signature `Ljava/io/Writer;.append:(C)Ljava/io/Writer;` @kind virtual;
+  #L2b2eae.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.lruEntries` @type ^`java.util.LinkedHashMap` @kind object;
+  #L2b2eb2.  call temp:= `remove`(v0, v8) @signature `Ljava/util/LinkedHashMap;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2b2eb8.  call temp:= `journalRebuildRequired`(v7) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.journalRebuildRequired:()Z` @kind direct;
+  #L2b2ebe.  v8:= temp;
+  #L2b2ec0.  if v8 == 0 then goto L2b2ed2;
+  #L2b2ec4.  v8:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.executorService` @type ^`java.util.concurrent.ThreadPoolExecutor` @kind object;
+  #L2b2ec8.  v0:= v7.`com.bumptech.glide.disklrucache.DiskLruCache.cleanupCallable` @type ^`java.util.concurrent.Callable` @kind object;
+  #L2b2ecc.  call temp:= `submit`(v8, v0) @signature `Ljava/util/concurrent/ThreadPoolExecutor;.submit:(Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Future;` @kind virtual;
+  #L2b2ed2.  @monitorexit v7
+  #L2b2ed4.  return v1;
+  #L2b2ed6.  @monitorexit v7
+  #L2b2ed8.  return v1;
+  #L2b2eda.  v8:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b2edc.  @monitorexit v7
+  #L2b2ede.  goto L2b2ee2;
+  #L2b2ee0.  throw v8;
+  #L2b2ee2.  goto L2b2ee0;
+  catch `java.lang.Throwable` @[L2b2dbe..L2b2ed2] goto L2b2eda;
+}
+procedure `void` `setMaxSize`(`com.bumptech.glide.disklrucache.DiskLruCache` v0 @kind this, `long` v1 ) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.setMaxSize:(J)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L2b3ea0.  @monitorenter v0
+  #L2b3ea2.  v0.`com.bumptech.glide.disklrucache.DiskLruCache.maxSize` @type ^`long` := v1 @kind wide;
+  #L2b3ea6.  v1:= v0.`com.bumptech.glide.disklrucache.DiskLruCache.executorService` @type ^`java.util.concurrent.ThreadPoolExecutor` @kind object;
+  #L2b3eaa.  v2:= v0.`com.bumptech.glide.disklrucache.DiskLruCache.cleanupCallable` @type ^`java.util.concurrent.Callable` @kind object;
+  #L2b3eae.  call temp:= `submit`(v1, v2) @signature `Ljava/util/concurrent/ThreadPoolExecutor;.submit:(Ljava/util/concurrent/Callable;)Ljava/util/concurrent/Future;` @kind virtual;
+  #L2b3eb4.  @monitorexit v0
+  #L2b3eb6.  return @kind void;
+  #L2b3eb8.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3eba.  @monitorexit v0
+  #L2b3ebc.  throw v1;
+  catch `java.lang.Throwable` @[L2b3ea2..L2b3eb4] goto L2b3eb8;
+}
+procedure `long` `size`(`com.bumptech.glide.disklrucache.DiskLruCache` v2 @kind this) @signature `Lcom/bumptech/glide/disklrucache/DiskLruCache;.size:()J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2b336c.  @monitorenter v2
+  #L2b336e.  v0:= v2.`com.bumptech.glide.disklrucache.DiskLruCache.size` @type ^`long` @kind wide;
+  #L2b3372.  @monitorexit v2
+  #L2b3374.  return v0 @kind wide;
+  #L2b3376.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2b3378.  @monitorexit v2
+  #L2b337a.  throw v0;
+  catch `java.lang.Throwable` @[L2b336e..L2b3372] goto L2b3376;
+}

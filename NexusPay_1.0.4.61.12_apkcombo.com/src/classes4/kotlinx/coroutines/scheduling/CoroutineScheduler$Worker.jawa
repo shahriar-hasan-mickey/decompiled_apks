@@ -1,0 +1,718 @@
+record `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` @kind class @AccessFlag PUBLIC_FINAL extends `java.lang.Thread` @kind class {
+  `long` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.a` @AccessFlag PRIVATE;
+  `long` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.b` @AccessFlag PRIVATE;
+  `int` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.c` @AccessFlag PRIVATE;
+  `kotlinx.coroutines.scheduling.CoroutineScheduler` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @AccessFlag FINAL_SYNTHETIC;
+  `int` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.indexInArray` @AccessFlag PRIVATE_VOLATILE;
+  `kotlinx.coroutines.scheduling.WorkQueue` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @AccessFlag PUBLIC_FINAL;
+  `boolean` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.mayHaveLocalTasks` @AccessFlag PUBLIC;
+  `java.lang.Object` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.nextParkedWorker` @AccessFlag PRIVATE_VOLATILE;
+  `kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @AccessFlag PUBLIC;
+  `int` `kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.workerCtl` @AccessFlag VOLATILE_SYNTHETIC;
+}
+global `java.util.concurrent.atomic.AtomicIntegerFieldUpdater` `@@kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.e` @AccessFlag STATIC_FINAL_SYNTHETIC;
+procedure `void` `<clinit>`() @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L18b89c.  v0:= constclass @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` @kind object;
+  #L18b8a0.  v1:= "workerCtl" @kind object;
+  #L18b8a4.  call temp:= `newUpdater`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.newUpdater:(Ljava/lang/Class;Ljava/lang/String;)Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;` @kind static;
+  #L18b8aa.  v0:= temp @kind object;
+  #L18b8ac.  `@@kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.e` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` := v0 @kind object;
+  #L18b8b0.  return @kind void;
+}
+procedure `void` `<init>`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v0 @kind this, `kotlinx.coroutines.scheduling.CoroutineScheduler` v1 @kind object) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.<init>:(Lkotlinx/coroutines/scheduling/CoroutineScheduler;)V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L18b8c4.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` := v1 @kind object;
+  #L18b8c8.  call `<init>`(v0) @signature `Ljava/lang/Thread;.<init>:()V` @kind direct;
+  #L18b8ce.  v1:= 1I;
+  #L18b8d0.  call `setDaemon`(v0, v1) @signature `Ljava/lang/Thread;.setDaemon:(Z)V` @kind virtual;
+  #L18b8d6.  v1:= new `kotlinx.coroutines.scheduling.WorkQueue`;
+  #L18b8da.  call `<init>`(v1) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.<init>:()V` @kind direct;
+  #L18b8e0.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` := v1 @kind object;
+  #L18b8e4.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.DORMANT` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b8e8.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` := v1 @kind object;
+  #L18b8ec.  v1:= 0I;
+  #L18b8ee.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.workerCtl` @type ^`int` := v1;
+  #L18b8f2.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler.NOT_IN_STACK` @type ^`kotlinx.coroutines.internal.Symbol` @kind object;
+  #L18b8f6.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.nextParkedWorker` @type ^`java.lang.Object` := v1 @kind object;
+  #L18b8fa.  v1:= `@@kotlin.random.Random.Default` @type ^`kotlin.random.Random$Default` @kind object;
+  #L18b8fe.  call temp:= `nextInt`(v1) @signature `Lkotlin/random/Random$Default;.nextInt:()I` @kind virtual;
+  #L18b904.  v1:= temp;
+  #L18b906.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.c` @type ^`int` := v1;
+  #L18b90a.  return @kind void;
+}
+procedure `void` `<init>`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v0 @kind this, `kotlinx.coroutines.scheduling.CoroutineScheduler` v1 @kind object, `int` v2 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.<init>:(Lkotlinx/coroutines/scheduling/CoroutineScheduler;I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L18b91c.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` := v1 @kind object;
+  #L18b920.  call `<init>`(v0, v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.<init>:(Lkotlinx/coroutines/scheduling/CoroutineScheduler;)V` @kind direct;
+  #L18b926.  call `setIndexInArray`(v0, v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.setIndexInArray:(I)V` @kind virtual;
+  #L18b92c.  return @kind void;
+}
+procedure `void` `a`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v3 @kind this, `int` v4 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.a:(I)V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L18b940.  if v4 != 0 then goto L18b946;
+  #L18b944.  return @kind void;
+  #L18b946.  v4:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b94a.  v0:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler.b` @type ^`java.util.concurrent.atomic.AtomicLongFieldUpdater` @kind object;
+  #L18b94e.  v1:= -2097152L;
+  #L18b954.  call temp:= `addAndGet`(v0, v4, v1) @signature `Ljava/util/concurrent/atomic/AtomicLongFieldUpdater;.addAndGet:(Ljava/lang/Object;J)J` @kind virtual;
+  #L18b95a.  v4:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b95e.  v0:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.TERMINATED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b962.  if v4 == v0 then goto L18b99a;
+  #L18b966.  call temp:= `getASSERTIONS_ENABLED`() @signature `Lkotlinx/coroutines/DebugKt;.getASSERTIONS_ENABLED:()Z` @kind static;
+  #L18b96c.  v0:= temp;
+  #L18b96e.  if v0 == 0 then goto L18b992;
+  #L18b972.  v0:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.BLOCKING` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b976.  if v4 != v0 then goto L18b97e;
+  #L18b97a.  v4:= 1I;
+  #L18b97c.  goto L18b980;
+  #L18b97e.  v4:= 0I;
+  #L18b980.  if v4 == 0 then goto L18b986;
+  #L18b984.  goto L18b992;
+  #L18b986.  v4:= new `java.lang.AssertionError`;
+  #L18b98a.  call `<init>`(v4) @signature `Ljava/lang/AssertionError;.<init>:()V` @kind direct;
+  #L18b990.  throw v4;
+  #L18b992.  v4:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.DORMANT` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b996.  v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` := v4 @kind object;
+  #L18b99a.  return @kind void;
+}
+procedure `void` `b`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v0 @kind this, `int` v1 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.b:(I)V` @AccessFlag PRIVATE_FINAL {
+    temp;
+
+  #L18b9ac.  if v1 != 0 then goto L18b9b2;
+  #L18b9b0.  return @kind void;
+  #L18b9b2.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.BLOCKING` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b9b6.  call temp:= `tryReleaseCpu`(v0, v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.tryReleaseCpu:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$WorkerState;)Z` @kind virtual;
+  #L18b9bc.  v1:= temp;
+  #L18b9be.  if v1 == 0 then goto L18b9cc;
+  #L18b9c2.  v1:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b9c6.  call `signalCpuWork`(v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.signalCpuWork:()V` @kind virtual;
+  #L18b9cc.  return @kind void;
+}
+procedure `void` `c`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v2 @kind this, `kotlinx.coroutines.scheduling.Task` v3 @kind object) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.c:(Lkotlinx/coroutines/scheduling/Task;)V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L18b9e0.  v0:= v3.`kotlinx.coroutines.scheduling.Task.taskContext` @type ^`kotlinx.coroutines.scheduling.TaskContext` @kind object;
+  #L18b9e4.  call temp:= `getTaskMode`(v0) @signature `Lkotlinx/coroutines/scheduling/TaskContext;.getTaskMode:()I` @kind interface;
+  #L18b9ea.  v0:= temp;
+  #L18b9ec.  call `e`(v2, v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.e:(I)V` @kind direct;
+  #L18b9f2.  call `b`(v2, v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.b:(I)V` @kind direct;
+  #L18b9f8.  v1:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b9fc.  call `runSafely`(v1, v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.runSafely:(Lkotlinx/coroutines/scheduling/Task;)V` @kind virtual;
+  #L18ba02.  call `a`(v2, v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.a:(I)V` @kind direct;
+  #L18ba08.  return @kind void;
+}
+procedure `kotlinx.coroutines.scheduling.Task` `d`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v2 @kind this, `boolean` v3 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.d:(Z)Lkotlinx/coroutines/scheduling/Task;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L18b5e0.  v0:= 0I;
+  #L18b5e2.  if v3 == 0 then goto L18b63e;
+  #L18b5e6.  v3:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b5ea.  v3:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler.corePoolSize` @type ^`int`;
+  #L18b5ee.  v3:= v3 * 2;
+  #L18b5f2.  call temp:= `nextInt`(v2, v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.nextInt:(I)I` @kind virtual;
+  #L18b5f8.  v3:= temp;
+  #L18b5fa.  if v3 != 0 then goto L18b602;
+  #L18b5fe.  v3:= 1I;
+  #L18b600.  goto L18b604;
+  #L18b602.  v3:= 0I;
+  #L18b604.  if v3 == 0 then goto L18b618;
+  #L18b608.  call temp:= `h`(v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.h:()Lkotlinx/coroutines/scheduling/Task;` @kind direct;
+  #L18b60e.  v1:= temp @kind object;
+  #L18b610.  if v1 != 0 then goto L18b616;
+  #L18b614.  goto L18b618;
+  #L18b616.  return v1 @kind object;
+  #L18b618.  v1:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b61c.  call temp:= `poll`(v1) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.poll:()Lkotlinx/coroutines/scheduling/Task;` @kind virtual;
+  #L18b622.  v1:= temp @kind object;
+  #L18b624.  if v1 != 0 then goto L18b63c;
+  #L18b628.  if v3 != 0 then goto L18b64a;
+  #L18b62c.  call temp:= `h`(v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.h:()Lkotlinx/coroutines/scheduling/Task;` @kind direct;
+  #L18b632.  v3:= temp @kind object;
+  #L18b634.  if v3 != 0 then goto L18b63a;
+  #L18b638.  goto L18b64a;
+  #L18b63a.  return v3 @kind object;
+  #L18b63c.  return v1 @kind object;
+  #L18b63e.  call temp:= `h`(v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.h:()Lkotlinx/coroutines/scheduling/Task;` @kind direct;
+  #L18b644.  v3:= temp @kind object;
+  #L18b646.  if v3 != 0 then goto L18b652;
+  #L18b64a.  call temp:= `l`(v2, v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.l:(Z)Lkotlinx/coroutines/scheduling/Task;` @kind direct;
+  #L18b650.  v3:= temp @kind object;
+  #L18b652.  return v3 @kind object;
+}
+procedure `void` `e`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v2 @kind this, `int` v3 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.e:(I)V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L18ba1c.  v0:= 0L;
+  #L18ba20.  v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.a` @type ^`long` := v0 @kind wide;
+  #L18ba24.  v0:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18ba28.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.PARKING` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18ba2c.  if v0 != v1 then goto L18ba60;
+  #L18ba30.  call temp:= `getASSERTIONS_ENABLED`() @signature `Lkotlinx/coroutines/DebugKt;.getASSERTIONS_ENABLED:()Z` @kind static;
+  #L18ba36.  v0:= temp;
+  #L18ba38.  if v0 == 0 then goto L18ba58;
+  #L18ba3c.  v0:= 1I;
+  #L18ba3e.  if v3 != v0 then goto L18ba44;
+  #L18ba42.  goto L18ba46;
+  #L18ba44.  v0:= 0I;
+  #L18ba46.  if v0 == 0 then goto L18ba4c;
+  #L18ba4a.  goto L18ba58;
+  #L18ba4c.  v3:= new `java.lang.AssertionError`;
+  #L18ba50.  call `<init>`(v3) @signature `Ljava/lang/AssertionError;.<init>:()V` @kind direct;
+  #L18ba56.  throw v3;
+  #L18ba58.  v3:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.BLOCKING` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18ba5c.  v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` := v3 @kind object;
+  #L18ba60.  return @kind void;
+}
+procedure `boolean` `f`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v2 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.f:()Z` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L18b468.  v0:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.nextParkedWorker` @type ^`java.lang.Object` @kind object;
+  #L18b46c.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler.NOT_IN_STACK` @type ^`kotlinx.coroutines.internal.Symbol` @kind object;
+  #L18b470.  if v0 == v1 then goto L18b478;
+  #L18b474.  v0:= 1I;
+  #L18b476.  goto L18b47a;
+  #L18b478.  v0:= 0I;
+  #L18b47a.  return v0;
+}
+procedure `void` `g`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v6 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.g:()V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L18ba74.  v0:= v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.a` @type ^`long` @kind wide;
+  #L18ba78.  v2:= 0L;
+  #L18ba7c.  v4:= lcmp(v0, v2);
+  #L18ba80.  if v4 != 0 then goto L18ba9a;
+  #L18ba84.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L18ba8a.  v0:= temp @kind wide;
+  #L18ba8c.  v4:= v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18ba90.  v4:= v4.`kotlinx.coroutines.scheduling.CoroutineScheduler.idleWorkerKeepAliveNs` @type ^`long` @kind wide;
+  #L18ba94.  v0:= v0 + v4 @kind long;
+  #L18ba96.  v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.a` @type ^`long` := v0 @kind wide;
+  #L18ba9a.  v0:= v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18ba9e.  v0:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.idleWorkerKeepAliveNs` @type ^`long` @kind wide;
+  #L18baa2.  call `parkNanos`(v0) @signature `Ljava/util/concurrent/locks/LockSupport;.parkNanos:(J)V` @kind static;
+  #L18baa8.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L18baae.  v0:= temp @kind wide;
+  #L18bab0.  v4:= v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.a` @type ^`long` @kind wide;
+  #L18bab4.  v0:= v0 - v4 @kind long;
+  #L18bab6.  v4:= lcmp(v0, v2);
+  #L18baba.  if v4 < 0 then goto L18bac8;
+  #L18babe.  v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.a` @type ^`long` := v2 @kind wide;
+  #L18bac2.  call `m`(v6) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.m:()V` @kind direct;
+  #L18bac8.  return @kind void;
+}
+procedure `kotlinx.coroutines.scheduling.Task` `h`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v1 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.h:()Lkotlinx/coroutines/scheduling/Task;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+
+  #L18b6d8.  v0:= 2I;
+  #L18b6da.  call temp:= `nextInt`(v1, v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.nextInt:(I)I` @kind virtual;
+  #L18b6e0.  v0:= temp;
+  #L18b6e2.  if v0 != 0 then goto L18b714;
+  #L18b6e6.  v0:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b6ea.  v0:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.globalCpuQueue` @type ^`kotlinx.coroutines.scheduling.GlobalQueue` @kind object;
+  #L18b6ee.  call temp:= `removeFirstOrNull`(v0) @signature `Lkotlinx/coroutines/internal/LockFreeTaskQueue;.removeFirstOrNull:()Ljava/lang/Object;` @kind virtual;
+  #L18b6f4.  v0:= temp @kind object;
+  #L18b6f6.  v0:= (`kotlinx.coroutines.scheduling.Task`) v0 @kind object;
+  #L18b6fa.  if v0 != 0 then goto L18b712;
+  #L18b6fe.  v0:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b702.  v0:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.globalBlockingQueue` @type ^`kotlinx.coroutines.scheduling.GlobalQueue` @kind object;
+  #L18b706.  call temp:= `removeFirstOrNull`(v0) @signature `Lkotlinx/coroutines/internal/LockFreeTaskQueue;.removeFirstOrNull:()Ljava/lang/Object;` @kind virtual;
+  #L18b70c.  v0:= temp @kind object;
+  #L18b70e.  v0:= (`kotlinx.coroutines.scheduling.Task`) v0 @kind object;
+  #L18b712.  return v0 @kind object;
+  #L18b714.  v0:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b718.  v0:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.globalBlockingQueue` @type ^`kotlinx.coroutines.scheduling.GlobalQueue` @kind object;
+  #L18b71c.  call temp:= `removeFirstOrNull`(v0) @signature `Lkotlinx/coroutines/internal/LockFreeTaskQueue;.removeFirstOrNull:()Ljava/lang/Object;` @kind virtual;
+  #L18b722.  v0:= temp @kind object;
+  #L18b724.  v0:= (`kotlinx.coroutines.scheduling.Task`) v0 @kind object;
+  #L18b728.  if v0 != 0 then goto L18b740;
+  #L18b72c.  v0:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b730.  v0:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.globalCpuQueue` @type ^`kotlinx.coroutines.scheduling.GlobalQueue` @kind object;
+  #L18b734.  call temp:= `removeFirstOrNull`(v0) @signature `Lkotlinx/coroutines/internal/LockFreeTaskQueue;.removeFirstOrNull:()Ljava/lang/Object;` @kind virtual;
+  #L18b73a.  v0:= temp @kind object;
+  #L18b73c.  v0:= (`kotlinx.coroutines.scheduling.Task`) v0 @kind object;
+  #L18b740.  return v0 @kind object;
+}
+procedure `void` `i`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v7 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.i:()V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L18baf4.  v0:= 0I;
+  #L18baf6.  v1:= 0I;
+  #L18baf8.  v2:= v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18bafc.  call temp:= `isTerminated`(v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.isTerminated:()Z` @kind virtual;
+  #L18bb02.  v2:= temp;
+  #L18bb04.  if v2 != 0 then goto L18bb74;
+  #L18bb08.  v2:= v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bb0c.  v3:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.TERMINATED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bb10.  if v2 == v3 then goto L18bb74;
+  #L18bb14.  v2:= v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.mayHaveLocalTasks` @type ^`boolean` @kind boolean;
+  #L18bb18.  call temp:= `findTask`(v7, v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.findTask:(Z)Lkotlinx/coroutines/scheduling/Task;` @kind virtual;
+  #L18bb1e.  v2:= temp @kind object;
+  #L18bb20.  v3:= 0L;
+  #L18bb24.  if v2 == 0 then goto L18bb34;
+  #L18bb28.  v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.b` @type ^`long` := v3 @kind wide;
+  #L18bb2c.  call `c`(v7, v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.c:(Lkotlinx/coroutines/scheduling/Task;)V` @kind direct;
+  #L18bb32.  goto L18baf6;
+  #L18bb34.  v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.mayHaveLocalTasks` @type ^`boolean` := v0 @kind boolean;
+  #L18bb38.  v5:= v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.b` @type ^`long` @kind wide;
+  #L18bb3c.  v2:= lcmp(v5, v3);
+  #L18bb40.  if v2 == 0 then goto L18bb6c;
+  #L18bb44.  if v1 != 0 then goto L18bb4c;
+  #L18bb48.  v1:= 1I;
+  #L18bb4a.  goto L18baf8;
+  #L18bb4c.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.PARKING` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bb50.  call temp:= `tryReleaseCpu`(v7, v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.tryReleaseCpu:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$WorkerState;)Z` @kind virtual;
+  #L18bb56.  call temp:= `interrupted`() @signature `Ljava/lang/Thread;.interrupted:()Z` @kind static;
+  #L18bb5c.  v1:= v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.b` @type ^`long` @kind wide;
+  #L18bb60.  call `parkNanos`(v1) @signature `Ljava/util/concurrent/locks/LockSupport;.parkNanos:(J)V` @kind static;
+  #L18bb66.  v7.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.b` @type ^`long` := v3 @kind wide;
+  #L18bb6a.  goto L18baf6;
+  #L18bb6c.  call `k`(v7) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.k:()V` @kind direct;
+  #L18bb72.  goto L18baf8;
+  #L18bb74.  v0:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.TERMINATED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bb78.  call temp:= `tryReleaseCpu`(v7, v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.tryReleaseCpu:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$WorkerState;)Z` @kind virtual;
+  #L18bb7e.  return @kind void;
+}
+procedure `boolean` `j`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v10 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.j:()Z` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L18b48c.  v0:= v10.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b490.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.CPU_ACQUIRED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b494.  v2:= 0I;
+  #L18b496.  v3:= 1I;
+  #L18b498.  if v0 != v1 then goto L18b4a0;
+  #L18b49c.  v2:= 1I;
+  #L18b49e.  goto L18b4f4;
+  #L18b4a0.  v0:= v10.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b4a4.  v6:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.controlState` @type ^`long` @kind wide;
+  #L18b4a8.  v4:= 9223367638808264704L;
+  #L18b4b2.  v4:= v4 ^& v6 @kind long;
+  #L18b4b4.  v1:= 42I;
+  #L18b4b8.  v4:= v4 ^> v1 @kind long;
+  #L18b4ba.  v1:= (`int`) v4 @kind l2i;
+  #L18b4bc.  if v1 != 0 then goto L18b4c4;
+  #L18b4c0.  v0:= 0I;
+  #L18b4c2.  goto L18b4e6;
+  #L18b4c4.  v4:= 4398046511104L;
+  #L18b4ce.  v8:= v6 - v4 @kind long;
+  #L18b4d2.  v4:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler.b` @type ^`java.util.concurrent.atomic.AtomicLongFieldUpdater` @kind object;
+  #L18b4d6.  v5:= v0 @kind object;
+  #L18b4d8.  call temp:= `compareAndSet`(v4, v5, v6, v8) @signature `Ljava/util/concurrent/atomic/AtomicLongFieldUpdater;.compareAndSet:(Ljava/lang/Object;JJ)Z` @kind virtual;
+  #L18b4de.  v1:= temp;
+  #L18b4e0.  if v1 == 0 then goto L18b4a4;
+  #L18b4e4.  v0:= 1I;
+  #L18b4e6.  if v0 == 0 then goto L18b4f4;
+  #L18b4ea.  v0:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.CPU_ACQUIRED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b4ee.  v10.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` := v0 @kind object;
+  #L18b4f2.  goto L18b49c;
+  #L18b4f4.  return v2;
+}
+procedure `void` `k`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v3 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.k:()V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L18bc08.  call temp:= `f`(v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.f:()Z` @kind direct;
+  #L18bc0e.  v0:= temp;
+  #L18bc10.  if v0 != 0 then goto L18bc20;
+  #L18bc14.  v0:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18bc18.  call temp:= `parkedWorkersStackPush`(v0, v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.parkedWorkersStackPush:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;)Z` @kind virtual;
+  #L18bc1e.  return @kind void;
+  #L18bc20.  call temp:= `getASSERTIONS_ENABLED`() @signature `Lkotlinx/coroutines/DebugKt;.getASSERTIONS_ENABLED:()Z` @kind static;
+  #L18bc26.  v0:= temp;
+  #L18bc28.  if v0 == 0 then goto L18bc54;
+  #L18bc2c.  v0:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18bc30.  call temp:= `getSize$kotlinx_coroutines_core`(v0) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.getSize$kotlinx_coroutines_core:()I` @kind virtual;
+  #L18bc36.  v0:= temp;
+  #L18bc38.  if v0 != 0 then goto L18bc40;
+  #L18bc3c.  v0:= 1I;
+  #L18bc3e.  goto L18bc42;
+  #L18bc40.  v0:= 0I;
+  #L18bc42.  if v0 == 0 then goto L18bc48;
+  #L18bc46.  goto L18bc54;
+  #L18bc48.  v0:= new `java.lang.AssertionError`;
+  #L18bc4c.  call `<init>`(v0) @signature `Ljava/lang/AssertionError;.<init>:()V` @kind direct;
+  #L18bc52.  throw v0;
+  #L18bc54.  v0:= -1I;
+  #L18bc56.  v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.workerCtl` @type ^`int` := v0;
+  #L18bc5a.  call temp:= `f`(v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.f:()Z` @kind direct;
+  #L18bc60.  v1:= temp;
+  #L18bc62.  if v1 == 0 then goto L18bca4;
+  #L18bc66.  v1:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.workerCtl` @type ^`int`;
+  #L18bc6a.  if v1 != v0 then goto L18bca4;
+  #L18bc6e.  v1:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18bc72.  call temp:= `isTerminated`(v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.isTerminated:()Z` @kind virtual;
+  #L18bc78.  v1:= temp;
+  #L18bc7a.  if v1 != 0 then goto L18bca4;
+  #L18bc7e.  v1:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bc82.  v2:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.TERMINATED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bc86.  if v1 != v2 then goto L18bc8c;
+  #L18bc8a.  goto L18bca4;
+  #L18bc8c.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.PARKING` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bc90.  call temp:= `tryReleaseCpu`(v3, v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.tryReleaseCpu:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$WorkerState;)Z` @kind virtual;
+  #L18bc96.  call temp:= `interrupted`() @signature `Ljava/lang/Thread;.interrupted:()Z` @kind static;
+  #L18bc9c.  call `g`(v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.g:()V` @kind direct;
+  #L18bca2.  goto L18bc5a;
+  #L18bca4.  return @kind void;
+}
+procedure `kotlinx.coroutines.scheduling.Task` `l`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v19 @kind this, `boolean` v20 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.l:(Z)Lkotlinx/coroutines/scheduling/Task;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+
+  #L18b754.  v0:= v19 @kind object;
+  #L18b758.  call temp:= `getASSERTIONS_ENABLED`() @signature `Lkotlinx/coroutines/DebugKt;.getASSERTIONS_ENABLED:()Z` @kind static;
+  #L18b75e.  v1:= temp;
+  #L18b760.  v2:= 0I;
+  #L18b762.  v3:= 1I;
+  #L18b764.  if v1 == 0 then goto L18b790;
+  #L18b768.  v1:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b76c.  call temp:= `getSize$kotlinx_coroutines_core`(v1) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.getSize$kotlinx_coroutines_core:()I` @kind virtual;
+  #L18b772.  v1:= temp;
+  #L18b774.  if v1 != 0 then goto L18b77c;
+  #L18b778.  v1:= 1I;
+  #L18b77a.  goto L18b77e;
+  #L18b77c.  v1:= 0I;
+  #L18b77e.  if v1 == 0 then goto L18b784;
+  #L18b782.  goto L18b790;
+  #L18b784.  v1:= new `java.lang.AssertionError`;
+  #L18b788.  call `<init>`(v1) @signature `Ljava/lang/AssertionError;.<init>:()V` @kind direct;
+  #L18b78e.  throw v1;
+  #L18b790.  v1:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b794.  v4:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler.controlState` @type ^`long` @kind wide;
+  #L18b798.  v6:= 2097151L;
+  #L18b79e.  v4:= v4 ^& v6 @kind long;
+  #L18b7a0.  v1:= (`int`) v4 @kind l2i;
+  #L18b7a2.  v4:= 2I;
+  #L18b7a4.  v5:= 0I;
+  #L18b7a6.  if v1 >= v4 then goto L18b7ac;
+  #L18b7aa.  return v5 @kind object;
+  #L18b7ac.  call temp:= `nextInt`(v0, v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.nextInt:(I)I` @kind virtual;
+  #L18b7b2.  v4:= temp;
+  #L18b7b4.  v6:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b7b8.  v7:= 9223372036854775807L;
+  #L18b7c2.  v10:= v7 @kind wide;
+  #L18b7c4.  v9:= 0I;
+  #L18b7c6.  v12:= 0L;
+  #L18b7ca.  if v9 >= v1 then goto L18b878;
+  #L18b7ce.  v4:= v4 + v3 @kind int;
+  #L18b7d0.  if v4 <= v1 then goto L18b7d6;
+  #L18b7d4.  v4:= 1I;
+  #L18b7d6.  v14:= v6.`kotlinx.coroutines.scheduling.CoroutineScheduler.workers` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L18b7da.  call temp:= `get`(v14, v4) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.get:(I)Ljava/lang/Object;` @kind virtual;
+  #L18b7e0.  v14:= temp @kind object;
+  #L18b7e2.  v14:= (`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker`) v14 @kind object;
+  #L18b7e6.  if v14 == 0 then goto L18b872;
+  #L18b7ea.  if v14 == v0 then goto L18b872;
+  #L18b7ee.  call temp:= `getASSERTIONS_ENABLED`() @signature `Lkotlinx/coroutines/DebugKt;.getASSERTIONS_ENABLED:()Z` @kind static;
+  #L18b7f4.  v15:= temp;
+  #L18b7f6.  if v15 == 0 then goto L18b822;
+  #L18b7fa.  v15:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b7fe.  call temp:= `getSize$kotlinx_coroutines_core`(v15) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.getSize$kotlinx_coroutines_core:()I` @kind virtual;
+  #L18b804.  v15:= temp;
+  #L18b806.  if v15 != 0 then goto L18b80e;
+  #L18b80a.  v15:= 1I;
+  #L18b80c.  goto L18b810;
+  #L18b80e.  v15:= 0I;
+  #L18b810.  if v15 == 0 then goto L18b816;
+  #L18b814.  goto L18b822;
+  #L18b816.  v1:= new `java.lang.AssertionError`;
+  #L18b81a.  call `<init>`(v1) @signature `Ljava/lang/AssertionError;.<init>:()V` @kind direct;
+  #L18b820.  throw v1;
+  #L18b822.  if v20 == 0 then goto L18b838;
+  #L18b826.  v15:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b82a.  v14:= v14.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b82e.  call temp:= `tryStealBlockingFrom`(v15, v14) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.tryStealBlockingFrom:(Lkotlinx/coroutines/scheduling/WorkQueue;)J` @kind virtual;
+  #L18b834.  v14:= temp @kind wide;
+  #L18b836.  goto L18b848;
+  #L18b838.  v15:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b83c.  v14:= v14.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b840.  call temp:= `tryStealFrom`(v15, v14) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.tryStealFrom:(Lkotlinx/coroutines/scheduling/WorkQueue;)J` @kind virtual;
+  #L18b846.  v14:= temp @kind wide;
+  #L18b848.  v16:= -1L;
+  #L18b84c.  v18:= lcmp(v14, v16);
+  #L18b850.  if v18 != 0 then goto L18b862;
+  #L18b854.  v1:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b858.  call temp:= `poll`(v1) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.poll:()Lkotlinx/coroutines/scheduling/Task;` @kind virtual;
+  #L18b85e.  v1:= temp @kind object;
+  #L18b860.  return v1 @kind object;
+  #L18b862.  v16:= lcmp(v14, v12);
+  #L18b866.  if v16 <= 0 then goto L18b872;
+  #L18b86a.  call temp:= `min`(v10, v14) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L18b870.  v10:= temp @kind wide;
+  #L18b872.  v9:= v9 + 1;
+  #L18b876.  goto L18b7c6;
+  #L18b878.  v1:= lcmp(v10, v7);
+  #L18b87c.  if v1 == 0 then goto L18b882;
+  #L18b880.  goto L18b884;
+  #L18b882.  v10:= v12 @kind wide;
+  #L18b884.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.b` @type ^`long` := v10 @kind wide;
+  #L18b888.  return v5 @kind object;
+}
+procedure `void` `m`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v8 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.m:()V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L18bcb8.  v0:= v8.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18bcbc.  v1:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.workers` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L18bcc0.  @monitorenter v1
+  #L18bcc2.  call temp:= `isTerminated`(v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.isTerminated:()Z` @kind virtual;
+  #L18bcc8.  v2:= temp;
+  #L18bcca.  if v2 == 0 then goto L18bcd2;
+  #L18bcce.  @monitorexit v1
+  #L18bcd0.  return @kind void;
+  #L18bcd2.  v2:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.controlState` @type ^`long` @kind wide;
+  #L18bcd6.  v4:= 2097151L;
+  #L18bcdc.  v2:= v2 ^& v4 @kind long;
+  #L18bcde.  v3:= (`int`) v2 @kind l2i;
+  #L18bce0.  v2:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.corePoolSize` @type ^`int`;
+  #L18bce4.  if v3 > v2 then goto L18bcec;
+  #L18bce8.  @monitorexit v1
+  #L18bcea.  return @kind void;
+  #L18bcec.  v2:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.e` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` @kind object;
+  #L18bcf0.  v3:= -1I;
+  #L18bcf2.  v6:= 1I;
+  #L18bcf4.  call temp:= `compareAndSet`(v2, v8, v3, v6) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.compareAndSet:(Ljava/lang/Object;II)Z` @kind virtual;
+  #L18bcfa.  v2:= temp;
+  #L18bcfc.  if v2 != 0 then goto L18bd04;
+  #L18bd00.  @monitorexit v1
+  #L18bd02.  return @kind void;
+  #L18bd04.  call temp:= `getIndexInArray`(v8) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.getIndexInArray:()I` @kind virtual;
+  #L18bd0a.  v2:= temp;
+  #L18bd0c.  v3:= 0I;
+  #L18bd0e.  call `setIndexInArray`(v8, v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.setIndexInArray:(I)V` @kind virtual;
+  #L18bd14.  call `parkedWorkersStackTopUpdate`(v0, v8, v2, v3) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.parkedWorkersStackTopUpdate:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;II)V` @kind virtual;
+  #L18bd1a.  v3:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler.b` @type ^`java.util.concurrent.atomic.AtomicLongFieldUpdater` @kind object;
+  #L18bd1e.  call temp:= `getAndDecrement`(v3, v0) @signature `Ljava/util/concurrent/atomic/AtomicLongFieldUpdater;.getAndDecrement:(Ljava/lang/Object;)J` @kind virtual;
+  #L18bd24.  v6:= temp @kind wide;
+  #L18bd26.  v3:= v6 ^& v4 @kind long;
+  #L18bd2a.  v4:= (`int`) v3 @kind l2i;
+  #L18bd2c.  if v4 == v2 then goto L18bd5c;
+  #L18bd30.  v3:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.workers` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L18bd34.  call temp:= `get`(v3, v4) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.get:(I)Ljava/lang/Object;` @kind virtual;
+  #L18bd3a.  v3:= temp @kind object;
+  #L18bd3c.  v3:= (`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker`) v3 @kind object;
+  #L18bd40.  call `checkNotNull`(v3) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNull:(Ljava/lang/Object;)V` @kind static;
+  #L18bd46.  v5:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.workers` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L18bd4a.  call `set`(v5, v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.set:(ILjava/lang/Object;)V` @kind virtual;
+  #L18bd50.  call `setIndexInArray`(v3, v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.setIndexInArray:(I)V` @kind virtual;
+  #L18bd56.  call `parkedWorkersStackTopUpdate`(v0, v3, v4, v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler;.parkedWorkersStackTopUpdate:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;II)V` @kind virtual;
+  #L18bd5c.  v0:= v0.`kotlinx.coroutines.scheduling.CoroutineScheduler.workers` @type ^`java.util.concurrent.atomic.AtomicReferenceArray` @kind object;
+  #L18bd60.  v2:= 0I;
+  #L18bd62.  call `set`(v0, v4, v2) @signature `Ljava/util/concurrent/atomic/AtomicReferenceArray;.set:(ILjava/lang/Object;)V` @kind virtual;
+  #L18bd68.  v0:= `@@kotlin.Unit.INSTANCE` @type ^`kotlin.Unit` @kind object;
+  #L18bd6c.  @monitorexit v1
+  #L18bd6e.  v0:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.TERMINATED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18bd72.  v8.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` := v0 @kind object;
+  #L18bd76.  return @kind void;
+  #L18bd78.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L18bd7a.  @monitorexit v1
+  #L18bd7c.  throw v0;
+  catch `java.lang.Throwable` @[L18bcc2..L18bcca] goto L18bd78;
+  catch `java.lang.Throwable` @[L18bcd2..L18bce4] goto L18bd78;
+  catch `java.lang.Throwable` @[L18bcec..L18bcfc] goto L18bd78;
+  catch `java.lang.Throwable` @[L18bd04..L18bd6c] goto L18bd78;
+}
+procedure `kotlinx.coroutines.scheduling.Task` `findTask`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v1 @kind this, `boolean` v2 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.findTask:(Z)Lkotlinx/coroutines/scheduling/Task;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L18b664.  call temp:= `j`(v1) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.j:()Z` @kind direct;
+  #L18b66a.  v0:= temp;
+  #L18b66c.  if v0 == 0 then goto L18b67a;
+  #L18b670.  call temp:= `d`(v1, v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.d:(Z)Lkotlinx/coroutines/scheduling/Task;` @kind direct;
+  #L18b676.  v2:= temp @kind object;
+  #L18b678.  return v2 @kind object;
+  #L18b67a.  if v2 == 0 then goto L18b6a4;
+  #L18b67e.  v2:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.localQueue` @type ^`kotlinx.coroutines.scheduling.WorkQueue` @kind object;
+  #L18b682.  call temp:= `poll`(v2) @signature `Lkotlinx/coroutines/scheduling/WorkQueue;.poll:()Lkotlinx/coroutines/scheduling/Task;` @kind virtual;
+  #L18b688.  v2:= temp @kind object;
+  #L18b68a.  if v2 != 0 then goto L18b6b8;
+  #L18b68e.  v2:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b692.  v2:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler.globalBlockingQueue` @type ^`kotlinx.coroutines.scheduling.GlobalQueue` @kind object;
+  #L18b696.  call temp:= `removeFirstOrNull`(v2) @signature `Lkotlinx/coroutines/internal/LockFreeTaskQueue;.removeFirstOrNull:()Ljava/lang/Object;` @kind virtual;
+  #L18b69c.  v2:= temp @kind object;
+  #L18b69e.  v2:= (`kotlinx.coroutines.scheduling.Task`) v2 @kind object;
+  #L18b6a2.  goto L18b6b8;
+  #L18b6a4.  v2:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b6a8.  v2:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler.globalBlockingQueue` @type ^`kotlinx.coroutines.scheduling.GlobalQueue` @kind object;
+  #L18b6ac.  call temp:= `removeFirstOrNull`(v2) @signature `Lkotlinx/coroutines/internal/LockFreeTaskQueue;.removeFirstOrNull:()Ljava/lang/Object;` @kind virtual;
+  #L18b6b2.  v2:= temp @kind object;
+  #L18b6b4.  v2:= (`kotlinx.coroutines.scheduling.Task`) v2 @kind object;
+  #L18b6b8.  if v2 != 0 then goto L18b6c6;
+  #L18b6bc.  v2:= 1I;
+  #L18b6be.  call temp:= `l`(v1, v2) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.l:(Z)Lkotlinx/coroutines/scheduling/Task;` @kind direct;
+  #L18b6c4.  v2:= temp @kind object;
+  #L18b6c6.  return v2 @kind object;
+}
+procedure `int` `getIndexInArray`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v1 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.getIndexInArray:()I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L18b550.  v0:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.indexInArray` @type ^`int`;
+  #L18b554.  return v0;
+}
+procedure `java.lang.Object` `getNextParkedWorker`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v1 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.getNextParkedWorker:()Ljava/lang/Object;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L18b5b0.  v0:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.nextParkedWorker` @type ^`java.lang.Object` @kind object;
+  #L18b5b4.  return v0 @kind object;
+}
+procedure `kotlinx.coroutines.scheduling.CoroutineScheduler` `getScheduler`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v1 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.getScheduler:()Lkotlinx/coroutines/scheduling/CoroutineScheduler;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L18b5c8.  v0:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b5cc.  return v0 @kind object;
+}
+procedure `int` `nextInt`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v3 @kind this, `int` v4 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.nextInt:(I)I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L18b568.  v0:= v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.c` @type ^`int`;
+  #L18b56c.  v1:= v0 ^< 13;
+  #L18b570.  v0:= v0 ^~ v1 @kind int;
+  #L18b572.  v1:= v0 ^> 17;
+  #L18b576.  v0:= v0 ^~ v1 @kind int;
+  #L18b578.  v1:= v0 ^< 5;
+  #L18b57c.  v0:= v0 ^~ v1 @kind int;
+  #L18b57e.  v3.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.c` @type ^`int` := v0;
+  #L18b582.  v1:= v4 + -1;
+  #L18b586.  v2:= v1 ^& v4 @kind int;
+  #L18b58a.  if v2 != 0 then goto L18b594;
+  #L18b58e.  v4:= v0 ^& v1 @kind int;
+  #L18b592.  return v4;
+  #L18b594.  v1:= 2147483647I;
+  #L18b59a.  v0:= v0 ^& v1 @kind int;
+  #L18b59c.  v0:= v0 %% v4 @kind int;
+  #L18b59e.  return v0;
+}
+procedure `void` `run`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v0 @kind this) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.run:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L18badc.  call `i`(v0) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.i:()V` @kind direct;
+  #L18bae2.  return @kind void;
+}
+procedure `void` `setIndexInArray`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v2 @kind this, `int` v3 ) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.setIndexInArray:(I)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L18bb90.  v0:= new `java.lang.StringBuilder`;
+  #L18bb94.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L18bb9a.  v1:= v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18bb9e.  v1:= v1.`kotlinx.coroutines.scheduling.CoroutineScheduler.schedulerName` @type ^`java.lang.String` @kind object;
+  #L18bba2.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L18bba8.  v1:= "-worker-" @kind object;
+  #L18bbac.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L18bbb2.  if v3 != 0 then goto L18bbbc;
+  #L18bbb6.  v1:= "TERMINATED" @kind object;
+  #L18bbba.  goto L18bbc4;
+  #L18bbbc.  call temp:= `valueOf`(v3) @signature `Ljava/lang/String;.valueOf:(I)Ljava/lang/String;` @kind static;
+  #L18bbc2.  v1:= temp @kind object;
+  #L18bbc4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L18bbca.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L18bbd0.  v0:= temp @kind object;
+  #L18bbd2.  call `setName`(v2, v0) @signature `Ljava/lang/Thread;.setName:(Ljava/lang/String;)V` @kind virtual;
+  #L18bbd8.  v2.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.indexInArray` @type ^`int` := v3;
+  #L18bbdc.  return @kind void;
+}
+procedure `void` `setNextParkedWorker`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.setNextParkedWorker:(Ljava/lang/Object;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+
+  #L18bbf0.  v0.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.nextParkedWorker` @type ^`java.lang.Object` := v1 @kind object;
+  #L18bbf4.  return @kind void;
+}
+procedure `boolean` `tryReleaseCpu`(`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker` v6 @kind this, `kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` v7 @kind object) @signature `Lkotlinx/coroutines/scheduling/CoroutineScheduler$Worker;.tryReleaseCpu:(Lkotlinx/coroutines/scheduling/CoroutineScheduler$WorkerState;)Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L18b508.  v0:= v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b50c.  v1:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState.CPU_ACQUIRED` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` @kind object;
+  #L18b510.  if v0 != v1 then goto L18b518;
+  #L18b514.  v1:= 1I;
+  #L18b516.  goto L18b51a;
+  #L18b518.  v1:= 0I;
+  #L18b51a.  if v1 == 0 then goto L18b536;
+  #L18b51e.  v2:= v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.d` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler` @kind object;
+  #L18b522.  v3:= `@@kotlinx.coroutines.scheduling.CoroutineScheduler.b` @type ^`java.util.concurrent.atomic.AtomicLongFieldUpdater` @kind object;
+  #L18b526.  v4:= 4398046511104L;
+  #L18b530.  call temp:= `addAndGet`(v3, v2, v4) @signature `Ljava/util/concurrent/atomic/AtomicLongFieldUpdater;.addAndGet:(Ljava/lang/Object;J)J` @kind virtual;
+  #L18b536.  if v0 == v7 then goto L18b53e;
+  #L18b53a.  v6.`kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.state` @type ^`kotlinx.coroutines.scheduling.CoroutineScheduler$WorkerState` := v7 @kind object;
+  #L18b53e.  return v1;
+}

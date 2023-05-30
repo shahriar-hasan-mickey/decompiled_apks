@@ -1,0 +1,323 @@
+record `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` @kind class @AccessFlag FINAL extends `rx.Subscriber` @kind class {
+  `boolean` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.active` @AccessFlag VOLATILE;
+  `rx.Subscriber` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @AccessFlag FINAL;
+  `rx.internal.producers.ProducerArbiter` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.arbiter` @AccessFlag FINAL;
+  `int` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.delayErrorMode` @AccessFlag FINAL;
+  `boolean` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.done` @AccessFlag VOLATILE;
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @AccessFlag FINAL;
+  `rx.subscriptions.SerialSubscription` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.inner` @AccessFlag FINAL;
+  `rx.functions.Func1` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.mapper` @AccessFlag FINAL;
+  `java.util.Queue` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.queue` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.wip` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v0 @kind this, `rx.Subscriber` v1 @kind object, `rx.functions.Func1` v2 @kind object, `int` v3 , `int` v4 ) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.<init>:(Lrx/Subscriber;Lrx/functions/Func1;II)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4975e8.  call `<init>`(v0) @signature `Lrx/Subscriber;.<init>:()V` @kind direct;
+  #L4975ee.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4975f2.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.mapper` @type ^`rx.functions.Func1` := v2 @kind object;
+  #L4975f6.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.delayErrorMode` @type ^`int` := v4;
+  #L4975fa.  v1:= new `rx.internal.producers.ProducerArbiter`;
+  #L4975fe.  call `<init>`(v1) @signature `Lrx/internal/producers/ProducerArbiter;.<init>:()V` @kind direct;
+  #L497604.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.arbiter` @type ^`rx.internal.producers.ProducerArbiter` := v1 @kind object;
+  #L497608.  v1:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L49760c.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L497612.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v1 @kind object;
+  #L497616.  v1:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L49761a.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L497620.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` := v1 @kind object;
+  #L497624.  call temp:= `isUnsafeAvailable`() @signature `Lrx/internal/util/unsafe/UnsafeAccess;.isUnsafeAvailable:()Z` @kind static;
+  #L49762a.  v1:= temp;
+  #L49762c.  if v1 == 0 then goto L49763c;
+  #L497630.  v1:= new `rx.internal.util.unsafe.SpscArrayQueue`;
+  #L497634.  call `<init>`(v1, v3) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.<init>:(I)V` @kind direct;
+  #L49763a.  goto L497646;
+  #L49763c.  v1:= new `rx.internal.util.atomic.SpscAtomicArrayQueue`;
+  #L497640.  call `<init>`(v1, v3) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.<init>:(I)V` @kind direct;
+  #L497646.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.queue` @type ^`java.util.Queue` := v1 @kind object;
+  #L49764a.  v1:= new `rx.subscriptions.SerialSubscription`;
+  #L49764e.  call `<init>`(v1) @signature `Lrx/subscriptions/SerialSubscription;.<init>:()V` @kind direct;
+  #L497654.  v0.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.inner` @type ^`rx.subscriptions.SerialSubscription` := v1 @kind object;
+  #L497658.  v1:= (`long`) v3 @kind i2l;
+  #L49765a.  call `request`(v0, v1) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.request:(J)V` @kind virtual;
+  #L497660.  return @kind void;
+}
+procedure `void` `drain`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v7 @kind this) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drain:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L497674.  v0:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L497678.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L49767e.  v0:= temp;
+  #L497680.  if v0 == 0 then goto L497686;
+  #L497684.  return @kind void;
+  #L497686.  v0:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.delayErrorMode` @type ^`int`;
+  #L49768a.  v1:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L49768e.  call temp:= `isUnsubscribed`(v1) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L497694.  v1:= temp;
+  #L497696.  if v1 == 0 then goto L49769c;
+  #L49769a.  return @kind void;
+  #L49769c.  v1:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.active` @type ^`boolean` @kind boolean;
+  #L4976a0.  if v1 != 0 then goto L4977f6;
+  #L4976a4.  v1:= 1I;
+  #L4976a6.  if v0 != v1 then goto L4976de;
+  #L4976aa.  v2:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4976ae.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4976b4.  v2:= temp @kind object;
+  #L4976b6.  if v2 == 0 then goto L4976de;
+  #L4976ba.  v0:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4976be.  call temp:= `terminate`(v0) @signature `Lrx/internal/util/ExceptionsUtils;.terminate:(Ljava/util/concurrent/atomic/AtomicReference;)Ljava/lang/Throwable;` @kind static;
+  #L4976c4.  v0:= temp @kind object;
+  #L4976c6.  call temp:= `isTerminated`(v0) @signature `Lrx/internal/util/ExceptionsUtils;.isTerminated:(Ljava/lang/Throwable;)Z` @kind static;
+  #L4976cc.  v1:= temp;
+  #L4976ce.  if v1 != 0 then goto L4976dc;
+  #L4976d2.  v1:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L4976d6.  call `onError`(v1, v0) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4976dc.  return @kind void;
+  #L4976de.  v2:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.done` @type ^`boolean` @kind boolean;
+  #L4976e2.  v3:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.queue` @type ^`java.util.Queue` @kind object;
+  #L4976e6.  call temp:= `poll`(v3) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L4976ec.  v3:= temp @kind object;
+  #L4976ee.  if v3 != 0 then goto L4976f6;
+  #L4976f2.  v4:= 1I;
+  #L4976f4.  goto L4976f8;
+  #L4976f6.  v4:= 0I;
+  #L4976f8.  if v2 == 0 then goto L497734;
+  #L4976fc.  if v4 == 0 then goto L497734;
+  #L497700.  v0:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L497704.  call temp:= `terminate`(v0) @signature `Lrx/internal/util/ExceptionsUtils;.terminate:(Ljava/util/concurrent/atomic/AtomicReference;)Ljava/lang/Throwable;` @kind static;
+  #L49770a.  v0:= temp @kind object;
+  #L49770c.  if v0 != 0 then goto L49771c;
+  #L497710.  v0:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L497714.  call `onCompleted`(v0) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L49771a.  goto L497732;
+  #L49771c.  call temp:= `isTerminated`(v0) @signature `Lrx/internal/util/ExceptionsUtils;.isTerminated:(Ljava/lang/Throwable;)Z` @kind static;
+  #L497722.  v1:= temp;
+  #L497724.  if v1 != 0 then goto L497732;
+  #L497728.  v1:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L49772c.  call `onError`(v1, v0) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L497732.  return @kind void;
+  #L497734.  if v4 != 0 then goto L4977f6;
+  #L497738.  v2:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.mapper` @type ^`rx.functions.Func1` @kind object;
+  #L49773c.  call temp:= `getValue`(v3) @signature `Lrx/internal/operators/NotificationLite;.getValue:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L497742.  v3:= temp @kind object;
+  #L497744.  call temp:= `call`(v2, v3) @signature `Lrx/functions/Func1;.call:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L49774a.  v2:= temp @kind object;
+  #L49774c.  v2:= (`rx.Observable`) v2 @kind object;
+  #L497750.  if v2 != 0 then goto L49776a;
+  #L497754.  v0:= new `java.lang.NullPointerException`;
+  #L497758.  v1:= "The source returned by the mapper was null" @kind object;
+  #L49775c.  call `<init>`(v0, v1) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L497762.  call `drainError`(v7, v0) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drainError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L497768.  return @kind void;
+  #L49776a.  call temp:= `empty`() @signature `Lrx/Observable;.empty:()Lrx/Observable;` @kind static;
+  #L497770.  v3:= temp @kind object;
+  #L497772.  v4:= 1L;
+  #L497776.  if v2 == v3 then goto L4977dc;
+  #L49777a.  v3:= instanceof @variable v2 @type ^`rx.internal.util.ScalarSynchronousObservable` @kind boolean;
+  #L49777e.  if v3 == 0 then goto L4977a8;
+  #L497782.  v2:= (`rx.internal.util.ScalarSynchronousObservable`) v2 @kind object;
+  #L497786.  v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.active` @type ^`boolean` := v1 @kind boolean;
+  #L49778a.  v1:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.arbiter` @type ^`rx.internal.producers.ProducerArbiter` @kind object;
+  #L49778e.  v3:= new `rx.internal.operators.OnSubscribeConcatMap$ConcatMapInnerScalarProducer`;
+  #L497792.  call temp:= `get`(v2) @signature `Lrx/internal/util/ScalarSynchronousObservable;.get:()Ljava/lang/Object;` @kind virtual;
+  #L497798.  v2:= temp @kind object;
+  #L49779a.  call `<init>`(v3, v2, v7) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapInnerScalarProducer;.<init>:(Ljava/lang/Object;Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;)V` @kind direct;
+  #L4977a0.  call `setProducer`(v1, v3) @signature `Lrx/internal/producers/ProducerArbiter;.setProducer:(Lrx/Producer;)V` @kind virtual;
+  #L4977a6.  goto L4977d2;
+  #L4977a8.  v3:= new `rx.internal.operators.OnSubscribeConcatMap$ConcatMapInnerSubscriber`;
+  #L4977ac.  call `<init>`(v3, v7) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapInnerSubscriber;.<init>:(Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;)V` @kind direct;
+  #L4977b2.  v6:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.inner` @type ^`rx.subscriptions.SerialSubscription` @kind object;
+  #L4977b6.  call `set`(v6, v3) @signature `Lrx/subscriptions/SerialSubscription;.set:(Lrx/Subscription;)V` @kind virtual;
+  #L4977bc.  call temp:= `isUnsubscribed`(v3) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapInnerSubscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4977c2.  v6:= temp;
+  #L4977c4.  if v6 != 0 then goto L4977da;
+  #L4977c8.  v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.active` @type ^`boolean` := v1 @kind boolean;
+  #L4977cc.  call temp:= `unsafeSubscribe`(v2, v3) @signature `Lrx/Observable;.unsafeSubscribe:(Lrx/Subscriber;)Lrx/Subscription;` @kind virtual;
+  #L4977d2.  call `request`(v7, v4) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.request:(J)V` @kind virtual;
+  #L4977d8.  goto L4977f6;
+  #L4977da.  return @kind void;
+  #L4977dc.  call `request`(v7, v4) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.request:(J)V` @kind virtual;
+  #L4977e2.  goto L49768a;
+  #L4977e6.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4977e8.  call `throwIfFatal`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L4977ee.  call `drainError`(v7, v0) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drainError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4977f4.  return @kind void;
+  #L4977f6.  v1:= v7.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4977fa.  call temp:= `decrementAndGet`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L497800.  v1:= temp;
+  #L497802.  if v1 != 0 then goto L49768a;
+  #L497806.  return @kind void;
+  catch `java.lang.Throwable` @[L497738..L497750] goto L4977e6;
+}
+procedure `void` `drainError`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drainError:(Ljava/lang/Throwable;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L497824.  call `unsubscribe`(v1) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.unsubscribe:()V` @kind virtual;
+  #L49782a.  v0:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L49782e.  call temp:= `addThrowable`(v0, v2) @signature `Lrx/internal/util/ExceptionsUtils;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L497834.  v0:= temp;
+  #L497836.  if v0 == 0 then goto L49785e;
+  #L49783a.  v2:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L49783e.  call temp:= `terminate`(v2) @signature `Lrx/internal/util/ExceptionsUtils;.terminate:(Ljava/util/concurrent/atomic/AtomicReference;)Ljava/lang/Throwable;` @kind static;
+  #L497844.  v2:= temp @kind object;
+  #L497846.  call temp:= `isTerminated`(v2) @signature `Lrx/internal/util/ExceptionsUtils;.isTerminated:(Ljava/lang/Throwable;)Z` @kind static;
+  #L49784c.  v0:= temp;
+  #L49784e.  if v0 != 0 then goto L497864;
+  #L497852.  v0:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L497856.  call `onError`(v0, v2) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L49785c.  goto L497864;
+  #L49785e.  call `pluginError`(v1, v2) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.pluginError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L497864.  return @kind void;
+}
+procedure `void` `innerCompleted`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v3 @kind this, `long` v4 ) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.innerCompleted:(J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L497878.  v0:= 0L;
+  #L49787c.  v2:= lcmp(v4, v0);
+  #L497880.  if v2 == 0 then goto L49788e;
+  #L497884.  v0:= v3.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.arbiter` @type ^`rx.internal.producers.ProducerArbiter` @kind object;
+  #L497888.  call `produced`(v0, v4) @signature `Lrx/internal/producers/ProducerArbiter;.produced:(J)V` @kind virtual;
+  #L49788e.  v4:= 0I;
+  #L497890.  v3.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.active` @type ^`boolean` := v4 @kind boolean;
+  #L497894.  call `drain`(v3) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drain:()V` @kind virtual;
+  #L49789a.  return @kind void;
+}
+procedure `void` `innerError`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v2 @kind this, `java.lang.Throwable` v3 @kind object, `long` v4 ) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.innerError:(Ljava/lang/Throwable;J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L4978ac.  v0:= v2.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4978b0.  call temp:= `addThrowable`(v0, v3) @signature `Lrx/internal/util/ExceptionsUtils;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L4978b6.  v0:= temp;
+  #L4978b8.  if v0 != 0 then goto L4978c4;
+  #L4978bc.  call `pluginError`(v2, v3) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.pluginError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4978c2.  goto L497918;
+  #L4978c4.  v3:= v2.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.delayErrorMode` @type ^`int`;
+  #L4978c8.  if v3 != 0 then goto L4978f6;
+  #L4978cc.  v3:= v2.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4978d0.  call temp:= `terminate`(v3) @signature `Lrx/internal/util/ExceptionsUtils;.terminate:(Ljava/util/concurrent/atomic/AtomicReference;)Ljava/lang/Throwable;` @kind static;
+  #L4978d6.  v3:= temp @kind object;
+  #L4978d8.  call temp:= `isTerminated`(v3) @signature `Lrx/internal/util/ExceptionsUtils;.isTerminated:(Ljava/lang/Throwable;)Z` @kind static;
+  #L4978de.  v4:= temp;
+  #L4978e0.  if v4 != 0 then goto L4978ee;
+  #L4978e4.  v4:= v2.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L4978e8.  call `onError`(v4, v3) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4978ee.  call `unsubscribe`(v2) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.unsubscribe:()V` @kind virtual;
+  #L4978f4.  goto L497918;
+  #L4978f6.  v0:= 0L;
+  #L4978fa.  v3:= lcmp(v4, v0);
+  #L4978fe.  if v3 == 0 then goto L49790c;
+  #L497902.  v3:= v2.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.arbiter` @type ^`rx.internal.producers.ProducerArbiter` @kind object;
+  #L497906.  call `produced`(v3, v4) @signature `Lrx/internal/producers/ProducerArbiter;.produced:(J)V` @kind virtual;
+  #L49790c.  v3:= 0I;
+  #L49790e.  v2.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.active` @type ^`boolean` := v3 @kind boolean;
+  #L497912.  call `drain`(v2) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drain:()V` @kind virtual;
+  #L497918.  return @kind void;
+}
+procedure `void` `innerNext`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.innerNext:(Ljava/lang/Object;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L49792c.  v0:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L497930.  call `onNext`(v0, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L497936.  return @kind void;
+}
+procedure `void` `onCompleted`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v1 @kind this) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497948.  v0:= 1I;
+  #L49794a.  v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.done` @type ^`boolean` := v0 @kind boolean;
+  #L49794e.  call `drain`(v1) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drain:()V` @kind virtual;
+  #L497954.  return @kind void;
+}
+procedure `void` `onError`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497968.  v0:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L49796c.  call temp:= `addThrowable`(v0, v2) @signature `Lrx/internal/util/ExceptionsUtils;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L497972.  v0:= temp;
+  #L497974.  if v0 == 0 then goto L4979bc;
+  #L497978.  v2:= 1I;
+  #L49797a.  v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.done` @type ^`boolean` := v2 @kind boolean;
+  #L49797e.  v2:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.delayErrorMode` @type ^`int`;
+  #L497982.  if v2 != 0 then goto L4979b4;
+  #L497986.  v2:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L49798a.  call temp:= `terminate`(v2) @signature `Lrx/internal/util/ExceptionsUtils;.terminate:(Ljava/util/concurrent/atomic/AtomicReference;)Ljava/lang/Throwable;` @kind static;
+  #L497990.  v2:= temp @kind object;
+  #L497992.  call temp:= `isTerminated`(v2) @signature `Lrx/internal/util/ExceptionsUtils;.isTerminated:(Ljava/lang/Throwable;)Z` @kind static;
+  #L497998.  v0:= temp;
+  #L49799a.  if v0 != 0 then goto L4979a8;
+  #L49799e.  v0:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.actual` @type ^`rx.Subscriber` @kind object;
+  #L4979a2.  call `onError`(v0, v2) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4979a8.  v2:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.inner` @type ^`rx.subscriptions.SerialSubscription` @kind object;
+  #L4979ac.  call `unsubscribe`(v2) @signature `Lrx/subscriptions/SerialSubscription;.unsubscribe:()V` @kind virtual;
+  #L4979b2.  goto L4979c2;
+  #L4979b4.  call `drain`(v1) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drain:()V` @kind virtual;
+  #L4979ba.  goto L4979c2;
+  #L4979bc.  call `pluginError`(v1, v2) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.pluginError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4979c2.  return @kind void;
+}
+procedure `void` `onNext`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4979d4.  v0:= v1.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.queue` @type ^`java.util.Queue` @kind object;
+  #L4979d8.  call temp:= `next`(v2) @signature `Lrx/internal/operators/NotificationLite;.next:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L4979de.  v2:= temp @kind object;
+  #L4979e0.  call temp:= `offer`(v0, v2) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L4979e6.  v2:= temp;
+  #L4979e8.  if v2 != 0 then goto L497a04;
+  #L4979ec.  call `unsubscribe`(v1) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.unsubscribe:()V` @kind virtual;
+  #L4979f2.  v2:= new `rx.exceptions.MissingBackpressureException`;
+  #L4979f6.  call `<init>`(v2) @signature `Lrx/exceptions/MissingBackpressureException;.<init>:()V` @kind direct;
+  #L4979fc.  call `onError`(v1, v2) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L497a02.  goto L497a0a;
+  #L497a04.  call `drain`(v1) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.drain:()V` @kind virtual;
+  #L497a0a.  return @kind void;
+}
+procedure `void` `pluginError`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v0 @kind this, `java.lang.Throwable` v1 @kind object) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.pluginError:(Ljava/lang/Throwable;)V` @AccessFlag  {
+    temp;
+
+  #L497a1c.  call `onError`(v1) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L497a22.  return @kind void;
+}
+procedure `void` `requestMore`(`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber` v3 @kind this, `long` v4 ) @signature `Lrx/internal/operators/OnSubscribeConcatMap$ConcatMapSubscriber;.requestMore:(J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L497a34.  v0:= 0L;
+  #L497a38.  v2:= lcmp(v4, v0);
+  #L497a3c.  if v2 <= 0 then goto L497a4c;
+  #L497a40.  v0:= v3.`rx.internal.operators.OnSubscribeConcatMap$ConcatMapSubscriber.arbiter` @type ^`rx.internal.producers.ProducerArbiter` @kind object;
+  #L497a44.  call `request`(v0, v4) @signature `Lrx/internal/producers/ProducerArbiter;.request:(J)V` @kind virtual;
+  #L497a4a.  goto L497a54;
+  #L497a4c.  v2:= lcmp(v4, v0);
+  #L497a50.  if v2 < 0 then goto L497a56;
+  #L497a54.  return @kind void;
+  #L497a56.  v0:= new `java.lang.IllegalArgumentException`;
+  #L497a5a.  v1:= new `java.lang.StringBuilder`;
+  #L497a5e.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L497a64.  v2:= "n >= 0 required but it was " @kind object;
+  #L497a68.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L497a6e.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L497a74.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L497a7a.  v4:= temp @kind object;
+  #L497a7c.  call `<init>`(v0, v4) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L497a82.  throw v0;
+}

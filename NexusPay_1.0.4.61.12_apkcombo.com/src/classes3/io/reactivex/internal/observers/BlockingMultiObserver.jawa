@@ -1,0 +1,209 @@
+record `io.reactivex.internal.observers.BlockingMultiObserver` @kind class @AccessFlag PUBLIC_FINAL extends `java.util.concurrent.CountDownLatch` @kind class, `io.reactivex.SingleObserver` @kind interface, `io.reactivex.CompletableObserver` @kind interface, `io.reactivex.MaybeObserver` @kind interface {
+  `java.lang.Object` `io.reactivex.internal.observers.BlockingMultiObserver.a` @AccessFlag ;
+  `java.lang.Throwable` `io.reactivex.internal.observers.BlockingMultiObserver.b` @AccessFlag ;
+  `io.reactivex.disposables.Disposable` `io.reactivex.internal.observers.BlockingMultiObserver.c` @AccessFlag ;
+  `boolean` `io.reactivex.internal.observers.BlockingMultiObserver.d` @AccessFlag VOLATILE;
+}
+procedure `void` `<init>`(`io.reactivex.internal.observers.BlockingMultiObserver` v1 @kind this) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L42aa80.  v0:= 1I;
+  #L42aa82.  call `<init>`(v1, v0) @signature `Ljava/util/concurrent/CountDownLatch;.<init>:(I)V` @kind direct;
+  #L42aa88.  return @kind void;
+}
+procedure `void` `a`(`io.reactivex.internal.observers.BlockingMultiObserver` v1 @kind this) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L42aa9c.  v0:= 1I;
+  #L42aa9e.  v1.`io.reactivex.internal.observers.BlockingMultiObserver.d` @type ^`boolean` := v0 @kind boolean;
+  #L42aaa2.  v0:= v1.`io.reactivex.internal.observers.BlockingMultiObserver.c` @type ^`io.reactivex.disposables.Disposable` @kind object;
+  #L42aaa6.  if v0 == 0 then goto L42aab0;
+  #L42aaaa.  call `dispose`(v0) @signature `Lio/reactivex/disposables/Disposable;.dispose:()V` @kind interface;
+  #L42aab0.  return @kind void;
+}
+procedure `boolean` `blockingAwait`(`io.reactivex.internal.observers.BlockingMultiObserver` v5 @kind this, `long` v6 , `java.util.concurrent.TimeUnit` v8 @kind object) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.blockingAwait:(JLjava/util/concurrent/TimeUnit;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L42a850.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L42a856.  v0:= temp @kind wide;
+  #L42a858.  v2:= 0L;
+  #L42a85c.  v4:= lcmp(v0, v2);
+  #L42a860.  if v4 == 0 then goto L42a892;
+  #L42a864.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L42a86a.  call temp:= `await`(v5, v6, v8) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L42a870.  v6:= temp;
+  #L42a872.  if v6 != 0 then goto L42a892;
+  #L42a876.  call `a`(v5) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @kind virtual;
+  #L42a87c.  v6:= 0I;
+  #L42a87e.  return v6;
+  #L42a880.  v6:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L42a882.  call `a`(v5) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @kind virtual;
+  #L42a888.  call temp:= `wrapOrThrow`(v6) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42a88e.  v6:= temp @kind object;
+  #L42a890.  throw v6;
+  #L42a892.  v6:= v5.`io.reactivex.internal.observers.BlockingMultiObserver.b` @type ^`java.lang.Throwable` @kind object;
+  #L42a896.  if v6 != 0 then goto L42a89e;
+  #L42a89a.  v6:= 1I;
+  #L42a89c.  return v6;
+  #L42a89e.  call temp:= `wrapOrThrow`(v6) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42a8a4.  v6:= temp @kind object;
+  #L42a8a6.  throw v6;
+  catch `java.lang.InterruptedException` @[L42a864..L42a87c] goto L42a880;
+}
+procedure `java.lang.Object` `blockingGet`(`io.reactivex.internal.observers.BlockingMultiObserver` v5 @kind this) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.blockingGet:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L42a8c8.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L42a8ce.  v0:= temp @kind wide;
+  #L42a8d0.  v2:= 0L;
+  #L42a8d4.  v4:= lcmp(v0, v2);
+  #L42a8d8.  if v4 == 0 then goto L42a8fc;
+  #L42a8dc.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L42a8e2.  call `await`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L42a8e8.  goto L42a8fc;
+  #L42a8ea.  v0:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L42a8ec.  call `a`(v5) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @kind virtual;
+  #L42a8f2.  call temp:= `wrapOrThrow`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42a8f8.  v0:= temp @kind object;
+  #L42a8fa.  throw v0;
+  #L42a8fc.  v0:= v5.`io.reactivex.internal.observers.BlockingMultiObserver.b` @type ^`java.lang.Throwable` @kind object;
+  #L42a900.  if v0 != 0 then goto L42a90a;
+  #L42a904.  v0:= v5.`io.reactivex.internal.observers.BlockingMultiObserver.a` @type ^`java.lang.Object` @kind object;
+  #L42a908.  return v0 @kind object;
+  #L42a90a.  call temp:= `wrapOrThrow`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42a910.  v0:= temp @kind object;
+  #L42a912.  throw v0;
+  catch `java.lang.InterruptedException` @[L42a8dc..L42a8e8] goto L42a8ea;
+}
+procedure `java.lang.Object` `blockingGet`(`io.reactivex.internal.observers.BlockingMultiObserver` v5 @kind this, `java.lang.Object` v6 @kind object) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.blockingGet:(Ljava/lang/Object;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L42a934.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L42a93a.  v0:= temp @kind wide;
+  #L42a93c.  v2:= 0L;
+  #L42a940.  v4:= lcmp(v0, v2);
+  #L42a944.  if v4 == 0 then goto L42a968;
+  #L42a948.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L42a94e.  call `await`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L42a954.  goto L42a968;
+  #L42a956.  v6:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L42a958.  call `a`(v5) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @kind virtual;
+  #L42a95e.  call temp:= `wrapOrThrow`(v6) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42a964.  v6:= temp @kind object;
+  #L42a966.  throw v6;
+  #L42a968.  v0:= v5.`io.reactivex.internal.observers.BlockingMultiObserver.b` @type ^`java.lang.Throwable` @kind object;
+  #L42a96c.  if v0 != 0 then goto L42a97c;
+  #L42a970.  v0:= v5.`io.reactivex.internal.observers.BlockingMultiObserver.a` @type ^`java.lang.Object` @kind object;
+  #L42a974.  if v0 == 0 then goto L42a97a;
+  #L42a978.  v6:= v0 @kind object;
+  #L42a97a.  return v6 @kind object;
+  #L42a97c.  call temp:= `wrapOrThrow`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42a982.  v6:= temp @kind object;
+  #L42a984.  throw v6;
+  catch `java.lang.InterruptedException` @[L42a948..L42a954] goto L42a956;
+}
+procedure `java.lang.Throwable` `blockingGetError`(`io.reactivex.internal.observers.BlockingMultiObserver` v5 @kind this) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.blockingGetError:()Ljava/lang/Throwable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L42a9a8.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L42a9ae.  v0:= temp @kind wide;
+  #L42a9b0.  v2:= 0L;
+  #L42a9b4.  v4:= lcmp(v0, v2);
+  #L42a9b8.  if v4 == 0 then goto L42a9d4;
+  #L42a9bc.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L42a9c2.  call `await`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L42a9c8.  goto L42a9d4;
+  #L42a9ca.  v0:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L42a9cc.  call `a`(v5) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @kind virtual;
+  #L42a9d2.  return v0 @kind object;
+  #L42a9d4.  v0:= v5.`io.reactivex.internal.observers.BlockingMultiObserver.b` @type ^`java.lang.Throwable` @kind object;
+  #L42a9d8.  return v0 @kind object;
+  catch `java.lang.InterruptedException` @[L42a9bc..L42a9c8] goto L42a9ca;
+}
+procedure `java.lang.Throwable` `blockingGetError`(`io.reactivex.internal.observers.BlockingMultiObserver` v5 @kind this, `long` v6 , `java.util.concurrent.TimeUnit` v8 @kind object) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.blockingGetError:(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Throwable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L42a9fc.  call temp:= `getCount`(v5) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L42aa02.  v0:= temp @kind wide;
+  #L42aa04.  v2:= 0L;
+  #L42aa08.  v4:= lcmp(v0, v2);
+  #L42aa0c.  if v4 == 0 then goto L42aa58;
+  #L42aa10.  call `verifyNonBlocking`() @signature `Lio/reactivex/internal/util/BlockingHelper;.verifyNonBlocking:()V` @kind static;
+  #L42aa16.  call temp:= `await`(v5, v6, v8) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L42aa1c.  v0:= temp;
+  #L42aa1e.  if v0 == 0 then goto L42aa24;
+  #L42aa22.  goto L42aa58;
+  #L42aa24.  call `a`(v5) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @kind virtual;
+  #L42aa2a.  v0:= new `java.util.concurrent.TimeoutException`;
+  #L42aa2e.  call temp:= `timeoutMessage`(v6, v8) @signature `Lio/reactivex/internal/util/ExceptionHelper;.timeoutMessage:(JLjava/util/concurrent/TimeUnit;)Ljava/lang/String;` @kind static;
+  #L42aa34.  v6:= temp @kind object;
+  #L42aa36.  call `<init>`(v0, v6) @signature `Ljava/util/concurrent/TimeoutException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L42aa3c.  call temp:= `wrapOrThrow`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42aa42.  v6:= temp @kind object;
+  #L42aa44.  throw v6;
+  #L42aa46.  v6:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L42aa48.  call `a`(v5) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.a:()V` @kind virtual;
+  #L42aa4e.  call temp:= `wrapOrThrow`(v6) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L42aa54.  v6:= temp @kind object;
+  #L42aa56.  throw v6;
+  #L42aa58.  v6:= v5.`io.reactivex.internal.observers.BlockingMultiObserver.b` @type ^`java.lang.Throwable` @kind object;
+  #L42aa5c.  return v6 @kind object;
+  catch `java.lang.InterruptedException` @[L42aa10..L42aa46] goto L42aa46;
+}
+procedure `void` `onComplete`(`io.reactivex.internal.observers.BlockingMultiObserver` v0 @kind this) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.onComplete:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L42aac4.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L42aaca.  return @kind void;
+}
+procedure `void` `onError`(`io.reactivex.internal.observers.BlockingMultiObserver` v0 @kind this, `java.lang.Throwable` v1 @kind object) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L42aadc.  v0.`io.reactivex.internal.observers.BlockingMultiObserver.b` @type ^`java.lang.Throwable` := v1 @kind object;
+  #L42aae0.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L42aae6.  return @kind void;
+}
+procedure `void` `onSubscribe`(`io.reactivex.internal.observers.BlockingMultiObserver` v1 @kind this, `io.reactivex.disposables.Disposable` v2 @kind object) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.onSubscribe:(Lio/reactivex/disposables/Disposable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L42aaf8.  v1.`io.reactivex.internal.observers.BlockingMultiObserver.c` @type ^`io.reactivex.disposables.Disposable` := v2 @kind object;
+  #L42aafc.  v0:= v1.`io.reactivex.internal.observers.BlockingMultiObserver.d` @type ^`boolean` @kind boolean;
+  #L42ab00.  if v0 == 0 then goto L42ab0a;
+  #L42ab04.  call `dispose`(v2) @signature `Lio/reactivex/disposables/Disposable;.dispose:()V` @kind interface;
+  #L42ab0a.  return @kind void;
+}
+procedure `void` `onSuccess`(`io.reactivex.internal.observers.BlockingMultiObserver` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lio/reactivex/internal/observers/BlockingMultiObserver;.onSuccess:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L42ab1c.  v0.`io.reactivex.internal.observers.BlockingMultiObserver.a` @type ^`java.lang.Object` := v1 @kind object;
+  #L42ab20.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L42ab26.  return @kind void;
+}

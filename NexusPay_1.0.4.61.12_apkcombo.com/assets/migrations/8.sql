@@ -1,0 +1,1 @@
+ALTER TABLE  ContactlessPaymentDataModel ADD COLUMN panSequenceNumber TEXT DEFAULT NULL;

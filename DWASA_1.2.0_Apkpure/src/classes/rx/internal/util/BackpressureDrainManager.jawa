@@ -1,0 +1,235 @@
+record `rx.internal.util.BackpressureDrainManager` @kind class @AccessFlag PUBLIC_FINAL extends `java.util.concurrent.atomic.AtomicLong` @kind class, `rx.Producer` @kind interface {
+  `rx.internal.util.BackpressureDrainManager$BackpressureQueueCallback` `rx.internal.util.BackpressureDrainManager.actual` @AccessFlag FINAL;
+  `boolean` `rx.internal.util.BackpressureDrainManager.emitting` @AccessFlag ;
+  `java.lang.Throwable` `rx.internal.util.BackpressureDrainManager.exception` @AccessFlag ;
+  `boolean` `rx.internal.util.BackpressureDrainManager.terminated` @AccessFlag VOLATILE;
+}
+global `long` `@@rx.internal.util.BackpressureDrainManager.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.util.BackpressureDrainManager` v0 @kind this, `rx.internal.util.BackpressureDrainManager$BackpressureQueueCallback` v1 @kind object) @signature `Lrx/internal/util/BackpressureDrainManager;.<init>:(Lrx/internal/util/BackpressureDrainManager$BackpressureQueueCallback;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b4440.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4b4446.  v0.`rx.internal.util.BackpressureDrainManager.actual` @type ^`rx.internal.util.BackpressureDrainManager$BackpressureQueueCallback` := v1 @kind object;
+  #L4b444a.  return @kind void;
+}
+procedure `void` `drain`(`rx.internal.util.BackpressureDrainManager` v13 @kind this) @signature `Lrx/internal/util/BackpressureDrainManager;.drain:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+
+  #L4b445c.  @monitorenter v13
+  #L4b445e.  v0:= v13.`rx.internal.util.BackpressureDrainManager.emitting` @type ^`boolean` @kind boolean;
+  #L4b4462.  if v0 == 0 then goto L4b446a;
+  #L4b4466.  @monitorexit v13
+  #L4b4468.  return @kind void;
+  #L4b446a.  v0:= 1I;
+  #L4b446c.  v13.`rx.internal.util.BackpressureDrainManager.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L4b4470.  v1:= v13.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` @kind boolean;
+  #L4b4474.  @monitorexit v13
+  #L4b4476.  call temp:= `get`(v13) @signature `Lrx/internal/util/BackpressureDrainManager;.get:()J` @kind virtual;
+  #L4b447c.  v2:= temp @kind wide;
+  #L4b447e.  v4:= 0I;
+  #L4b4480.  v5:= v13.`rx.internal.util.BackpressureDrainManager.actual` @type ^`rx.internal.util.BackpressureDrainManager$BackpressureQueueCallback` @kind object;
+  #L4b4484.  v6:= 0I;
+  #L4b4486.  v7:= 0L;
+  #L4b448a.  v9:= lcmp(v2, v7);
+  #L4b448e.  if v9 > 0 then goto L4b4496;
+  #L4b4492.  if v1 == 0 then goto L4b44cc;
+  #L4b4496.  if v1 == 0 then goto L4b44c0;
+  #L4b449a.  call temp:= `peek`(v5) @signature `Lrx/internal/util/BackpressureDrainManager$BackpressureQueueCallback;.peek:()Ljava/lang/Object;` @kind interface;
+  #L4b44a0.  v9:= temp @kind object;
+  #L4b44a2.  if v9 != 0 then goto L4b44b6;
+  #L4b44a6.  v1:= v13.`rx.internal.util.BackpressureDrainManager.exception` @type ^`java.lang.Throwable` @kind object;
+  #L4b44aa.  call `complete`(v5, v1) @signature `Lrx/internal/util/BackpressureDrainManager$BackpressureQueueCallback;.complete:(Ljava/lang/Throwable;)V` @kind interface;
+  #L4b44b0.  return @kind void;
+  #L4b44b2.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b44b4.  goto L4b456c;
+  #L4b44b6.  v9:= lcmp(v2, v7);
+  #L4b44ba.  if v9 != 0 then goto L4b44c0;
+  #L4b44be.  goto L4b44cc;
+  #L4b44c0.  call temp:= `poll`(v5) @signature `Lrx/internal/util/BackpressureDrainManager$BackpressureQueueCallback;.poll:()Ljava/lang/Object;` @kind interface;
+  #L4b44c6.  v9:= temp @kind object;
+  #L4b44c8.  if v9 != 0 then goto L4b454e;
+  #L4b44cc.  @monitorenter v13
+  #L4b44ce.  v1:= v13.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` @kind boolean;
+  #L4b44d2.  call temp:= `peek`(v5) @signature `Lrx/internal/util/BackpressureDrainManager$BackpressureQueueCallback;.peek:()Ljava/lang/Object;` @kind interface;
+  #L4b44d8.  v2:= temp @kind object;
+  #L4b44da.  if v2 == 0 then goto L4b44e2;
+  #L4b44de.  v2:= 1I;
+  #L4b44e0.  goto L4b44e4;
+  #L4b44e2.  v2:= 0I;
+  #L4b44e4.  call temp:= `get`(v13) @signature `Lrx/internal/util/BackpressureDrainManager;.get:()J` @kind virtual;
+  #L4b44ea.  v9:= temp @kind wide;
+  #L4b44ec.  v11:= 9223372036854775807L;
+  #L4b44f6.  v3:= lcmp(v9, v11);
+  #L4b44fa.  if v3 != 0 then goto L4b4512;
+  #L4b44fe.  if v2 != 0 then goto L4b450e;
+  #L4b4502.  if v1 != 0 then goto L4b450e;
+  #L4b4506.  v13.`rx.internal.util.BackpressureDrainManager.emitting` @type ^`boolean` := v4 @kind boolean;
+  #L4b450a.  @monitorexit v13
+  #L4b450c.  return @kind void;
+  #L4b450e.  v2:= v11 @kind wide;
+  #L4b4510.  goto L4b4536;
+  #L4b4512.  v3:= -v6 @kind int;
+  #L4b4514.  v9:= (`long`) v3 @kind i2l;
+  #L4b4516.  call temp:= `addAndGet`(v13, v9) @signature `Lrx/internal/util/BackpressureDrainManager;.addAndGet:(J)J` @kind virtual;
+  #L4b451c.  v9:= temp @kind wide;
+  #L4b451e.  v3:= lcmp(v9, v7);
+  #L4b4522.  if v3 == 0 then goto L4b452a;
+  #L4b4526.  if v2 != 0 then goto L4b4534;
+  #L4b452a.  if v1 == 0 then goto L4b453a;
+  #L4b452e.  if v2 == 0 then goto L4b4534;
+  #L4b4532.  goto L4b453a;
+  #L4b4534.  v2:= v9 @kind wide;
+  #L4b4536.  @monitorexit v13
+  #L4b4538.  goto L4b4484;
+  #L4b453a.  v13.`rx.internal.util.BackpressureDrainManager.emitting` @type ^`boolean` := v4 @kind boolean;
+  #L4b453e.  @monitorexit v13
+  #L4b4540.  return @kind void;
+  #L4b4542.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b4544.  v0:= 0I;
+  #L4b4546.  @monitorexit v13
+  #L4b4548.  throw v1;
+  #L4b454a.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b454c.  goto L4b4546;
+  #L4b454e.  call temp:= `accept`(v5, v9) @signature `Lrx/internal/util/BackpressureDrainManager$BackpressureQueueCallback;.accept:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b4554.  v7:= temp;
+  #L4b4556.  if v7 == 0 then goto L4b455c;
+  #L4b455a.  return @kind void;
+  #L4b455c.  v7:= 1L;
+  #L4b4560.  v2:= v2 - v7 @kind long;
+  #L4b4562.  v6:= v6 + 1;
+  #L4b4566.  goto L4b4486;
+  #L4b4568.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b456a.  v0:= 0I;
+  #L4b456c.  if v0 != 0 then goto L4b4580;
+  #L4b4570.  @monitorenter v13
+  #L4b4572.  v13.`rx.internal.util.BackpressureDrainManager.emitting` @type ^`boolean` := v4 @kind boolean;
+  #L4b4576.  @monitorexit v13
+  #L4b4578.  goto L4b4580;
+  #L4b457a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b457c.  @monitorexit v13
+  #L4b457e.  throw v0;
+  #L4b4580.  throw v1;
+  #L4b4582.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b4584.  @monitorexit v13
+  #L4b4586.  goto L4b458a;
+  #L4b4588.  throw v0;
+  #L4b458a.  goto L4b4588;
+  catch `java.lang.Throwable` @[L4b445e..L4b4476] goto L4b4582;
+  catch `java.lang.Throwable` @[L4b4480..L4b44a2] goto L4b4568;
+  catch `java.lang.Throwable` @[L4b44a6..L4b44b0] goto L4b44b2;
+  catch `java.lang.Throwable` @[L4b44c0..L4b44ce] goto L4b4568;
+  catch `java.lang.Throwable` @[L4b44ce..L4b44ec] goto L4b4542;
+  catch `java.lang.Throwable` @[L4b4506..L4b450c] goto L4b454a;
+  catch `java.lang.Throwable` @[L4b4516..L4b4538] goto L4b4542;
+  catch `java.lang.Throwable` @[L4b453a..L4b4548] goto L4b454a;
+  catch `java.lang.Throwable` @[L4b4548..L4b454a] goto L4b44b2;
+  catch `java.lang.Throwable` @[L4b454e..L4b4556] goto L4b4568;
+  catch `java.lang.Throwable` @[L4b4572..L4b457e] goto L4b457a;
+  catch `java.lang.Throwable` @[L4b4584..L4b4586] goto L4b4582;
+}
+procedure `boolean` `isTerminated`(`rx.internal.util.BackpressureDrainManager` v1 @kind this) @signature `Lrx/internal/util/BackpressureDrainManager;.isTerminated:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b4428.  v0:= v1.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` @kind boolean;
+  #L4b442c.  return v0;
+}
+procedure `void` `request`(`rx.internal.util.BackpressureDrainManager` v10 @kind this, `long` v11 ) @signature `Lrx/internal/util/BackpressureDrainManager;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L4b460c.  v0:= 0L;
+  #L4b4610.  v2:= lcmp(v11, v0);
+  #L4b4614.  if v2 != 0 then goto L4b461a;
+  #L4b4618.  return @kind void;
+  #L4b461a.  call temp:= `get`(v10) @signature `Lrx/internal/util/BackpressureDrainManager;.get:()J` @kind virtual;
+  #L4b4620.  v2:= temp @kind wide;
+  #L4b4622.  v4:= 1I;
+  #L4b4624.  v5:= lcmp(v2, v0);
+  #L4b4628.  if v5 != 0 then goto L4b4630;
+  #L4b462c.  v5:= 1I;
+  #L4b462e.  goto L4b4632;
+  #L4b4630.  v5:= 0I;
+  #L4b4632.  v6:= 9223372036854775807L;
+  #L4b463c.  v8:= lcmp(v2, v6);
+  #L4b4640.  if v8 != 0 then goto L4b4646;
+  #L4b4644.  goto L4b4672;
+  #L4b4646.  v8:= lcmp(v11, v6);
+  #L4b464a.  if v8 != 0 then goto L4b4654;
+  #L4b464e.  v6:= v11 @kind wide;
+  #L4b4650.  v5:= 1I;
+  #L4b4652.  goto L4b4666;
+  #L4b4654.  v8:= v6 - v11 @kind long;
+  #L4b4658.  v4:= lcmp(v2, v8);
+  #L4b465c.  if v4 <= 0 then goto L4b4662;
+  #L4b4660.  goto L4b4666;
+  #L4b4662.  v6:= v2 + v11 @kind long;
+  #L4b4666.  call temp:= `compareAndSet`(v10, v2, v6) @signature `Lrx/internal/util/BackpressureDrainManager;.compareAndSet:(JJ)Z` @kind virtual;
+  #L4b466c.  v2:= temp;
+  #L4b466e.  if v2 == 0 then goto L4b461a;
+  #L4b4672.  if v5 == 0 then goto L4b467c;
+  #L4b4676.  call `drain`(v10) @signature `Lrx/internal/util/BackpressureDrainManager;.drain:()V` @kind virtual;
+  #L4b467c.  return @kind void;
+}
+procedure `void` `terminate`(`rx.internal.util.BackpressureDrainManager` v1 @kind this) @signature `Lrx/internal/util/BackpressureDrainManager;.terminate:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b4690.  v0:= 1I;
+  #L4b4692.  v1.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` := v0 @kind boolean;
+  #L4b4696.  return @kind void;
+}
+procedure `void` `terminate`(`rx.internal.util.BackpressureDrainManager` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/internal/util/BackpressureDrainManager;.terminate:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b46a8.  v0:= v1.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` @kind boolean;
+  #L4b46ac.  if v0 != 0 then goto L4b46ba;
+  #L4b46b0.  v1.`rx.internal.util.BackpressureDrainManager.exception` @type ^`java.lang.Throwable` := v2 @kind object;
+  #L4b46b4.  v2:= 1I;
+  #L4b46b6.  v1.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` := v2 @kind boolean;
+  #L4b46ba.  return @kind void;
+}
+procedure `void` `terminateAndDrain`(`rx.internal.util.BackpressureDrainManager` v1 @kind this) @signature `Lrx/internal/util/BackpressureDrainManager;.terminateAndDrain:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b46cc.  v0:= 1I;
+  #L4b46ce.  v1.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` := v0 @kind boolean;
+  #L4b46d2.  call `drain`(v1) @signature `Lrx/internal/util/BackpressureDrainManager;.drain:()V` @kind virtual;
+  #L4b46d8.  return @kind void;
+}
+procedure `void` `terminateAndDrain`(`rx.internal.util.BackpressureDrainManager` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/internal/util/BackpressureDrainManager;.terminateAndDrain:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b46ec.  v0:= v1.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` @kind boolean;
+  #L4b46f0.  if v0 != 0 then goto L4b4704;
+  #L4b46f4.  v1.`rx.internal.util.BackpressureDrainManager.exception` @type ^`java.lang.Throwable` := v2 @kind object;
+  #L4b46f8.  v2:= 1I;
+  #L4b46fa.  v1.`rx.internal.util.BackpressureDrainManager.terminated` @type ^`boolean` := v2 @kind boolean;
+  #L4b46fe.  call `drain`(v1) @signature `Lrx/internal/util/BackpressureDrainManager;.drain:()V` @kind virtual;
+  #L4b4704.  return @kind void;
+}

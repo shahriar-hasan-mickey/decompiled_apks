@@ -1,0 +1,60 @@
+record `com.dbbl.nexus.pay.workers.MnoBundleWorker` @kind class @AccessFlag PUBLIC extends `androidx.work.Worker` @kind class {
+  `long` `com.dbbl.nexus.pay.workers.MnoBundleWorker.a` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`com.dbbl.nexus.pay.workers.MnoBundleWorker` v0 @kind this, `android.content.Context` v1 @kind object, `androidx.work.WorkerParameters` v2 @kind object) @signature `Lcom/dbbl/nexus/pay/workers/MnoBundleWorker;.<init>:(Landroid/content/Context;Landroidx/work/WorkerParameters;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L1bdcac.  call `<init>`(v0, v1, v2) @signature `Landroidx/work/Worker;.<init>:(Landroid/content/Context;Landroidx/work/WorkerParameters;)V` @kind direct;
+  #L1bdcb2.  v1:= 21600000L;
+  #L1bdcb8.  v0.`com.dbbl.nexus.pay.workers.MnoBundleWorker.a` @type ^`long` := v1 @kind wide;
+  #L1bdcbc.  return @kind void;
+}
+procedure `androidx.work.ListenableWorker$Result` `doWork`(`com.dbbl.nexus.pay.workers.MnoBundleWorker` v9 @kind this) @signature `Lcom/dbbl/nexus/pay/workers/MnoBundleWorker;.doWork:()Landroidx/work/ListenableWorker$Result;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L1bdc0c.  call temp:= `getInstance`() @signature `Lcom/dbbl/nexus/pay/services/NexusPayServiceFactory;.getInstance:()Lcom/dbbl/nexus/pay/services/NexusPayServiceFactory;` @kind static;
+  #L1bdc12.  v0:= temp @kind object;
+  #L1bdc14.  call temp:= `getMobileTopUpService`(v0) @signature `Lcom/dbbl/nexus/pay/services/NexusPayServiceFactory;.getMobileTopUpService:()Lcom/dbbl/nexus/pay/services/MobileTopUpService;` @kind virtual;
+  #L1bdc1a.  v0:= temp @kind object;
+  #L1bdc1c.  call temp:= `getAll`(v0) @signature `Lcom/dbbl/nexus/pay/services/MobileTopUpService;.getAll:()Ljava/util/List;` @kind interface;
+  #L1bdc22.  v1:= temp @kind object;
+  #L1bdc24.  v2:= 0I;
+  #L1bdc26.  if v1 == 0 then goto L1bdc62;
+  #L1bdc2a.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L1bdc30.  v3:= temp;
+  #L1bdc32.  if v3 <= 0 then goto L1bdc62;
+  #L1bdc36.  call temp:= `get`(v1, v2) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L1bdc3c.  v1:= temp @kind object;
+  #L1bdc3e.  v1:= (`com.dbbl.nexus.pay.database.mno.MnoBundleEntity`) v1 @kind object;
+  #L1bdc42.  call temp:= `getUpdatedTimestamp`(v1) @signature `Lcom/dbbl/nexus/pay/database/mno/MnoBundleEntity;.getUpdatedTimestamp:()J` @kind virtual;
+  #L1bdc48.  v3:= temp @kind wide;
+  #L1bdc4a.  call temp:= `currentTimeMillis`() @signature `Ljava/lang/System;.currentTimeMillis:()J` @kind static;
+  #L1bdc50.  v5:= temp @kind wide;
+  #L1bdc52.  v7:= v9.`com.dbbl.nexus.pay.workers.MnoBundleWorker.a` @type ^`long` @kind wide;
+  #L1bdc56.  v5:= v5 - v7 @kind long;
+  #L1bdc58.  v1:= lcmp(v3, v5);
+  #L1bdc5c.  if v1 <= 0 then goto L1bdc62;
+  #L1bdc60.  goto L1bdc64;
+  #L1bdc62.  v2:= 1I;
+  #L1bdc64.  if v2 == 0 then goto L1bdc82;
+  #L1bdc68.  call temp:= `getMnoBundleFromOnline`(v0) @signature `Lcom/dbbl/nexus/pay/services/MobileTopUpService;.getMnoBundleFromOnline:()Ljava/util/List;` @kind interface;
+  #L1bdc6e.  call temp:= `success`() @signature `Landroidx/work/ListenableWorker$Result;.success:()Landroidx/work/ListenableWorker$Result;` @kind static;
+  #L1bdc74.  v0:= temp @kind object;
+  #L1bdc76.  return v0 @kind object;
+  #L1bdc78.  call temp:= `failure`() @signature `Landroidx/work/ListenableWorker$Result;.failure:()Landroidx/work/ListenableWorker$Result;` @kind static;
+  #L1bdc7e.  v0:= temp @kind object;
+  #L1bdc80.  return v0 @kind object;
+  #L1bdc82.  call temp:= `success`() @signature `Landroidx/work/ListenableWorker$Result;.success:()Landroidx/work/ListenableWorker$Result;` @kind static;
+  #L1bdc88.  v0:= temp @kind object;
+  #L1bdc8a.  return v0 @kind object;
+  catch `com.dbbl.nexus.pay.exceptions.ApiGatewayResponseFailureException` @[L1bdc68..L1bdc76] goto L1bdc78;
+}

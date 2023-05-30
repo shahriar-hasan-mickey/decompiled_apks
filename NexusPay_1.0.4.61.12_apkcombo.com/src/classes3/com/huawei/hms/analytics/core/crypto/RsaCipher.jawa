@@ -1,0 +1,59 @@
+record `com.huawei.hms.analytics.core.crypto.RsaCipher` @kind class @AccessFlag PUBLIC {
+}
+global `java.nio.charset.Charset` `@@com.huawei.hms.analytics.core.crypto.RsaCipher.a` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/analytics/core/crypto/RsaCipher;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1d7b78.  v0:= "UTF-8" @kind object;
+  #L1d7b7c.  call temp:= `forName`(v0) @signature `Ljava/nio/charset/Charset;.forName:(Ljava/lang/String;)Ljava/nio/charset/Charset;` @kind static;
+  #L1d7b82.  v0:= temp @kind object;
+  #L1d7b84.  `@@com.huawei.hms.analytics.core.crypto.RsaCipher.a` @type ^`java.nio.charset.Charset` := v0 @kind object;
+  #L1d7b88.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.analytics.core.crypto.RsaCipher` v0 @kind this) @signature `Lcom/huawei/hms/analytics/core/crypto/RsaCipher;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L1d7b9c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1d7ba2.  return @kind void;
+}
+procedure `java.lang.String` `encrypt`(`byte`[] v3 @kind object, `java.lang.String` v4 @kind object) @signature `Lcom/huawei/hms/analytics/core/crypto/RsaCipher;.encrypt:([BLjava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1d7ae0.  v0:= "" @kind object;
+  #L1d7ae4.  v1:= "RsaCipherCommander" @kind object;
+  #L1d7ae8.  if v3 == 0 then goto L1d7b4c;
+  #L1d7aec.  if v4 == 0 then goto L1d7b4c;
+  #L1d7af0.  call temp:= `length`(v4) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L1d7af6.  v2:= temp;
+  #L1d7af8.  if v2 != 0 then goto L1d7afe;
+  #L1d7afc.  goto L1d7b4c;
+  #L1d7afe.  v2:= new `java.security.spec.X509EncodedKeySpec`;
+  #L1d7b02.  call `<init>`(v2, v3) @signature `Ljava/security/spec/X509EncodedKeySpec;.<init>:([B)V` @kind direct;
+  #L1d7b08.  v3:= "RSA" @kind object;
+  #L1d7b0c.  call temp:= `getInstance`(v3) @signature `Ljava/security/KeyFactory;.getInstance:(Ljava/lang/String;)Ljava/security/KeyFactory;` @kind static;
+  #L1d7b12.  v3:= temp @kind object;
+  #L1d7b14.  call temp:= `generatePublic`(v3, v2) @signature `Ljava/security/KeyFactory;.generatePublic:(Ljava/security/spec/KeySpec;)Ljava/security/PublicKey;` @kind virtual;
+  #L1d7b1a.  v3:= temp @kind object;
+  #L1d7b1c.  v2:= `@@com.huawei.hms.analytics.core.crypto.RsaCipher.a` @type ^`java.nio.charset.Charset` @kind object;
+  #L1d7b20.  call temp:= `getBytes`(v4, v2) @signature `Ljava/lang/String;.getBytes:(Ljava/nio/charset/Charset;)[B` @kind virtual;
+  #L1d7b26.  v4:= temp @kind object;
+  #L1d7b28.  call temp:= `encrypt`(v4, v3) @signature `Lcom/huawei/secure/android/common/encrypt/rsa/RSAEncrypt;.encrypt:([BLjava/security/PublicKey;)[B` @kind static;
+  #L1d7b2e.  v3:= temp @kind object;
+  #L1d7b30.  call temp:= `byteArray2HexString`(v3) @signature `Lcom/huawei/hms/analytics/core/crypto/HAHexUtil;.byteArray2HexString:([B)Ljava/lang/String;` @kind static;
+  #L1d7b36.  v3:= temp @kind object;
+  #L1d7b38.  return v3 @kind object;
+  #L1d7b3a.  v3:= "rsaEncrypt(): InvalidKeySpecException" @kind object;
+  #L1d7b3e.  goto L1d7b44;
+  #L1d7b40.  v3:= "rsaEncrypt(): getInstance - No such algorithm,transformation" @kind object;
+  #L1d7b44.  call `w`(v1, v3) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.w:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d7b4a.  return v0 @kind object;
+  #L1d7b4c.  v3:= "content or public key is null" @kind object;
+  #L1d7b50.  call `e`(v1, v3) @signature `Lcom/huawei/hms/analytics/core/log/HiLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1d7b56.  return v0 @kind object;
+  catch `java.security.NoSuchAlgorithmException` @[L1d7afe..L1d7b38] goto L1d7b40;
+  catch `java.security.spec.InvalidKeySpecException` @[L1d7afe..L1d7b38] goto L1d7b3a;
+}

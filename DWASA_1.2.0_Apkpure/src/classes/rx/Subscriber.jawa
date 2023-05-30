@@ -1,0 +1,171 @@
+record `rx.Subscriber` @kind class @AccessFlag PUBLIC_ABSTRACT extends `rx.Observer` @kind interface, `rx.Subscription` @kind interface {
+  `rx.Producer` `rx.Subscriber.producer` @AccessFlag PRIVATE;
+  `long` `rx.Subscriber.requested` @AccessFlag PRIVATE;
+  `rx.Subscriber` `rx.Subscriber.subscriber` @AccessFlag PRIVATE_FINAL;
+  `rx.internal.util.SubscriptionList` `rx.Subscriber.subscriptions` @AccessFlag PRIVATE_FINAL;
+}
+global `long` `@@rx.Subscriber.NOT_SET` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.Subscriber` v2 @kind this) @signature `Lrx/Subscriber;.<init>:()V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4905bc.  v0:= 0I;
+  #L4905be.  v1:= 0I;
+  #L4905c0.  call `<init>`(v2, v0, v1) @signature `Lrx/Subscriber;.<init>:(Lrx/Subscriber;Z)V` @kind direct;
+  #L4905c6.  return @kind void;
+}
+procedure `void` `<init>`(`rx.Subscriber` v1 @kind this, `rx.Subscriber` v2 @kind object) @signature `Lrx/Subscriber;.<init>:(Lrx/Subscriber;)V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4905d8.  v0:= 1I;
+  #L4905da.  call `<init>`(v1, v2, v0) @signature `Lrx/Subscriber;.<init>:(Lrx/Subscriber;Z)V` @kind direct;
+  #L4905e0.  return @kind void;
+}
+procedure `void` `<init>`(`rx.Subscriber` v2 @kind this, `rx.Subscriber` v3 @kind object, `boolean` v4 ) @signature `Lrx/Subscriber;.<init>:(Lrx/Subscriber;Z)V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4905f4.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4905fa.  v0:= -9223372036854775808L;
+  #L4905fe.  v2.`rx.Subscriber.requested` @type ^`long` := v0 @kind wide;
+  #L490602.  v2.`rx.Subscriber.subscriber` @type ^`rx.Subscriber` := v3 @kind object;
+  #L490606.  if v4 == 0 then goto L490614;
+  #L49060a.  if v3 == 0 then goto L490614;
+  #L49060e.  v3:= v3.`rx.Subscriber.subscriptions` @type ^`rx.internal.util.SubscriptionList` @kind object;
+  #L490612.  goto L49061e;
+  #L490614.  v3:= new `rx.internal.util.SubscriptionList`;
+  #L490618.  call `<init>`(v3) @signature `Lrx/internal/util/SubscriptionList;.<init>:()V` @kind direct;
+  #L49061e.  v2.`rx.Subscriber.subscriptions` @type ^`rx.internal.util.SubscriptionList` := v3 @kind object;
+  #L490622.  return @kind void;
+}
+procedure `void` `addToRequested`(`rx.Subscriber` v5 @kind this, `long` v6 ) @signature `Lrx/Subscriber;.addToRequested:(J)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L490650.  v0:= v5.`rx.Subscriber.requested` @type ^`long` @kind wide;
+  #L490654.  v2:= -9223372036854775808L;
+  #L490658.  v4:= lcmp(v0, v2);
+  #L49065c.  if v4 != 0 then goto L490666;
+  #L490660.  v5.`rx.Subscriber.requested` @type ^`long` := v6 @kind wide;
+  #L490664.  goto L490688;
+  #L490666.  v0:= v0 + v6 @kind long;
+  #L490668.  v6:= 0L;
+  #L49066c.  v2:= lcmp(v0, v6);
+  #L490670.  if v2 >= 0 then goto L490684;
+  #L490674.  v6:= 9223372036854775807L;
+  #L49067e.  v5.`rx.Subscriber.requested` @type ^`long` := v6 @kind wide;
+  #L490682.  goto L490688;
+  #L490684.  v5.`rx.Subscriber.requested` @type ^`long` := v0 @kind wide;
+  #L490688.  return @kind void;
+}
+procedure `void` `add`(`rx.Subscriber` v1 @kind this, `rx.Subscription` v2 @kind object) @signature `Lrx/Subscriber;.add:(Lrx/Subscription;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L490634.  v0:= v1.`rx.Subscriber.subscriptions` @type ^`rx.internal.util.SubscriptionList` @kind object;
+  #L490638.  call `add`(v0, v2) @signature `Lrx/internal/util/SubscriptionList;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L49063e.  return @kind void;
+}
+procedure `boolean` `isUnsubscribed`(`rx.Subscriber` v1 @kind this) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L49059c.  v0:= v1.`rx.Subscriber.subscriptions` @type ^`rx.internal.util.SubscriptionList` @kind object;
+  #L4905a0.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/internal/util/SubscriptionList;.isUnsubscribed:()Z` @kind virtual;
+  #L4905a6.  v0:= temp;
+  #L4905a8.  return v0;
+}
+procedure `void` `onStart`(`rx.Subscriber` v0 @kind this) @signature `Lrx/Subscriber;.onStart:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L49069c.  return @kind void;
+}
+procedure `void` `request`(`rx.Subscriber` v3 @kind this, `long` v4 ) @signature `Lrx/Subscriber;.request:(J)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4906b0.  v0:= 0L;
+  #L4906b4.  v2:= lcmp(v4, v0);
+  #L4906b8.  if v2 < 0 then goto L4906e4;
+  #L4906bc.  @monitorenter v3
+  #L4906be.  v0:= v3.`rx.Subscriber.producer` @type ^`rx.Producer` @kind object;
+  #L4906c2.  if v0 == 0 then goto L4906d4;
+  #L4906c6.  v0:= v3.`rx.Subscriber.producer` @type ^`rx.Producer` @kind object;
+  #L4906ca.  @monitorexit v3
+  #L4906cc.  call `request`(v0, v4) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L4906d2.  return @kind void;
+  #L4906d4.  call `addToRequested`(v3, v4) @signature `Lrx/Subscriber;.addToRequested:(J)V` @kind direct;
+  #L4906da.  @monitorexit v3
+  #L4906dc.  return @kind void;
+  #L4906de.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4906e0.  @monitorexit v3
+  #L4906e2.  throw v4;
+  #L4906e4.  v0:= new `java.lang.IllegalArgumentException`;
+  #L4906e8.  v1:= new `java.lang.StringBuilder`;
+  #L4906ec.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4906f2.  v2:= "number requested cannot be negative: " @kind object;
+  #L4906f6.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4906fc.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L490702.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L490708.  v4:= temp @kind object;
+  #L49070a.  call `<init>`(v0, v4) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L490710.  throw v0;
+  catch `java.lang.Throwable` @[L4906be..L4906cc] goto L4906de;
+  catch `java.lang.Throwable` @[L4906d4..L4906e2] goto L4906de;
+}
+procedure `void` `setProducer`(`rx.Subscriber` v4 @kind this, `rx.Producer` v5 @kind object) @signature `Lrx/Subscriber;.setProducer:(Lrx/Producer;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L490738.  @monitorenter v4
+  #L49073a.  v0:= v4.`rx.Subscriber.requested` @type ^`long` @kind wide;
+  #L49073e.  v4.`rx.Subscriber.producer` @type ^`rx.Producer` := v5 @kind object;
+  #L490742.  v5:= v4.`rx.Subscriber.subscriber` @type ^`rx.Subscriber` @kind object;
+  #L490746.  v2:= -9223372036854775808L;
+  #L49074a.  if v5 == 0 then goto L49075a;
+  #L49074e.  v5:= lcmp(v0, v2);
+  #L490752.  if v5 != 0 then goto L49075a;
+  #L490756.  v5:= 1I;
+  #L490758.  goto L49075c;
+  #L49075a.  v5:= 0I;
+  #L49075c.  @monitorexit v4
+  #L49075e.  if v5 == 0 then goto L490772;
+  #L490762.  v5:= v4.`rx.Subscriber.subscriber` @type ^`rx.Subscriber` @kind object;
+  #L490766.  v0:= v4.`rx.Subscriber.producer` @type ^`rx.Producer` @kind object;
+  #L49076a.  call `setProducer`(v5, v0) @signature `Lrx/Subscriber;.setProducer:(Lrx/Producer;)V` @kind virtual;
+  #L490770.  goto L49079a;
+  #L490772.  v5:= lcmp(v0, v2);
+  #L490776.  if v5 != 0 then goto L490790;
+  #L49077a.  v5:= v4.`rx.Subscriber.producer` @type ^`rx.Producer` @kind object;
+  #L49077e.  v0:= 9223372036854775807L;
+  #L490788.  call `request`(v5, v0) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L49078e.  goto L49079a;
+  #L490790.  v5:= v4.`rx.Subscriber.producer` @type ^`rx.Producer` @kind object;
+  #L490794.  call `request`(v5, v0) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L49079a.  return @kind void;
+  #L49079c.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L49079e.  @monitorexit v4
+  #L4907a0.  throw v5;
+  catch `java.lang.Throwable` @[L49073a..L49075e] goto L49079c;
+  catch `java.lang.Throwable` @[L49079e..L4907a0] goto L49079c;
+}
+procedure `void` `unsubscribe`(`rx.Subscriber` v1 @kind this) @signature `Lrx/Subscriber;.unsubscribe:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L4907c8.  v0:= v1.`rx.Subscriber.subscriptions` @type ^`rx.internal.util.SubscriptionList` @kind object;
+  #L4907cc.  call `unsubscribe`(v0) @signature `Lrx/internal/util/SubscriptionList;.unsubscribe:()V` @kind virtual;
+  #L4907d2.  return @kind void;
+}

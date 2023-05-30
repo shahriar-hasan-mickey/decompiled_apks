@@ -1,0 +1,61 @@
+record `io.jsonwebtoken.impl.crypto.EllipticCurveSignatureValidator` @kind class @AccessFlag PUBLIC extends `io.jsonwebtoken.impl.crypto.EllipticCurveProvider` @kind class, `io.jsonwebtoken.impl.crypto.SignatureValidator` @kind interface {
+}
+procedure `void` `<init>`(`io.jsonwebtoken.impl.crypto.EllipticCurveSignatureValidator` v0 @kind this, `io.jsonwebtoken.SignatureAlgorithm` v1 @kind object, `java.security.Key` v2 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/EllipticCurveSignatureValidator;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L40f1e4.  call `<init>`(v0, v1, v2) @signature `Lio/jsonwebtoken/impl/crypto/EllipticCurveProvider;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @kind direct;
+  #L40f1ea.  v1:= instanceof @variable v2 @type ^`java.security.interfaces.ECPublicKey` @kind boolean;
+  #L40f1ee.  v2:= "Elliptic Curve signature validation requires an ECPublicKey instance." @kind object;
+  #L40f1f2.  call `isTrue`(v1, v2) @signature `Lio/jsonwebtoken/lang/Assert;.isTrue:(ZLjava/lang/String;)V` @kind static;
+  #L40f1f8.  return @kind void;
+}
+procedure `boolean` `doVerify`(`io.jsonwebtoken.impl.crypto.EllipticCurveSignatureValidator` v0 @kind this, `java.security.Signature` v1 @kind object, `java.security.PublicKey` v2 @kind object, `byte`[] v3 @kind object, `byte`[] v4 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/EllipticCurveSignatureValidator;.doVerify:(Ljava/security/Signature;Ljava/security/PublicKey;[B[B)Z` @AccessFlag PROTECTED {
+    temp;
+
+  #L40f120.  call `initVerify`(v1, v2) @signature `Ljava/security/Signature;.initVerify:(Ljava/security/PublicKey;)V` @kind virtual;
+  #L40f126.  call `update`(v1, v3) @signature `Ljava/security/Signature;.update:([B)V` @kind virtual;
+  #L40f12c.  call temp:= `verify`(v1, v4) @signature `Ljava/security/Signature;.verify:([B)Z` @kind virtual;
+  #L40f132.  v1:= temp;
+  #L40f134.  return v1;
+}
+procedure `boolean` `isValid`(`io.jsonwebtoken.impl.crypto.EllipticCurveSignatureValidator` v4 @kind this, `byte`[] v5 @kind object, `byte`[] v6 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/EllipticCurveSignatureValidator;.isValid:([B[B)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L40f148.  call temp:= `createSignatureInstance`(v4) @signature `Lio/jsonwebtoken/impl/crypto/a;.createSignatureInstance:()Ljava/security/Signature;` @kind virtual;
+  #L40f14e.  v0:= temp @kind object;
+  #L40f150.  v1:= v4.`io.jsonwebtoken.impl.crypto.a.key` @type ^`java.security.Key` @kind object;
+  #L40f154.  v1:= (`java.security.PublicKey`) v1 @kind object;
+  #L40f158.  v2:= v4.`io.jsonwebtoken.impl.crypto.a.alg` @type ^`io.jsonwebtoken.SignatureAlgorithm` @kind object;
+  #L40f15c.  call temp:= `getSignatureByteArrayLength`(v2) @signature `Lio/jsonwebtoken/impl/crypto/EllipticCurveProvider;.getSignatureByteArrayLength:(Lio/jsonwebtoken/SignatureAlgorithm;)I` @kind static;
+  #L40f162.  v2:= temp;
+  #L40f164.  v3:= length @variable v6;
+  #L40f166.  if v2 == v3 then goto L40f17a;
+  #L40f16a.  v2:= 0I;
+  #L40f16c.  v2:= v6[v2] @kind byte;
+  #L40f170.  v3:= 48I;
+  #L40f174.  if v2 != v3 then goto L40f17a;
+  #L40f178.  goto L40f182;
+  #L40f17a.  call temp:= `transcodeSignatureToDER`(v6) @signature `Lio/jsonwebtoken/impl/crypto/EllipticCurveProvider;.transcodeSignatureToDER:([B)[B` @kind static;
+  #L40f180.  v6:= temp @kind object;
+  #L40f182.  call temp:= `doVerify`(v4, v0, v1, v5, v6) @signature `Lio/jsonwebtoken/impl/crypto/EllipticCurveSignatureValidator;.doVerify:(Ljava/security/Signature;Ljava/security/PublicKey;[B[B)Z` @kind virtual;
+  #L40f188.  v5:= temp;
+  #L40f18a.  return v5;
+  #L40f18c.  v5:= Exception @type ^`java.lang.Exception` @kind object;
+  #L40f18e.  v6:= new `java.lang.StringBuilder`;
+  #L40f192.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40f198.  v0:= "Unable to verify Elliptic Curve signature using configured ECPublicKey. " @kind object;
+  #L40f19c.  call temp:= `append`(v6, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f1a2.  call temp:= `getMessage`(v5) @signature `Ljava/lang/Exception;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L40f1a8.  v0:= temp @kind object;
+  #L40f1aa.  call temp:= `append`(v6, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f1b0.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40f1b6.  v6:= temp @kind object;
+  #L40f1b8.  v0:= new `io.jsonwebtoken.SignatureException`;
+  #L40f1bc.  call `<init>`(v0, v6, v5) @signature `Lio/jsonwebtoken/SignatureException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40f1c2.  throw v0;
+  catch `java.lang.Exception` @[L40f158..L40f18a] goto L40f18c;
+}

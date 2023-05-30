@@ -1,0 +1,1056 @@
+record `org.joda.time.chrono.BasicChronology` @kind class @AccessFlag ABSTRACT extends `org.joda.time.chrono.AssembledChronology` @kind class {
+  `int` `org.joda.time.chrono.BasicChronology.iMinDaysInFirstWeek` @AccessFlag PRIVATE_FINAL;
+  `org.joda.time.chrono.BasicChronology$YearInfo`[] `org.joda.time.chrono.BasicChronology.iYearInfoCache` @AccessFlag PRIVATE_FINAL_TRANSIENT;
+}
+global `int` `@@org.joda.time.chrono.BasicChronology.CACHE_MASK` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@org.joda.time.chrono.BasicChronology.CACHE_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cClockhourOfDayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cClockhourOfHalfdayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DurationField` `@@org.joda.time.chrono.BasicChronology.cDaysField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cHalfdayOfDayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DurationField` `@@org.joda.time.chrono.BasicChronology.cHalfdaysField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cHourOfDayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cHourOfHalfdayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DurationField` `@@org.joda.time.chrono.BasicChronology.cHoursField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DurationField` `@@org.joda.time.chrono.BasicChronology.cMillisField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cMillisOfDayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cMillisOfSecondField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cMinuteOfDayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cMinuteOfHourField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DurationField` `@@org.joda.time.chrono.BasicChronology.cMinutesField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cSecondOfDayField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DateTimeField` `@@org.joda.time.chrono.BasicChronology.cSecondOfMinuteField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DurationField` `@@org.joda.time.chrono.BasicChronology.cSecondsField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.joda.time.DurationField` `@@org.joda.time.chrono.BasicChronology.cWeeksField` @AccessFlag PRIVATE_STATIC_FINAL;
+global `long` `@@org.joda.time.chrono.BasicChronology.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lorg/joda/time/chrono/BasicChronology;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b0ac0.  v0:= `@@org.joda.time.field.MillisDurationField.INSTANCE` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0ac4.  `@@org.joda.time.chrono.BasicChronology.cMillisField` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0ac8.  v0:= new `org.joda.time.field.PreciseDurationField`;
+  #L3b0acc.  call temp:= `seconds`() @signature `Lorg/joda/time/DurationFieldType;.seconds:()Lorg/joda/time/DurationFieldType;` @kind static;
+  #L3b0ad2.  v1:= temp @kind object;
+  #L3b0ad4.  v2:= 1000L;
+  #L3b0ad8.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/PreciseDurationField;.<init>:(Lorg/joda/time/DurationFieldType;J)V` @kind direct;
+  #L3b0ade.  `@@org.joda.time.chrono.BasicChronology.cSecondsField` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0ae2.  v0:= new `org.joda.time.field.PreciseDurationField`;
+  #L3b0ae6.  call temp:= `minutes`() @signature `Lorg/joda/time/DurationFieldType;.minutes:()Lorg/joda/time/DurationFieldType;` @kind static;
+  #L3b0aec.  v1:= temp @kind object;
+  #L3b0aee.  v2:= 60000L;
+  #L3b0af4.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/PreciseDurationField;.<init>:(Lorg/joda/time/DurationFieldType;J)V` @kind direct;
+  #L3b0afa.  `@@org.joda.time.chrono.BasicChronology.cMinutesField` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0afe.  v0:= new `org.joda.time.field.PreciseDurationField`;
+  #L3b0b02.  call temp:= `hours`() @signature `Lorg/joda/time/DurationFieldType;.hours:()Lorg/joda/time/DurationFieldType;` @kind static;
+  #L3b0b08.  v1:= temp @kind object;
+  #L3b0b0a.  v2:= 3600000L;
+  #L3b0b10.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/PreciseDurationField;.<init>:(Lorg/joda/time/DurationFieldType;J)V` @kind direct;
+  #L3b0b16.  `@@org.joda.time.chrono.BasicChronology.cHoursField` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0b1a.  v0:= new `org.joda.time.field.PreciseDurationField`;
+  #L3b0b1e.  call temp:= `halfdays`() @signature `Lorg/joda/time/DurationFieldType;.halfdays:()Lorg/joda/time/DurationFieldType;` @kind static;
+  #L3b0b24.  v1:= temp @kind object;
+  #L3b0b26.  v2:= 43200000L;
+  #L3b0b2c.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/PreciseDurationField;.<init>:(Lorg/joda/time/DurationFieldType;J)V` @kind direct;
+  #L3b0b32.  `@@org.joda.time.chrono.BasicChronology.cHalfdaysField` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0b36.  v0:= new `org.joda.time.field.PreciseDurationField`;
+  #L3b0b3a.  call temp:= `days`() @signature `Lorg/joda/time/DurationFieldType;.days:()Lorg/joda/time/DurationFieldType;` @kind static;
+  #L3b0b40.  v1:= temp @kind object;
+  #L3b0b42.  v2:= 86400000L;
+  #L3b0b48.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/PreciseDurationField;.<init>:(Lorg/joda/time/DurationFieldType;J)V` @kind direct;
+  #L3b0b4e.  `@@org.joda.time.chrono.BasicChronology.cDaysField` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0b52.  v0:= new `org.joda.time.field.PreciseDurationField`;
+  #L3b0b56.  call temp:= `weeks`() @signature `Lorg/joda/time/DurationFieldType;.weeks:()Lorg/joda/time/DurationFieldType;` @kind static;
+  #L3b0b5c.  v1:= temp @kind object;
+  #L3b0b5e.  v2:= 604800000L;
+  #L3b0b64.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/PreciseDurationField;.<init>:(Lorg/joda/time/DurationFieldType;J)V` @kind direct;
+  #L3b0b6a.  `@@org.joda.time.chrono.BasicChronology.cWeeksField` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0b6e.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0b72.  call temp:= `millisOfSecond`() @signature `Lorg/joda/time/DateTimeFieldType;.millisOfSecond:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0b78.  v1:= temp @kind object;
+  #L3b0b7a.  v2:= `@@org.joda.time.chrono.BasicChronology.cMillisField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0b7e.  v3:= `@@org.joda.time.chrono.BasicChronology.cSecondsField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0b82.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0b88.  `@@org.joda.time.chrono.BasicChronology.cMillisOfSecondField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0b8c.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0b90.  call temp:= `millisOfDay`() @signature `Lorg/joda/time/DateTimeFieldType;.millisOfDay:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0b96.  v1:= temp @kind object;
+  #L3b0b98.  v2:= `@@org.joda.time.chrono.BasicChronology.cMillisField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0b9c.  v3:= `@@org.joda.time.chrono.BasicChronology.cDaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0ba0.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0ba6.  `@@org.joda.time.chrono.BasicChronology.cMillisOfDayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0baa.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0bae.  call temp:= `secondOfMinute`() @signature `Lorg/joda/time/DateTimeFieldType;.secondOfMinute:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0bb4.  v1:= temp @kind object;
+  #L3b0bb6.  v2:= `@@org.joda.time.chrono.BasicChronology.cSecondsField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0bba.  v3:= `@@org.joda.time.chrono.BasicChronology.cMinutesField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0bbe.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0bc4.  `@@org.joda.time.chrono.BasicChronology.cSecondOfMinuteField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0bc8.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0bcc.  call temp:= `secondOfDay`() @signature `Lorg/joda/time/DateTimeFieldType;.secondOfDay:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0bd2.  v1:= temp @kind object;
+  #L3b0bd4.  v2:= `@@org.joda.time.chrono.BasicChronology.cSecondsField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0bd8.  v3:= `@@org.joda.time.chrono.BasicChronology.cDaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0bdc.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0be2.  `@@org.joda.time.chrono.BasicChronology.cSecondOfDayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0be6.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0bea.  call temp:= `minuteOfHour`() @signature `Lorg/joda/time/DateTimeFieldType;.minuteOfHour:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0bf0.  v1:= temp @kind object;
+  #L3b0bf2.  v2:= `@@org.joda.time.chrono.BasicChronology.cMinutesField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0bf6.  v3:= `@@org.joda.time.chrono.BasicChronology.cHoursField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0bfa.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0c00.  `@@org.joda.time.chrono.BasicChronology.cMinuteOfHourField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0c04.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0c08.  call temp:= `minuteOfDay`() @signature `Lorg/joda/time/DateTimeFieldType;.minuteOfDay:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0c0e.  v1:= temp @kind object;
+  #L3b0c10.  v2:= `@@org.joda.time.chrono.BasicChronology.cMinutesField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0c14.  v3:= `@@org.joda.time.chrono.BasicChronology.cDaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0c18.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0c1e.  `@@org.joda.time.chrono.BasicChronology.cMinuteOfDayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0c22.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0c26.  call temp:= `hourOfDay`() @signature `Lorg/joda/time/DateTimeFieldType;.hourOfDay:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0c2c.  v1:= temp @kind object;
+  #L3b0c2e.  v2:= `@@org.joda.time.chrono.BasicChronology.cHoursField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0c32.  v3:= `@@org.joda.time.chrono.BasicChronology.cDaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0c36.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0c3c.  `@@org.joda.time.chrono.BasicChronology.cHourOfDayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0c40.  v0:= new `org.joda.time.field.PreciseDateTimeField`;
+  #L3b0c44.  call temp:= `hourOfHalfday`() @signature `Lorg/joda/time/DateTimeFieldType;.hourOfHalfday:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0c4a.  v1:= temp @kind object;
+  #L3b0c4c.  v2:= `@@org.joda.time.chrono.BasicChronology.cHoursField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0c50.  v3:= `@@org.joda.time.chrono.BasicChronology.cHalfdaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0c54.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/joda/time/field/PreciseDateTimeField;.<init>:(Lorg/joda/time/DateTimeFieldType;Lorg/joda/time/DurationField;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0c5a.  `@@org.joda.time.chrono.BasicChronology.cHourOfHalfdayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0c5e.  v0:= new `org.joda.time.field.ZeroIsMaxDateTimeField`;
+  #L3b0c62.  v1:= `@@org.joda.time.chrono.BasicChronology.cHourOfDayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0c66.  call temp:= `clockhourOfDay`() @signature `Lorg/joda/time/DateTimeFieldType;.clockhourOfDay:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0c6c.  v2:= temp @kind object;
+  #L3b0c6e.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/ZeroIsMaxDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;Lorg/joda/time/DateTimeFieldType;)V` @kind direct;
+  #L3b0c74.  `@@org.joda.time.chrono.BasicChronology.cClockhourOfDayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0c78.  v0:= new `org.joda.time.field.ZeroIsMaxDateTimeField`;
+  #L3b0c7c.  v1:= `@@org.joda.time.chrono.BasicChronology.cHourOfHalfdayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0c80.  call temp:= `clockhourOfHalfday`() @signature `Lorg/joda/time/DateTimeFieldType;.clockhourOfHalfday:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0c86.  v2:= temp @kind object;
+  #L3b0c88.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/ZeroIsMaxDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;Lorg/joda/time/DateTimeFieldType;)V` @kind direct;
+  #L3b0c8e.  `@@org.joda.time.chrono.BasicChronology.cClockhourOfHalfdayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0c92.  v0:= new `org.joda.time.chrono.BasicChronology$HalfdayField`;
+  #L3b0c96.  call `<init>`(v0) @signature `Lorg/joda/time/chrono/BasicChronology$HalfdayField;.<init>:()V` @kind direct;
+  #L3b0c9c.  `@@org.joda.time.chrono.BasicChronology.cHalfdayOfDayField` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0ca0.  return @kind void;
+}
+procedure `void` `<init>`(`org.joda.time.chrono.BasicChronology` v1 @kind this, `org.joda.time.Chronology` v2 @kind object, `java.lang.Object` v3 @kind object, `int` v4 ) @signature `Lorg/joda/time/chrono/BasicChronology;.<init>:(Lorg/joda/time/Chronology;Ljava/lang/Object;I)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3b0cb4.  call `<init>`(v1, v2, v3) @signature `Lorg/joda/time/chrono/AssembledChronology;.<init>:(Lorg/joda/time/Chronology;Ljava/lang/Object;)V` @kind direct;
+  #L3b0cba.  v2:= 1024I;
+  #L3b0cbe.  v2:= new `org.joda.time.chrono.BasicChronology$YearInfo`[v2];
+  #L3b0cc2.  v1.`org.joda.time.chrono.BasicChronology.iYearInfoCache` @type ^`org.joda.time.chrono.BasicChronology$YearInfo`[] := v2 @kind object;
+  #L3b0cc6.  v2:= 1I;
+  #L3b0cc8.  if v4 < v2 then goto L3b0cd8;
+  #L3b0ccc.  v2:= 7I;
+  #L3b0cce.  if v4 > v2 then goto L3b0cd8;
+  #L3b0cd2.  v1.`org.joda.time.chrono.BasicChronology.iMinDaysInFirstWeek` @type ^`int` := v4;
+  #L3b0cd6.  return @kind void;
+  #L3b0cd8.  v2:= new `java.lang.IllegalArgumentException`;
+  #L3b0cdc.  v3:= new `java.lang.StringBuilder`;
+  #L3b0ce0.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3b0ce6.  v0:= "Invalid min days in first week: " @kind object;
+  #L3b0cea.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b0cf0.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b0cf6.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3b0cfc.  v3:= temp @kind object;
+  #L3b0cfe.  call `<init>`(v2, v3) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3b0d04.  throw v2;
+}
+procedure `org.joda.time.DurationField` `access$000`() @signature `Lorg/joda/time/chrono/BasicChronology;.access$000:()Lorg/joda/time/DurationField;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L3b0a4c.  v0:= `@@org.joda.time.chrono.BasicChronology.cHalfdaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0a50.  return v0 @kind object;
+}
+procedure `org.joda.time.DurationField` `access$100`() @signature `Lorg/joda/time/chrono/BasicChronology;.access$100:()Lorg/joda/time/DurationField;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L3b0a64.  v0:= `@@org.joda.time.chrono.BasicChronology.cDaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0a68.  return v0 @kind object;
+}
+procedure `long` `getDateTimeMillis0`(`org.joda.time.chrono.BasicChronology` v6 @kind this, `int` v7 , `int` v8 , `int` v9 , `int` v10 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateTimeMillis0:(IIII)J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L3b08e8.  call temp:= `getDateMidnightMillis`(v6, v7, v8, v9) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateMidnightMillis:(III)J` @kind virtual;
+  #L3b08ee.  v0:= temp @kind wide;
+  #L3b08f0.  v2:= -9223372036854775808L;
+  #L3b08f4.  v4:= lcmp(v0, v2);
+  #L3b08f8.  if v4 != 0 then goto L3b0910;
+  #L3b08fc.  v9:= v9 + 1;
+  #L3b0900.  call temp:= `getDateMidnightMillis`(v6, v7, v8, v9) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateMidnightMillis:(III)J` @kind virtual;
+  #L3b0906.  v0:= temp @kind wide;
+  #L3b0908.  v7:= 86400000I;
+  #L3b090e.  v10:= v10 - v7 @kind int;
+  #L3b0910.  v7:= (`long`) v10 @kind i2l;
+  #L3b0912.  v7:= v7 + v0 @kind long;
+  #L3b0914.  v9:= 0L;
+  #L3b0918.  v4:= lcmp(v7, v9);
+  #L3b091c.  if v4 >= 0 then goto L3b0934;
+  #L3b0920.  v5:= lcmp(v0, v9);
+  #L3b0924.  if v5 <= 0 then goto L3b0934;
+  #L3b0928.  v7:= 9223372036854775807L;
+  #L3b0932.  return v7 @kind wide;
+  #L3b0934.  if v4 <= 0 then goto L3b0942;
+  #L3b0938.  v4:= lcmp(v0, v9);
+  #L3b093c.  if v4 >= 0 then goto L3b0942;
+  #L3b0940.  return v2 @kind wide;
+  #L3b0942.  return v7 @kind wide;
+}
+procedure `org.joda.time.chrono.BasicChronology$YearInfo` `getYearInfo`(`org.joda.time.chrono.BasicChronology` v4 @kind this, `int` v5 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearInfo:(I)Lorg/joda/time/chrono/BasicChronology$YearInfo;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b0a7c.  v0:= v4.`org.joda.time.chrono.BasicChronology.iYearInfoCache` @type ^`org.joda.time.chrono.BasicChronology$YearInfo`[] @kind object;
+  #L3b0a80.  v1:= v5 ^& 1023;
+  #L3b0a84.  v0:= v0[v1] @kind object;
+  #L3b0a88.  if v0 == 0 then goto L3b0a94;
+  #L3b0a8c.  v2:= v0.`org.joda.time.chrono.BasicChronology$YearInfo.iYear` @type ^`int`;
+  #L3b0a90.  if v2 == v5 then goto L3b0aae;
+  #L3b0a94.  v0:= new `org.joda.time.chrono.BasicChronology$YearInfo`;
+  #L3b0a98.  call temp:= `calculateFirstDayOfYearMillis`(v4, v5) @signature `Lorg/joda/time/chrono/BasicChronology;.calculateFirstDayOfYearMillis:(I)J` @kind virtual;
+  #L3b0a9e.  v2:= temp @kind wide;
+  #L3b0aa0.  call `<init>`(v0, v5, v2) @signature `Lorg/joda/time/chrono/BasicChronology$YearInfo;.<init>:(IJ)V` @kind direct;
+  #L3b0aa6.  v5:= v4.`org.joda.time.chrono.BasicChronology.iYearInfoCache` @type ^`org.joda.time.chrono.BasicChronology$YearInfo`[] @kind object;
+  #L3b0aaa.  v5[v1]:= v0 @kind object;
+  #L3b0aae.  return v0 @kind object;
+}
+procedure `void` `assemble`(`org.joda.time.chrono.BasicChronology` v6 @kind this, `org.joda.time.chrono.AssembledChronology$Fields` v7 @kind object) @signature `Lorg/joda/time/chrono/BasicChronology;.assemble:(Lorg/joda/time/chrono/AssembledChronology$Fields;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L3b0d18.  v0:= `@@org.joda.time.chrono.BasicChronology.cMillisField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0d1c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.millis` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0d20.  v0:= `@@org.joda.time.chrono.BasicChronology.cSecondsField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0d24.  v7.`org.joda.time.chrono.AssembledChronology$Fields.seconds` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0d28.  v0:= `@@org.joda.time.chrono.BasicChronology.cMinutesField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0d2c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.minutes` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0d30.  v0:= `@@org.joda.time.chrono.BasicChronology.cHoursField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0d34.  v7.`org.joda.time.chrono.AssembledChronology$Fields.hours` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0d38.  v0:= `@@org.joda.time.chrono.BasicChronology.cHalfdaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0d3c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.halfdays` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0d40.  v0:= `@@org.joda.time.chrono.BasicChronology.cDaysField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0d44.  v7.`org.joda.time.chrono.AssembledChronology$Fields.days` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0d48.  v0:= `@@org.joda.time.chrono.BasicChronology.cWeeksField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0d4c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.weeks` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0d50.  v0:= `@@org.joda.time.chrono.BasicChronology.cMillisOfSecondField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d54.  v7.`org.joda.time.chrono.AssembledChronology$Fields.millisOfSecond` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d58.  v0:= `@@org.joda.time.chrono.BasicChronology.cMillisOfDayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d5c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.millisOfDay` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d60.  v0:= `@@org.joda.time.chrono.BasicChronology.cSecondOfMinuteField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d64.  v7.`org.joda.time.chrono.AssembledChronology$Fields.secondOfMinute` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d68.  v0:= `@@org.joda.time.chrono.BasicChronology.cSecondOfDayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d6c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.secondOfDay` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d70.  v0:= `@@org.joda.time.chrono.BasicChronology.cMinuteOfHourField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d74.  v7.`org.joda.time.chrono.AssembledChronology$Fields.minuteOfHour` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d78.  v0:= `@@org.joda.time.chrono.BasicChronology.cMinuteOfDayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d7c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.minuteOfDay` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d80.  v0:= `@@org.joda.time.chrono.BasicChronology.cHourOfDayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d84.  v7.`org.joda.time.chrono.AssembledChronology$Fields.hourOfDay` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d88.  v0:= `@@org.joda.time.chrono.BasicChronology.cHourOfHalfdayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d8c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.hourOfHalfday` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d90.  v0:= `@@org.joda.time.chrono.BasicChronology.cClockhourOfDayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d94.  v7.`org.joda.time.chrono.AssembledChronology$Fields.clockhourOfDay` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0d98.  v0:= `@@org.joda.time.chrono.BasicChronology.cClockhourOfHalfdayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0d9c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.clockhourOfHalfday` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0da0.  v0:= `@@org.joda.time.chrono.BasicChronology.cHalfdayOfDayField` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0da4.  v7.`org.joda.time.chrono.AssembledChronology$Fields.halfdayOfDay` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0da8.  v0:= new `org.joda.time.chrono.BasicYearDateTimeField`;
+  #L3b0dac.  call `<init>`(v0, v6) @signature `Lorg/joda/time/chrono/BasicYearDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;)V` @kind direct;
+  #L3b0db2.  v7.`org.joda.time.chrono.AssembledChronology$Fields.year` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0db6.  v1:= new `org.joda.time.chrono.GJYearOfEraDateTimeField`;
+  #L3b0dba.  call `<init>`(v1, v0, v6) @signature `Lorg/joda/time/chrono/GJYearOfEraDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;Lorg/joda/time/chrono/BasicChronology;)V` @kind direct;
+  #L3b0dc0.  v7.`org.joda.time.chrono.AssembledChronology$Fields.yearOfEra` @type ^`org.joda.time.DateTimeField` := v1 @kind object;
+  #L3b0dc4.  v0:= new `org.joda.time.field.OffsetDateTimeField`;
+  #L3b0dc8.  v2:= 99I;
+  #L3b0dcc.  call `<init>`(v0, v1, v2) @signature `Lorg/joda/time/field/OffsetDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;I)V` @kind direct;
+  #L3b0dd2.  v1:= new `org.joda.time.field.DividedDateTimeField`;
+  #L3b0dd6.  call temp:= `centuryOfEra`() @signature `Lorg/joda/time/DateTimeFieldType;.centuryOfEra:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0ddc.  v2:= temp @kind object;
+  #L3b0dde.  v3:= 100I;
+  #L3b0de2.  call `<init>`(v1, v0, v2, v3) @signature `Lorg/joda/time/field/DividedDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;Lorg/joda/time/DateTimeFieldType;I)V` @kind direct;
+  #L3b0de8.  v7.`org.joda.time.chrono.AssembledChronology$Fields.centuryOfEra` @type ^`org.joda.time.DateTimeField` := v1 @kind object;
+  #L3b0dec.  call temp:= `getDurationField`(v1) @signature `Lorg/joda/time/DateTimeField;.getDurationField:()Lorg/joda/time/DurationField;` @kind virtual;
+  #L3b0df2.  v0:= temp @kind object;
+  #L3b0df4.  v7.`org.joda.time.chrono.AssembledChronology$Fields.centuries` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0df8.  v0:= new `org.joda.time.field.RemainderDateTimeField`;
+  #L3b0dfc.  v1:= v7.`org.joda.time.chrono.AssembledChronology$Fields.centuryOfEra` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0e00.  v1:= (`org.joda.time.field.DividedDateTimeField`) v1 @kind object;
+  #L3b0e04.  call `<init>`(v0, v1) @signature `Lorg/joda/time/field/RemainderDateTimeField;.<init>:(Lorg/joda/time/field/DividedDateTimeField;)V` @kind direct;
+  #L3b0e0a.  v1:= new `org.joda.time.field.OffsetDateTimeField`;
+  #L3b0e0e.  call temp:= `yearOfCentury`() @signature `Lorg/joda/time/DateTimeFieldType;.yearOfCentury:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0e14.  v2:= temp @kind object;
+  #L3b0e16.  v4:= 1I;
+  #L3b0e18.  call `<init>`(v1, v0, v2, v4) @signature `Lorg/joda/time/field/OffsetDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;Lorg/joda/time/DateTimeFieldType;I)V` @kind direct;
+  #L3b0e1e.  v7.`org.joda.time.chrono.AssembledChronology$Fields.yearOfCentury` @type ^`org.joda.time.DateTimeField` := v1 @kind object;
+  #L3b0e22.  v0:= new `org.joda.time.chrono.GJEraDateTimeField`;
+  #L3b0e26.  call `<init>`(v0, v6) @signature `Lorg/joda/time/chrono/GJEraDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;)V` @kind direct;
+  #L3b0e2c.  v7.`org.joda.time.chrono.AssembledChronology$Fields.era` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0e30.  v0:= new `org.joda.time.chrono.GJDayOfWeekDateTimeField`;
+  #L3b0e34.  v1:= v7.`org.joda.time.chrono.AssembledChronology$Fields.days` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0e38.  call `<init>`(v0, v6, v1) @signature `Lorg/joda/time/chrono/GJDayOfWeekDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0e3e.  v7.`org.joda.time.chrono.AssembledChronology$Fields.dayOfWeek` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0e42.  v0:= new `org.joda.time.chrono.BasicDayOfMonthDateTimeField`;
+  #L3b0e46.  v1:= v7.`org.joda.time.chrono.AssembledChronology$Fields.days` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0e4a.  call `<init>`(v0, v6, v1) @signature `Lorg/joda/time/chrono/BasicDayOfMonthDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0e50.  v7.`org.joda.time.chrono.AssembledChronology$Fields.dayOfMonth` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0e54.  v0:= new `org.joda.time.chrono.BasicDayOfYearDateTimeField`;
+  #L3b0e58.  v1:= v7.`org.joda.time.chrono.AssembledChronology$Fields.days` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0e5c.  call `<init>`(v0, v6, v1) @signature `Lorg/joda/time/chrono/BasicDayOfYearDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0e62.  v7.`org.joda.time.chrono.AssembledChronology$Fields.dayOfYear` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0e66.  v0:= new `org.joda.time.chrono.GJMonthOfYearDateTimeField`;
+  #L3b0e6a.  call `<init>`(v0, v6) @signature `Lorg/joda/time/chrono/GJMonthOfYearDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;)V` @kind direct;
+  #L3b0e70.  v7.`org.joda.time.chrono.AssembledChronology$Fields.monthOfYear` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0e74.  v0:= new `org.joda.time.chrono.BasicWeekyearDateTimeField`;
+  #L3b0e78.  call `<init>`(v0, v6) @signature `Lorg/joda/time/chrono/BasicWeekyearDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;)V` @kind direct;
+  #L3b0e7e.  v7.`org.joda.time.chrono.AssembledChronology$Fields.weekyear` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0e82.  v0:= new `org.joda.time.chrono.BasicWeekOfWeekyearDateTimeField`;
+  #L3b0e86.  v1:= v7.`org.joda.time.chrono.AssembledChronology$Fields.weeks` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0e8a.  call `<init>`(v0, v6, v1) @signature `Lorg/joda/time/chrono/BasicWeekOfWeekyearDateTimeField;.<init>:(Lorg/joda/time/chrono/BasicChronology;Lorg/joda/time/DurationField;)V` @kind direct;
+  #L3b0e90.  v7.`org.joda.time.chrono.AssembledChronology$Fields.weekOfWeekyear` @type ^`org.joda.time.DateTimeField` := v0 @kind object;
+  #L3b0e94.  v0:= new `org.joda.time.field.RemainderDateTimeField`;
+  #L3b0e98.  v1:= v7.`org.joda.time.chrono.AssembledChronology$Fields.weekyear` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0e9c.  v2:= v7.`org.joda.time.chrono.AssembledChronology$Fields.centuries` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b0ea0.  call temp:= `weekyearOfCentury`() @signature `Lorg/joda/time/DateTimeFieldType;.weekyearOfCentury:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0ea6.  v5:= temp @kind object;
+  #L3b0ea8.  call `<init>`(v0, v1, v2, v5, v3) @signature `Lorg/joda/time/field/RemainderDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;Lorg/joda/time/DurationField;Lorg/joda/time/DateTimeFieldType;I)V` @kind direct;
+  #L3b0eae.  v1:= new `org.joda.time.field.OffsetDateTimeField`;
+  #L3b0eb2.  call temp:= `weekyearOfCentury`() @signature `Lorg/joda/time/DateTimeFieldType;.weekyearOfCentury:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0eb8.  v2:= temp @kind object;
+  #L3b0eba.  call `<init>`(v1, v0, v2, v4) @signature `Lorg/joda/time/field/OffsetDateTimeField;.<init>:(Lorg/joda/time/DateTimeField;Lorg/joda/time/DateTimeFieldType;I)V` @kind direct;
+  #L3b0ec0.  v7.`org.joda.time.chrono.AssembledChronology$Fields.weekyearOfCentury` @type ^`org.joda.time.DateTimeField` := v1 @kind object;
+  #L3b0ec4.  v0:= v7.`org.joda.time.chrono.AssembledChronology$Fields.year` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0ec8.  call temp:= `getDurationField`(v0) @signature `Lorg/joda/time/DateTimeField;.getDurationField:()Lorg/joda/time/DurationField;` @kind virtual;
+  #L3b0ece.  v0:= temp @kind object;
+  #L3b0ed0.  v7.`org.joda.time.chrono.AssembledChronology$Fields.years` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0ed4.  v0:= v7.`org.joda.time.chrono.AssembledChronology$Fields.monthOfYear` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0ed8.  call temp:= `getDurationField`(v0) @signature `Lorg/joda/time/DateTimeField;.getDurationField:()Lorg/joda/time/DurationField;` @kind virtual;
+  #L3b0ede.  v0:= temp @kind object;
+  #L3b0ee0.  v7.`org.joda.time.chrono.AssembledChronology$Fields.months` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0ee4.  v0:= v7.`org.joda.time.chrono.AssembledChronology$Fields.weekyear` @type ^`org.joda.time.DateTimeField` @kind object;
+  #L3b0ee8.  call temp:= `getDurationField`(v0) @signature `Lorg/joda/time/DateTimeField;.getDurationField:()Lorg/joda/time/DurationField;` @kind virtual;
+  #L3b0eee.  v0:= temp @kind object;
+  #L3b0ef0.  v7.`org.joda.time.chrono.AssembledChronology$Fields.weekyears` @type ^`org.joda.time.DurationField` := v0 @kind object;
+  #L3b0ef4.  return @kind void;
+}
+procedure `long` `calculateFirstDayOfYearMillis`(`int` v0 ) @signature `Lorg/joda/time/chrono/BasicChronology;.calculateFirstDayOfYearMillis:(I)J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `boolean` `equals`(`org.joda.time.chrono.BasicChronology` v4 @kind this, `java.lang.Object` v5 @kind object) @signature `Lorg/joda/time/chrono/BasicChronology;.equals:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b01bc.  v0:= 1I;
+  #L3b01be.  if v4 != v5 then goto L3b01c4;
+  #L3b01c2.  return v0;
+  #L3b01c4.  v1:= 0I;
+  #L3b01c6.  if v5 == 0 then goto L3b0218;
+  #L3b01ca.  call temp:= `getClass`(v4) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L3b01d0.  v2:= temp @kind object;
+  #L3b01d2.  call temp:= `getClass`(v5) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L3b01d8.  v3:= temp @kind object;
+  #L3b01da.  if v2 != v3 then goto L3b0218;
+  #L3b01de.  v5:= (`org.joda.time.chrono.BasicChronology`) v5 @kind object;
+  #L3b01e2.  call temp:= `getMinimumDaysInFirstWeek`(v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinimumDaysInFirstWeek:()I` @kind virtual;
+  #L3b01e8.  v2:= temp;
+  #L3b01ea.  call temp:= `getMinimumDaysInFirstWeek`(v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinimumDaysInFirstWeek:()I` @kind virtual;
+  #L3b01f0.  v3:= temp;
+  #L3b01f2.  if v2 != v3 then goto L3b0214;
+  #L3b01f6.  call temp:= `getZone`(v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getZone:()Lorg/joda/time/DateTimeZone;` @kind virtual;
+  #L3b01fc.  v2:= temp @kind object;
+  #L3b01fe.  call temp:= `getZone`(v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getZone:()Lorg/joda/time/DateTimeZone;` @kind virtual;
+  #L3b0204.  v5:= temp @kind object;
+  #L3b0206.  call temp:= `equals`(v2, v5) @signature `Lorg/joda/time/DateTimeZone;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L3b020c.  v5:= temp;
+  #L3b020e.  if v5 == 0 then goto L3b0214;
+  #L3b0212.  goto L3b0216;
+  #L3b0214.  v0:= 0I;
+  #L3b0216.  return v0;
+  #L3b0218.  return v1;
+}
+procedure `long` `getApproxMillisAtEpochDividedByTwo`() @signature `Lorg/joda/time/chrono/BasicChronology;.getApproxMillisAtEpochDividedByTwo:()J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `getAverageMillisPerMonth`() @signature `Lorg/joda/time/chrono/BasicChronology;.getAverageMillisPerMonth:()J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `getAverageMillisPerYear`() @signature `Lorg/joda/time/chrono/BasicChronology;.getAverageMillisPerYear:()J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `getAverageMillisPerYearDividedByTwo`() @signature `Lorg/joda/time/chrono/BasicChronology;.getAverageMillisPerYearDividedByTwo:()J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `getDateMidnightMillis`(`org.joda.time.chrono.BasicChronology` v4 @kind this, `int` v5 , `int` v6 , `int` v7 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateMidnightMillis:(III)J` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b0750.  call temp:= `year`() @signature `Lorg/joda/time/DateTimeFieldType;.year:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0756.  v0:= temp @kind object;
+  #L3b0758.  call temp:= `getMinYear`(v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinYear:()I` @kind virtual;
+  #L3b075e.  v1:= temp;
+  #L3b0760.  v2:= 1I;
+  #L3b0762.  v1:= v1 - v2 @kind int;
+  #L3b0764.  call temp:= `getMaxYear`(v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getMaxYear:()I` @kind virtual;
+  #L3b076a.  v3:= temp;
+  #L3b076c.  v3:= v3 + v2 @kind int;
+  #L3b076e.  call `verifyValueBounds`(v0, v5, v1, v3) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b0774.  call temp:= `monthOfYear`() @signature `Lorg/joda/time/DateTimeFieldType;.monthOfYear:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b077a.  v0:= temp @kind object;
+  #L3b077c.  call temp:= `getMaxMonth`(v4, v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getMaxMonth:(I)I` @kind virtual;
+  #L3b0782.  v1:= temp;
+  #L3b0784.  call `verifyValueBounds`(v0, v6, v2, v1) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b078a.  call temp:= `dayOfMonth`() @signature `Lorg/joda/time/DateTimeFieldType;.dayOfMonth:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0790.  v0:= temp @kind object;
+  #L3b0792.  call temp:= `getDaysInYearMonth`(v4, v5, v6) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInYearMonth:(II)I` @kind virtual;
+  #L3b0798.  v1:= temp;
+  #L3b079a.  call `verifyValueBounds`(v0, v7, v2, v1) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b07a0.  call temp:= `getYearMonthDayMillis`(v4, v5, v6, v7) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMonthDayMillis:(III)J` @kind virtual;
+  #L3b07a6.  v6:= temp @kind wide;
+  #L3b07a8.  v0:= 0L;
+  #L3b07ac.  v3:= lcmp(v6, v0);
+  #L3b07b0.  if v3 >= 0 then goto L3b07ce;
+  #L3b07b4.  call temp:= `getMaxYear`(v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getMaxYear:()I` @kind virtual;
+  #L3b07ba.  v0:= temp;
+  #L3b07bc.  v0:= v0 + v2 @kind int;
+  #L3b07be.  if v5 != v0 then goto L3b07ce;
+  #L3b07c2.  v5:= 9223372036854775807L;
+  #L3b07cc.  return v5 @kind wide;
+  #L3b07ce.  if v3 <= 0 then goto L3b07e6;
+  #L3b07d2.  call temp:= `getMinYear`(v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinYear:()I` @kind virtual;
+  #L3b07d8.  v0:= temp;
+  #L3b07da.  v0:= v0 - v2 @kind int;
+  #L3b07dc.  if v5 != v0 then goto L3b07e6;
+  #L3b07e0.  v5:= -9223372036854775808L;
+  #L3b07e4.  return v5 @kind wide;
+  #L3b07e6.  return v6 @kind wide;
+}
+procedure `long` `getDateTimeMillis`(`org.joda.time.chrono.BasicChronology` v3 @kind this, `int` v4 , `int` v5 , `int` v6 , `int` v7 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateTimeMillis:(IIII)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3b07f8.  call temp:= `getBase`(v3) @signature `Lorg/joda/time/chrono/AssembledChronology;.getBase:()Lorg/joda/time/Chronology;` @kind virtual;
+  #L3b07fe.  v0:= temp @kind object;
+  #L3b0800.  if v0 == 0 then goto L3b080e;
+  #L3b0804.  call temp:= `getDateTimeMillis`(v0, v4, v5, v6, v7) @signature `Lorg/joda/time/Chronology;.getDateTimeMillis:(IIII)J` @kind virtual;
+  #L3b080a.  v4:= temp @kind wide;
+  #L3b080c.  return v4 @kind wide;
+  #L3b080e.  call temp:= `millisOfDay`() @signature `Lorg/joda/time/DateTimeFieldType;.millisOfDay:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0814.  v0:= temp @kind object;
+  #L3b0816.  v1:= 0I;
+  #L3b0818.  v2:= 86399999I;
+  #L3b081e.  call `verifyValueBounds`(v0, v7, v1, v2) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b0824.  call temp:= `getDateTimeMillis0`(v3, v4, v5, v6, v7) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateTimeMillis0:(IIII)J` @kind direct;
+  #L3b082a.  v4:= temp @kind wide;
+  #L3b082c.  return v4 @kind wide;
+}
+procedure `long` `getDateTimeMillis`(`org.joda.time.chrono.BasicChronology` v8 @kind this, `int` v9 , `int` v10 , `int` v11 , `int` v12 , `int` v13 , `int` v14 , `int` v15 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateTimeMillis:(IIIIIII)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3b0840.  call temp:= `getBase`(v8) @signature `Lorg/joda/time/chrono/AssembledChronology;.getBase:()Lorg/joda/time/Chronology;` @kind virtual;
+  #L3b0846.  v0:= temp @kind object;
+  #L3b0848.  if v0 == 0 then goto L3b0864;
+  #L3b084c.  v1:= v9;
+  #L3b084e.  v2:= v10;
+  #L3b0850.  v3:= v11;
+  #L3b0852.  v4:= v12;
+  #L3b0854.  v5:= v13;
+  #L3b0856.  v6:= v14;
+  #L3b0858.  v7:= v15;
+  #L3b085a.  call temp:= `getDateTimeMillis`(v0, v1, v2, v3, v4, v5, v6, v7) @signature `Lorg/joda/time/Chronology;.getDateTimeMillis:(IIIIIII)J` @kind virtual;
+  #L3b0860.  v9:= temp @kind wide;
+  #L3b0862.  return v9 @kind wide;
+  #L3b0864.  call temp:= `hourOfDay`() @signature `Lorg/joda/time/DateTimeFieldType;.hourOfDay:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b086a.  v0:= temp @kind object;
+  #L3b086c.  v1:= 23I;
+  #L3b0870.  v2:= 0I;
+  #L3b0872.  call `verifyValueBounds`(v0, v12, v2, v1) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b0878.  call temp:= `minuteOfHour`() @signature `Lorg/joda/time/DateTimeFieldType;.minuteOfHour:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b087e.  v0:= temp @kind object;
+  #L3b0880.  v1:= 59I;
+  #L3b0884.  call `verifyValueBounds`(v0, v13, v2, v1) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b088a.  call temp:= `secondOfMinute`() @signature `Lorg/joda/time/DateTimeFieldType;.secondOfMinute:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b0890.  v0:= temp @kind object;
+  #L3b0892.  call `verifyValueBounds`(v0, v14, v2, v1) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b0898.  call temp:= `millisOfSecond`() @signature `Lorg/joda/time/DateTimeFieldType;.millisOfSecond:()Lorg/joda/time/DateTimeFieldType;` @kind static;
+  #L3b089e.  v0:= temp @kind object;
+  #L3b08a0.  v1:= 999I;
+  #L3b08a4.  call `verifyValueBounds`(v0, v15, v2, v1) @signature `Lorg/joda/time/field/FieldUtils;.verifyValueBounds:(Lorg/joda/time/DateTimeFieldType;III)V` @kind static;
+  #L3b08aa.  v0:= 3600000I;
+  #L3b08b0.  v12:= v12 * v0 @kind int;
+  #L3b08b4.  v0:= 60000I;
+  #L3b08ba.  v13:= v13 * v0 @kind int;
+  #L3b08be.  v12:= v12 + v13 @kind int;
+  #L3b08c0.  v14:= v14 * 1000;
+  #L3b08c4.  v12:= v12 + v14 @kind int;
+  #L3b08c6.  v12:= v12 + v15 @kind int;
+  #L3b08c8.  v12:= (`long`) v12 @kind i2l;
+  #L3b08ca.  v13:= (`int`) v12 @kind l2i;
+  #L3b08cc.  call temp:= `getDateTimeMillis0`(v8, v9, v10, v11, v13) @signature `Lorg/joda/time/chrono/BasicChronology;.getDateTimeMillis0:(IIII)J` @kind direct;
+  #L3b08d2.  v9:= temp @kind wide;
+  #L3b08d4.  return v9 @kind wide;
+}
+procedure `int` `getDayOfMonth`(`org.joda.time.chrono.BasicChronology` v2 @kind this, `long` v3 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfMonth:(J)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3b0240.  call temp:= `getYear`(v2, v3) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b0246.  v0:= temp;
+  #L3b0248.  call temp:= `getMonthOfYear`(v2, v3, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getMonthOfYear:(JI)I` @kind virtual;
+  #L3b024e.  v1:= temp;
+  #L3b0250.  call temp:= `getDayOfMonth`(v2, v3, v0, v1) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfMonth:(JII)I` @kind virtual;
+  #L3b0256.  v3:= temp;
+  #L3b0258.  return v3;
+}
+procedure `int` `getDayOfMonth`(`org.joda.time.chrono.BasicChronology` v1 @kind this, `long` v2 , `int` v4 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfMonth:(JI)I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b026c.  call temp:= `getMonthOfYear`(v1, v2, v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getMonthOfYear:(JI)I` @kind virtual;
+  #L3b0272.  v0:= temp;
+  #L3b0274.  call temp:= `getDayOfMonth`(v1, v2, v4, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfMonth:(JII)I` @kind virtual;
+  #L3b027a.  v2:= temp;
+  #L3b027c.  return v2;
+}
+procedure `int` `getDayOfMonth`(`org.joda.time.chrono.BasicChronology` v2 @kind this, `long` v3 , `int` v5 , `int` v6 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfMonth:(JII)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3b0290.  call temp:= `getYearMillis`(v2, v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMillis:(I)J` @kind virtual;
+  #L3b0296.  v0:= temp @kind wide;
+  #L3b0298.  call temp:= `getTotalMillisByYearMonth`(v2, v5, v6) @signature `Lorg/joda/time/chrono/BasicChronology;.getTotalMillisByYearMonth:(II)J` @kind virtual;
+  #L3b029e.  v5:= temp @kind wide;
+  #L3b02a0.  v0:= v0 + v5 @kind long;
+  #L3b02a2.  v3:= v3 - v0 @kind long;
+  #L3b02a4.  v5:= 86400000L;
+  #L3b02aa.  v3:= v3 / v5 @kind long;
+  #L3b02ac.  v4:= (`int`) v3 @kind l2i;
+  #L3b02ae.  v4:= v4 + 1;
+  #L3b02b2.  return v4;
+}
+procedure `int` `getDayOfWeek`(`org.joda.time.chrono.BasicChronology` v7 @kind this, `long` v8 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfWeek:(J)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L3b02c4.  v0:= 7L;
+  #L3b02c8.  v2:= 86400000L;
+  #L3b02ce.  v4:= 0L;
+  #L3b02d2.  v6:= lcmp(v8, v4);
+  #L3b02d6.  if v6 < 0 then goto L3b02de;
+  #L3b02da.  v8:= v8 / v2 @kind long;
+  #L3b02dc.  goto L3b0304;
+  #L3b02de.  v4:= 86399999L;
+  #L3b02e4.  v8:= v8 - v4 @kind long;
+  #L3b02e6.  v8:= v8 / v2 @kind long;
+  #L3b02e8.  v2:= -3L;
+  #L3b02ec.  v4:= lcmp(v8, v2);
+  #L3b02f0.  if v4 >= 0 then goto L3b0304;
+  #L3b02f4.  v2:= 4L;
+  #L3b02f8.  v8:= v8 + v2 @kind long;
+  #L3b02fa.  v8:= v8 %% v0 @kind long;
+  #L3b02fc.  v9:= (`int`) v8 @kind l2i;
+  #L3b02fe.  v9:= v9 + 7;
+  #L3b0302.  return v9;
+  #L3b0304.  v2:= 3L;
+  #L3b0308.  v8:= v8 + v2 @kind long;
+  #L3b030a.  v8:= v8 %% v0 @kind long;
+  #L3b030c.  v9:= (`int`) v8 @kind l2i;
+  #L3b030e.  v9:= v9 + 1;
+  #L3b0312.  return v9;
+}
+procedure `int` `getDayOfYear`(`org.joda.time.chrono.BasicChronology` v1 @kind this, `long` v2 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfYear:(J)I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b0324.  call temp:= `getYear`(v1, v2) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b032a.  v0:= temp;
+  #L3b032c.  call temp:= `getDayOfYear`(v1, v2, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfYear:(JI)I` @kind virtual;
+  #L3b0332.  v2:= temp;
+  #L3b0334.  return v2;
+}
+procedure `int` `getDayOfYear`(`org.joda.time.chrono.BasicChronology` v2 @kind this, `long` v3 , `int` v5 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfYear:(JI)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3b0348.  call temp:= `getYearMillis`(v2, v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMillis:(I)J` @kind virtual;
+  #L3b034e.  v0:= temp @kind wide;
+  #L3b0350.  v3:= v3 - v0 @kind long;
+  #L3b0352.  v0:= 86400000L;
+  #L3b0358.  v3:= v3 / v0 @kind long;
+  #L3b035a.  v4:= (`int`) v3 @kind l2i;
+  #L3b035c.  v4:= v4 + 1;
+  #L3b0360.  return v4;
+}
+procedure `int` `getDaysInMonthMax`(`org.joda.time.chrono.BasicChronology` v1 @kind this) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInMonthMax:()I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b0374.  v0:= 31I;
+  #L3b0378.  return v0;
+}
+procedure `int` `getDaysInMonthMax`(`int` v0 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInMonthMax:(I)I` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `int` `getDaysInMonthMax`(`org.joda.time.chrono.BasicChronology` v1 @kind this, `long` v2 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInMonthMax:(J)I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b038c.  call temp:= `getYear`(v1, v2) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b0392.  v0:= temp;
+  #L3b0394.  call temp:= `getMonthOfYear`(v1, v2, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getMonthOfYear:(JI)I` @kind virtual;
+  #L3b039a.  v2:= temp;
+  #L3b039c.  call temp:= `getDaysInYearMonth`(v1, v0, v2) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInYearMonth:(II)I` @kind virtual;
+  #L3b03a2.  v2:= temp;
+  #L3b03a4.  return v2;
+}
+procedure `int` `getDaysInMonthMaxForSet`(`org.joda.time.chrono.BasicChronology` v0 @kind this, `long` v1 , `int` v3 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInMonthMaxForSet:(JI)I` @AccessFlag  {
+    temp;
+
+  #L3b03b8.  call temp:= `getDaysInMonthMax`(v0, v1) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInMonthMax:(J)I` @kind virtual;
+  #L3b03be.  v1:= temp;
+  #L3b03c0.  return v1;
+}
+procedure `int` `getDaysInYear`(`org.joda.time.chrono.BasicChronology` v0 @kind this, `int` v1 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInYear:(I)I` @AccessFlag  {
+    temp;
+
+  #L3b03d4.  call temp:= `isLeapYear`(v0, v1) @signature `Lorg/joda/time/chrono/BasicChronology;.isLeapYear:(I)Z` @kind virtual;
+  #L3b03da.  v1:= temp;
+  #L3b03dc.  if v1 == 0 then goto L3b03e6;
+  #L3b03e0.  v1:= 366I;
+  #L3b03e4.  goto L3b03ea;
+  #L3b03e6.  v1:= 365I;
+  #L3b03ea.  return v1;
+}
+procedure `int` `getDaysInYearMax`(`org.joda.time.chrono.BasicChronology` v1 @kind this) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInYearMax:()I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b03fc.  v0:= 366I;
+  #L3b0400.  return v0;
+}
+procedure `int` `getDaysInYearMonth`(`int` v0 , `int` v1 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getDaysInYearMonth:(II)I` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `getFirstWeekOfYearMillis`(`org.joda.time.chrono.BasicChronology` v7 @kind this, `int` v8 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getFirstWeekOfYearMillis:(I)J` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L3b0954.  call temp:= `getYearMillis`(v7, v8) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMillis:(I)J` @kind virtual;
+  #L3b095a.  v0:= temp @kind wide;
+  #L3b095c.  call temp:= `getDayOfWeek`(v7, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getDayOfWeek:(J)I` @kind virtual;
+  #L3b0962.  v8:= temp;
+  #L3b0964.  v2:= v7.`org.joda.time.chrono.BasicChronology.iMinDaysInFirstWeek` @type ^`int`;
+  #L3b0968.  v2:= v2 - 8;
+  #L3b096c.  v3:= 86400000L;
+  #L3b0972.  if v8 <= v2 then goto L3b0984;
+  #L3b0976.  v8:= v8 - 8;
+  #L3b097a.  v5:= (`long`) v8 @kind i2l;
+  #L3b097c.  v5:= v5 * v3 @kind long;
+  #L3b0980.  v0:= v0 + v5 @kind long;
+  #L3b0982.  return v0 @kind wide;
+  #L3b0984.  v8:= v8 + -1;
+  #L3b0988.  v5:= (`long`) v8 @kind i2l;
+  #L3b098a.  v5:= v5 * v3 @kind long;
+  #L3b098e.  v0:= v0 - v5 @kind long;
+  #L3b0990.  return v0 @kind wide;
+}
+procedure `int` `getMaxMonth`(`org.joda.time.chrono.BasicChronology` v1 @kind this) @signature `Lorg/joda/time/chrono/BasicChronology;.getMaxMonth:()I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b0414.  v0:= 12I;
+  #L3b0418.  return v0;
+}
+procedure `int` `getMaxMonth`(`org.joda.time.chrono.BasicChronology` v0 @kind this, `int` v1 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getMaxMonth:(I)I` @AccessFlag  {
+    temp;
+
+  #L3b042c.  call temp:= `getMaxMonth`(v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getMaxMonth:()I` @kind virtual;
+  #L3b0432.  v1:= temp;
+  #L3b0434.  return v1;
+}
+procedure `int` `getMaxYear`() @signature `Lorg/joda/time/chrono/BasicChronology;.getMaxYear:()I` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `int` `getMillisOfDay`(`org.joda.time.chrono.BasicChronology` v5 @kind this, `long` v6 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getMillisOfDay:(J)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3b0448.  v0:= 86400000L;
+  #L3b044e.  v2:= 0L;
+  #L3b0452.  v4:= lcmp(v6, v2);
+  #L3b0456.  if v4 < 0 then goto L3b0460;
+  #L3b045a.  v6:= v6 %% v0 @kind long;
+  #L3b045c.  v7:= (`int`) v6 @kind l2i;
+  #L3b045e.  return v7;
+  #L3b0460.  v2:= 86399999I;
+  #L3b0466.  v3:= 1L;
+  #L3b046a.  v6:= v6 + v3 @kind long;
+  #L3b046c.  v6:= v6 %% v0 @kind long;
+  #L3b046e.  v7:= (`int`) v6 @kind l2i;
+  #L3b0470.  v7:= v7 + v2 @kind int;
+  #L3b0472.  return v7;
+}
+procedure `int` `getMinYear`() @signature `Lorg/joda/time/chrono/BasicChronology;.getMinYear:()I` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `int` `getMinimumDaysInFirstWeek`(`org.joda.time.chrono.BasicChronology` v1 @kind this) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinimumDaysInFirstWeek:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3b0484.  v0:= v1.`org.joda.time.chrono.BasicChronology.iMinDaysInFirstWeek` @type ^`int`;
+  #L3b0488.  return v0;
+}
+procedure `int` `getMonthOfYear`(`org.joda.time.chrono.BasicChronology` v1 @kind this, `long` v2 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getMonthOfYear:(J)I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b049c.  call temp:= `getYear`(v1, v2) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b04a2.  v0:= temp;
+  #L3b04a4.  call temp:= `getMonthOfYear`(v1, v2, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getMonthOfYear:(JI)I` @kind virtual;
+  #L3b04aa.  v2:= temp;
+  #L3b04ac.  return v2;
+}
+procedure `int` `getMonthOfYear`(`long` v0 , `int` v2 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getMonthOfYear:(JI)I` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `getTotalMillisByYearMonth`(`int` v0 , `int` v1 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getTotalMillisByYearMonth:(II)J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `int` `getWeekOfWeekyear`(`org.joda.time.chrono.BasicChronology` v1 @kind this, `long` v2 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getWeekOfWeekyear:(J)I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3b04c0.  call temp:= `getYear`(v1, v2) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b04c6.  v0:= temp;
+  #L3b04c8.  call temp:= `getWeekOfWeekyear`(v1, v2, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getWeekOfWeekyear:(JI)I` @kind virtual;
+  #L3b04ce.  v2:= temp;
+  #L3b04d0.  return v2;
+}
+procedure `int` `getWeekOfWeekyear`(`org.joda.time.chrono.BasicChronology` v5 @kind this, `long` v6 , `int` v8 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getWeekOfWeekyear:(JI)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3b04e4.  call temp:= `getFirstWeekOfYearMillis`(v5, v8) @signature `Lorg/joda/time/chrono/BasicChronology;.getFirstWeekOfYearMillis:(I)J` @kind virtual;
+  #L3b04ea.  v0:= temp @kind wide;
+  #L3b04ec.  v2:= 1I;
+  #L3b04ee.  v3:= lcmp(v6, v0);
+  #L3b04f2.  if v3 >= 0 then goto L3b0502;
+  #L3b04f6.  v8:= v8 - v2 @kind int;
+  #L3b04f8.  call temp:= `getWeeksInYear`(v5, v8) @signature `Lorg/joda/time/chrono/BasicChronology;.getWeeksInYear:(I)I` @kind virtual;
+  #L3b04fe.  v6:= temp;
+  #L3b0500.  return v6;
+  #L3b0502.  v8:= v8 + v2 @kind int;
+  #L3b0504.  call temp:= `getFirstWeekOfYearMillis`(v5, v8) @signature `Lorg/joda/time/chrono/BasicChronology;.getFirstWeekOfYearMillis:(I)J` @kind virtual;
+  #L3b050a.  v3:= temp @kind wide;
+  #L3b050c.  v8:= lcmp(v6, v3);
+  #L3b0510.  if v8 < 0 then goto L3b0516;
+  #L3b0514.  return v2;
+  #L3b0516.  v6:= v6 - v0 @kind long;
+  #L3b0518.  v0:= 604800000L;
+  #L3b051e.  v6:= v6 / v0 @kind long;
+  #L3b0520.  v7:= (`int`) v6 @kind l2i;
+  #L3b0522.  v7:= v7 + v2 @kind int;
+  #L3b0524.  return v7;
+}
+procedure `int` `getWeeksInYear`(`org.joda.time.chrono.BasicChronology` v4 @kind this, `int` v5 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getWeeksInYear:(I)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b0538.  call temp:= `getFirstWeekOfYearMillis`(v4, v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getFirstWeekOfYearMillis:(I)J` @kind virtual;
+  #L3b053e.  v0:= temp @kind wide;
+  #L3b0540.  v5:= v5 + 1;
+  #L3b0544.  call temp:= `getFirstWeekOfYearMillis`(v4, v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getFirstWeekOfYearMillis:(I)J` @kind virtual;
+  #L3b054a.  v2:= temp @kind wide;
+  #L3b054c.  v2:= v2 - v0 @kind long;
+  #L3b054e.  v0:= 604800000L;
+  #L3b0554.  v2:= v2 / v0 @kind long;
+  #L3b0556.  v5:= (`int`) v2 @kind l2i;
+  #L3b0558.  return v5;
+}
+procedure `int` `getWeekyear`(`org.joda.time.chrono.BasicChronology` v3 @kind this, `long` v4 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getWeekyear:(J)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3b056c.  call temp:= `getYear`(v3, v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b0572.  v0:= temp;
+  #L3b0574.  call temp:= `getWeekOfWeekyear`(v3, v4, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getWeekOfWeekyear:(JI)I` @kind virtual;
+  #L3b057a.  v1:= temp;
+  #L3b057c.  v2:= 1I;
+  #L3b057e.  if v1 != v2 then goto L3b0594;
+  #L3b0582.  v0:= 604800000L;
+  #L3b0588.  v4:= v4 + v0 @kind long;
+  #L3b058a.  call temp:= `getYear`(v3, v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b0590.  v4:= temp;
+  #L3b0592.  return v4;
+  #L3b0594.  v2:= 51I;
+  #L3b0598.  if v1 <= v2 then goto L3b05ae;
+  #L3b059c.  v0:= 1209600000L;
+  #L3b05a2.  v4:= v4 - v0 @kind long;
+  #L3b05a4.  call temp:= `getYear`(v3, v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @kind virtual;
+  #L3b05aa.  v4:= temp;
+  #L3b05ac.  return v4;
+  #L3b05ae.  return v0;
+}
+procedure `int` `getYear`(`org.joda.time.chrono.BasicChronology` v8 @kind this, `long` v9 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getYear:(J)I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3b05c0.  call temp:= `getAverageMillisPerYearDividedByTwo`(v8) @signature `Lorg/joda/time/chrono/BasicChronology;.getAverageMillisPerYearDividedByTwo:()J` @kind virtual;
+  #L3b05c6.  v0:= temp @kind wide;
+  #L3b05c8.  v2:= 1I;
+  #L3b05ca.  v2:= v9 ^> v2 @kind long;
+  #L3b05ce.  call temp:= `getApproxMillisAtEpochDividedByTwo`(v8) @signature `Lorg/joda/time/chrono/BasicChronology;.getApproxMillisAtEpochDividedByTwo:()J` @kind virtual;
+  #L3b05d4.  v4:= temp @kind wide;
+  #L3b05d6.  v2:= v2 + v4 @kind long;
+  #L3b05d8.  v4:= 0L;
+  #L3b05dc.  v6:= lcmp(v2, v4);
+  #L3b05e0.  if v6 >= 0 then goto L3b05ec;
+  #L3b05e4.  v2:= v2 - v0 @kind long;
+  #L3b05e6.  v6:= 1L;
+  #L3b05ea.  v2:= v2 + v6 @kind long;
+  #L3b05ec.  v2:= v2 / v0 @kind long;
+  #L3b05ee.  v0:= (`int`) v2 @kind l2i;
+  #L3b05f0.  call temp:= `getYearMillis`(v8, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMillis:(I)J` @kind virtual;
+  #L3b05f6.  v1:= temp @kind wide;
+  #L3b05f8.  v6:= v9 - v1 @kind long;
+  #L3b05fc.  v3:= lcmp(v6, v4);
+  #L3b0600.  if v3 >= 0 then goto L3b060a;
+  #L3b0604.  v0:= v0 + -1;
+  #L3b0608.  goto L3b0640;
+  #L3b060a.  v3:= 31536000000L;
+  #L3b0614.  v5:= lcmp(v6, v3);
+  #L3b0618.  if v5 < 0 then goto L3b0640;
+  #L3b061c.  call temp:= `isLeapYear`(v8, v0) @signature `Lorg/joda/time/chrono/BasicChronology;.isLeapYear:(I)Z` @kind virtual;
+  #L3b0622.  v5:= temp;
+  #L3b0624.  if v5 == 0 then goto L3b0632;
+  #L3b0628.  v3:= 31622400000L;
+  #L3b0632.  v1:= v1 + v3 @kind long;
+  #L3b0634.  v3:= lcmp(v1, v9);
+  #L3b0638.  if v3 > 0 then goto L3b0640;
+  #L3b063c.  v0:= v0 + 1;
+  #L3b0640.  return v0;
+}
+procedure `long` `getYearDifference`(`long` v0 , `long` v2 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearDifference:(JJ)J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `getYearMillis`(`org.joda.time.chrono.BasicChronology` v2 @kind this, `int` v3 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMillis:(I)J` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3b09a4.  call temp:= `getYearInfo`(v2, v3) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearInfo:(I)Lorg/joda/time/chrono/BasicChronology$YearInfo;` @kind direct;
+  #L3b09aa.  v3:= temp @kind object;
+  #L3b09ac.  v0:= v3.`org.joda.time.chrono.BasicChronology$YearInfo.iFirstDayMillis` @type ^`long` @kind wide;
+  #L3b09b0.  return v0 @kind wide;
+}
+procedure `long` `getYearMonthDayMillis`(`org.joda.time.chrono.BasicChronology` v4 @kind this, `int` v5 , `int` v6 , `int` v7 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMonthDayMillis:(III)J` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b09c4.  call temp:= `getYearMillis`(v4, v5) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMillis:(I)J` @kind virtual;
+  #L3b09ca.  v0:= temp @kind wide;
+  #L3b09cc.  call temp:= `getTotalMillisByYearMonth`(v4, v5, v6) @signature `Lorg/joda/time/chrono/BasicChronology;.getTotalMillisByYearMonth:(II)J` @kind virtual;
+  #L3b09d2.  v5:= temp @kind wide;
+  #L3b09d4.  v0:= v0 + v5 @kind long;
+  #L3b09d6.  v7:= v7 + -1;
+  #L3b09da.  v5:= (`long`) v7 @kind i2l;
+  #L3b09dc.  v2:= 86400000L;
+  #L3b09e2.  v5:= v5 * v2 @kind long;
+  #L3b09e6.  v0:= v0 + v5 @kind long;
+  #L3b09e8.  return v0 @kind wide;
+}
+procedure `long` `getYearMonthMillis`(`org.joda.time.chrono.BasicChronology` v2 @kind this, `int` v3 , `int` v4 ) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMonthMillis:(II)J` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3b09fc.  call temp:= `getYearMillis`(v2, v3) @signature `Lorg/joda/time/chrono/BasicChronology;.getYearMillis:(I)J` @kind virtual;
+  #L3b0a02.  v0:= temp @kind wide;
+  #L3b0a04.  call temp:= `getTotalMillisByYearMonth`(v2, v3, v4) @signature `Lorg/joda/time/chrono/BasicChronology;.getTotalMillisByYearMonth:(II)J` @kind virtual;
+  #L3b0a0a.  v3:= temp @kind wide;
+  #L3b0a0c.  v0:= v0 + v3 @kind long;
+  #L3b0a0e.  return v0 @kind wide;
+}
+procedure `org.joda.time.DateTimeZone` `getZone`(`org.joda.time.chrono.BasicChronology` v1 @kind this) @signature `Lorg/joda/time/chrono/BasicChronology;.getZone:()Lorg/joda/time/DateTimeZone;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3b0a20.  call temp:= `getBase`(v1) @signature `Lorg/joda/time/chrono/AssembledChronology;.getBase:()Lorg/joda/time/Chronology;` @kind virtual;
+  #L3b0a26.  v0:= temp @kind object;
+  #L3b0a28.  if v0 == 0 then goto L3b0a36;
+  #L3b0a2c.  call temp:= `getZone`(v0) @signature `Lorg/joda/time/Chronology;.getZone:()Lorg/joda/time/DateTimeZone;` @kind virtual;
+  #L3b0a32.  v0:= temp @kind object;
+  #L3b0a34.  return v0 @kind object;
+  #L3b0a36.  v0:= `@@org.joda.time.DateTimeZone.UTC` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b0a3a.  return v0 @kind object;
+}
+procedure `int` `hashCode`(`org.joda.time.chrono.BasicChronology` v2 @kind this) @signature `Lorg/joda/time/chrono/BasicChronology;.hashCode:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3b0654.  call temp:= `getClass`(v2) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L3b065a.  v0:= temp @kind object;
+  #L3b065c.  call temp:= `getName`(v0) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L3b0662.  v0:= temp @kind object;
+  #L3b0664.  call temp:= `hashCode`(v0) @signature `Ljava/lang/String;.hashCode:()I` @kind virtual;
+  #L3b066a.  v0:= temp;
+  #L3b066c.  v0:= v0 * 11;
+  #L3b0670.  call temp:= `getZone`(v2) @signature `Lorg/joda/time/chrono/BasicChronology;.getZone:()Lorg/joda/time/DateTimeZone;` @kind virtual;
+  #L3b0676.  v1:= temp @kind object;
+  #L3b0678.  call temp:= `hashCode`(v1) @signature `Lorg/joda/time/DateTimeZone;.hashCode:()I` @kind virtual;
+  #L3b067e.  v1:= temp;
+  #L3b0680.  v0:= v0 + v1 @kind int;
+  #L3b0682.  call temp:= `getMinimumDaysInFirstWeek`(v2) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinimumDaysInFirstWeek:()I` @kind virtual;
+  #L3b0688.  v1:= temp;
+  #L3b068a.  v0:= v0 + v1 @kind int;
+  #L3b068c.  return v0;
+}
+procedure `boolean` `isLeapDay`(`org.joda.time.chrono.BasicChronology` v0 @kind this, `long` v1 ) @signature `Lorg/joda/time/chrono/BasicChronology;.isLeapDay:(J)Z` @AccessFlag  {
+    temp;
+
+  #L3b022c.  v1:= 0I;
+  #L3b022e.  return v1;
+}
+procedure `boolean` `isLeapYear`(`int` v0 ) @signature `Lorg/joda/time/chrono/BasicChronology;.isLeapYear:(I)Z` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `long` `setYear`(`long` v0 , `int` v2 ) @signature `Lorg/joda/time/chrono/BasicChronology;.setYear:(JI)J` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `java.lang.String` `toString`(`org.joda.time.chrono.BasicChronology` v3 @kind this) @signature `Lorg/joda/time/chrono/BasicChronology;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3b06a0.  v0:= new `java.lang.StringBuilder`;
+  #L3b06a4.  v1:= 60I;
+  #L3b06a8.  call `<init>`(v0, v1) @signature `Ljava/lang/StringBuilder;.<init>:(I)V` @kind direct;
+  #L3b06ae.  call temp:= `getClass`(v3) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L3b06b4.  v1:= temp @kind object;
+  #L3b06b6.  call temp:= `getName`(v1) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L3b06bc.  v1:= temp @kind object;
+  #L3b06be.  v2:= 46I;
+  #L3b06c2.  call temp:= `lastIndexOf`(v1, v2) @signature `Ljava/lang/String;.lastIndexOf:(I)I` @kind virtual;
+  #L3b06c8.  v2:= temp;
+  #L3b06ca.  if v2 < 0 then goto L3b06da;
+  #L3b06ce.  v2:= v2 + 1;
+  #L3b06d2.  call temp:= `substring`(v1, v2) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L3b06d8.  v1:= temp @kind object;
+  #L3b06da.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b06e0.  v1:= 91I;
+  #L3b06e4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b06ea.  call temp:= `getZone`(v3) @signature `Lorg/joda/time/chrono/BasicChronology;.getZone:()Lorg/joda/time/DateTimeZone;` @kind virtual;
+  #L3b06f0.  v1:= temp @kind object;
+  #L3b06f2.  if v1 == 0 then goto L3b0704;
+  #L3b06f6.  call temp:= `getID`(v1) @signature `Lorg/joda/time/DateTimeZone;.getID:()Ljava/lang/String;` @kind virtual;
+  #L3b06fc.  v1:= temp @kind object;
+  #L3b06fe.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b0704.  call temp:= `getMinimumDaysInFirstWeek`(v3) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinimumDaysInFirstWeek:()I` @kind virtual;
+  #L3b070a.  v1:= temp;
+  #L3b070c.  v2:= 4I;
+  #L3b070e.  if v1 == v2 then goto L3b072a;
+  #L3b0712.  v1:= ",mdfw=" @kind object;
+  #L3b0716.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b071c.  call temp:= `getMinimumDaysInFirstWeek`(v3) @signature `Lorg/joda/time/chrono/BasicChronology;.getMinimumDaysInFirstWeek:()I` @kind virtual;
+  #L3b0722.  v1:= temp;
+  #L3b0724.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b072a.  v1:= 93I;
+  #L3b072e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3b0734.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3b073a.  v0:= temp @kind object;
+  #L3b073c.  return v0 @kind object;
+}

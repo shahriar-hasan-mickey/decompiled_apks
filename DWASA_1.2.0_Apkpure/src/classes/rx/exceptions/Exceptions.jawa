@@ -1,0 +1,182 @@
+record `rx.exceptions.Exceptions` @kind class @AccessFlag PUBLIC_FINAL {
+}
+global `int` `@@rx.exceptions.Exceptions.MAX_DEPTH` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.exceptions.Exceptions` v2 @kind this) @signature `Lrx/exceptions/Exceptions;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L490f90.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L490f96.  v0:= new `java.lang.IllegalStateException`;
+  #L490f9a.  v1:= "No instances!" @kind object;
+  #L490f9e.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L490fa4.  throw v0;
+}
+procedure `void` `addCause`(`java.lang.Throwable` v4 @kind object, `java.lang.Throwable` v5 @kind object) @signature `Lrx/exceptions/Exceptions;.addCause:(Ljava/lang/Throwable;Ljava/lang/Throwable;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L490fb8.  v0:= new `java.util.HashSet`;
+  #L490fbc.  call `<init>`(v0) @signature `Ljava/util/HashSet;.<init>:()V` @kind direct;
+  #L490fc2.  v1:= 0I;
+  #L490fc4.  call temp:= `getCause`(v4) @signature `Ljava/lang/Throwable;.getCause:()Ljava/lang/Throwable;` @kind virtual;
+  #L490fca.  v2:= temp @kind object;
+  #L490fcc.  if v2 == 0 then goto L49100e;
+  #L490fd0.  v2:= v1 + 1;
+  #L490fd4.  v3:= 25I;
+  #L490fd8.  if v1 < v3 then goto L490fde;
+  #L490fdc.  return @kind void;
+  #L490fde.  call temp:= `getCause`(v4) @signature `Ljava/lang/Throwable;.getCause:()Ljava/lang/Throwable;` @kind virtual;
+  #L490fe4.  v4:= temp @kind object;
+  #L490fe6.  call temp:= `getCause`(v4) @signature `Ljava/lang/Throwable;.getCause:()Ljava/lang/Throwable;` @kind virtual;
+  #L490fec.  v1:= temp @kind object;
+  #L490fee.  call temp:= `contains`(v0, v1) @signature `Ljava/util/Set;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L490ff4.  v1:= temp;
+  #L490ff6.  if v1 == 0 then goto L490ffc;
+  #L490ffa.  goto L49100e;
+  #L490ffc.  call temp:= `getCause`(v4) @signature `Ljava/lang/Throwable;.getCause:()Ljava/lang/Throwable;` @kind virtual;
+  #L491002.  v1:= temp @kind object;
+  #L491004.  call temp:= `add`(v0, v1) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L49100a.  v1:= v2;
+  #L49100c.  goto L490fc4;
+  #L49100e.  call temp:= `initCause`(v4, v5) @signature `Ljava/lang/Throwable;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L491014.  return @kind void;
+  catch `java.lang.Throwable` @[L49100e..L491014] goto L491014;
+}
+procedure `java.lang.Throwable` `getFinalCause`(`java.lang.Throwable` v3 @kind object) @signature `Lrx/exceptions/Exceptions;.getFinalCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L490f48.  v0:= 0I;
+  #L490f4a.  call temp:= `getCause`(v3) @signature `Ljava/lang/Throwable;.getCause:()Ljava/lang/Throwable;` @kind virtual;
+  #L490f50.  v1:= temp @kind object;
+  #L490f52.  if v1 == 0 then goto L490f7e;
+  #L490f56.  v1:= v0 + 1;
+  #L490f5a.  v2:= 25I;
+  #L490f5e.  if v0 < v2 then goto L490f72;
+  #L490f62.  v3:= new `java.lang.RuntimeException`;
+  #L490f66.  v0:= "Stack too deep to get final cause" @kind object;
+  #L490f6a.  call `<init>`(v3, v0) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L490f70.  return v3 @kind object;
+  #L490f72.  call temp:= `getCause`(v3) @signature `Ljava/lang/Throwable;.getCause:()Ljava/lang/Throwable;` @kind virtual;
+  #L490f78.  v3:= temp @kind object;
+  #L490f7a.  v0:= v1;
+  #L490f7c.  goto L490f4a;
+  #L490f7e.  return v3 @kind object;
+}
+procedure `java.lang.RuntimeException` `propagate`(`java.lang.Throwable` v1 @kind object) @signature `Lrx/exceptions/Exceptions;.propagate:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L490f10.  v0:= instanceof @variable v1 @type ^`java.lang.RuntimeException` @kind boolean;
+  #L490f14.  if v0 != 0 then goto L490f32;
+  #L490f18.  v0:= instanceof @variable v1 @type ^`java.lang.Error` @kind boolean;
+  #L490f1c.  if v0 == 0 then goto L490f26;
+  #L490f20.  v1:= (`java.lang.Error`) v1 @kind object;
+  #L490f24.  throw v1;
+  #L490f26.  v0:= new `java.lang.RuntimeException`;
+  #L490f2a.  call `<init>`(v0, v1) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L490f30.  throw v0;
+  #L490f32.  v1:= (`java.lang.RuntimeException`) v1 @kind object;
+  #L490f36.  throw v1;
+}
+procedure `void` `throwIfAny`(`java.util.List` v2 @kind object) @signature `Lrx/exceptions/Exceptions;.throwIfAny:(Ljava/util/List;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L491034.  if v2 == 0 then goto L491094;
+  #L491038.  call temp:= `isEmpty`(v2) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L49103e.  v0:= temp;
+  #L491040.  if v0 != 0 then goto L491094;
+  #L491044.  call temp:= `size`(v2) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L49104a.  v0:= temp;
+  #L49104c.  v1:= 1I;
+  #L49104e.  if v0 != v1 then goto L491088;
+  #L491052.  v0:= 0I;
+  #L491054.  call temp:= `get`(v2, v0) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L49105a.  v2:= temp @kind object;
+  #L49105c.  v2:= (`java.lang.Throwable`) v2 @kind object;
+  #L491060.  v0:= instanceof @variable v2 @type ^`java.lang.RuntimeException` @kind boolean;
+  #L491064.  if v0 != 0 then goto L491082;
+  #L491068.  v0:= instanceof @variable v2 @type ^`java.lang.Error` @kind boolean;
+  #L49106c.  if v0 == 0 then goto L491076;
+  #L491070.  v2:= (`java.lang.Error`) v2 @kind object;
+  #L491074.  throw v2;
+  #L491076.  v0:= new `java.lang.RuntimeException`;
+  #L49107a.  call `<init>`(v0, v2) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L491080.  throw v0;
+  #L491082.  v2:= (`java.lang.RuntimeException`) v2 @kind object;
+  #L491086.  throw v2;
+  #L491088.  v0:= new `rx.exceptions.CompositeException`;
+  #L49108c.  call `<init>`(v0, v2) @signature `Lrx/exceptions/CompositeException;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L491092.  throw v0;
+  #L491094.  return @kind void;
+}
+procedure `void` `throwIfFatal`(`java.lang.Throwable` v1 @kind object) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4910a8.  v0:= instanceof @variable v1 @type ^`rx.exceptions.OnErrorNotImplementedException` @kind boolean;
+  #L4910ac.  if v0 != 0 then goto L4910f8;
+  #L4910b0.  v0:= instanceof @variable v1 @type ^`rx.exceptions.OnErrorFailedException` @kind boolean;
+  #L4910b4.  if v0 != 0 then goto L4910f2;
+  #L4910b8.  v0:= instanceof @variable v1 @type ^`rx.exceptions.OnCompletedFailedException` @kind boolean;
+  #L4910bc.  if v0 != 0 then goto L4910ec;
+  #L4910c0.  v0:= instanceof @variable v1 @type ^`java.lang.VirtualMachineError` @kind boolean;
+  #L4910c4.  if v0 != 0 then goto L4910e6;
+  #L4910c8.  v0:= instanceof @variable v1 @type ^`java.lang.ThreadDeath` @kind boolean;
+  #L4910cc.  if v0 != 0 then goto L4910e0;
+  #L4910d0.  v0:= instanceof @variable v1 @type ^`java.lang.LinkageError` @kind boolean;
+  #L4910d4.  if v0 != 0 then goto L4910da;
+  #L4910d8.  return @kind void;
+  #L4910da.  v1:= (`java.lang.LinkageError`) v1 @kind object;
+  #L4910de.  throw v1;
+  #L4910e0.  v1:= (`java.lang.ThreadDeath`) v1 @kind object;
+  #L4910e4.  throw v1;
+  #L4910e6.  v1:= (`java.lang.VirtualMachineError`) v1 @kind object;
+  #L4910ea.  throw v1;
+  #L4910ec.  v1:= (`rx.exceptions.OnCompletedFailedException`) v1 @kind object;
+  #L4910f0.  throw v1;
+  #L4910f2.  v1:= (`rx.exceptions.OnErrorFailedException`) v1 @kind object;
+  #L4910f6.  throw v1;
+  #L4910f8.  v1:= (`rx.exceptions.OnErrorNotImplementedException`) v1 @kind object;
+  #L4910fc.  throw v1;
+}
+procedure `void` `throwOrReport`(`java.lang.Throwable` v0 @kind object, `rx.Observer` v1 @kind object) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L491110.  call `throwIfFatal`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L491116.  call `onError`(v1, v0) @signature `Lrx/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L49111c.  return @kind void;
+}
+procedure `void` `throwOrReport`(`java.lang.Throwable` v0 @kind object, `rx.Observer` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;Ljava/lang/Object;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L491130.  call `throwIfFatal`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L491136.  call temp:= `addValueAsLastCause`(v0, v2) @signature `Lrx/exceptions/OnErrorThrowable;.addValueAsLastCause:(Ljava/lang/Throwable;Ljava/lang/Object;)Ljava/lang/Throwable;` @kind static;
+  #L49113c.  v0:= temp @kind object;
+  #L49113e.  call `onError`(v1, v0) @signature `Lrx/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L491144.  return @kind void;
+}
+procedure `void` `throwOrReport`(`java.lang.Throwable` v0 @kind object, `rx.SingleSubscriber` v1 @kind object) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/SingleSubscriber;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L491158.  call `throwIfFatal`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L49115e.  call `onError`(v1, v0) @signature `Lrx/SingleSubscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L491164.  return @kind void;
+}
+procedure `void` `throwOrReport`(`java.lang.Throwable` v0 @kind object, `rx.SingleSubscriber` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/SingleSubscriber;Ljava/lang/Object;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L491178.  call `throwIfFatal`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L49117e.  call temp:= `addValueAsLastCause`(v0, v2) @signature `Lrx/exceptions/OnErrorThrowable;.addValueAsLastCause:(Ljava/lang/Throwable;Ljava/lang/Object;)Ljava/lang/Throwable;` @kind static;
+  #L491184.  v0:= temp @kind object;
+  #L491186.  call `onError`(v1, v0) @signature `Lrx/SingleSubscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L49118c.  return @kind void;
+}

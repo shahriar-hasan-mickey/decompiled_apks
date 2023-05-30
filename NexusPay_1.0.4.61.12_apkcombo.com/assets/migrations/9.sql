@@ -1,0 +1,1 @@
+ALTER TABLE  TransactionLog ADD COLUMN purpose TEXT DEFAULT NULL;

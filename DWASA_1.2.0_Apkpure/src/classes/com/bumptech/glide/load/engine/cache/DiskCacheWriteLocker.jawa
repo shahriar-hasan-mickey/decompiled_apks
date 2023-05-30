@@ -1,0 +1,122 @@
+record `com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker` @kind class @AccessFlag FINAL {
+  `java.util.Map` `com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.locks` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLockPool` `com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.writeLockPool` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker` v2 @kind this) @signature `Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L2bc36c.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2bc372.  v0:= new `java.util.HashMap`;
+  #L2bc376.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L2bc37c.  v2.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.locks` @type ^`java.util.Map` := v0 @kind object;
+  #L2bc380.  v0:= new `com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLockPool`;
+  #L2bc384.  v1:= 0I;
+  #L2bc386.  call `<init>`(v0, v1) @signature `Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker$WriteLockPool;.<init>:(Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker$1;)V` @kind direct;
+  #L2bc38c.  v2.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.writeLockPool` @type ^`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLockPool` := v0 @kind object;
+  #L2bc390.  return @kind void;
+}
+procedure `void` `acquire`(`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker` v2 @kind this, `com.bumptech.glide.load.Key` v3 @kind object) @signature `Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker;.acquire:(Lcom/bumptech/glide/load/Key;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L2bc3a4.  @monitorenter v2
+  #L2bc3a6.  v0:= v2.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.locks` @type ^`java.util.Map` @kind object;
+  #L2bc3aa.  call temp:= `get`(v0, v3) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2bc3b0.  v0:= temp @kind object;
+  #L2bc3b2.  v0:= (`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock`) v0 @kind object;
+  #L2bc3b6.  if v0 != 0 then goto L2bc3d0;
+  #L2bc3ba.  v0:= v2.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.writeLockPool` @type ^`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLockPool` @kind object;
+  #L2bc3be.  call temp:= `obtain`(v0) @signature `Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker$WriteLockPool;.obtain:()Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker$WriteLock;` @kind virtual;
+  #L2bc3c4.  v0:= temp @kind object;
+  #L2bc3c6.  v1:= v2.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.locks` @type ^`java.util.Map` @kind object;
+  #L2bc3ca.  call temp:= `put`(v1, v3, v0) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2bc3d0.  v3:= v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.interestedThreads` @type ^`int`;
+  #L2bc3d4.  v3:= v3 + 1;
+  #L2bc3d8.  v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.interestedThreads` @type ^`int` := v3;
+  #L2bc3dc.  @monitorexit v2
+  #L2bc3de.  v3:= v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.lock` @type ^`java.util.concurrent.locks.Lock` @kind object;
+  #L2bc3e2.  call `lock`(v3) @signature `Ljava/util/concurrent/locks/Lock;.lock:()V` @kind interface;
+  #L2bc3e8.  return @kind void;
+  #L2bc3ea.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2bc3ec.  @monitorexit v2
+  #L2bc3ee.  throw v3;
+  catch `java.lang.Throwable` @[L2bc3a6..L2bc3de] goto L2bc3ea;
+  catch `java.lang.Throwable` @[L2bc3ec..L2bc3ee] goto L2bc3ea;
+}
+procedure `void` `release`(`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker` v5 @kind this, `com.bumptech.glide.load.Key` v6 @kind object) @signature `Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker;.release:(Lcom/bumptech/glide/load/Key;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2bc414.  @monitorenter v5
+  #L2bc416.  v0:= v5.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.locks` @type ^`java.util.Map` @kind object;
+  #L2bc41a.  call temp:= `get`(v0, v6) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2bc420.  v0:= temp @kind object;
+  #L2bc422.  v0:= (`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock`) v0 @kind object;
+  #L2bc426.  if v0 == 0 then goto L2bc4c8;
+  #L2bc42a.  v1:= v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.interestedThreads` @type ^`int`;
+  #L2bc42e.  if v1 > 0 then goto L2bc434;
+  #L2bc432.  goto L2bc4c8;
+  #L2bc434.  v1:= v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.interestedThreads` @type ^`int`;
+  #L2bc438.  v1:= v1 + -1;
+  #L2bc43c.  v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.interestedThreads` @type ^`int` := v1;
+  #L2bc440.  if v1 != 0 then goto L2bc4ba;
+  #L2bc444.  v1:= v5.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.locks` @type ^`java.util.Map` @kind object;
+  #L2bc448.  call temp:= `remove`(v1, v6) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2bc44e.  v1:= temp @kind object;
+  #L2bc450.  v1:= (`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock`) v1 @kind object;
+  #L2bc454.  call temp:= `equals`(v1, v0) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2bc45a.  v2:= temp;
+  #L2bc45c.  if v2 == 0 then goto L2bc46c;
+  #L2bc460.  v6:= v5.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker.writeLockPool` @type ^`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLockPool` @kind object;
+  #L2bc464.  call `offer`(v6, v1) @signature `Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker$WriteLockPool;.offer:(Lcom/bumptech/glide/load/engine/cache/DiskCacheWriteLocker$WriteLock;)V` @kind virtual;
+  #L2bc46a.  goto L2bc4ba;
+  #L2bc46c.  v2:= new `java.lang.IllegalStateException`;
+  #L2bc470.  v3:= new `java.lang.StringBuilder`;
+  #L2bc474.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bc47a.  v4:= "Removed the wrong lock, expected to remove: " @kind object;
+  #L2bc47e.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc484.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc48a.  v0:= ", but actually removed: " @kind object;
+  #L2bc48e.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc494.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc49a.  v0:= ", key: " @kind object;
+  #L2bc49e.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc4a4.  call temp:= `append`(v3, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc4aa.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2bc4b0.  v6:= temp @kind object;
+  #L2bc4b2.  call `<init>`(v2, v6) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2bc4b8.  throw v2;
+  #L2bc4ba.  @monitorexit v5
+  #L2bc4bc.  v6:= v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.lock` @type ^`java.util.concurrent.locks.Lock` @kind object;
+  #L2bc4c0.  call `unlock`(v6) @signature `Ljava/util/concurrent/locks/Lock;.unlock:()V` @kind interface;
+  #L2bc4c6.  return @kind void;
+  #L2bc4c8.  v1:= new `java.lang.IllegalArgumentException`;
+  #L2bc4cc.  v2:= new `java.lang.StringBuilder`;
+  #L2bc4d0.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bc4d6.  v3:= "Cannot release a lock that is not held, key: " @kind object;
+  #L2bc4da.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc4e0.  call temp:= `append`(v2, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc4e6.  v6:= ", interestedThreads: " @kind object;
+  #L2bc4ea.  call temp:= `append`(v2, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc4f0.  if v0 != 0 then goto L2bc4f8;
+  #L2bc4f4.  v6:= 0I;
+  #L2bc4f6.  goto L2bc4fc;
+  #L2bc4f8.  v6:= v0.`com.bumptech.glide.load.engine.cache.DiskCacheWriteLocker$WriteLock.interestedThreads` @type ^`int`;
+  #L2bc4fc.  call temp:= `append`(v2, v6) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bc502.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2bc508.  v6:= temp @kind object;
+  #L2bc50a.  call `<init>`(v1, v6) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2bc510.  throw v1;
+  #L2bc512.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2bc514.  @monitorexit v5
+  #L2bc516.  throw v6;
+  catch `java.lang.Throwable` @[L2bc416..L2bc4bc] goto L2bc512;
+  catch `java.lang.Throwable` @[L2bc4c8..L2bc516] goto L2bc512;
+}

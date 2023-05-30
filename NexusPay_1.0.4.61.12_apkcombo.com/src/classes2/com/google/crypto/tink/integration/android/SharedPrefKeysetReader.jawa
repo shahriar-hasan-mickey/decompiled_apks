@@ -1,0 +1,94 @@
+record `com.google.crypto.tink.integration.android.SharedPrefKeysetReader` @kind class @AccessFlag PUBLIC_FINAL extends `com.google.crypto.tink.KeysetReader` @kind interface {
+  `android.content.SharedPreferences` `com.google.crypto.tink.integration.android.SharedPrefKeysetReader.a` @AccessFlag PRIVATE_FINAL;
+  `java.lang.String` `com.google.crypto.tink.integration.android.SharedPrefKeysetReader.b` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`com.google.crypto.tink.integration.android.SharedPrefKeysetReader` v0 @kind this, `android.content.Context` v1 @kind object, `java.lang.String` v2 @kind object, `java.lang.String` v3 @kind object) @signature `Lcom/google/crypto/tink/integration/android/SharedPrefKeysetReader;.<init>:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L42f34c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L42f352.  if v2 == 0 then goto L42f384;
+  #L42f356.  v0.`com.google.crypto.tink.integration.android.SharedPrefKeysetReader.b` @type ^`java.lang.String` := v2 @kind object;
+  #L42f35a.  call temp:= `getApplicationContext`(v1) @signature `Landroid/content/Context;.getApplicationContext:()Landroid/content/Context;` @kind virtual;
+  #L42f360.  v1:= temp @kind object;
+  #L42f362.  if v3 != 0 then goto L42f374;
+  #L42f366.  call temp:= `getDefaultSharedPreferences`(v1) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L42f36c.  v1:= temp @kind object;
+  #L42f36e.  v0.`com.google.crypto.tink.integration.android.SharedPrefKeysetReader.a` @type ^`android.content.SharedPreferences` := v1 @kind object;
+  #L42f372.  goto L42f382;
+  #L42f374.  v2:= 0I;
+  #L42f376.  call temp:= `getSharedPreferences`(v1, v3, v2) @signature `Landroid/content/Context;.getSharedPreferences:(Ljava/lang/String;I)Landroid/content/SharedPreferences;` @kind virtual;
+  #L42f37c.  v1:= temp @kind object;
+  #L42f37e.  v0.`com.google.crypto.tink.integration.android.SharedPrefKeysetReader.a` @type ^`android.content.SharedPreferences` := v1 @kind object;
+  #L42f382.  return @kind void;
+  #L42f384.  v1:= new `java.lang.IllegalArgumentException`;
+  #L42f388.  v2:= "keysetName cannot be null" @kind object;
+  #L42f38c.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L42f392.  throw v1;
+}
+procedure `byte`[] `a`(`com.google.crypto.tink.integration.android.SharedPrefKeysetReader` v6 @kind this) @signature `Lcom/google/crypto/tink/integration/android/SharedPrefKeysetReader;.a:()[B` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L42f268.  v0:= 0I;
+  #L42f26a.  v1:= 1I;
+  #L42f26c.  v2:= v6.`com.google.crypto.tink.integration.android.SharedPrefKeysetReader.a` @type ^`android.content.SharedPreferences` @kind object;
+  #L42f270.  v3:= v6.`com.google.crypto.tink.integration.android.SharedPrefKeysetReader.b` @type ^`java.lang.String` @kind object;
+  #L42f274.  v4:= 0I;
+  #L42f276.  call temp:= `getString`(v2, v3, v4) @signature `Landroid/content/SharedPreferences;.getString:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind interface;
+  #L42f27c.  v2:= temp @kind object;
+  #L42f27e.  if v2 == 0 then goto L42f28c;
+  #L42f282.  call temp:= `decode`(v2) @signature `Lcom/google/crypto/tink/subtle/Hex;.decode:(Ljava/lang/String;)[B` @kind static;
+  #L42f288.  v0:= temp @kind object;
+  #L42f28a.  return v0 @kind object;
+  #L42f28c.  v2:= new `java.io.FileNotFoundException`;
+  #L42f290.  v3:= "can't read keyset; the pref value %s does not exist" @kind object;
+  #L42f294.  v4:= new `java.lang.Object`[v1];
+  #L42f298.  v5:= v6.`com.google.crypto.tink.integration.android.SharedPrefKeysetReader.b` @type ^`java.lang.String` @kind object;
+  #L42f29c.  v4[v0]:= v5 @kind object;
+  #L42f2a0.  call temp:= `format`(v3, v4) @signature `Ljava/lang/String;.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L42f2a6.  v3:= temp @kind object;
+  #L42f2a8.  call `<init>`(v2, v3) @signature `Ljava/io/FileNotFoundException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L42f2ae.  throw v2;
+  #L42f2b0.  v2:= new `java.io.CharConversionException`;
+  #L42f2b4.  v1:= new `java.lang.Object`[v1];
+  #L42f2b8.  v3:= v6.`com.google.crypto.tink.integration.android.SharedPrefKeysetReader.b` @type ^`java.lang.String` @kind object;
+  #L42f2bc.  v1[v0]:= v3 @kind object;
+  #L42f2c0.  v0:= "can't read keyset; the pref value %s is not a valid hex string" @kind object;
+  #L42f2c4.  call temp:= `format`(v0, v1) @signature `Ljava/lang/String;.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L42f2ca.  v0:= temp @kind object;
+  #L42f2cc.  call `<init>`(v2, v0) @signature `Ljava/io/CharConversionException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L42f2d2.  throw v2;
+  catch `java.lang.ClassCastException` @[L42f26c..L42f2b0] goto L42f2b0;
+  catch `java.lang.IllegalArgumentException` @[L42f26c..L42f2b0] goto L42f2b0;
+}
+procedure `com.google.crypto.tink.proto.Keyset` `read`(`com.google.crypto.tink.integration.android.SharedPrefKeysetReader` v2 @kind this) @signature `Lcom/google/crypto/tink/integration/android/SharedPrefKeysetReader;.read:()Lcom/google/crypto/tink/proto/Keyset;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L42f320.  call temp:= `a`(v2) @signature `Lcom/google/crypto/tink/integration/android/SharedPrefKeysetReader;.a:()[B` @kind direct;
+  #L42f326.  v0:= temp @kind object;
+  #L42f328.  call temp:= `getEmptyRegistry`() @signature `Lcom/google/crypto/tink/shaded/protobuf/ExtensionRegistryLite;.getEmptyRegistry:()Lcom/google/crypto/tink/shaded/protobuf/ExtensionRegistryLite;` @kind static;
+  #L42f32e.  v1:= temp @kind object;
+  #L42f330.  call temp:= `parseFrom`(v0, v1) @signature `Lcom/google/crypto/tink/proto/Keyset;.parseFrom:([BLcom/google/crypto/tink/shaded/protobuf/ExtensionRegistryLite;)Lcom/google/crypto/tink/proto/Keyset;` @kind static;
+  #L42f336.  v0:= temp @kind object;
+  #L42f338.  return v0 @kind object;
+}
+procedure `com.google.crypto.tink.proto.EncryptedKeyset` `readEncrypted`(`com.google.crypto.tink.integration.android.SharedPrefKeysetReader` v2 @kind this) @signature `Lcom/google/crypto/tink/integration/android/SharedPrefKeysetReader;.readEncrypted:()Lcom/google/crypto/tink/proto/EncryptedKeyset;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L42f2f4.  call temp:= `a`(v2) @signature `Lcom/google/crypto/tink/integration/android/SharedPrefKeysetReader;.a:()[B` @kind direct;
+  #L42f2fa.  v0:= temp @kind object;
+  #L42f2fc.  call temp:= `getEmptyRegistry`() @signature `Lcom/google/crypto/tink/shaded/protobuf/ExtensionRegistryLite;.getEmptyRegistry:()Lcom/google/crypto/tink/shaded/protobuf/ExtensionRegistryLite;` @kind static;
+  #L42f302.  v1:= temp @kind object;
+  #L42f304.  call temp:= `parseFrom`(v0, v1) @signature `Lcom/google/crypto/tink/proto/EncryptedKeyset;.parseFrom:([BLcom/google/crypto/tink/shaded/protobuf/ExtensionRegistryLite;)Lcom/google/crypto/tink/proto/EncryptedKeyset;` @kind static;
+  #L42f30a.  v0:= temp @kind object;
+  #L42f30c.  return v0 @kind object;
+}

@@ -1,0 +1,431 @@
+record `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` @kind class @AccessFlag PUBLIC extends `androidx.fragment.app.Fragment` @kind class, `dream71.com.wasa.NetworkConnection.DataController` @kind interface, `dream71.com.wasa.interfaces.OnClickItemPosition` @kind interface {
+  `dream71.com.wasa.database.DatabaseHelper` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.databaseHelper` @AccessFlag ;
+  `androidx.recyclerview.widget.RecyclerView` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.dtwList` @AccessFlag ;
+  `com.google.gson.Gson` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.gson` @AccessFlag ;
+  `androidx.swiperefreshlayout.widget.SwipeRefreshLayout` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.mSwipeRefreshLayout` @AccessFlag ;
+  `dream71.com.wasa.home.waterSupply.pipe.model.WaterPipeListMessage` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.nodeListMessage` @AccessFlag ;
+  `android.app.ProgressDialog` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @AccessFlag ;
+  `int` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pageNumber` @AccessFlag ;
+  `android.widget.EditText` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.search_bar` @AccessFlag ;
+  `android.widget.TextView` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.titleBar` @AccessFlag ;
+  `butterknife.Unbinder` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.unbinder` @AccessFlag ;
+  `dream71.com.wasa.home.waterSupply.adapter.WaterPipeAdapter` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipeAdapter` @AccessFlag ;
+  `java.util.List` `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipes` @AccessFlag ;
+}
+procedure `void` `<init>`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3be98c.  call `<init>`(v1) @signature `Landroidx/fragment/app/Fragment;.<init>:()V` @kind direct;
+  #L3be992.  v0:= new `java.util.ArrayList`;
+  #L3be996.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L3be99c.  v1.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipes` @type ^`java.util.List` := v0 @kind object;
+  #L3be9a0.  v0:= 0I;
+  #L3be9a2.  v1.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pageNumber` @type ^`int` := v0;
+  #L3be9a6.  v0:= new `com.google.gson.Gson`;
+  #L3be9aa.  call `<init>`(v0) @signature `Lcom/google/gson/Gson;.<init>:()V` @kind direct;
+  #L3be9b0.  v1.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.gson` @type ^`com.google.gson.Gson` := v0 @kind object;
+  #L3be9b4.  return @kind void;
+}
+procedure `void` `ReloadPage`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.ReloadPage:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3beadc.  v0:= `@@dream71.com.wasa.Main.MainActivity.FragmentManagerDashBoard` @type ^`androidx.fragment.app.FragmentManager` @kind object;
+  #L3beae0.  call temp:= `beginTransaction`(v0) @signature `Landroidx/fragment/app/FragmentManager;.beginTransaction:()Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3beae6.  v0:= temp @kind object;
+  #L3beae8.  v1:= 2130771997I;
+  #L3beaee.  v2:= 2130772000I;
+  #L3beaf4.  call temp:= `setCustomAnimations`(v0, v1, v2) @signature `Landroidx/fragment/app/FragmentTransaction;.setCustomAnimations:(II)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3beafa.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3beafe.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L3beb04.  v1:= temp @kind object;
+  #L3beb06.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3beb0a.  call `onPause`(v1) @signature `Landroidx/fragment/app/Fragment;.onPause:()V` @kind virtual;
+  #L3beb10.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3beb14.  call temp:= `pop`(v1) @signature `Ljava/util/Stack;.pop:()Ljava/lang/Object;` @kind virtual;
+  #L3beb1a.  v1:= temp @kind object;
+  #L3beb1c.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3beb20.  call temp:= `remove`(v0, v1) @signature `Landroidx/fragment/app/FragmentTransaction;.remove:(Landroidx/fragment/app/Fragment;)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3beb26.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3beb2a.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L3beb30.  v1:= temp @kind object;
+  #L3beb32.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3beb36.  call `onResume`(v1) @signature `Landroidx/fragment/app/Fragment;.onResume:()V` @kind virtual;
+  #L3beb3c.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3beb40.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L3beb46.  v1:= temp @kind object;
+  #L3beb48.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3beb4c.  call temp:= `show`(v0, v1) @signature `Landroidx/fragment/app/FragmentTransaction;.show:(Landroidx/fragment/app/Fragment;)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3beb52.  call temp:= `commit`(v0) @signature `Landroidx/fragment/app/FragmentTransaction;.commit:()I` @kind virtual;
+  #L3beb58.  return @kind void;
+}
+procedure `void` `SaveData`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v2 @kind this, `java.util.List` v3 @kind object) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.SaveData:(Ljava/util/List;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3beb6c.  v0:= new `com.arasthel.asyncjob.AsyncJob$AsyncJobBuilder`;
+  #L3beb70.  call `<init>`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.<init>:()V` @kind direct;
+  #L3beb76.  v1:= new `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment$7`;
+  #L3beb7a.  call `<init>`(v1, v2, v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment$7;.<init>:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;Ljava/util/List;)V` @kind direct;
+  #L3beb80.  call temp:= `doInBackground`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doInBackground:(Lcom/arasthel/asyncjob/AsyncJob$AsyncAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3beb86.  v3:= temp @kind object;
+  #L3beb88.  v0:= new `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment$6`;
+  #L3beb8c.  call `<init>`(v0, v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment$6;.<init>:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;)V` @kind direct;
+  #L3beb92.  call temp:= `doWhenFinished`(v3, v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doWhenFinished:(Lcom/arasthel/asyncjob/AsyncJob$AsyncResultAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3beb98.  v3:= temp @kind object;
+  #L3beb9a.  call temp:= `create`(v3) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.create:()Lcom/arasthel/asyncjob/AsyncJob;` @kind virtual;
+  #L3beba0.  v3:= temp @kind object;
+  #L3beba2.  call `start`(v3) @signature `Lcom/arasthel/asyncjob/AsyncJob;.start:()V` @kind virtual;
+  #L3beba8.  return @kind void;
+}
+procedure `void` `StartServices`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.StartServices:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3bec44.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3bec4a.  v0:= temp @kind object;
+  #L3bec4c.  v1:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L3bec50.  call temp:= `isServiceRunning`(v0, v1) @signature `Ldream71/com/wasa/utils/Validation;.isServiceRunning:(Landroid/content/Context;Ljava/lang/Class;)Z` @kind static;
+  #L3bec56.  v0:= temp;
+  #L3bec58.  if v0 != 0 then goto L3bec80;
+  #L3bec5c.  v0:= new `android.content.Intent`;
+  #L3bec60.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3bec66.  v1:= temp @kind object;
+  #L3bec68.  v2:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L3bec6c.  call `<init>`(v0, v1, v2) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L3bec72.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3bec78.  v1:= temp @kind object;
+  #L3bec7a.  call temp:= `startService`(v1, v0) @signature `Landroidx/fragment/app/FragmentActivity;.startService:(Landroid/content/Intent;)Landroid/content/ComponentName;` @kind virtual;
+  #L3bec80.  return @kind void;
+}
+procedure `void` `access$000`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v0 @kind object) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.access$000:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L3bece4.  call `getData`(v0) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getData:()V` @kind direct;
+  #L3becea.  return @kind void;
+}
+procedure `void` `getData`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getData:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3bed2c.  call temp:= `getActivity`(v1) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3bed32.  v0:= temp @kind object;
+  #L3bed34.  call temp:= `getConnectivitychecking`(v0) @signature `Ldream71/com/wasa/NetworkConnection/NetworkConnection;.getConnectivitychecking:(Landroid/content/Context;)Z` @kind static;
+  #L3bed3a.  v0:= temp;
+  #L3bed3c.  if v0 != 0 then goto L3bed48;
+  #L3bed40.  call `getOfflineData`(v1) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getOfflineData:()V` @kind direct;
+  #L3bed46.  goto L3bed4e;
+  #L3bed48.  call `getDataFromAPI`(v1) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getDataFromAPI:()V` @kind virtual;
+  #L3bed4e.  return @kind void;
+}
+procedure `void` `getOfflineData`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getOfflineData:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3bedd4.  v0:= new `com.arasthel.asyncjob.AsyncJob$AsyncJobBuilder`;
+  #L3bedd8.  call `<init>`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.<init>:()V` @kind direct;
+  #L3bedde.  v1:= new `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment$5`;
+  #L3bede2.  call `<init>`(v1, v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment$5;.<init>:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;)V` @kind direct;
+  #L3bede8.  call temp:= `doInBackground`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doInBackground:(Lcom/arasthel/asyncjob/AsyncJob$AsyncAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3bedee.  v0:= temp @kind object;
+  #L3bedf0.  v1:= new `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment$4`;
+  #L3bedf4.  call `<init>`(v1, v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment$4;.<init>:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;)V` @kind direct;
+  #L3bedfa.  call temp:= `doWhenFinished`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doWhenFinished:(Lcom/arasthel/asyncjob/AsyncJob$AsyncResultAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3bee00.  v0:= temp @kind object;
+  #L3bee02.  call temp:= `create`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.create:()Lcom/arasthel/asyncjob/AsyncJob;` @kind virtual;
+  #L3bee08.  v0:= temp @kind object;
+  #L3bee0a.  call `start`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob;.start:()V` @kind virtual;
+  #L3bee10.  return @kind void;
+}
+procedure `void` `DataReceivedFromDataController`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v3 @kind this, `java.lang.String` v4 @kind object, `int` v5 ) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.DataReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3be9c8.  v5:= v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3be9cc.  v0:= 0I;
+  #L3be9ce.  call `setRefreshing`(v5, v0) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setRefreshing:(Z)V` @kind virtual;
+  #L3be9d4.  call `hideProgressBar`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.hideProgressBar:()V` @kind virtual;
+  #L3be9da.  v5:= v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L3be9de.  v0:= constclass @type ^`dream71.com.wasa.model.ResponseMessage` @kind object;
+  #L3be9e2.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L3be9e8.  v5:= temp @kind object;
+  #L3be9ea.  v5:= (`dream71.com.wasa.model.ResponseMessage`) v5 @kind object;
+  #L3be9ee.  v0:= new `java.lang.StringBuilder`;
+  #L3be9f2.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3be9f8.  v1:= "" @kind object;
+  #L3be9fc.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3bea02.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3bea08.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3bea0e.  v0:= temp @kind object;
+  #L3bea10.  v2:= "response" @kind object;
+  #L3bea14.  call temp:= `e`(v2, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3bea1a.  v0:= v5.`dream71.com.wasa.model.ResponseMessage.status` @type ^`int`;
+  #L3bea1e.  v2:= 1I;
+  #L3bea20.  if v0 != v2 then goto L3bea64;
+  #L3bea24.  v5:= v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L3bea28.  v0:= constclass @type ^`dream71.com.wasa.home.waterSupply.pipe.model.WaterPipeListMessage` @kind object;
+  #L3bea2c.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L3bea32.  v4:= temp @kind object;
+  #L3bea34.  v4:= (`dream71.com.wasa.home.waterSupply.pipe.model.WaterPipeListMessage`) v4 @kind object;
+  #L3bea38.  v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.nodeListMessage` @type ^`dream71.com.wasa.home.waterSupply.pipe.model.WaterPipeListMessage` := v4 @kind object;
+  #L3bea3c.  v4:= v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.nodeListMessage` @type ^`dream71.com.wasa.home.waterSupply.pipe.model.WaterPipeListMessage` @kind object;
+  #L3bea40.  v4:= v4.`dream71.com.wasa.home.waterSupply.pipe.model.WaterPipeListMessage.water_pipe` @type ^`java.util.List` @kind object;
+  #L3bea44.  v5:= v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipes` @type ^`java.util.List` @kind object;
+  #L3bea48.  call temp:= `addAll`(v5, v4) @signature `Ljava/util/List;.addAll:(Ljava/util/Collection;)Z` @kind interface;
+  #L3bea4e.  v4:= v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WaterPipeAdapter` @kind object;
+  #L3bea52.  call `notifyDataSetChanged`(v4) @signature `Ldream71/com/wasa/home/waterSupply/adapter/WaterPipeAdapter;.notifyDataSetChanged:()V` @kind virtual;
+  #L3bea58.  v4:= v3.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipes` @type ^`java.util.List` @kind object;
+  #L3bea5c.  call `SaveData`(v3, v4) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.SaveData:(Ljava/util/List;)V` @kind direct;
+  #L3bea62.  goto L3beaca;
+  #L3bea64.  v4:= v5.`dream71.com.wasa.model.ResponseMessage.message` @type ^`java.lang.String` @kind object;
+  #L3bea68.  call temp:= `toLowerCase`(v4) @signature `Ljava/lang/String;.toLowerCase:()Ljava/lang/String;` @kind virtual;
+  #L3bea6e.  v4:= temp @kind object;
+  #L3bea70.  v0:= "invalid token" @kind object;
+  #L3bea74.  call temp:= `contains`(v4, v0) @signature `Ljava/lang/String;.contains:(Ljava/lang/CharSequence;)Z` @kind virtual;
+  #L3bea7a.  v4:= temp;
+  #L3bea7c.  if v4 == 0 then goto L3bea9a;
+  #L3bea80.  v4:= new `dream71.com.wasa.utils.Utils`;
+  #L3bea84.  call `<init>`(v4) @signature `Ldream71/com/wasa/utils/Utils;.<init>:()V` @kind direct;
+  #L3bea8a.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3bea90.  v5:= temp @kind object;
+  #L3bea92.  call `showLoginAlertDialog`(v4, v5) @signature `Ldream71/com/wasa/utils/Utils;.showLoginAlertDialog:(Landroid/content/Context;)V` @kind virtual;
+  #L3bea98.  goto L3beaca;
+  #L3bea9a.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3beaa0.  v4:= temp @kind object;
+  #L3beaa2.  v0:= new `java.lang.StringBuilder`;
+  #L3beaa6.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3beaac.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3beab2.  v5:= v5.`dream71.com.wasa.model.ResponseMessage.message` @type ^`java.lang.String` @kind object;
+  #L3beab6.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3beabc.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3beac2.  v5:= temp @kind object;
+  #L3beac4.  call `Info`(v4, v5) @signature `Ldream71/com/wasa/utils/ToastyMsg;.Info:(Landroid/content/Context;Ljava/lang/String;)V` @kind static;
+  #L3beaca.  return @kind void;
+}
+procedure `void` `Search`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.Search:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3bebbc.  v0:= new `java.lang.StringBuilder`;
+  #L3bebc0.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3bebc6.  v1:= "" @kind object;
+  #L3bebca.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3bebd0.  v1:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.search_bar` @type ^`android.widget.EditText` @kind object;
+  #L3bebd4.  call temp:= `getText`(v1) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L3bebda.  v1:= temp @kind object;
+  #L3bebdc.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3bebe2.  v1:= temp @kind object;
+  #L3bebe4.  call temp:= `trim`(v1) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L3bebea.  v1:= temp @kind object;
+  #L3bebec.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3bebf2.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3bebf8.  v0:= temp @kind object;
+  #L3bebfa.  v1:= "search_bar" @kind object;
+  #L3bebfe.  call temp:= `e`(v1, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3bec04.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WaterPipeAdapter` @kind object;
+  #L3bec08.  call temp:= `getFilter`(v0) @signature `Ldream71/com/wasa/home/waterSupply/adapter/WaterPipeAdapter;.getFilter:()Landroid/widget/Filter;` @kind virtual;
+  #L3bec0e.  v0:= temp @kind object;
+  #L3bec10.  v1:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.search_bar` @type ^`android.widget.EditText` @kind object;
+  #L3bec14.  call temp:= `getText`(v1) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L3bec1a.  v1:= temp @kind object;
+  #L3bec1c.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3bec22.  v1:= temp @kind object;
+  #L3bec24.  call temp:= `trim`(v1) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L3bec2a.  v1:= temp @kind object;
+  #L3bec2c.  call `filter`(v0, v1) @signature `Landroid/widget/Filter;.filter:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3bec32.  return @kind void;
+}
+procedure `void` `TubeWeel`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.TubeWeel:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3bec94.  v0:= new `android.content.Intent`;
+  #L3bec98.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3bec9e.  v1:= temp @kind object;
+  #L3beca0.  v2:= constclass @type ^`dream71.com.wasa.home.waterSupply.pipe.PipeActivity` @kind object;
+  #L3beca4.  call `<init>`(v0, v1, v2) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L3becaa.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3becb0.  v1:= temp @kind object;
+  #L3becb2.  call `startActivity`(v1, v0) @signature `Landroidx/fragment/app/FragmentActivity;.startActivity:(Landroid/content/Intent;)V` @kind virtual;
+  #L3becb8.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3becbe.  v0:= temp @kind object;
+  #L3becc0.  v1:= 2130771998I;
+  #L3becc6.  v2:= 2130771999I;
+  #L3beccc.  call `overridePendingTransition`(v0, v1, v2) @signature `Landroidx/fragment/app/FragmentActivity;.overridePendingTransition:(II)V` @kind virtual;
+  #L3becd2.  return @kind void;
+}
+procedure `void` `back`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v0 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.back:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3becfc.  call `ReloadPage`(v0) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.ReloadPage:()V` @kind direct;
+  #L3bed02.  return @kind void;
+}
+procedure `void` `errorReceivedFromDataController`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v0 @kind this, `java.lang.String` v1 @kind object, `int` v2 ) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.errorReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3bed14.  call `hideProgressBar`(v0) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.hideProgressBar:()V` @kind virtual;
+  #L3bed1a.  return @kind void;
+}
+procedure `void` `getDataFromAPI`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v4 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getDataFromAPI:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3bed60.  v0:= new `dream71.com.wasa.NetworkConnection.RemoteDataController`;
+  #L3bed64.  call temp:= `getActivity`(v4) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3bed6a.  v1:= temp @kind object;
+  #L3bed6c.  call `<init>`(v0, v4, v1) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.<init>:(Ldream71/com/wasa/NetworkConnection/DataController;Landroid/content/Context;)V` @kind direct;
+  #L3bed72.  v1:= new `java.util.HashMap`;
+  #L3bed76.  call `<init>`(v1) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L3bed7c.  v2:= new `java.lang.StringBuilder`;
+  #L3bed80.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3bed86.  v3:= "http://info.dwasa.org.bd:4040/api/water-pipelist?page=" @kind object;
+  #L3bed8a.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3bed90.  v3:= v4.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pageNumber` @type ^`int`;
+  #L3bed94.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3bed9a.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3beda0.  v2:= temp @kind object;
+  #L3beda2.  v3:= 100I;
+  #L3beda6.  call `getData`(v0, v2, v1, v3) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.getData:(Ljava/lang/String;Ljava/util/HashMap;I)V` @kind virtual;
+  #L3bedac.  return @kind void;
+}
+procedure `void` `getItemPosition`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v0 @kind this, `int` v1 , `java.lang.String` v2 @kind object, `int` v3 ) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getItemPosition:(ILjava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3bedc0.  return @kind void;
+}
+procedure `void` `hideProgressBar`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.hideProgressBar:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3bee24.  v0:= v1.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3bee28.  if v0 == 0 then goto L3bee32;
+  #L3bee2c.  call `dismiss`(v0) @signature `Landroid/app/ProgressDialog;.dismiss:()V` @kind virtual;
+  #L3bee32.  return @kind void;
+}
+procedure `android.view.View` `onCreateView`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v2 @kind this, `android.view.LayoutInflater` v3 @kind object, `android.view.ViewGroup` v4 @kind object, `android.os.Bundle` v5 @kind object) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.onCreateView:(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3be864.  v5:= 2131427402I;
+  #L3be86a.  v0:= 0I;
+  #L3be86c.  call temp:= `inflate`(v3, v5, v4, v0) @signature `Landroid/view/LayoutInflater;.inflate:(ILandroid/view/ViewGroup;Z)Landroid/view/View;` @kind virtual;
+  #L3be872.  v3:= temp @kind object;
+  #L3be874.  v4:= 1I;
+  #L3be876.  call `shouldShowBackButton`(v4) @signature `Ldream71/com/wasa/Main/MainActivity;.shouldShowBackButton:(Z)V` @kind static;
+  #L3be87c.  call temp:= `bind`(v2, v3) @signature `Lbutterknife/ButterKnife;.bind:(Ljava/lang/Object;Landroid/view/View;)Lbutterknife/Unbinder;` @kind static;
+  #L3be882.  v5:= temp @kind object;
+  #L3be884.  v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.unbinder` @type ^`butterknife.Unbinder` := v5 @kind object;
+  #L3be888.  v5:= `@@dream71.com.wasa.Main.MainActivity.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L3be88c.  v0:= "" @kind object;
+  #L3be890.  call `setText`(v5, v0) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3be896.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3be89c.  v5:= temp @kind object;
+  #L3be89e.  call temp:= `getAppDatabase`(v5) @signature `Ldream71/com/wasa/database/DatabaseHelper;.getAppDatabase:(Landroid/content/Context;)Ldream71/com/wasa/database/DatabaseHelper;` @kind static;
+  #L3be8a4.  v5:= temp @kind object;
+  #L3be8a6.  v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.databaseHelper` @type ^`dream71.com.wasa.database.DatabaseHelper` := v5 @kind object;
+  #L3be8aa.  v5:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L3be8ae.  call `setText`(v5, v0) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3be8b4.  v5:= new `androidx.recyclerview.widget.LinearLayoutManager`;
+  #L3be8b8.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3be8be.  v0:= temp @kind object;
+  #L3be8c0.  call `<init>`(v5, v0) @signature `Landroidx/recyclerview/widget/LinearLayoutManager;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L3be8c6.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3be8ca.  call `setHasFixedSize`(v0, v4) @signature `Landroidx/recyclerview/widget/RecyclerView;.setHasFixedSize:(Z)V` @kind virtual;
+  #L3be8d0.  v4:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3be8d4.  call `setLayoutManager`(v4, v5) @signature `Landroidx/recyclerview/widget/RecyclerView;.setLayoutManager:(Landroidx/recyclerview/widget/RecyclerView$LayoutManager;)V` @kind virtual;
+  #L3be8da.  v4:= new `dream71.com.wasa.home.waterSupply.adapter.WaterPipeAdapter`;
+  #L3be8de.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3be8e4.  v0:= temp @kind object;
+  #L3be8e6.  v1:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipes` @type ^`java.util.List` @kind object;
+  #L3be8ea.  call `<init>`(v4, v0, v1) @signature `Ldream71/com/wasa/home/waterSupply/adapter/WaterPipeAdapter;.<init>:(Landroid/content/Context;Ljava/util/List;)V` @kind direct;
+  #L3be8f0.  v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WaterPipeAdapter` := v4 @kind object;
+  #L3be8f4.  v4:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3be8f8.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.waterPipeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WaterPipeAdapter` @kind object;
+  #L3be8fc.  call `setAdapter`(v4, v0) @signature `Landroidx/recyclerview/widget/RecyclerView;.setAdapter:(Landroidx/recyclerview/widget/RecyclerView$Adapter;)V` @kind virtual;
+  #L3be902.  v4:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3be906.  v0:= new `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment$1`;
+  #L3be90a.  call `<init>`(v0, v2, v5) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment$1;.<init>:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;Landroidx/recyclerview/widget/LinearLayoutManager;)V` @kind direct;
+  #L3be910.  call `addOnScrollListener`(v4, v0) @signature `Landroidx/recyclerview/widget/RecyclerView;.addOnScrollListener:(Landroidx/recyclerview/widget/RecyclerView$OnScrollListener;)V` @kind virtual;
+  #L3be916.  v4:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3be91a.  v5:= 4I;
+  #L3be91c.  v5:= new `int`[v5];
+  #L3be920.  goto L3be964;
+  #L3be926.  call `setColorSchemeResources`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setColorSchemeResources:([I)V` @kind virtual;
+  #L3be92c.  v4:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3be930.  v5:= new `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment$2`;
+  #L3be934.  call `<init>`(v5, v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment$2;.<init>:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;)V` @kind direct;
+  #L3be93a.  call temp:= `post`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.post:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L3be940.  v4:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3be944.  v5:= new `dream71.com.wasa.home.waterSupply.pipe.PipeListFragment$3`;
+  #L3be948.  call `<init>`(v5, v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment$3;.<init>:(Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;)V` @kind direct;
+  #L3be94e.  call `setOnRefreshListener`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setOnRefreshListener:(Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout$OnRefreshListener;)V` @kind virtual;
+  #L3be954.  v4:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L3be958.  v5:= "Pipe List" @kind object;
+  #L3be95c.  call `setText`(v4, v5) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3be962.  return v3 @kind object;
+  #L3be964.  v5:= (2131034173I, 17170453I, 17170457I, 17170451I) @kind object;
+  #L3be97b.  goto L3be926;
+}
+procedure `void` `onDestroy`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.onDestroy:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3bee44.  call `onDestroy`(v1) @signature `Landroidx/fragment/app/Fragment;.onDestroy:()V` @kind super;
+  #L3bee4a.  v0:= v1.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.unbinder` @type ^`butterknife.Unbinder` @kind object;
+  #L3bee4e.  call `unbind`(v0) @signature `Lbutterknife/Unbinder;.unbind:()V` @kind interface;
+  #L3bee54.  return @kind void;
+}
+procedure `void` `onResume`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.onResume:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3bee68.  call `onResume`(v2) @signature `Landroidx/fragment/app/Fragment;.onResume:()V` @kind super;
+  #L3bee6e.  v0:= 1I;
+  #L3bee70.  call `shouldShowBackButton`(v0) @signature `Ldream71/com/wasa/Main/MainActivity;.shouldShowBackButton:(Z)V` @kind static;
+  #L3bee76.  v0:= `@@dream71.com.wasa.Main.MainActivity.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L3bee7a.  v1:= "" @kind object;
+  #L3bee7e.  call `setText`(v0, v1) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3bee84.  return @kind void;
+}
+procedure `void` `showProgressBar`(`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.showProgressBar:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3bee98.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3bee9c.  if v0 != 0 then goto L3beedc;
+  #L3beea0.  v0:= new `android.app.ProgressDialog`;
+  #L3beea4.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/pipe/PipeListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3beeaa.  v1:= temp @kind object;
+  #L3beeac.  call `<init>`(v0, v1) @signature `Landroid/app/ProgressDialog;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L3beeb2.  v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @type ^`android.app.ProgressDialog` := v0 @kind object;
+  #L3beeb6.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3beeba.  v1:= "Loading..." @kind object;
+  #L3beebe.  call `setMessage`(v0, v1) @signature `Landroid/app/ProgressDialog;.setMessage:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3beec4.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3beec8.  v1:= 0I;
+  #L3beeca.  call `setIndeterminate`(v0, v1) @signature `Landroid/app/ProgressDialog;.setIndeterminate:(Z)V` @kind virtual;
+  #L3beed0.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3beed4.  v1:= 1I;
+  #L3beed6.  call `setCancelable`(v0, v1) @signature `Landroid/app/ProgressDialog;.setCancelable:(Z)V` @kind virtual;
+  #L3beedc.  v0:= v2.`dream71.com.wasa.home.waterSupply.pipe.PipeListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3beee0.  call `show`(v0) @signature `Landroid/app/ProgressDialog;.show:()V` @kind virtual;
+  #L3beee6.  return @kind void;
+}

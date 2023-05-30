@@ -1,0 +1,81 @@
+record `com.android.volley.InternalUtils` @kind class @AccessFlag  {
+}
+global `char`[] `@@com.android.volley.InternalUtils.HEX_CHARS` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/android/volley/InternalUtils;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L29d784.  v0:= "0123456789ABCDEF" @kind object;
+  #L29d788.  call temp:= `toCharArray`(v0) @signature `Ljava/lang/String;.toCharArray:()[C` @kind virtual;
+  #L29d78e.  v0:= temp @kind object;
+  #L29d790.  `@@com.android.volley.InternalUtils.HEX_CHARS` @type ^`char`[] := v0 @kind object;
+  #L29d794.  return @kind void;
+}
+procedure `void` `<init>`(`com.android.volley.InternalUtils` v0 @kind this) @signature `Lcom/android/volley/InternalUtils;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L29d7a8.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L29d7ae.  return @kind void;
+}
+procedure `java.lang.String` `convertToHex`(`byte`[] v6 @kind object) @signature `Lcom/android/volley/InternalUtils;.convertToHex:([B)Ljava/lang/String;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L29d6b8.  v0:= length @variable v6;
+  #L29d6ba.  v0:= v0 * 2;
+  #L29d6be.  v0:= new `char`[v0];
+  #L29d6c2.  v1:= 0I;
+  #L29d6c4.  v2:= length @variable v6;
+  #L29d6c6.  if v1 >= v2 then goto L29d6fc;
+  #L29d6ca.  v2:= v6[v1] @kind byte;
+  #L29d6ce.  v2:= v2 ^& 255;
+  #L29d6d2.  v3:= v1 * 2;
+  #L29d6d6.  v4:= `@@com.android.volley.InternalUtils.HEX_CHARS` @type ^`char`[] @kind object;
+  #L29d6da.  v5:= v2 ^>> 4;
+  #L29d6de.  v5:= v4[v5] @kind char;
+  #L29d6e2.  v0[v3]:= v5 @kind char;
+  #L29d6e6.  v3:= v3 + 1;
+  #L29d6ea.  v2:= v2 ^& 15;
+  #L29d6ee.  v2:= v4[v2] @kind char;
+  #L29d6f2.  v0[v3]:= v2 @kind char;
+  #L29d6f6.  v1:= v1 + 1;
+  #L29d6fa.  goto L29d6c4;
+  #L29d6fc.  v6:= new `java.lang.String`;
+  #L29d700.  call `<init>`(v6, v0) @signature `Ljava/lang/String;.<init>:([C)V` @kind direct;
+  #L29d706.  return v6 @kind object;
+}
+procedure `java.lang.String` `sha1Hash`(`java.lang.String` v3 @kind object) @signature `Lcom/android/volley/InternalUtils;.sha1Hash:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L29d718.  v0:= "SHA-1" @kind object;
+  #L29d71c.  call temp:= `getInstance`(v0) @signature `Ljava/security/MessageDigest;.getInstance:(Ljava/lang/String;)Ljava/security/MessageDigest;` @kind static;
+  #L29d722.  v0:= temp @kind object;
+  #L29d724.  v1:= "UTF-8" @kind object;
+  #L29d728.  call temp:= `getBytes`(v3, v1) @signature `Ljava/lang/String;.getBytes:(Ljava/lang/String;)[B` @kind virtual;
+  #L29d72e.  v3:= temp @kind object;
+  #L29d730.  v1:= 0I;
+  #L29d732.  v2:= length @variable v3;
+  #L29d734.  call `update`(v0, v3, v1, v2) @signature `Ljava/security/MessageDigest;.update:([BII)V` @kind virtual;
+  #L29d73a.  call temp:= `digest`(v0) @signature `Ljava/security/MessageDigest;.digest:()[B` @kind virtual;
+  #L29d740.  v3:= temp @kind object;
+  #L29d742.  call temp:= `convertToHex`(v3) @signature `Lcom/android/volley/InternalUtils;.convertToHex:([B)Ljava/lang/String;` @kind static;
+  #L29d748.  v3:= temp @kind object;
+  #L29d74a.  goto L29d760;
+  #L29d74c.  v3:= Exception @type ^`java.io.UnsupportedEncodingException` @kind object;
+  #L29d74e.  call `printStackTrace`(v3) @signature `Ljava/io/UnsupportedEncodingException;.printStackTrace:()V` @kind virtual;
+  #L29d754.  goto L29d75e;
+  #L29d756.  v3:= Exception @type ^`java.security.NoSuchAlgorithmException` @kind object;
+  #L29d758.  call `printStackTrace`(v3) @signature `Ljava/security/NoSuchAlgorithmException;.printStackTrace:()V` @kind virtual;
+  #L29d75e.  v3:= 0I;
+  #L29d760.  return v3 @kind object;
+  catch `java.security.NoSuchAlgorithmException` @[L29d718..L29d74a] goto L29d756;
+  catch `java.io.UnsupportedEncodingException` @[L29d718..L29d74a] goto L29d74c;
+}

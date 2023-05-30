@@ -1,0 +1,1098 @@
+record `com.google.android.material.snackbar.BaseTransientBottomBar` @kind class @AccessFlag PUBLIC_ABSTRACT {
+  `android.view.accessibility.AccessibilityManager` `com.google.android.material.snackbar.BaseTransientBottomBar.accessibilityManager` @AccessFlag PRIVATE_FINAL;
+  `android.view.View` `com.google.android.material.snackbar.BaseTransientBottomBar.anchorView` @AccessFlag PRIVATE;
+  `android.view.ViewTreeObserver$OnGlobalLayoutListener` `com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListener` @AccessFlag PRIVATE_FINAL;
+  `boolean` `com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListenerEnabled` @AccessFlag PRIVATE;
+  `com.google.android.material.snackbar.BaseTransientBottomBar$Behavior` `com.google.android.material.snackbar.BaseTransientBottomBar.behavior` @AccessFlag PRIVATE;
+  `java.lang.Runnable` `com.google.android.material.snackbar.BaseTransientBottomBar.bottomMarginGestureInsetRunnable` @AccessFlag PRIVATE_FINAL;
+  `java.util.List` `com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @AccessFlag PRIVATE;
+  `com.google.android.material.snackbar.ContentViewCallback` `com.google.android.material.snackbar.BaseTransientBottomBar.contentViewCallback` @AccessFlag PRIVATE_FINAL;
+  `android.content.Context` `com.google.android.material.snackbar.BaseTransientBottomBar.context` @AccessFlag PRIVATE_FINAL;
+  `int` `com.google.android.material.snackbar.BaseTransientBottomBar.duration` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginAnchorView` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginGestureInset` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginWindowInset` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.snackbar.BaseTransientBottomBar.extraLeftMarginWindowInset` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.snackbar.BaseTransientBottomBar.extraRightMarginWindowInset` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.snackbar.BaseTransientBottomBar.gestureInsetBottomIgnored` @AccessFlag PRIVATE;
+  `com.google.android.material.snackbar.SnackbarManager$Callback` `com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @AccessFlag ;
+  `android.graphics.Rect` `com.google.android.material.snackbar.BaseTransientBottomBar.originalMargins` @AccessFlag PRIVATE;
+  `android.view.ViewGroup` `com.google.android.material.snackbar.BaseTransientBottomBar.targetParent` @AccessFlag PRIVATE_FINAL;
+  `com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` `com.google.android.material.snackbar.BaseTransientBottomBar.view` @AccessFlag PROTECTED_FINAL;
+}
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_DURATION` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_FADE_DURATION` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_FADE_IN_DURATION` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_FADE_OUT_DURATION` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_FADE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_MODE_SLIDE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `float` `@@com.google.android.material.snackbar.BaseTransientBottomBar.ANIMATION_SCALE_FROM_VALUE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.MSG_DISMISS` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.snackbar.BaseTransientBottomBar.MSG_SHOW` @AccessFlag STATIC_FINAL;
+global `int`[] `@@com.google.android.material.snackbar.BaseTransientBottomBar.SNACKBAR_STYLE_ATTR` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.google.android.material.snackbar.BaseTransientBottomBar.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `boolean` `@@com.google.android.material.snackbar.BaseTransientBottomBar.USE_OFFSET_API` @AccessFlag PRIVATE_STATIC_FINAL;
+global `android.os.Handler` `@@com.google.android.material.snackbar.BaseTransientBottomBar.handler` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L217c9c.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L217ca0.  v1:= 1I;
+  #L217ca2.  v2:= 0I;
+  #L217ca4.  v3:= 16I;
+  #L217ca8.  if v0 < v3 then goto L217cbc;
+  #L217cac.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L217cb0.  v3:= 19I;
+  #L217cb4.  if v0 > v3 then goto L217cbc;
+  #L217cb8.  v0:= v1;
+  #L217cba.  goto L217cbe;
+  #L217cbc.  v0:= v2;
+  #L217cbe.  `@@com.google.android.material.snackbar.BaseTransientBottomBar.USE_OFFSET_API` @type ^`boolean` := v0 @kind boolean;
+  #L217cc2.  v0:= new `int`[v1];
+  #L217cc6.  v1:= `@@com.google.android.material.R$attr.snackbarStyle` @type ^`int`;
+  #L217cca.  v0[v2]:= v1;
+  #L217cce.  `@@com.google.android.material.snackbar.BaseTransientBottomBar.SNACKBAR_STYLE_ATTR` @type ^`int`[] := v0 @kind object;
+  #L217cd2.  v0:= constclass @type ^`com.google.android.material.snackbar.BaseTransientBottomBar` @kind object;
+  #L217cd6.  call temp:= `getSimpleName`(v0) @signature `Ljava/lang/Class;.getSimpleName:()Ljava/lang/String;` @kind virtual;
+  #L217cdc.  v0:= temp @kind object;
+  #L217cde.  `@@com.google.android.material.snackbar.BaseTransientBottomBar.TAG` @type ^`java.lang.String` := v0 @kind object;
+  #L217ce2.  v0:= new `android.os.Handler`;
+  #L217ce6.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L217cec.  v1:= temp @kind object;
+  #L217cee.  v2:= new `com.google.android.material.snackbar.BaseTransientBottomBar$1`;
+  #L217cf2.  call `<init>`(v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$1;.<init>:()V` @kind direct;
+  #L217cf8.  call `<init>`(v0, v1, v2) @signature `Landroid/os/Handler;.<init>:(Landroid/os/Looper;Landroid/os/Handler$Callback;)V` @kind direct;
+  #L217cfe.  `@@com.google.android.material.snackbar.BaseTransientBottomBar.handler` @type ^`android.os.Handler` := v0 @kind object;
+  #L217d02.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.snackbar.BaseTransientBottomBar` v9 @kind this, `android.content.Context` v10 @kind object @name `context`, `android.view.ViewGroup` v11 @kind object @name `parent`, `android.view.View` v12 @kind object @name `content`, `com.google.android.material.snackbar.ContentViewCallback` v13 @kind object @name `contentViewCallback`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.<init>:(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/view/View;Lcom/google/android/material/snackbar/ContentViewCallback;)V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L217d14.  call `<init>`(v9) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L217d1a.  v0:= 0I;
+  #L217d1c.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListenerEnabled` @type ^`boolean` := v0 @kind boolean;
+  #L217d20.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$2`;
+  #L217d24.  call `<init>`(v1, v9) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$2;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L217d2a.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListener` @type ^`android.view.ViewTreeObserver$OnGlobalLayoutListener` := v1 @kind object;
+  #L217d2e.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$3`;
+  #L217d32.  call `<init>`(v1, v9) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$3;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L217d38.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.bottomMarginGestureInsetRunnable` @type ^`java.lang.Runnable` := v1 @kind object;
+  #L217d3c.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$6`;
+  #L217d40.  call `<init>`(v1, v9) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$6;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L217d46.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @type ^`com.google.android.material.snackbar.SnackbarManager$Callback` := v1 @kind object;
+  #L217d4a.  if v11 == 0 then goto L217e4a;
+  #L217d4e.  if v12 == 0 then goto L217e3a;
+  #L217d52.  if v13 == 0 then goto L217e2a;
+  #L217d56.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.targetParent` @type ^`android.view.ViewGroup` := v11 @kind object;
+  #L217d5a.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.contentViewCallback` @type ^`com.google.android.material.snackbar.ContentViewCallback` := v13 @kind object;
+  #L217d5e.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.context` @type ^`android.content.Context` := v10 @kind object;
+  #L217d62.  call `checkAppCompatTheme`(v10) @signature `Lcom/google/android/material/internal/ThemeEnforcement;.checkAppCompatTheme:(Landroid/content/Context;)V` @kind static;
+  #L217d68.  call temp:= `from`(v10) @signature `Landroid/view/LayoutInflater;.from:(Landroid/content/Context;)Landroid/view/LayoutInflater;` @kind static;
+  #L217d6e.  v1:= temp @kind object;
+  #L217d70.  call temp:= `getSnackbarBaseLayoutResId`(v9) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getSnackbarBaseLayoutResId:()I` @kind virtual;
+  #L217d76.  v2:= temp;
+  #L217d78.  call temp:= `inflate`(v1, v2, v11, v0) @signature `Landroid/view/LayoutInflater;.inflate:(ILandroid/view/ViewGroup;Z)Landroid/view/View;` @kind virtual;
+  #L217d7e.  v0:= temp @kind object;
+  #L217d80.  v0:= (`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout`) v0 @kind object;
+  #L217d84.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` := v0 @kind object;
+  #L217d88.  v2:= instanceof @variable v12 @type ^`com.google.android.material.snackbar.SnackbarContentLayout` @kind boolean;
+  #L217d8c.  if v2 == 0 then goto L217da4;
+  #L217d90.  v2:= v12 @kind object;
+  #L217d92.  v2:= (`com.google.android.material.snackbar.SnackbarContentLayout`) v2 @kind object;
+  #L217d96.  call temp:= `getActionTextColorAlpha`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getActionTextColorAlpha:()F` @kind virtual;
+  #L217d9c.  v3:= temp;
+  #L217d9e.  call `updateActionTextColorAlphaIfNeeded`(v2, v3) @signature `Lcom/google/android/material/snackbar/SnackbarContentLayout;.updateActionTextColorAlphaIfNeeded:(F)V` @kind virtual;
+  #L217da4.  call `addView`(v0, v12) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.addView:(Landroid/view/View;)V` @kind virtual;
+  #L217daa.  call temp:= `getLayoutParams`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L217db0.  v2:= temp @kind object;
+  #L217db2.  v3:= instanceof @variable v2 @type ^`android.view.ViewGroup$MarginLayoutParams` @kind boolean;
+  #L217db6.  if v3 == 0 then goto L217dde;
+  #L217dba.  v3:= v2 @kind object;
+  #L217dbc.  v3:= (`android.view.ViewGroup$MarginLayoutParams`) v3 @kind object;
+  #L217dc0.  v4:= new `android.graphics.Rect`;
+  #L217dc4.  v5:= v3.`android.view.ViewGroup$MarginLayoutParams.leftMargin` @type ^`int`;
+  #L217dc8.  v6:= v3.`android.view.ViewGroup$MarginLayoutParams.topMargin` @type ^`int`;
+  #L217dcc.  v7:= v3.`android.view.ViewGroup$MarginLayoutParams.rightMargin` @type ^`int`;
+  #L217dd0.  v8:= v3.`android.view.ViewGroup$MarginLayoutParams.bottomMargin` @type ^`int`;
+  #L217dd4.  call `<init>`(v4, v5, v6, v7, v8) @signature `Landroid/graphics/Rect;.<init>:(IIII)V` @kind direct;
+  #L217dda.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.originalMargins` @type ^`android.graphics.Rect` := v4 @kind object;
+  #L217dde.  v3:= 1I;
+  #L217de0.  call `setAccessibilityLiveRegion`(v0, v3) @signature `Landroidx/core/view/ViewCompat;.setAccessibilityLiveRegion:(Landroid/view/View;I)V` @kind static;
+  #L217de6.  call `setImportantForAccessibility`(v0, v3) @signature `Landroidx/core/view/ViewCompat;.setImportantForAccessibility:(Landroid/view/View;I)V` @kind static;
+  #L217dec.  call `setFitsSystemWindows`(v0, v3) @signature `Landroidx/core/view/ViewCompat;.setFitsSystemWindows:(Landroid/view/View;Z)V` @kind static;
+  #L217df2.  v3:= new `com.google.android.material.snackbar.BaseTransientBottomBar$4`;
+  #L217df6.  call `<init>`(v3, v9) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$4;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L217dfc.  call `setOnApplyWindowInsetsListener`(v0, v3) @signature `Landroidx/core/view/ViewCompat;.setOnApplyWindowInsetsListener:(Landroid/view/View;Landroidx/core/view/OnApplyWindowInsetsListener;)V` @kind static;
+  #L217e02.  v3:= new `com.google.android.material.snackbar.BaseTransientBottomBar$5`;
+  #L217e06.  call `<init>`(v3, v9) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$5;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L217e0c.  call `setAccessibilityDelegate`(v0, v3) @signature `Landroidx/core/view/ViewCompat;.setAccessibilityDelegate:(Landroid/view/View;Landroidx/core/view/AccessibilityDelegateCompat;)V` @kind static;
+  #L217e12.  
+  #L217e14.  v0:= "accessibility" @kind object;
+  #L217e18.  call temp:= `getSystemService`(v10, v0) @signature `Landroid/content/Context;.getSystemService:(Ljava/lang/String;)Ljava/lang/Object;` @kind virtual;
+  #L217e1e.  v0:= temp @kind object;
+  #L217e20.  v0:= (`android.view.accessibility.AccessibilityManager`) v0 @kind object;
+  #L217e24.  v9.`com.google.android.material.snackbar.BaseTransientBottomBar.accessibilityManager` @type ^`android.view.accessibility.AccessibilityManager` := v0 @kind object;
+  #L217e28.  return @kind void;
+  #L217e2a.  v0:= new `java.lang.IllegalArgumentException`;
+  #L217e2e.  v1:= "Transient bottom bar must have non-null callback" @kind object;
+  #L217e32.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L217e38.  throw v0;
+  #L217e3a.  v0:= new `java.lang.IllegalArgumentException`;
+  #L217e3e.  v1:= "Transient bottom bar must have non-null content" @kind object;
+  #L217e42.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L217e48.  throw v0;
+  #L217e4a.  v0:= new `java.lang.IllegalArgumentException`;
+  #L217e4e.  v1:= "Transient bottom bar must have non-null parent" @kind object;
+  #L217e52.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L217e58.  throw v0;
+}
+procedure `void` `<init>`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this, `android.view.ViewGroup` v2 @kind object @name `parent`, `android.view.View` v3 @kind object @name `content`, `com.google.android.material.snackbar.ContentViewCallback` v4 @kind object @name `contentViewCallback`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.<init>:(Landroid/view/ViewGroup;Landroid/view/View;Lcom/google/android/material/snackbar/ContentViewCallback;)V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L217e6c.  call temp:= `getContext`(v2) @signature `Landroid/view/ViewGroup;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L217e72.  v0:= temp @kind object;
+  #L217e74.  call `<init>`(v1, v0, v2, v3, v4) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.<init>:(Landroid/content/Context;Landroid/view/ViewGroup;Landroid/view/View;Lcom/google/android/material/snackbar/ContentViewCallback;)V` @kind direct;
+  #L217e7a.  return @kind void;
+}
+procedure `boolean` `access$000`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$000:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)Z` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L2176f4.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListenerEnabled` @type ^`boolean` @kind boolean;
+  #L2176f8.  return v0;
+}
+procedure `int` `access$1002`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`, `int` v1 @name `x1`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$1002:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217a30.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.extraLeftMarginWindowInset` @type ^`int` := v1;
+  #L217a34.  return v1;
+}
+procedure `int` `access$102`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`, `int` v1 @name `x1`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$102:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217a48.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginAnchorView` @type ^`int` := v1;
+  #L217a4c.  return v1;
+}
+procedure `int` `access$1102`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`, `int` v1 @name `x1`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$1102:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217a60.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.extraRightMarginWindowInset` @type ^`int` := v1;
+  #L217a64.  return v1;
+}
+procedure `void` `access$1200`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$1200:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217e8c.  call `showViewImpl`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.showViewImpl:()V` @kind direct;
+  #L217e92.  return @kind void;
+}
+procedure `void` `access$1400`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$1400:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217ea4.  call `startFadeInAnimation`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startFadeInAnimation:()V` @kind direct;
+  #L217eaa.  return @kind void;
+}
+procedure `void` `access$1500`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$1500:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217ebc.  call `startSlideInAnimation`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startSlideInAnimation:()V` @kind direct;
+  #L217ec2.  return @kind void;
+}
+procedure `com.google.android.material.snackbar.ContentViewCallback` `access$1600`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$1600:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)Lcom/google/android/material/snackbar/ContentViewCallback;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L217a18.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.contentViewCallback` @type ^`com.google.android.material.snackbar.ContentViewCallback` @kind object;
+  #L217a1c.  return v0 @kind object;
+}
+procedure `boolean` `access$1700`() @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$1700:()Z` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L21770c.  v0:= `@@com.google.android.material.snackbar.BaseTransientBottomBar.USE_OFFSET_API` @type ^`boolean` @kind boolean;
+  #L217710.  return v0;
+}
+procedure `int` `access$200`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$200:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L217a78.  call temp:= `calculateBottomMarginForAnchorView`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.calculateBottomMarginForAnchorView:()I` @kind direct;
+  #L217a7e.  v0:= temp;
+  #L217a80.  return v0;
+}
+procedure `void` `access$300`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$300:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217ed4.  call `updateMargins`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.updateMargins:()V` @kind direct;
+  #L217eda.  return @kind void;
+}
+procedure `android.content.Context` `access$400`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$400:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)Landroid/content/Context;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L217694.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.context` @type ^`android.content.Context` @kind object;
+  #L217698.  return v0 @kind object;
+}
+procedure `int` `access$500`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$500:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L217a94.  call temp:= `getScreenHeight`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getScreenHeight:()I` @kind direct;
+  #L217a9a.  v0:= temp;
+  #L217a9c.  return v0;
+}
+procedure `int` `access$600`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$600:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L217ab0.  call temp:= `getViewAbsoluteBottom`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getViewAbsoluteBottom:()I` @kind direct;
+  #L217ab6.  v0:= temp;
+  #L217ab8.  return v0;
+}
+procedure `int` `access$700`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$700:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L217acc.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginGestureInset` @type ^`int`;
+  #L217ad0.  return v0;
+}
+procedure `int` `access$702`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`, `int` v1 @name `x1`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$702:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217ae4.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginGestureInset` @type ^`int` := v1;
+  #L217ae8.  return v1;
+}
+procedure `java.lang.String` `access$800`() @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$800:()Ljava/lang/String;` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L217c84.  v0:= `@@com.google.android.material.snackbar.BaseTransientBottomBar.TAG` @type ^`java.lang.String` @kind object;
+  #L217c88.  return v0 @kind object;
+}
+procedure `int` `access$902`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind object @name `x0`, `int` v1 @name `x1`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.access$902:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L217afc.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginWindowInset` @type ^`int` := v1;
+  #L217b00.  return v1;
+}
+procedure `void` `animateViewOut`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this, `int` v3 @name `event`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.animateViewOut:(I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L217f14.  v0:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217f18.  call temp:= `getAnimationMode`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getAnimationMode:()I` @kind virtual;
+  #L217f1e.  v0:= temp;
+  #L217f20.  v1:= 1I;
+  #L217f22.  if v0 != v1 then goto L217f2e;
+  #L217f26.  call `startFadeOutAnimation`(v2, v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startFadeOutAnimation:(I)V` @kind direct;
+  #L217f2c.  goto L217f34;
+  #L217f2e.  call `startSlideOutAnimation`(v2, v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startSlideOutAnimation:(I)V` @kind direct;
+  #L217f34.  return @kind void;
+}
+procedure `int` `calculateBottomMarginForAnchorView`(`com.google.android.material.snackbar.BaseTransientBottomBar` v5 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.calculateBottomMarginForAnchorView:()I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L217b14.  v0:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorView` @type ^`android.view.View` @kind object;
+  #L217b18.  if v0 != 0 then goto L217b20;
+  #L217b1c.  v0:= 0I;
+  #L217b1e.  return v0;
+  #L217b20.  v1:= 2I;
+  #L217b22.  v2:= new `int`[v1];
+  #L217b26.  call `getLocationOnScreen`(v0, v2) @signature `Landroid/view/View;.getLocationOnScreen:([I)V` @kind virtual;
+  #L217b2c.  v0:= 1I;
+  #L217b2e.  v3:= v2[v0];
+  #L217b32.  v1:= new `int`[v1];
+  #L217b36.  v4:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.targetParent` @type ^`android.view.ViewGroup` @kind object;
+  #L217b3a.  call `getLocationOnScreen`(v4, v1) @signature `Landroid/view/ViewGroup;.getLocationOnScreen:([I)V` @kind virtual;
+  #L217b40.  v0:= v1[v0];
+  #L217b44.  v4:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.targetParent` @type ^`android.view.ViewGroup` @kind object;
+  #L217b48.  call temp:= `getHeight`(v4) @signature `Landroid/view/ViewGroup;.getHeight:()I` @kind virtual;
+  #L217b4e.  v4:= temp;
+  #L217b50.  v0:= v0 + v4 @kind int;
+  #L217b52.  v4:= v0 - v3 @kind int;
+  #L217b56.  return v4;
+}
+procedure `android.animation.ValueAnimator` `getAlphaAnimator`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this, `float`[] v3 @kind object @name `alphaValues`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getAlphaAnimator:([F)Landroid/animation/ValueAnimator;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L21762c.  call temp:= `ofFloat`(v3) @signature `Landroid/animation/ValueAnimator;.ofFloat:([F)Landroid/animation/ValueAnimator;` @kind static;
+  #L217632.  v0:= temp @kind object;
+  #L217634.  v1:= `@@com.google.android.material.animation.AnimationUtils.LINEAR_INTERPOLATOR` @type ^`android.animation.TimeInterpolator` @kind object;
+  #L217638.  call `setInterpolator`(v0, v1) @signature `Landroid/animation/ValueAnimator;.setInterpolator:(Landroid/animation/TimeInterpolator;)V` @kind virtual;
+  #L21763e.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$13`;
+  #L217642.  call `<init>`(v1, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$13;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L217648.  call `addUpdateListener`(v0, v1) @signature `Landroid/animation/ValueAnimator;.addUpdateListener:(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V` @kind virtual;
+  #L21764e.  return v0 @kind object;
+}
+procedure `android.animation.ValueAnimator` `getScaleAnimator`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this, `float`[] v3 @kind object @name `scaleValues`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getScaleAnimator:([F)Landroid/animation/ValueAnimator;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L217660.  call temp:= `ofFloat`(v3) @signature `Landroid/animation/ValueAnimator;.ofFloat:([F)Landroid/animation/ValueAnimator;` @kind static;
+  #L217666.  v0:= temp @kind object;
+  #L217668.  v1:= `@@com.google.android.material.animation.AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR` @type ^`android.animation.TimeInterpolator` @kind object;
+  #L21766c.  call `setInterpolator`(v0, v1) @signature `Landroid/animation/ValueAnimator;.setInterpolator:(Landroid/animation/TimeInterpolator;)V` @kind virtual;
+  #L217672.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$14`;
+  #L217676.  call `<init>`(v1, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$14;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L21767c.  call `addUpdateListener`(v0, v1) @signature `Landroid/animation/ValueAnimator;.addUpdateListener:(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V` @kind virtual;
+  #L217682.  return v0 @kind object;
+}
+procedure `int` `getScreenHeight`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getScreenHeight:()I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L217ba0.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.context` @type ^`android.content.Context` @kind object;
+  #L217ba4.  v1:= "window" @kind object;
+  #L217ba8.  call temp:= `getSystemService`(v0, v1) @signature `Landroid/content/Context;.getSystemService:(Ljava/lang/String;)Ljava/lang/Object;` @kind virtual;
+  #L217bae.  v0:= temp @kind object;
+  #L217bb0.  v0:= (`android.view.WindowManager`) v0 @kind object;
+  #L217bb4.  v1:= new `android.util.DisplayMetrics`;
+  #L217bb8.  call `<init>`(v1) @signature `Landroid/util/DisplayMetrics;.<init>:()V` @kind direct;
+  #L217bbe.  call temp:= `getDefaultDisplay`(v0) @signature `Landroid/view/WindowManager;.getDefaultDisplay:()Landroid/view/Display;` @kind interface;
+  #L217bc4.  v2:= temp @kind object;
+  #L217bc6.  call `getRealMetrics`(v2, v1) @signature `Landroid/view/Display;.getRealMetrics:(Landroid/util/DisplayMetrics;)V` @kind virtual;
+  #L217bcc.  v2:= v1.`android.util.DisplayMetrics.heightPixels` @type ^`int`;
+  #L217bd0.  return v2;
+}
+procedure `int` `getTranslationYBottom`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getTranslationYBottom:()I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L217c0c.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217c10.  call temp:= `getHeight`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getHeight:()I` @kind virtual;
+  #L217c16.  v0:= temp;
+  #L217c18.  v1:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217c1c.  call temp:= `getLayoutParams`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L217c22.  v1:= temp @kind object;
+  #L217c24.  v2:= instanceof @variable v1 @type ^`android.view.ViewGroup$MarginLayoutParams` @kind boolean;
+  #L217c28.  if v2 == 0 then goto L217c38;
+  #L217c2c.  v2:= v1 @kind object;
+  #L217c2e.  v2:= (`android.view.ViewGroup$MarginLayoutParams`) v2 @kind object;
+  #L217c32.  v2:= v2.`android.view.ViewGroup$MarginLayoutParams.bottomMargin` @type ^`int`;
+  #L217c36.  v0:= v0 + v2 @kind int;
+  #L217c38.  return v0;
+}
+procedure `int` `getViewAbsoluteBottom`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getViewAbsoluteBottom:()I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L217c4c.  v0:= 2I;
+  #L217c4e.  v0:= new `int`[v0];
+  #L217c52.  v1:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217c56.  call `getLocationOnScreen`(v1, v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getLocationOnScreen:([I)V` @kind virtual;
+  #L217c5c.  v1:= 1I;
+  #L217c5e.  v1:= v0[v1];
+  #L217c62.  v2:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217c66.  call temp:= `getHeight`(v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getHeight:()I` @kind virtual;
+  #L217c6c.  v2:= temp;
+  #L217c6e.  v1:= v1 + v2 @kind int;
+  #L217c70.  return v1;
+}
+procedure `boolean` `isSwipeDismissable`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.isSwipeDismissable:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2177e0.  v0:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2177e4.  call temp:= `getLayoutParams`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L2177ea.  v0:= temp @kind object;
+  #L2177ec.  v1:= instanceof @variable v0 @type ^`androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams` @kind boolean;
+  #L2177f0.  if v1 == 0 then goto L21780e;
+  #L2177f4.  v1:= v0 @kind object;
+  #L2177f6.  v1:= (`androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams`) v1 @kind object;
+  #L2177fa.  call temp:= `getBehavior`(v1) @signature `Landroidx/coordinatorlayout/widget/CoordinatorLayout$LayoutParams;.getBehavior:()Landroidx/coordinatorlayout/widget/CoordinatorLayout$Behavior;` @kind virtual;
+  #L217800.  v1:= temp @kind object;
+  #L217802.  v1:= instanceof @variable v1 @type ^`com.google.android.material.behavior.SwipeDismissBehavior` @kind boolean;
+  #L217806.  if v1 == 0 then goto L21780e;
+  #L21780a.  v1:= 1I;
+  #L21780c.  goto L217810;
+  #L21780e.  v1:= 0I;
+  #L217810.  return v1;
+}
+procedure `void` `setUpBehavior`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this, `androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams` v4 @kind object @name `lp`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setUpBehavior:(Landroidx/coordinatorlayout/widget/CoordinatorLayout$LayoutParams;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2180b0.  v0:= v4 @kind object;
+  #L2180b2.  v1:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.behavior` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$Behavior` @kind object;
+  #L2180b6.  if v1 != 0 then goto L2180c4;
+  #L2180ba.  call temp:= `getNewBehavior`(v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getNewBehavior:()Lcom/google/android/material/behavior/SwipeDismissBehavior;` @kind virtual;
+  #L2180c0.  v1:= temp @kind object;
+  #L2180c2.  goto L2180c6;
+  #L2180c4.  
+  #L2180c6.  v2:= instanceof @variable v1 @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$Behavior` @kind boolean;
+  #L2180ca.  if v2 == 0 then goto L2180da;
+  #L2180ce.  v2:= v1 @kind object;
+  #L2180d0.  v2:= (`com.google.android.material.snackbar.BaseTransientBottomBar$Behavior`) v2 @kind object;
+  #L2180d4.  call `access$1300`(v2, v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$Behavior;.access$1300:(Lcom/google/android/material/snackbar/BaseTransientBottomBar$Behavior;Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind static;
+  #L2180da.  v2:= new `com.google.android.material.snackbar.BaseTransientBottomBar$9`;
+  #L2180de.  call `<init>`(v2, v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$9;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L2180e4.  call `setListener`(v1, v2) @signature `Lcom/google/android/material/behavior/SwipeDismissBehavior;.setListener:(Lcom/google/android/material/behavior/SwipeDismissBehavior$OnDismissListener;)V` @kind virtual;
+  #L2180ea.  call `setBehavior`(v0, v1) @signature `Landroidx/coordinatorlayout/widget/CoordinatorLayout$LayoutParams;.setBehavior:(Landroidx/coordinatorlayout/widget/CoordinatorLayout$Behavior;)V` @kind virtual;
+  #L2180f0.  v2:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorView` @type ^`android.view.View` @kind object;
+  #L2180f4.  if v2 != 0 then goto L218100;
+  #L2180f8.  v2:= 80I;
+  #L2180fc.  v0.`androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams.insetEdge` @type ^`int` := v2;
+  #L218100.  return @kind void;
+}
+procedure `boolean` `shouldUpdateGestureInset`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.shouldUpdateGestureInset:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L217864.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginGestureInset` @type ^`int`;
+  #L217868.  if v0 <= 0 then goto L217884;
+  #L21786c.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.gestureInsetBottomIgnored` @type ^`boolean` @kind boolean;
+  #L217870.  if v0 != 0 then goto L217884;
+  #L217874.  call temp:= `isSwipeDismissable`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.isSwipeDismissable:()Z` @kind direct;
+  #L21787a.  v0:= temp;
+  #L21787c.  if v0 == 0 then goto L217884;
+  #L217880.  v0:= 1I;
+  #L217882.  goto L217886;
+  #L217884.  v0:= 0I;
+  #L217886.  return v0;
+}
+procedure `void` `showViewImpl`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.showViewImpl:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2181f0.  call temp:= `shouldAnimate`(v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.shouldAnimate:()Z` @kind virtual;
+  #L2181f6.  v0:= temp;
+  #L2181f8.  if v0 == 0 then goto L218204;
+  #L2181fc.  call `animateViewIn`(v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.animateViewIn:()V` @kind virtual;
+  #L218202.  goto L218226;
+  #L218204.  v0:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L218208.  call temp:= `getParent`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getParent:()Landroid/view/ViewParent;` @kind virtual;
+  #L21820e.  v0:= temp @kind object;
+  #L218210.  if v0 == 0 then goto L218220;
+  #L218214.  v0:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L218218.  v1:= 0I;
+  #L21821a.  call `setVisibility`(v0, v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.setVisibility:(I)V` @kind virtual;
+  #L218220.  call `onViewShown`(v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.onViewShown:()V` @kind virtual;
+  #L218226.  return @kind void;
+}
+procedure `void` `startFadeInAnimation`(`com.google.android.material.snackbar.BaseTransientBottomBar` v6 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startFadeInAnimation:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L218238.  v0:= 2I;
+  #L21823a.  v1:= new `float`[v0];
+  #L21823e.  goto L2182a0;
+  #L218244.  call temp:= `getAlphaAnimator`(v6, v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getAlphaAnimator:([F)Landroid/animation/ValueAnimator;` @kind direct;
+  #L21824a.  v1:= temp @kind object;
+  #L21824c.  v2:= new `float`[v0];
+  #L218250.  goto L2182b0;
+  #L218256.  call temp:= `getScaleAnimator`(v6, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getScaleAnimator:([F)Landroid/animation/ValueAnimator;` @kind direct;
+  #L21825c.  v2:= temp @kind object;
+  #L21825e.  v3:= new `android.animation.AnimatorSet`;
+  #L218262.  call `<init>`(v3) @signature `Landroid/animation/AnimatorSet;.<init>:()V` @kind direct;
+  #L218268.  v0:= new `android.animation.Animator`[v0];
+  #L21826c.  v4:= 0I;
+  #L21826e.  v0[v4]:= v1 @kind object;
+  #L218272.  v4:= 1I;
+  #L218274.  v0[v4]:= v2 @kind object;
+  #L218278.  call `playTogether`(v3, v0) @signature `Landroid/animation/AnimatorSet;.playTogether:([Landroid/animation/Animator;)V` @kind virtual;
+  #L21827e.  v4:= 150L;
+  #L218282.  call temp:= `setDuration`(v3, v4) @signature `Landroid/animation/AnimatorSet;.setDuration:(J)Landroid/animation/AnimatorSet;` @kind virtual;
+  #L218288.  v0:= new `com.google.android.material.snackbar.BaseTransientBottomBar$11`;
+  #L21828c.  call `<init>`(v0, v6) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$11;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L218292.  call `addListener`(v3, v0) @signature `Landroid/animation/AnimatorSet;.addListener:(Landroid/animation/Animator$AnimatorListener;)V` @kind virtual;
+  #L218298.  call `start`(v3) @signature `Landroid/animation/AnimatorSet;.start:()V` @kind virtual;
+  #L21829e.  return @kind void;
+  #L2182a0.  v1:= (0I, 1065353216I) @kind object;
+  #L2182af.  goto L218244;
+  #L2182b0.  v2:= (1061997773I, 1065353216I) @kind object;
+  #L2182bf.  goto L218256;
+}
+procedure `void` `startFadeOutAnimation`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this, `int` v4 @name `event`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startFadeOutAnimation:(I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2182d0.  v0:= 2I;
+  #L2182d2.  v0:= new `float`[v0];
+  #L2182d6.  goto L218308;
+  #L2182dc.  call temp:= `getAlphaAnimator`(v3, v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getAlphaAnimator:([F)Landroid/animation/ValueAnimator;` @kind direct;
+  #L2182e2.  v0:= temp @kind object;
+  #L2182e4.  v1:= 75L;
+  #L2182e8.  call temp:= `setDuration`(v0, v1) @signature `Landroid/animation/ValueAnimator;.setDuration:(J)Landroid/animation/ValueAnimator;` @kind virtual;
+  #L2182ee.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$12`;
+  #L2182f2.  call `<init>`(v1, v3, v4) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$12;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)V` @kind direct;
+  #L2182f8.  call `addListener`(v0, v1) @signature `Landroid/animation/ValueAnimator;.addListener:(Landroid/animation/Animator$AnimatorListener;)V` @kind virtual;
+  #L2182fe.  call `start`(v0) @signature `Landroid/animation/ValueAnimator;.start:()V` @kind virtual;
+  #L218304.  return @kind void;
+  #L218306.  
+  #L218308.  v0:= (1065353216I, 0I) @kind object;
+  #L218317.  goto L2182dc;
+}
+procedure `void` `startSlideInAnimation`(`com.google.android.material.snackbar.BaseTransientBottomBar` v5 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startSlideInAnimation:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L218328.  call temp:= `getTranslationYBottom`(v5) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getTranslationYBottom:()I` @kind direct;
+  #L21832e.  v0:= temp;
+  #L218330.  v1:= `@@com.google.android.material.snackbar.BaseTransientBottomBar.USE_OFFSET_API` @type ^`boolean` @kind boolean;
+  #L218334.  if v1 == 0 then goto L218344;
+  #L218338.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L21833c.  call `offsetTopAndBottom`(v1, v0) @signature `Landroidx/core/view/ViewCompat;.offsetTopAndBottom:(Landroid/view/View;I)V` @kind static;
+  #L218342.  goto L218350;
+  #L218344.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L218348.  v2:= (`float`) v0 @kind i2f;
+  #L21834a.  call `setTranslationY`(v1, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.setTranslationY:(F)V` @kind virtual;
+  #L218350.  v1:= new `android.animation.ValueAnimator`;
+  #L218354.  call `<init>`(v1) @signature `Landroid/animation/ValueAnimator;.<init>:()V` @kind direct;
+  #L21835a.  v2:= 2I;
+  #L21835c.  v2:= new `int`[v2];
+  #L218360.  v3:= 0I;
+  #L218362.  v2[v3]:= v0;
+  #L218366.  v4:= 1I;
+  #L218368.  v2[v4]:= v3;
+  #L21836c.  call `setIntValues`(v1, v2) @signature `Landroid/animation/ValueAnimator;.setIntValues:([I)V` @kind virtual;
+  #L218372.  v2:= `@@com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR` @type ^`android.animation.TimeInterpolator` @kind object;
+  #L218376.  call `setInterpolator`(v1, v2) @signature `Landroid/animation/ValueAnimator;.setInterpolator:(Landroid/animation/TimeInterpolator;)V` @kind virtual;
+  #L21837c.  v2:= 250L;
+  #L218380.  call temp:= `setDuration`(v1, v2) @signature `Landroid/animation/ValueAnimator;.setDuration:(J)Landroid/animation/ValueAnimator;` @kind virtual;
+  #L218386.  v2:= new `com.google.android.material.snackbar.BaseTransientBottomBar$15`;
+  #L21838a.  call `<init>`(v2, v5) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$15;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L218390.  call `addListener`(v1, v2) @signature `Landroid/animation/ValueAnimator;.addListener:(Landroid/animation/Animator$AnimatorListener;)V` @kind virtual;
+  #L218396.  v2:= new `com.google.android.material.snackbar.BaseTransientBottomBar$16`;
+  #L21839a.  call `<init>`(v2, v5, v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$16;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)V` @kind direct;
+  #L2183a0.  call `addUpdateListener`(v1, v2) @signature `Landroid/animation/ValueAnimator;.addUpdateListener:(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V` @kind virtual;
+  #L2183a6.  call `start`(v1) @signature `Landroid/animation/ValueAnimator;.start:()V` @kind virtual;
+  #L2183ac.  return @kind void;
+}
+procedure `void` `startSlideOutAnimation`(`com.google.android.material.snackbar.BaseTransientBottomBar` v4 @kind this, `int` v5 @name `event`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.startSlideOutAnimation:(I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2183c0.  v0:= new `android.animation.ValueAnimator`;
+  #L2183c4.  call `<init>`(v0) @signature `Landroid/animation/ValueAnimator;.<init>:()V` @kind direct;
+  #L2183ca.  v1:= 2I;
+  #L2183cc.  v1:= new `int`[v1];
+  #L2183d0.  v2:= 0I;
+  #L2183d2.  v1[v2]:= v2;
+  #L2183d6.  call temp:= `getTranslationYBottom`(v4) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getTranslationYBottom:()I` @kind direct;
+  #L2183dc.  v2:= temp;
+  #L2183de.  v3:= 1I;
+  #L2183e0.  v1[v3]:= v2;
+  #L2183e4.  call `setIntValues`(v0, v1) @signature `Landroid/animation/ValueAnimator;.setIntValues:([I)V` @kind virtual;
+  #L2183ea.  v1:= `@@com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR` @type ^`android.animation.TimeInterpolator` @kind object;
+  #L2183ee.  call `setInterpolator`(v0, v1) @signature `Landroid/animation/ValueAnimator;.setInterpolator:(Landroid/animation/TimeInterpolator;)V` @kind virtual;
+  #L2183f4.  v1:= 250L;
+  #L2183f8.  call temp:= `setDuration`(v0, v1) @signature `Landroid/animation/ValueAnimator;.setDuration:(J)Landroid/animation/ValueAnimator;` @kind virtual;
+  #L2183fe.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$17`;
+  #L218402.  call `<init>`(v1, v4, v5) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$17;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;I)V` @kind direct;
+  #L218408.  call `addListener`(v0, v1) @signature `Landroid/animation/ValueAnimator;.addListener:(Landroid/animation/Animator$AnimatorListener;)V` @kind virtual;
+  #L21840e.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$18`;
+  #L218412.  call `<init>`(v1, v4) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$18;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L218418.  call `addUpdateListener`(v0, v1) @signature `Landroid/animation/ValueAnimator;.addUpdateListener:(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V` @kind virtual;
+  #L21841e.  call `start`(v0) @signature `Landroid/animation/ValueAnimator;.start:()V` @kind virtual;
+  #L218424.  return @kind void;
+}
+procedure `void` `updateMargins`(`com.google.android.material.snackbar.BaseTransientBottomBar` v5 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.updateMargins:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L218438.  v0:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L21843c.  call temp:= `getLayoutParams`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L218442.  v0:= temp @kind object;
+  #L218444.  v1:= instanceof @variable v0 @type ^`android.view.ViewGroup$MarginLayoutParams` @kind boolean;
+  #L218448.  if v1 == 0 then goto L2184dc;
+  #L21844c.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.originalMargins` @type ^`android.graphics.Rect` @kind object;
+  #L218450.  if v1 != 0 then goto L218456;
+  #L218454.  goto L2184dc;
+  #L218456.  v2:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorView` @type ^`android.view.View` @kind object;
+  #L21845a.  if v2 == 0 then goto L218464;
+  #L21845e.  v2:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginAnchorView` @type ^`int`;
+  #L218462.  goto L218468;
+  #L218464.  v2:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginWindowInset` @type ^`int`;
+  #L218468.  v3:= v0 @kind object;
+  #L21846a.  v3:= (`android.view.ViewGroup$MarginLayoutParams`) v3 @kind object;
+  #L21846e.  v1:= v1.`android.graphics.Rect.bottom` @type ^`int`;
+  #L218472.  v1:= v1 + v2 @kind int;
+  #L218474.  v3.`android.view.ViewGroup$MarginLayoutParams.bottomMargin` @type ^`int` := v1;
+  #L218478.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.originalMargins` @type ^`android.graphics.Rect` @kind object;
+  #L21847c.  v1:= v1.`android.graphics.Rect.left` @type ^`int`;
+  #L218480.  v4:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.extraLeftMarginWindowInset` @type ^`int`;
+  #L218484.  v1:= v1 + v4 @kind int;
+  #L218486.  v3.`android.view.ViewGroup$MarginLayoutParams.leftMargin` @type ^`int` := v1;
+  #L21848a.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.originalMargins` @type ^`android.graphics.Rect` @kind object;
+  #L21848e.  v1:= v1.`android.graphics.Rect.right` @type ^`int`;
+  #L218492.  v4:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.extraRightMarginWindowInset` @type ^`int`;
+  #L218496.  v1:= v1 + v4 @kind int;
+  #L218498.  v3.`android.view.ViewGroup$MarginLayoutParams.rightMargin` @type ^`int` := v1;
+  #L21849c.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2184a0.  call `requestLayout`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.requestLayout:()V` @kind virtual;
+  #L2184a6.  v1:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L2184aa.  v4:= 29I;
+  #L2184ae.  if v1 < v4 then goto L2184da;
+  #L2184b2.  call temp:= `shouldUpdateGestureInset`(v5) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.shouldUpdateGestureInset:()Z` @kind direct;
+  #L2184b8.  v1:= temp;
+  #L2184ba.  if v1 == 0 then goto L2184da;
+  #L2184be.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2184c2.  v4:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.bottomMarginGestureInsetRunnable` @type ^`java.lang.Runnable` @kind object;
+  #L2184c6.  call temp:= `removeCallbacks`(v1, v4) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.removeCallbacks:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L2184cc.  v1:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2184d0.  v4:= v5.`com.google.android.material.snackbar.BaseTransientBottomBar.bottomMarginGestureInsetRunnable` @type ^`java.lang.Runnable` @kind object;
+  #L2184d4.  call temp:= `post`(v1, v4) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.post:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L2184da.  return @kind void;
+  #L2184dc.  v1:= `@@com.google.android.material.snackbar.BaseTransientBottomBar.TAG` @type ^`java.lang.String` @kind object;
+  #L2184e0.  v2:= "Unable to update margins because layout params are not MarginLayoutParams" @kind object;
+  #L2184e4.  call temp:= `w`(v1, v2) @signature `Landroid/util/Log;.w:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2184ea.  return @kind void;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `addCallback`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this, `com.google.android.material.snackbar.BaseTransientBottomBar$BaseCallback` v2 @kind object) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.addCallback:(Lcom/google/android/material/snackbar/BaseTransientBottomBar$BaseCallback;)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2178b4.  if v2 != 0 then goto L2178ba;
+  #L2178b8.  return v1 @kind object;
+  #L2178ba.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` @kind object;
+  #L2178be.  if v0 != 0 then goto L2178d0;
+  #L2178c2.  v0:= new `java.util.ArrayList`;
+  #L2178c6.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L2178cc.  v1.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` := v0 @kind object;
+  #L2178d0.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` @kind object;
+  #L2178d4.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2178da.  return v1 @kind object;
+}
+procedure `void` `animateViewIn`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.animateViewIn:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L217eec.  v0:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217ef0.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$10`;
+  #L217ef4.  call `<init>`(v1, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$10;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L217efa.  call temp:= `post`(v0, v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.post:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L217f00.  return @kind void;
+}
+procedure `void` `dismiss`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.dismiss:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L217f48.  v0:= 3I;
+  #L217f4a.  call `dispatchDismiss`(v1, v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.dispatchDismiss:(I)V` @kind virtual;
+  #L217f50.  return @kind void;
+}
+procedure `void` `dispatchDismiss`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this, `int` v3 @name `event`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.dispatchDismiss:(I)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+
+  #L217f64.  call temp:= `getInstance`() @signature `Lcom/google/android/material/snackbar/SnackbarManager;.getInstance:()Lcom/google/android/material/snackbar/SnackbarManager;` @kind static;
+  #L217f6a.  v0:= temp @kind object;
+  #L217f6c.  v1:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @type ^`com.google.android.material.snackbar.SnackbarManager$Callback` @kind object;
+  #L217f70.  call `dismiss`(v0, v1, v3) @signature `Lcom/google/android/material/snackbar/SnackbarManager;.dismiss:(Lcom/google/android/material/snackbar/SnackbarManager$Callback;I)V` @kind virtual;
+  #L217f76.  return @kind void;
+}
+procedure `android.view.View` `getAnchorView`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getAnchorView:()Landroid/view/View;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2176c4.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorView` @type ^`android.view.View` @kind object;
+  #L2176c8.  return v0 @kind object;
+}
+procedure `int` `getAnimationMode`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getAnimationMode:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L217b68.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217b6c.  call temp:= `getAnimationMode`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getAnimationMode:()I` @kind virtual;
+  #L217b72.  v0:= temp;
+  #L217b74.  return v0;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar$Behavior` `getBehavior`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getBehavior:()Lcom/google/android/material/snackbar/BaseTransientBottomBar$Behavior;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L217a00.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.behavior` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$Behavior` @kind object;
+  #L217a04.  return v0 @kind object;
+}
+procedure `android.content.Context` `getContext`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getContext:()Landroid/content/Context;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2176ac.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.context` @type ^`android.content.Context` @kind object;
+  #L2176b0.  return v0 @kind object;
+}
+procedure `int` `getDuration`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getDuration:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L217b88.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.duration` @type ^`int`;
+  #L217b8c.  return v0;
+}
+procedure `com.google.android.material.behavior.SwipeDismissBehavior` `getNewBehavior`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getNewBehavior:()Lcom/google/android/material/behavior/SwipeDismissBehavior;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L217898.  v0:= new `com.google.android.material.snackbar.BaseTransientBottomBar$Behavior`;
+  #L21789c.  call `<init>`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$Behavior;.<init>:()V` @kind direct;
+  #L2178a2.  return v0 @kind object;
+}
+procedure `int` `getSnackbarBaseLayoutResId`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getSnackbarBaseLayoutResId:()I` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L217be4.  call temp:= `hasSnackbarStyleAttr`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.hasSnackbarStyleAttr:()Z` @kind virtual;
+  #L217bea.  v0:= temp;
+  #L217bec.  if v0 == 0 then goto L217bf6;
+  #L217bf0.  v0:= `@@com.google.android.material.R$layout.mtrl_layout_snackbar` @type ^`int`;
+  #L217bf4.  goto L217bfa;
+  #L217bf6.  v0:= `@@com.google.android.material.R$layout.design_layout_snackbar` @type ^`int`;
+  #L217bfa.  return v0;
+}
+procedure `android.view.View` `getView`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getView:()Landroid/view/View;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2176dc.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2176e0.  return v0 @kind object;
+}
+procedure `boolean` `hasSnackbarStyleAttr`(`com.google.android.material.snackbar.BaseTransientBottomBar` v4 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.hasSnackbarStyleAttr:()Z` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L217724.  v0:= v4.`com.google.android.material.snackbar.BaseTransientBottomBar.context` @type ^`android.content.Context` @kind object;
+  #L217728.  v1:= `@@com.google.android.material.snackbar.BaseTransientBottomBar.SNACKBAR_STYLE_ATTR` @type ^`int`[] @kind object;
+  #L21772c.  call temp:= `obtainStyledAttributes`(v0, v1) @signature `Landroid/content/Context;.obtainStyledAttributes:([I)Landroid/content/res/TypedArray;` @kind virtual;
+  #L217732.  v0:= temp @kind object;
+  #L217734.  v1:= 0I;
+  #L217736.  v2:= -1I;
+  #L217738.  call temp:= `getResourceId`(v0, v1, v2) @signature `Landroid/content/res/TypedArray;.getResourceId:(II)I` @kind virtual;
+  #L21773e.  v3:= temp;
+  #L217740.  call `recycle`(v0) @signature `Landroid/content/res/TypedArray;.recycle:()V` @kind virtual;
+  #L217746.  if v3 == v2 then goto L21774c;
+  #L21774a.  v1:= 1I;
+  #L21774c.  return v1;
+}
+procedure `void` `hideView`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this, `int` v2 @name `event`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.hideView:(I)V` @AccessFlag FINAL {
+    temp;
+    v0;
+
+  #L217f88.  call temp:= `shouldAnimate`(v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.shouldAnimate:()Z` @kind virtual;
+  #L217f8e.  v0:= temp;
+  #L217f90.  if v0 == 0 then goto L217fac;
+  #L217f94.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L217f98.  call temp:= `getVisibility`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getVisibility:()I` @kind virtual;
+  #L217f9e.  v0:= temp;
+  #L217fa0.  if v0 != 0 then goto L217fac;
+  #L217fa4.  call `animateViewOut`(v1, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.animateViewOut:(I)V` @kind direct;
+  #L217faa.  goto L217fb2;
+  #L217fac.  call `onViewHidden`(v1, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.onViewHidden:(I)V` @kind virtual;
+  #L217fb2.  return @kind void;
+}
+procedure `boolean` `isAnchorViewLayoutListenerEnabled`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.isAnchorViewLayoutListenerEnabled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L217760.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListenerEnabled` @type ^`boolean` @kind boolean;
+  #L217764.  return v0;
+}
+procedure `boolean` `isGestureInsetBottomIgnored`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.isGestureInsetBottomIgnored:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L217778.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.gestureInsetBottomIgnored` @type ^`boolean` @kind boolean;
+  #L21777c.  return v0;
+}
+procedure `boolean` `isShown`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.isShown:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L217790.  call temp:= `getInstance`() @signature `Lcom/google/android/material/snackbar/SnackbarManager;.getInstance:()Lcom/google/android/material/snackbar/SnackbarManager;` @kind static;
+  #L217796.  v0:= temp @kind object;
+  #L217798.  v1:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @type ^`com.google.android.material.snackbar.SnackbarManager$Callback` @kind object;
+  #L21779c.  call temp:= `isCurrent`(v0, v1) @signature `Lcom/google/android/material/snackbar/SnackbarManager;.isCurrent:(Lcom/google/android/material/snackbar/SnackbarManager$Callback;)Z` @kind virtual;
+  #L2177a2.  v0:= temp;
+  #L2177a4.  return v0;
+}
+procedure `boolean` `isShownOrQueued`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.isShownOrQueued:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2177b8.  call temp:= `getInstance`() @signature `Lcom/google/android/material/snackbar/SnackbarManager;.getInstance:()Lcom/google/android/material/snackbar/SnackbarManager;` @kind static;
+  #L2177be.  v0:= temp @kind object;
+  #L2177c0.  v1:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @type ^`com.google.android.material.snackbar.SnackbarManager$Callback` @kind object;
+  #L2177c4.  call temp:= `isCurrentOrNext`(v0, v1) @signature `Lcom/google/android/material/snackbar/SnackbarManager;.isCurrentOrNext:(Lcom/google/android/material/snackbar/SnackbarManager$Callback;)Z` @kind virtual;
+  #L2177ca.  v0:= temp;
+  #L2177cc.  return v0;
+}
+procedure `void` `onViewHidden`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this, `int` v4 @name `event`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.onViewHidden:(I)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L217fc4.  call temp:= `getInstance`() @signature `Lcom/google/android/material/snackbar/SnackbarManager;.getInstance:()Lcom/google/android/material/snackbar/SnackbarManager;` @kind static;
+  #L217fca.  v0:= temp @kind object;
+  #L217fcc.  v1:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @type ^`com.google.android.material.snackbar.SnackbarManager$Callback` @kind object;
+  #L217fd0.  call `onDismissed`(v0, v1) @signature `Lcom/google/android/material/snackbar/SnackbarManager;.onDismissed:(Lcom/google/android/material/snackbar/SnackbarManager$Callback;)V` @kind virtual;
+  #L217fd6.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` @kind object;
+  #L217fda.  if v0 == 0 then goto L21800a;
+  #L217fde.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L217fe4.  v0:= temp;
+  #L217fe6.  v1:= v0 + -1;
+  #L217fea.  if v1 < 0 then goto L21800a;
+  #L217fee.  v2:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` @kind object;
+  #L217ff2.  call temp:= `get`(v2, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L217ff8.  v2:= temp @kind object;
+  #L217ffa.  v2:= (`com.google.android.material.snackbar.BaseTransientBottomBar$BaseCallback`) v2 @kind object;
+  #L217ffe.  call `onDismissed`(v2, v3, v4) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$BaseCallback;.onDismissed:(Ljava/lang/Object;I)V` @kind virtual;
+  #L218004.  v1:= v1 + -1;
+  #L218008.  goto L217fea;
+  #L21800a.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L21800e.  call temp:= `getParent`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getParent:()Landroid/view/ViewParent;` @kind virtual;
+  #L218014.  v0:= temp @kind object;
+  #L218016.  v1:= instanceof @variable v0 @type ^`android.view.ViewGroup` @kind boolean;
+  #L21801a.  if v1 == 0 then goto L21802e;
+  #L21801e.  v1:= v0 @kind object;
+  #L218020.  v1:= (`android.view.ViewGroup`) v1 @kind object;
+  #L218024.  v2:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L218028.  call `removeView`(v1, v2) @signature `Landroid/view/ViewGroup;.removeView:(Landroid/view/View;)V` @kind virtual;
+  #L21802e.  return @kind void;
+}
+procedure `void` `onViewShown`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.onViewShown:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L218040.  call temp:= `getInstance`() @signature `Lcom/google/android/material/snackbar/SnackbarManager;.getInstance:()Lcom/google/android/material/snackbar/SnackbarManager;` @kind static;
+  #L218046.  v0:= temp @kind object;
+  #L218048.  v1:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @type ^`com.google.android.material.snackbar.SnackbarManager$Callback` @kind object;
+  #L21804c.  call `onShown`(v0, v1) @signature `Lcom/google/android/material/snackbar/SnackbarManager;.onShown:(Lcom/google/android/material/snackbar/SnackbarManager$Callback;)V` @kind virtual;
+  #L218052.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` @kind object;
+  #L218056.  if v0 == 0 then goto L218086;
+  #L21805a.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L218060.  v0:= temp;
+  #L218062.  v1:= v0 + -1;
+  #L218066.  if v1 < 0 then goto L218086;
+  #L21806a.  v2:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` @kind object;
+  #L21806e.  call temp:= `get`(v2, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L218074.  v2:= temp @kind object;
+  #L218076.  v2:= (`com.google.android.material.snackbar.BaseTransientBottomBar$BaseCallback`) v2 @kind object;
+  #L21807a.  call `onShown`(v2, v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$BaseCallback;.onShown:(Ljava/lang/Object;)V` @kind virtual;
+  #L218080.  v1:= v1 + -1;
+  #L218084.  goto L218066;
+  #L218086.  return @kind void;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `removeCallback`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this, `com.google.android.material.snackbar.BaseTransientBottomBar$BaseCallback` v2 @kind object) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.removeCallback:(Lcom/google/android/material/snackbar/BaseTransientBottomBar$BaseCallback;)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2178ec.  if v2 != 0 then goto L2178f2;
+  #L2178f0.  return v1 @kind object;
+  #L2178f2.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.callbacks` @type ^`java.util.List` @kind object;
+  #L2178f6.  if v0 != 0 then goto L2178fc;
+  #L2178fa.  return v1 @kind object;
+  #L2178fc.  call temp:= `remove`(v0, v2) @signature `Ljava/util/List;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L217902.  return v1 @kind object;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `setAnchorView`(`com.google.android.material.snackbar.BaseTransientBottomBar` v4 @kind this, `int` v5 @name `anchorViewId`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setAnchorView:(I)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L217944.  v0:= v4.`com.google.android.material.snackbar.BaseTransientBottomBar.targetParent` @type ^`android.view.ViewGroup` @kind object;
+  #L217948.  call temp:= `findViewById`(v0, v5) @signature `Landroid/view/ViewGroup;.findViewById:(I)Landroid/view/View;` @kind virtual;
+  #L21794e.  v0:= temp @kind object;
+  #L217950.  if v0 == 0 then goto L21795e;
+  #L217954.  call temp:= `setAnchorView`(v4, v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setAnchorView:(Landroid/view/View;)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @kind virtual;
+  #L21795a.  v1:= temp @kind object;
+  #L21795c.  return v1 @kind object;
+  #L21795e.  v1:= new `java.lang.IllegalArgumentException`;
+  #L217962.  v2:= new `java.lang.StringBuilder`;
+  #L217966.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L21796c.  v3:= "Unable to find anchor view with id: " @kind object;
+  #L217970.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L217976.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L21797c.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L217982.  v2:= temp @kind object;
+  #L217984.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L21798a.  throw v1;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `setAnchorView`(`com.google.android.material.snackbar.BaseTransientBottomBar` v2 @kind this, `android.view.View` v3 @kind object @name `anchorView`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setAnchorView:(Landroid/view/View;)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L217914.  v0:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorView` @type ^`android.view.View` @kind object;
+  #L217918.  v1:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListener` @type ^`android.view.ViewTreeObserver$OnGlobalLayoutListener` @kind object;
+  #L21791c.  call `removeOnGlobalLayoutListener`(v0, v1) @signature `Lcom/google/android/material/internal/ViewUtils;.removeOnGlobalLayoutListener:(Landroid/view/View;Landroid/view/ViewTreeObserver$OnGlobalLayoutListener;)V` @kind static;
+  #L217922.  v2.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorView` @type ^`android.view.View` := v3 @kind object;
+  #L217926.  v0:= v2.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListener` @type ^`android.view.ViewTreeObserver$OnGlobalLayoutListener` @kind object;
+  #L21792a.  call `addOnGlobalLayoutListener`(v3, v0) @signature `Lcom/google/android/material/internal/ViewUtils;.addOnGlobalLayoutListener:(Landroid/view/View;Landroid/view/ViewTreeObserver$OnGlobalLayoutListener;)V` @kind static;
+  #L217930.  return v2 @kind object;
+}
+procedure `void` `setAnchorViewLayoutListenerEnabled`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind this, `boolean` v1 @name `anchorViewLayoutListenerEnabled`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setAnchorViewLayoutListenerEnabled:(Z)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L218098.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.anchorViewLayoutListenerEnabled` @type ^`boolean` := v1 @kind boolean;
+  #L21809c.  return @kind void;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `setAnimationMode`(`com.google.android.material.snackbar.BaseTransientBottomBar` v1 @kind this, `int` v2 @name `animationMode`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setAnimationMode:(I)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L21799c.  v0:= v1.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2179a0.  call `setAnimationMode`(v0, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.setAnimationMode:(I)V` @kind virtual;
+  #L2179a6.  return v1 @kind object;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `setBehavior`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind this, `com.google.android.material.snackbar.BaseTransientBottomBar$Behavior` v1 @kind object @name `behavior`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setBehavior:(Lcom/google/android/material/snackbar/BaseTransientBottomBar$Behavior;)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+
+  #L2179b8.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.behavior` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$Behavior` := v1 @kind object;
+  #L2179bc.  return v0 @kind object;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `setDuration`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind this, `int` v1 @name `duration`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setDuration:(I)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+
+  #L2179d0.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.duration` @type ^`int` := v1;
+  #L2179d4.  return v0 @kind object;
+}
+procedure `com.google.android.material.snackbar.BaseTransientBottomBar` `setGestureInsetBottomIgnored`(`com.google.android.material.snackbar.BaseTransientBottomBar` v0 @kind this, `boolean` v1 @name `gestureInsetBottomIgnored`) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setGestureInsetBottomIgnored:(Z)Lcom/google/android/material/snackbar/BaseTransientBottomBar;` @AccessFlag PUBLIC {
+    temp;
+
+  #L2179e8.  v0.`com.google.android.material.snackbar.BaseTransientBottomBar.gestureInsetBottomIgnored` @type ^`boolean` := v1 @kind boolean;
+  #L2179ec.  return v0 @kind object;
+}
+procedure `boolean` `shouldAnimate`(`com.google.android.material.snackbar.BaseTransientBottomBar` v4 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.shouldAnimate:()Z` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L217824.  v0:= v4.`com.google.android.material.snackbar.BaseTransientBottomBar.accessibilityManager` @type ^`android.view.accessibility.AccessibilityManager` @kind object;
+  #L217828.  v1:= 1I;
+  #L21782a.  if v0 != 0 then goto L217830;
+  #L21782e.  return v1;
+  #L217830.  v2:= 1I;
+  #L217832.  
+  #L217834.  call temp:= `getEnabledAccessibilityServiceList`(v0, v2) @signature `Landroid/view/accessibility/AccessibilityManager;.getEnabledAccessibilityServiceList:(I)Ljava/util/List;` @kind virtual;
+  #L21783a.  v0:= temp @kind object;
+  #L21783c.  if v0 == 0 then goto L21784e;
+  #L217840.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L217846.  v3:= temp;
+  #L217848.  if v3 == 0 then goto L21784e;
+  #L21784c.  goto L217850;
+  #L21784e.  v1:= 0I;
+  #L217850.  return v1;
+}
+procedure `void` `show`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.show:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L218114.  call temp:= `getInstance`() @signature `Lcom/google/android/material/snackbar/SnackbarManager;.getInstance:()Lcom/google/android/material/snackbar/SnackbarManager;` @kind static;
+  #L21811a.  v0:= temp @kind object;
+  #L21811c.  call temp:= `getDuration`(v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.getDuration:()I` @kind virtual;
+  #L218122.  v1:= temp;
+  #L218124.  v2:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.managerCallback` @type ^`com.google.android.material.snackbar.SnackbarManager$Callback` @kind object;
+  #L218128.  call `show`(v0, v1, v2) @signature `Lcom/google/android/material/snackbar/SnackbarManager;.show:(ILcom/google/android/material/snackbar/SnackbarManager$Callback;)V` @kind virtual;
+  #L21812e.  return @kind void;
+}
+procedure `void` `showView`(`com.google.android.material.snackbar.BaseTransientBottomBar` v3 @kind this) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.showView:()V` @AccessFlag FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L218140.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L218144.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$7`;
+  #L218148.  call `<init>`(v1, v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$7;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L21814e.  call `setOnAttachStateChangeListener`(v0, v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.setOnAttachStateChangeListener:(Lcom/google/android/material/snackbar/BaseTransientBottomBar$OnAttachStateChangeListener;)V` @kind virtual;
+  #L218154.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L218158.  call temp:= `getParent`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getParent:()Landroid/view/ViewParent;` @kind virtual;
+  #L21815e.  v0:= temp @kind object;
+  #L218160.  if v0 != 0 then goto L2181b0;
+  #L218164.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L218168.  call temp:= `getLayoutParams`(v0) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L21816e.  v0:= temp @kind object;
+  #L218170.  v1:= instanceof @variable v0 @type ^`androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams` @kind boolean;
+  #L218174.  if v1 == 0 then goto L218184;
+  #L218178.  v1:= v0 @kind object;
+  #L21817a.  v1:= (`androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams`) v1 @kind object;
+  #L21817e.  call `setUpBehavior`(v3, v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.setUpBehavior:(Landroidx/coordinatorlayout/widget/CoordinatorLayout$LayoutParams;)V` @kind direct;
+  #L218184.  call temp:= `calculateBottomMarginForAnchorView`(v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.calculateBottomMarginForAnchorView:()I` @kind direct;
+  #L21818a.  v1:= temp;
+  #L21818c.  v3.`com.google.android.material.snackbar.BaseTransientBottomBar.extraBottomMarginAnchorView` @type ^`int` := v1;
+  #L218190.  call `updateMargins`(v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.updateMargins:()V` @kind direct;
+  #L218196.  v1:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L21819a.  v2:= 4I;
+  #L21819c.  call `setVisibility`(v1, v2) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.setVisibility:(I)V` @kind virtual;
+  #L2181a2.  v1:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.targetParent` @type ^`android.view.ViewGroup` @kind object;
+  #L2181a6.  v2:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2181aa.  call `addView`(v1, v2) @signature `Landroid/view/ViewGroup;.addView:(Landroid/view/View;)V` @kind virtual;
+  #L2181b0.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2181b4.  call temp:= `isLaidOut`(v0) @signature `Landroidx/core/view/ViewCompat;.isLaidOut:(Landroid/view/View;)Z` @kind static;
+  #L2181ba.  v0:= temp;
+  #L2181bc.  if v0 == 0 then goto L2181c8;
+  #L2181c0.  call `showViewImpl`(v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar;.showViewImpl:()V` @kind direct;
+  #L2181c6.  return @kind void;
+  #L2181c8.  v0:= v3.`com.google.android.material.snackbar.BaseTransientBottomBar.view` @type ^`com.google.android.material.snackbar.BaseTransientBottomBar$SnackbarBaseLayout` @kind object;
+  #L2181cc.  v1:= new `com.google.android.material.snackbar.BaseTransientBottomBar$8`;
+  #L2181d0.  call `<init>`(v1, v3) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$8;.<init>:(Lcom/google/android/material/snackbar/BaseTransientBottomBar;)V` @kind direct;
+  #L2181d6.  call `setOnLayoutChangeListener`(v0, v1) @signature `Lcom/google/android/material/snackbar/BaseTransientBottomBar$SnackbarBaseLayout;.setOnLayoutChangeListener:(Lcom/google/android/material/snackbar/BaseTransientBottomBar$OnLayoutChangeListener;)V` @kind virtual;
+  #L2181dc.  return @kind void;
+}

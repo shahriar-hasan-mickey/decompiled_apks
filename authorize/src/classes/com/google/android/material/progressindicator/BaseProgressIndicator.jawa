@@ -1,0 +1,988 @@
+record `com.google.android.material.progressindicator.BaseProgressIndicator` @kind class @AccessFlag PUBLIC_ABSTRACT extends `android.widget.ProgressBar` @kind class {
+  `com.google.android.material.progressindicator.AnimatorDurationScaleProvider` `com.google.android.material.progressindicator.BaseProgressIndicator.animatorDurationScaleProvider` @AccessFlag ;
+  `java.lang.Runnable` `com.google.android.material.progressindicator.BaseProgressIndicator.delayedHide` @AccessFlag PRIVATE_FINAL;
+  `java.lang.Runnable` `com.google.android.material.progressindicator.BaseProgressIndicator.delayedShow` @AccessFlag PRIVATE_FINAL;
+  `androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` `com.google.android.material.progressindicator.BaseProgressIndicator.hideAnimationCallback` @AccessFlag PRIVATE_FINAL;
+  `boolean` `com.google.android.material.progressindicator.BaseProgressIndicator.isIndeterminateModeChangeRequested` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.progressindicator.BaseProgressIndicator.isParentDoneInitializing` @AccessFlag PRIVATE;
+  `long` `com.google.android.material.progressindicator.BaseProgressIndicator.lastShowStartTime` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.progressindicator.BaseProgressIndicator.minHideDelay` @AccessFlag PRIVATE_FINAL;
+  `int` `com.google.android.material.progressindicator.BaseProgressIndicator.showDelay` @AccessFlag PRIVATE_FINAL;
+  `com.google.android.material.progressindicator.BaseProgressIndicatorSpec` `com.google.android.material.progressindicator.BaseProgressIndicator.spec` @AccessFlag ;
+  `int` `com.google.android.material.progressindicator.BaseProgressIndicator.storedProgress` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.progressindicator.BaseProgressIndicator.storedProgressAnimated` @AccessFlag PRIVATE;
+  `androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` `com.google.android.material.progressindicator.BaseProgressIndicator.switchIndeterminateModeCallback` @AccessFlag PRIVATE_FINAL;
+  `int` `com.google.android.material.progressindicator.BaseProgressIndicator.visibilityAfterHide` @AccessFlag PRIVATE;
+}
+global `float` `@@com.google.android.material.progressindicator.BaseProgressIndicator.DEFAULT_OPACITY` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.DEF_STYLE_RES` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_INWARD` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_NONE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_OUTWARD` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.MAX_ALPHA` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.MAX_HIDE_DELAY` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.SHOW_INWARD` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.SHOW_NONE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@com.google.android.material.progressindicator.BaseProgressIndicator.SHOW_OUTWARD` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L206d18.  v0:= `@@com.google.android.material.R$style.Widget_MaterialComponents_ProgressIndicator` @type ^`int`;
+  #L206d1c.  `@@com.google.android.material.progressindicator.BaseProgressIndicator.DEF_STYLE_RES` @type ^`int` := v0;
+  #L206d20.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.progressindicator.BaseProgressIndicator` v8 @kind this, `android.content.Context` v9 @kind object @name `context`, `android.util.AttributeSet` v10 @kind object @name `attrs`, `int` v11 @name `defStyleAttr`, `int` v12 @name `defStyleRes`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;II)V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L206d34.  v0:= `@@com.google.android.material.progressindicator.BaseProgressIndicator.DEF_STYLE_RES` @type ^`int`;
+  #L206d38.  call temp:= `wrap`(v9, v10, v11, v0) @signature `Lcom/google/android/material/theme/overlay/MaterialThemeOverlay;.wrap:(Landroid/content/Context;Landroid/util/AttributeSet;II)Landroid/content/Context;` @kind static;
+  #L206d3e.  v0:= temp @kind object;
+  #L206d40.  call `<init>`(v8, v0, v10, v11) @signature `Landroid/widget/ProgressBar;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @kind direct;
+  #L206d46.  v0:= -1L;
+  #L206d4a.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.lastShowStartTime` @type ^`long` := v0 @kind wide;
+  #L206d4e.  v0:= 0I;
+  #L206d50.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.isIndeterminateModeChangeRequested` @type ^`boolean` := v0 @kind boolean;
+  #L206d54.  v1:= 4I;
+  #L206d56.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.visibilityAfterHide` @type ^`int` := v1;
+  #L206d5a.  v1:= new `com.google.android.material.progressindicator.BaseProgressIndicator$1`;
+  #L206d5e.  call `<init>`(v1, v8) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator$1;.<init>:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)V` @kind direct;
+  #L206d64.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedShow` @type ^`java.lang.Runnable` := v1 @kind object;
+  #L206d68.  v1:= new `com.google.android.material.progressindicator.BaseProgressIndicator$2`;
+  #L206d6c.  call `<init>`(v1, v8) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator$2;.<init>:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)V` @kind direct;
+  #L206d72.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedHide` @type ^`java.lang.Runnable` := v1 @kind object;
+  #L206d76.  v1:= new `com.google.android.material.progressindicator.BaseProgressIndicator$3`;
+  #L206d7a.  call `<init>`(v1, v8) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator$3;.<init>:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)V` @kind direct;
+  #L206d80.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.switchIndeterminateModeCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` := v1 @kind object;
+  #L206d84.  v1:= new `com.google.android.material.progressindicator.BaseProgressIndicator$4`;
+  #L206d88.  call `<init>`(v1, v8) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator$4;.<init>:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)V` @kind direct;
+  #L206d8e.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.hideAnimationCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` := v1 @kind object;
+  #L206d92.  call temp:= `getContext`(v8) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L206d98.  v9:= temp @kind object;
+  #L206d9a.  call temp:= `createSpec`(v8, v9, v10) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.createSpec:(Landroid/content/Context;Landroid/util/AttributeSet;)Lcom/google/android/material/progressindicator/BaseProgressIndicatorSpec;` @kind virtual;
+  #L206da0.  v1:= temp @kind object;
+  #L206da2.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` := v1 @kind object;
+  #L206da6.  v4:= `@@com.google.android.material.R$styleable.BaseProgressIndicator` @type ^`int`[] @kind object;
+  #L206daa.  v7:= new `int`[v0];
+  #L206dae.  v2:= v9 @kind object;
+  #L206db0.  v3:= v10 @kind object;
+  #L206db2.  v5:= v11;
+  #L206db4.  v6:= v12;
+  #L206db6.  call temp:= `obtainStyledAttributes`(v2, v3, v4, v5, v6, v7) @signature `Lcom/google/android/material/internal/ThemeEnforcement;.obtainStyledAttributes:(Landroid/content/Context;Landroid/util/AttributeSet;[III[I)Landroid/content/res/TypedArray;` @kind static;
+  #L206dbc.  v0:= temp @kind object;
+  #L206dbe.  v1:= `@@com.google.android.material.R$styleable.BaseProgressIndicator_showDelay` @type ^`int`;
+  #L206dc2.  v2:= -1I;
+  #L206dc4.  call temp:= `getInt`(v0, v1, v2) @signature `Landroid/content/res/TypedArray;.getInt:(II)I` @kind virtual;
+  #L206dca.  v1:= temp;
+  #L206dcc.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.showDelay` @type ^`int` := v1;
+  #L206dd0.  v1:= `@@com.google.android.material.R$styleable.BaseProgressIndicator_minHideDelay` @type ^`int`;
+  #L206dd4.  call temp:= `getInt`(v0, v1, v2) @signature `Landroid/content/res/TypedArray;.getInt:(II)I` @kind virtual;
+  #L206dda.  v1:= temp;
+  #L206ddc.  v2:= 1000I;
+  #L206de0.  call temp:= `min`(v1, v2) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L206de6.  v2:= temp;
+  #L206de8.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.minHideDelay` @type ^`int` := v2;
+  #L206dec.  call `recycle`(v0) @signature `Landroid/content/res/TypedArray;.recycle:()V` @kind virtual;
+  #L206df2.  v2:= new `com.google.android.material.progressindicator.AnimatorDurationScaleProvider`;
+  #L206df6.  call `<init>`(v2) @signature `Lcom/google/android/material/progressindicator/AnimatorDurationScaleProvider;.<init>:()V` @kind direct;
+  #L206dfc.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.animatorDurationScaleProvider` @type ^`com.google.android.material.progressindicator.AnimatorDurationScaleProvider` := v2 @kind object;
+  #L206e00.  v2:= 1I;
+  #L206e02.  v8.`com.google.android.material.progressindicator.BaseProgressIndicator.isParentDoneInitializing` @type ^`boolean` := v2 @kind boolean;
+  #L206e06.  return @kind void;
+}
+procedure `void` `access$000`(`com.google.android.material.progressindicator.BaseProgressIndicator` v0 @kind object @name `x0`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.access$000:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L206e18.  call `internalShow`(v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.internalShow:()V` @kind direct;
+  #L206e1e.  return @kind void;
+}
+procedure `void` `access$100`(`com.google.android.material.progressindicator.BaseProgressIndicator` v0 @kind object @name `x0`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.access$100:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L206e30.  call `internalHide`(v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.internalHide:()V` @kind direct;
+  #L206e36.  return @kind void;
+}
+procedure `long` `access$202`(`com.google.android.material.progressindicator.BaseProgressIndicator` v0 @kind object @name `x0`, `long` v1 @name `x1`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.access$202:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;J)J` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L206d00.  v0.`com.google.android.material.progressindicator.BaseProgressIndicator.lastShowStartTime` @type ^`long` := v1 @kind wide;
+  #L206d04.  return v1 @kind wide;
+}
+procedure `int` `access$300`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.access$300:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L206c28.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.storedProgress` @type ^`int`;
+  #L206c2c.  return v0;
+}
+procedure `boolean` `access$400`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.access$400:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)Z` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L206a6c.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.storedProgressAnimated` @type ^`boolean` @kind boolean;
+  #L206a70.  return v0;
+}
+procedure `boolean` `access$500`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.access$500:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)Z` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L206a84.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.isIndeterminateModeChangeRequested` @type ^`boolean` @kind boolean;
+  #L206a88.  return v0;
+}
+procedure `int` `access$600`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind object @name `x0`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.access$600:(Lcom/google/android/material/progressindicator/BaseProgressIndicator;)I` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L206c40.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.visibilityAfterHide` @type ^`int`;
+  #L206c44.  return v0;
+}
+procedure `com.google.android.material.progressindicator.DrawingDelegate` `getCurrentDrawingDelegate`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawingDelegate:()Lcom/google/android/material/progressindicator/DrawingDelegate;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L206ba8.  call temp:= `isIndeterminate`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isIndeterminate:()Z` @kind virtual;
+  #L206bae.  v0:= temp;
+  #L206bb0.  v1:= 0I;
+  #L206bb2.  if v0 == 0 then goto L206bd6;
+  #L206bb6.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L206bbc.  v0:= temp @kind object;
+  #L206bbe.  if v0 != 0 then goto L206bc4;
+  #L206bc2.  goto L206bd4;
+  #L206bc4.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L206bca.  v0:= temp @kind object;
+  #L206bcc.  call temp:= `getDrawingDelegate`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.getDrawingDelegate:()Lcom/google/android/material/progressindicator/DrawingDelegate;` @kind virtual;
+  #L206bd2.  v1:= temp @kind object;
+  #L206bd4.  return v1 @kind object;
+  #L206bd6.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L206bdc.  v0:= temp @kind object;
+  #L206bde.  if v0 != 0 then goto L206be4;
+  #L206be2.  goto L206bf4;
+  #L206be4.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L206bea.  v0:= temp @kind object;
+  #L206bec.  call temp:= `getDrawingDelegate`(v0) @signature `Lcom/google/android/material/progressindicator/DeterminateDrawable;.getDrawingDelegate:()Lcom/google/android/material/progressindicator/DrawingDelegate;` @kind virtual;
+  #L206bf2.  v1:= temp @kind object;
+  #L206bf4.  return v1 @kind object;
+}
+procedure `void` `internalHide`(`com.google.android.material.progressindicator.BaseProgressIndicator` v3 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.internalHide:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L206ef4.  call temp:= `getCurrentDrawable`(v3) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L206efa.  v0:= temp @kind object;
+  #L206efc.  v0:= (`com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange`) v0 @kind object;
+  #L206f00.  v1:= 0I;
+  #L206f02.  v2:= 1I;
+  #L206f04.  call temp:= `setVisible`(v0, v1, v1, v2) @signature `Lcom/google/android/material/progressindicator/DrawableWithAnimatedVisibilityChange;.setVisible:(ZZZ)Z` @kind virtual;
+  #L206f0a.  call temp:= `isNoLongerNeedToBeVisible`(v3) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isNoLongerNeedToBeVisible:()Z` @kind direct;
+  #L206f10.  v0:= temp;
+  #L206f12.  if v0 == 0 then goto L206f1e;
+  #L206f16.  v0:= 4I;
+  #L206f18.  call `setVisibility`(v3, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setVisibility:(I)V` @kind virtual;
+  #L206f1e.  return @kind void;
+}
+procedure `void` `internalShow`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.internalShow:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L206f30.  v0:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.minHideDelay` @type ^`int`;
+  #L206f34.  if v0 <= 0 then goto L206f44;
+  #L206f38.  call temp:= `uptimeMillis`() @signature `Landroid/os/SystemClock;.uptimeMillis:()J` @kind static;
+  #L206f3e.  v0:= temp @kind wide;
+  #L206f40.  v2.`com.google.android.material.progressindicator.BaseProgressIndicator.lastShowStartTime` @type ^`long` := v0 @kind wide;
+  #L206f44.  v0:= 0I;
+  #L206f46.  call `setVisibility`(v2, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setVisibility:(I)V` @kind virtual;
+  #L206f4c.  return @kind void;
+}
+procedure `boolean` `isNoLongerNeedToBeVisible`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isNoLongerNeedToBeVisible:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L206af0.  call temp:= `getProgressDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L206af6.  v0:= temp @kind object;
+  #L206af8.  if v0 == 0 then goto L206b10;
+  #L206afc.  call temp:= `getProgressDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L206b02.  v0:= temp @kind object;
+  #L206b04.  call temp:= `isVisible`(v0) @signature `Lcom/google/android/material/progressindicator/DeterminateDrawable;.isVisible:()Z` @kind virtual;
+  #L206b0a.  v0:= temp;
+  #L206b0c.  if v0 != 0 then goto L206b32;
+  #L206b10.  call temp:= `getIndeterminateDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L206b16.  v0:= temp @kind object;
+  #L206b18.  if v0 == 0 then goto L206b36;
+  #L206b1c.  call temp:= `getIndeterminateDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L206b22.  v0:= temp @kind object;
+  #L206b24.  call temp:= `isVisible`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.isVisible:()Z` @kind virtual;
+  #L206b2a.  v0:= temp;
+  #L206b2c.  if v0 != 0 then goto L206b32;
+  #L206b30.  goto L206b36;
+  #L206b32.  v0:= 0I;
+  #L206b34.  goto L206b38;
+  #L206b36.  v0:= 1I;
+  #L206b38.  return v0;
+}
+procedure `void` `registerAnimationCallbacks`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.registerAnimationCallbacks:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2071c0.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L2071c6.  v0:= temp @kind object;
+  #L2071c8.  if v0 == 0 then goto L2071f2;
+  #L2071cc.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2071d2.  v0:= temp @kind object;
+  #L2071d4.  if v0 == 0 then goto L2071f2;
+  #L2071d8.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2071de.  v0:= temp @kind object;
+  #L2071e0.  call temp:= `getAnimatorDelegate`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.getAnimatorDelegate:()Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;` @kind virtual;
+  #L2071e6.  v0:= temp @kind object;
+  #L2071e8.  v1:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.switchIndeterminateModeCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` @kind object;
+  #L2071ec.  call `registerAnimatorsCompleteCallback`(v0, v1) @signature `Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;.registerAnimatorsCompleteCallback:(Landroidx/vectordrawable/graphics/drawable/Animatable2Compat$AnimationCallback;)V` @kind virtual;
+  #L2071f2.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L2071f8.  v0:= temp @kind object;
+  #L2071fa.  if v0 == 0 then goto L207210;
+  #L2071fe.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L207204.  v0:= temp @kind object;
+  #L207206.  v1:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.hideAnimationCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` @kind object;
+  #L20720a.  call `registerAnimationCallback`(v0, v1) @signature `Lcom/google/android/material/progressindicator/DeterminateDrawable;.registerAnimationCallback:(Landroidx/vectordrawable/graphics/drawable/Animatable2Compat$AnimationCallback;)V` @kind virtual;
+  #L207210.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L207216.  v0:= temp @kind object;
+  #L207218.  if v0 == 0 then goto L20722e;
+  #L20721c.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L207222.  v0:= temp @kind object;
+  #L207224.  v1:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.hideAnimationCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` @kind object;
+  #L207228.  call `registerAnimationCallback`(v0, v1) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.registerAnimationCallback:(Landroidx/vectordrawable/graphics/drawable/Animatable2Compat$AnimationCallback;)V` @kind virtual;
+  #L20722e.  return @kind void;
+}
+procedure `void` `unregisterAnimationCallbacks`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.unregisterAnimationCallbacks:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2076b0.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2076b6.  v0:= temp @kind object;
+  #L2076b8.  if v0 == 0 then goto L2076e4;
+  #L2076bc.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2076c2.  v0:= temp @kind object;
+  #L2076c4.  v1:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.hideAnimationCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` @kind object;
+  #L2076c8.  call temp:= `unregisterAnimationCallback`(v0, v1) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.unregisterAnimationCallback:(Landroidx/vectordrawable/graphics/drawable/Animatable2Compat$AnimationCallback;)Z` @kind virtual;
+  #L2076ce.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2076d4.  v0:= temp @kind object;
+  #L2076d6.  call temp:= `getAnimatorDelegate`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.getAnimatorDelegate:()Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;` @kind virtual;
+  #L2076dc.  v0:= temp @kind object;
+  #L2076de.  call `unregisterAnimatorsCompleteCallback`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;.unregisterAnimatorsCompleteCallback:()V` @kind virtual;
+  #L2076e4.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L2076ea.  v0:= temp @kind object;
+  #L2076ec.  if v0 == 0 then goto L207702;
+  #L2076f0.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L2076f6.  v0:= temp @kind object;
+  #L2076f8.  v1:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.hideAnimationCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` @kind object;
+  #L2076fc.  call temp:= `unregisterAnimationCallback`(v0, v1) @signature `Lcom/google/android/material/progressindicator/DeterminateDrawable;.unregisterAnimationCallback:(Landroidx/vectordrawable/graphics/drawable/Animatable2Compat$AnimationCallback;)Z` @kind virtual;
+  #L207702.  return @kind void;
+}
+procedure `void` `applyNewVisibility`(`com.google.android.material.progressindicator.BaseProgressIndicator` v3 @kind this, `boolean` v4 @name `animate`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.applyNewVisibility:(Z)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L206e48.  v0:= v3.`com.google.android.material.progressindicator.BaseProgressIndicator.isParentDoneInitializing` @type ^`boolean` @kind boolean;
+  #L206e4c.  if v0 != 0 then goto L206e52;
+  #L206e50.  return @kind void;
+  #L206e52.  call temp:= `getCurrentDrawable`(v3) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L206e58.  v0:= temp @kind object;
+  #L206e5a.  v0:= (`com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange`) v0 @kind object;
+  #L206e5e.  call temp:= `visibleToUser`(v3) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.visibleToUser:()Z` @kind virtual;
+  #L206e64.  v1:= temp;
+  #L206e66.  v2:= 0I;
+  #L206e68.  call temp:= `setVisible`(v0, v1, v2, v4) @signature `Lcom/google/android/material/progressindicator/DrawableWithAnimatedVisibilityChange;.setVisible:(ZZZ)Z` @kind virtual;
+  #L206e6e.  return @kind void;
+}
+procedure `com.google.android.material.progressindicator.BaseProgressIndicatorSpec` `createSpec`(`android.content.Context` v0 @kind object, `android.util.AttributeSet` v1 @kind object) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.createSpec:(Landroid/content/Context;Landroid/util/AttributeSet;)Lcom/google/android/material/progressindicator/BaseProgressIndicatorSpec;` @AccessFlag ABSTRACT {
+
+  # return;
+}
+procedure `android.graphics.drawable.Drawable` `getCurrentDrawable`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206a04.  call temp:= `isIndeterminate`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isIndeterminate:()Z` @kind virtual;
+  #L206a0a.  v0:= temp;
+  #L206a0c.  if v0 == 0 then goto L206a1a;
+  #L206a10.  call temp:= `getIndeterminateDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L206a16.  v0:= temp @kind object;
+  #L206a18.  goto L206a22;
+  #L206a1a.  call temp:= `getProgressDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L206a20.  v0:= temp @kind object;
+  #L206a22.  return v0 @kind object;
+}
+procedure `int` `getHideAnimationBehavior`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getHideAnimationBehavior:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206c58.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L206c5c.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.hideAnimationBehavior` @type ^`int`;
+  #L206c60.  return v0;
+}
+procedure `android.graphics.drawable.Drawable` `getIndeterminateDrawable`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Landroid/graphics/drawable/Drawable;` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L206a34.  call temp:= `getIndeterminateDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L206a3a.  v0:= temp @kind object;
+  #L206a3c.  return v0 @kind object;
+}
+procedure `com.google.android.material.progressindicator.IndeterminateDrawable` `getIndeterminateDrawable`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206c08.  call temp:= `getIndeterminateDrawable`(v1) @signature `Landroid/widget/ProgressBar;.getIndeterminateDrawable:()Landroid/graphics/drawable/Drawable;` @kind super;
+  #L206c0e.  v0:= temp @kind object;
+  #L206c10.  v0:= (`com.google.android.material.progressindicator.IndeterminateDrawable`) v0 @kind object;
+  #L206c14.  return v0 @kind object;
+}
+procedure `int`[] `getIndicatorColor`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndicatorColor:()[I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206ce4.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L206ce8.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.indicatorColors` @type ^`int`[] @kind object;
+  #L206cec.  return v0 @kind object;
+}
+procedure `android.graphics.drawable.Drawable` `getProgressDrawable`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Landroid/graphics/drawable/Drawable;` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+    v0;
+
+  #L206a50.  call temp:= `getProgressDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L206a56.  v0:= temp @kind object;
+  #L206a58.  return v0 @kind object;
+}
+procedure `com.google.android.material.progressindicator.DeterminateDrawable` `getProgressDrawable`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206b88.  call temp:= `getProgressDrawable`(v1) @signature `Landroid/widget/ProgressBar;.getProgressDrawable:()Landroid/graphics/drawable/Drawable;` @kind super;
+  #L206b8e.  v0:= temp @kind object;
+  #L206b90.  v0:= (`com.google.android.material.progressindicator.DeterminateDrawable`) v0 @kind object;
+  #L206b94.  return v0 @kind object;
+}
+procedure `int` `getShowAnimationBehavior`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getShowAnimationBehavior:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206c74.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L206c78.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.showAnimationBehavior` @type ^`int`;
+  #L206c7c.  return v0;
+}
+procedure `int` `getTrackColor`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getTrackColor:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206c90.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L206c94.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackColor` @type ^`int`;
+  #L206c98.  return v0;
+}
+procedure `int` `getTrackCornerRadius`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getTrackCornerRadius:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206cac.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L206cb0.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackCornerRadius` @type ^`int`;
+  #L206cb4.  return v0;
+}
+procedure `int` `getTrackThickness`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getTrackThickness:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206cc8.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L206ccc.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackThickness` @type ^`int`;
+  #L206cd0.  return v0;
+}
+procedure `void` `hide`(`com.google.android.material.progressindicator.BaseProgressIndicator` v7 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.hide:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L206e80.  call temp:= `getVisibility`(v7) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getVisibility:()I` @kind virtual;
+  #L206e86.  v0:= temp;
+  #L206e88.  if v0 == 0 then goto L206e98;
+  #L206e8c.  v0:= v7.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedShow` @type ^`java.lang.Runnable` @kind object;
+  #L206e90.  call temp:= `removeCallbacks`(v7, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.removeCallbacks:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L206e96.  return @kind void;
+  #L206e98.  v0:= v7.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedHide` @type ^`java.lang.Runnable` @kind object;
+  #L206e9c.  call temp:= `removeCallbacks`(v7, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.removeCallbacks:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L206ea2.  call temp:= `uptimeMillis`() @signature `Landroid/os/SystemClock;.uptimeMillis:()J` @kind static;
+  #L206ea8.  v0:= temp @kind wide;
+  #L206eaa.  v2:= v7.`com.google.android.material.progressindicator.BaseProgressIndicator.lastShowStartTime` @type ^`long` @kind wide;
+  #L206eae.  v0:= v0 - v2 @kind long;
+  #L206eb0.  v2:= v7.`com.google.android.material.progressindicator.BaseProgressIndicator.minHideDelay` @type ^`int`;
+  #L206eb4.  v3:= (`long`) v2 @kind i2l;
+  #L206eb6.  v3:= lcmp(v0, v3);
+  #L206eba.  if v3 < 0 then goto L206ec2;
+  #L206ebe.  v3:= 1I;
+  #L206ec0.  goto L206ec4;
+  #L206ec2.  v3:= 0I;
+  #L206ec4.  if v3 == 0 then goto L206ed4;
+  #L206ec8.  v2:= v7.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedHide` @type ^`java.lang.Runnable` @kind object;
+  #L206ecc.  call `run`(v2) @signature `Ljava/lang/Runnable;.run:()V` @kind interface;
+  #L206ed2.  return @kind void;
+  #L206ed4.  v4:= v7.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedHide` @type ^`java.lang.Runnable` @kind object;
+  #L206ed8.  v5:= (`long`) v2 @kind i2l;
+  #L206eda.  v5:= v5 - v0 @kind long;
+  #L206edc.  call temp:= `postDelayed`(v7, v4, v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.postDelayed:(Ljava/lang/Runnable;J)Z` @kind virtual;
+  #L206ee2.  return @kind void;
+}
+procedure `void` `invalidate`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.invalidate:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L206f60.  call `invalidate`(v1) @signature `Landroid/widget/ProgressBar;.invalidate:()V` @kind super;
+  #L206f66.  call temp:= `getCurrentDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L206f6c.  v0:= temp @kind object;
+  #L206f6e.  if v0 == 0 then goto L206f80;
+  #L206f72.  call temp:= `getCurrentDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L206f78.  v0:= temp @kind object;
+  #L206f7a.  call `invalidateSelf`(v0) @signature `Landroid/graphics/drawable/Drawable;.invalidateSelf:()V` @kind virtual;
+  #L206f80.  return @kind void;
+}
+procedure `boolean` `isEffectivelyVisible`(`com.google.android.material.progressindicator.BaseProgressIndicator` v5 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isEffectivelyVisible:()Z` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L206a9c.  v0:= v5 @kind object;
+  #L206a9e.  call temp:= `getVisibility`(v0) @signature `Landroid/view/View;.getVisibility:()I` @kind virtual;
+  #L206aa4.  v1:= temp;
+  #L206aa6.  v2:= 0I;
+  #L206aa8.  if v1 == 0 then goto L206aae;
+  #L206aac.  return v2;
+  #L206aae.  call temp:= `getParent`(v0) @signature `Landroid/view/View;.getParent:()Landroid/view/ViewParent;` @kind virtual;
+  #L206ab4.  v1:= temp @kind object;
+  #L206ab6.  v3:= 1I;
+  #L206ab8.  if v1 != 0 then goto L206acc;
+  #L206abc.  call temp:= `getWindowVisibility`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getWindowVisibility:()I` @kind virtual;
+  #L206ac2.  v4:= temp;
+  #L206ac4.  if v4 != 0 then goto L206aca;
+  #L206ac8.  v2:= v3;
+  #L206aca.  return v2;
+  #L206acc.  v2:= instanceof @variable v1 @type ^`android.view.View` @kind boolean;
+  #L206ad0.  if v2 != 0 then goto L206ad6;
+  #L206ad4.  return v3;
+  #L206ad6.  v0:= v1 @kind object;
+  #L206ad8.  v0:= (`android.view.View`) v0 @kind object;
+  #L206adc.  goto L206a9e;
+}
+procedure `void` `onAttachedToWindow`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.onAttachedToWindow:()V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L206f94.  call `onAttachedToWindow`(v1) @signature `Landroid/widget/ProgressBar;.onAttachedToWindow:()V` @kind super;
+  #L206f9a.  call `registerAnimationCallbacks`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.registerAnimationCallbacks:()V` @kind direct;
+  #L206fa0.  call temp:= `visibleToUser`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.visibleToUser:()Z` @kind virtual;
+  #L206fa6.  v0:= temp;
+  #L206fa8.  if v0 == 0 then goto L206fb2;
+  #L206fac.  call `internalShow`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.internalShow:()V` @kind direct;
+  #L206fb2.  return @kind void;
+}
+procedure `void` `onDetachedFromWindow`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.onDetachedFromWindow:()V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L206fc4.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedHide` @type ^`java.lang.Runnable` @kind object;
+  #L206fc8.  call temp:= `removeCallbacks`(v1, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.removeCallbacks:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L206fce.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedShow` @type ^`java.lang.Runnable` @kind object;
+  #L206fd2.  call temp:= `removeCallbacks`(v1, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.removeCallbacks:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L206fd8.  call temp:= `getCurrentDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L206fde.  v0:= temp @kind object;
+  #L206fe0.  v0:= (`com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange`) v0 @kind object;
+  #L206fe4.  call temp:= `hideNow`(v0) @signature `Lcom/google/android/material/progressindicator/DrawableWithAnimatedVisibilityChange;.hideNow:()Z` @kind virtual;
+  #L206fea.  call `unregisterAnimationCallbacks`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.unregisterAnimationCallbacks:()V` @kind direct;
+  #L206ff0.  call `onDetachedFromWindow`(v1) @signature `Landroid/widget/ProgressBar;.onDetachedFromWindow:()V` @kind super;
+  #L206ff6.  return @kind void;
+}
+procedure `void` `onDraw`(`com.google.android.material.progressindicator.BaseProgressIndicator` v5 @kind this, `android.graphics.Canvas` v6 @kind object @name `canvas`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.onDraw:(Landroid/graphics/Canvas;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L207008.  @monitorenter v5
+  #L20700a.  call temp:= `save`(v6) @signature `Landroid/graphics/Canvas;.save:()I` @kind virtual;
+  #L207010.  v0:= temp;
+  #L207012.  call temp:= `getPaddingLeft`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingLeft:()I` @kind virtual;
+  #L207018.  v1:= temp;
+  #L20701a.  if v1 != 0 then goto L20702a;
+  #L20701e.  call temp:= `getPaddingTop`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingTop:()I` @kind virtual;
+  #L207024.  v1:= temp;
+  #L207026.  if v1 == 0 then goto L207044;
+  #L20702a.  call temp:= `getPaddingLeft`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingLeft:()I` @kind virtual;
+  #L207030.  v1:= temp;
+  #L207032.  v1:= (`float`) v1 @kind i2f;
+  #L207034.  call temp:= `getPaddingTop`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingTop:()I` @kind virtual;
+  #L20703a.  v2:= temp;
+  #L20703c.  v2:= (`float`) v2 @kind i2f;
+  #L20703e.  call `translate`(v6, v1, v2) @signature `Landroid/graphics/Canvas;.translate:(FF)V` @kind virtual;
+  #L207044.  call temp:= `getPaddingRight`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingRight:()I` @kind virtual;
+  #L20704a.  v1:= temp;
+  #L20704c.  if v1 != 0 then goto L20705c;
+  #L207050.  call temp:= `getPaddingBottom`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingBottom:()I` @kind virtual;
+  #L207056.  v1:= temp;
+  #L207058.  if v1 == 0 then goto L20709c;
+  #L20705c.  call temp:= `getWidth`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getWidth:()I` @kind virtual;
+  #L207062.  v1:= temp;
+  #L207064.  call temp:= `getPaddingLeft`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingLeft:()I` @kind virtual;
+  #L20706a.  v2:= temp;
+  #L20706c.  call temp:= `getPaddingRight`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingRight:()I` @kind virtual;
+  #L207072.  v3:= temp;
+  #L207074.  v2:= v2 + v3 @kind int;
+  #L207076.  v1:= v1 - v2 @kind int;
+  #L207078.  call temp:= `getHeight`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getHeight:()I` @kind virtual;
+  #L20707e.  v2:= temp;
+  #L207080.  call temp:= `getPaddingTop`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingTop:()I` @kind virtual;
+  #L207086.  v3:= temp;
+  #L207088.  call temp:= `getPaddingBottom`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingBottom:()I` @kind virtual;
+  #L20708e.  v4:= temp;
+  #L207090.  v3:= v3 + v4 @kind int;
+  #L207092.  v2:= v2 - v3 @kind int;
+  #L207094.  v3:= 0I;
+  #L207096.  call temp:= `clipRect`(v6, v3, v3, v1, v2) @signature `Landroid/graphics/Canvas;.clipRect:(IIII)Z` @kind virtual;
+  #L20709c.  call temp:= `getCurrentDrawable`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L2070a2.  v1:= temp @kind object;
+  #L2070a4.  call `draw`(v1, v6) @signature `Landroid/graphics/drawable/Drawable;.draw:(Landroid/graphics/Canvas;)V` @kind virtual;
+  #L2070aa.  call `restoreToCount`(v6, v0) @signature `Landroid/graphics/Canvas;.restoreToCount:(I)V` @kind virtual;
+  #L2070b0.  @monitorexit v5
+  #L2070b2.  return @kind void;
+  #L2070b4.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2070b6.  @monitorexit v5
+  #L2070b8.  throw v6;
+  catch `java.lang.Throwable` @[L20700a..L2070b0] goto L2070b4;
+}
+procedure `void` `onMeasure`(`com.google.android.material.progressindicator.BaseProgressIndicator` v6 @kind this, `int` v7 @name `widthMeasureSpec`, `int` v8 @name `heightMeasureSpec`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.onMeasure:(II)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L2070d8.  @monitorenter v6
+  #L2070da.  call `onMeasure`(v6, v7, v8) @signature `Landroid/widget/ProgressBar;.onMeasure:(II)V` @kind super;
+  #L2070e0.  call temp:= `getCurrentDrawingDelegate`(v6) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawingDelegate:()Lcom/google/android/material/progressindicator/DrawingDelegate;` @kind direct;
+  #L2070e6.  v0:= temp @kind object;
+  #L2070e8.  if v0 != 0 then goto L2070f0;
+  #L2070ec.  @monitorexit v6
+  #L2070ee.  return @kind void;
+  #L2070f0.  call temp:= `getPreferredWidth`(v0) @signature `Lcom/google/android/material/progressindicator/DrawingDelegate;.getPreferredWidth:()I` @kind virtual;
+  #L2070f6.  v1:= temp;
+  #L2070f8.  call temp:= `getPreferredHeight`(v0) @signature `Lcom/google/android/material/progressindicator/DrawingDelegate;.getPreferredHeight:()I` @kind virtual;
+  #L2070fe.  v2:= temp;
+  #L207100.  if v1 >= 0 then goto L20710e;
+  #L207104.  call temp:= `getMeasuredWidth`(v6) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getMeasuredWidth:()I` @kind virtual;
+  #L20710a.  v3:= temp;
+  #L20710c.  goto L207122;
+  #L20710e.  call temp:= `getPaddingLeft`(v6) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingLeft:()I` @kind virtual;
+  #L207114.  v3:= temp;
+  #L207116.  v3:= v3 + v1 @kind int;
+  #L207118.  call temp:= `getPaddingRight`(v6) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingRight:()I` @kind virtual;
+  #L20711e.  v4:= temp;
+  #L207120.  v3:= v3 + v4 @kind int;
+  #L207122.  if v2 >= 0 then goto L207130;
+  #L207126.  call temp:= `getMeasuredHeight`(v6) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getMeasuredHeight:()I` @kind virtual;
+  #L20712c.  v4:= temp;
+  #L20712e.  goto L207144;
+  #L207130.  call temp:= `getPaddingTop`(v6) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingTop:()I` @kind virtual;
+  #L207136.  v4:= temp;
+  #L207138.  v4:= v4 + v2 @kind int;
+  #L20713a.  call temp:= `getPaddingBottom`(v6) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getPaddingBottom:()I` @kind virtual;
+  #L207140.  v5:= temp;
+  #L207142.  v4:= v4 + v5 @kind int;
+  #L207144.  call `setMeasuredDimension`(v6, v3, v4) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setMeasuredDimension:(II)V` @kind virtual;
+  #L20714a.  @monitorexit v6
+  #L20714c.  return @kind void;
+  #L20714e.  v7:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L207150.  @monitorexit v6
+  #L207152.  throw v7;
+  catch `java.lang.Throwable` @[L2070da..L2070e8] goto L20714e;
+  catch `java.lang.Throwable` @[L2070f0..L20714a] goto L20714e;
+}
+procedure `void` `onVisibilityChanged`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `android.view.View` v2 @kind object @name `changedView`, `int` v3 @name `visibility`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.onVisibilityChanged:(Landroid/view/View;I)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L207178.  call `onVisibilityChanged`(v1, v2, v3) @signature `Landroid/widget/ProgressBar;.onVisibilityChanged:(Landroid/view/View;I)V` @kind super;
+  #L20717e.  if v3 != 0 then goto L207186;
+  #L207182.  v0:= 1I;
+  #L207184.  goto L207188;
+  #L207186.  v0:= 0I;
+  #L207188.  call `applyNewVisibility`(v1, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.applyNewVisibility:(Z)V` @kind virtual;
+  #L20718e.  return @kind void;
+}
+procedure `void` `onWindowVisibilityChanged`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `int` v2 @name `visibility`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.onWindowVisibilityChanged:(I)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L2071a0.  call `onWindowVisibilityChanged`(v1, v2) @signature `Landroid/widget/ProgressBar;.onWindowVisibilityChanged:(I)V` @kind super;
+  #L2071a6.  v0:= 0I;
+  #L2071a8.  call `applyNewVisibility`(v1, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.applyNewVisibility:(Z)V` @kind virtual;
+  #L2071ae.  return @kind void;
+}
+procedure `void` `setAnimatorDurationScaleProvider`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `com.google.android.material.progressindicator.AnimatorDurationScaleProvider` v2 @kind object @name `animatorDurationScaleProvider`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setAnimatorDurationScaleProvider:(Lcom/google/android/material/progressindicator/AnimatorDurationScaleProvider;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L207240.  v1.`com.google.android.material.progressindicator.BaseProgressIndicator.animatorDurationScaleProvider` @type ^`com.google.android.material.progressindicator.AnimatorDurationScaleProvider` := v2 @kind object;
+  #L207244.  call temp:= `getProgressDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L20724a.  v0:= temp @kind object;
+  #L20724c.  if v0 == 0 then goto L20725c;
+  #L207250.  call temp:= `getProgressDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L207256.  v0:= temp @kind object;
+  #L207258.  v0.`com.google.android.material.progressindicator.DeterminateDrawable.animatorDurationScaleProvider` @type ^`com.google.android.material.progressindicator.AnimatorDurationScaleProvider` := v2 @kind object;
+  #L20725c.  call temp:= `getIndeterminateDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L207262.  v0:= temp @kind object;
+  #L207264.  if v0 == 0 then goto L207274;
+  #L207268.  call temp:= `getIndeterminateDrawable`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L20726e.  v0:= temp @kind object;
+  #L207270.  v0.`com.google.android.material.progressindicator.IndeterminateDrawable.animatorDurationScaleProvider` @type ^`com.google.android.material.progressindicator.AnimatorDurationScaleProvider` := v2 @kind object;
+  #L207274.  return @kind void;
+}
+procedure `void` `setHideAnimationBehavior`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `int` v2 @name `hideAnimationBehavior`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setHideAnimationBehavior:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L207288.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L20728c.  v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.hideAnimationBehavior` @type ^`int` := v2;
+  #L207290.  call `invalidate`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.invalidate:()V` @kind virtual;
+  #L207296.  return @kind void;
+}
+procedure `void` `setIndeterminate`(`com.google.android.material.progressindicator.BaseProgressIndicator` v4 @kind this, `boolean` v5 @name `indeterminate`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setIndeterminate:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2072a8.  @monitorenter v4
+  #L2072aa.  call temp:= `isIndeterminate`(v4) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isIndeterminate:()Z` @kind virtual;
+  #L2072b0.  v0:= temp;
+  #L2072b2.  if v5 != v0 then goto L2072ba;
+  #L2072b6.  @monitorexit v4
+  #L2072b8.  return @kind void;
+  #L2072ba.  call temp:= `visibleToUser`(v4) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.visibleToUser:()Z` @kind virtual;
+  #L2072c0.  v0:= temp;
+  #L2072c2.  if v0 == 0 then goto L2072dc;
+  #L2072c6.  if v5 != 0 then goto L2072cc;
+  #L2072ca.  goto L2072dc;
+  #L2072cc.  v0:= new `java.lang.IllegalStateException`;
+  #L2072d0.  v1:= "Cannot switch to indeterminate mode while the progress indicator is visible." @kind object;
+  #L2072d4.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2072da.  throw v0;
+  #L2072dc.  
+  #L2072de.  call temp:= `getCurrentDrawable`(v4) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L2072e4.  v0:= temp @kind object;
+  #L2072e6.  v0:= (`com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange`) v0 @kind object;
+  #L2072ea.  if v0 == 0 then goto L2072f4;
+  #L2072ee.  call temp:= `hideNow`(v0) @signature `Lcom/google/android/material/progressindicator/DrawableWithAnimatedVisibilityChange;.hideNow:()Z` @kind virtual;
+  #L2072f4.  call `setIndeterminate`(v4, v5) @signature `Landroid/widget/ProgressBar;.setIndeterminate:(Z)V` @kind super;
+  #L2072fa.  
+  #L2072fc.  call temp:= `getCurrentDrawable`(v4) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getCurrentDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L207302.  v1:= temp @kind object;
+  #L207304.  v1:= (`com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange`) v1 @kind object;
+  #L207308.  v2:= 0I;
+  #L20730a.  if v1 == 0 then goto L20731c;
+  #L20730e.  call temp:= `visibleToUser`(v4) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.visibleToUser:()Z` @kind virtual;
+  #L207314.  v3:= temp;
+  #L207316.  call temp:= `setVisible`(v1, v3, v2, v2) @signature `Lcom/google/android/material/progressindicator/DrawableWithAnimatedVisibilityChange;.setVisible:(ZZZ)Z` @kind virtual;
+  #L20731c.  v4.`com.google.android.material.progressindicator.BaseProgressIndicator.isIndeterminateModeChangeRequested` @type ^`boolean` := v2 @kind boolean;
+  #L207320.  @monitorexit v4
+  #L207322.  return @kind void;
+  #L207324.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L207326.  @monitorexit v4
+  #L207328.  throw v5;
+  catch `java.lang.Throwable` @[L2072aa..L2072b2] goto L207324;
+  catch `java.lang.Throwable` @[L2072ba..L207320] goto L207324;
+}
+procedure `void` `setIndeterminateDrawable`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this, `android.graphics.drawable.Drawable` v3 @kind object @name `drawable`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setIndeterminateDrawable:(Landroid/graphics/drawable/Drawable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L207350.  if v3 != 0 then goto L20735e;
+  #L207354.  v0:= 0I;
+  #L207356.  call `setIndeterminateDrawable`(v2, v0) @signature `Landroid/widget/ProgressBar;.setIndeterminateDrawable:(Landroid/graphics/drawable/Drawable;)V` @kind super;
+  #L20735c.  return @kind void;
+  #L20735e.  v0:= instanceof @variable v3 @type ^`com.google.android.material.progressindicator.IndeterminateDrawable` @kind boolean;
+  #L207362.  if v0 == 0 then goto L20737a;
+  #L207366.  v0:= v3 @kind object;
+  #L207368.  v0:= (`com.google.android.material.progressindicator.DrawableWithAnimatedVisibilityChange`) v0 @kind object;
+  #L20736c.  call temp:= `hideNow`(v0) @signature `Lcom/google/android/material/progressindicator/DrawableWithAnimatedVisibilityChange;.hideNow:()Z` @kind virtual;
+  #L207372.  call `setIndeterminateDrawable`(v2, v3) @signature `Landroid/widget/ProgressBar;.setIndeterminateDrawable:(Landroid/graphics/drawable/Drawable;)V` @kind super;
+  #L207378.  return @kind void;
+  #L20737a.  v0:= new `java.lang.IllegalArgumentException`;
+  #L20737e.  v1:= "Cannot set framework drawable as indeterminate drawable." @kind object;
+  #L207382.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L207388.  throw v0;
+}
+procedure `void` `setIndicatorColor`(`com.google.android.material.progressindicator.BaseProgressIndicator` v5 @kind this, `int`[] v6 @kind object @name `indicatorColors`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setIndicatorColor:([I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L20739c.  v0:= length @variable v6;
+  #L20739e.  if v0 != 0 then goto L2073c6;
+  #L2073a2.  v0:= 1I;
+  #L2073a4.  v0:= new `int`[v0];
+  #L2073a8.  v1:= 0I;
+  #L2073aa.  call temp:= `getContext`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L2073b0.  v2:= temp @kind object;
+  #L2073b2.  v3:= `@@com.google.android.material.R$attr.colorPrimary` @type ^`int`;
+  #L2073b6.  v4:= -1I;
+  #L2073b8.  call temp:= `getColor`(v2, v3, v4) @signature `Lcom/google/android/material/color/MaterialColors;.getColor:(Landroid/content/Context;II)I` @kind static;
+  #L2073be.  v2:= temp;
+  #L2073c0.  v0[v1]:= v2;
+  #L2073c4.  v6:= v0 @kind object;
+  #L2073c6.  call temp:= `getIndicatorColor`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndicatorColor:()[I` @kind virtual;
+  #L2073cc.  v0:= temp @kind object;
+  #L2073ce.  call temp:= `equals`(v0, v6) @signature `Ljava/util/Arrays;.equals:([I[I)Z` @kind static;
+  #L2073d4.  v0:= temp;
+  #L2073d6.  if v0 != 0 then goto L2073fe;
+  #L2073da.  v0:= v5.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L2073de.  v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.indicatorColors` @type ^`int`[] := v6 @kind object;
+  #L2073e2.  call temp:= `getIndeterminateDrawable`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2073e8.  v0:= temp @kind object;
+  #L2073ea.  call temp:= `getAnimatorDelegate`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.getAnimatorDelegate:()Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;` @kind virtual;
+  #L2073f0.  v0:= temp @kind object;
+  #L2073f2.  call `invalidateSpecValues`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;.invalidateSpecValues:()V` @kind virtual;
+  #L2073f8.  call `invalidate`(v5) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.invalidate:()V` @kind virtual;
+  #L2073fe.  return @kind void;
+}
+procedure `void` `setProgress`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `int` v2 @name `progress`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setProgress:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L207410.  @monitorenter v1
+  #L207412.  call temp:= `isIndeterminate`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isIndeterminate:()Z` @kind virtual;
+  #L207418.  v0:= temp;
+  #L20741a.  if v0 == 0 then goto L207422;
+  #L20741e.  @monitorexit v1
+  #L207420.  return @kind void;
+  #L207422.  v0:= 0I;
+  #L207424.  call `setProgressCompat`(v1, v2, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setProgressCompat:(IZ)V` @kind virtual;
+  #L20742a.  @monitorexit v1
+  #L20742c.  return @kind void;
+  #L20742e.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L207430.  @monitorexit v1
+  #L207432.  throw v2;
+  catch `java.lang.Throwable` @[L207412..L20741a] goto L20742e;
+  catch `java.lang.Throwable` @[L207424..L20742a] goto L20742e;
+}
+procedure `void` `setProgressCompat`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this, `int` v3 @name `progress`, `boolean` v4 @name `animated`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setProgressCompat:(IZ)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L207458.  call temp:= `isIndeterminate`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isIndeterminate:()Z` @kind virtual;
+  #L20745e.  v0:= temp;
+  #L207460.  if v0 == 0 then goto L2074e6;
+  #L207464.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L20746a.  v0:= temp @kind object;
+  #L20746c.  if v0 == 0 then goto L20750a;
+  #L207470.  v2.`com.google.android.material.progressindicator.BaseProgressIndicator.storedProgress` @type ^`int` := v3;
+  #L207474.  v2.`com.google.android.material.progressindicator.BaseProgressIndicator.storedProgressAnimated` @type ^`boolean` := v4 @kind boolean;
+  #L207478.  v0:= 1I;
+  #L20747a.  v2.`com.google.android.material.progressindicator.BaseProgressIndicator.isIndeterminateModeChangeRequested` @type ^`boolean` := v0 @kind boolean;
+  #L20747e.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L207484.  v0:= temp @kind object;
+  #L207486.  call temp:= `isVisible`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.isVisible:()Z` @kind virtual;
+  #L20748c.  v0:= temp;
+  #L20748e.  if v0 == 0 then goto L2074d2;
+  #L207492.  v0:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.animatorDurationScaleProvider` @type ^`com.google.android.material.progressindicator.AnimatorDurationScaleProvider` @kind object;
+  #L207496.  call temp:= `getContext`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L20749c.  v1:= temp @kind object;
+  #L20749e.  call temp:= `getContentResolver`(v1) @signature `Landroid/content/Context;.getContentResolver:()Landroid/content/ContentResolver;` @kind virtual;
+  #L2074a4.  v1:= temp @kind object;
+  #L2074a6.  call temp:= `getSystemAnimatorDurationScale`(v0, v1) @signature `Lcom/google/android/material/progressindicator/AnimatorDurationScaleProvider;.getSystemAnimatorDurationScale:(Landroid/content/ContentResolver;)F` @kind virtual;
+  #L2074ac.  v0:= temp;
+  #L2074ae.  v1:= 0I;
+  #L2074b0.  v0:= fcmpl(v0, v1);
+  #L2074b4.  if v0 != 0 then goto L2074ba;
+  #L2074b8.  goto L2074d2;
+  #L2074ba.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2074c0.  v0:= temp @kind object;
+  #L2074c2.  call temp:= `getAnimatorDelegate`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateDrawable;.getAnimatorDelegate:()Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;` @kind virtual;
+  #L2074c8.  v0:= temp @kind object;
+  #L2074ca.  call `requestCancelAnimatorAfterCurrentCycle`(v0) @signature `Lcom/google/android/material/progressindicator/IndeterminateAnimatorDelegate;.requestCancelAnimatorAfterCurrentCycle:()V` @kind virtual;
+  #L2074d0.  goto L20750a;
+  #L2074d2.  v0:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.switchIndeterminateModeCallback` @type ^`androidx.vectordrawable.graphics.drawable.Animatable2Compat$AnimationCallback` @kind object;
+  #L2074d6.  call temp:= `getIndeterminateDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getIndeterminateDrawable:()Lcom/google/android/material/progressindicator/IndeterminateDrawable;` @kind virtual;
+  #L2074dc.  v1:= temp @kind object;
+  #L2074de.  call `onAnimationEnd`(v0, v1) @signature `Landroidx/vectordrawable/graphics/drawable/Animatable2Compat$AnimationCallback;.onAnimationEnd:(Landroid/graphics/drawable/Drawable;)V` @kind virtual;
+  #L2074e4.  goto L20750a;
+  #L2074e6.  call `setProgress`(v2, v3) @signature `Landroid/widget/ProgressBar;.setProgress:(I)V` @kind super;
+  #L2074ec.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L2074f2.  v0:= temp @kind object;
+  #L2074f4.  if v0 == 0 then goto L20750a;
+  #L2074f8.  if v4 != 0 then goto L20750a;
+  #L2074fc.  call temp:= `getProgressDrawable`(v2) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgressDrawable:()Lcom/google/android/material/progressindicator/DeterminateDrawable;` @kind virtual;
+  #L207502.  v0:= temp @kind object;
+  #L207504.  call `jumpToCurrentState`(v0) @signature `Lcom/google/android/material/progressindicator/DeterminateDrawable;.jumpToCurrentState:()V` @kind virtual;
+  #L20750a.  return @kind void;
+}
+procedure `void` `setProgressDrawable`(`com.google.android.material.progressindicator.BaseProgressIndicator` v3 @kind this, `android.graphics.drawable.Drawable` v4 @kind object @name `drawable`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setProgressDrawable:(Landroid/graphics/drawable/Drawable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L20751c.  if v4 != 0 then goto L20752a;
+  #L207520.  v0:= 0I;
+  #L207522.  call `setProgressDrawable`(v3, v0) @signature `Landroid/widget/ProgressBar;.setProgressDrawable:(Landroid/graphics/drawable/Drawable;)V` @kind super;
+  #L207528.  return @kind void;
+  #L20752a.  v0:= instanceof @variable v4 @type ^`com.google.android.material.progressindicator.DeterminateDrawable` @kind boolean;
+  #L20752e.  if v0 == 0 then goto L207564;
+  #L207532.  v0:= v4 @kind object;
+  #L207534.  v0:= (`com.google.android.material.progressindicator.DeterminateDrawable`) v0 @kind object;
+  #L207538.  call temp:= `hideNow`(v0) @signature `Lcom/google/android/material/progressindicator/DeterminateDrawable;.hideNow:()Z` @kind virtual;
+  #L20753e.  call `setProgressDrawable`(v3, v0) @signature `Landroid/widget/ProgressBar;.setProgressDrawable:(Landroid/graphics/drawable/Drawable;)V` @kind super;
+  #L207544.  call temp:= `getProgress`(v3) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getProgress:()I` @kind virtual;
+  #L20754a.  v1:= temp;
+  #L20754c.  v1:= (`float`) v1 @kind i2f;
+  #L20754e.  call temp:= `getMax`(v3) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getMax:()I` @kind virtual;
+  #L207554.  v2:= temp;
+  #L207556.  v2:= (`float`) v2 @kind i2f;
+  #L207558.  v1:= v1 / v2 @kind float;
+  #L20755a.  call `setLevelByFraction`(v0, v1) @signature `Lcom/google/android/material/progressindicator/DeterminateDrawable;.setLevelByFraction:(F)V` @kind virtual;
+  #L207560.  
+  #L207562.  return @kind void;
+  #L207564.  v0:= new `java.lang.IllegalArgumentException`;
+  #L207568.  v1:= "Cannot set framework drawable as progress drawable." @kind object;
+  #L20756c.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L207572.  throw v0;
+}
+procedure `void` `setShowAnimationBehavior`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `int` v2 @name `showAnimationBehavior`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setShowAnimationBehavior:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L207584.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L207588.  v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.showAnimationBehavior` @type ^`int` := v2;
+  #L20758c.  call `invalidate`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.invalidate:()V` @kind virtual;
+  #L207592.  return @kind void;
+}
+procedure `void` `setTrackColor`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `int` v2 @name `trackColor`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setTrackColor:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2075a4.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L2075a8.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackColor` @type ^`int`;
+  #L2075ac.  if v0 == v2 then goto L2075be;
+  #L2075b0.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L2075b4.  v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackColor` @type ^`int` := v2;
+  #L2075b8.  call `invalidate`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.invalidate:()V` @kind virtual;
+  #L2075be.  return @kind void;
+}
+procedure `void` `setTrackCornerRadius`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this, `int` v3 @name `trackCornerRadius`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setTrackCornerRadius:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2075d0.  v0:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L2075d4.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackCornerRadius` @type ^`int`;
+  #L2075d8.  if v0 == v3 then goto L2075f4;
+  #L2075dc.  v0:= v2.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L2075e0.  v1:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackThickness` @type ^`int`;
+  #L2075e4.  v1:= v1 / 2;
+  #L2075e8.  call temp:= `min`(v3, v1) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L2075ee.  v1:= temp;
+  #L2075f0.  v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackCornerRadius` @type ^`int` := v1;
+  #L2075f4.  return @kind void;
+}
+procedure `void` `setTrackThickness`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this, `int` v2 @name `trackThickness`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setTrackThickness:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L207608.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L20760c.  v0:= v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackThickness` @type ^`int`;
+  #L207610.  if v0 == v2 then goto L207622;
+  #L207614.  v0:= v1.`com.google.android.material.progressindicator.BaseProgressIndicator.spec` @type ^`com.google.android.material.progressindicator.BaseProgressIndicatorSpec` @kind object;
+  #L207618.  v0.`com.google.android.material.progressindicator.BaseProgressIndicatorSpec.trackThickness` @type ^`int` := v2;
+  #L20761c.  call `requestLayout`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.requestLayout:()V` @kind virtual;
+  #L207622.  return @kind void;
+}
+procedure `void` `setVisibilityAfterHide`(`com.google.android.material.progressindicator.BaseProgressIndicator` v2 @kind this, `int` v3 @name `visibility`) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.setVisibilityAfterHide:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L207634.  if v3 == 0 then goto L207658;
+  #L207638.  v0:= 4I;
+  #L20763a.  if v3 == v0 then goto L207658;
+  #L20763e.  v0:= 8I;
+  #L207642.  if v3 != v0 then goto L207648;
+  #L207646.  goto L207658;
+  #L207648.  v0:= new `java.lang.IllegalArgumentException`;
+  #L20764c.  v1:= "The component's visibility must be one of VISIBLE, INVISIBLE, and GONE defined in View." @kind object;
+  #L207650.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L207656.  throw v0;
+  #L207658.  v2.`com.google.android.material.progressindicator.BaseProgressIndicator.visibilityAfterHide` @type ^`int` := v3;
+  #L20765c.  return @kind void;
+}
+procedure `void` `show`(`com.google.android.material.progressindicator.BaseProgressIndicator` v3 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.show:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L207670.  v0:= v3.`com.google.android.material.progressindicator.BaseProgressIndicator.showDelay` @type ^`int`;
+  #L207674.  if v0 <= 0 then goto L207694;
+  #L207678.  v0:= v3.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedShow` @type ^`java.lang.Runnable` @kind object;
+  #L20767c.  call temp:= `removeCallbacks`(v3, v0) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.removeCallbacks:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L207682.  v0:= v3.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedShow` @type ^`java.lang.Runnable` @kind object;
+  #L207686.  v1:= v3.`com.google.android.material.progressindicator.BaseProgressIndicator.showDelay` @type ^`int`;
+  #L20768a.  v1:= (`long`) v1 @kind i2l;
+  #L20768c.  call temp:= `postDelayed`(v3, v0, v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.postDelayed:(Ljava/lang/Runnable;J)Z` @kind virtual;
+  #L207692.  goto L20769e;
+  #L207694.  v0:= v3.`com.google.android.material.progressindicator.BaseProgressIndicator.delayedShow` @type ^`java.lang.Runnable` @kind object;
+  #L207698.  call `run`(v0) @signature `Ljava/lang/Runnable;.run:()V` @kind interface;
+  #L20769e.  return @kind void;
+}
+procedure `boolean` `visibleToUser`(`com.google.android.material.progressindicator.BaseProgressIndicator` v1 @kind this) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.visibleToUser:()Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L206b4c.  call temp:= `isAttachedToWindow`(v1) @signature `Landroidx/core/view/ViewCompat;.isAttachedToWindow:(Landroid/view/View;)Z` @kind static;
+  #L206b52.  v0:= temp;
+  #L206b54.  if v0 == 0 then goto L206b74;
+  #L206b58.  call temp:= `getWindowVisibility`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.getWindowVisibility:()I` @kind virtual;
+  #L206b5e.  v0:= temp;
+  #L206b60.  if v0 != 0 then goto L206b74;
+  #L206b64.  call temp:= `isEffectivelyVisible`(v1) @signature `Lcom/google/android/material/progressindicator/BaseProgressIndicator;.isEffectivelyVisible:()Z` @kind virtual;
+  #L206b6a.  v0:= temp;
+  #L206b6c.  if v0 == 0 then goto L206b74;
+  #L206b70.  v0:= 1I;
+  #L206b72.  goto L206b76;
+  #L206b74.  v0:= 0I;
+  #L206b76.  return v0;
+}

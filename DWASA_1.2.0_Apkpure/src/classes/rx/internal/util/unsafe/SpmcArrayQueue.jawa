@@ -1,0 +1,165 @@
+record `rx.internal.util.unsafe.SpmcArrayQueue` @kind class @AccessFlag PUBLIC_FINAL extends `rx.internal.util.unsafe.SpmcArrayQueueL3Pad` @kind class {
+}
+procedure `void` `<init>`(`rx.internal.util.unsafe.SpmcArrayQueue` v0 @kind this, `int` v1 ) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4ba438.  call `<init>`(v0, v1) @signature `Lrx/internal/util/unsafe/SpmcArrayQueueL3Pad;.<init>:(I)V` @kind direct;
+  #L4ba43e.  return @kind void;
+}
+procedure `boolean` `isEmpty`(`rx.internal.util.unsafe.SpmcArrayQueue` v5 @kind this) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.isEmpty:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4ba27c.  call temp:= `lvConsumerIndex`(v5) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvConsumerIndex:()J` @kind virtual;
+  #L4ba282.  v0:= temp @kind wide;
+  #L4ba284.  call temp:= `lvProducerIndex`(v5) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvProducerIndex:()J` @kind virtual;
+  #L4ba28a.  v2:= temp @kind wide;
+  #L4ba28c.  v4:= lcmp(v0, v2);
+  #L4ba290.  if v4 != 0 then goto L4ba298;
+  #L4ba294.  v0:= 1I;
+  #L4ba296.  goto L4ba29a;
+  #L4ba298.  v0:= 0I;
+  #L4ba29a.  return v0;
+}
+procedure `boolean` `offer`(`rx.internal.util.unsafe.SpmcArrayQueue` v10 @kind this, `java.lang.Object` v11 @kind object) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.offer:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L4ba2ac.  if v11 == 0 then goto L4ba310;
+  #L4ba2b0.  v0:= v10.`rx.internal.util.unsafe.SpmcArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4ba2b4.  v1:= v10.`rx.internal.util.unsafe.SpmcArrayQueue.mask` @type ^`long` @kind wide;
+  #L4ba2b8.  call temp:= `lvProducerIndex`(v10) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvProducerIndex:()J` @kind virtual;
+  #L4ba2be.  v3:= temp @kind wide;
+  #L4ba2c0.  call temp:= `calcElementOffset`(v10, v3) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.calcElementOffset:(J)J` @kind virtual;
+  #L4ba2c6.  v5:= temp @kind wide;
+  #L4ba2c8.  call temp:= `lvElement`(v10, v0, v5) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4ba2ce.  v7:= temp @kind object;
+  #L4ba2d0.  if v7 == 0 then goto L4ba2fa;
+  #L4ba2d4.  call temp:= `lvConsumerIndex`(v10) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvConsumerIndex:()J` @kind virtual;
+  #L4ba2da.  v7:= temp @kind wide;
+  #L4ba2dc.  v7:= v3 - v7 @kind long;
+  #L4ba2e0.  v9:= lcmp(v7, v1);
+  #L4ba2e4.  if v9 <= 0 then goto L4ba2ec;
+  #L4ba2e8.  v11:= 0I;
+  #L4ba2ea.  return v11;
+  #L4ba2ec.  call temp:= `lvElement`(v10, v0, v5) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4ba2f2.  v1:= temp @kind object;
+  #L4ba2f4.  if v1 == 0 then goto L4ba2fa;
+  #L4ba2f8.  goto L4ba2ec;
+  #L4ba2fa.  call `spElement`(v10, v0, v5, v11) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.spElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4ba300.  v0:= 1L;
+  #L4ba304.  v3:= v3 + v0 @kind long;
+  #L4ba306.  call `soTail`(v10, v3) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.soTail:(J)V` @kind virtual;
+  #L4ba30c.  v11:= 1I;
+  #L4ba30e.  return v11;
+  #L4ba310.  v11:= new `java.lang.NullPointerException`;
+  #L4ba314.  v0:= "Null is not a valid element" @kind object;
+  #L4ba318.  call `<init>`(v11, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4ba31e.  goto L4ba322;
+  #L4ba320.  throw v11;
+  #L4ba322.  goto L4ba320;
+}
+procedure `java.lang.Object` `peek`(`rx.internal.util.unsafe.SpmcArrayQueue` v7 @kind this) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.peek:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4ba370.  call temp:= `lvProducerIndexCache`(v7) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvProducerIndexCache:()J` @kind virtual;
+  #L4ba376.  v0:= temp @kind wide;
+  #L4ba378.  call temp:= `lvConsumerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvConsumerIndex:()J` @kind virtual;
+  #L4ba37e.  v2:= temp @kind wide;
+  #L4ba380.  v4:= lcmp(v2, v0);
+  #L4ba384.  if v4 < 0 then goto L4ba3a2;
+  #L4ba388.  call temp:= `lvProducerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvProducerIndex:()J` @kind virtual;
+  #L4ba38e.  v4:= temp @kind wide;
+  #L4ba390.  v6:= lcmp(v2, v4);
+  #L4ba394.  if v6 < 0 then goto L4ba39c;
+  #L4ba398.  v0:= 0I;
+  #L4ba39a.  return v0 @kind object;
+  #L4ba39c.  call `svProducerIndexCache`(v7, v4) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.svProducerIndexCache:(J)V` @kind virtual;
+  #L4ba3a2.  call temp:= `calcElementOffset`(v7, v2) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.calcElementOffset:(J)J` @kind virtual;
+  #L4ba3a8.  v2:= temp @kind wide;
+  #L4ba3aa.  call temp:= `lvElement`(v7, v2) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvElement:(J)Ljava/lang/Object;` @kind virtual;
+  #L4ba3b0.  v2:= temp @kind object;
+  #L4ba3b2.  if v2 == 0 then goto L4ba378;
+  #L4ba3b6.  return v2 @kind object;
+}
+procedure `java.lang.Object` `poll`(`rx.internal.util.unsafe.SpmcArrayQueue` v8 @kind this) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.poll:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4ba3c8.  call temp:= `lvProducerIndexCache`(v8) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvProducerIndexCache:()J` @kind virtual;
+  #L4ba3ce.  v0:= temp @kind wide;
+  #L4ba3d0.  call temp:= `lvConsumerIndex`(v8) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvConsumerIndex:()J` @kind virtual;
+  #L4ba3d6.  v2:= temp @kind wide;
+  #L4ba3d8.  v4:= 0I;
+  #L4ba3da.  v5:= lcmp(v2, v0);
+  #L4ba3de.  if v5 < 0 then goto L4ba3fa;
+  #L4ba3e2.  call temp:= `lvProducerIndex`(v8) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvProducerIndex:()J` @kind virtual;
+  #L4ba3e8.  v5:= temp @kind wide;
+  #L4ba3ea.  v7:= lcmp(v2, v5);
+  #L4ba3ee.  if v7 < 0 then goto L4ba3f4;
+  #L4ba3f2.  return v4 @kind object;
+  #L4ba3f4.  call `svProducerIndexCache`(v8, v5) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.svProducerIndexCache:(J)V` @kind virtual;
+  #L4ba3fa.  v5:= 1L;
+  #L4ba3fe.  v5:= v5 + v2 @kind long;
+  #L4ba400.  call temp:= `casHead`(v8, v2, v5) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.casHead:(JJ)Z` @kind virtual;
+  #L4ba406.  v5:= temp;
+  #L4ba408.  if v5 == 0 then goto L4ba3d0;
+  #L4ba40c.  call temp:= `calcElementOffset`(v8, v2) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.calcElementOffset:(J)J` @kind virtual;
+  #L4ba412.  v0:= temp @kind wide;
+  #L4ba414.  v2:= v8.`rx.internal.util.unsafe.SpmcArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4ba418.  call temp:= `lpElement`(v8, v2, v0) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lpElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4ba41e.  v3:= temp @kind object;
+  #L4ba420.  call `soElement`(v8, v2, v0, v4) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.soElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4ba426.  return v3 @kind object;
+}
+procedure `int` `size`(`rx.internal.util.unsafe.SpmcArrayQueue` v7 @kind this) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.size:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4ba334.  call temp:= `lvConsumerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvConsumerIndex:()J` @kind virtual;
+  #L4ba33a.  v0:= temp @kind wide;
+  #L4ba33c.  call temp:= `lvProducerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvProducerIndex:()J` @kind virtual;
+  #L4ba342.  v2:= temp @kind wide;
+  #L4ba344.  call temp:= `lvConsumerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpmcArrayQueue;.lvConsumerIndex:()J` @kind virtual;
+  #L4ba34a.  v4:= temp @kind wide;
+  #L4ba34c.  v6:= lcmp(v0, v4);
+  #L4ba350.  if v6 != 0 then goto L4ba35a;
+  #L4ba354.  v2:= v2 - v4 @kind long;
+  #L4ba356.  v0:= (`int`) v2 @kind l2i;
+  #L4ba358.  return v0;
+  #L4ba35a.  v0:= v4 @kind wide;
+  #L4ba35c.  goto L4ba33c;
+}

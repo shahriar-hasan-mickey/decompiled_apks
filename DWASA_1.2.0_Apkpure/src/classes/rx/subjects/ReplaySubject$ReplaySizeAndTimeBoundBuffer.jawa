@@ -1,0 +1,351 @@
+record `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` @kind class @AccessFlag FINAL extends `rx.subjects.ReplaySubject$ReplayBuffer` @kind interface {
+  `boolean` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.done` @AccessFlag VOLATILE;
+  `java.lang.Throwable` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.error` @AccessFlag ;
+  `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.head` @AccessFlag VOLATILE;
+  `int` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.limit` @AccessFlag FINAL;
+  `long` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.maxAgeMillis` @AccessFlag FINAL;
+  `rx.Scheduler` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.scheduler` @AccessFlag FINAL;
+  `int` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.size` @AccessFlag ;
+  `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.tail` @AccessFlag ;
+}
+procedure `void` `<init>`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v3 @kind this, `int` v4 , `long` v5 , `rx.Scheduler` v7 @kind object) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.<init>:(IJLrx/Scheduler;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c3f48.  call `<init>`(v3) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4c3f4e.  v3.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.limit` @type ^`int` := v4;
+  #L4c3f52.  v4:= new `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`;
+  #L4c3f56.  v0:= 0I;
+  #L4c3f58.  v1:= 0L;
+  #L4c3f5c.  call `<init>`(v4, v0, v1) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.<init>:(Ljava/lang/Object;J)V` @kind direct;
+  #L4c3f62.  v3.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.tail` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` := v4 @kind object;
+  #L4c3f66.  v3.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.head` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` := v4 @kind object;
+  #L4c3f6a.  v3.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.maxAgeMillis` @type ^`long` := v5 @kind wide;
+  #L4c3f6e.  v3.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.scheduler` @type ^`rx.Scheduler` := v7 @kind object;
+  #L4c3f72.  return @kind void;
+}
+procedure `void` `complete`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v1 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.complete:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c3f84.  call `evictFinal`(v1) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.evictFinal:()V` @kind virtual;
+  #L4c3f8a.  v0:= 1I;
+  #L4c3f8c.  v1.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.done` @type ^`boolean` := v0 @kind boolean;
+  #L4c3f90.  return @kind void;
+}
+procedure `void` `drain`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v17 @kind this, `rx.subjects.ReplaySubject$ReplayProducer` v18 @kind object) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.drain:(Lrx/subjects/ReplaySubject$ReplayProducer;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+
+  #L4c3fa4.  v0:= v17 @kind object;
+  #L4c3fa8.  v1:= v18 @kind object;
+  #L4c3fac.  call temp:= `getAndIncrement`(v18) @signature `Lrx/subjects/ReplaySubject$ReplayProducer;.getAndIncrement:()I` @kind virtual;
+  #L4c3fb2.  v2:= temp;
+  #L4c3fb4.  if v2 == 0 then goto L4c3fba;
+  #L4c3fb8.  return @kind void;
+  #L4c3fba.  v2:= v1.`rx.subjects.ReplaySubject$ReplayProducer.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c3fbe.  v3:= 1I;
+  #L4c3fc0.  v4:= 1I;
+  #L4c3fc2.  v5:= v1.`rx.subjects.ReplaySubject$ReplayProducer.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4c3fc6.  call temp:= `get`(v5) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4c3fcc.  v5:= temp @kind wide;
+  #L4c3fce.  v7:= v1.`rx.subjects.ReplaySubject$ReplayProducer.node` @type ^`java.lang.Object` @kind object;
+  #L4c3fd2.  v7:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v7 @kind object;
+  #L4c3fd6.  v8:= 0L;
+  #L4c3fda.  if v7 != 0 then goto L4c3fe6;
+  #L4c3fde.  call temp:= `latestHead`(v17) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.latestHead:()Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;` @kind virtual;
+  #L4c3fe4.  v7:= temp @kind object;
+  #L4c3fe6.  v10:= v8 @kind wide;
+  #L4c3fe8.  v12:= 0I;
+  #L4c3fea.  v13:= 0I;
+  #L4c3fec.  v14:= lcmp(v10, v5);
+  #L4c3ff0.  if v14 == 0 then goto L4c4062;
+  #L4c3ff4.  call temp:= `isUnsubscribed`(v2) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4c3ffa.  v14:= temp;
+  #L4c3ffc.  if v14 == 0 then goto L4c4006;
+  #L4c4000.  v1.`rx.subjects.ReplaySubject$ReplayProducer.node` @type ^`java.lang.Object` := v13 @kind object;
+  #L4c4004.  return @kind void;
+  #L4c4006.  v14:= v0.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.done` @type ^`boolean` @kind boolean;
+  #L4c400a.  call temp:= `get`(v7) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c4010.  v15:= temp @kind object;
+  #L4c4012.  v15:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v15 @kind object;
+  #L4c4016.  if v15 != 0 then goto L4c4020;
+  #L4c401a.  v16:= 1I;
+  #L4c401e.  goto L4c4024;
+  #L4c4020.  v16:= 0I;
+  #L4c4024.  if v14 == 0 then goto L4c4048;
+  #L4c4028.  if v16 == 0 then goto L4c4048;
+  #L4c402c.  v1.`rx.subjects.ReplaySubject$ReplayProducer.node` @type ^`java.lang.Object` := v13 @kind object;
+  #L4c4030.  v1:= v0.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.error` @type ^`java.lang.Throwable` @kind object;
+  #L4c4034.  if v1 == 0 then goto L4c4040;
+  #L4c4038.  call `onError`(v2, v1) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4c403e.  goto L4c4046;
+  #L4c4040.  call `onCompleted`(v2) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4c4046.  return @kind void;
+  #L4c4048.  if v16 == 0 then goto L4c404e;
+  #L4c404c.  goto L4c4062;
+  #L4c404e.  v7:= v15.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode.value` @type ^`java.lang.Object` @kind object;
+  #L4c4052.  call `onNext`(v2, v7) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4c4058.  v12:= 1L;
+  #L4c405c.  v10:= v10 + v12 @kind long;
+  #L4c405e.  v7:= v15 @kind object;
+  #L4c4060.  goto L4c3fe8;
+  #L4c4062.  v14:= lcmp(v10, v5);
+  #L4c4066.  if v14 != 0 then goto L4c40b2;
+  #L4c406a.  call temp:= `isUnsubscribed`(v2) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4c4070.  v14:= temp;
+  #L4c4072.  if v14 == 0 then goto L4c407c;
+  #L4c4076.  v1.`rx.subjects.ReplaySubject$ReplayProducer.node` @type ^`java.lang.Object` := v13 @kind object;
+  #L4c407a.  return @kind void;
+  #L4c407c.  v14:= v0.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.done` @type ^`boolean` @kind boolean;
+  #L4c4080.  call temp:= `get`(v7) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c4086.  v15:= temp @kind object;
+  #L4c4088.  if v15 != 0 then goto L4c408e;
+  #L4c408c.  v12:= 1I;
+  #L4c408e.  if v14 == 0 then goto L4c40b2;
+  #L4c4092.  if v12 == 0 then goto L4c40b2;
+  #L4c4096.  v1.`rx.subjects.ReplaySubject$ReplayProducer.node` @type ^`java.lang.Object` := v13 @kind object;
+  #L4c409a.  v1:= v0.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.error` @type ^`java.lang.Throwable` @kind object;
+  #L4c409e.  if v1 == 0 then goto L4c40aa;
+  #L4c40a2.  call `onError`(v2, v1) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4c40a8.  goto L4c40b0;
+  #L4c40aa.  call `onCompleted`(v2) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4c40b0.  return @kind void;
+  #L4c40b2.  v12:= lcmp(v10, v8);
+  #L4c40b6.  if v12 == 0 then goto L4c40d6;
+  #L4c40ba.  v8:= 9223372036854775807L;
+  #L4c40c4.  v12:= lcmp(v5, v8);
+  #L4c40c8.  if v12 == 0 then goto L4c40d6;
+  #L4c40cc.  v5:= v1.`rx.subjects.ReplaySubject$ReplayProducer.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4c40d0.  call temp:= `produced`(v5, v10) @signature `Lrx/internal/operators/BackpressureUtils;.produced:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L4c40d6.  v1.`rx.subjects.ReplaySubject$ReplayProducer.node` @type ^`java.lang.Object` := v7 @kind object;
+  #L4c40da.  v4:= -v4 @kind int;
+  #L4c40dc.  call temp:= `addAndGet`(v1, v4) @signature `Lrx/subjects/ReplaySubject$ReplayProducer;.addAndGet:(I)I` @kind virtual;
+  #L4c40e2.  v4:= temp;
+  #L4c40e4.  if v4 != 0 then goto L4c3fc2;
+  #L4c40e8.  return @kind void;
+}
+procedure `java.lang.Throwable` `error`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v1 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.error:()Ljava/lang/Throwable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c3ee4.  v0:= v1.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.error` @type ^`java.lang.Throwable` @kind object;
+  #L4c3ee8.  return v0 @kind object;
+}
+procedure `void` `error`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v0 @kind this, `java.lang.Throwable` v1 @kind object) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.error:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4c40fc.  call `evictFinal`(v0) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.evictFinal:()V` @kind virtual;
+  #L4c4102.  v0.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.error` @type ^`java.lang.Throwable` := v1 @kind object;
+  #L4c4106.  v1:= 1I;
+  #L4c4108.  v0.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.done` @type ^`boolean` := v1 @kind boolean;
+  #L4c410c.  return @kind void;
+}
+procedure `void` `evictFinal`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v8 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.evictFinal:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4c4120.  v0:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.scheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c4124.  call temp:= `now`(v0) @signature `Lrx/Scheduler;.now:()J` @kind virtual;
+  #L4c412a.  v0:= temp @kind wide;
+  #L4c412c.  v2:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.maxAgeMillis` @type ^`long` @kind wide;
+  #L4c4130.  v0:= v0 - v2 @kind long;
+  #L4c4132.  v2:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.head` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` @kind object;
+  #L4c4136.  v3:= v2 @kind object;
+  #L4c4138.  call temp:= `get`(v3) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c413e.  v4:= temp @kind object;
+  #L4c4140.  v4:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v4 @kind object;
+  #L4c4144.  if v4 == 0 then goto L4c415a;
+  #L4c4148.  v5:= v4.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode.timestamp` @type ^`long` @kind wide;
+  #L4c414c.  v7:= lcmp(v5, v0);
+  #L4c4150.  if v7 <= 0 then goto L4c4156;
+  #L4c4154.  goto L4c415a;
+  #L4c4156.  v3:= v4 @kind object;
+  #L4c4158.  goto L4c4138;
+  #L4c415a.  if v2 == v3 then goto L4c4162;
+  #L4c415e.  v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.head` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` := v3 @kind object;
+  #L4c4162.  return @kind void;
+}
+procedure `boolean` `isComplete`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v1 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.isComplete:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c3dd0.  v0:= v1.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.done` @type ^`boolean` @kind boolean;
+  #L4c3dd4.  return v0;
+}
+procedure `boolean` `isEmpty`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v1 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.isEmpty:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c3de8.  call temp:= `latestHead`(v1) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.latestHead:()Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;` @kind virtual;
+  #L4c3dee.  v0:= temp @kind object;
+  #L4c3df0.  call temp:= `get`(v0) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c3df6.  v0:= temp @kind object;
+  #L4c3df8.  if v0 != 0 then goto L4c3e00;
+  #L4c3dfc.  v0:= 1I;
+  #L4c3dfe.  goto L4c3e02;
+  #L4c3e00.  v0:= 0I;
+  #L4c3e02.  return v0;
+}
+procedure `java.lang.Object` `last`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v2 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.last:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c3e5c.  call temp:= `latestHead`(v2) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.latestHead:()Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;` @kind virtual;
+  #L4c3e62.  v0:= temp @kind object;
+  #L4c3e64.  call temp:= `get`(v0) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c3e6a.  v1:= temp @kind object;
+  #L4c3e6c.  v1:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v1 @kind object;
+  #L4c3e70.  if v1 == 0 then goto L4c3e78;
+  #L4c3e74.  v0:= v1 @kind object;
+  #L4c3e76.  goto L4c3e64;
+  #L4c3e78.  v0:= v0.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode.value` @type ^`java.lang.Object` @kind object;
+  #L4c3e7c.  return v0 @kind object;
+}
+procedure `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` `latestHead`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v7 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.latestHead:()Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4c3efc.  v0:= v7.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.scheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c3f00.  call temp:= `now`(v0) @signature `Lrx/Scheduler;.now:()J` @kind virtual;
+  #L4c3f06.  v0:= temp @kind wide;
+  #L4c3f08.  v2:= v7.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.maxAgeMillis` @type ^`long` @kind wide;
+  #L4c3f0c.  v0:= v0 - v2 @kind long;
+  #L4c3f0e.  v2:= v7.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.head` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` @kind object;
+  #L4c3f12.  call temp:= `get`(v2) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c3f18.  v3:= temp @kind object;
+  #L4c3f1a.  v3:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v3 @kind object;
+  #L4c3f1e.  if v3 == 0 then goto L4c3f34;
+  #L4c3f22.  v4:= v3.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode.timestamp` @type ^`long` @kind wide;
+  #L4c3f26.  v6:= lcmp(v4, v0);
+  #L4c3f2a.  if v6 <= 0 then goto L4c3f30;
+  #L4c3f2e.  goto L4c3f34;
+  #L4c3f30.  v2:= v3 @kind object;
+  #L4c3f32.  goto L4c3f12;
+  #L4c3f34.  return v2 @kind object;
+}
+procedure `void` `next`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v8 @kind this, `java.lang.Object` v9 @kind object) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.next:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4c4174.  v0:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.scheduler` @type ^`rx.Scheduler` @kind object;
+  #L4c4178.  call temp:= `now`(v0) @signature `Lrx/Scheduler;.now:()J` @kind virtual;
+  #L4c417e.  v0:= temp @kind wide;
+  #L4c4180.  v2:= new `rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`;
+  #L4c4184.  call `<init>`(v2, v9, v0) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.<init>:(Ljava/lang/Object;J)V` @kind direct;
+  #L4c418a.  v9:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.tail` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` @kind object;
+  #L4c418e.  call `set`(v9, v2) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.set:(Ljava/lang/Object;)V` @kind virtual;
+  #L4c4194.  v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.tail` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` := v2 @kind object;
+  #L4c4198.  v2:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.maxAgeMillis` @type ^`long` @kind wide;
+  #L4c419c.  v0:= v0 - v2 @kind long;
+  #L4c419e.  v9:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.size` @type ^`int`;
+  #L4c41a2.  v2:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.head` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` @kind object;
+  #L4c41a6.  v3:= v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.limit` @type ^`int`;
+  #L4c41aa.  if v9 != v3 then goto L4c41bc;
+  #L4c41ae.  call temp:= `get`(v2) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c41b4.  v3:= temp @kind object;
+  #L4c41b6.  v3:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v3 @kind object;
+  #L4c41ba.  goto L4c41c2;
+  #L4c41bc.  v9:= v9 + 1;
+  #L4c41c0.  v3:= v2 @kind object;
+  #L4c41c2.  call temp:= `get`(v3) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c41c8.  v4:= temp @kind object;
+  #L4c41ca.  v4:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v4 @kind object;
+  #L4c41ce.  if v4 == 0 then goto L4c41e8;
+  #L4c41d2.  v5:= v4.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode.timestamp` @type ^`long` @kind wide;
+  #L4c41d6.  v7:= lcmp(v5, v0);
+  #L4c41da.  if v7 <= 0 then goto L4c41e0;
+  #L4c41de.  goto L4c41e8;
+  #L4c41e0.  v9:= v9 + -1;
+  #L4c41e4.  v3:= v4 @kind object;
+  #L4c41e6.  goto L4c41c2;
+  #L4c41e8.  v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.size` @type ^`int` := v9;
+  #L4c41ec.  if v3 == v2 then goto L4c41f4;
+  #L4c41f0.  v8.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer.head` @type ^`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode` := v3 @kind object;
+  #L4c41f4.  return @kind void;
+}
+procedure `int` `size`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v3 @kind this) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.size:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c3e14.  call temp:= `latestHead`(v3) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.latestHead:()Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;` @kind virtual;
+  #L4c3e1a.  v0:= temp @kind object;
+  #L4c3e1c.  call temp:= `get`(v0) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c3e22.  v0:= temp @kind object;
+  #L4c3e24.  v0:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v0 @kind object;
+  #L4c3e28.  v1:= 0I;
+  #L4c3e2a.  if v0 == 0 then goto L4c3e4a;
+  #L4c3e2e.  v2:= 2147483647I;
+  #L4c3e34.  if v1 == v2 then goto L4c3e4a;
+  #L4c3e38.  call temp:= `get`(v0) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c3e3e.  v0:= temp @kind object;
+  #L4c3e40.  v0:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v0 @kind object;
+  #L4c3e44.  v1:= v1 + 1;
+  #L4c3e48.  goto L4c3e2a;
+  #L4c3e4a.  return v1;
+}
+procedure `java.lang.Object`[] `toArray`(`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer` v3 @kind this, `java.lang.Object`[] v4 @kind object) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.toArray:([Ljava/lang/Object;)[Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c3e90.  v0:= new `java.util.ArrayList`;
+  #L4c3e94.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4c3e9a.  call temp:= `latestHead`(v3) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer;.latestHead:()Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;` @kind virtual;
+  #L4c3ea0.  v1:= temp @kind object;
+  #L4c3ea2.  call temp:= `get`(v1) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c3ea8.  v1:= temp @kind object;
+  #L4c3eaa.  v1:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v1 @kind object;
+  #L4c3eae.  if v1 == 0 then goto L4c3eca;
+  #L4c3eb2.  v2:= v1.`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode.value` @type ^`java.lang.Object` @kind object;
+  #L4c3eb6.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c3ebc.  call temp:= `get`(v1) @signature `Lrx/subjects/ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c3ec2.  v1:= temp @kind object;
+  #L4c3ec4.  v1:= (`rx.subjects.ReplaySubject$ReplaySizeAndTimeBoundBuffer$TimedNode`) v1 @kind object;
+  #L4c3ec8.  goto L4c3eae;
+  #L4c3eca.  call temp:= `toArray`(v0, v4) @signature `Ljava/util/List;.toArray:([Ljava/lang/Object;)[Ljava/lang/Object;` @kind interface;
+  #L4c3ed0.  v4:= temp @kind object;
+  #L4c3ed2.  return v4 @kind object;
+}

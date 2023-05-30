@@ -1,0 +1,37 @@
+record `okio.Throttler$sink$1` @kind class @AccessFlag PUBLIC_FINAL extends `okio.ForwardingSink` @kind class {
+  `okio.Throttler` `okio.Throttler$sink$1.a` @AccessFlag FINAL_SYNTHETIC;
+}
+procedure `void` `<init>`(`okio.Throttler$sink$1` v0 @kind this, `okio.Throttler` v1 @kind object, `okio.Sink` v2 @kind object, `okio.Sink` v3 @kind object) @signature `Lokio/Throttler$sink$1;.<init>:(Lokio/Throttler;Lokio/Sink;Lokio/Sink;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L1d7524.  v0.`okio.Throttler$sink$1.a` @type ^`okio.Throttler` := v1 @kind object;
+  #L1d7528.  call `<init>`(v0, v3) @signature `Lokio/ForwardingSink;.<init>:(Lokio/Sink;)V` @kind direct;
+  #L1d752e.  return @kind void;
+}
+procedure `void` `write`(`okio.Throttler$sink$1` v3 @kind this, `okio.Buffer` v4 @kind object, `long` v5 ) @signature `Lokio/Throttler$sink$1;.write:(Lokio/Buffer;J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1d7540.  v0:= "source" @kind object;
+  #L1d7544.  call `checkNotNullParameter`(v4, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d754a.  v0:= 0L;
+  #L1d754e.  v2:= lcmp(v5, v0);
+  #L1d7552.  if v2 <= 0 then goto L1d758a;
+  #L1d7556.  v0:= v3.`okio.Throttler$sink$1.a` @type ^`okio.Throttler` @kind object;
+  #L1d755a.  call temp:= `take$okio`(v0, v5) @signature `Lokio/Throttler;.take$okio:(J)J` @kind virtual;
+  #L1d7560.  v0:= temp @kind wide;
+  #L1d7562.  call `write`(v3, v4, v0) @signature `Lokio/ForwardingSink;.write:(Lokio/Buffer;J)V` @kind super;
+  #L1d7568.  v5:= v5 - v0 @kind long;
+  #L1d756a.  goto L1d754a;
+  #L1d756c.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L1d7572.  v4:= temp @kind object;
+  #L1d7574.  call `interrupt`(v4) @signature `Ljava/lang/Thread;.interrupt:()V` @kind virtual;
+  #L1d757a.  v4:= new `java.io.InterruptedIOException`;
+  #L1d757e.  v5:= "interrupted" @kind object;
+  #L1d7582.  call `<init>`(v4, v5) @signature `Ljava/io/InterruptedIOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d7588.  throw v4;
+  #L1d758a.  return @kind void;
+  catch `java.lang.InterruptedException` @[L1d7556..L1d7568] goto L1d756c;
+}

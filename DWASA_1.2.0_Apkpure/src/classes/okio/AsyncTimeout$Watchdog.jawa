@@ -1,0 +1,45 @@
+record `okio.AsyncTimeout$Watchdog` @kind class @AccessFlag FINAL extends `java.lang.Thread` @kind class {
+}
+procedure `void` `<init>`(`okio.AsyncTimeout$Watchdog` v1 @kind this) @signature `Lokio/AsyncTimeout$Watchdog;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L477650.  v0:= "Okio Watchdog" @kind object;
+  #L477654.  call `<init>`(v1, v0) @signature `Ljava/lang/Thread;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47765a.  v0:= 1I;
+  #L47765c.  call `setDaemon`(v1, v0) @signature `Lokio/AsyncTimeout$Watchdog;.setDaemon:(Z)V` @kind virtual;
+  #L477662.  return @kind void;
+}
+procedure `void` `run`(`okio.AsyncTimeout$Watchdog` v3 @kind this) @signature `Lokio/AsyncTimeout$Watchdog;.run:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L477674.  v0:= constclass @type ^`okio.AsyncTimeout` @kind object;
+  #L477678.  @monitorenter v0
+  #L47767a.  call temp:= `awaitTimeout`() @signature `Lokio/AsyncTimeout;.awaitTimeout:()Lokio/AsyncTimeout;` @kind static;
+  #L477680.  v1:= temp @kind object;
+  #L477682.  if v1 != 0 then goto L47768a;
+  #L477686.  @monitorexit v0
+  #L477688.  goto L477674;
+  #L47768a.  v2:= `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` @kind object;
+  #L47768e.  if v1 != v2 then goto L47769c;
+  #L477692.  v1:= 0I;
+  #L477694.  `@@okio.AsyncTimeout.head` @type ^`okio.AsyncTimeout` := v1 @kind object;
+  #L477698.  @monitorexit v0
+  #L47769a.  return @kind void;
+  #L47769c.  @monitorexit v0
+  #L47769e.  call `timedOut`(v1) @signature `Lokio/AsyncTimeout;.timedOut:()V` @kind virtual;
+  #L4776a4.  goto L477674;
+  #L4776a6.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4776a8.  @monitorexit v0
+  #L4776aa.  goto L4776ae;
+  #L4776ac.  throw v1;
+  #L4776ae.  goto L4776ac;
+  catch `java.lang.InterruptedException` @[L477674..L47767a] goto L477674;
+  catch `java.lang.Throwable` @[L47767a..L47769e] goto L4776a6;
+  catch `java.lang.InterruptedException` @[L47769e..L4776a4] goto L477674;
+  catch `java.lang.Throwable` @[L4776a8..L4776aa] goto L4776a6;
+  catch `java.lang.InterruptedException` @[L4776aa..L4776ac] goto L477674;
+}

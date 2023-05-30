@@ -1,0 +1,1301 @@
+record `com.google.android.material.appbar.AppBarLayout` @kind class @AccessFlag PUBLIC extends `android.widget.LinearLayout` @kind class, `androidx.coordinatorlayout.widget.CoordinatorLayout$AttachedBehavior` @kind interface {
+  `int` `com.google.android.material.appbar.AppBarLayout.currentOffset` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.appbar.AppBarLayout.downPreScrollRange` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.appbar.AppBarLayout.downScrollRange` @AccessFlag PRIVATE;
+  `android.animation.ValueAnimator` `com.google.android.material.appbar.AppBarLayout.elevationOverlayAnimator` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.appbar.AppBarLayout.haveChildWithInterpolator` @AccessFlag PRIVATE;
+  `androidx.core.view.WindowInsetsCompat` `com.google.android.material.appbar.AppBarLayout.lastInsets` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.appbar.AppBarLayout.liftOnScroll` @AccessFlag PRIVATE;
+  `java.lang.ref.WeakReference` `com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetView` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetViewId` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.appbar.AppBarLayout.liftable` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.appbar.AppBarLayout.liftableOverride` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.appbar.AppBarLayout.lifted` @AccessFlag PRIVATE;
+  `java.util.List` `com.google.android.material.appbar.AppBarLayout.listeners` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.appbar.AppBarLayout.pendingAction` @AccessFlag PRIVATE;
+  `android.graphics.drawable.Drawable` `com.google.android.material.appbar.AppBarLayout.statusBarForeground` @AccessFlag PRIVATE;
+  `int`[] `com.google.android.material.appbar.AppBarLayout.tmpStatesArray` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.appbar.AppBarLayout.totalScrollRange` @AccessFlag PRIVATE;
+}
+global `int` `@@com.google.android.material.appbar.AppBarLayout.DEF_STYLE_RES` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.android.material.appbar.AppBarLayout.INVALID_SCROLL_RANGE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.android.material.appbar.AppBarLayout.PENDING_ACTION_ANIMATE_ENABLED` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.appbar.AppBarLayout.PENDING_ACTION_COLLAPSED` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.appbar.AppBarLayout.PENDING_ACTION_EXPANDED` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.appbar.AppBarLayout.PENDING_ACTION_FORCE` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.android.material.appbar.AppBarLayout.PENDING_ACTION_NONE` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/google/android/material/appbar/AppBarLayout;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3c54a4.  v0:= `@@com.google.android.material.R$style.Widget_Design_AppBarLayout` @type ^`int`;
+  #L3c54a8.  `@@com.google.android.material.appbar.AppBarLayout.DEF_STYLE_RES` @type ^`int` := v0;
+  #L3c54ac.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `android.content.Context` v2 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.<init>:(Landroid/content/Context;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3c54c0.  v0:= 0I;
+  #L3c54c2.  call `<init>`(v1, v2, v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @kind direct;
+  #L3c54c8.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `android.content.Context` v2 @kind object, `android.util.AttributeSet` v3 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3c54dc.  v0:= `@@com.google.android.material.R$attr.appBarLayoutStyle` @type ^`int`;
+  #L3c54e0.  call `<init>`(v1, v2, v3, v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @kind direct;
+  #L3c54e6.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.appbar.AppBarLayout` v9 @kind this, `android.content.Context` v10 @kind object, `android.util.AttributeSet` v11 @kind object, `int` v12 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L3c54f8.  v0:= `@@com.google.android.material.appbar.AppBarLayout.DEF_STYLE_RES` @type ^`int`;
+  #L3c54fc.  call temp:= `wrap`(v10, v11, v12, v0) @signature `Lcom/google/android/material/theme/overlay/MaterialThemeOverlay;.wrap:(Landroid/content/Context;Landroid/util/AttributeSet;II)Landroid/content/Context;` @kind static;
+  #L3c5502.  v10:= temp @kind object;
+  #L3c5504.  call `<init>`(v9, v10, v11, v12) @signature `Landroid/widget/LinearLayout;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @kind direct;
+  #L3c550a.  v10:= -1I;
+  #L3c550c.  v9.`com.google.android.material.appbar.AppBarLayout.totalScrollRange` @type ^`int` := v10;
+  #L3c5510.  v9.`com.google.android.material.appbar.AppBarLayout.downPreScrollRange` @type ^`int` := v10;
+  #L3c5514.  v9.`com.google.android.material.appbar.AppBarLayout.downScrollRange` @type ^`int` := v10;
+  #L3c5518.  v0:= 0I;
+  #L3c551a.  v9.`com.google.android.material.appbar.AppBarLayout.pendingAction` @type ^`int` := v0;
+  #L3c551e.  call temp:= `getContext`(v9) @signature `Landroid/widget/LinearLayout;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L3c5524.  v7:= temp @kind object;
+  #L3c5526.  v1:= 1I;
+  #L3c5528.  call `setOrientation`(v9, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setOrientation:(I)V` @kind virtual;
+  #L3c552e.  v1:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3c5532.  v8:= 21I;
+  #L3c5536.  if v1 < v8 then goto L3c554a;
+  #L3c553a.  call `setBoundsViewOutlineProvider`(v9) @signature `Lcom/google/android/material/appbar/ViewUtilsLollipop;.setBoundsViewOutlineProvider:(Landroid/view/View;)V` @kind static;
+  #L3c5540.  v1:= `@@com.google.android.material.appbar.AppBarLayout.DEF_STYLE_RES` @type ^`int`;
+  #L3c5544.  call `setStateListAnimatorFromAttrs`(v9, v11, v12, v1) @signature `Lcom/google/android/material/appbar/ViewUtilsLollipop;.setStateListAnimatorFromAttrs:(Landroid/view/View;Landroid/util/AttributeSet;II)V` @kind static;
+  #L3c554a.  v3:= `@@com.google.android.material.R$styleable.AppBarLayout` @type ^`int`[] @kind object;
+  #L3c554e.  v5:= `@@com.google.android.material.appbar.AppBarLayout.DEF_STYLE_RES` @type ^`int`;
+  #L3c5552.  v6:= new `int`[v0];
+  #L3c5556.  v1:= v7 @kind object;
+  #L3c5558.  v2:= v11 @kind object;
+  #L3c555a.  v4:= v12;
+  #L3c555c.  call temp:= `obtainStyledAttributes`(v1, v2, v3, v4, v5, v6) @signature `Lcom/google/android/material/internal/ThemeEnforcement;.obtainStyledAttributes:(Landroid/content/Context;Landroid/util/AttributeSet;[III[I)Landroid/content/res/TypedArray;` @kind static;
+  #L3c5562.  v11:= temp @kind object;
+  #L3c5564.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_android_background` @type ^`int`;
+  #L3c5568.  call temp:= `getDrawable`(v11, v12) @signature `Landroid/content/res/TypedArray;.getDrawable:(I)Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3c556e.  v12:= temp @kind object;
+  #L3c5570.  call `setBackground`(v9, v12) @signature `Landroidx/core/view/ViewCompat;.setBackground:(Landroid/view/View;Landroid/graphics/drawable/Drawable;)V` @kind static;
+  #L3c5576.  call temp:= `getBackground`(v9) @signature `Landroid/widget/LinearLayout;.getBackground:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3c557c.  v12:= temp @kind object;
+  #L3c557e.  v12:= instanceof @variable v12 @type ^`android.graphics.drawable.ColorDrawable` @kind boolean;
+  #L3c5582.  if v12 == 0 then goto L3c55be;
+  #L3c5586.  call temp:= `getBackground`(v9) @signature `Landroid/widget/LinearLayout;.getBackground:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3c558c.  v12:= temp @kind object;
+  #L3c558e.  v12:= (`android.graphics.drawable.ColorDrawable`) v12 @kind object;
+  #L3c5592.  v1:= new `com.google.android.material.shape.MaterialShapeDrawable`;
+  #L3c5596.  call `<init>`(v1) @signature `Lcom/google/android/material/shape/MaterialShapeDrawable;.<init>:()V` @kind direct;
+  #L3c559c.  call temp:= `getColor`(v12) @signature `Landroid/graphics/drawable/ColorDrawable;.getColor:()I` @kind virtual;
+  #L3c55a2.  v12:= temp;
+  #L3c55a4.  call temp:= `valueOf`(v12) @signature `Landroid/content/res/ColorStateList;.valueOf:(I)Landroid/content/res/ColorStateList;` @kind static;
+  #L3c55aa.  v12:= temp @kind object;
+  #L3c55ac.  call `setFillColor`(v1, v12) @signature `Lcom/google/android/material/shape/MaterialShapeDrawable;.setFillColor:(Landroid/content/res/ColorStateList;)V` @kind virtual;
+  #L3c55b2.  call `initializeElevationOverlay`(v1, v7) @signature `Lcom/google/android/material/shape/MaterialShapeDrawable;.initializeElevationOverlay:(Landroid/content/Context;)V` @kind virtual;
+  #L3c55b8.  call `setBackground`(v9, v1) @signature `Landroidx/core/view/ViewCompat;.setBackground:(Landroid/view/View;Landroid/graphics/drawable/Drawable;)V` @kind static;
+  #L3c55be.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_expanded` @type ^`int`;
+  #L3c55c2.  call temp:= `hasValue`(v11, v12) @signature `Landroid/content/res/TypedArray;.hasValue:(I)Z` @kind virtual;
+  #L3c55c8.  v12:= temp;
+  #L3c55ca.  if v12 == 0 then goto L3c55e0;
+  #L3c55ce.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_expanded` @type ^`int`;
+  #L3c55d2.  call temp:= `getBoolean`(v11, v12, v0) @signature `Landroid/content/res/TypedArray;.getBoolean:(IZ)Z` @kind virtual;
+  #L3c55d8.  v12:= temp;
+  #L3c55da.  call `setExpanded`(v9, v12, v0, v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setExpanded:(ZZZ)V` @kind direct;
+  #L3c55e0.  v12:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3c55e4.  if v12 < v8 then goto L3c560c;
+  #L3c55e8.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_elevation` @type ^`int`;
+  #L3c55ec.  call temp:= `hasValue`(v11, v12) @signature `Landroid/content/res/TypedArray;.hasValue:(I)Z` @kind virtual;
+  #L3c55f2.  v12:= temp;
+  #L3c55f4.  if v12 == 0 then goto L3c560c;
+  #L3c55f8.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_elevation` @type ^`int`;
+  #L3c55fc.  call temp:= `getDimensionPixelSize`(v11, v12, v0) @signature `Landroid/content/res/TypedArray;.getDimensionPixelSize:(II)I` @kind virtual;
+  #L3c5602.  v12:= temp;
+  #L3c5604.  v12:= (`float`) v12 @kind i2f;
+  #L3c5606.  call `setDefaultAppBarLayoutStateListAnimator`(v9, v12) @signature `Lcom/google/android/material/appbar/ViewUtilsLollipop;.setDefaultAppBarLayoutStateListAnimator:(Landroid/view/View;F)V` @kind static;
+  #L3c560c.  v12:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3c5610.  v1:= 26I;
+  #L3c5614.  if v12 < v1 then goto L3c565c;
+  #L3c5618.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_android_keyboardNavigationCluster` @type ^`int`;
+  #L3c561c.  call temp:= `hasValue`(v11, v12) @signature `Landroid/content/res/TypedArray;.hasValue:(I)Z` @kind virtual;
+  #L3c5622.  v12:= temp;
+  #L3c5624.  if v12 == 0 then goto L3c563a;
+  #L3c5628.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_android_keyboardNavigationCluster` @type ^`int`;
+  #L3c562c.  call temp:= `getBoolean`(v11, v12, v0) @signature `Landroid/content/res/TypedArray;.getBoolean:(IZ)Z` @kind virtual;
+  #L3c5632.  v12:= temp;
+  #L3c5634.  call `setKeyboardNavigationCluster`(v9, v12) @signature `Landroid/widget/LinearLayout;.setKeyboardNavigationCluster:(Z)V` @kind virtual;
+  #L3c563a.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_android_touchscreenBlocksFocus` @type ^`int`;
+  #L3c563e.  call temp:= `hasValue`(v11, v12) @signature `Landroid/content/res/TypedArray;.hasValue:(I)Z` @kind virtual;
+  #L3c5644.  v12:= temp;
+  #L3c5646.  if v12 == 0 then goto L3c565c;
+  #L3c564a.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_android_touchscreenBlocksFocus` @type ^`int`;
+  #L3c564e.  call temp:= `getBoolean`(v11, v12, v0) @signature `Landroid/content/res/TypedArray;.getBoolean:(IZ)Z` @kind virtual;
+  #L3c5654.  v12:= temp;
+  #L3c5656.  call `setTouchscreenBlocksFocus`(v9, v12) @signature `Landroid/widget/LinearLayout;.setTouchscreenBlocksFocus:(Z)V` @kind virtual;
+  #L3c565c.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_liftOnScroll` @type ^`int`;
+  #L3c5660.  call temp:= `getBoolean`(v11, v12, v0) @signature `Landroid/content/res/TypedArray;.getBoolean:(IZ)Z` @kind virtual;
+  #L3c5666.  v12:= temp;
+  #L3c5668.  v9.`com.google.android.material.appbar.AppBarLayout.liftOnScroll` @type ^`boolean` := v12 @kind boolean;
+  #L3c566c.  v12:= `@@com.google.android.material.R$styleable.AppBarLayout_liftOnScrollTargetViewId` @type ^`int`;
+  #L3c5670.  call temp:= `getResourceId`(v11, v12, v10) @signature `Landroid/content/res/TypedArray;.getResourceId:(II)I` @kind virtual;
+  #L3c5676.  v10:= temp;
+  #L3c5678.  v9.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetViewId` @type ^`int` := v10;
+  #L3c567c.  v10:= `@@com.google.android.material.R$styleable.AppBarLayout_statusBarForeground` @type ^`int`;
+  #L3c5680.  call temp:= `getDrawable`(v11, v10) @signature `Landroid/content/res/TypedArray;.getDrawable:(I)Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3c5686.  v10:= temp @kind object;
+  #L3c5688.  call `setStatusBarForeground`(v9, v10) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setStatusBarForeground:(Landroid/graphics/drawable/Drawable;)V` @kind virtual;
+  #L3c568e.  call `recycle`(v11) @signature `Landroid/content/res/TypedArray;.recycle:()V` @kind virtual;
+  #L3c5694.  v10:= new `com.google.android.material.appbar.AppBarLayout$1`;
+  #L3c5698.  call `<init>`(v10, v9) @signature `Lcom/google/android/material/appbar/AppBarLayout$1;.<init>:(Lcom/google/android/material/appbar/AppBarLayout;)V` @kind direct;
+  #L3c569e.  call `setOnApplyWindowInsetsListener`(v9, v10) @signature `Landroidx/core/view/ViewCompat;.setOnApplyWindowInsetsListener:(Landroid/view/View;Landroidx/core/view/OnApplyWindowInsetsListener;)V` @kind static;
+  #L3c56a4.  return @kind void;
+}
+procedure `void` `clearLiftOnScrollTargetView`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.clearLiftOnScrollTargetView:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3c5718.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetView` @type ^`java.lang.ref.WeakReference` @kind object;
+  #L3c571c.  if v0 == 0 then goto L3c5726;
+  #L3c5720.  call `clear`(v0) @signature `Ljava/lang/ref/WeakReference;.clear:()V` @kind virtual;
+  #L3c5726.  v0:= 0I;
+  #L3c5728.  v1.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetView` @type ^`java.lang.ref.WeakReference` := v0 @kind object;
+  #L3c572c.  return @kind void;
+}
+procedure `android.view.View` `findLiftOnScrollTargetView`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this, `android.view.View` v4 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.findLiftOnScrollTargetView:(Landroid/view/View;)Landroid/view/View;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c4c58.  v0:= v3.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetView` @type ^`java.lang.ref.WeakReference` @kind object;
+  #L3c4c5c.  v1:= 0I;
+  #L3c4c5e.  if v0 != 0 then goto L3c4cba;
+  #L3c4c62.  v0:= v3.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetViewId` @type ^`int`;
+  #L3c4c66.  v2:= -1I;
+  #L3c4c68.  if v0 == v2 then goto L3c4cba;
+  #L3c4c6c.  if v4 == 0 then goto L3c4c7a;
+  #L3c4c70.  call temp:= `findViewById`(v4, v0) @signature `Landroid/view/View;.findViewById:(I)Landroid/view/View;` @kind virtual;
+  #L3c4c76.  v4:= temp @kind object;
+  #L3c4c78.  goto L3c4c7c;
+  #L3c4c7a.  v4:= v1 @kind object;
+  #L3c4c7c.  if v4 != 0 then goto L3c4ca8;
+  #L3c4c80.  call temp:= `getParent`(v3) @signature `Landroid/widget/LinearLayout;.getParent:()Landroid/view/ViewParent;` @kind virtual;
+  #L3c4c86.  v0:= temp @kind object;
+  #L3c4c88.  v0:= instanceof @variable v0 @type ^`android.view.ViewGroup` @kind boolean;
+  #L3c4c8c.  if v0 == 0 then goto L3c4ca8;
+  #L3c4c90.  call temp:= `getParent`(v3) @signature `Landroid/widget/LinearLayout;.getParent:()Landroid/view/ViewParent;` @kind virtual;
+  #L3c4c96.  v4:= temp @kind object;
+  #L3c4c98.  v4:= (`android.view.ViewGroup`) v4 @kind object;
+  #L3c4c9c.  v0:= v3.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetViewId` @type ^`int`;
+  #L3c4ca0.  call temp:= `findViewById`(v4, v0) @signature `Landroid/view/ViewGroup;.findViewById:(I)Landroid/view/View;` @kind virtual;
+  #L3c4ca6.  v4:= temp @kind object;
+  #L3c4ca8.  if v4 == 0 then goto L3c4cba;
+  #L3c4cac.  v0:= new `java.lang.ref.WeakReference`;
+  #L3c4cb0.  call `<init>`(v0, v4) @signature `Ljava/lang/ref/WeakReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L3c4cb6.  v3.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetView` @type ^`java.lang.ref.WeakReference` := v0 @kind object;
+  #L3c4cba.  v4:= v3.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetView` @type ^`java.lang.ref.WeakReference` @kind object;
+  #L3c4cbe.  if v4 == 0 then goto L3c4cd0;
+  #L3c4cc2.  call temp:= `get`(v4) @signature `Ljava/lang/ref/WeakReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L3c4cc8.  v4:= temp @kind object;
+  #L3c4cca.  v1:= v4 @kind object;
+  #L3c4ccc.  v1:= (`android.view.View`) v1 @kind object;
+  #L3c4cd0.  return v1 @kind object;
+}
+procedure `boolean` `hasCollapsibleChild`(`com.google.android.material.appbar.AppBarLayout` v4 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.hasCollapsibleChild:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3c4e1c.  call temp:= `getChildCount`(v4) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c4e22.  v0:= temp;
+  #L3c4e24.  v1:= 0I;
+  #L3c4e26.  v2:= 0I;
+  #L3c4e28.  if v2 >= v0 then goto L3c4e56;
+  #L3c4e2c.  call temp:= `getChildAt`(v4, v2) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c4e32.  v3:= temp @kind object;
+  #L3c4e34.  call temp:= `getLayoutParams`(v3) @signature `Landroid/view/View;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L3c4e3a.  v3:= temp @kind object;
+  #L3c4e3c.  v3:= (`com.google.android.material.appbar.AppBarLayout$LayoutParams`) v3 @kind object;
+  #L3c4e40.  call temp:= `isCollapsible`(v3) @signature `Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;.isCollapsible:()Z` @kind virtual;
+  #L3c4e46.  v3:= temp;
+  #L3c4e48.  if v3 == 0 then goto L3c4e50;
+  #L3c4e4c.  v0:= 1I;
+  #L3c4e4e.  return v0;
+  #L3c4e50.  v2:= v2 + 1;
+  #L3c4e54.  goto L3c4e28;
+  #L3c4e56.  return v1;
+}
+procedure `void` `invalidateScrollRanges`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.invalidateScrollRanges:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3c57d4.  v0:= -1I;
+  #L3c57d6.  v1.`com.google.android.material.appbar.AppBarLayout.totalScrollRange` @type ^`int` := v0;
+  #L3c57da.  v1.`com.google.android.material.appbar.AppBarLayout.downPreScrollRange` @type ^`int` := v0;
+  #L3c57de.  v1.`com.google.android.material.appbar.AppBarLayout.downScrollRange` @type ^`int` := v0;
+  #L3c57e2.  return @kind void;
+}
+procedure `void` `setExpanded`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `boolean` v2 , `boolean` v3 , `boolean` v4 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setExpanded:(ZZZ)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3c5ac8.  if v2 == 0 then goto L3c5ad0;
+  #L3c5acc.  v2:= 1I;
+  #L3c5ace.  goto L3c5ad2;
+  #L3c5ad0.  v2:= 2I;
+  #L3c5ad2.  v0:= 0I;
+  #L3c5ad4.  if v3 == 0 then goto L3c5adc;
+  #L3c5ad8.  v3:= 4I;
+  #L3c5ada.  goto L3c5ade;
+  #L3c5adc.  v3:= 0I;
+  #L3c5ade.  v2:= v2 ^| v3 @kind int;
+  #L3c5ae0.  if v4 == 0 then goto L3c5ae8;
+  #L3c5ae4.  v0:= 8I;
+  #L3c5ae8.  v2:= v2 ^| v0 @kind int;
+  #L3c5aea.  v1.`com.google.android.material.appbar.AppBarLayout.pendingAction` @type ^`int` := v2;
+  #L3c5aee.  call `requestLayout`(v1) @signature `Landroid/widget/LinearLayout;.requestLayout:()V` @kind virtual;
+  #L3c5af4.  return @kind void;
+}
+procedure `boolean` `setLiftableState`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `boolean` v2 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftableState:(Z)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3c4edc.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.liftable` @type ^`boolean` @kind boolean;
+  #L3c4ee0.  if v0 == v2 then goto L3c4ef2;
+  #L3c4ee4.  v1.`com.google.android.material.appbar.AppBarLayout.liftable` @type ^`boolean` := v2 @kind boolean;
+  #L3c4ee8.  call `refreshDrawableState`(v1) @signature `Landroid/widget/LinearLayout;.refreshDrawableState:()V` @kind virtual;
+  #L3c4eee.  v2:= 1I;
+  #L3c4ef0.  return v2;
+  #L3c4ef2.  v2:= 0I;
+  #L3c4ef4.  return v2;
+}
+procedure `boolean` `shouldDrawStatusBarForeground`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.shouldDrawStatusBarForeground:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3c4f78.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c4f7c.  if v0 == 0 then goto L3c4f90;
+  #L3c4f80.  call temp:= `getTopInset`(v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c4f86.  v0:= temp;
+  #L3c4f88.  if v0 <= 0 then goto L3c4f90;
+  #L3c4f8c.  v0:= 1I;
+  #L3c4f8e.  goto L3c4f92;
+  #L3c4f90.  v0:= 0I;
+  #L3c4f92.  return v0;
+}
+procedure `boolean` `shouldOffsetFirstChild`(`com.google.android.material.appbar.AppBarLayout` v4 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.shouldOffsetFirstChild:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3c4fec.  call temp:= `getChildCount`(v4) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c4ff2.  v0:= temp;
+  #L3c4ff4.  v1:= 0I;
+  #L3c4ff6.  if v0 <= 0 then goto L3c5020;
+  #L3c4ffa.  call temp:= `getChildAt`(v4, v1) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c5000.  v0:= temp @kind object;
+  #L3c5002.  call temp:= `getVisibility`(v0) @signature `Landroid/view/View;.getVisibility:()I` @kind virtual;
+  #L3c5008.  v2:= temp;
+  #L3c500a.  v3:= 8I;
+  #L3c500e.  if v2 == v3 then goto L3c5020;
+  #L3c5012.  call temp:= `getFitsSystemWindows`(v0) @signature `Landroidx/core/view/ViewCompat;.getFitsSystemWindows:(Landroid/view/View;)Z` @kind static;
+  #L3c5018.  v0:= temp;
+  #L3c501a.  if v0 != 0 then goto L3c5020;
+  #L3c501e.  v1:= 1I;
+  #L3c5020.  return v1;
+}
+procedure `void` `startLiftOnScrollElevationOverlayAnimation`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this, `com.google.android.material.shape.MaterialShapeDrawable` v4 @kind object, `boolean` v5 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.startLiftOnScrollElevationOverlayAnimation:(Lcom/google/android/material/shape/MaterialShapeDrawable;Z)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c5cb0.  call temp:= `getResources`(v3) @signature `Landroid/widget/LinearLayout;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L3c5cb6.  v0:= temp @kind object;
+  #L3c5cb8.  v1:= `@@com.google.android.material.R$dimen.design_appbar_elevation` @type ^`int`;
+  #L3c5cbc.  call temp:= `getDimension`(v0, v1) @signature `Landroid/content/res/Resources;.getDimension:(I)F` @kind virtual;
+  #L3c5cc2.  v0:= temp;
+  #L3c5cc4.  v1:= 0I;
+  #L3c5cc6.  if v5 == 0 then goto L3c5cce;
+  #L3c5cca.  v2:= 0I;
+  #L3c5ccc.  goto L3c5cd0;
+  #L3c5cce.  v2:= v0;
+  #L3c5cd0.  if v5 == 0 then goto L3c5cd6;
+  #L3c5cd4.  goto L3c5cd8;
+  #L3c5cd6.  v0:= 0I;
+  #L3c5cd8.  v5:= v3.`com.google.android.material.appbar.AppBarLayout.elevationOverlayAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L3c5cdc.  if v5 == 0 then goto L3c5ce6;
+  #L3c5ce0.  call `cancel`(v5) @signature `Landroid/animation/ValueAnimator;.cancel:()V` @kind virtual;
+  #L3c5ce6.  v5:= 2I;
+  #L3c5ce8.  v5:= new `float`[v5];
+  #L3c5cec.  v1:= 0I;
+  #L3c5cee.  v5[v1]:= v2;
+  #L3c5cf2.  v1:= 1I;
+  #L3c5cf4.  v5[v1]:= v0;
+  #L3c5cf8.  call temp:= `ofFloat`(v5) @signature `Landroid/animation/ValueAnimator;.ofFloat:([F)Landroid/animation/ValueAnimator;` @kind static;
+  #L3c5cfe.  v5:= temp @kind object;
+  #L3c5d00.  v3.`com.google.android.material.appbar.AppBarLayout.elevationOverlayAnimator` @type ^`android.animation.ValueAnimator` := v5 @kind object;
+  #L3c5d04.  call temp:= `getResources`(v3) @signature `Landroid/widget/LinearLayout;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L3c5d0a.  v0:= temp @kind object;
+  #L3c5d0c.  v1:= `@@com.google.android.material.R$integer.app_bar_elevation_anim_duration` @type ^`int`;
+  #L3c5d10.  call temp:= `getInteger`(v0, v1) @signature `Landroid/content/res/Resources;.getInteger:(I)I` @kind virtual;
+  #L3c5d16.  v0:= temp;
+  #L3c5d18.  v0:= (`long`) v0 @kind i2l;
+  #L3c5d1a.  call temp:= `setDuration`(v5, v0) @signature `Landroid/animation/ValueAnimator;.setDuration:(J)Landroid/animation/ValueAnimator;` @kind virtual;
+  #L3c5d20.  v5:= v3.`com.google.android.material.appbar.AppBarLayout.elevationOverlayAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L3c5d24.  v0:= `@@com.google.android.material.animation.AnimationUtils.LINEAR_INTERPOLATOR` @type ^`android.animation.TimeInterpolator` @kind object;
+  #L3c5d28.  call `setInterpolator`(v5, v0) @signature `Landroid/animation/ValueAnimator;.setInterpolator:(Landroid/animation/TimeInterpolator;)V` @kind virtual;
+  #L3c5d2e.  v5:= v3.`com.google.android.material.appbar.AppBarLayout.elevationOverlayAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L3c5d32.  v0:= new `com.google.android.material.appbar.AppBarLayout$2`;
+  #L3c5d36.  call `<init>`(v0, v3, v4) @signature `Lcom/google/android/material/appbar/AppBarLayout$2;.<init>:(Lcom/google/android/material/appbar/AppBarLayout;Lcom/google/android/material/shape/MaterialShapeDrawable;)V` @kind direct;
+  #L3c5d3c.  call `addUpdateListener`(v5, v0) @signature `Landroid/animation/ValueAnimator;.addUpdateListener:(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V` @kind virtual;
+  #L3c5d42.  v4:= v3.`com.google.android.material.appbar.AppBarLayout.elevationOverlayAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L3c5d46.  call `start`(v4) @signature `Landroid/animation/ValueAnimator;.start:()V` @kind virtual;
+  #L3c5d4c.  return @kind void;
+}
+procedure `void` `updateWillNotDraw`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.updateWillNotDraw:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3c5d60.  call temp:= `shouldDrawStatusBarForeground`(v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.shouldDrawStatusBarForeground:()Z` @kind direct;
+  #L3c5d66.  v0:= temp;
+  #L3c5d68.  v0:= v0 ^~ 1;
+  #L3c5d6c.  call `setWillNotDraw`(v1, v0) @signature `Landroid/widget/LinearLayout;.setWillNotDraw:(Z)V` @kind virtual;
+  #L3c5d72.  return @kind void;
+}
+procedure `void` `addOnOffsetChangedListener`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `com.google.android.material.appbar.AppBarLayout$BaseOnOffsetChangedListener` v2 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.addOnOffsetChangedListener:(Lcom/google/android/material/appbar/AppBarLayout$BaseOnOffsetChangedListener;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c56b8.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.listeners` @type ^`java.util.List` @kind object;
+  #L3c56bc.  if v0 != 0 then goto L3c56ce;
+  #L3c56c0.  v0:= new `java.util.ArrayList`;
+  #L3c56c4.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L3c56ca.  v1.`com.google.android.material.appbar.AppBarLayout.listeners` @type ^`java.util.List` := v0 @kind object;
+  #L3c56ce.  if v2 == 0 then goto L3c56ec;
+  #L3c56d2.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.listeners` @type ^`java.util.List` @kind object;
+  #L3c56d6.  call temp:= `contains`(v0, v2) @signature `Ljava/util/List;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L3c56dc.  v0:= temp;
+  #L3c56de.  if v0 != 0 then goto L3c56ec;
+  #L3c56e2.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.listeners` @type ^`java.util.List` @kind object;
+  #L3c56e6.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L3c56ec.  return @kind void;
+}
+procedure `void` `addOnOffsetChangedListener`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `com.google.android.material.appbar.AppBarLayout$OnOffsetChangedListener` v1 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.addOnOffsetChangedListener:(Lcom/google/android/material/appbar/AppBarLayout$OnOffsetChangedListener;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c5700.  call `addOnOffsetChangedListener`(v0, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.addOnOffsetChangedListener:(Lcom/google/android/material/appbar/AppBarLayout$BaseOnOffsetChangedListener;)V` @kind virtual;
+  #L3c5706.  return @kind void;
+}
+procedure `boolean` `checkLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `android.view.ViewGroup$LayoutParams` v1 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.checkLayoutParams:(Landroid/view/ViewGroup$LayoutParams;)Z` @AccessFlag PROTECTED {
+    temp;
+
+  #L3c4dec.  v1:= instanceof @variable v1 @type ^`com.google.android.material.appbar.AppBarLayout$LayoutParams` @kind boolean;
+  #L3c4df0.  return v1;
+}
+procedure `void` `draw`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this, `android.graphics.Canvas` v4 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.draw:(Landroid/graphics/Canvas;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c5740.  call `draw`(v3, v4) @signature `Landroid/widget/LinearLayout;.draw:(Landroid/graphics/Canvas;)V` @kind super;
+  #L3c5746.  call temp:= `shouldDrawStatusBarForeground`(v3) @signature `Lcom/google/android/material/appbar/AppBarLayout;.shouldDrawStatusBarForeground:()Z` @kind direct;
+  #L3c574c.  v0:= temp;
+  #L3c574e.  if v0 == 0 then goto L3c577a;
+  #L3c5752.  call temp:= `save`(v4) @signature `Landroid/graphics/Canvas;.save:()I` @kind virtual;
+  #L3c5758.  v0:= temp;
+  #L3c575a.  v1:= 0I;
+  #L3c575c.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.currentOffset` @type ^`int`;
+  #L3c5760.  v2:= -v2 @kind int;
+  #L3c5762.  v2:= (`float`) v2 @kind i2f;
+  #L3c5764.  call `translate`(v4, v1, v2) @signature `Landroid/graphics/Canvas;.translate:(FF)V` @kind virtual;
+  #L3c576a.  v1:= v3.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c576e.  call `draw`(v1, v4) @signature `Landroid/graphics/drawable/Drawable;.draw:(Landroid/graphics/Canvas;)V` @kind virtual;
+  #L3c5774.  call `restoreToCount`(v4, v0) @signature `Landroid/graphics/Canvas;.restoreToCount:(I)V` @kind virtual;
+  #L3c577a.  return @kind void;
+}
+procedure `void` `drawableStateChanged`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.drawableStateChanged:()V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c578c.  call `drawableStateChanged`(v3) @signature `Landroid/widget/LinearLayout;.drawableStateChanged:()V` @kind super;
+  #L3c5792.  call temp:= `getDrawableState`(v3) @signature `Landroid/widget/LinearLayout;.getDrawableState:()[I` @kind virtual;
+  #L3c5798.  v0:= temp @kind object;
+  #L3c579a.  v1:= v3.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c579e.  if v1 == 0 then goto L3c57c0;
+  #L3c57a2.  call temp:= `isStateful`(v1) @signature `Landroid/graphics/drawable/Drawable;.isStateful:()Z` @kind virtual;
+  #L3c57a8.  v2:= temp;
+  #L3c57aa.  if v2 == 0 then goto L3c57c0;
+  #L3c57ae.  call temp:= `setState`(v1, v0) @signature `Landroid/graphics/drawable/Drawable;.setState:([I)Z` @kind virtual;
+  #L3c57b4.  v0:= temp;
+  #L3c57b6.  if v0 == 0 then goto L3c57c0;
+  #L3c57ba.  call `invalidateDrawable`(v3, v1) @signature `Landroid/widget/LinearLayout;.invalidateDrawable:(Landroid/graphics/drawable/Drawable;)V` @kind virtual;
+  #L3c57c0.  return @kind void;
+}
+procedure `android.view.ViewGroup$LayoutParams` `generateDefaultLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateDefaultLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @AccessFlag PROTECTED_SYNTHETIC {
+    temp;
+    v0;
+
+  #L3c4ce4.  call temp:= `generateDefaultLayoutParams`(v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateDefaultLayoutParams:()Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @kind virtual;
+  #L3c4cea.  v0:= temp @kind object;
+  #L3c4cec.  return v0 @kind object;
+}
+procedure `android.widget.LinearLayout$LayoutParams` `generateDefaultLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateDefaultLayoutParams:()Landroid/widget/LinearLayout$LayoutParams;` @AccessFlag PROTECTED_SYNTHETIC {
+    temp;
+    v0;
+
+  #L3c4d38.  call temp:= `generateDefaultLayoutParams`(v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateDefaultLayoutParams:()Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @kind virtual;
+  #L3c4d3e.  v0:= temp @kind object;
+  #L3c4d40.  return v0 @kind object;
+}
+procedure `com.google.android.material.appbar.AppBarLayout$LayoutParams` `generateDefaultLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateDefaultLayoutParams:()Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c5064.  v0:= new `com.google.android.material.appbar.AppBarLayout$LayoutParams`;
+  #L3c5068.  v1:= -1I;
+  #L3c506a.  v2:= -2I;
+  #L3c506c.  call `<init>`(v0, v1, v2) @signature `Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;.<init>:(II)V` @kind direct;
+  #L3c5072.  return v0 @kind object;
+}
+procedure `android.view.ViewGroup$LayoutParams` `generateLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `android.util.AttributeSet` v1 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/util/AttributeSet;)Landroid/view/ViewGroup$LayoutParams;` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+
+  #L3c4d00.  call temp:= `generateLayoutParams`(v0, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/util/AttributeSet;)Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @kind virtual;
+  #L3c4d06.  v1:= temp @kind object;
+  #L3c4d08.  return v1 @kind object;
+}
+procedure `android.view.ViewGroup$LayoutParams` `generateLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `android.view.ViewGroup$LayoutParams` v1 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/view/ViewGroup$LayoutParams;)Landroid/view/ViewGroup$LayoutParams;` @AccessFlag PROTECTED_SYNTHETIC {
+    temp;
+
+  #L3c4d1c.  call temp:= `generateLayoutParams`(v0, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/view/ViewGroup$LayoutParams;)Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @kind virtual;
+  #L3c4d22.  v1:= temp @kind object;
+  #L3c4d24.  return v1 @kind object;
+}
+procedure `android.widget.LinearLayout$LayoutParams` `generateLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `android.util.AttributeSet` v1 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/util/AttributeSet;)Landroid/widget/LinearLayout$LayoutParams;` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+
+  #L3c4d54.  call temp:= `generateLayoutParams`(v0, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/util/AttributeSet;)Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @kind virtual;
+  #L3c4d5a.  v1:= temp @kind object;
+  #L3c4d5c.  return v1 @kind object;
+}
+procedure `android.widget.LinearLayout$LayoutParams` `generateLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `android.view.ViewGroup$LayoutParams` v1 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/view/ViewGroup$LayoutParams;)Landroid/widget/LinearLayout$LayoutParams;` @AccessFlag PROTECTED_SYNTHETIC {
+    temp;
+
+  #L3c4d70.  call temp:= `generateLayoutParams`(v0, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/view/ViewGroup$LayoutParams;)Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @kind virtual;
+  #L3c4d76.  v1:= temp @kind object;
+  #L3c4d78.  return v1 @kind object;
+}
+procedure `com.google.android.material.appbar.AppBarLayout$LayoutParams` `generateLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v2 @kind this, `android.util.AttributeSet` v3 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/util/AttributeSet;)Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3c5084.  v0:= new `com.google.android.material.appbar.AppBarLayout$LayoutParams`;
+  #L3c5088.  call temp:= `getContext`(v2) @signature `Landroid/widget/LinearLayout;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L3c508e.  v1:= temp @kind object;
+  #L3c5090.  call `<init>`(v0, v1, v3) @signature `Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @kind direct;
+  #L3c5096.  return v0 @kind object;
+}
+procedure `com.google.android.material.appbar.AppBarLayout$LayoutParams` `generateLayoutParams`(`com.google.android.material.appbar.AppBarLayout` v2 @kind this, `android.view.ViewGroup$LayoutParams` v3 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.generateLayoutParams:(Landroid/view/ViewGroup$LayoutParams;)Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+
+  #L3c50a8.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3c50ac.  v1:= 19I;
+  #L3c50b0.  if v0 < v1 then goto L3c50cc;
+  #L3c50b4.  v0:= instanceof @variable v3 @type ^`android.widget.LinearLayout$LayoutParams` @kind boolean;
+  #L3c50b8.  if v0 == 0 then goto L3c50cc;
+  #L3c50bc.  v0:= new `com.google.android.material.appbar.AppBarLayout$LayoutParams`;
+  #L3c50c0.  v3:= (`android.widget.LinearLayout$LayoutParams`) v3 @kind object;
+  #L3c50c4.  call `<init>`(v0, v3) @signature `Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;.<init>:(Landroid/widget/LinearLayout$LayoutParams;)V` @kind direct;
+  #L3c50ca.  return v0 @kind object;
+  #L3c50cc.  v0:= instanceof @variable v3 @type ^`android.view.ViewGroup$MarginLayoutParams` @kind boolean;
+  #L3c50d0.  if v0 == 0 then goto L3c50e4;
+  #L3c50d4.  v0:= new `com.google.android.material.appbar.AppBarLayout$LayoutParams`;
+  #L3c50d8.  v3:= (`android.view.ViewGroup$MarginLayoutParams`) v3 @kind object;
+  #L3c50dc.  call `<init>`(v0, v3) @signature `Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;.<init>:(Landroid/view/ViewGroup$MarginLayoutParams;)V` @kind direct;
+  #L3c50e2.  return v0 @kind object;
+  #L3c50e4.  v0:= new `com.google.android.material.appbar.AppBarLayout$LayoutParams`;
+  #L3c50e8.  call `<init>`(v0, v3) @signature `Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;.<init>:(Landroid/view/ViewGroup$LayoutParams;)V` @kind direct;
+  #L3c50ee.  return v0 @kind object;
+}
+procedure `androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior` `getBehavior`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getBehavior:()Landroidx/coordinatorlayout/widget/CoordinatorLayout$Behavior;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c4d8c.  v0:= new `com.google.android.material.appbar.AppBarLayout$Behavior`;
+  #L3c4d90.  call `<init>`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout$Behavior;.<init>:()V` @kind direct;
+  #L3c4d96.  return v0 @kind object;
+}
+procedure `int` `getDownNestedPreScrollRange`(`com.google.android.material.appbar.AppBarLayout` v9 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getDownNestedPreScrollRange:()I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L3c5114.  v0:= v9.`com.google.android.material.appbar.AppBarLayout.downPreScrollRange` @type ^`int`;
+  #L3c5118.  v1:= -1I;
+  #L3c511a.  if v0 == v1 then goto L3c5120;
+  #L3c511e.  return v0;
+  #L3c5120.  call temp:= `getChildCount`(v9) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c5126.  v0:= temp;
+  #L3c5128.  v0:= v0 + -1;
+  #L3c512c.  v1:= 0I;
+  #L3c512e.  v2:= 0I;
+  #L3c5130.  if v0 < 0 then goto L3c51c6;
+  #L3c5134.  call temp:= `getChildAt`(v9, v0) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c513a.  v3:= temp @kind object;
+  #L3c513c.  call temp:= `getLayoutParams`(v3) @signature `Landroid/view/View;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L3c5142.  v4:= temp @kind object;
+  #L3c5144.  v4:= (`com.google.android.material.appbar.AppBarLayout$LayoutParams`) v4 @kind object;
+  #L3c5148.  call temp:= `getMeasuredHeight`(v3) @signature `Landroid/view/View;.getMeasuredHeight:()I` @kind virtual;
+  #L3c514e.  v5:= temp;
+  #L3c5150.  v6:= v4.`com.google.android.material.appbar.AppBarLayout$LayoutParams.scrollFlags` @type ^`int`;
+  #L3c5154.  v7:= v6 ^& 5;
+  #L3c5158.  v8:= 5I;
+  #L3c515a.  if v7 != v8 then goto L3c51ba;
+  #L3c515e.  v7:= v4.`android.widget.LinearLayout$LayoutParams.topMargin` @type ^`int`;
+  #L3c5162.  v4:= v4.`android.widget.LinearLayout$LayoutParams.bottomMargin` @type ^`int`;
+  #L3c5166.  v7:= v7 + v4 @kind int;
+  #L3c5168.  v4:= v6 ^& 8;
+  #L3c516c.  if v4 == 0 then goto L3c517c;
+  #L3c5170.  call temp:= `getMinimumHeight`(v3) @signature `Landroidx/core/view/ViewCompat;.getMinimumHeight:(Landroid/view/View;)I` @kind static;
+  #L3c5176.  v4:= temp;
+  #L3c5178.  v7:= v7 + v4 @kind int;
+  #L3c517a.  goto L3c5194;
+  #L3c517c.  v4:= v6 ^& 2;
+  #L3c5180.  if v4 == 0 then goto L3c5192;
+  #L3c5184.  call temp:= `getMinimumHeight`(v3) @signature `Landroidx/core/view/ViewCompat;.getMinimumHeight:(Landroid/view/View;)I` @kind static;
+  #L3c518a.  v4:= temp;
+  #L3c518c.  v4:= v5 - v4 @kind int;
+  #L3c5190.  goto L3c5178;
+  #L3c5192.  v7:= v7 + v5 @kind int;
+  #L3c5194.  if v0 != 0 then goto L3c51b6;
+  #L3c5198.  call temp:= `getFitsSystemWindows`(v3) @signature `Landroidx/core/view/ViewCompat;.getFitsSystemWindows:(Landroid/view/View;)Z` @kind static;
+  #L3c519e.  v3:= temp;
+  #L3c51a0.  if v3 == 0 then goto L3c51b6;
+  #L3c51a4.  call temp:= `getTopInset`(v9) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c51aa.  v3:= temp;
+  #L3c51ac.  v5:= v5 - v3 @kind int;
+  #L3c51ae.  call temp:= `min`(v7, v5) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L3c51b4.  v7:= temp;
+  #L3c51b6.  v2:= v2 + v7 @kind int;
+  #L3c51b8.  goto L3c51c0;
+  #L3c51ba.  if v2 <= 0 then goto L3c51c0;
+  #L3c51be.  goto L3c51c6;
+  #L3c51c0.  v0:= v0 + -1;
+  #L3c51c4.  goto L3c5130;
+  #L3c51c6.  call temp:= `max`(v1, v2) @signature `Ljava/lang/Math;.max:(II)I` @kind static;
+  #L3c51cc.  v0:= temp;
+  #L3c51ce.  v9.`com.google.android.material.appbar.AppBarLayout.downPreScrollRange` @type ^`int` := v0;
+  #L3c51d2.  return v0;
+}
+procedure `int` `getDownNestedScrollRange`(`com.google.android.material.appbar.AppBarLayout` v9 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getDownNestedScrollRange:()I` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L3c51e4.  v0:= v9.`com.google.android.material.appbar.AppBarLayout.downScrollRange` @type ^`int`;
+  #L3c51e8.  v1:= -1I;
+  #L3c51ea.  if v0 == v1 then goto L3c51f0;
+  #L3c51ee.  return v0;
+  #L3c51f0.  call temp:= `getChildCount`(v9) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c51f6.  v0:= temp;
+  #L3c51f8.  v1:= 0I;
+  #L3c51fa.  v2:= 0I;
+  #L3c51fc.  v3:= 0I;
+  #L3c51fe.  if v2 >= v0 then goto L3c5252;
+  #L3c5202.  call temp:= `getChildAt`(v9, v2) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c5208.  v4:= temp @kind object;
+  #L3c520a.  call temp:= `getLayoutParams`(v4) @signature `Landroid/view/View;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L3c5210.  v5:= temp @kind object;
+  #L3c5212.  v5:= (`com.google.android.material.appbar.AppBarLayout$LayoutParams`) v5 @kind object;
+  #L3c5216.  call temp:= `getMeasuredHeight`(v4) @signature `Landroid/view/View;.getMeasuredHeight:()I` @kind virtual;
+  #L3c521c.  v6:= temp;
+  #L3c521e.  v7:= v5.`android.widget.LinearLayout$LayoutParams.topMargin` @type ^`int`;
+  #L3c5222.  v8:= v5.`android.widget.LinearLayout$LayoutParams.bottomMargin` @type ^`int`;
+  #L3c5226.  v7:= v7 + v8 @kind int;
+  #L3c5228.  v6:= v6 + v7 @kind int;
+  #L3c522a.  v5:= v5.`com.google.android.material.appbar.AppBarLayout$LayoutParams.scrollFlags` @type ^`int`;
+  #L3c522e.  v7:= v5 ^& 1;
+  #L3c5232.  if v7 == 0 then goto L3c5252;
+  #L3c5236.  v3:= v3 + v6 @kind int;
+  #L3c5238.  v5:= v5 ^& 2;
+  #L3c523c.  if v5 == 0 then goto L3c524c;
+  #L3c5240.  call temp:= `getMinimumHeight`(v4) @signature `Landroidx/core/view/ViewCompat;.getMinimumHeight:(Landroid/view/View;)I` @kind static;
+  #L3c5246.  v0:= temp;
+  #L3c5248.  v3:= v3 - v0 @kind int;
+  #L3c524a.  goto L3c5252;
+  #L3c524c.  v2:= v2 + 1;
+  #L3c5250.  goto L3c51fe;
+  #L3c5252.  call temp:= `max`(v1, v3) @signature `Ljava/lang/Math;.max:(II)I` @kind static;
+  #L3c5258.  v0:= temp;
+  #L3c525a.  v9.`com.google.android.material.appbar.AppBarLayout.downScrollRange` @type ^`int` := v0;
+  #L3c525e.  return v0;
+}
+procedure `int` `getLiftOnScrollTargetViewId`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getLiftOnScrollTargetViewId:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5270.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetViewId` @type ^`int`;
+  #L3c5274.  return v0;
+}
+procedure `int` `getMinimumHeightForVisibleOverlappingContent`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getMinimumHeightForVisibleOverlappingContent:()I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c5288.  call temp:= `getTopInset`(v3) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c528e.  v0:= temp;
+  #L3c5290.  call temp:= `getMinimumHeight`(v3) @signature `Landroidx/core/view/ViewCompat;.getMinimumHeight:(Landroid/view/View;)I` @kind static;
+  #L3c5296.  v1:= temp;
+  #L3c5298.  if v1 == 0 then goto L3c52a4;
+  #L3c529c.  v1:= v1 * 2;
+  #L3c52a0.  v1:= v1 + v0 @kind int;
+  #L3c52a2.  return v1;
+  #L3c52a4.  call temp:= `getChildCount`(v3) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c52aa.  v1:= temp;
+  #L3c52ac.  v2:= 1I;
+  #L3c52ae.  if v1 < v2 then goto L3c52c6;
+  #L3c52b2.  v1:= v1 - v2 @kind int;
+  #L3c52b4.  call temp:= `getChildAt`(v3, v1) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c52ba.  v1:= temp @kind object;
+  #L3c52bc.  call temp:= `getMinimumHeight`(v1) @signature `Landroidx/core/view/ViewCompat;.getMinimumHeight:(Landroid/view/View;)I` @kind static;
+  #L3c52c2.  v1:= temp;
+  #L3c52c4.  goto L3c52c8;
+  #L3c52c6.  v1:= 0I;
+  #L3c52c8.  if v1 == 0 then goto L3c52ce;
+  #L3c52cc.  goto L3c529c;
+  #L3c52ce.  call temp:= `getHeight`(v3) @signature `Landroid/widget/LinearLayout;.getHeight:()I` @kind virtual;
+  #L3c52d4.  v0:= temp;
+  #L3c52d6.  v0:= v0 / 3;
+  #L3c52da.  return v0;
+}
+procedure `int` `getPendingAction`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getPendingAction:()I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3c52ec.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.pendingAction` @type ^`int`;
+  #L3c52f0.  return v0;
+}
+procedure `android.graphics.drawable.Drawable` `getStatusBarForeground`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getStatusBarForeground:()Landroid/graphics/drawable/Drawable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c4c40.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c4c44.  return v0 @kind object;
+}
+procedure `float` `getTargetElevation`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTargetElevation:()F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5100.  v0:= 0I;
+  #L3c5102.  return v0;
+}
+procedure `int` `getTopInset`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @AccessFlag FINAL {
+    temp;
+    v0;
+
+  #L3c5304.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.lastInsets` @type ^`androidx.core.view.WindowInsetsCompat` @kind object;
+  #L3c5308.  if v0 == 0 then goto L3c5316;
+  #L3c530c.  call temp:= `getSystemWindowInsetTop`(v0) @signature `Landroidx/core/view/WindowInsetsCompat;.getSystemWindowInsetTop:()I` @kind virtual;
+  #L3c5312.  v0:= temp;
+  #L3c5314.  goto L3c5318;
+  #L3c5316.  v0:= 0I;
+  #L3c5318.  return v0;
+}
+procedure `int` `getTotalScrollRange`(`com.google.android.material.appbar.AppBarLayout` v9 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTotalScrollRange:()I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L3c532c.  v0:= v9.`com.google.android.material.appbar.AppBarLayout.totalScrollRange` @type ^`int`;
+  #L3c5330.  v1:= -1I;
+  #L3c5332.  if v0 == v1 then goto L3c5338;
+  #L3c5336.  return v0;
+  #L3c5338.  call temp:= `getChildCount`(v9) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c533e.  v0:= temp;
+  #L3c5340.  v1:= 0I;
+  #L3c5342.  v2:= 0I;
+  #L3c5344.  v3:= 0I;
+  #L3c5346.  if v2 >= v0 then goto L3c53b4;
+  #L3c534a.  call temp:= `getChildAt`(v9, v2) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c5350.  v4:= temp @kind object;
+  #L3c5352.  call temp:= `getLayoutParams`(v4) @signature `Landroid/view/View;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L3c5358.  v5:= temp @kind object;
+  #L3c535a.  v5:= (`com.google.android.material.appbar.AppBarLayout$LayoutParams`) v5 @kind object;
+  #L3c535e.  call temp:= `getMeasuredHeight`(v4) @signature `Landroid/view/View;.getMeasuredHeight:()I` @kind virtual;
+  #L3c5364.  v6:= temp;
+  #L3c5366.  v7:= v5.`com.google.android.material.appbar.AppBarLayout$LayoutParams.scrollFlags` @type ^`int`;
+  #L3c536a.  v8:= v7 ^& 1;
+  #L3c536e.  if v8 == 0 then goto L3c53b4;
+  #L3c5372.  v8:= v5.`android.widget.LinearLayout$LayoutParams.topMargin` @type ^`int`;
+  #L3c5376.  v6:= v6 + v8 @kind int;
+  #L3c5378.  v5:= v5.`android.widget.LinearLayout$LayoutParams.bottomMargin` @type ^`int`;
+  #L3c537c.  v6:= v6 + v5 @kind int;
+  #L3c537e.  v3:= v3 + v6 @kind int;
+  #L3c5380.  if v2 != 0 then goto L3c539a;
+  #L3c5384.  call temp:= `getFitsSystemWindows`(v4) @signature `Landroidx/core/view/ViewCompat;.getFitsSystemWindows:(Landroid/view/View;)Z` @kind static;
+  #L3c538a.  v5:= temp;
+  #L3c538c.  if v5 == 0 then goto L3c539a;
+  #L3c5390.  call temp:= `getTopInset`(v9) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c5396.  v5:= temp;
+  #L3c5398.  v3:= v3 - v5 @kind int;
+  #L3c539a.  v5:= v7 ^& 2;
+  #L3c539e.  if v5 == 0 then goto L3c53ae;
+  #L3c53a2.  call temp:= `getMinimumHeight`(v4) @signature `Landroidx/core/view/ViewCompat;.getMinimumHeight:(Landroid/view/View;)I` @kind static;
+  #L3c53a8.  v0:= temp;
+  #L3c53aa.  v3:= v3 - v0 @kind int;
+  #L3c53ac.  goto L3c53b4;
+  #L3c53ae.  v2:= v2 + 1;
+  #L3c53b2.  goto L3c5346;
+  #L3c53b4.  call temp:= `max`(v1, v3) @signature `Ljava/lang/Math;.max:(II)I` @kind static;
+  #L3c53ba.  v0:= temp;
+  #L3c53bc.  v9.`com.google.android.material.appbar.AppBarLayout.totalScrollRange` @type ^`int` := v0;
+  #L3c53c0.  return v0;
+}
+procedure `int` `getUpNestedPreScrollRange`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getUpNestedPreScrollRange:()I` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3c53d4.  call temp:= `getTotalScrollRange`(v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTotalScrollRange:()I` @kind virtual;
+  #L3c53da.  v0:= temp;
+  #L3c53dc.  return v0;
+}
+procedure `boolean` `hasChildWithInterpolator`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.hasChildWithInterpolator:()Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3c4e04.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.haveChildWithInterpolator` @type ^`boolean` @kind boolean;
+  #L3c4e08.  return v0;
+}
+procedure `boolean` `hasScrollableChildren`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.hasScrollableChildren:()Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3c4e68.  call temp:= `getTotalScrollRange`(v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTotalScrollRange:()I` @kind virtual;
+  #L3c4e6e.  v0:= temp;
+  #L3c4e70.  if v0 == 0 then goto L3c4e78;
+  #L3c4e74.  v0:= 1I;
+  #L3c4e76.  goto L3c4e7a;
+  #L3c4e78.  v0:= 0I;
+  #L3c4e7a.  return v0;
+}
+procedure `boolean` `isLiftOnScroll`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.isLiftOnScroll:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c4e8c.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.liftOnScroll` @type ^`boolean` @kind boolean;
+  #L3c4e90.  return v0;
+}
+procedure `boolean` `isLifted`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.isLifted:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c4ea4.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.lifted` @type ^`boolean` @kind boolean;
+  #L3c4ea8.  return v0;
+}
+procedure `void` `onAttachedToWindow`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.onAttachedToWindow:()V` @AccessFlag PROTECTED {
+    temp;
+
+  #L3c57f4.  call `onAttachedToWindow`(v0) @signature `Landroid/widget/LinearLayout;.onAttachedToWindow:()V` @kind super;
+  #L3c57fa.  call `setParentAbsoluteElevation`(v0) @signature `Lcom/google/android/material/shape/MaterialShapeUtils;.setParentAbsoluteElevation:(Landroid/view/View;)V` @kind static;
+  #L3c5800.  return @kind void;
+}
+procedure `int`[] `onCreateDrawableState`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this, `int` v4 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.onCreateDrawableState:(I)[I` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c53f0.  v0:= v3.`com.google.android.material.appbar.AppBarLayout.tmpStatesArray` @type ^`int`[] @kind object;
+  #L3c53f4.  if v0 != 0 then goto L3c5402;
+  #L3c53f8.  v0:= 4I;
+  #L3c53fa.  v0:= new `int`[v0];
+  #L3c53fe.  v3.`com.google.android.material.appbar.AppBarLayout.tmpStatesArray` @type ^`int`[] := v0 @kind object;
+  #L3c5402.  v0:= v3.`com.google.android.material.appbar.AppBarLayout.tmpStatesArray` @type ^`int`[] @kind object;
+  #L3c5406.  v1:= length @variable v0;
+  #L3c5408.  v4:= v4 + v1 @kind int;
+  #L3c540a.  call temp:= `onCreateDrawableState`(v3, v4) @signature `Landroid/widget/LinearLayout;.onCreateDrawableState:(I)[I` @kind super;
+  #L3c5410.  v4:= temp @kind object;
+  #L3c5412.  v1:= 0I;
+  #L3c5414.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.liftable` @type ^`boolean` @kind boolean;
+  #L3c5418.  if v2 == 0 then goto L3c5422;
+  #L3c541c.  v2:= `@@com.google.android.material.R$attr.state_liftable` @type ^`int`;
+  #L3c5420.  goto L3c5428;
+  #L3c5422.  v2:= `@@com.google.android.material.R$attr.state_liftable` @type ^`int`;
+  #L3c5426.  v2:= -v2 @kind int;
+  #L3c5428.  v0[v1]:= v2;
+  #L3c542c.  v1:= 1I;
+  #L3c542e.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.liftable` @type ^`boolean` @kind boolean;
+  #L3c5432.  if v2 == 0 then goto L3c5444;
+  #L3c5436.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.lifted` @type ^`boolean` @kind boolean;
+  #L3c543a.  if v2 == 0 then goto L3c5444;
+  #L3c543e.  v2:= `@@com.google.android.material.R$attr.state_lifted` @type ^`int`;
+  #L3c5442.  goto L3c544a;
+  #L3c5444.  v2:= `@@com.google.android.material.R$attr.state_lifted` @type ^`int`;
+  #L3c5448.  v2:= -v2 @kind int;
+  #L3c544a.  v0[v1]:= v2;
+  #L3c544e.  v1:= 2I;
+  #L3c5450.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.liftable` @type ^`boolean` @kind boolean;
+  #L3c5454.  if v2 == 0 then goto L3c545e;
+  #L3c5458.  v2:= `@@com.google.android.material.R$attr.state_collapsible` @type ^`int`;
+  #L3c545c.  goto L3c5464;
+  #L3c545e.  v2:= `@@com.google.android.material.R$attr.state_collapsible` @type ^`int`;
+  #L3c5462.  v2:= -v2 @kind int;
+  #L3c5464.  v0[v1]:= v2;
+  #L3c5468.  v1:= 3I;
+  #L3c546a.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.liftable` @type ^`boolean` @kind boolean;
+  #L3c546e.  if v2 == 0 then goto L3c5480;
+  #L3c5472.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.lifted` @type ^`boolean` @kind boolean;
+  #L3c5476.  if v2 == 0 then goto L3c5480;
+  #L3c547a.  v2:= `@@com.google.android.material.R$attr.state_collapsed` @type ^`int`;
+  #L3c547e.  goto L3c5486;
+  #L3c5480.  v2:= `@@com.google.android.material.R$attr.state_collapsed` @type ^`int`;
+  #L3c5484.  v2:= -v2 @kind int;
+  #L3c5486.  v0[v1]:= v2;
+  #L3c548a.  call temp:= `mergeDrawableStates`(v4, v0) @signature `Landroid/widget/LinearLayout;.mergeDrawableStates:([I[I)[I` @kind static;
+  #L3c5490.  v4:= temp @kind object;
+  #L3c5492.  return v4 @kind object;
+}
+procedure `void` `onDetachedFromWindow`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.onDetachedFromWindow:()V` @AccessFlag PROTECTED {
+    temp;
+
+  #L3c5814.  call `onDetachedFromWindow`(v0) @signature `Landroid/widget/LinearLayout;.onDetachedFromWindow:()V` @kind super;
+  #L3c581a.  call `clearLiftOnScrollTargetView`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.clearLiftOnScrollTargetView:()V` @kind direct;
+  #L3c5820.  return @kind void;
+}
+procedure `void` `onLayout`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `boolean` v1 , `int` v2 , `int` v3 , `int` v4 , `int` v5 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.onLayout:(ZIIII)V` @AccessFlag PROTECTED {
+    temp;
+
+  #L3c5834.  call `onLayout`(v0, v1, v2, v3, v4, v5) @signature `Landroid/widget/LinearLayout;.onLayout:(ZIIII)V` @kind super;
+  #L3c583a.  call temp:= `getFitsSystemWindows`(v0) @signature `Landroidx/core/view/ViewCompat;.getFitsSystemWindows:(Landroid/view/View;)Z` @kind static;
+  #L3c5840.  v1:= temp;
+  #L3c5842.  v2:= 1I;
+  #L3c5844.  if v1 == 0 then goto L3c587e;
+  #L3c5848.  call temp:= `shouldOffsetFirstChild`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.shouldOffsetFirstChild:()Z` @kind direct;
+  #L3c584e.  v1:= temp;
+  #L3c5850.  if v1 == 0 then goto L3c587e;
+  #L3c5854.  call temp:= `getTopInset`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c585a.  v1:= temp;
+  #L3c585c.  call temp:= `getChildCount`(v0) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c5862.  v3:= temp;
+  #L3c5864.  v3:= v3 - v2 @kind int;
+  #L3c5866.  if v3 < 0 then goto L3c587e;
+  #L3c586a.  call temp:= `getChildAt`(v0, v3) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c5870.  v4:= temp @kind object;
+  #L3c5872.  call `offsetTopAndBottom`(v4, v1) @signature `Landroidx/core/view/ViewCompat;.offsetTopAndBottom:(Landroid/view/View;I)V` @kind static;
+  #L3c5878.  v3:= v3 + -1;
+  #L3c587c.  goto L3c5866;
+  #L3c587e.  call `invalidateScrollRanges`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.invalidateScrollRanges:()V` @kind direct;
+  #L3c5884.  v1:= 0I;
+  #L3c5886.  v0.`com.google.android.material.appbar.AppBarLayout.haveChildWithInterpolator` @type ^`boolean` := v1 @kind boolean;
+  #L3c588a.  call temp:= `getChildCount`(v0) @signature `Landroid/widget/LinearLayout;.getChildCount:()I` @kind virtual;
+  #L3c5890.  v3:= temp;
+  #L3c5892.  v4:= 0I;
+  #L3c5894.  if v4 >= v3 then goto L3c58c4;
+  #L3c5898.  call temp:= `getChildAt`(v0, v4) @signature `Landroid/widget/LinearLayout;.getChildAt:(I)Landroid/view/View;` @kind virtual;
+  #L3c589e.  v5:= temp @kind object;
+  #L3c58a0.  call temp:= `getLayoutParams`(v5) @signature `Landroid/view/View;.getLayoutParams:()Landroid/view/ViewGroup$LayoutParams;` @kind virtual;
+  #L3c58a6.  v5:= temp @kind object;
+  #L3c58a8.  v5:= (`com.google.android.material.appbar.AppBarLayout$LayoutParams`) v5 @kind object;
+  #L3c58ac.  call temp:= `getScrollInterpolator`(v5) @signature `Lcom/google/android/material/appbar/AppBarLayout$LayoutParams;.getScrollInterpolator:()Landroid/view/animation/Interpolator;` @kind virtual;
+  #L3c58b2.  v5:= temp @kind object;
+  #L3c58b4.  if v5 == 0 then goto L3c58be;
+  #L3c58b8.  v0.`com.google.android.material.appbar.AppBarLayout.haveChildWithInterpolator` @type ^`boolean` := v2 @kind boolean;
+  #L3c58bc.  goto L3c58c4;
+  #L3c58be.  v4:= v4 + 1;
+  #L3c58c2.  goto L3c5894;
+  #L3c58c4.  v3:= v0.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c58c8.  if v3 == 0 then goto L3c58e2;
+  #L3c58cc.  call temp:= `getWidth`(v0) @signature `Landroid/widget/LinearLayout;.getWidth:()I` @kind virtual;
+  #L3c58d2.  v4:= temp;
+  #L3c58d4.  call temp:= `getTopInset`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c58da.  v5:= temp;
+  #L3c58dc.  call `setBounds`(v3, v1, v1, v4, v5) @signature `Landroid/graphics/drawable/Drawable;.setBounds:(IIII)V` @kind virtual;
+  #L3c58e2.  v3:= v0.`com.google.android.material.appbar.AppBarLayout.liftableOverride` @type ^`boolean` @kind boolean;
+  #L3c58e6.  if v3 != 0 then goto L3c5908;
+  #L3c58ea.  v3:= v0.`com.google.android.material.appbar.AppBarLayout.liftOnScroll` @type ^`boolean` @kind boolean;
+  #L3c58ee.  if v3 != 0 then goto L3c5902;
+  #L3c58f2.  call temp:= `hasCollapsibleChild`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.hasCollapsibleChild:()Z` @kind direct;
+  #L3c58f8.  v3:= temp;
+  #L3c58fa.  if v3 == 0 then goto L3c5900;
+  #L3c58fe.  goto L3c5902;
+  #L3c5900.  v2:= 0I;
+  #L3c5902.  call temp:= `setLiftableState`(v0, v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftableState:(Z)Z` @kind direct;
+  #L3c5908.  return @kind void;
+}
+procedure `void` `onMeasure`(`com.google.android.material.appbar.AppBarLayout` v2 @kind this, `int` v3 , `int` v4 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.onMeasure:(II)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+
+  #L3c591c.  call `onMeasure`(v2, v3, v4) @signature `Landroid/widget/LinearLayout;.onMeasure:(II)V` @kind super;
+  #L3c5922.  call temp:= `getMode`(v4) @signature `Landroid/view/View$MeasureSpec;.getMode:(I)I` @kind static;
+  #L3c5928.  v3:= temp;
+  #L3c592a.  v0:= 2.0F;
+  #L3c592e.  if v3 == v0 then goto L3c599e;
+  #L3c5932.  call temp:= `getFitsSystemWindows`(v2) @signature `Landroidx/core/view/ViewCompat;.getFitsSystemWindows:(Landroid/view/View;)Z` @kind static;
+  #L3c5938.  v0:= temp;
+  #L3c593a.  if v0 == 0 then goto L3c599e;
+  #L3c593e.  call temp:= `shouldOffsetFirstChild`(v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.shouldOffsetFirstChild:()Z` @kind direct;
+  #L3c5944.  v0:= temp;
+  #L3c5946.  if v0 == 0 then goto L3c599e;
+  #L3c594a.  call temp:= `getMeasuredHeight`(v2) @signature `Landroid/widget/LinearLayout;.getMeasuredHeight:()I` @kind virtual;
+  #L3c5950.  v0:= temp;
+  #L3c5952.  v1:= -2147483648I;
+  #L3c5956.  if v3 == v1 then goto L3c596c;
+  #L3c595a.  if v3 == 0 then goto L3c5960;
+  #L3c595e.  goto L3c5990;
+  #L3c5960.  call temp:= `getTopInset`(v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c5966.  v3:= temp;
+  #L3c5968.  v0:= v0 + v3 @kind int;
+  #L3c596a.  goto L3c5990;
+  #L3c596c.  call temp:= `getMeasuredHeight`(v2) @signature `Landroid/widget/LinearLayout;.getMeasuredHeight:()I` @kind virtual;
+  #L3c5972.  v3:= temp;
+  #L3c5974.  call temp:= `getTopInset`(v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.getTopInset:()I` @kind virtual;
+  #L3c597a.  v0:= temp;
+  #L3c597c.  v3:= v3 + v0 @kind int;
+  #L3c597e.  v0:= 0I;
+  #L3c5980.  call temp:= `getSize`(v4) @signature `Landroid/view/View$MeasureSpec;.getSize:(I)I` @kind static;
+  #L3c5986.  v4:= temp;
+  #L3c5988.  call temp:= `clamp`(v3, v0, v4) @signature `Landroidx/core/math/MathUtils;.clamp:(III)I` @kind static;
+  #L3c598e.  v0:= temp;
+  #L3c5990.  call temp:= `getMeasuredWidth`(v2) @signature `Landroid/widget/LinearLayout;.getMeasuredWidth:()I` @kind virtual;
+  #L3c5996.  v3:= temp;
+  #L3c5998.  call `setMeasuredDimension`(v2, v3, v0) @signature `Landroid/widget/LinearLayout;.setMeasuredDimension:(II)V` @kind virtual;
+  #L3c599e.  call `invalidateScrollRanges`(v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.invalidateScrollRanges:()V` @kind direct;
+  #L3c59a4.  return @kind void;
+}
+procedure `void` `onOffsetChanged`(`com.google.android.material.appbar.AppBarLayout` v3 @kind this, `int` v4 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.onOffsetChanged:(I)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c59b8.  v3.`com.google.android.material.appbar.AppBarLayout.currentOffset` @type ^`int` := v4;
+  #L3c59bc.  call temp:= `willNotDraw`(v3) @signature `Landroid/widget/LinearLayout;.willNotDraw:()Z` @kind virtual;
+  #L3c59c2.  v0:= temp;
+  #L3c59c4.  if v0 != 0 then goto L3c59ce;
+  #L3c59c8.  call `postInvalidateOnAnimation`(v3) @signature `Landroidx/core/view/ViewCompat;.postInvalidateOnAnimation:(Landroid/view/View;)V` @kind static;
+  #L3c59ce.  v0:= v3.`com.google.android.material.appbar.AppBarLayout.listeners` @type ^`java.util.List` @kind object;
+  #L3c59d2.  if v0 == 0 then goto L3c5a04;
+  #L3c59d6.  v1:= 0I;
+  #L3c59d8.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L3c59de.  v0:= temp;
+  #L3c59e0.  if v1 >= v0 then goto L3c5a04;
+  #L3c59e4.  v2:= v3.`com.google.android.material.appbar.AppBarLayout.listeners` @type ^`java.util.List` @kind object;
+  #L3c59e8.  call temp:= `get`(v2, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L3c59ee.  v2:= temp @kind object;
+  #L3c59f0.  v2:= (`com.google.android.material.appbar.AppBarLayout$BaseOnOffsetChangedListener`) v2 @kind object;
+  #L3c59f4.  if v2 == 0 then goto L3c59fe;
+  #L3c59f8.  call `onOffsetChanged`(v2, v3, v4) @signature `Lcom/google/android/material/appbar/AppBarLayout$BaseOnOffsetChangedListener;.onOffsetChanged:(Lcom/google/android/material/appbar/AppBarLayout;I)V` @kind interface;
+  #L3c59fe.  v1:= v1 + 1;
+  #L3c5a02.  goto L3c59e0;
+  #L3c5a04.  return @kind void;
+}
+procedure `androidx.core.view.WindowInsetsCompat` `onWindowInsetChanged`(`com.google.android.material.appbar.AppBarLayout` v2 @kind this, `androidx.core.view.WindowInsetsCompat` v3 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.onWindowInsetChanged:(Landroidx/core/view/WindowInsetsCompat;)Landroidx/core/view/WindowInsetsCompat;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3c4da8.  call temp:= `getFitsSystemWindows`(v2) @signature `Landroidx/core/view/ViewCompat;.getFitsSystemWindows:(Landroid/view/View;)Z` @kind static;
+  #L3c4dae.  v0:= temp;
+  #L3c4db0.  if v0 == 0 then goto L3c4db8;
+  #L3c4db4.  v0:= v3 @kind object;
+  #L3c4db6.  goto L3c4dba;
+  #L3c4db8.  v0:= 0I;
+  #L3c4dba.  v1:= v2.`com.google.android.material.appbar.AppBarLayout.lastInsets` @type ^`androidx.core.view.WindowInsetsCompat` @kind object;
+  #L3c4dbe.  call temp:= `equals`(v1, v0) @signature `Landroidx/core/util/ObjectsCompat;.equals:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind static;
+  #L3c4dc4.  v1:= temp;
+  #L3c4dc6.  if v1 != 0 then goto L3c4dda;
+  #L3c4dca.  v2.`com.google.android.material.appbar.AppBarLayout.lastInsets` @type ^`androidx.core.view.WindowInsetsCompat` := v0 @kind object;
+  #L3c4dce.  call `updateWillNotDraw`(v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.updateWillNotDraw:()V` @kind direct;
+  #L3c4dd4.  call `requestLayout`(v2) @signature `Landroid/widget/LinearLayout;.requestLayout:()V` @kind virtual;
+  #L3c4dda.  return v3 @kind object;
+}
+procedure `void` `removeOnOffsetChangedListener`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `com.google.android.material.appbar.AppBarLayout$BaseOnOffsetChangedListener` v2 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.removeOnOffsetChangedListener:(Lcom/google/android/material/appbar/AppBarLayout$BaseOnOffsetChangedListener;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5a18.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.listeners` @type ^`java.util.List` @kind object;
+  #L3c5a1c.  if v0 == 0 then goto L3c5a2a;
+  #L3c5a20.  if v2 == 0 then goto L3c5a2a;
+  #L3c5a24.  call temp:= `remove`(v0, v2) @signature `Ljava/util/List;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L3c5a2a.  return @kind void;
+}
+procedure `void` `removeOnOffsetChangedListener`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `com.google.android.material.appbar.AppBarLayout$OnOffsetChangedListener` v1 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.removeOnOffsetChangedListener:(Lcom/google/android/material/appbar/AppBarLayout$OnOffsetChangedListener;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c5a3c.  call `removeOnOffsetChangedListener`(v0, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.removeOnOffsetChangedListener:(Lcom/google/android/material/appbar/AppBarLayout$BaseOnOffsetChangedListener;)V` @kind virtual;
+  #L3c5a42.  return @kind void;
+}
+procedure `void` `resetPendingAction`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this) @signature `Lcom/google/android/material/appbar/AppBarLayout;.resetPendingAction:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3c5a54.  v0:= 0I;
+  #L3c5a56.  v1.`com.google.android.material.appbar.AppBarLayout.pendingAction` @type ^`int` := v0;
+  #L3c5a5a.  return @kind void;
+}
+procedure `void` `setElevation`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `float` v1 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setElevation:(F)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c5a6c.  call `setElevation`(v0, v1) @signature `Landroid/widget/LinearLayout;.setElevation:(F)V` @kind super;
+  #L3c5a72.  call `setElevation`(v0, v1) @signature `Lcom/google/android/material/shape/MaterialShapeUtils;.setElevation:(Landroid/view/View;F)V` @kind static;
+  #L3c5a78.  return @kind void;
+}
+procedure `void` `setExpanded`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `boolean` v2 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setExpanded:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5a8c.  call temp:= `isLaidOut`(v1) @signature `Landroidx/core/view/ViewCompat;.isLaidOut:(Landroid/view/View;)Z` @kind static;
+  #L3c5a92.  v0:= temp;
+  #L3c5a94.  call `setExpanded`(v1, v2, v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setExpanded:(ZZ)V` @kind virtual;
+  #L3c5a9a.  return @kind void;
+}
+procedure `void` `setExpanded`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `boolean` v2 , `boolean` v3 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setExpanded:(ZZ)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5aac.  v0:= 1I;
+  #L3c5aae.  call `setExpanded`(v1, v2, v3, v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setExpanded:(ZZZ)V` @kind direct;
+  #L3c5ab4.  return @kind void;
+}
+procedure `void` `setLiftOnScroll`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `boolean` v1 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftOnScroll:(Z)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c5b08.  v0.`com.google.android.material.appbar.AppBarLayout.liftOnScroll` @type ^`boolean` := v1 @kind boolean;
+  #L3c5b0c.  return @kind void;
+}
+procedure `void` `setLiftOnScrollTargetViewId`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `int` v1 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftOnScrollTargetViewId:(I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c5b20.  v0.`com.google.android.material.appbar.AppBarLayout.liftOnScrollTargetViewId` @type ^`int` := v1;
+  #L3c5b24.  call `clearLiftOnScrollTargetView`(v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.clearLiftOnScrollTargetView:()V` @kind direct;
+  #L3c5b2a.  return @kind void;
+}
+procedure `boolean` `setLiftable`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `boolean` v2 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftable:(Z)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c4ebc.  v0:= 1I;
+  #L3c4ebe.  v1.`com.google.android.material.appbar.AppBarLayout.liftableOverride` @type ^`boolean` := v0 @kind boolean;
+  #L3c4ec2.  call temp:= `setLiftableState`(v1, v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftableState:(Z)Z` @kind direct;
+  #L3c4ec8.  v2:= temp;
+  #L3c4eca.  return v2;
+}
+procedure `boolean` `setLifted`(`com.google.android.material.appbar.AppBarLayout` v0 @kind this, `boolean` v1 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLifted:(Z)Z` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c4f08.  call temp:= `setLiftedState`(v0, v1) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftedState:(Z)Z` @kind virtual;
+  #L3c4f0e.  v1:= temp;
+  #L3c4f10.  return v1;
+}
+procedure `boolean` `setLiftedState`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `boolean` v2 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setLiftedState:(Z)Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3c4f24.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.lifted` @type ^`boolean` @kind boolean;
+  #L3c4f28.  if v0 == v2 then goto L3c4f64;
+  #L3c4f2c.  v1.`com.google.android.material.appbar.AppBarLayout.lifted` @type ^`boolean` := v2 @kind boolean;
+  #L3c4f30.  call `refreshDrawableState`(v1) @signature `Landroid/widget/LinearLayout;.refreshDrawableState:()V` @kind virtual;
+  #L3c4f36.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.liftOnScroll` @type ^`boolean` @kind boolean;
+  #L3c4f3a.  if v0 == 0 then goto L3c4f60;
+  #L3c4f3e.  call temp:= `getBackground`(v1) @signature `Landroid/widget/LinearLayout;.getBackground:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3c4f44.  v0:= temp @kind object;
+  #L3c4f46.  v0:= instanceof @variable v0 @type ^`com.google.android.material.shape.MaterialShapeDrawable` @kind boolean;
+  #L3c4f4a.  if v0 == 0 then goto L3c4f60;
+  #L3c4f4e.  call temp:= `getBackground`(v1) @signature `Landroid/widget/LinearLayout;.getBackground:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3c4f54.  v0:= temp @kind object;
+  #L3c4f56.  v0:= (`com.google.android.material.shape.MaterialShapeDrawable`) v0 @kind object;
+  #L3c4f5a.  call `startLiftOnScrollElevationOverlayAnimation`(v1, v0, v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.startLiftOnScrollElevationOverlayAnimation:(Lcom/google/android/material/shape/MaterialShapeDrawable;Z)V` @kind direct;
+  #L3c4f60.  v2:= 1I;
+  #L3c4f62.  return v2;
+  #L3c4f64.  v2:= 0I;
+  #L3c4f66.  return v2;
+}
+procedure `void` `setOrientation`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `int` v2 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setOrientation:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5b3c.  v0:= 1I;
+  #L3c5b3e.  if v2 != v0 then goto L3c5b4a;
+  #L3c5b42.  call `setOrientation`(v1, v2) @signature `Landroid/widget/LinearLayout;.setOrientation:(I)V` @kind super;
+  #L3c5b48.  return @kind void;
+  #L3c5b4a.  v2:= new `java.lang.IllegalArgumentException`;
+  #L3c5b4e.  v0:= "AppBarLayout is always vertical and does not support horizontal orientation" @kind object;
+  #L3c5b52.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3c5b58.  throw v2;
+}
+procedure `void` `setStatusBarForeground`(`com.google.android.material.appbar.AppBarLayout` v2 @kind this, `android.graphics.drawable.Drawable` v3 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setStatusBarForeground:(Landroid/graphics/drawable/Drawable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3c5b6c.  v0:= v2.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c5b70.  if v0 == v3 then goto L3c5bf8;
+  #L3c5b74.  v1:= 0I;
+  #L3c5b76.  if v0 == 0 then goto L3c5b80;
+  #L3c5b7a.  call `setCallback`(v0, v1) @signature `Landroid/graphics/drawable/Drawable;.setCallback:(Landroid/graphics/drawable/Drawable$Callback;)V` @kind virtual;
+  #L3c5b80.  if v3 == 0 then goto L3c5b8c;
+  #L3c5b84.  call temp:= `mutate`(v3) @signature `Landroid/graphics/drawable/Drawable;.mutate:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3c5b8a.  v1:= temp @kind object;
+  #L3c5b8c.  v2.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` := v1 @kind object;
+  #L3c5b90.  if v1 == 0 then goto L3c5bec;
+  #L3c5b94.  call temp:= `isStateful`(v1) @signature `Landroid/graphics/drawable/Drawable;.isStateful:()Z` @kind virtual;
+  #L3c5b9a.  v3:= temp;
+  #L3c5b9c.  if v3 == 0 then goto L3c5bb2;
+  #L3c5ba0.  v3:= v2.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c5ba4.  call temp:= `getDrawableState`(v2) @signature `Landroid/widget/LinearLayout;.getDrawableState:()[I` @kind virtual;
+  #L3c5baa.  v0:= temp @kind object;
+  #L3c5bac.  call temp:= `setState`(v3, v0) @signature `Landroid/graphics/drawable/Drawable;.setState:([I)Z` @kind virtual;
+  #L3c5bb2.  v3:= v2.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c5bb6.  call temp:= `getLayoutDirection`(v2) @signature `Landroidx/core/view/ViewCompat;.getLayoutDirection:(Landroid/view/View;)I` @kind static;
+  #L3c5bbc.  v0:= temp;
+  #L3c5bbe.  call temp:= `setLayoutDirection`(v3, v0) @signature `Landroidx/core/graphics/drawable/DrawableCompat;.setLayoutDirection:(Landroid/graphics/drawable/Drawable;I)Z` @kind static;
+  #L3c5bc4.  v3:= v2.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c5bc8.  call temp:= `getVisibility`(v2) @signature `Landroid/widget/LinearLayout;.getVisibility:()I` @kind virtual;
+  #L3c5bce.  v0:= temp;
+  #L3c5bd0.  v1:= 0I;
+  #L3c5bd2.  if v0 != 0 then goto L3c5bda;
+  #L3c5bd6.  v0:= 1I;
+  #L3c5bd8.  goto L3c5bdc;
+  #L3c5bda.  v0:= 0I;
+  #L3c5bdc.  call temp:= `setVisible`(v3, v0, v1) @signature `Landroid/graphics/drawable/Drawable;.setVisible:(ZZ)Z` @kind virtual;
+  #L3c5be2.  v3:= v2.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c5be6.  call `setCallback`(v3, v2) @signature `Landroid/graphics/drawable/Drawable;.setCallback:(Landroid/graphics/drawable/Drawable$Callback;)V` @kind virtual;
+  #L3c5bec.  call `updateWillNotDraw`(v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.updateWillNotDraw:()V` @kind direct;
+  #L3c5bf2.  call `postInvalidateOnAnimation`(v2) @signature `Landroidx/core/view/ViewCompat;.postInvalidateOnAnimation:(Landroid/view/View;)V` @kind static;
+  #L3c5bf8.  return @kind void;
+}
+procedure `void` `setStatusBarForegroundColor`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `int` v2 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setStatusBarForegroundColor:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5c0c.  v0:= new `android.graphics.drawable.ColorDrawable`;
+  #L3c5c10.  call `<init>`(v0, v2) @signature `Landroid/graphics/drawable/ColorDrawable;.<init>:(I)V` @kind direct;
+  #L3c5c16.  call `setStatusBarForeground`(v1, v0) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setStatusBarForeground:(Landroid/graphics/drawable/Drawable;)V` @kind virtual;
+  #L3c5c1c.  return @kind void;
+}
+procedure `void` `setStatusBarForegroundResource`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `int` v2 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setStatusBarForegroundResource:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c5c30.  call temp:= `getContext`(v1) @signature `Landroid/widget/LinearLayout;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L3c5c36.  v0:= temp @kind object;
+  #L3c5c38.  call temp:= `getDrawable`(v0, v2) @signature `Landroidx/appcompat/content/res/AppCompatResources;.getDrawable:(Landroid/content/Context;I)Landroid/graphics/drawable/Drawable;` @kind static;
+  #L3c5c3e.  v2:= temp @kind object;
+  #L3c5c40.  call `setStatusBarForeground`(v1, v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setStatusBarForeground:(Landroid/graphics/drawable/Drawable;)V` @kind virtual;
+  #L3c5c46.  return @kind void;
+}
+procedure `void` `setTargetElevation`(`com.google.android.material.appbar.AppBarLayout` v2 @kind this, `float` v3 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setTargetElevation:(F)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3c5c58.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3c5c5c.  v1:= 21I;
+  #L3c5c60.  if v0 < v1 then goto L3c5c6a;
+  #L3c5c64.  call `setDefaultAppBarLayoutStateListAnimator`(v2, v3) @signature `Lcom/google/android/material/appbar/ViewUtilsLollipop;.setDefaultAppBarLayoutStateListAnimator:(Landroid/view/View;F)V` @kind static;
+  #L3c5c6a.  return @kind void;
+}
+procedure `void` `setVisibility`(`com.google.android.material.appbar.AppBarLayout` v2 @kind this, `int` v3 ) @signature `Lcom/google/android/material/appbar/AppBarLayout;.setVisibility:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3c5c7c.  call `setVisibility`(v2, v3) @signature `Landroid/widget/LinearLayout;.setVisibility:(I)V` @kind super;
+  #L3c5c82.  v0:= 0I;
+  #L3c5c84.  if v3 != 0 then goto L3c5c8c;
+  #L3c5c88.  v3:= 1I;
+  #L3c5c8a.  goto L3c5c8e;
+  #L3c5c8c.  v3:= 0I;
+  #L3c5c8e.  v1:= v2.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c5c92.  if v1 == 0 then goto L3c5c9c;
+  #L3c5c96.  call temp:= `setVisible`(v1, v3, v0) @signature `Landroid/graphics/drawable/Drawable;.setVisible:(ZZ)Z` @kind virtual;
+  #L3c5c9c.  return @kind void;
+}
+procedure `boolean` `shouldLift`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `android.view.View` v2 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.shouldLift:(Landroid/view/View;)Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3c4fa4.  call temp:= `findLiftOnScrollTargetView`(v1, v2) @signature `Lcom/google/android/material/appbar/AppBarLayout;.findLiftOnScrollTargetView:(Landroid/view/View;)Landroid/view/View;` @kind direct;
+  #L3c4faa.  v0:= temp @kind object;
+  #L3c4fac.  if v0 != 0 then goto L3c4fb2;
+  #L3c4fb0.  goto L3c4fb4;
+  #L3c4fb2.  v2:= v0 @kind object;
+  #L3c4fb4.  if v2 == 0 then goto L3c4fd6;
+  #L3c4fb8.  v0:= -1I;
+  #L3c4fba.  call temp:= `canScrollVertically`(v2, v0) @signature `Landroid/view/View;.canScrollVertically:(I)Z` @kind virtual;
+  #L3c4fc0.  v0:= temp;
+  #L3c4fc2.  if v0 != 0 then goto L3c4fd2;
+  #L3c4fc6.  call temp:= `getScrollY`(v2) @signature `Landroid/view/View;.getScrollY:()I` @kind virtual;
+  #L3c4fcc.  v2:= temp;
+  #L3c4fce.  if v2 <= 0 then goto L3c4fd6;
+  #L3c4fd2.  v2:= 1I;
+  #L3c4fd4.  goto L3c4fd8;
+  #L3c4fd6.  v2:= 0I;
+  #L3c4fd8.  return v2;
+}
+procedure `boolean` `verifyDrawable`(`com.google.android.material.appbar.AppBarLayout` v1 @kind this, `android.graphics.drawable.Drawable` v2 @kind object) @signature `Lcom/google/android/material/appbar/AppBarLayout;.verifyDrawable:(Landroid/graphics/drawable/Drawable;)Z` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L3c5034.  call temp:= `verifyDrawable`(v1, v2) @signature `Landroid/widget/LinearLayout;.verifyDrawable:(Landroid/graphics/drawable/Drawable;)Z` @kind super;
+  #L3c503a.  v0:= temp;
+  #L3c503c.  if v0 != 0 then goto L3c504e;
+  #L3c5040.  v0:= v1.`com.google.android.material.appbar.AppBarLayout.statusBarForeground` @type ^`android.graphics.drawable.Drawable` @kind object;
+  #L3c5044.  if v2 != v0 then goto L3c504a;
+  #L3c5048.  goto L3c504e;
+  #L3c504a.  v2:= 0I;
+  #L3c504c.  goto L3c5050;
+  #L3c504e.  v2:= 1I;
+  #L3c5050.  return v2;
+}

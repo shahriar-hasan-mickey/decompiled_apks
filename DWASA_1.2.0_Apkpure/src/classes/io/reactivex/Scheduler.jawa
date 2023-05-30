@@ -1,0 +1,125 @@
+record `io.reactivex.Scheduler` @kind class @AccessFlag PUBLIC_ABSTRACT {
+}
+global `long` `@@io.reactivex.Scheduler.CLOCK_DRIFT_TOLERANCE_NANOSECONDS` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lio/reactivex/Scheduler;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3e1ad8.  v0:= `@@java.util.concurrent.TimeUnit.MINUTES` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L3e1adc.  v1:= "rx2.scheduler.drift-tolerance" @kind object;
+  #L3e1ae0.  v2:= 15L;
+  #L3e1ae4.  call temp:= `getLong`(v1, v2) @signature `Ljava/lang/Long;.getLong:(Ljava/lang/String;J)Ljava/lang/Long;` @kind static;
+  #L3e1aea.  v1:= temp @kind object;
+  #L3e1aec.  call temp:= `longValue`(v1) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L3e1af2.  v1:= temp @kind wide;
+  #L3e1af4.  call temp:= `toNanos`(v0, v1) @signature `Ljava/util/concurrent/TimeUnit;.toNanos:(J)J` @kind virtual;
+  #L3e1afa.  v0:= temp @kind wide;
+  #L3e1afc.  `@@io.reactivex.Scheduler.CLOCK_DRIFT_TOLERANCE_NANOSECONDS` @type ^`long` := v0 @kind wide;
+  #L3e1b00.  return @kind void;
+}
+procedure `void` `<init>`(`io.reactivex.Scheduler` v0 @kind this) @signature `Lio/reactivex/Scheduler;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L3e1b14.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3e1b1a.  return @kind void;
+}
+procedure `long` `clockDriftTolerance`() @signature `Lio/reactivex/Scheduler;.clockDriftTolerance:()J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L3e1a98.  v0:= `@@io.reactivex.Scheduler.CLOCK_DRIFT_TOLERANCE_NANOSECONDS` @type ^`long` @kind wide;
+  #L3e1a9c.  return v0 @kind wide;
+}
+procedure `io.reactivex.Scheduler$Worker` `createWorker`() @signature `Lio/reactivex/Scheduler;.createWorker:()Lio/reactivex/Scheduler$Worker;` @AccessFlag PUBLIC_ABSTRACT {
+
+  # return;
+}
+procedure `long` `now`(`io.reactivex.Scheduler` v3 @kind this, `java.util.concurrent.TimeUnit` v4 @kind object) @signature `Lio/reactivex/Scheduler;.now:(Ljava/util/concurrent/TimeUnit;)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3e1ab0.  call temp:= `currentTimeMillis`() @signature `Ljava/lang/System;.currentTimeMillis:()J` @kind static;
+  #L3e1ab6.  v0:= temp @kind wide;
+  #L3e1ab8.  v2:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L3e1abc.  call temp:= `convert`(v4, v0, v2) @signature `Ljava/util/concurrent/TimeUnit;.convert:(JLjava/util/concurrent/TimeUnit;)J` @kind virtual;
+  #L3e1ac2.  v0:= temp @kind wide;
+  #L3e1ac4.  return v0 @kind wide;
+}
+procedure `io.reactivex.disposables.Disposable` `scheduleDirect`(`io.reactivex.Scheduler` v3 @kind this, `java.lang.Runnable` v4 @kind object) @signature `Lio/reactivex/Scheduler;.scheduleDirect:(Ljava/lang/Runnable;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3e19f8.  v0:= `@@java.util.concurrent.TimeUnit.NANOSECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L3e19fc.  v1:= 0L;
+  #L3e1a00.  call temp:= `scheduleDirect`(v3, v4, v1, v0) @signature `Lio/reactivex/Scheduler;.scheduleDirect:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L3e1a06.  v4:= temp @kind object;
+  #L3e1a08.  return v4 @kind object;
+}
+procedure `io.reactivex.disposables.Disposable` `scheduleDirect`(`io.reactivex.Scheduler` v2 @kind this, `java.lang.Runnable` v3 @kind object, `long` v4 , `java.util.concurrent.TimeUnit` v6 @kind object) @signature `Lio/reactivex/Scheduler;.scheduleDirect:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3e1a1c.  call temp:= `createWorker`(v2) @signature `Lio/reactivex/Scheduler;.createWorker:()Lio/reactivex/Scheduler$Worker;` @kind virtual;
+  #L3e1a22.  v0:= temp @kind object;
+  #L3e1a24.  call temp:= `onSchedule`(v3) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onSchedule:(Ljava/lang/Runnable;)Ljava/lang/Runnable;` @kind static;
+  #L3e1a2a.  v3:= temp @kind object;
+  #L3e1a2c.  v1:= new `io.reactivex.Scheduler$DisposeTask`;
+  #L3e1a30.  call `<init>`(v1, v3, v0) @signature `Lio/reactivex/Scheduler$DisposeTask;.<init>:(Ljava/lang/Runnable;Lio/reactivex/Scheduler$Worker;)V` @kind direct;
+  #L3e1a36.  call temp:= `schedule`(v0, v1, v4, v6) @signature `Lio/reactivex/Scheduler$Worker;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L3e1a3c.  return v1 @kind object;
+}
+procedure `io.reactivex.disposables.Disposable` `schedulePeriodicallyDirect`(`io.reactivex.Scheduler` v8 @kind this, `java.lang.Runnable` v9 @kind object, `long` v10 , `long` v12 , `java.util.concurrent.TimeUnit` v14 @kind object) @signature `Lio/reactivex/Scheduler;.schedulePeriodicallyDirect:(Ljava/lang/Runnable;JJLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3e1a50.  call temp:= `createWorker`(v8) @signature `Lio/reactivex/Scheduler;.createWorker:()Lio/reactivex/Scheduler$Worker;` @kind virtual;
+  #L3e1a56.  v0:= temp @kind object;
+  #L3e1a58.  call temp:= `onSchedule`(v9) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onSchedule:(Ljava/lang/Runnable;)Ljava/lang/Runnable;` @kind static;
+  #L3e1a5e.  v9:= temp @kind object;
+  #L3e1a60.  v7:= new `io.reactivex.Scheduler$PeriodicDirectTask`;
+  #L3e1a64.  call `<init>`(v7, v9, v0) @signature `Lio/reactivex/Scheduler$PeriodicDirectTask;.<init>:(Ljava/lang/Runnable;Lio/reactivex/Scheduler$Worker;)V` @kind direct;
+  #L3e1a6a.  v1:= v7 @kind object;
+  #L3e1a6c.  v2:= v10 @kind wide;
+  #L3e1a6e.  v4:= v12 @kind wide;
+  #L3e1a70.  v6:= v14 @kind object;
+  #L3e1a72.  call temp:= `schedulePeriodically`(v0, v1, v2, v4, v6) @signature `Lio/reactivex/Scheduler$Worker;.schedulePeriodically:(Ljava/lang/Runnable;JJLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L3e1a78.  v9:= temp @kind object;
+  #L3e1a7a.  v10:= `@@io.reactivex.internal.disposables.EmptyDisposable.INSTANCE` @type ^`io.reactivex.internal.disposables.EmptyDisposable` @kind object;
+  #L3e1a7e.  if v9 != v10 then goto L3e1a84;
+  #L3e1a82.  return v9 @kind object;
+  #L3e1a84.  return v7 @kind object;
+}
+procedure `void` `shutdown`(`io.reactivex.Scheduler` v0 @kind this) @signature `Lio/reactivex/Scheduler;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3e1b2c.  return @kind void;
+}
+procedure `void` `start`(`io.reactivex.Scheduler` v0 @kind this) @signature `Lio/reactivex/Scheduler;.start:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3e1b40.  return @kind void;
+}
+procedure `io.reactivex.Scheduler` `when`(`io.reactivex.Scheduler` v1 @kind this, `io.reactivex.functions.Function` v2 @kind object) @signature `Lio/reactivex/Scheduler;.when:(Lio/reactivex/functions/Function;)Lio/reactivex/Scheduler;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3e19dc.  v0:= new `io.reactivex.internal.schedulers.SchedulerWhen`;
+  #L3e19e0.  call `<init>`(v0, v2, v1) @signature `Lio/reactivex/internal/schedulers/SchedulerWhen;.<init>:(Lio/reactivex/functions/Function;Lio/reactivex/Scheduler;)V` @kind direct;
+  #L3e19e6.  return v0 @kind object;
+}

@@ -1,0 +1,354 @@
+record `net.authorize.acceptsdk.parser.AcceptSDKParser` @kind class @AccessFlag PUBLIC {
+}
+procedure `void` `<init>`(`net.authorize.acceptsdk.parser.AcceptSDKParser` v0 @kind this) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L236a80.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L236a86.  return @kind void;
+}
+procedure `net.authorize.acceptsdk.datamodel.transaction.response.TransactionResponse` `createEncryptionTransactionResponse`(`java.lang.String` v4 @kind object @name `json`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.createEncryptionTransactionResponse:(Ljava/lang/String;)Lnet/authorize/acceptsdk/datamodel/transaction/response/TransactionResponse;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2369f4.  v0:= new `org.json.JSONTokener`;
+  #L2369f8.  call `<init>`(v0, v4) @signature `Lorg/json/JSONTokener;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2369fe.  call temp:= `nextValue`(v0) @signature `Lorg/json/JSONTokener;.nextValue:()Ljava/lang/Object;` @kind virtual;
+  #L236a04.  v0:= temp @kind object;
+  #L236a06.  v0:= (`org.json.JSONObject`) v0 @kind object;
+  #L236a0a.  v1:= "opaqueData" @kind object;
+  #L236a0e.  call temp:= `has`(v0, v1) @signature `Lorg/json/JSONObject;.has:(Ljava/lang/String;)Z` @kind virtual;
+  #L236a14.  v2:= temp;
+  #L236a16.  v3:= "messages" @kind object;
+  #L236a1a.  if v2 == 0 then goto L236a50;
+  #L236a1e.  v2:= new `net.authorize.acceptsdk.datamodel.transaction.response.EncryptTransactionResponse`;
+  #L236a22.  call `<init>`(v2) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/EncryptTransactionResponse;.<init>:()V` @kind direct;
+  #L236a28.  call temp:= `getJSONObject`(v0, v1) @signature `Lorg/json/JSONObject;.getJSONObject:(Ljava/lang/String;)Lorg/json/JSONObject;` @kind virtual;
+  #L236a2e.  v1:= temp @kind object;
+  #L236a30.  call `parseOpaqueSection`(v2, v1) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseOpaqueSection:(Lnet/authorize/acceptsdk/datamodel/transaction/response/EncryptTransactionResponse;Lorg/json/JSONObject;)V` @kind static;
+  #L236a36.  
+  #L236a38.  call temp:= `getJSONObject`(v0, v3) @signature `Lorg/json/JSONObject;.getJSONObject:(Ljava/lang/String;)Lorg/json/JSONObject;` @kind virtual;
+  #L236a3e.  v1:= temp @kind object;
+  #L236a40.  call temp:= `parseResponseMessagesSection`(v1) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseResponseMessagesSection:(Lorg/json/JSONObject;)Lnet/authorize/acceptsdk/datamodel/common/ResponseMessages;` @kind static;
+  #L236a46.  v1:= temp @kind object;
+  #L236a48.  call `setResponseMessages`(v2, v1) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/EncryptTransactionResponse;.setResponseMessages:(Lnet/authorize/acceptsdk/datamodel/common/ResponseMessages;)V` @kind virtual;
+  #L236a4e.  return v2 @kind object;
+  #L236a50.  
+  #L236a52.  call temp:= `getJSONObject`(v0, v3) @signature `Lorg/json/JSONObject;.getJSONObject:(Ljava/lang/String;)Lorg/json/JSONObject;` @kind virtual;
+  #L236a58.  v1:= temp @kind object;
+  #L236a5a.  call temp:= `parseResponseMessagesSection`(v1) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseResponseMessagesSection:(Lorg/json/JSONObject;)Lnet/authorize/acceptsdk/datamodel/common/ResponseMessages;` @kind static;
+  #L236a60.  v1:= temp @kind object;
+  #L236a62.  v2:= new `net.authorize.acceptsdk.datamodel.transaction.response.ErrorTransactionResponse`;
+  #L236a66.  call `<init>`(v2, v1) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;.<init>:(Lnet/authorize/acceptsdk/datamodel/common/ResponseMessages;)V` @kind direct;
+  #L236a6c.  return v2 @kind object;
+}
+procedure `java.lang.String` `getOrderedJsonFromEncryptTransaction`(`net.authorize.acceptsdk.datamodel.transaction.EncryptTransactionObject` v5 @kind object @name `transactionObject`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.getOrderedJsonFromEncryptTransaction:(Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2367fc.  call temp:= `getCardData`(v5) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;.getCardData:()Lnet/authorize/acceptsdk/datamodel/transaction/CardData;` @kind virtual;
+  #L236802.  v0:= temp @kind object;
+  #L236804.  v1:= new `org.json.JSONStringer`;
+  #L236808.  call `<init>`(v1) @signature `Lorg/json/JSONStringer;.<init>:()V` @kind direct;
+  #L23680e.  call temp:= `object`(v1) @signature `Lorg/json/JSONStringer;.object:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236814.  v1:= temp @kind object;
+  #L236816.  v2:= "securePaymentContainerRequest" @kind object;
+  #L23681a.  call temp:= `key`(v1, v2) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236820.  v2:= temp @kind object;
+  #L236822.  call temp:= `object`(v2) @signature `Lorg/json/JSONStringer;.object:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236828.  call `prepareJsonForAuthenticationSection`(v1, v5) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.prepareJsonForAuthenticationSection:(Lorg/json/JSONStringer;Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;)V` @kind static;
+  #L23682e.  v2:= "clientId" @kind object;
+  #L236832.  call temp:= `key`(v1, v2) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236838.  v2:= temp @kind object;
+  #L23683a.  v3:= "accept-sdk-android-1.0.2" @kind object;
+  #L23683e.  call temp:= `value`(v2, v3) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236844.  v2:= "data" @kind object;
+  #L236848.  call temp:= `key`(v1, v2) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L23684e.  v2:= temp @kind object;
+  #L236850.  call temp:= `object`(v2) @signature `Lorg/json/JSONStringer;.object:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236856.  v2:= "type" @kind object;
+  #L23685a.  call temp:= `key`(v1, v2) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236860.  v2:= temp @kind object;
+  #L236862.  v3:= "TOKEN" @kind object;
+  #L236866.  call temp:= `value`(v2, v3) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L23686c.  v2:= "id" @kind object;
+  #L236870.  call temp:= `key`(v1, v2) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236876.  v2:= temp @kind object;
+  #L236878.  call temp:= `getGuid`(v5) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;.getGuid:()Ljava/lang/String;` @kind virtual;
+  #L23687e.  v3:= temp @kind object;
+  #L236880.  call temp:= `value`(v2, v3) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236886.  call `prepareJsonForTokenSection`(v1, v0) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.prepareJsonForTokenSection:(Lorg/json/JSONStringer;Lnet/authorize/acceptsdk/datamodel/transaction/CardData;)V` @kind static;
+  #L23688c.  call temp:= `endObject`(v1) @signature `Lorg/json/JSONStringer;.endObject:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236892.  call temp:= `endObject`(v1) @signature `Lorg/json/JSONStringer;.endObject:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236898.  call temp:= `endObject`(v1) @signature `Lorg/json/JSONStringer;.endObject:()Lorg/json/JSONStringer;` @kind virtual;
+  #L23689e.  v2:= `@@net.authorize.acceptsdk.util.LogUtil$LOG_LEVEL.INFO` @type ^`net.authorize.acceptsdk.util.LogUtil$LOG_LEVEL` @kind object;
+  #L2368a2.  v3:= new `java.lang.StringBuilder`;
+  #L2368a6.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2368ac.  v4:= "getJsonFromEncryptTransaction : " @kind object;
+  #L2368b0.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2368b6.  call temp:= `toString`(v1) @signature `Lorg/json/JSONStringer;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2368bc.  v4:= temp @kind object;
+  #L2368be.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2368c4.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2368ca.  v3:= temp @kind object;
+  #L2368cc.  call `log`(v2, v3) @signature `Lnet/authorize/acceptsdk/util/LogUtil;.log:(Lnet/authorize/acceptsdk/util/LogUtil$LOG_LEVEL;Ljava/lang/String;)V` @kind static;
+  #L2368d2.  call temp:= `toString`(v1) @signature `Lorg/json/JSONStringer;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2368d8.  v2:= temp @kind object;
+  #L2368da.  return v2 @kind object;
+}
+procedure `net.authorize.acceptsdk.datamodel.common.Message` `parseMessage`(`org.json.JSONObject` v2 @kind object @name `json`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseMessage:(Lorg/json/JSONObject;)Lnet/authorize/acceptsdk/datamodel/common/Message;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L236954.  v0:= new `net.authorize.acceptsdk.datamodel.common.Message`;
+  #L236958.  call `<init>`(v0) @signature `Lnet/authorize/acceptsdk/datamodel/common/Message;.<init>:()V` @kind direct;
+  #L23695e.  v1:= "code" @kind object;
+  #L236962.  call temp:= `getString`(v2, v1) @signature `Lorg/json/JSONObject;.getString:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L236968.  v1:= temp @kind object;
+  #L23696a.  call `setMessageCode`(v0, v1) @signature `Lnet/authorize/acceptsdk/datamodel/common/Message;.setMessageCode:(Ljava/lang/String;)V` @kind virtual;
+  #L236970.  v1:= "text" @kind object;
+  #L236974.  call temp:= `getString`(v2, v1) @signature `Lorg/json/JSONObject;.getString:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L23697a.  v1:= temp @kind object;
+  #L23697c.  call `setMessageText`(v0, v1) @signature `Lnet/authorize/acceptsdk/datamodel/common/Message;.setMessageText:(Ljava/lang/String;)V` @kind virtual;
+  #L236982.  return v0 @kind object;
+}
+procedure `java.util.List` `parseMessagesList`(`boolean` v5 @name `isErrorResponse`, `org.json.JSONArray` v6 @kind object @name `jsonArray`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseMessagesList:(ZLorg/json/JSONArray;)Ljava/util/List;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2368ec.  call temp:= `length`(v6) @signature `Lorg/json/JSONArray;.length:()I` @kind virtual;
+  #L2368f2.  v0:= temp;
+  #L2368f4.  v1:= new `java.util.ArrayList`;
+  #L2368f8.  call `<init>`(v1, v0) @signature `Ljava/util/ArrayList;.<init>:(I)V` @kind direct;
+  #L2368fe.  v2:= 0I;
+  #L236900.  if v2 >= v0 then goto L236942;
+  #L236904.  call temp:= `getJSONObject`(v6, v2) @signature `Lorg/json/JSONArray;.getJSONObject:(I)Lorg/json/JSONObject;` @kind virtual;
+  #L23690a.  v3:= temp @kind object;
+  #L23690c.  call temp:= `parseMessage`(v3) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseMessage:(Lorg/json/JSONObject;)Lnet/authorize/acceptsdk/datamodel/common/Message;` @kind static;
+  #L236912.  v3:= temp @kind object;
+  #L236914.  if v5 == 0 then goto L23692c;
+  #L236918.  v4:= `@@net.authorize.acceptsdk.datamodel.error.SDKErrorCode.E_WC_14` @type ^`net.authorize.acceptsdk.datamodel.error.SDKErrorCode` @kind object;
+  #L23691c.  call temp:= `getErrorCode`(v4) @signature `Lnet/authorize/acceptsdk/datamodel/error/SDKErrorCode;.getErrorCode:()Ljava/lang/String;` @kind virtual;
+  #L236922.  v4:= temp @kind object;
+  #L236924.  call `setMessageCode`(v3, v4) @signature `Lnet/authorize/acceptsdk/datamodel/common/Message;.setMessageCode:(Ljava/lang/String;)V` @kind virtual;
+  #L23692a.  goto L236936;
+  #L23692c.  v4:= "I_WC_01" @kind object;
+  #L236930.  call `setMessageCode`(v3, v4) @signature `Lnet/authorize/acceptsdk/datamodel/common/Message;.setMessageCode:(Ljava/lang/String;)V` @kind virtual;
+  #L236936.  call temp:= `add`(v1, v3) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L23693c.  v2:= v2 + 1;
+  #L236940.  goto L236900;
+  #L236942.  return v1 @kind object;
+}
+procedure `void` `parseOpaqueSection`(`net.authorize.acceptsdk.datamodel.transaction.response.EncryptTransactionResponse` v1 @kind object @name `response`, `org.json.JSONObject` v2 @kind object @name `json`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseOpaqueSection:(Lnet/authorize/acceptsdk/datamodel/transaction/response/EncryptTransactionResponse;Lorg/json/JSONObject;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L236a98.  v0:= "dataDescriptor" @kind object;
+  #L236a9c.  call temp:= `getString`(v2, v0) @signature `Lorg/json/JSONObject;.getString:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L236aa2.  v0:= temp @kind object;
+  #L236aa4.  call `setDataDescriptor`(v1, v0) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/EncryptTransactionResponse;.setDataDescriptor:(Ljava/lang/String;)V` @kind virtual;
+  #L236aaa.  v0:= "dataValue" @kind object;
+  #L236aae.  call temp:= `getString`(v2, v0) @signature `Lorg/json/JSONObject;.getString:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L236ab4.  v0:= temp @kind object;
+  #L236ab6.  call `setDataValue`(v1, v0) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/EncryptTransactionResponse;.setDataValue:(Ljava/lang/String;)V` @kind virtual;
+  #L236abc.  return @kind void;
+}
+procedure `net.authorize.acceptsdk.datamodel.common.ResponseMessages` `parseResponseMessagesSection`(`org.json.JSONObject` v4 @kind object @name `json`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseResponseMessagesSection:(Lorg/json/JSONObject;)Lnet/authorize/acceptsdk/datamodel/common/ResponseMessages;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L236994.  v0:= "resultCode" @kind object;
+  #L236998.  call temp:= `getString`(v4, v0) @signature `Lorg/json/JSONObject;.getString:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L23699e.  v1:= temp @kind object;
+  #L2369a0.  v2:= 0I;
+  #L2369a2.  v3:= "Error" @kind object;
+  #L2369a6.  call temp:= `equals`(v1, v3) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2369ac.  v3:= temp;
+  #L2369ae.  if v3 == 0 then goto L2369b4;
+  #L2369b2.  v2:= 1I;
+  #L2369b4.  v3:= new `net.authorize.acceptsdk.datamodel.common.ResponseMessages`;
+  #L2369b8.  call temp:= `getString`(v4, v0) @signature `Lorg/json/JSONObject;.getString:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L2369be.  v0:= temp @kind object;
+  #L2369c0.  call `<init>`(v3, v0) @signature `Lnet/authorize/acceptsdk/datamodel/common/ResponseMessages;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2369c6.  v0:= v3 @kind object;
+  #L2369c8.  v3:= "message" @kind object;
+  #L2369cc.  call temp:= `getJSONArray`(v4, v3) @signature `Lorg/json/JSONObject;.getJSONArray:(Ljava/lang/String;)Lorg/json/JSONArray;` @kind virtual;
+  #L2369d2.  v3:= temp @kind object;
+  #L2369d4.  call temp:= `parseMessagesList`(v2, v3) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.parseMessagesList:(ZLorg/json/JSONArray;)Ljava/util/List;` @kind static;
+  #L2369da.  v3:= temp @kind object;
+  #L2369dc.  call `setMessageList`(v0, v3) @signature `Lnet/authorize/acceptsdk/datamodel/common/ResponseMessages;.setMessageList:(Ljava/util/List;)V` @kind virtual;
+  #L2369e2.  return v0 @kind object;
+}
+procedure `void` `prepareJsonForAuthenticationSection`(`org.json.JSONStringer` v5 @kind object @name `stringer`, `net.authorize.acceptsdk.datamodel.transaction.EncryptTransactionObject` v6 @kind object @name `transactionObject`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.prepareJsonForAuthenticationSection:(Lorg/json/JSONStringer;Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L236ad0.  v0:= 0I;
+  #L236ad2.  v1:= 0I;
+  #L236ad4.  call temp:= `getMerchantAuthentication`(v6) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;.getMerchantAuthentication:()Lnet/authorize/acceptsdk/datamodel/merchant/AbstractMerchantAuthentication;` @kind virtual;
+  #L236ada.  v2:= temp @kind object;
+  #L236adc.  call temp:= `getApiLoginID`(v2) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/AbstractMerchantAuthentication;.getApiLoginID:()Ljava/lang/String;` @kind virtual;
+  #L236ae2.  v2:= temp @kind object;
+  #L236ae4.  
+  #L236ae6.  call temp:= `getMerchantAuthentication`(v6) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;.getMerchantAuthentication:()Lnet/authorize/acceptsdk/datamodel/merchant/AbstractMerchantAuthentication;` @kind virtual;
+  #L236aec.  v3:= temp @kind object;
+  #L236aee.  call temp:= `getMerchantAuthenticationType`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/AbstractMerchantAuthentication;.getMerchantAuthenticationType:()Lnet/authorize/acceptsdk/datamodel/merchant/MerchantAuthenticationType;` @kind virtual;
+  #L236af4.  v3:= temp @kind object;
+  #L236af6.  v4:= `@@net.authorize.acceptsdk.datamodel.merchant.MerchantAuthenticationType.CLIENT_KEY` @type ^`net.authorize.acceptsdk.datamodel.merchant.MerchantAuthenticationType` @kind object;
+  #L236afa.  if v3 != v4 then goto L236b16;
+  #L236afe.  
+  #L236b00.  call temp:= `getMerchantAuthentication`(v6) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;.getMerchantAuthentication:()Lnet/authorize/acceptsdk/datamodel/merchant/AbstractMerchantAuthentication;` @kind virtual;
+  #L236b06.  v4:= temp @kind object;
+  #L236b08.  v4:= (`net.authorize.acceptsdk.datamodel.merchant.ClientKeyBasedMerchantAuthentication`) v4 @kind object;
+  #L236b0c.  call temp:= `getClientKey`(v4) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/ClientKeyBasedMerchantAuthentication;.getClientKey:()Ljava/lang/String;` @kind virtual;
+  #L236b12.  v0:= temp @kind object;
+  #L236b14.  goto L236b36;
+  #L236b16.  v4:= `@@net.authorize.acceptsdk.datamodel.merchant.MerchantAuthenticationType.FINGERPRINT` @type ^`net.authorize.acceptsdk.datamodel.merchant.MerchantAuthenticationType` @kind object;
+  #L236b1a.  if v3 != v4 then goto L236b36;
+  #L236b1e.  
+  #L236b20.  call temp:= `getMerchantAuthentication`(v6) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;.getMerchantAuthentication:()Lnet/authorize/acceptsdk/datamodel/merchant/AbstractMerchantAuthentication;` @kind virtual;
+  #L236b26.  v4:= temp @kind object;
+  #L236b28.  v4:= (`net.authorize.acceptsdk.datamodel.merchant.FingerPrintBasedMerchantAuthentication`) v4 @kind object;
+  #L236b2c.  call temp:= `getFingerPrintData`(v4) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintBasedMerchantAuthentication;.getFingerPrintData:()Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;` @kind virtual;
+  #L236b32.  v1:= temp @kind object;
+  #L236b34.  goto L236b38;
+  #L236b36.  
+  #L236b38.  v4:= "merchantAuthentication" @kind object;
+  #L236b3c.  call temp:= `key`(v5, v4) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236b42.  v4:= temp @kind object;
+  #L236b44.  call temp:= `object`(v4) @signature `Lorg/json/JSONStringer;.object:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236b4a.  v4:= "name" @kind object;
+  #L236b4e.  call temp:= `key`(v5, v4) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236b54.  v4:= temp @kind object;
+  #L236b56.  call temp:= `value`(v4, v2) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236b5c.  if v0 == 0 then goto L236b74;
+  #L236b60.  v4:= "clientKey" @kind object;
+  #L236b64.  call temp:= `key`(v5, v4) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236b6a.  v4:= temp @kind object;
+  #L236b6c.  call temp:= `value`(v4, v0) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236b72.  goto L236b7e;
+  #L236b74.  if v1 == 0 then goto L236b7e;
+  #L236b78.  call `prepareJsonForFingerPrintSection`(v5, v1) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.prepareJsonForFingerPrintSection:(Lorg/json/JSONStringer;Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;)V` @kind static;
+  #L236b7e.  call temp:= `endObject`(v5) @signature `Lorg/json/JSONStringer;.endObject:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236b84.  return @kind void;
+}
+procedure `void` `prepareJsonForFingerPrintSection`(`org.json.JSONStringer` v2 @kind object @name `stringer`, `net.authorize.acceptsdk.datamodel.merchant.FingerPrintData` v3 @kind object @name `fData`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.prepareJsonForFingerPrintSection:(Lorg/json/JSONStringer;Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L236b98.  v0:= "fingerPrint" @kind object;
+  #L236b9c.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236ba2.  v0:= temp @kind object;
+  #L236ba4.  call temp:= `object`(v0) @signature `Lorg/json/JSONStringer;.object:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236baa.  v0:= "hashValue" @kind object;
+  #L236bae.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236bb4.  v0:= temp @kind object;
+  #L236bb6.  call temp:= `getHashValue`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getHashValue:()Ljava/lang/String;` @kind virtual;
+  #L236bbc.  v1:= temp @kind object;
+  #L236bbe.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236bc4.  call temp:= `getSequence`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getSequence:()Ljava/lang/String;` @kind virtual;
+  #L236bca.  v0:= temp @kind object;
+  #L236bcc.  if v0 == 0 then goto L236bea;
+  #L236bd0.  v0:= "sequence" @kind object;
+  #L236bd4.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236bda.  v0:= temp @kind object;
+  #L236bdc.  call temp:= `getSequence`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getSequence:()Ljava/lang/String;` @kind virtual;
+  #L236be2.  v1:= temp @kind object;
+  #L236be4.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236bea.  v0:= "timestamp" @kind object;
+  #L236bee.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236bf4.  v0:= temp @kind object;
+  #L236bf6.  call temp:= `getTimestampString`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getTimestampString:()Ljava/lang/String;` @kind virtual;
+  #L236bfc.  v1:= temp @kind object;
+  #L236bfe.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c04.  call temp:= `getCurrencyCode`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getCurrencyCode:()Ljava/lang/String;` @kind virtual;
+  #L236c0a.  v0:= temp @kind object;
+  #L236c0c.  if v0 == 0 then goto L236c2a;
+  #L236c10.  v0:= "currencyCode" @kind object;
+  #L236c14.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c1a.  v0:= temp @kind object;
+  #L236c1c.  call temp:= `getCurrencyCode`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getCurrencyCode:()Ljava/lang/String;` @kind virtual;
+  #L236c22.  v1:= temp @kind object;
+  #L236c24.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c2a.  call temp:= `getAmountString`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getAmountString:()Ljava/lang/String;` @kind virtual;
+  #L236c30.  v0:= temp @kind object;
+  #L236c32.  if v0 == 0 then goto L236c50;
+  #L236c36.  v0:= "amount" @kind object;
+  #L236c3a.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c40.  v0:= temp @kind object;
+  #L236c42.  call temp:= `getAmountString`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/merchant/FingerPrintData;.getAmountString:()Ljava/lang/String;` @kind virtual;
+  #L236c48.  v1:= temp @kind object;
+  #L236c4a.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c50.  call temp:= `endObject`(v2) @signature `Lorg/json/JSONStringer;.endObject:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236c56.  return @kind void;
+}
+procedure `void` `prepareJsonForTokenSection`(`org.json.JSONStringer` v2 @kind object @name `stringer`, `net.authorize.acceptsdk.datamodel.transaction.CardData` v3 @kind object @name `cardData`) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.prepareJsonForTokenSection:(Lorg/json/JSONStringer;Lnet/authorize/acceptsdk/datamodel/transaction/CardData;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L236c68.  v0:= "token" @kind object;
+  #L236c6c.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c72.  v0:= temp @kind object;
+  #L236c74.  call temp:= `object`(v0) @signature `Lorg/json/JSONStringer;.object:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236c7a.  v0:= "cardNumber" @kind object;
+  #L236c7e.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c84.  v0:= temp @kind object;
+  #L236c86.  call temp:= `getCardNumber`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getCardNumber:()Ljava/lang/String;` @kind virtual;
+  #L236c8c.  v1:= temp @kind object;
+  #L236c8e.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c94.  v0:= "expirationDate" @kind object;
+  #L236c98.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236c9e.  v0:= temp @kind object;
+  #L236ca0.  call temp:= `getExpirationInFormatMMYYYY`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getExpirationInFormatMMYYYY:()Ljava/lang/String;` @kind virtual;
+  #L236ca6.  v1:= temp @kind object;
+  #L236ca8.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236cae.  call temp:= `getCvvCode`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getCvvCode:()Ljava/lang/String;` @kind virtual;
+  #L236cb4.  v0:= temp @kind object;
+  #L236cb6.  if v0 == 0 then goto L236cd4;
+  #L236cba.  v0:= "cardCode" @kind object;
+  #L236cbe.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236cc4.  v0:= temp @kind object;
+  #L236cc6.  call temp:= `getCvvCode`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getCvvCode:()Ljava/lang/String;` @kind virtual;
+  #L236ccc.  v1:= temp @kind object;
+  #L236cce.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236cd4.  call temp:= `getZipCode`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getZipCode:()Ljava/lang/String;` @kind virtual;
+  #L236cda.  v0:= temp @kind object;
+  #L236cdc.  if v0 == 0 then goto L236cfa;
+  #L236ce0.  v0:= "zip" @kind object;
+  #L236ce4.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236cea.  v0:= temp @kind object;
+  #L236cec.  call temp:= `getZipCode`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getZipCode:()Ljava/lang/String;` @kind virtual;
+  #L236cf2.  v1:= temp @kind object;
+  #L236cf4.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236cfa.  call temp:= `getCardHolderName`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getCardHolderName:()Ljava/lang/String;` @kind virtual;
+  #L236d00.  v0:= temp @kind object;
+  #L236d02.  if v0 == 0 then goto L236d20;
+  #L236d06.  v0:= "fullName" @kind object;
+  #L236d0a.  call temp:= `key`(v2, v0) @signature `Lorg/json/JSONStringer;.key:(Ljava/lang/String;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236d10.  v0:= temp @kind object;
+  #L236d12.  call temp:= `getCardHolderName`(v3) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/CardData;.getCardHolderName:()Ljava/lang/String;` @kind virtual;
+  #L236d18.  v1:= temp @kind object;
+  #L236d1a.  call temp:= `value`(v0, v1) @signature `Lorg/json/JSONStringer;.value:(Ljava/lang/Object;)Lorg/json/JSONStringer;` @kind virtual;
+  #L236d20.  call temp:= `endObject`(v2) @signature `Lorg/json/JSONStringer;.endObject:()Lorg/json/JSONStringer;` @kind virtual;
+  #L236d26.  return @kind void;
+}

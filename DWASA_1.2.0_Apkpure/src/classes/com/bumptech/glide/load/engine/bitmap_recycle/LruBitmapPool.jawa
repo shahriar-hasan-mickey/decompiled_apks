@@ -1,0 +1,494 @@
+record `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` @kind class @AccessFlag PUBLIC extends `com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool` @kind interface {
+  `java.util.Set` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.allowedConfigs` @AccessFlag PRIVATE_FINAL;
+  `int` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.evictions` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.hits` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.initialMaxSize` @AccessFlag PRIVATE_FINAL;
+  `int` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.misses` @AccessFlag PRIVATE;
+  `int` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.puts` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool$BitmapTracker` `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.tracker` @AccessFlag PRIVATE_FINAL;
+}
+global `android.graphics.Bitmap$Config` `@@com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.DEFAULT_CONFIG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2bb17c.  v0:= `@@android.graphics.Bitmap$Config.ARGB_8888` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L2bb180.  `@@com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.DEFAULT_CONFIG` @type ^`android.graphics.Bitmap$Config` := v0 @kind object;
+  #L2bb184.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v2 @kind this, `int` v3 ) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L2bb198.  call temp:= `getDefaultStrategy`() @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getDefaultStrategy:()Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;` @kind static;
+  #L2bb19e.  v0:= temp @kind object;
+  #L2bb1a0.  call temp:= `getDefaultAllowedConfigs`() @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getDefaultAllowedConfigs:()Ljava/util/Set;` @kind static;
+  #L2bb1a6.  v1:= temp @kind object;
+  #L2bb1a8.  call `<init>`(v2, v3, v0, v1) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.<init>:(ILcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;Ljava/util/Set;)V` @kind direct;
+  #L2bb1ae.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v0 @kind this, `int` v1 , `com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` v2 @kind object, `java.util.Set` v3 @kind object) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.<init>:(ILcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;Ljava/util/Set;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L2bb1c0.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2bb1c6.  v0.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.initialMaxSize` @type ^`int` := v1;
+  #L2bb1ca.  v0.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @type ^`int` := v1;
+  #L2bb1ce.  v0.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` := v2 @kind object;
+  #L2bb1d2.  v0.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.allowedConfigs` @type ^`java.util.Set` := v3 @kind object;
+  #L2bb1d6.  v1:= new `com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool$NullBitmapTracker`;
+  #L2bb1da.  v2:= 0I;
+  #L2bb1dc.  call `<init>`(v1, v2) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool$NullBitmapTracker;.<init>:(Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool$1;)V` @kind direct;
+  #L2bb1e2.  v0.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.tracker` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool$BitmapTracker` := v1 @kind object;
+  #L2bb1e6.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v1 @kind this, `int` v2 , `java.util.Set` v3 @kind object) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.<init>:(ILjava/util/Set;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2bb1f8.  call temp:= `getDefaultStrategy`() @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getDefaultStrategy:()Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;` @kind static;
+  #L2bb1fe.  v0:= temp @kind object;
+  #L2bb200.  call `<init>`(v1, v2, v0, v3) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.<init>:(ILcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;Ljava/util/Set;)V` @kind direct;
+  #L2bb206.  return @kind void;
+}
+procedure `void` `dump`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v2 @kind this) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.dump:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2bb250.  v0:= "LruBitmapPool" @kind object;
+  #L2bb254.  v1:= 2I;
+  #L2bb256.  call temp:= `isLoggable`(v0, v1) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bb25c.  v0:= temp;
+  #L2bb25e.  if v0 == 0 then goto L2bb268;
+  #L2bb262.  call `dumpUnchecked`(v2) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.dumpUnchecked:()V` @kind direct;
+  #L2bb268.  return @kind void;
+}
+procedure `void` `dumpUnchecked`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v2 @kind this) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.dumpUnchecked:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L2bb27c.  v0:= new `java.lang.StringBuilder`;
+  #L2bb280.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bb286.  v1:= "Hits=" @kind object;
+  #L2bb28a.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb290.  v1:= v2.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.hits` @type ^`int`;
+  #L2bb294.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb29a.  v1:= ", misses=" @kind object;
+  #L2bb29e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2a4.  v1:= v2.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.misses` @type ^`int`;
+  #L2bb2a8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2ae.  v1:= ", puts=" @kind object;
+  #L2bb2b2.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2b8.  v1:= v2.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.puts` @type ^`int`;
+  #L2bb2bc.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2c2.  v1:= ", evictions=" @kind object;
+  #L2bb2c6.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2cc.  v1:= v2.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.evictions` @type ^`int`;
+  #L2bb2d0.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2d6.  v1:= ", currentSize=" @kind object;
+  #L2bb2da.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2e0.  v1:= v2.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int`;
+  #L2bb2e4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2ea.  v1:= ", maxSize=" @kind object;
+  #L2bb2ee.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2f4.  v1:= v2.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @type ^`int`;
+  #L2bb2f8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb2fe.  v1:= "\nStrategy=" @kind object;
+  #L2bb302.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb308.  v1:= v2.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bb30c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb312.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2bb318.  v0:= temp @kind object;
+  #L2bb31a.  v1:= "LruBitmapPool" @kind object;
+  #L2bb31e.  call temp:= `v`(v1, v0) @signature `Landroid/util/Log;.v:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bb324.  return @kind void;
+}
+procedure `void` `evict`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v1 @kind this) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.evict:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2bb338.  v0:= v1.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @type ^`int`;
+  #L2bb33c.  call `trimToSize`(v1, v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.trimToSize:(I)V` @kind direct;
+  #L2bb342.  return @kind void;
+}
+procedure `java.util.Set` `getDefaultAllowedConfigs`() @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getDefaultAllowedConfigs:()Ljava/util/Set;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2bb12c.  v0:= new `java.util.HashSet`;
+  #L2bb130.  call `<init>`(v0) @signature `Ljava/util/HashSet;.<init>:()V` @kind direct;
+  #L2bb136.  call temp:= `values`() @signature `Landroid/graphics/Bitmap$Config;.values:()[Landroid/graphics/Bitmap$Config;` @kind static;
+  #L2bb13c.  v1:= temp @kind object;
+  #L2bb13e.  call temp:= `asList`(v1) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L2bb144.  v1:= temp @kind object;
+  #L2bb146.  call temp:= `addAll`(v0, v1) @signature `Ljava/util/Set;.addAll:(Ljava/util/Collection;)Z` @kind interface;
+  #L2bb14c.  v1:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L2bb150.  v2:= 19I;
+  #L2bb154.  if v1 < v2 then goto L2bb160;
+  #L2bb158.  v1:= 0I;
+  #L2bb15a.  call temp:= `add`(v0, v1) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2bb160.  call temp:= `unmodifiableSet`(v0) @signature `Ljava/util/Collections;.unmodifiableSet:(Ljava/util/Set;)Ljava/util/Set;` @kind static;
+  #L2bb166.  v0:= temp @kind object;
+  #L2bb168.  return v0 @kind object;
+}
+procedure `com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` `getDefaultStrategy`() @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getDefaultStrategy:()Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2bb0e0.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L2bb0e4.  v1:= 19I;
+  #L2bb0e8.  if v0 < v1 then goto L2bb0f8;
+  #L2bb0ec.  v0:= new `com.bumptech.glide.load.engine.bitmap_recycle.SizeConfigStrategy`;
+  #L2bb0f0.  call `<init>`(v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/SizeConfigStrategy;.<init>:()V` @kind direct;
+  #L2bb0f6.  goto L2bb102;
+  #L2bb0f8.  v0:= new `com.bumptech.glide.load.engine.bitmap_recycle.AttributeStrategy`;
+  #L2bb0fc.  call `<init>`(v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/AttributeStrategy;.<init>:()V` @kind direct;
+  #L2bb102.  return v0 @kind object;
+}
+procedure `void` `trimToSize`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v4 @kind this, `int` v5 ) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.trimToSize:(I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2bb40c.  @monitorenter v4
+  #L2bb40e.  v0:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int`;
+  #L2bb412.  if v0 <= v5 then goto L2bb4da;
+  #L2bb416.  v0:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bb41a.  call temp:= `removeLast`(v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.removeLast:()Landroid/graphics/Bitmap;` @kind interface;
+  #L2bb420.  v0:= temp @kind object;
+  #L2bb422.  if v0 != 0 then goto L2bb456;
+  #L2bb426.  v5:= "LruBitmapPool" @kind object;
+  #L2bb42a.  v0:= 5I;
+  #L2bb42c.  call temp:= `isLoggable`(v5, v0) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bb432.  v5:= temp;
+  #L2bb434.  if v5 == 0 then goto L2bb44c;
+  #L2bb438.  v5:= "LruBitmapPool" @kind object;
+  #L2bb43c.  v0:= "Size mismatch, resetting" @kind object;
+  #L2bb440.  call temp:= `w`(v5, v0) @signature `Landroid/util/Log;.w:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bb446.  call `dumpUnchecked`(v4) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.dumpUnchecked:()V` @kind direct;
+  #L2bb44c.  v5:= 0I;
+  #L2bb44e.  v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int` := v5;
+  #L2bb452.  @monitorexit v4
+  #L2bb454.  return @kind void;
+  #L2bb456.  v1:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.tracker` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool$BitmapTracker` @kind object;
+  #L2bb45a.  call `remove`(v1, v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool$BitmapTracker;.remove:(Landroid/graphics/Bitmap;)V` @kind interface;
+  #L2bb460.  v1:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int`;
+  #L2bb464.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bb468.  call temp:= `getSize`(v2, v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.getSize:(Landroid/graphics/Bitmap;)I` @kind interface;
+  #L2bb46e.  v2:= temp;
+  #L2bb470.  v1:= v1 - v2 @kind int;
+  #L2bb472.  v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int` := v1;
+  #L2bb476.  call `recycle`(v0) @signature `Landroid/graphics/Bitmap;.recycle:()V` @kind virtual;
+  #L2bb47c.  v1:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.evictions` @type ^`int`;
+  #L2bb480.  v1:= v1 + 1;
+  #L2bb484.  v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.evictions` @type ^`int` := v1;
+  #L2bb488.  v1:= "LruBitmapPool" @kind object;
+  #L2bb48c.  v2:= 3I;
+  #L2bb48e.  call temp:= `isLoggable`(v1, v2) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bb494.  v1:= temp;
+  #L2bb496.  if v1 == 0 then goto L2bb4d2;
+  #L2bb49a.  v1:= "LruBitmapPool" @kind object;
+  #L2bb49e.  v2:= new `java.lang.StringBuilder`;
+  #L2bb4a2.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bb4a8.  v3:= "Evicting bitmap=" @kind object;
+  #L2bb4ac.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb4b2.  v3:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bb4b6.  call temp:= `logBitmap`(v3, v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.logBitmap:(Landroid/graphics/Bitmap;)Ljava/lang/String;` @kind interface;
+  #L2bb4bc.  v0:= temp @kind object;
+  #L2bb4be.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb4c4.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2bb4ca.  v0:= temp @kind object;
+  #L2bb4cc.  call temp:= `d`(v1, v0) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bb4d2.  call `dump`(v4) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.dump:()V` @kind direct;
+  #L2bb4d8.  goto L2bb40e;
+  #L2bb4da.  @monitorexit v4
+  #L2bb4dc.  return @kind void;
+  #L2bb4de.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2bb4e0.  @monitorexit v4
+  #L2bb4e2.  goto L2bb4e6;
+  #L2bb4e4.  throw v5;
+  #L2bb4e6.  goto L2bb4e4;
+  catch `java.lang.Throwable` @[L2bb40e..L2bb452] goto L2bb4de;
+  catch `java.lang.Throwable` @[L2bb456..L2bb4d8] goto L2bb4de;
+}
+procedure `void` `clearMemory`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v2 @kind this) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.clearMemory:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2bb218.  v0:= "LruBitmapPool" @kind object;
+  #L2bb21c.  v1:= 3I;
+  #L2bb21e.  call temp:= `isLoggable`(v0, v1) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bb224.  v1:= temp;
+  #L2bb226.  if v1 == 0 then goto L2bb234;
+  #L2bb22a.  v1:= "clearMemory" @kind object;
+  #L2bb22e.  call temp:= `d`(v0, v1) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bb234.  v0:= 0I;
+  #L2bb236.  call `trimToSize`(v2, v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.trimToSize:(I)V` @kind direct;
+  #L2bb23c.  return @kind void;
+}
+procedure `android.graphics.Bitmap` `get`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v0 @kind this, `int` v1 , `int` v2 , `android.graphics.Bitmap$Config` v3 @kind object) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.get:(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;` @AccessFlag PUBLIC {
+    temp;
+
+  #L2baddc.  @monitorenter v0
+  #L2badde.  call temp:= `getDirty`(v0, v1, v2, v3) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getDirty:(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;` @kind virtual;
+  #L2bade4.  v1:= temp @kind object;
+  #L2bade6.  if v1 == 0 then goto L2badf2;
+  #L2badea.  v2:= 0I;
+  #L2badec.  call `eraseColor`(v1, v2) @signature `Landroid/graphics/Bitmap;.eraseColor:(I)V` @kind virtual;
+  #L2badf2.  @monitorexit v0
+  #L2badf4.  return v1 @kind object;
+  #L2badf6.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2badf8.  @monitorexit v0
+  #L2badfa.  throw v1;
+  catch `java.lang.Throwable` @[L2badde..L2badf2] goto L2badf6;
+}
+procedure `android.graphics.Bitmap` `getDirty`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v5 @kind this, `int` v6 , `int` v7 , `android.graphics.Bitmap$Config` v8 @kind object) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getDirty:(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2bae18.  @monitorenter v5
+  #L2bae1a.  v0:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bae1e.  if v8 == 0 then goto L2bae26;
+  #L2bae22.  v1:= v8 @kind object;
+  #L2bae24.  goto L2bae2a;
+  #L2bae26.  v1:= `@@com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.DEFAULT_CONFIG` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L2bae2a.  call temp:= `get`(v0, v6, v7, v1) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.get:(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;` @kind interface;
+  #L2bae30.  v0:= temp @kind object;
+  #L2bae32.  v1:= 1I;
+  #L2bae34.  if v0 != 0 then goto L2bae8e;
+  #L2bae38.  v2:= "LruBitmapPool" @kind object;
+  #L2bae3c.  v3:= 3I;
+  #L2bae3e.  call temp:= `isLoggable`(v2, v3) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bae44.  v2:= temp;
+  #L2bae46.  if v2 == 0 then goto L2bae82;
+  #L2bae4a.  v2:= "LruBitmapPool" @kind object;
+  #L2bae4e.  v3:= new `java.lang.StringBuilder`;
+  #L2bae52.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bae58.  v4:= "Missing bitmap=" @kind object;
+  #L2bae5c.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bae62.  v4:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bae66.  call temp:= `logBitmap`(v4, v6, v7, v8) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.logBitmap:(IILandroid/graphics/Bitmap$Config;)Ljava/lang/String;` @kind interface;
+  #L2bae6c.  v4:= temp @kind object;
+  #L2bae6e.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bae74.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2bae7a.  v3:= temp @kind object;
+  #L2bae7c.  call temp:= `d`(v2, v3) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bae82.  v2:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.misses` @type ^`int`;
+  #L2bae86.  v2:= v2 + v1 @kind int;
+  #L2bae88.  v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.misses` @type ^`int` := v2;
+  #L2bae8c.  goto L2baeca;
+  #L2bae8e.  v2:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.hits` @type ^`int`;
+  #L2bae92.  v2:= v2 + v1 @kind int;
+  #L2bae94.  v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.hits` @type ^`int` := v2;
+  #L2bae98.  v2:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int`;
+  #L2bae9c.  v3:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2baea0.  call temp:= `getSize`(v3, v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.getSize:(Landroid/graphics/Bitmap;)I` @kind interface;
+  #L2baea6.  v3:= temp;
+  #L2baea8.  v2:= v2 - v3 @kind int;
+  #L2baeaa.  v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int` := v2;
+  #L2baeae.  v2:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.tracker` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool$BitmapTracker` @kind object;
+  #L2baeb2.  call `remove`(v2, v0) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool$BitmapTracker;.remove:(Landroid/graphics/Bitmap;)V` @kind interface;
+  #L2baeb8.  v2:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L2baebc.  v3:= 12I;
+  #L2baec0.  if v2 < v3 then goto L2baeca;
+  #L2baec4.  call `setHasAlpha`(v0, v1) @signature `Landroid/graphics/Bitmap;.setHasAlpha:(Z)V` @kind virtual;
+  #L2baeca.  v1:= "LruBitmapPool" @kind object;
+  #L2baece.  v2:= 2I;
+  #L2baed0.  call temp:= `isLoggable`(v1, v2) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2baed6.  v1:= temp;
+  #L2baed8.  if v1 == 0 then goto L2baf14;
+  #L2baedc.  v1:= "LruBitmapPool" @kind object;
+  #L2baee0.  v2:= new `java.lang.StringBuilder`;
+  #L2baee4.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2baeea.  v3:= "Get bitmap=" @kind object;
+  #L2baeee.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2baef4.  v3:= v5.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2baef8.  call temp:= `logBitmap`(v3, v6, v7, v8) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.logBitmap:(IILandroid/graphics/Bitmap$Config;)Ljava/lang/String;` @kind interface;
+  #L2baefe.  v6:= temp @kind object;
+  #L2baf00.  call temp:= `append`(v2, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2baf06.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2baf0c.  v6:= temp @kind object;
+  #L2baf0e.  call temp:= `v`(v1, v6) @signature `Landroid/util/Log;.v:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2baf14.  call `dump`(v5) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.dump:()V` @kind direct;
+  #L2baf1a.  @monitorexit v5
+  #L2baf1c.  return v0 @kind object;
+  #L2baf1e.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2baf20.  @monitorexit v5
+  #L2baf22.  throw v6;
+  catch `java.lang.Throwable` @[L2bae1a..L2baf1a] goto L2baf1e;
+}
+procedure `int` `getMaxSize`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v1 @kind this) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.getMaxSize:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2bb114.  v0:= v1.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @type ^`int`;
+  #L2bb118.  return v0;
+}
+procedure `boolean` `put`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v4 @kind this, `android.graphics.Bitmap` v5 @kind object) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.put:(Landroid/graphics/Bitmap;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2baf40.  @monitorenter v4
+  #L2baf42.  if v5 == 0 then goto L2bb09e;
+  #L2baf46.  call temp:= `isMutable`(v5) @signature `Landroid/graphics/Bitmap;.isMutable:()Z` @kind virtual;
+  #L2baf4c.  v0:= temp;
+  #L2baf4e.  v1:= 2I;
+  #L2baf50.  if v0 == 0 then goto L2bb010;
+  #L2baf54.  v0:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2baf58.  call temp:= `getSize`(v0, v5) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.getSize:(Landroid/graphics/Bitmap;)I` @kind interface;
+  #L2baf5e.  v0:= temp;
+  #L2baf60.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @type ^`int`;
+  #L2baf64.  if v0 > v2 then goto L2bb010;
+  #L2baf68.  v0:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.allowedConfigs` @type ^`java.util.Set` @kind object;
+  #L2baf6c.  call temp:= `getConfig`(v5) @signature `Landroid/graphics/Bitmap;.getConfig:()Landroid/graphics/Bitmap$Config;` @kind virtual;
+  #L2baf72.  v2:= temp @kind object;
+  #L2baf74.  call temp:= `contains`(v0, v2) @signature `Ljava/util/Set;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L2baf7a.  v0:= temp;
+  #L2baf7c.  if v0 != 0 then goto L2baf82;
+  #L2baf80.  goto L2bb010;
+  #L2baf82.  v0:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2baf86.  call temp:= `getSize`(v0, v5) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.getSize:(Landroid/graphics/Bitmap;)I` @kind interface;
+  #L2baf8c.  v0:= temp;
+  #L2baf8e.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2baf92.  call `put`(v2, v5) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.put:(Landroid/graphics/Bitmap;)V` @kind interface;
+  #L2baf98.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.tracker` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool$BitmapTracker` @kind object;
+  #L2baf9c.  call `add`(v2, v5) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool$BitmapTracker;.add:(Landroid/graphics/Bitmap;)V` @kind interface;
+  #L2bafa2.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.puts` @type ^`int`;
+  #L2bafa6.  v3:= 1I;
+  #L2bafa8.  v2:= v2 + v3 @kind int;
+  #L2bafaa.  v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.puts` @type ^`int` := v2;
+  #L2bafae.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int`;
+  #L2bafb2.  v2:= v2 + v0 @kind int;
+  #L2bafb4.  v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.currentSize` @type ^`int` := v2;
+  #L2bafb8.  v0:= "LruBitmapPool" @kind object;
+  #L2bafbc.  call temp:= `isLoggable`(v0, v1) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bafc2.  v0:= temp;
+  #L2bafc4.  if v0 == 0 then goto L2bb000;
+  #L2bafc8.  v0:= "LruBitmapPool" @kind object;
+  #L2bafcc.  v1:= new `java.lang.StringBuilder`;
+  #L2bafd0.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bafd6.  v2:= "Put bitmap in pool=" @kind object;
+  #L2bafda.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bafe0.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bafe4.  call temp:= `logBitmap`(v2, v5) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.logBitmap:(Landroid/graphics/Bitmap;)Ljava/lang/String;` @kind interface;
+  #L2bafea.  v5:= temp @kind object;
+  #L2bafec.  call temp:= `append`(v1, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2baff2.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2baff8.  v5:= temp @kind object;
+  #L2baffa.  call temp:= `v`(v0, v5) @signature `Landroid/util/Log;.v:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bb000.  call `dump`(v4) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.dump:()V` @kind direct;
+  #L2bb006.  call `evict`(v4) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.evict:()V` @kind direct;
+  #L2bb00c.  @monitorexit v4
+  #L2bb00e.  return v3;
+  #L2bb010.  v0:= "LruBitmapPool" @kind object;
+  #L2bb014.  call temp:= `isLoggable`(v0, v1) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bb01a.  v0:= temp;
+  #L2bb01c.  if v0 == 0 then goto L2bb094;
+  #L2bb020.  v0:= "LruBitmapPool" @kind object;
+  #L2bb024.  v1:= new `java.lang.StringBuilder`;
+  #L2bb028.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bb02e.  v2:= "Reject bitmap from pool, bitmap: " @kind object;
+  #L2bb032.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb038.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.strategy` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.LruPoolStrategy` @kind object;
+  #L2bb03c.  call temp:= `logBitmap`(v2, v5) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruPoolStrategy;.logBitmap:(Landroid/graphics/Bitmap;)Ljava/lang/String;` @kind interface;
+  #L2bb042.  v2:= temp @kind object;
+  #L2bb044.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb04a.  v2:= ", is mutable: " @kind object;
+  #L2bb04e.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb054.  call temp:= `isMutable`(v5) @signature `Landroid/graphics/Bitmap;.isMutable:()Z` @kind virtual;
+  #L2bb05a.  v2:= temp;
+  #L2bb05c.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Z)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb062.  v2:= ", is allowed config: " @kind object;
+  #L2bb066.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb06c.  v2:= v4.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.allowedConfigs` @type ^`java.util.Set` @kind object;
+  #L2bb070.  call temp:= `getConfig`(v5) @signature `Landroid/graphics/Bitmap;.getConfig:()Landroid/graphics/Bitmap$Config;` @kind virtual;
+  #L2bb076.  v5:= temp @kind object;
+  #L2bb078.  call temp:= `contains`(v2, v5) @signature `Ljava/util/Set;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L2bb07e.  v5:= temp;
+  #L2bb080.  call temp:= `append`(v1, v5) @signature `Ljava/lang/StringBuilder;.append:(Z)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb086.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2bb08c.  v5:= temp @kind object;
+  #L2bb08e.  call temp:= `v`(v0, v5) @signature `Landroid/util/Log;.v:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bb094.  v5:= 0I;
+  #L2bb096.  @monitorexit v4
+  #L2bb098.  return v5;
+  #L2bb09a.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2bb09c.  goto L2bb0ae;
+  #L2bb09e.  v5:= new `java.lang.NullPointerException`;
+  #L2bb0a2.  v0:= "Bitmap must not be null" @kind object;
+  #L2bb0a6.  call `<init>`(v5, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2bb0ac.  throw v5;
+  #L2bb0ae.  @monitorexit v4
+  #L2bb0b0.  throw v5;
+  catch `java.lang.Throwable` @[L2baf46..L2bb00c] goto L2bb09a;
+  catch `java.lang.Throwable` @[L2bb010..L2bb094] goto L2bb09a;
+  catch `java.lang.Throwable` @[L2bb09e..L2bb0ae] goto L2bb09a;
+}
+procedure `void` `setSizeMultiplier`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v1 @kind this, `float` v2 ) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.setSizeMultiplier:(F)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2bb354.  @monitorenter v1
+  #L2bb356.  v0:= v1.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.initialMaxSize` @type ^`int`;
+  #L2bb35a.  v0:= (`float`) v0 @kind i2f;
+  #L2bb35c.  v0:= v0 * v2 @kind float;
+  #L2bb360.  call temp:= `round`(v0) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L2bb366.  v2:= temp;
+  #L2bb368.  v1.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @type ^`int` := v2;
+  #L2bb36c.  call `evict`(v1) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.evict:()V` @kind direct;
+  #L2bb372.  @monitorexit v1
+  #L2bb374.  return @kind void;
+  #L2bb376.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2bb378.  @monitorexit v1
+  #L2bb37a.  throw v2;
+  catch `java.lang.Throwable` @[L2bb356..L2bb372] goto L2bb376;
+}
+procedure `void` `trimMemory`(`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool` v3 @kind this, `int` v4 ) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.trimMemory:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2bb398.  v0:= "LruBitmapPool" @kind object;
+  #L2bb39c.  v1:= 3I;
+  #L2bb39e.  call temp:= `isLoggable`(v0, v1) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2bb3a4.  v1:= temp;
+  #L2bb3a6.  if v1 == 0 then goto L2bb3d2;
+  #L2bb3aa.  v1:= new `java.lang.StringBuilder`;
+  #L2bb3ae.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2bb3b4.  v2:= "trimMemory, level=" @kind object;
+  #L2bb3b8.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb3be.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2bb3c4.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2bb3ca.  v1:= temp @kind object;
+  #L2bb3cc.  call temp:= `d`(v0, v1) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2bb3d2.  v0:= 60I;
+  #L2bb3d6.  if v4 < v0 then goto L2bb3e2;
+  #L2bb3da.  call `clearMemory`(v3) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.clearMemory:()V` @kind virtual;
+  #L2bb3e0.  goto L2bb3f8;
+  #L2bb3e2.  v0:= 40I;
+  #L2bb3e6.  if v4 < v0 then goto L2bb3f8;
+  #L2bb3ea.  v4:= v3.`com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool.maxSize` @type ^`int`;
+  #L2bb3ee.  v4:= v4 / 2;
+  #L2bb3f2.  call `trimToSize`(v3, v4) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/LruBitmapPool;.trimToSize:(I)V` @kind direct;
+  #L2bb3f8.  return @kind void;
+}

@@ -1,0 +1,439 @@
+record `okhttp3.internal.http.HttpHeaders` @kind class @AccessFlag PUBLIC_FINAL {
+}
+global `java.util.regex.Pattern` `@@okhttp3.internal.http.HttpHeaders.PARAMETER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@okhttp3.internal.http.HttpHeaders.QUOTED_STRING` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@okhttp3.internal.http.HttpHeaders.TOKEN` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lokhttp3/internal/http/HttpHeaders;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4697c0.  v0:= " +([^ \"=]*)=(:?\"([^\"]*)\"|([^ \"=]*)) *(:?,|$)" @kind object;
+  #L4697c4.  call temp:= `compile`(v0) @signature `Ljava/util/regex/Pattern;.compile:(Ljava/lang/String;)Ljava/util/regex/Pattern;` @kind static;
+  #L4697ca.  v0:= temp @kind object;
+  #L4697cc.  `@@okhttp3.internal.http.HttpHeaders.PARAMETER` @type ^`java.util.regex.Pattern` := v0 @kind object;
+  #L4697d0.  return @kind void;
+}
+procedure `void` `<init>`(`okhttp3.internal.http.HttpHeaders` v0 @kind this) @signature `Lokhttp3/internal/http/HttpHeaders;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L4697e4.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4697ea.  return @kind void;
+}
+procedure `long` `contentLength`(`okhttp3.Headers` v2 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.contentLength:(Lokhttp3/Headers;)J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L469680.  v0:= "Content-Length" @kind object;
+  #L469684.  call temp:= `get`(v2, v0) @signature `Lokhttp3/Headers;.get:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L46968a.  v2:= temp @kind object;
+  #L46968c.  call temp:= `stringToLong`(v2) @signature `Lokhttp3/internal/http/HttpHeaders;.stringToLong:(Ljava/lang/String;)J` @kind static;
+  #L469692.  v0:= temp @kind wide;
+  #L469694.  return v0 @kind wide;
+}
+procedure `long` `contentLength`(`okhttp3.Response` v2 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.contentLength:(Lokhttp3/Response;)J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4696a8.  call temp:= `headers`(v2) @signature `Lokhttp3/Response;.headers:()Lokhttp3/Headers;` @kind virtual;
+  #L4696ae.  v2:= temp @kind object;
+  #L4696b0.  call temp:= `contentLength`(v2) @signature `Lokhttp3/internal/http/HttpHeaders;.contentLength:(Lokhttp3/Headers;)J` @kind static;
+  #L4696b6.  v0:= temp @kind wide;
+  #L4696b8.  return v0 @kind wide;
+}
+procedure `boolean` `hasBody`(`okhttp3.Response` v8 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.hasBody:(Lokhttp3/Response;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L469288.  call temp:= `request`(v8) @signature `Lokhttp3/Response;.request:()Lokhttp3/Request;` @kind virtual;
+  #L46928e.  v0:= temp @kind object;
+  #L469290.  call temp:= `method`(v0) @signature `Lokhttp3/Request;.method:()Ljava/lang/String;` @kind virtual;
+  #L469296.  v0:= temp @kind object;
+  #L469298.  v1:= "HEAD" @kind object;
+  #L46929c.  call temp:= `equals`(v0, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4692a2.  v0:= temp;
+  #L4692a4.  v1:= 0I;
+  #L4692a6.  if v0 == 0 then goto L4692ac;
+  #L4692aa.  return v1;
+  #L4692ac.  call temp:= `code`(v8) @signature `Lokhttp3/Response;.code:()I` @kind virtual;
+  #L4692b2.  v0:= temp;
+  #L4692b4.  v2:= 100I;
+  #L4692b8.  v3:= 1I;
+  #L4692ba.  if v0 < v2 then goto L4692c6;
+  #L4692be.  v2:= 200I;
+  #L4692c2.  if v0 < v2 then goto L4692d8;
+  #L4692c6.  v2:= 204I;
+  #L4692ca.  if v0 == v2 then goto L4692d8;
+  #L4692ce.  v2:= 304I;
+  #L4692d2.  if v0 == v2 then goto L4692d8;
+  #L4692d6.  return v3;
+  #L4692d8.  call temp:= `contentLength`(v8) @signature `Lokhttp3/internal/http/HttpHeaders;.contentLength:(Lokhttp3/Response;)J` @kind static;
+  #L4692de.  v4:= temp @kind wide;
+  #L4692e0.  v6:= -1L;
+  #L4692e4.  v0:= lcmp(v4, v6);
+  #L4692e8.  if v0 != 0 then goto L46930c;
+  #L4692ec.  v0:= "Transfer-Encoding" @kind object;
+  #L4692f0.  call temp:= `header`(v8, v0) @signature `Lokhttp3/Response;.header:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L4692f6.  v8:= temp @kind object;
+  #L4692f8.  v0:= "chunked" @kind object;
+  #L4692fc.  call temp:= `equalsIgnoreCase`(v0, v8) @signature `Ljava/lang/String;.equalsIgnoreCase:(Ljava/lang/String;)Z` @kind virtual;
+  #L469302.  v8:= temp;
+  #L469304.  if v8 == 0 then goto L46930a;
+  #L469308.  goto L46930c;
+  #L46930a.  return v1;
+  #L46930c.  return v3;
+}
+procedure `boolean` `hasVaryAll`(`okhttp3.Headers` v1 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.hasVaryAll:(Lokhttp3/Headers;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L469320.  call temp:= `varyFields`(v1) @signature `Lokhttp3/internal/http/HttpHeaders;.varyFields:(Lokhttp3/Headers;)Ljava/util/Set;` @kind static;
+  #L469326.  v1:= temp @kind object;
+  #L469328.  v0:= "*" @kind object;
+  #L46932c.  call temp:= `contains`(v1, v0) @signature `Ljava/util/Set;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L469332.  v1:= temp;
+  #L469334.  return v1;
+}
+procedure `boolean` `hasVaryAll`(`okhttp3.Response` v0 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.hasVaryAll:(Lokhttp3/Response;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L469348.  call temp:= `headers`(v0) @signature `Lokhttp3/Response;.headers:()Lokhttp3/Headers;` @kind virtual;
+  #L46934e.  v0:= temp @kind object;
+  #L469350.  call temp:= `hasVaryAll`(v0) @signature `Lokhttp3/internal/http/HttpHeaders;.hasVaryAll:(Lokhttp3/Headers;)Z` @kind static;
+  #L469356.  v0:= temp;
+  #L469358.  return v0;
+}
+procedure `java.util.List` `parseChallenges`(`okhttp3.Headers` v13 @kind object, `java.lang.String` v14 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.parseChallenges:(Lokhttp3/Headers;Ljava/lang/String;)Ljava/util/List;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+
+  #L469498.  v0:= new `java.util.ArrayList`;
+  #L46949c.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4694a2.  call temp:= `values`(v13, v14) @signature `Lokhttp3/Headers;.values:(Ljava/lang/String;)Ljava/util/List;` @kind virtual;
+  #L4694a8.  v13:= temp @kind object;
+  #L4694aa.  call temp:= `iterator`(v13) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L4694b0.  v13:= temp @kind object;
+  #L4694b2.  call temp:= `hasNext`(v13) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4694b8.  v14:= temp;
+  #L4694ba.  if v14 == 0 then goto L4695ac;
+  #L4694be.  call temp:= `next`(v13) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4694c4.  v14:= temp @kind object;
+  #L4694c6.  v14:= (`java.lang.String`) v14 @kind object;
+  #L4694ca.  v1:= 32I;
+  #L4694ce.  call temp:= `indexOf`(v14, v1) @signature `Ljava/lang/String;.indexOf:(I)I` @kind virtual;
+  #L4694d4.  v1:= temp;
+  #L4694d6.  v2:= -1I;
+  #L4694d8.  if v1 != v2 then goto L4694de;
+  #L4694dc.  goto L4694b2;
+  #L4694de.  v2:= 0I;
+  #L4694e0.  call temp:= `substring`(v14, v2, v1) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L4694e6.  v7:= temp @kind object;
+  #L4694e8.  v2:= `@@okhttp3.internal.http.HttpHeaders.PARAMETER` @type ^`java.util.regex.Pattern` @kind object;
+  #L4694ec.  call temp:= `matcher`(v2, v14) @signature `Ljava/util/regex/Pattern;.matcher:(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;` @kind virtual;
+  #L4694f2.  v8:= temp @kind object;
+  #L4694f4.  v2:= 0I;
+  #L4694f6.  v9:= v2 @kind object;
+  #L4694f8.  v10:= v9 @kind object;
+  #L4694fa.  call temp:= `find`(v8, v1) @signature `Ljava/util/regex/Matcher;.find:(I)Z` @kind virtual;
+  #L469500.  v1:= temp;
+  #L469502.  if v1 == 0 then goto L469574;
+  #L469506.  v2:= 1I;
+  #L469508.  v11:= 1I;
+  #L46950a.  call temp:= `start`(v8, v11) @signature `Ljava/util/regex/Matcher;.start:(I)I` @kind virtual;
+  #L469510.  v3:= temp;
+  #L469512.  v5:= 0I;
+  #L469514.  v6:= 5I;
+  #L469516.  v4:= "realm" @kind object;
+  #L46951a.  v1:= v14 @kind object;
+  #L46951c.  call temp:= `regionMatches`(v1, v2, v3, v4, v5, v6) @signature `Ljava/lang/String;.regionMatches:(ZILjava/lang/String;II)Z` @kind virtual;
+  #L469522.  v1:= temp;
+  #L469524.  v12:= 3I;
+  #L469526.  if v1 == 0 then goto L469536;
+  #L46952a.  call temp:= `group`(v8, v12) @signature `Ljava/util/regex/Matcher;.group:(I)Ljava/lang/String;` @kind virtual;
+  #L469530.  v1:= temp @kind object;
+  #L469532.  v9:= v1 @kind object;
+  #L469534.  goto L469560;
+  #L469536.  v2:= 1I;
+  #L469538.  call temp:= `start`(v8, v11) @signature `Ljava/util/regex/Matcher;.start:(I)I` @kind virtual;
+  #L46953e.  v3:= temp;
+  #L469540.  v5:= 0I;
+  #L469542.  v6:= 7I;
+  #L469544.  v4:= "charset" @kind object;
+  #L469548.  v1:= v14 @kind object;
+  #L46954a.  call temp:= `regionMatches`(v1, v2, v3, v4, v5, v6) @signature `Ljava/lang/String;.regionMatches:(ZILjava/lang/String;II)Z` @kind virtual;
+  #L469550.  v1:= temp;
+  #L469552.  if v1 == 0 then goto L469560;
+  #L469556.  call temp:= `group`(v8, v12) @signature `Ljava/util/regex/Matcher;.group:(I)Ljava/lang/String;` @kind virtual;
+  #L46955c.  v1:= temp @kind object;
+  #L46955e.  v10:= v1 @kind object;
+  #L469560.  if v9 == 0 then goto L46956a;
+  #L469564.  if v10 == 0 then goto L46956a;
+  #L469568.  goto L469574;
+  #L46956a.  call temp:= `end`(v8) @signature `Ljava/util/regex/Matcher;.end:()I` @kind virtual;
+  #L469570.  v1:= temp;
+  #L469572.  goto L4694fa;
+  #L469574.  if v9 != 0 then goto L46957a;
+  #L469578.  goto L4694b2;
+  #L46957a.  v14:= new `okhttp3.Challenge`;
+  #L46957e.  call `<init>`(v14, v7, v9) @signature `Lokhttp3/Challenge;.<init>:(Ljava/lang/String;Ljava/lang/String;)V` @kind direct;
+  #L469584.  if v10 == 0 then goto L4695a4;
+  #L469588.  v1:= "UTF-8" @kind object;
+  #L46958c.  call temp:= `equalsIgnoreCase`(v10, v1) @signature `Ljava/lang/String;.equalsIgnoreCase:(Ljava/lang/String;)Z` @kind virtual;
+  #L469592.  v1:= temp;
+  #L469594.  if v1 == 0 then goto L4694b2;
+  #L469598.  v1:= `@@okhttp3.internal.Util.UTF_8` @type ^`java.nio.charset.Charset` @kind object;
+  #L46959c.  call temp:= `withCharset`(v14, v1) @signature `Lokhttp3/Challenge;.withCharset:(Ljava/nio/charset/Charset;)Lokhttp3/Challenge;` @kind virtual;
+  #L4695a2.  v14:= temp @kind object;
+  #L4695a4.  call temp:= `add`(v0, v14) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4695aa.  goto L4694b2;
+  #L4695ac.  return v0 @kind object;
+}
+procedure `int` `parseSeconds`(`java.lang.String` v3 @kind object, `int` v4 ) @signature `Lokhttp3/internal/http/HttpHeaders;.parseSeconds:(Ljava/lang/String;I)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4693c8.  call temp:= `parseLong`(v3) @signature `Ljava/lang/Long;.parseLong:(Ljava/lang/String;)J` @kind static;
+  #L4693ce.  v3:= temp @kind wide;
+  #L4693d0.  v0:= 2147483647L;
+  #L4693d6.  v2:= lcmp(v3, v0);
+  #L4693da.  if v2 <= 0 then goto L4693e6;
+  #L4693de.  v3:= 2147483647I;
+  #L4693e4.  return v3;
+  #L4693e6.  v0:= 0L;
+  #L4693ea.  v2:= lcmp(v3, v0);
+  #L4693ee.  if v2 >= 0 then goto L4693f6;
+  #L4693f2.  v3:= 0I;
+  #L4693f4.  return v3;
+  #L4693f6.  v4:= (`int`) v3 @kind l2i;
+  #L4693f8.  return v4;
+  catch `java.lang.NumberFormatException` @[L4693c8..L4693d0] goto L4693f8;
+}
+procedure `void` `receiveHeaders`(`okhttp3.CookieJar` v1 @kind object, `okhttp3.HttpUrl` v2 @kind object, `okhttp3.Headers` v3 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.receiveHeaders:(Lokhttp3/CookieJar;Lokhttp3/HttpUrl;Lokhttp3/Headers;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4697fc.  v0:= `@@okhttp3.CookieJar.NO_COOKIES` @type ^`okhttp3.CookieJar` @kind object;
+  #L469800.  if v1 != v0 then goto L469806;
+  #L469804.  return @kind void;
+  #L469806.  call temp:= `parseAll`(v2, v3) @signature `Lokhttp3/Cookie;.parseAll:(Lokhttp3/HttpUrl;Lokhttp3/Headers;)Ljava/util/List;` @kind static;
+  #L46980c.  v3:= temp @kind object;
+  #L46980e.  call temp:= `isEmpty`(v3) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L469814.  v0:= temp;
+  #L469816.  if v0 == 0 then goto L46981c;
+  #L46981a.  return @kind void;
+  #L46981c.  call `saveFromResponse`(v1, v2, v3) @signature `Lokhttp3/CookieJar;.saveFromResponse:(Lokhttp3/HttpUrl;Ljava/util/List;)V` @kind interface;
+  #L469822.  return @kind void;
+}
+procedure `int` `skipUntil`(`java.lang.String` v2 @kind object, `int` v3 , `java.lang.String` v4 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.skipUntil:(Ljava/lang/String;ILjava/lang/String;)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L46941c.  call temp:= `length`(v2) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L469422.  v0:= temp;
+  #L469424.  if v3 >= v0 then goto L469446;
+  #L469428.  call temp:= `charAt`(v2, v3) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L46942e.  v0:= temp;
+  #L469430.  call temp:= `indexOf`(v4, v0) @signature `Ljava/lang/String;.indexOf:(I)I` @kind virtual;
+  #L469436.  v0:= temp;
+  #L469438.  v1:= -1I;
+  #L46943a.  if v0 == v1 then goto L469440;
+  #L46943e.  goto L469446;
+  #L469440.  v3:= v3 + 1;
+  #L469444.  goto L46941c;
+  #L469446.  return v3;
+}
+procedure `int` `skipWhitespace`(`java.lang.String` v2 @kind object, `int` v3 ) @signature `Lokhttp3/internal/http/HttpHeaders;.skipWhitespace:(Ljava/lang/String;I)I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L469458.  call temp:= `length`(v2) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L46945e.  v0:= temp;
+  #L469460.  if v3 >= v0 then goto L469484;
+  #L469464.  call temp:= `charAt`(v2, v3) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L46946a.  v0:= temp;
+  #L46946c.  v1:= 32I;
+  #L469470.  if v0 == v1 then goto L46947e;
+  #L469474.  v1:= 9I;
+  #L469478.  if v0 == v1 then goto L46947e;
+  #L46947c.  goto L469484;
+  #L46947e.  v3:= v3 + 1;
+  #L469482.  goto L469458;
+  #L469484.  return v3;
+}
+procedure `long` `stringToLong`(`java.lang.String` v2 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.stringToLong:(Ljava/lang/String;)J` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4696cc.  v0:= -1L;
+  #L4696d0.  if v2 != 0 then goto L4696d6;
+  #L4696d4.  return v0 @kind wide;
+  #L4696d6.  call temp:= `parseLong`(v2) @signature `Ljava/lang/Long;.parseLong:(Ljava/lang/String;)J` @kind static;
+  #L4696dc.  v0:= temp @kind wide;
+  #L4696de.  return v0 @kind wide;
+  catch `java.lang.NumberFormatException` @[L4696d6..L4696de] goto L4696de;
+}
+procedure `java.util.Set` `varyFields`(`okhttp3.Headers` v8 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.varyFields:(Lokhttp3/Headers;)Ljava/util/Set;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4695c0.  call temp:= `emptySet`() @signature `Ljava/util/Collections;.emptySet:()Ljava/util/Set;` @kind static;
+  #L4695c6.  v0:= temp @kind object;
+  #L4695c8.  call temp:= `size`(v8) @signature `Lokhttp3/Headers;.size:()I` @kind virtual;
+  #L4695ce.  v1:= temp;
+  #L4695d0.  v2:= 0I;
+  #L4695d2.  v3:= v0 @kind object;
+  #L4695d4.  v0:= 0I;
+  #L4695d6.  if v0 >= v1 then goto L469648;
+  #L4695da.  call temp:= `name`(v8, v0) @signature `Lokhttp3/Headers;.name:(I)Ljava/lang/String;` @kind virtual;
+  #L4695e0.  v4:= temp @kind object;
+  #L4695e2.  v5:= "Vary" @kind object;
+  #L4695e6.  call temp:= `equalsIgnoreCase`(v5, v4) @signature `Ljava/lang/String;.equalsIgnoreCase:(Ljava/lang/String;)Z` @kind virtual;
+  #L4695ec.  v4:= temp;
+  #L4695ee.  if v4 != 0 then goto L4695f4;
+  #L4695f2.  goto L469642;
+  #L4695f4.  call temp:= `value`(v8, v0) @signature `Lokhttp3/Headers;.value:(I)Ljava/lang/String;` @kind virtual;
+  #L4695fa.  v4:= temp @kind object;
+  #L4695fc.  call temp:= `isEmpty`(v3) @signature `Ljava/util/Set;.isEmpty:()Z` @kind interface;
+  #L469602.  v5:= temp;
+  #L469604.  if v5 == 0 then goto L469616;
+  #L469608.  v3:= new `java.util.TreeSet`;
+  #L46960c.  v5:= `@@java.lang.String.CASE_INSENSITIVE_ORDER` @type ^`java.util.Comparator` @kind object;
+  #L469610.  call `<init>`(v3, v5) @signature `Ljava/util/TreeSet;.<init>:(Ljava/util/Comparator;)V` @kind direct;
+  #L469616.  v5:= "," @kind object;
+  #L46961a.  call temp:= `split`(v4, v5) @signature `Ljava/lang/String;.split:(Ljava/lang/String;)[Ljava/lang/String;` @kind virtual;
+  #L469620.  v4:= temp @kind object;
+  #L469622.  v5:= length @variable v4;
+  #L469624.  v6:= 0I;
+  #L469626.  if v6 >= v5 then goto L469642;
+  #L46962a.  v7:= v4[v6] @kind object;
+  #L46962e.  call temp:= `trim`(v7) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L469634.  v7:= temp @kind object;
+  #L469636.  call temp:= `add`(v3, v7) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L46963c.  v6:= v6 + 1;
+  #L469640.  goto L469626;
+  #L469642.  v0:= v0 + 1;
+  #L469646.  goto L4695d6;
+  #L469648.  return v3 @kind object;
+}
+procedure `java.util.Set` `varyFields`(`okhttp3.Response` v0 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.varyFields:(Lokhttp3/Response;)Ljava/util/Set;` @AccessFlag PRIVATE_STATIC {
+    temp;
+
+  #L46965c.  call temp:= `headers`(v0) @signature `Lokhttp3/Response;.headers:()Lokhttp3/Headers;` @kind virtual;
+  #L469662.  v0:= temp @kind object;
+  #L469664.  call temp:= `varyFields`(v0) @signature `Lokhttp3/internal/http/HttpHeaders;.varyFields:(Lokhttp3/Headers;)Ljava/util/Set;` @kind static;
+  #L46966a.  v0:= temp @kind object;
+  #L46966c.  return v0 @kind object;
+}
+procedure `okhttp3.Headers` `varyHeaders`(`okhttp3.Headers` v5 @kind object, `okhttp3.Headers` v6 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.varyHeaders:(Lokhttp3/Headers;Lokhttp3/Headers;)Lokhttp3/Headers;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L469700.  call temp:= `varyFields`(v6) @signature `Lokhttp3/internal/http/HttpHeaders;.varyFields:(Lokhttp3/Headers;)Ljava/util/Set;` @kind static;
+  #L469706.  v6:= temp @kind object;
+  #L469708.  call temp:= `isEmpty`(v6) @signature `Ljava/util/Set;.isEmpty:()Z` @kind interface;
+  #L46970e.  v0:= temp;
+  #L469710.  if v0 == 0 then goto L469728;
+  #L469714.  v5:= new `okhttp3.Headers$Builder`;
+  #L469718.  call `<init>`(v5) @signature `Lokhttp3/Headers$Builder;.<init>:()V` @kind direct;
+  #L46971e.  call temp:= `build`(v5) @signature `Lokhttp3/Headers$Builder;.build:()Lokhttp3/Headers;` @kind virtual;
+  #L469724.  v5:= temp @kind object;
+  #L469726.  return v5 @kind object;
+  #L469728.  v0:= new `okhttp3.Headers$Builder`;
+  #L46972c.  call `<init>`(v0) @signature `Lokhttp3/Headers$Builder;.<init>:()V` @kind direct;
+  #L469732.  v1:= 0I;
+  #L469734.  call temp:= `size`(v5) @signature `Lokhttp3/Headers;.size:()I` @kind virtual;
+  #L46973a.  v2:= temp;
+  #L46973c.  if v1 >= v2 then goto L469768;
+  #L469740.  call temp:= `name`(v5, v1) @signature `Lokhttp3/Headers;.name:(I)Ljava/lang/String;` @kind virtual;
+  #L469746.  v3:= temp @kind object;
+  #L469748.  call temp:= `contains`(v6, v3) @signature `Ljava/util/Set;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L46974e.  v4:= temp;
+  #L469750.  if v4 == 0 then goto L469762;
+  #L469754.  call temp:= `value`(v5, v1) @signature `Lokhttp3/Headers;.value:(I)Ljava/lang/String;` @kind virtual;
+  #L46975a.  v4:= temp @kind object;
+  #L46975c.  call temp:= `add`(v0, v3, v4) @signature `Lokhttp3/Headers$Builder;.add:(Ljava/lang/String;Ljava/lang/String;)Lokhttp3/Headers$Builder;` @kind virtual;
+  #L469762.  v1:= v1 + 1;
+  #L469766.  goto L46973c;
+  #L469768.  call temp:= `build`(v0) @signature `Lokhttp3/Headers$Builder;.build:()Lokhttp3/Headers;` @kind virtual;
+  #L46976e.  v5:= temp @kind object;
+  #L469770.  return v5 @kind object;
+}
+procedure `okhttp3.Headers` `varyHeaders`(`okhttp3.Response` v1 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.varyHeaders:(Lokhttp3/Response;)Lokhttp3/Headers;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L469784.  call temp:= `networkResponse`(v1) @signature `Lokhttp3/Response;.networkResponse:()Lokhttp3/Response;` @kind virtual;
+  #L46978a.  v0:= temp @kind object;
+  #L46978c.  call temp:= `request`(v0) @signature `Lokhttp3/Response;.request:()Lokhttp3/Request;` @kind virtual;
+  #L469792.  v0:= temp @kind object;
+  #L469794.  call temp:= `headers`(v0) @signature `Lokhttp3/Request;.headers:()Lokhttp3/Headers;` @kind virtual;
+  #L46979a.  v0:= temp @kind object;
+  #L46979c.  call temp:= `headers`(v1) @signature `Lokhttp3/Response;.headers:()Lokhttp3/Headers;` @kind virtual;
+  #L4697a2.  v1:= temp @kind object;
+  #L4697a4.  call temp:= `varyHeaders`(v0, v1) @signature `Lokhttp3/internal/http/HttpHeaders;.varyHeaders:(Lokhttp3/Headers;Lokhttp3/Headers;)Lokhttp3/Headers;` @kind static;
+  #L4697aa.  v1:= temp @kind object;
+  #L4697ac.  return v1 @kind object;
+}
+procedure `boolean` `varyMatches`(`okhttp3.Response` v2 @kind object, `okhttp3.Headers` v3 @kind object, `okhttp3.Request` v4 @kind object) @signature `Lokhttp3/internal/http/HttpHeaders;.varyMatches:(Lokhttp3/Response;Lokhttp3/Headers;Lokhttp3/Request;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L46936c.  call temp:= `varyFields`(v2) @signature `Lokhttp3/internal/http/HttpHeaders;.varyFields:(Lokhttp3/Response;)Ljava/util/Set;` @kind static;
+  #L469372.  v2:= temp @kind object;
+  #L469374.  call temp:= `iterator`(v2) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L46937a.  v2:= temp @kind object;
+  #L46937c.  call temp:= `hasNext`(v2) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L469382.  v0:= temp;
+  #L469384.  if v0 == 0 then goto L4693b4;
+  #L469388.  call temp:= `next`(v2) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L46938e.  v0:= temp @kind object;
+  #L469390.  v0:= (`java.lang.String`) v0 @kind object;
+  #L469394.  call temp:= `values`(v3, v0) @signature `Lokhttp3/Headers;.values:(Ljava/lang/String;)Ljava/util/List;` @kind virtual;
+  #L46939a.  v1:= temp @kind object;
+  #L46939c.  call temp:= `headers`(v4, v0) @signature `Lokhttp3/Request;.headers:(Ljava/lang/String;)Ljava/util/List;` @kind virtual;
+  #L4693a2.  v0:= temp @kind object;
+  #L4693a4.  call temp:= `equal`(v1, v0) @signature `Lokhttp3/internal/Util;.equal:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind static;
+  #L4693aa.  v0:= temp;
+  #L4693ac.  if v0 != 0 then goto L46937c;
+  #L4693b0.  v2:= 0I;
+  #L4693b2.  return v2;
+  #L4693b4.  v2:= 1I;
+  #L4693b6.  return v2;
+}

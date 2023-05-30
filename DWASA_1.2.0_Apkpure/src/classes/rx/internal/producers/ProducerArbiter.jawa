@@ -1,0 +1,261 @@
+record `rx.internal.producers.ProducerArbiter` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Producer` @kind interface {
+  `rx.Producer` `rx.internal.producers.ProducerArbiter.currentProducer` @AccessFlag ;
+  `boolean` `rx.internal.producers.ProducerArbiter.emitting` @AccessFlag ;
+  `long` `rx.internal.producers.ProducerArbiter.missedProduced` @AccessFlag ;
+  `rx.Producer` `rx.internal.producers.ProducerArbiter.missedProducer` @AccessFlag ;
+  `long` `rx.internal.producers.ProducerArbiter.missedRequested` @AccessFlag ;
+  `long` `rx.internal.producers.ProducerArbiter.requested` @AccessFlag ;
+}
+global `rx.Producer` `@@rx.internal.producers.ProducerArbiter.NULL_PRODUCER` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/producers/ProducerArbiter;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b0e30.  v0:= new `rx.internal.producers.ProducerArbiter$1`;
+  #L4b0e34.  call `<init>`(v0) @signature `Lrx/internal/producers/ProducerArbiter$1;.<init>:()V` @kind direct;
+  #L4b0e3a.  `@@rx.internal.producers.ProducerArbiter.NULL_PRODUCER` @type ^`rx.Producer` := v0 @kind object;
+  #L4b0e3e.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.producers.ProducerArbiter` v0 @kind this) @signature `Lrx/internal/producers/ProducerArbiter;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b0e50.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b0e56.  return @kind void;
+}
+procedure `void` `emitLoop`(`rx.internal.producers.ProducerArbiter` v13 @kind this) @signature `Lrx/internal/producers/ProducerArbiter;.emitLoop:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+
+  #L4b0e68.  @monitorenter v13
+  #L4b0e6a.  v0:= v13.`rx.internal.producers.ProducerArbiter.missedRequested` @type ^`long` @kind wide;
+  #L4b0e6e.  v2:= v13.`rx.internal.producers.ProducerArbiter.missedProduced` @type ^`long` @kind wide;
+  #L4b0e72.  v4:= v13.`rx.internal.producers.ProducerArbiter.missedProducer` @type ^`rx.Producer` @kind object;
+  #L4b0e76.  v5:= 0L;
+  #L4b0e7a.  v7:= lcmp(v0, v5);
+  #L4b0e7e.  if v7 != 0 then goto L4b0e98;
+  #L4b0e82.  v7:= lcmp(v2, v5);
+  #L4b0e86.  if v7 != 0 then goto L4b0e98;
+  #L4b0e8a.  if v4 != 0 then goto L4b0e98;
+  #L4b0e8e.  v0:= 0I;
+  #L4b0e90.  v13.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L4b0e94.  @monitorexit v13
+  #L4b0e96.  return @kind void;
+  #L4b0e98.  v13.`rx.internal.producers.ProducerArbiter.missedRequested` @type ^`long` := v5 @kind wide;
+  #L4b0e9c.  v13.`rx.internal.producers.ProducerArbiter.missedProduced` @type ^`long` := v5 @kind wide;
+  #L4b0ea0.  v7:= 0I;
+  #L4b0ea2.  v13.`rx.internal.producers.ProducerArbiter.missedProducer` @type ^`rx.Producer` := v7 @kind object;
+  #L4b0ea6.  @monitorexit v13
+  #L4b0ea8.  v8:= v13.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` @kind wide;
+  #L4b0eac.  v10:= 9223372036854775807L;
+  #L4b0eb6.  v12:= lcmp(v8, v10);
+  #L4b0eba.  if v12 == 0 then goto L4b0ef8;
+  #L4b0ebe.  v8:= v8 + v0 @kind long;
+  #L4b0ec0.  v12:= lcmp(v8, v5);
+  #L4b0ec4.  if v12 < 0 then goto L4b0ef2;
+  #L4b0ec8.  v12:= lcmp(v8, v10);
+  #L4b0ecc.  if v12 != 0 then goto L4b0ed2;
+  #L4b0ed0.  goto L4b0ef2;
+  #L4b0ed2.  v8:= v8 - v2 @kind long;
+  #L4b0ed4.  v2:= lcmp(v8, v5);
+  #L4b0ed8.  if v2 < 0 then goto L4b0ee2;
+  #L4b0edc.  v13.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` := v8 @kind wide;
+  #L4b0ee0.  goto L4b0ef8;
+  #L4b0ee2.  v0:= new `java.lang.IllegalStateException`;
+  #L4b0ee6.  v1:= "more produced than requested" @kind object;
+  #L4b0eea.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b0ef0.  throw v0;
+  #L4b0ef2.  v13.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` := v10 @kind wide;
+  #L4b0ef6.  v8:= v10 @kind wide;
+  #L4b0ef8.  if v4 == 0 then goto L4b0f16;
+  #L4b0efc.  v0:= `@@rx.internal.producers.ProducerArbiter.NULL_PRODUCER` @type ^`rx.Producer` @kind object;
+  #L4b0f00.  if v4 != v0 then goto L4b0f0a;
+  #L4b0f04.  v13.`rx.internal.producers.ProducerArbiter.currentProducer` @type ^`rx.Producer` := v7 @kind object;
+  #L4b0f08.  goto L4b0e68;
+  #L4b0f0a.  v13.`rx.internal.producers.ProducerArbiter.currentProducer` @type ^`rx.Producer` := v4 @kind object;
+  #L4b0f0e.  call `request`(v4, v8) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L4b0f14.  goto L4b0e68;
+  #L4b0f16.  v2:= v13.`rx.internal.producers.ProducerArbiter.currentProducer` @type ^`rx.Producer` @kind object;
+  #L4b0f1a.  if v2 == 0 then goto L4b0e68;
+  #L4b0f1e.  v3:= lcmp(v0, v5);
+  #L4b0f22.  if v3 == 0 then goto L4b0e68;
+  #L4b0f26.  call `request`(v2, v0) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L4b0f2c.  goto L4b0e68;
+  #L4b0f2e.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b0f30.  @monitorexit v13
+  #L4b0f32.  goto L4b0f36;
+  #L4b0f34.  throw v0;
+  #L4b0f36.  goto L4b0f34;
+  catch `java.lang.Throwable` @[L4b0e6a..L4b0ea8] goto L4b0f2e;
+  catch `java.lang.Throwable` @[L4b0f30..L4b0f32] goto L4b0f2e;
+}
+procedure `void` `produced`(`rx.internal.producers.ProducerArbiter` v7 @kind this, `long` v8 ) @signature `Lrx/internal/producers/ProducerArbiter;.produced:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4b0f5c.  v0:= 0L;
+  #L4b0f60.  v2:= lcmp(v8, v0);
+  #L4b0f64.  if v2 <= 0 then goto L4b0fe0;
+  #L4b0f68.  @monitorenter v7
+  #L4b0f6a.  v2:= v7.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` @kind boolean;
+  #L4b0f6e.  if v2 == 0 then goto L4b0f80;
+  #L4b0f72.  v0:= v7.`rx.internal.producers.ProducerArbiter.missedProduced` @type ^`long` @kind wide;
+  #L4b0f76.  v0:= v0 + v8 @kind long;
+  #L4b0f78.  v7.`rx.internal.producers.ProducerArbiter.missedProduced` @type ^`long` := v0 @kind wide;
+  #L4b0f7c.  @monitorexit v7
+  #L4b0f7e.  return @kind void;
+  #L4b0f80.  v2:= 1I;
+  #L4b0f82.  v7.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` := v2 @kind boolean;
+  #L4b0f86.  @monitorexit v7
+  #L4b0f88.  v2:= v7.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` @kind wide;
+  #L4b0f8c.  v4:= 9223372036854775807L;
+  #L4b0f96.  v6:= lcmp(v2, v4);
+  #L4b0f9a.  if v6 == 0 then goto L4b0fbe;
+  #L4b0f9e.  v2:= v2 - v8 @kind long;
+  #L4b0fa0.  v8:= lcmp(v2, v0);
+  #L4b0fa4.  if v8 < 0 then goto L4b0fae;
+  #L4b0fa8.  v7.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` := v2 @kind wide;
+  #L4b0fac.  goto L4b0fbe;
+  #L4b0fae.  v8:= new `java.lang.IllegalStateException`;
+  #L4b0fb2.  v9:= "more items arrived than were requested" @kind object;
+  #L4b0fb6.  call `<init>`(v8, v9) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b0fbc.  throw v8;
+  #L4b0fbe.  call `emitLoop`(v7) @signature `Lrx/internal/producers/ProducerArbiter;.emitLoop:()V` @kind virtual;
+  #L4b0fc4.  return @kind void;
+  #L4b0fc6.  v8:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b0fc8.  @monitorenter v7
+  #L4b0fca.  v9:= 0I;
+  #L4b0fcc.  v7.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` := v9 @kind boolean;
+  #L4b0fd0.  @monitorexit v7
+  #L4b0fd2.  throw v8;
+  #L4b0fd4.  v8:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b0fd6.  @monitorexit v7
+  #L4b0fd8.  throw v8;
+  #L4b0fda.  v8:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b0fdc.  @monitorexit v7
+  #L4b0fde.  throw v8;
+  #L4b0fe0.  v8:= new `java.lang.IllegalArgumentException`;
+  #L4b0fe4.  v9:= "n > 0 required" @kind object;
+  #L4b0fe8.  call `<init>`(v8, v9) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b0fee.  throw v8;
+  catch `java.lang.Throwable` @[L4b0f6a..L4b0f88] goto L4b0fda;
+  catch `java.lang.Throwable` @[L4b0f88..L4b0fc4] goto L4b0fc6;
+  catch `java.lang.Throwable` @[L4b0fcc..L4b0fd2] goto L4b0fd4;
+  catch `java.lang.Throwable` @[L4b0fd6..L4b0fd8] goto L4b0fd4;
+  catch `java.lang.Throwable` @[L4b0fdc..L4b0fde] goto L4b0fda;
+}
+procedure `void` `request`(`rx.internal.producers.ProducerArbiter` v5 @kind this, `long` v6 ) @signature `Lrx/internal/producers/ProducerArbiter;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b1030.  v0:= 0L;
+  #L4b1034.  v2:= lcmp(v6, v0);
+  #L4b1038.  if v2 < 0 then goto L4b10b2;
+  #L4b103c.  v2:= lcmp(v6, v0);
+  #L4b1040.  if v2 != 0 then goto L4b1046;
+  #L4b1044.  return @kind void;
+  #L4b1046.  @monitorenter v5
+  #L4b1048.  v2:= v5.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` @kind boolean;
+  #L4b104c.  if v2 == 0 then goto L4b105e;
+  #L4b1050.  v0:= v5.`rx.internal.producers.ProducerArbiter.missedRequested` @type ^`long` @kind wide;
+  #L4b1054.  v0:= v0 + v6 @kind long;
+  #L4b1056.  v5.`rx.internal.producers.ProducerArbiter.missedRequested` @type ^`long` := v0 @kind wide;
+  #L4b105a.  @monitorexit v5
+  #L4b105c.  return @kind void;
+  #L4b105e.  v2:= 1I;
+  #L4b1060.  v5.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` := v2 @kind boolean;
+  #L4b1064.  @monitorexit v5
+  #L4b1066.  v2:= v5.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` @kind wide;
+  #L4b106a.  v2:= v2 + v6 @kind long;
+  #L4b106c.  v4:= lcmp(v2, v0);
+  #L4b1070.  if v4 >= 0 then goto L4b107e;
+  #L4b1074.  v2:= 9223372036854775807L;
+  #L4b107e.  v5.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` := v2 @kind wide;
+  #L4b1082.  v0:= v5.`rx.internal.producers.ProducerArbiter.currentProducer` @type ^`rx.Producer` @kind object;
+  #L4b1086.  if v0 == 0 then goto L4b1090;
+  #L4b108a.  call `request`(v0, v6) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L4b1090.  call `emitLoop`(v5) @signature `Lrx/internal/producers/ProducerArbiter;.emitLoop:()V` @kind virtual;
+  #L4b1096.  return @kind void;
+  #L4b1098.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b109a.  @monitorenter v5
+  #L4b109c.  v7:= 0I;
+  #L4b109e.  v5.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` := v7 @kind boolean;
+  #L4b10a2.  @monitorexit v5
+  #L4b10a4.  throw v6;
+  #L4b10a6.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b10a8.  @monitorexit v5
+  #L4b10aa.  throw v6;
+  #L4b10ac.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b10ae.  @monitorexit v5
+  #L4b10b0.  throw v6;
+  #L4b10b2.  v6:= new `java.lang.IllegalArgumentException`;
+  #L4b10b6.  v7:= "n >= 0 required" @kind object;
+  #L4b10ba.  call `<init>`(v6, v7) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b10c0.  throw v6;
+  catch `java.lang.Throwable` @[L4b1048..L4b1066] goto L4b10ac;
+  catch `java.lang.Throwable` @[L4b1066..L4b1096] goto L4b1098;
+  catch `java.lang.Throwable` @[L4b109e..L4b10a4] goto L4b10a6;
+  catch `java.lang.Throwable` @[L4b10a8..L4b10aa] goto L4b10a6;
+  catch `java.lang.Throwable` @[L4b10ae..L4b10b0] goto L4b10ac;
+}
+procedure `void` `setProducer`(`rx.internal.producers.ProducerArbiter` v2 @kind this, `rx.Producer` v3 @kind object) @signature `Lrx/internal/producers/ProducerArbiter;.setProducer:(Lrx/Producer;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b1104.  @monitorenter v2
+  #L4b1106.  v0:= v2.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` @kind boolean;
+  #L4b110a.  if v0 == 0 then goto L4b111e;
+  #L4b110e.  if v3 != 0 then goto L4b1116;
+  #L4b1112.  v3:= `@@rx.internal.producers.ProducerArbiter.NULL_PRODUCER` @type ^`rx.Producer` @kind object;
+  #L4b1116.  v2.`rx.internal.producers.ProducerArbiter.missedProducer` @type ^`rx.Producer` := v3 @kind object;
+  #L4b111a.  @monitorexit v2
+  #L4b111c.  return @kind void;
+  #L4b111e.  v0:= 1I;
+  #L4b1120.  v2.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L4b1124.  @monitorexit v2
+  #L4b1126.  v2.`rx.internal.producers.ProducerArbiter.currentProducer` @type ^`rx.Producer` := v3 @kind object;
+  #L4b112a.  if v3 == 0 then goto L4b1138;
+  #L4b112e.  v0:= v2.`rx.internal.producers.ProducerArbiter.requested` @type ^`long` @kind wide;
+  #L4b1132.  call `request`(v3, v0) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L4b1138.  call `emitLoop`(v2) @signature `Lrx/internal/producers/ProducerArbiter;.emitLoop:()V` @kind virtual;
+  #L4b113e.  return @kind void;
+  #L4b1140.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b1142.  @monitorenter v2
+  #L4b1144.  v0:= 0I;
+  #L4b1146.  v2.`rx.internal.producers.ProducerArbiter.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L4b114a.  @monitorexit v2
+  #L4b114c.  throw v3;
+  #L4b114e.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b1150.  @monitorexit v2
+  #L4b1152.  throw v3;
+  #L4b1154.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b1156.  @monitorexit v2
+  #L4b1158.  throw v3;
+  catch `java.lang.Throwable` @[L4b1106..L4b1126] goto L4b1154;
+  catch `java.lang.Throwable` @[L4b1126..L4b113e] goto L4b1140;
+  catch `java.lang.Throwable` @[L4b1146..L4b114c] goto L4b114e;
+  catch `java.lang.Throwable` @[L4b1150..L4b1152] goto L4b114e;
+  catch `java.lang.Throwable` @[L4b1156..L4b1158] goto L4b1154;
+}

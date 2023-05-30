@@ -1,0 +1,357 @@
+record `com.huawei.hms.ml.grs.GrsUtils` @kind class @AccessFlag PUBLIC {
+}
+global `java.lang.String` `@@com.huawei.hms.ml.grs.GrsUtils.BACKUP_URL_KEY` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.ml.grs.GrsUtils.HTTPS_HEADER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.ml.grs.GrsUtils.HTTP_HEADER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.ml.grs.GrsUtils.MAIN_URL_KEY` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.ml.grs.GrsUtils.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `com.huawei.hms.framework.network.grs.GrsClient` `@@com.huawei.hms.ml.grs.GrsUtils.grsClient` @AccessFlag PRIVATE_STATIC;
+global `com.huawei.hms.framework.network.grs.GrsClient` `@@com.huawei.hms.ml.grs.GrsUtils.grsVisionSearchClient` @AccessFlag PRIVATE_STATIC;
+global `com.huawei.hms.framework.network.grs.GrsBaseInfo` `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @AccessFlag PRIVATE_STATIC;
+global `com.huawei.hms.framework.network.grs.GrsBaseInfo` `@@com.huawei.hms.ml.grs.GrsUtils.hmsVisionGrsInfo` @AccessFlag PRIVATE_STATIC;
+global `android.content.Context` `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<init>`(`com.huawei.hms.ml.grs.GrsUtils` v0 @kind this) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L230440.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L230446.  return @kind void;
+}
+procedure `java.util.List` `addHttpsHeaders`(`java.util.List` v4 @kind object) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.addHttpsHeaders:(Ljava/util/List;)Ljava/util/List;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L230150.  v0:= new `java.util.ArrayList`;
+  #L230154.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L23015a.  if v4 == 0 then goto L230240;
+  #L23015e.  call temp:= `size`(v4) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L230164.  v1:= temp;
+  #L230166.  if v1 != 0 then goto L23016c;
+  #L23016a.  goto L230240;
+  #L23016c.  call temp:= `iterator`(v4) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L230172.  v4:= temp @kind object;
+  #L230174.  call temp:= `hasNext`(v4) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L23017a.  v1:= temp;
+  #L23017c.  if v1 == 0 then goto L230240;
+  #L230180.  call temp:= `next`(v4) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L230186.  v1:= temp @kind object;
+  #L230188.  v1:= (`java.lang.String`) v1 @kind object;
+  #L23018c.  call temp:= `trim`(v1) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L230192.  v1:= temp @kind object;
+  #L230194.  v2:= `@@java.util.Locale.ENGLISH` @type ^`java.util.Locale` @kind object;
+  #L230198.  call temp:= `toLowerCase`(v1, v2) @signature `Ljava/lang/String;.toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;` @kind virtual;
+  #L23019e.  v1:= temp @kind object;
+  #L2301a0.  v2:= "http://" @kind object;
+  #L2301a4.  call temp:= `startsWith`(v1, v2) @signature `Ljava/lang/String;.startsWith:(Ljava/lang/String;)Z` @kind virtual;
+  #L2301aa.  v2:= temp;
+  #L2301ac.  if v2 != 0 then goto L2301de;
+  #L2301b0.  v2:= "https://" @kind object;
+  #L2301b4.  call temp:= `startsWith`(v1, v2) @signature `Ljava/lang/String;.startsWith:(Ljava/lang/String;)Z` @kind virtual;
+  #L2301ba.  v3:= temp;
+  #L2301bc.  if v3 != 0 then goto L2301de;
+  #L2301c0.  v3:= new `java.lang.StringBuilder`;
+  #L2301c4.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2301ca.  call temp:= `append`(v3, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2301d0.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2301d6.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2301dc.  v1:= temp @kind object;
+  #L2301de.  v2:= "/" @kind object;
+  #L2301e2.  call temp:= `endsWith`(v1, v2) @signature `Ljava/lang/String;.endsWith:(Ljava/lang/String;)Z` @kind virtual;
+  #L2301e8.  v3:= temp;
+  #L2301ea.  if v3 != 0 then goto L23020c;
+  #L2301ee.  v3:= new `java.lang.StringBuilder`;
+  #L2301f2.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2301f8.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2301fe.  call temp:= `append`(v3, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L230204.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L23020a.  v1:= temp @kind object;
+  #L23020c.  v2:= new `java.lang.StringBuilder`;
+  #L230210.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L230216.  v3:= "GrsClient grs url is: " @kind object;
+  #L23021a.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L230220.  call temp:= `append`(v2, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L230226.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L23022c.  v2:= temp @kind object;
+  #L23022e.  v3:= "GRS" @kind object;
+  #L230232.  call temp:= `i`(v3, v2) @signature `Landroid/util/Log;.i:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L230238.  call temp:= `add`(v0, v1) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L23023e.  goto L230174;
+  #L230240.  return v0 @kind object;
+}
+procedure `java.lang.String` `getUrl`(`java.lang.String` v4 @kind object) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.getUrl:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2300a0.  v0:= `@@com.huawei.hms.ml.grs.GrsUtils.grsClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` @kind object;
+  #L2300a4.  v1:= "" @kind object;
+  #L2300a8.  v2:= "GRS" @kind object;
+  #L2300ac.  if v0 != 0 then goto L2300bc;
+  #L2300b0.  v4:= "grsClient not initialized!" @kind object;
+  #L2300b4.  call temp:= `e`(v2, v4) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2300ba.  return v1 @kind object;
+  #L2300bc.  v3:= "com.huawei.cloud.mlkitservice" @kind object;
+  #L2300c0.  call temp:= `synGetGrsUrl`(v0, v3, v4) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.synGetGrsUrl:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L2300c6.  v4:= temp @kind object;
+  #L2300c8.  call temp:= `isEmpty`(v4) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L2300ce.  v0:= temp;
+  #L2300d0.  if v0 == 0 then goto L23010a;
+  #L2300d4.  v4:= new `java.lang.StringBuilder`;
+  #L2300d8.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2300de.  v0:= "grs get url is empty, countryCode=" @kind object;
+  #L2300e2.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2300e8.  v0:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L2300ec.  call temp:= `getSerCountry`(v0) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.getSerCountry:()Ljava/lang/String;` @kind virtual;
+  #L2300f2.  v0:= temp @kind object;
+  #L2300f4.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2300fa.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L230100.  v4:= temp @kind object;
+  #L230102.  call temp:= `e`(v2, v4) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L230108.  return v1 @kind object;
+  #L23010a.  v0:= new `java.lang.StringBuilder`;
+  #L23010e.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L230114.  v1:= "grs get url success:   countryCode = " @kind object;
+  #L230118.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L23011e.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L230122.  call temp:= `getSerCountry`(v1) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.getSerCountry:()Ljava/lang/String;` @kind virtual;
+  #L230128.  v1:= temp @kind object;
+  #L23012a.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L230130.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L230136.  v0:= temp @kind object;
+  #L230138.  call temp:= `i`(v2, v0) @signature `Landroid/util/Log;.i:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L23013e.  return v4 @kind object;
+}
+procedure `java.util.List` `getUrls`(`android.content.Context` v6 @kind object, `boolean` v7 ) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.getUrls:(Landroid/content/Context;Z)Ljava/util/List;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L230254.  v0:= new `java.util.ArrayList`;
+  #L230258.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L23025e.  if v7 != 0 then goto L230272;
+  #L230262.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.grsClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` @kind object;
+  #L230266.  if v1 != 0 then goto L230272;
+  #L23026a.  call `initGrsClient`(v6) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.initGrsClient:(Landroid/content/Context;)V` @kind static;
+  #L230270.  goto L230284;
+  #L230272.  if v7 == 0 then goto L230284;
+  #L230276.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.grsVisionSearchClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` @kind object;
+  #L23027a.  if v1 != 0 then goto L230284;
+  #L23027e.  call `initGrsVisionSearchClient`(v6) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.initGrsVisionSearchClient:(Landroid/content/Context;)V` @kind static;
+  #L230284.  if v7 == 0 then goto L23028e;
+  #L230288.  v6:= `@@com.huawei.hms.ml.grs.GrsUtils.grsVisionSearchClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` @kind object;
+  #L23028c.  goto L230292;
+  #L23028e.  v6:= `@@com.huawei.hms.ml.grs.GrsUtils.grsClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` @kind object;
+  #L230292.  v7:= "com.huawei.cloud.mlkitservice" @kind object;
+  #L230296.  v1:= "ROOT" @kind object;
+  #L23029a.  call temp:= `synGetGrsUrl`(v6, v7, v1) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.synGetGrsUrl:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L2302a0.  v1:= temp @kind object;
+  #L2302a2.  call temp:= `isEmpty`(v1) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L2302a8.  v2:= temp;
+  #L2302aa.  v3:= "" @kind object;
+  #L2302ae.  v4:= "grs get url is empty, countryCode=" @kind object;
+  #L2302b2.  v5:= "GRS" @kind object;
+  #L2302b6.  if v2 != 0 then goto L2302c2;
+  #L2302ba.  call temp:= `add`(v0, v1) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2302c0.  goto L2302f8;
+  #L2302c2.  v1:= new `java.lang.StringBuilder`;
+  #L2302c6.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2302cc.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2302d2.  v2:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L2302d6.  call temp:= `getSerCountry`(v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.getSerCountry:()Ljava/lang/String;` @kind virtual;
+  #L2302dc.  v2:= temp @kind object;
+  #L2302de.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2302e4.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2302ea.  v1:= temp @kind object;
+  #L2302ec.  call temp:= `e`(v5, v1) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2302f2.  call temp:= `add`(v0, v3) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2302f8.  v1:= "ROOTBACK" @kind object;
+  #L2302fc.  call temp:= `synGetGrsUrl`(v6, v7, v1) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.synGetGrsUrl:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L230302.  v6:= temp @kind object;
+  #L230304.  call temp:= `isEmpty`(v6) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L23030a.  v7:= temp;
+  #L23030c.  if v7 != 0 then goto L230318;
+  #L230310.  call temp:= `add`(v0, v6) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L230316.  goto L23034e;
+  #L230318.  v6:= new `java.lang.StringBuilder`;
+  #L23031c.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L230322.  call temp:= `append`(v6, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L230328.  v7:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L23032c.  call temp:= `getSerCountry`(v7) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.getSerCountry:()Ljava/lang/String;` @kind virtual;
+  #L230332.  v7:= temp @kind object;
+  #L230334.  call temp:= `append`(v6, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L23033a.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L230340.  v6:= temp @kind object;
+  #L230342.  call temp:= `e`(v5, v6) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L230348.  call temp:= `add`(v0, v3) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L23034e.  return v0 @kind object;
+}
+procedure `java.util.List` `getVisionSearchUrls`(`com.huawei.hms.framework.network.grs.GrsClient` v7 @kind object) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.getVisionSearchUrls:(Lcom/huawei/hms/framework/network/grs/GrsClient;)Ljava/util/List;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L230360.  v0:= new `java.util.ArrayList`;
+  #L230364.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L23036a.  if v7 != 0 then goto L230370;
+  #L23036e.  return v0 @kind object;
+  #L230370.  v1:= "com.huawei.cloud.mlkitservice" @kind object;
+  #L230374.  v2:= "ROOT" @kind object;
+  #L230378.  call temp:= `synGetGrsUrl`(v7, v1, v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.synGetGrsUrl:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L23037e.  v2:= temp @kind object;
+  #L230380.  call temp:= `isEmpty`(v2) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L230386.  v3:= temp;
+  #L230388.  v4:= "" @kind object;
+  #L23038c.  v5:= "grs get url is empty, countryCode=" @kind object;
+  #L230390.  v6:= "GRS" @kind object;
+  #L230394.  if v3 != 0 then goto L2303a0;
+  #L230398.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L23039e.  goto L2303d6;
+  #L2303a0.  v2:= new `java.lang.StringBuilder`;
+  #L2303a4.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2303aa.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2303b0.  v3:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L2303b4.  call temp:= `getSerCountry`(v3) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.getSerCountry:()Ljava/lang/String;` @kind virtual;
+  #L2303ba.  v3:= temp @kind object;
+  #L2303bc.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2303c2.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2303c8.  v2:= temp @kind object;
+  #L2303ca.  call temp:= `e`(v6, v2) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2303d0.  call temp:= `add`(v0, v4) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2303d6.  v2:= "ROOTBACK" @kind object;
+  #L2303da.  call temp:= `synGetGrsUrl`(v7, v1, v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.synGetGrsUrl:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L2303e0.  v7:= temp @kind object;
+  #L2303e2.  call temp:= `isEmpty`(v7) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L2303e8.  v1:= temp;
+  #L2303ea.  if v1 != 0 then goto L2303f6;
+  #L2303ee.  call temp:= `add`(v0, v7) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2303f4.  goto L23042c;
+  #L2303f6.  v7:= new `java.lang.StringBuilder`;
+  #L2303fa.  call `<init>`(v7) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L230400.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L230406.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L23040a.  call temp:= `getSerCountry`(v1) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.getSerCountry:()Ljava/lang/String;` @kind virtual;
+  #L230410.  v1:= temp @kind object;
+  #L230412.  call temp:= `append`(v7, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L230418.  call temp:= `toString`(v7) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L23041e.  v7:= temp @kind object;
+  #L230420.  call temp:= `e`(v6, v7) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L230426.  call temp:= `add`(v0, v4) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L23042c.  return v0 @kind object;
+}
+procedure `void` `initGrsClient`(`android.content.Context` v3 @kind object) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.initGrsClient:(Landroid/content/Context;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L230458.  v0:= constclass @type ^`com.huawei.hms.ml.grs.GrsUtils` @kind object;
+  #L23045c.  @monitorenter v0
+  #L23045e.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.grsClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` @kind object;
+  #L230462.  if v1 == 0 then goto L23046a;
+  #L230466.  @monitorexit v0
+  #L230468.  return @kind void;
+  #L23046a.  `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` := v3 @kind object;
+  #L23046e.  v3:= new `com.huawei.hms.framework.network.grs.GrsBaseInfo`;
+  #L230472.  call `<init>`(v3) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.<init>:()V` @kind direct;
+  #L230478.  `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` := v3 @kind object;
+  #L23047c.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/framework/network/grs/GrsApp;.getInstance:()Lcom/huawei/hms/framework/network/grs/GrsApp;` @kind static;
+  #L230482.  v1:= temp @kind object;
+  #L230484.  v2:= `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` @kind object;
+  #L230488.  call temp:= `getIssueCountryCode`(v1, v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsApp;.getIssueCountryCode:(Landroid/content/Context;)Ljava/lang/String;` @kind virtual;
+  #L23048e.  v1:= temp @kind object;
+  #L230490.  call `setSerCountry`(v3, v1) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.setSerCountry:(Ljava/lang/String;)V` @kind virtual;
+  #L230496.  v3:= new `com.huawei.hms.framework.network.grs.GrsClient`;
+  #L23049a.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` @kind object;
+  #L23049e.  v2:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L2304a2.  call `<init>`(v3, v1, v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.<init>:(Landroid/content/Context;Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;)V` @kind direct;
+  #L2304a8.  `@@com.huawei.hms.ml.grs.GrsUtils.grsClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` := v3 @kind object;
+  #L2304ac.  @monitorexit v0
+  #L2304ae.  return @kind void;
+  #L2304b0.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2304b2.  @monitorexit v0
+  #L2304b4.  throw v3;
+  catch `java.lang.Throwable` @[L23045e..L230462] goto L2304b0;
+  catch `java.lang.Throwable` @[L23046a..L2304ac] goto L2304b0;
+}
+procedure `void` `initGrsVisionSearchClient`(`android.content.Context` v3 @kind object) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.initGrsVisionSearchClient:(Landroid/content/Context;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2304dc.  v0:= constclass @type ^`com.huawei.hms.ml.grs.GrsUtils` @kind object;
+  #L2304e0.  @monitorenter v0
+  #L2304e2.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.grsVisionSearchClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` @kind object;
+  #L2304e6.  if v1 == 0 then goto L2304ee;
+  #L2304ea.  @monitorexit v0
+  #L2304ec.  return @kind void;
+  #L2304ee.  `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` := v3 @kind object;
+  #L2304f2.  v3:= new `com.huawei.hms.framework.network.grs.GrsBaseInfo`;
+  #L2304f6.  call `<init>`(v3) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.<init>:()V` @kind direct;
+  #L2304fc.  `@@com.huawei.hms.ml.grs.GrsUtils.hmsVisionGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` := v3 @kind object;
+  #L230500.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/framework/network/grs/GrsApp;.getInstance:()Lcom/huawei/hms/framework/network/grs/GrsApp;` @kind static;
+  #L230506.  v1:= temp @kind object;
+  #L230508.  v2:= `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` @kind object;
+  #L23050c.  call temp:= `getIssueCountryCode`(v1, v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsApp;.getIssueCountryCode:(Landroid/content/Context;)Ljava/lang/String;` @kind virtual;
+  #L230512.  v1:= temp @kind object;
+  #L230514.  call `setSerCountry`(v3, v1) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.setSerCountry:(Ljava/lang/String;)V` @kind virtual;
+  #L23051a.  v3:= new `com.huawei.hms.framework.network.grs.GrsClient`;
+  #L23051e.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` @kind object;
+  #L230522.  v2:= `@@com.huawei.hms.ml.grs.GrsUtils.hmsVisionGrsInfo` @type ^`com.huawei.hms.framework.network.grs.GrsBaseInfo` @kind object;
+  #L230526.  call `<init>`(v3, v1, v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.<init>:(Landroid/content/Context;Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;)V` @kind direct;
+  #L23052c.  `@@com.huawei.hms.ml.grs.GrsUtils.grsVisionSearchClient` @type ^`com.huawei.hms.framework.network.grs.GrsClient` := v3 @kind object;
+  #L230530.  @monitorexit v0
+  #L230532.  return @kind void;
+  #L230534.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L230536.  @monitorexit v0
+  #L230538.  throw v3;
+  catch `java.lang.Throwable` @[L2304e2..L2304e6] goto L230534;
+  catch `java.lang.Throwable` @[L2304ee..L230530] goto L230534;
+}
+procedure `com.huawei.hms.framework.network.grs.GrsClient` `initGrsVisionSearchClientWithCountry`(`android.content.Context` v2 @kind object, `java.lang.String` v3 @kind object) @signature `Lcom/huawei/hms/ml/grs/GrsUtils;.initGrsVisionSearchClientWithCountry:(Landroid/content/Context;Ljava/lang/String;)Lcom/huawei/hms/framework/network/grs/GrsClient;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L23001c.  v0:= constclass @type ^`com.huawei.hms.ml.grs.GrsUtils` @kind object;
+  #L230020.  @monitorenter v0
+  #L230022.  `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` := v2 @kind object;
+  #L230026.  call temp:= `isEmpty`(v3) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L23002c.  v2:= temp;
+  #L23002e.  if v2 == 0 then goto L230046;
+  #L230032.  v2:= "GRS" @kind object;
+  #L230036.  v3:= "grsClient not initialized!" @kind object;
+  #L23003a.  call temp:= `e`(v2, v3) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L230040.  v2:= 0I;
+  #L230042.  @monitorexit v0
+  #L230044.  return v2 @kind object;
+  #L230046.  v2:= new `com.huawei.hms.framework.network.grs.GrsBaseInfo`;
+  #L23004a.  call `<init>`(v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.<init>:()V` @kind direct;
+  #L230050.  v1:= `@@java.util.Locale.ENGLISH` @type ^`java.util.Locale` @kind object;
+  #L230054.  call temp:= `toUpperCase`(v3, v1) @signature `Ljava/lang/String;.toUpperCase:(Ljava/util/Locale;)Ljava/lang/String;` @kind virtual;
+  #L23005a.  v3:= temp @kind object;
+  #L23005c.  call `setSerCountry`(v2, v3) @signature `Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;.setSerCountry:(Ljava/lang/String;)V` @kind virtual;
+  #L230062.  v3:= new `com.huawei.hms.framework.network.grs.GrsClient`;
+  #L230066.  v1:= `@@com.huawei.hms.ml.grs.GrsUtils.mContext` @type ^`android.content.Context` @kind object;
+  #L23006a.  call `<init>`(v3, v1, v2) @signature `Lcom/huawei/hms/framework/network/grs/GrsClient;.<init>:(Landroid/content/Context;Lcom/huawei/hms/framework/network/grs/GrsBaseInfo;)V` @kind direct;
+  #L230070.  @monitorexit v0
+  #L230072.  return v3 @kind object;
+  #L230074.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L230076.  @monitorexit v0
+  #L230078.  throw v2;
+  catch `java.lang.Throwable` @[L230022..L230040] goto L230074;
+  catch `java.lang.Throwable` @[L230046..L230070] goto L230074;
+}

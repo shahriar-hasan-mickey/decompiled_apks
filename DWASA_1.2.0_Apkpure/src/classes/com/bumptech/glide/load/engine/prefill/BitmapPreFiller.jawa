@@ -1,0 +1,144 @@
+record `com.bumptech.glide.load.engine.prefill.BitmapPreFiller` @kind class @AccessFlag PUBLIC_FINAL {
+  `com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool` `com.bumptech.glide.load.engine.prefill.BitmapPreFiller.bitmapPool` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.prefill.BitmapPreFillRunner` `com.bumptech.glide.load.engine.prefill.BitmapPreFiller.current` @AccessFlag PRIVATE;
+  `com.bumptech.glide.load.DecodeFormat` `com.bumptech.glide.load.engine.prefill.BitmapPreFiller.defaultFormat` @AccessFlag PRIVATE_FINAL;
+  `android.os.Handler` `com.bumptech.glide.load.engine.prefill.BitmapPreFiller.handler` @AccessFlag PRIVATE_FINAL;
+  `com.bumptech.glide.load.engine.cache.MemoryCache` `com.bumptech.glide.load.engine.prefill.BitmapPreFiller.memoryCache` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.prefill.BitmapPreFiller` v2 @kind this, `com.bumptech.glide.load.engine.cache.MemoryCache` v3 @kind object, `com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool` v4 @kind object, `com.bumptech.glide.load.DecodeFormat` v5 @kind object) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFiller;.<init>:(Lcom/bumptech/glide/load/engine/cache/MemoryCache;Lcom/bumptech/glide/load/engine/bitmap_recycle/BitmapPool;Lcom/bumptech/glide/load/DecodeFormat;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L2bd97c.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2bd982.  v0:= new `android.os.Handler`;
+  #L2bd986.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L2bd98c.  v1:= temp @kind object;
+  #L2bd98e.  call `<init>`(v0, v1) @signature `Landroid/os/Handler;.<init>:(Landroid/os/Looper;)V` @kind direct;
+  #L2bd994.  v2.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.handler` @type ^`android.os.Handler` := v0 @kind object;
+  #L2bd998.  v2.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.memoryCache` @type ^`com.bumptech.glide.load.engine.cache.MemoryCache` := v3 @kind object;
+  #L2bd99c.  v2.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.bitmapPool` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool` := v4 @kind object;
+  #L2bd9a0.  v2.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.defaultFormat` @type ^`com.bumptech.glide.load.DecodeFormat` := v5 @kind object;
+  #L2bd9a4.  return @kind void;
+}
+procedure `int` `getSizeInBytes`(`com.bumptech.glide.load.engine.prefill.PreFillType` v2 @kind object) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFiller;.getSizeInBytes:(Lcom/bumptech/glide/load/engine/prefill/PreFillType;)I` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2bd948.  call temp:= `getWidth`(v2) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType;.getWidth:()I` @kind virtual;
+  #L2bd94e.  v0:= temp;
+  #L2bd950.  call temp:= `getHeight`(v2) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType;.getHeight:()I` @kind virtual;
+  #L2bd956.  v1:= temp;
+  #L2bd958.  call temp:= `getConfig`(v2) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType;.getConfig:()Landroid/graphics/Bitmap$Config;` @kind virtual;
+  #L2bd95e.  v2:= temp @kind object;
+  #L2bd960.  call temp:= `getBitmapByteSize`(v0, v1, v2) @signature `Lcom/bumptech/glide/util/Util;.getBitmapByteSize:(IILandroid/graphics/Bitmap$Config;)I` @kind static;
+  #L2bd966.  v2:= temp;
+  #L2bd968.  return v2;
+}
+procedure `com.bumptech.glide.load.engine.prefill.PreFillQueue` `generateAllocationOrder`(`com.bumptech.glide.load.engine.prefill.BitmapPreFiller` v7 @kind this, `com.bumptech.glide.load.engine.prefill.PreFillType`[] v8 @kind object) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFiller;.generateAllocationOrder:([Lcom/bumptech/glide/load/engine/prefill/PreFillType;)Lcom/bumptech/glide/load/engine/prefill/PreFillQueue;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L2bd894.  v0:= v7.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.memoryCache` @type ^`com.bumptech.glide.load.engine.cache.MemoryCache` @kind object;
+  #L2bd898.  call temp:= `getMaxSize`(v0) @signature `Lcom/bumptech/glide/load/engine/cache/MemoryCache;.getMaxSize:()I` @kind interface;
+  #L2bd89e.  v0:= temp;
+  #L2bd8a0.  v1:= v7.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.memoryCache` @type ^`com.bumptech.glide.load.engine.cache.MemoryCache` @kind object;
+  #L2bd8a4.  call temp:= `getCurrentSize`(v1) @signature `Lcom/bumptech/glide/load/engine/cache/MemoryCache;.getCurrentSize:()I` @kind interface;
+  #L2bd8aa.  v1:= temp;
+  #L2bd8ac.  v0:= v0 - v1 @kind int;
+  #L2bd8ae.  v1:= v7.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.bitmapPool` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool` @kind object;
+  #L2bd8b2.  call temp:= `getMaxSize`(v1) @signature `Lcom/bumptech/glide/load/engine/bitmap_recycle/BitmapPool;.getMaxSize:()I` @kind interface;
+  #L2bd8b8.  v1:= temp;
+  #L2bd8ba.  v0:= v0 + v1 @kind int;
+  #L2bd8bc.  v1:= length @variable v8;
+  #L2bd8be.  v2:= 0I;
+  #L2bd8c0.  v3:= 0I;
+  #L2bd8c2.  v4:= 0I;
+  #L2bd8c4.  if v3 >= v1 then goto L2bd8dc;
+  #L2bd8c8.  v5:= v8[v3] @kind object;
+  #L2bd8cc.  call temp:= `getWeight`(v5) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType;.getWeight:()I` @kind virtual;
+  #L2bd8d2.  v5:= temp;
+  #L2bd8d4.  v4:= v4 + v5 @kind int;
+  #L2bd8d6.  v3:= v3 + 1;
+  #L2bd8da.  goto L2bd8c4;
+  #L2bd8dc.  v0:= (`float`) v0 @kind i2f;
+  #L2bd8de.  v1:= (`float`) v4 @kind i2f;
+  #L2bd8e0.  v0:= v0 / v1 @kind float;
+  #L2bd8e2.  v1:= new `java.util.HashMap`;
+  #L2bd8e6.  call `<init>`(v1) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L2bd8ec.  v3:= length @variable v8;
+  #L2bd8ee.  if v2 >= v3 then goto L2bd92a;
+  #L2bd8f2.  v4:= v8[v2] @kind object;
+  #L2bd8f6.  call temp:= `getWeight`(v4) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType;.getWeight:()I` @kind virtual;
+  #L2bd8fc.  v5:= temp;
+  #L2bd8fe.  v5:= (`float`) v5 @kind i2f;
+  #L2bd900.  v5:= v5 * v0 @kind float;
+  #L2bd904.  call temp:= `round`(v5) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L2bd90a.  v5:= temp;
+  #L2bd90c.  call temp:= `getSizeInBytes`(v4) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFiller;.getSizeInBytes:(Lcom/bumptech/glide/load/engine/prefill/PreFillType;)I` @kind static;
+  #L2bd912.  v6:= temp;
+  #L2bd914.  v5:= v5 / v6 @kind int;
+  #L2bd916.  call temp:= `valueOf`(v5) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L2bd91c.  v5:= temp @kind object;
+  #L2bd91e.  call temp:= `put`(v1, v4, v5) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L2bd924.  v2:= v2 + 1;
+  #L2bd928.  goto L2bd8ee;
+  #L2bd92a.  v8:= new `com.bumptech.glide.load.engine.prefill.PreFillQueue`;
+  #L2bd92e.  call `<init>`(v8, v1) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillQueue;.<init>:(Ljava/util/Map;)V` @kind direct;
+  #L2bd934.  return v8 @kind object;
+}
+procedure `void` `preFill`(`com.bumptech.glide.load.engine.prefill.BitmapPreFiller` v5 @kind this, `com.bumptech.glide.load.engine.prefill.PreFillType$Builder`[] v6 @kind object) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFiller;.preFill:([Lcom/bumptech/glide/load/engine/prefill/PreFillType$Builder;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2bd9b8.  v0:= v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.current` @type ^`com.bumptech.glide.load.engine.prefill.BitmapPreFillRunner` @kind object;
+  #L2bd9bc.  if v0 == 0 then goto L2bd9c6;
+  #L2bd9c0.  call `cancel`(v0) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFillRunner;.cancel:()V` @kind virtual;
+  #L2bd9c6.  v0:= length @variable v6;
+  #L2bd9c8.  v0:= new `com.bumptech.glide.load.engine.prefill.PreFillType`[v0];
+  #L2bd9cc.  v1:= 0I;
+  #L2bd9ce.  v2:= length @variable v6;
+  #L2bd9d0.  if v1 >= v2 then goto L2bda20;
+  #L2bd9d4.  v2:= v6[v1] @kind object;
+  #L2bd9d8.  call temp:= `getConfig`(v2) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType$Builder;.getConfig:()Landroid/graphics/Bitmap$Config;` @kind virtual;
+  #L2bd9de.  v3:= temp @kind object;
+  #L2bd9e0.  if v3 != 0 then goto L2bda0e;
+  #L2bd9e4.  v3:= v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.defaultFormat` @type ^`com.bumptech.glide.load.DecodeFormat` @kind object;
+  #L2bd9e8.  v4:= `@@com.bumptech.glide.load.DecodeFormat.ALWAYS_ARGB_8888` @type ^`com.bumptech.glide.load.DecodeFormat` @kind object;
+  #L2bd9ec.  if v3 == v4 then goto L2bda04;
+  #L2bd9f0.  v3:= v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.defaultFormat` @type ^`com.bumptech.glide.load.DecodeFormat` @kind object;
+  #L2bd9f4.  v4:= `@@com.bumptech.glide.load.DecodeFormat.PREFER_ARGB_8888` @type ^`com.bumptech.glide.load.DecodeFormat` @kind object;
+  #L2bd9f8.  if v3 != v4 then goto L2bd9fe;
+  #L2bd9fc.  goto L2bda04;
+  #L2bd9fe.  v3:= `@@android.graphics.Bitmap$Config.RGB_565` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L2bda02.  goto L2bda08;
+  #L2bda04.  v3:= `@@android.graphics.Bitmap$Config.ARGB_8888` @type ^`android.graphics.Bitmap$Config` @kind object;
+  #L2bda08.  call temp:= `setConfig`(v2, v3) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType$Builder;.setConfig:(Landroid/graphics/Bitmap$Config;)Lcom/bumptech/glide/load/engine/prefill/PreFillType$Builder;` @kind virtual;
+  #L2bda0e.  call temp:= `build`(v2) @signature `Lcom/bumptech/glide/load/engine/prefill/PreFillType$Builder;.build:()Lcom/bumptech/glide/load/engine/prefill/PreFillType;` @kind virtual;
+  #L2bda14.  v2:= temp @kind object;
+  #L2bda16.  v0[v1]:= v2 @kind object;
+  #L2bda1a.  v1:= v1 + 1;
+  #L2bda1e.  goto L2bd9ce;
+  #L2bda20.  call temp:= `generateAllocationOrder`(v5, v0) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFiller;.generateAllocationOrder:([Lcom/bumptech/glide/load/engine/prefill/PreFillType;)Lcom/bumptech/glide/load/engine/prefill/PreFillQueue;` @kind virtual;
+  #L2bda26.  v6:= temp @kind object;
+  #L2bda28.  v0:= new `com.bumptech.glide.load.engine.prefill.BitmapPreFillRunner`;
+  #L2bda2c.  v1:= v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.bitmapPool` @type ^`com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool` @kind object;
+  #L2bda30.  v2:= v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.memoryCache` @type ^`com.bumptech.glide.load.engine.cache.MemoryCache` @kind object;
+  #L2bda34.  call `<init>`(v0, v1, v2, v6) @signature `Lcom/bumptech/glide/load/engine/prefill/BitmapPreFillRunner;.<init>:(Lcom/bumptech/glide/load/engine/bitmap_recycle/BitmapPool;Lcom/bumptech/glide/load/engine/cache/MemoryCache;Lcom/bumptech/glide/load/engine/prefill/PreFillQueue;)V` @kind direct;
+  #L2bda3a.  v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.current` @type ^`com.bumptech.glide.load.engine.prefill.BitmapPreFillRunner` := v0 @kind object;
+  #L2bda3e.  v6:= v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.handler` @type ^`android.os.Handler` @kind object;
+  #L2bda42.  v0:= v5.`com.bumptech.glide.load.engine.prefill.BitmapPreFiller.current` @type ^`com.bumptech.glide.load.engine.prefill.BitmapPreFillRunner` @kind object;
+  #L2bda46.  call temp:= `post`(v6, v0) @signature `Landroid/os/Handler;.post:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L2bda4c.  return @kind void;
+}

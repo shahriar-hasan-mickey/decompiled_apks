@@ -1,0 +1,385 @@
+record `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` @kind class @AccessFlag PUBLIC {
+  `com.huawei.hianalytics.process.HiAnalyticsInstance` `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.defaultInstance` @AccessFlag PRIVATE;
+  `com.huawei.hianalytics.process.HiAnalyticsInstance` `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hInstance` @AccessFlag PRIVATE;
+  `java.lang.String` `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.haTag` @AccessFlag PRIVATE;
+  `boolean` `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHMSBI` @AccessFlag PRIVATE;
+  `boolean` `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @AccessFlag PRIVATE;
+  `boolean` `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.isEnablePrivacyPolicy` @AccessFlag PRIVATE;
+  `java.util.concurrent.ExecutorService` `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.reportExecutor` @AccessFlag PRIVATE;
+}
+global `java.lang.String` `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.DEAULT_HA_SERVICE_TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.HWID_HA_SERVICE_TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.TYPE_MAINTF` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.USER_EXPERIENCE_INVOLVED` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.USER_EXPERIENCE_ON` @AccessFlag PRIVATE_STATIC_FINAL;
+global `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.instance` @AccessFlag PRIVATE_STATIC_VOLATILE;
+procedure `void` `<init>`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v5 @kind this) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L20cc04.  v0:= "HianalyticsHelper" @kind object;
+  #L20cc08.  call `<init>`(v5) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L20cc0e.  v1:= "hms_hwid" @kind object;
+  #L20cc12.  v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.haTag` @type ^`java.lang.String` := v1 @kind object;
+  #L20cc16.  v1:= 0I;
+  #L20cc18.  v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` := v1 @kind object;
+  #L20cc1c.  v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.defaultInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` := v1 @kind object;
+  #L20cc20.  v1:= 0I;
+  #L20cc22.  v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.isEnablePrivacyPolicy` @type ^`boolean` := v1 @kind boolean;
+  #L20cc26.  v2:= "report_ha" @kind object;
+  #L20cc2a.  call temp:= `newSingleThreadExecutor`(v2) @signature `Lcom/huawei/hms/framework/common/ExecutorsUtils;.newSingleThreadExecutor:(Ljava/lang/String;)Ljava/util/concurrent/ExecutorService;` @kind static;
+  #L20cc30.  v2:= temp @kind object;
+  #L20cc32.  v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.reportExecutor` @type ^`java.util.concurrent.ExecutorService` := v2 @kind object;
+  #L20cc36.  v2:= 1I;
+  #L20cc38.  v3:= "_default_config_tag" @kind object;
+  #L20cc3c.  call temp:= `getInitFlag`(v3) @signature `Lcom/huawei/hianalytics/process/HiAnalyticsManager;.getInitFlag:(Ljava/lang/String;)Z` @kind static;
+  #L20cc42.  v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @type ^`boolean` := v2 @kind boolean;
+  #L20cc46.  goto L20cc56;
+  #L20cc48.  v3:= "Hianalytics sdk not found" @kind object;
+  #L20cc4c.  call `i`(v0, v3) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cc52.  v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @type ^`boolean` := v1 @kind boolean;
+  #L20cc56.  v3:= v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @type ^`boolean` @kind boolean;
+  #L20cc5a.  if v3 != 0 then goto L20cc6c;
+  #L20cc5e.  call temp:= `getAppContext`() @signature `Lcom/huawei/hms/framework/common/ContextHolder;.getAppContext:()Landroid/content/Context;` @kind static;
+  #L20cc64.  v3:= temp @kind object;
+  #L20cc66.  call `tryHMSBIInit`(v5, v3) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.tryHMSBIInit:(Landroid/content/Context;)V` @kind direct;
+  #L20cc6c.  v3:= 2I;
+  #L20cc6e.  v3:= new `java.lang.Object`[v3];
+  #L20cc72.  v4:= v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @type ^`boolean` @kind boolean;
+  #L20cc76.  call temp:= `valueOf`(v4) @signature `Ljava/lang/Boolean;.valueOf:(Z)Ljava/lang/Boolean;` @kind static;
+  #L20cc7c.  v4:= temp @kind object;
+  #L20cc7e.  v3[v1]:= v4 @kind object;
+  #L20cc82.  v1:= v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHMSBI` @type ^`boolean` @kind boolean;
+  #L20cc86.  call temp:= `valueOf`(v1) @signature `Ljava/lang/Boolean;.valueOf:(Z)Ljava/lang/Boolean;` @kind static;
+  #L20cc8c.  v1:= temp @kind object;
+  #L20cc8e.  v3[v2]:= v1 @kind object;
+  #L20cc92.  v1:= "this time the ha %s, mini %s" @kind object;
+  #L20cc96.  call `v`(v0, v1, v3) @signature `Lcom/huawei/hms/framework/common/Logger;.v:(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V` @kind static;
+  #L20cc9c.  return @kind void;
+  catch `java.lang.Throwable` @[L20cc38..L20cc46] goto L20cc48;
+}
+procedure `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` `getInstance`() @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getInstance:()Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L20cb9c.  v0:= `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.instance` @type ^`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` @kind object;
+  #L20cba0.  if v0 != 0 then goto L20cbca;
+  #L20cba4.  v0:= constclass @type ^`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` @kind object;
+  #L20cba8.  @monitorenter v0
+  #L20cbaa.  v1:= `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.instance` @type ^`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` @kind object;
+  #L20cbae.  if v1 != 0 then goto L20cbc0;
+  #L20cbb2.  v1:= new `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper`;
+  #L20cbb6.  call `<init>`(v1) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.<init>:()V` @kind direct;
+  #L20cbbc.  `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.instance` @type ^`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` := v1 @kind object;
+  #L20cbc0.  @monitorexit v0
+  #L20cbc2.  goto L20cbca;
+  #L20cbc4.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L20cbc6.  @monitorexit v0
+  #L20cbc8.  throw v1;
+  #L20cbca.  v0:= `@@com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.instance` @type ^`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` @kind object;
+  #L20cbce.  return v0 @kind object;
+  catch `java.lang.Throwable` @[L20cbaa..L20cbc8] goto L20cbc4;
+}
+procedure `boolean` `isHianalyticsOk`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v4 @kind this) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isHianalyticsOk:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L20cb30.  v0:= "_default_config_tag" @kind object;
+  #L20cb34.  call temp:= `getInitFlag`(v0) @signature `Lcom/huawei/hianalytics/process/HiAnalyticsManager;.getInitFlag:(Ljava/lang/String;)Z` @kind static;
+  #L20cb3a.  v1:= temp;
+  #L20cb3c.  v2:= 1I;
+  #L20cb3e.  v3:= 0I;
+  #L20cb40.  if v1 == 0 then goto L20cb66;
+  #L20cb44.  v1:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.defaultInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` @kind object;
+  #L20cb48.  if v1 != 0 then goto L20cb58;
+  #L20cb4c.  call temp:= `getInstanceByTag`(v0) @signature `Lcom/huawei/hianalytics/process/HiAnalyticsManager;.getInstanceByTag:(Ljava/lang/String;)Lcom/huawei/hianalytics/process/HiAnalyticsInstance;` @kind static;
+  #L20cb52.  v0:= temp @kind object;
+  #L20cb54.  v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.defaultInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` := v0 @kind object;
+  #L20cb58.  v0:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.defaultInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` @kind object;
+  #L20cb5c.  if v0 == 0 then goto L20cb62;
+  #L20cb60.  goto L20cb64;
+  #L20cb62.  v2:= 0I;
+  #L20cb64.  return v2;
+  #L20cb66.  v0:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` @kind object;
+  #L20cb6a.  if v0 != 0 then goto L20cb7e;
+  #L20cb6e.  v0:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.haTag` @type ^`java.lang.String` @kind object;
+  #L20cb72.  call temp:= `getInstanceByTag`(v0) @signature `Lcom/huawei/hianalytics/process/HiAnalyticsManager;.getInstanceByTag:(Ljava/lang/String;)Lcom/huawei/hianalytics/process/HiAnalyticsInstance;` @kind static;
+  #L20cb78.  v0:= temp @kind object;
+  #L20cb7a.  v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` := v0 @kind object;
+  #L20cb7e.  v0:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` @kind object;
+  #L20cb82.  if v0 == 0 then goto L20cb88;
+  #L20cb86.  goto L20cb8a;
+  #L20cb88.  v2:= 0I;
+  #L20cb8a.  return v2;
+}
+procedure `void` `onNewEvent`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v3 @kind this, `android.content.Context` v4 @kind object, `java.lang.String` v5 @kind object, `java.util.Map` v6 @kind object, `int` v7 ) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onNewEvent:(Landroid/content/Context;Ljava/lang/String;Ljava/util/Map;I)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L20cde8.  if v4 == 0 then goto L20ce32;
+  #L20cdec.  if v6 != 0 then goto L20cdf2;
+  #L20cdf0.  goto L20ce32;
+  #L20cdf2.  v0:= 1I;
+  #L20cdf4.  v0:= new `java.lang.Object`[v0];
+  #L20cdf8.  v1:= 0I;
+  #L20cdfa.  v0[v1]:= v6 @kind object;
+  #L20cdfe.  v1:= "HianalyticsHelper" @kind object;
+  #L20ce02.  v2:= "data = %s" @kind object;
+  #L20ce06.  call `v`(v1, v2, v0) @signature `Lcom/huawei/hms/framework/common/Logger;.v:(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V` @kind static;
+  #L20ce0c.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/support/hianalytics/HiAnalyticsUtils;.getInstance:()Lcom/huawei/hms/support/hianalytics/HiAnalyticsUtils;` @kind static;
+  #L20ce12.  v0:= temp @kind object;
+  #L20ce14.  call `onNewEvent`(v0, v4, v5, v6, v7) @signature `Lcom/huawei/hms/support/hianalytics/HiAnalyticsUtils;.onNewEvent:(Landroid/content/Context;Ljava/lang/String;Ljava/util/Map;I)V` @kind virtual;
+  #L20ce1a.  goto L20ce32;
+  #L20ce1c.  v4:= "the stats has other error,pls check it" @kind object;
+  #L20ce20.  call `i`(v1, v4) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20ce26.  goto L20ce32;
+  #L20ce28.  v4:= "may be you need upgrade stats sdk" @kind object;
+  #L20ce2c.  call `w`(v1, v4) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20ce32.  return @kind void;
+  catch `java.lang.NoSuchMethodError` @[L20ce0c..L20ce1a] goto L20ce28;
+  catch `java.lang.Throwable` @[L20ce0c..L20ce1a] goto L20ce1c;
+}
+procedure `void` `tryHMSBIInit`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v1 @kind this, `android.content.Context` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.tryHMSBIInit:(Landroid/content/Context;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L20cf20.  v0:= "HianalyticsHelper" @kind object;
+  #L20cf24.  if v2 != 0 then goto L20cf34;
+  #L20cf28.  v2:= "the appContext hasn't init" @kind object;
+  #L20cf2c.  call `i`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cf32.  return @kind void;
+  #L20cf34.  call temp:= `getInstance`(v2) @signature `Lcom/huawei/hms/utils/HMSBIInitializer;.getInstance:(Landroid/content/Context;)Lcom/huawei/hms/utils/HMSBIInitializer;` @kind static;
+  #L20cf3a.  v2:= temp @kind object;
+  #L20cf3c.  call `initBI`(v2) @signature `Lcom/huawei/hms/utils/HMSBIInitializer;.initBI:()V` @kind virtual;
+  #L20cf42.  v2:= 1I;
+  #L20cf44.  v1.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHMSBI` @type ^`boolean` := v2 @kind boolean;
+  #L20cf48.  goto L20cf60;
+  #L20cf4a.  v2:= "the hms base has other error!" @kind object;
+  #L20cf4e.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cf54.  goto L20cf60;
+  #L20cf56.  v2:= "maybe you need add base sdk!" @kind object;
+  #L20cf5a.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cf60.  return @kind void;
+  catch `java.lang.NoClassDefFoundError` @[L20cf34..L20cf48] goto L20cf56;
+  catch `java.lang.Throwable` @[L20cf34..L20cf48] goto L20cf4a;
+}
+procedure `void` `enablePrivacyPolicy`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v0 @kind this, `boolean` v1 ) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.enablePrivacyPolicy:(Z)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L20ccbc.  v0.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.isEnablePrivacyPolicy` @type ^`boolean` := v1 @kind boolean;
+  #L20ccc0.  return @kind void;
+}
+procedure `void` `executeReportHa`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v2 @kind this, `com.huawei.hms.framework.common.hianalytics.HianalyticsBaseData` v3 @kind object, `java.lang.String` v4 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.executeReportHa:(Lcom/huawei/hms/framework/common/hianalytics/HianalyticsBaseData;Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L20ccd4.  call temp:= `getReportExecutor`(v2) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getReportExecutor:()Ljava/util/concurrent/ExecutorService;` @kind virtual;
+  #L20ccda.  v0:= temp @kind object;
+  #L20ccdc.  v1:= new `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper$HianalyticsRunnable`;
+  #L20cce0.  call `<init>`(v1, v3, v4) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper$HianalyticsRunnable;.<init>:(Lcom/huawei/hms/framework/common/hianalytics/HianalyticsBaseData;Ljava/lang/String;)V` @kind direct;
+  #L20cce6.  call `execute`(v0, v1) @signature `Ljava/util/concurrent/ExecutorService;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L20ccec.  return @kind void;
+}
+procedure `java.util.concurrent.ExecutorService` `getReportExecutor`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v1 @kind this) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getReportExecutor:()Ljava/util/concurrent/ExecutorService;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L20cbec.  v0:= v1.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.reportExecutor` @type ^`java.util.concurrent.ExecutorService` @kind object;
+  #L20cbf0.  return v0 @kind object;
+}
+procedure `boolean` `isEnableReport`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v1 @kind this, `android.content.Context` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isEnableReport:(Landroid/content/Context;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L20ca4c.  v0:= v1.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHMSBI` @type ^`boolean` @kind boolean;
+  #L20ca50.  if v0 == 0 then goto L20ca58;
+  #L20ca54.  v2:= 1I;
+  #L20ca56.  return v2;
+  #L20ca58.  v0:= v1.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @type ^`boolean` @kind boolean;
+  #L20ca5c.  if v0 != 0 then goto L20ca64;
+  #L20ca60.  v2:= 0I;
+  #L20ca62.  return v2;
+  #L20ca64.  call temp:= `isEnableReportNoSeed`(v1, v2) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isEnableReportNoSeed:(Landroid/content/Context;)Z` @kind virtual;
+  #L20ca6a.  v2:= temp;
+  #L20ca6c.  return v2;
+}
+procedure `boolean` `isEnableReportNoSeed`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v5 @kind this, `android.content.Context` v6 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isEnableReportNoSeed:(Landroid/content/Context;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L20ca80.  v0:= v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHMSBI` @type ^`boolean` @kind boolean;
+  #L20ca84.  v1:= 1I;
+  #L20ca86.  if v0 == 0 then goto L20ca8c;
+  #L20ca8a.  return v1;
+  #L20ca8c.  v0:= v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @type ^`boolean` @kind boolean;
+  #L20ca90.  v2:= 0I;
+  #L20ca92.  v3:= "HianalyticsHelper" @kind object;
+  #L20ca96.  if v0 != 0 then goto L20caa6;
+  #L20ca9a.  v6:= "Hianalytics sdk need to be initialized" @kind object;
+  #L20ca9e.  call `i`(v3, v6) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20caa4.  return v2;
+  #L20caa6.  if v6 != 0 then goto L20cab6;
+  #L20caaa.  v6:= "HianalyticsHelper context can't be null" @kind object;
+  #L20caae.  call `i`(v3, v6) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cab4.  return v2;
+  #L20cab6.  v0:= v5.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.isEnablePrivacyPolicy` @type ^`boolean` @kind boolean;
+  #L20caba.  if v0 == 0 then goto L20cac8;
+  #L20cabe.  call temp:= `isHianalyticsOk`(v5) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isHianalyticsOk:()Z` @kind direct;
+  #L20cac4.  v6:= temp;
+  #L20cac6.  return v6;
+  #L20cac8.  call temp:= `getContentResolver`(v6) @signature `Landroid/content/Context;.getContentResolver:()Landroid/content/ContentResolver;` @kind virtual;
+  #L20cace.  v6:= temp @kind object;
+  #L20cad0.  v0:= "user_experience_involved" @kind object;
+  #L20cad4.  v4:= -1I;
+  #L20cad6.  call temp:= `getInt`(v6, v0, v4) @signature `Landroid/provider/Settings$Secure;.getInt:(Landroid/content/ContentResolver;Ljava/lang/String;I)I` @kind static;
+  #L20cadc.  v6:= temp;
+  #L20cade.  if v6 != v1 then goto L20cb02;
+  #L20cae2.  call temp:= `isHianalyticsOk`(v5) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isHianalyticsOk:()Z` @kind direct;
+  #L20cae8.  v6:= temp;
+  #L20caea.  return v6;
+  #L20caec.  v6:= "the setting has other error" @kind object;
+  #L20caf0.  call `w`(v3, v6) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20caf6.  goto L20cb02;
+  #L20caf8.  v6:= "the setting has illegalStateException" @kind object;
+  #L20cafc.  call `w`(v3, v6) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cb02.  v6:= "user experience involved needs to be opened" @kind object;
+  #L20cb06.  call `i`(v3, v6) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cb0c.  return v2;
+  catch `java.lang.IllegalStateException` @[L20cad0..L20caea] goto L20caf8;
+  catch `java.lang.Throwable` @[L20cad0..L20caea] goto L20caec;
+}
+procedure `void` `onEvent`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v1 @kind this, `java.util.LinkedHashMap` v2 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onEvent:(Ljava/util/LinkedHashMap;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L20cd00.  v0:= "url_request" @kind object;
+  #L20cd04.  call `onEvent`(v1, v2, v0) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onEvent:(Ljava/util/LinkedHashMap;Ljava/lang/String;)V` @kind virtual;
+  #L20cd0a.  return @kind void;
+}
+procedure `void` `onEvent`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v1 @kind this, `java.util.LinkedHashMap` v2 @kind object, `java.lang.String` v3 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onEvent:(Ljava/util/LinkedHashMap;Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L20cd1c.  v0:= 1I;
+  #L20cd1e.  call `onEvent`(v1, v2, v3, v0) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onEvent:(Ljava/util/LinkedHashMap;Ljava/lang/String;I)V` @kind virtual;
+  #L20cd24.  return @kind void;
+}
+procedure `void` `onEvent`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v4 @kind this, `java.util.LinkedHashMap` v5 @kind object, `java.lang.String` v6 @kind object, `int` v7 ) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onEvent:(Ljava/util/LinkedHashMap;Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L20cd38.  v0:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHMSBI` @type ^`boolean` @kind boolean;
+  #L20cd3c.  v1:= 0I;
+  #L20cd3e.  v2:= "HianalyticsHelper" @kind object;
+  #L20cd42.  v3:= 1I;
+  #L20cd44.  if v0 == 0 then goto L20cd58;
+  #L20cd48.  call temp:= `getAppContext`() @signature `Lcom/huawei/hms/framework/common/ContextHolder;.getAppContext:()Landroid/content/Context;` @kind static;
+  #L20cd4e.  v0:= temp @kind object;
+  #L20cd50.  call `onNewEvent`(v4, v0, v6, v5, v7) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onNewEvent:(Landroid/content/Context;Ljava/lang/String;Ljava/util/Map;I)V` @kind direct;
+  #L20cd56.  goto L20cd78;
+  #L20cd58.  if v7 != 0 then goto L20cd78;
+  #L20cd5c.  v5:= new `java.lang.Object`[v3];
+  #L20cd60.  call temp:= `valueOf`(v7) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L20cd66.  v6:= temp @kind object;
+  #L20cd68.  v5[v1]:= v6 @kind object;
+  #L20cd6c.  v6:= "the base sdk isn't exsit, and reportType is %s" @kind object;
+  #L20cd70.  call `v`(v2, v6, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.v:(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V` @kind static;
+  #L20cd76.  return @kind void;
+  #L20cd78.  v7:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hasHianalytics` @type ^`boolean` @kind boolean;
+  #L20cd7c.  if v7 != 0 then goto L20cd82;
+  #L20cd80.  return @kind void;
+  #L20cd82.  if v5 != 0 then goto L20cd88;
+  #L20cd86.  return @kind void;
+  #L20cd88.  v7:= new `java.lang.Object`[v3];
+  #L20cd8c.  v7[v1]:= v5 @kind object;
+  #L20cd90.  v0:= "data = %s" @kind object;
+  #L20cd94.  call `v`(v2, v0, v7) @signature `Lcom/huawei/hms/framework/common/Logger;.v:(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V` @kind static;
+  #L20cd9a.  v7:= "_default_config_tag" @kind object;
+  #L20cd9e.  call temp:= `getInitFlag`(v7) @signature `Lcom/huawei/hianalytics/process/HiAnalyticsManager;.getInitFlag:(Ljava/lang/String;)Z` @kind static;
+  #L20cda4.  v7:= temp;
+  #L20cda6.  if v7 == 0 then goto L20cdba;
+  #L20cdaa.  v7:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.defaultInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` @kind object;
+  #L20cdae.  if v7 == 0 then goto L20cdba;
+  #L20cdb2.  call `onEvent`(v7, v3, v6, v5) @signature `Lcom/huawei/hianalytics/process/HiAnalyticsInstance;.onEvent:(ILjava/lang/String;Ljava/util/LinkedHashMap;)V` @kind interface;
+  #L20cdb8.  goto L20cdd4;
+  #L20cdba.  v7:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.hInstance` @type ^`com.huawei.hianalytics.process.HiAnalyticsInstance` @kind object;
+  #L20cdbe.  if v7 == 0 then goto L20cdca;
+  #L20cdc2.  call `onEvent`(v7, v3, v6, v5) @signature `Lcom/huawei/hianalytics/process/HiAnalyticsInstance;.onEvent:(ILjava/lang/String;Ljava/util/LinkedHashMap;)V` @kind interface;
+  #L20cdc8.  goto L20cdd4;
+  #L20cdca.  v5:= "the ha has error,has init but is null!" @kind object;
+  #L20cdce.  call `e`(v2, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cdd4.  return @kind void;
+}
+procedure `void` `reportData`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v0 @kind this, `android.content.Context` v1 @kind object, `java.util.LinkedHashMap` v2 @kind object, `java.lang.String` v3 @kind object, `int` v4 ) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.reportData:(Landroid/content/Context;Ljava/util/LinkedHashMap;Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L20ce54.  call temp:= `isEnableReportNoSeed`(v0, v1) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isEnableReportNoSeed:(Landroid/content/Context;)Z` @kind virtual;
+  #L20ce5a.  v1:= temp;
+  #L20ce5c.  if v1 != 0 then goto L20ce62;
+  #L20ce60.  return @kind void;
+  #L20ce62.  call `onEvent`(v0, v2, v3, v4) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.onEvent:(Ljava/util/LinkedHashMap;Ljava/lang/String;I)V` @kind virtual;
+  #L20ce68.  return @kind void;
+}
+procedure `void` `reportException`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v4 @kind this, `java.lang.Throwable` v5 @kind object, `java.lang.String` v6 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.reportException:(Ljava/lang/Throwable;Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L20ce7c.  v0:= "HianalyticsHelper" @kind object;
+  #L20ce80.  call temp:= `getInstance`() @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.getInstance:()Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;` @kind static;
+  #L20ce86.  v1:= temp @kind object;
+  #L20ce88.  call temp:= `getAppContext`() @signature `Lcom/huawei/hms/framework/common/ContextHolder;.getAppContext:()Landroid/content/Context;` @kind static;
+  #L20ce8e.  v2:= temp @kind object;
+  #L20ce90.  call temp:= `isEnableReport`(v1, v2) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.isEnableReport:(Landroid/content/Context;)Z` @kind virtual;
+  #L20ce96.  v1:= temp;
+  #L20ce98.  if v1 != 0 then goto L20ce9e;
+  #L20ce9c.  return @kind void;
+  #L20ce9e.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L20cea4.  v1:= temp @kind object;
+  #L20cea6.  call temp:= `getName`(v1) @signature `Ljava/lang/Thread;.getName:()Ljava/lang/String;` @kind virtual;
+  #L20ceac.  v1:= temp @kind object;
+  #L20ceae.  v2:= v4.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.reportExecutor` @type ^`java.util.concurrent.ExecutorService` @kind object;
+  #L20ceb2.  v3:= new `com.huawei.hms.framework.common.hianalytics.HianalyticsHelper$1`;
+  #L20ceb6.  call `<init>`(v3, v4, v1, v5, v6) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper$1;.<init>:(Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;Ljava/lang/String;Ljava/lang/Throwable;Ljava/lang/String;)V` @kind direct;
+  #L20cebc.  call temp:= `submit`(v2, v3) @signature `Ljava/util/concurrent/ExecutorService;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind interface;
+  #L20cec2.  goto L20cee6;
+  #L20cec4.  v6:= 1I;
+  #L20cec6.  v6:= new `java.lang.Object`[v6];
+  #L20ceca.  v1:= 0I;
+  #L20cecc.  v6[v1]:= v5 @kind object;
+  #L20ced0.  v5:= "reportException error!" @kind object;
+  #L20ced4.  call `i`(v0, v5, v6) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V` @kind static;
+  #L20ceda.  goto L20cee6;
+  #L20cedc.  v5:= "reportException error RejectedExecutionException" @kind object;
+  #L20cee0.  call `i`(v0, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.i:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L20cee6.  return @kind void;
+  catch `java.util.concurrent.RejectedExecutionException` @[L20ceae..L20cec2] goto L20cedc;
+  catch `java.lang.Exception` @[L20ceae..L20cec2] goto L20cec4;
+}
+procedure `void` `setHaTag`(`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper` v0 @kind this, `java.lang.String` v1 @kind object) @signature `Lcom/huawei/hms/framework/common/hianalytics/HianalyticsHelper;.setHaTag:(Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L20cf08.  v0.`com.huawei.hms.framework.common.hianalytics.HianalyticsHelper.haTag` @type ^`java.lang.String` := v1 @kind object;
+  #L20cf0c.  return @kind void;
+}

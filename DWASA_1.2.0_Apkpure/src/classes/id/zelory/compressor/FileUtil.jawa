@@ -1,0 +1,260 @@
+record `id.zelory.compressor.FileUtil` @kind class @AccessFlag PUBLIC {
+}
+global `int` `@@id.zelory.compressor.FileUtil.DEFAULT_BUFFER_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@id.zelory.compressor.FileUtil.EOF` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@id.zelory.compressor.FileUtil.FILES_PATH` @AccessFlag STATIC_FINAL;
+procedure `void` `<init>`(`id.zelory.compressor.FileUtil` v0 @kind this) @signature `Lid/zelory/compressor/FileUtil;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L3cfe3c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3cfe42.  return @kind void;
+}
+procedure `int` `copy`(`java.io.InputStream` v3 @kind object, `java.io.OutputStream` v4 @kind object) @signature `Lid/zelory/compressor/FileUtil;.copy:(Ljava/io/InputStream;Ljava/io/OutputStream;)I` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3cfae8.  call temp:= `copyLarge`(v3, v4) @signature `Lid/zelory/compressor/FileUtil;.copyLarge:(Ljava/io/InputStream;Ljava/io/OutputStream;)J` @kind static;
+  #L3cfaee.  v3:= temp @kind wide;
+  #L3cfaf0.  v0:= 2147483647L;
+  #L3cfaf6.  v2:= lcmp(v3, v0);
+  #L3cfafa.  if v2 <= 0 then goto L3cfb02;
+  #L3cfafe.  v3:= -1I;
+  #L3cfb00.  return v3;
+  #L3cfb02.  v4:= (`int`) v3 @kind l2i;
+  #L3cfb04.  return v4;
+}
+procedure `long` `copyLarge`(`java.io.InputStream` v1 @kind object, `java.io.OutputStream` v2 @kind object) @signature `Lid/zelory/compressor/FileUtil;.copyLarge:(Ljava/io/InputStream;Ljava/io/OutputStream;)J` @AccessFlag STATIC {
+    temp;
+    v0;
+
+  #L3cfde4.  v0:= 4096I;
+  #L3cfde8.  v0:= new `byte`[v0];
+  #L3cfdec.  call temp:= `copyLarge`(v1, v2, v0) @signature `Lid/zelory/compressor/FileUtil;.copyLarge:(Ljava/io/InputStream;Ljava/io/OutputStream;[B)J` @kind static;
+  #L3cfdf2.  v1:= temp @kind wide;
+  #L3cfdf4.  return v1 @kind wide;
+}
+procedure `long` `copyLarge`(`java.io.InputStream` v4 @kind object, `java.io.OutputStream` v5 @kind object, `byte`[] v6 @kind object) @signature `Lid/zelory/compressor/FileUtil;.copyLarge:(Ljava/io/InputStream;Ljava/io/OutputStream;[B)J` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3cfe08.  v0:= 0L;
+  #L3cfe0c.  v2:= -1I;
+  #L3cfe0e.  call temp:= `read`(v4, v6) @signature `Ljava/io/InputStream;.read:([B)I` @kind virtual;
+  #L3cfe14.  v3:= temp;
+  #L3cfe16.  if v2 == v3 then goto L3cfe28;
+  #L3cfe1a.  v2:= 0I;
+  #L3cfe1c.  call `write`(v5, v6, v2, v3) @signature `Ljava/io/OutputStream;.write:([BII)V` @kind virtual;
+  #L3cfe22.  v2:= (`long`) v3 @kind i2l;
+  #L3cfe24.  v0:= v0 + v2 @kind long;
+  #L3cfe26.  goto L3cfe0c;
+  #L3cfe28.  return v0 @kind wide;
+}
+procedure `java.io.File` `from`(`android.content.Context` v3 @kind object, `android.net.Uri` v4 @kind object) @signature `Lid/zelory/compressor/FileUtil;.from:(Landroid/content/Context;Landroid/net/Uri;)Ljava/io/File;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3cfb18.  call temp:= `getContentResolver`(v3) @signature `Landroid/content/Context;.getContentResolver:()Landroid/content/ContentResolver;` @kind virtual;
+  #L3cfb1e.  v0:= temp @kind object;
+  #L3cfb20.  call temp:= `openInputStream`(v0, v4) @signature `Landroid/content/ContentResolver;.openInputStream:(Landroid/net/Uri;)Ljava/io/InputStream;` @kind virtual;
+  #L3cfb26.  v0:= temp @kind object;
+  #L3cfb28.  call temp:= `getFileName`(v3, v4) @signature `Lid/zelory/compressor/FileUtil;.getFileName:(Landroid/content/Context;Landroid/net/Uri;)Ljava/lang/String;` @kind static;
+  #L3cfb2e.  v3:= temp @kind object;
+  #L3cfb30.  call temp:= `splitFileName`(v3) @signature `Lid/zelory/compressor/FileUtil;.splitFileName:(Ljava/lang/String;)[Ljava/lang/String;` @kind static;
+  #L3cfb36.  v4:= temp @kind object;
+  #L3cfb38.  v1:= 0I;
+  #L3cfb3a.  v1:= v4[v1] @kind object;
+  #L3cfb3e.  v2:= 1I;
+  #L3cfb40.  v4:= v4[v2] @kind object;
+  #L3cfb44.  call temp:= `createTempFile`(v1, v4) @signature `Ljava/io/File;.createTempFile:(Ljava/lang/String;Ljava/lang/String;)Ljava/io/File;` @kind static;
+  #L3cfb4a.  v4:= temp @kind object;
+  #L3cfb4c.  call temp:= `rename`(v4, v3) @signature `Lid/zelory/compressor/FileUtil;.rename:(Ljava/io/File;Ljava/lang/String;)Ljava/io/File;` @kind static;
+  #L3cfb52.  v3:= temp @kind object;
+  #L3cfb54.  call `deleteOnExit`(v3) @signature `Ljava/io/File;.deleteOnExit:()V` @kind virtual;
+  #L3cfb5a.  v4:= new `java.io.FileOutputStream`;
+  #L3cfb5e.  call `<init>`(v4, v3) @signature `Ljava/io/FileOutputStream;.<init>:(Ljava/io/File;)V` @kind direct;
+  #L3cfb64.  goto L3cfb70;
+  #L3cfb66.  v4:= Exception @type ^`java.io.FileNotFoundException` @kind object;
+  #L3cfb68.  call `printStackTrace`(v4) @signature `Ljava/io/FileNotFoundException;.printStackTrace:()V` @kind virtual;
+  #L3cfb6e.  v4:= 0I;
+  #L3cfb70.  if v0 == 0 then goto L3cfb80;
+  #L3cfb74.  call temp:= `copy`(v0, v4) @signature `Lid/zelory/compressor/FileUtil;.copy:(Ljava/io/InputStream;Ljava/io/OutputStream;)I` @kind static;
+  #L3cfb7a.  call `close`(v0) @signature `Ljava/io/InputStream;.close:()V` @kind virtual;
+  #L3cfb80.  if v4 == 0 then goto L3cfb8a;
+  #L3cfb84.  call `close`(v4) @signature `Ljava/io/FileOutputStream;.close:()V` @kind virtual;
+  #L3cfb8a.  return v3 @kind object;
+  catch `java.io.FileNotFoundException` @[L3cfb5a..L3cfb64] goto L3cfb66;
+}
+procedure `java.lang.String` `getFileName`(`android.content.Context` v8 @kind object, `android.net.Uri` v9 @kind object) @signature `Lid/zelory/compressor/FileUtil;.getFileName:(Landroid/content/Context;Landroid/net/Uri;)Ljava/lang/String;` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3cfc60.  call temp:= `getScheme`(v9) @signature `Landroid/net/Uri;.getScheme:()Ljava/lang/String;` @kind virtual;
+  #L3cfc66.  v0:= temp @kind object;
+  #L3cfc68.  v1:= "content" @kind object;
+  #L3cfc6c.  call temp:= `equals`(v0, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L3cfc72.  v0:= temp;
+  #L3cfc74.  v1:= 0I;
+  #L3cfc76.  if v0 == 0 then goto L3cfce4;
+  #L3cfc7a.  call temp:= `getContentResolver`(v8) @signature `Landroid/content/Context;.getContentResolver:()Landroid/content/ContentResolver;` @kind virtual;
+  #L3cfc80.  v2:= temp @kind object;
+  #L3cfc82.  v4:= 0I;
+  #L3cfc84.  v5:= 0I;
+  #L3cfc86.  v6:= 0I;
+  #L3cfc88.  v7:= 0I;
+  #L3cfc8a.  v3:= v9 @kind object;
+  #L3cfc8c.  call temp:= `query`(v2, v3, v4, v5, v6, v7) @signature `Landroid/content/ContentResolver;.query:(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;` @kind virtual;
+  #L3cfc92.  v8:= temp @kind object;
+  #L3cfc94.  if v8 == 0 then goto L3cfcda;
+  #L3cfc98.  call temp:= `moveToFirst`(v8) @signature `Landroid/database/Cursor;.moveToFirst:()Z` @kind interface;
+  #L3cfc9e.  v0:= temp;
+  #L3cfca0.  if v0 == 0 then goto L3cfcda;
+  #L3cfca4.  v0:= "_display_name" @kind object;
+  #L3cfca8.  call temp:= `getColumnIndex`(v8, v0) @signature `Landroid/database/Cursor;.getColumnIndex:(Ljava/lang/String;)I` @kind interface;
+  #L3cfcae.  v0:= temp;
+  #L3cfcb0.  call temp:= `getString`(v8, v0) @signature `Landroid/database/Cursor;.getString:(I)Ljava/lang/String;` @kind interface;
+  #L3cfcb6.  v0:= temp @kind object;
+  #L3cfcb8.  v1:= v0 @kind object;
+  #L3cfcba.  goto L3cfcda;
+  #L3cfcbc.  v9:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3cfcbe.  goto L3cfcce;
+  #L3cfcc0.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L3cfcc2.  call `printStackTrace`(v0) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L3cfcc8.  if v8 == 0 then goto L3cfce4;
+  #L3cfccc.  goto L3cfcde;
+  #L3cfcce.  if v8 == 0 then goto L3cfcd8;
+  #L3cfcd2.  call `close`(v8) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L3cfcd8.  throw v9;
+  #L3cfcda.  if v8 == 0 then goto L3cfce4;
+  #L3cfcde.  call `close`(v8) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L3cfce4.  if v1 != 0 then goto L3cfd0e;
+  #L3cfce8.  call temp:= `getPath`(v9) @signature `Landroid/net/Uri;.getPath:()Ljava/lang/String;` @kind virtual;
+  #L3cfcee.  v1:= temp @kind object;
+  #L3cfcf0.  v8:= `@@java.io.File.separator` @type ^`java.lang.String` @kind object;
+  #L3cfcf4.  call temp:= `lastIndexOf`(v1, v8) @signature `Ljava/lang/String;.lastIndexOf:(Ljava/lang/String;)I` @kind virtual;
+  #L3cfcfa.  v8:= temp;
+  #L3cfcfc.  v9:= -1I;
+  #L3cfcfe.  if v8 == v9 then goto L3cfd0e;
+  #L3cfd02.  v8:= v8 + 1;
+  #L3cfd06.  call temp:= `substring`(v1, v8) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L3cfd0c.  v1:= temp @kind object;
+  #L3cfd0e.  return v1 @kind object;
+  catch `java.lang.Exception` @[L3cfc98..L3cfcb8] goto L3cfcc0;
+  catch `java.lang.Throwable` @[L3cfc98..L3cfcb8] goto L3cfcbc;
+  catch `java.lang.Throwable` @[L3cfcc2..L3cfcc8] goto L3cfcbc;
+}
+procedure `java.lang.String` `getRealPathFromURI`(`android.content.Context` v6 @kind object, `android.net.Uri` v7 @kind object) @signature `Lid/zelory/compressor/FileUtil;.getRealPathFromURI:(Landroid/content/Context;Landroid/net/Uri;)Ljava/lang/String;` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L3cfd38.  call temp:= `getContentResolver`(v6) @signature `Landroid/content/Context;.getContentResolver:()Landroid/content/ContentResolver;` @kind virtual;
+  #L3cfd3e.  v0:= temp @kind object;
+  #L3cfd40.  v2:= 0I;
+  #L3cfd42.  v3:= 0I;
+  #L3cfd44.  v4:= 0I;
+  #L3cfd46.  v5:= 0I;
+  #L3cfd48.  v1:= v7 @kind object;
+  #L3cfd4a.  call temp:= `query`(v0, v1, v2, v3, v4, v5) @signature `Landroid/content/ContentResolver;.query:(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;` @kind virtual;
+  #L3cfd50.  v6:= temp @kind object;
+  #L3cfd52.  if v6 != 0 then goto L3cfd60;
+  #L3cfd56.  call temp:= `getPath`(v7) @signature `Landroid/net/Uri;.getPath:()Ljava/lang/String;` @kind virtual;
+  #L3cfd5c.  v6:= temp @kind object;
+  #L3cfd5e.  return v6 @kind object;
+  #L3cfd60.  call temp:= `moveToFirst`(v6) @signature `Landroid/database/Cursor;.moveToFirst:()Z` @kind interface;
+  #L3cfd66.  v7:= "_data" @kind object;
+  #L3cfd6a.  call temp:= `getColumnIndex`(v6, v7) @signature `Landroid/database/Cursor;.getColumnIndex:(Ljava/lang/String;)I` @kind interface;
+  #L3cfd70.  v7:= temp;
+  #L3cfd72.  call temp:= `getString`(v6, v7) @signature `Landroid/database/Cursor;.getString:(I)Ljava/lang/String;` @kind interface;
+  #L3cfd78.  v7:= temp @kind object;
+  #L3cfd7a.  call `close`(v6) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L3cfd80.  return v7 @kind object;
+}
+procedure `java.io.File` `rename`(`java.io.File` v4 @kind object, `java.lang.String` v5 @kind object) @signature `Lid/zelory/compressor/FileUtil;.rename:(Ljava/io/File;Ljava/lang/String;)Ljava/io/File;` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3cfbac.  v0:= new `java.io.File`;
+  #L3cfbb0.  call temp:= `getParent`(v4) @signature `Ljava/io/File;.getParent:()Ljava/lang/String;` @kind virtual;
+  #L3cfbb6.  v1:= temp @kind object;
+  #L3cfbb8.  call `<init>`(v0, v1, v5) @signature `Ljava/io/File;.<init>:(Ljava/lang/String;Ljava/lang/String;)V` @kind direct;
+  #L3cfbbe.  call temp:= `equals`(v0, v4) @signature `Ljava/io/File;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L3cfbc4.  v1:= temp;
+  #L3cfbc6.  if v1 != 0 then goto L3cfc4c;
+  #L3cfbca.  call temp:= `exists`(v0) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L3cfbd0.  v1:= temp;
+  #L3cfbd2.  v2:= "FileUtil" @kind object;
+  #L3cfbd6.  if v1 == 0 then goto L3cfc18;
+  #L3cfbda.  call temp:= `delete`(v0) @signature `Ljava/io/File;.delete:()Z` @kind virtual;
+  #L3cfbe0.  v1:= temp;
+  #L3cfbe2.  if v1 == 0 then goto L3cfc18;
+  #L3cfbe6.  v1:= new `java.lang.StringBuilder`;
+  #L3cfbea.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3cfbf0.  v3:= "Delete old " @kind object;
+  #L3cfbf4.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3cfbfa.  call temp:= `append`(v1, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3cfc00.  v3:= " file" @kind object;
+  #L3cfc04.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3cfc0a.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3cfc10.  v1:= temp @kind object;
+  #L3cfc12.  call temp:= `d`(v2, v1) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3cfc18.  call temp:= `renameTo`(v4, v0) @signature `Ljava/io/File;.renameTo:(Ljava/io/File;)Z` @kind virtual;
+  #L3cfc1e.  v4:= temp;
+  #L3cfc20.  if v4 == 0 then goto L3cfc4c;
+  #L3cfc24.  v4:= new `java.lang.StringBuilder`;
+  #L3cfc28.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3cfc2e.  v1:= "Rename file to " @kind object;
+  #L3cfc32.  call temp:= `append`(v4, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3cfc38.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3cfc3e.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3cfc44.  v4:= temp @kind object;
+  #L3cfc46.  call temp:= `d`(v2, v4) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3cfc4c.  return v0 @kind object;
+}
+procedure `java.lang.String`[] `splitFileName`(`java.lang.String` v3 @kind object) @signature `Lid/zelory/compressor/FileUtil;.splitFileName:(Ljava/lang/String;)[Ljava/lang/String;` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3cfd94.  v0:= "." @kind object;
+  #L3cfd98.  call temp:= `lastIndexOf`(v3, v0) @signature `Ljava/lang/String;.lastIndexOf:(Ljava/lang/String;)I` @kind virtual;
+  #L3cfd9e.  v0:= temp;
+  #L3cfda0.  v1:= 0I;
+  #L3cfda2.  v2:= -1I;
+  #L3cfda4.  if v0 == v2 then goto L3cfdbe;
+  #L3cfda8.  call temp:= `substring`(v3, v1, v0) @signature `Ljava/lang/String;.substring:(II)Ljava/lang/String;` @kind virtual;
+  #L3cfdae.  v2:= temp @kind object;
+  #L3cfdb0.  call temp:= `substring`(v3, v0) @signature `Ljava/lang/String;.substring:(I)Ljava/lang/String;` @kind virtual;
+  #L3cfdb6.  v3:= temp @kind object;
+  #L3cfdb8.  v0:= v3 @kind object;
+  #L3cfdba.  v3:= v2 @kind object;
+  #L3cfdbc.  goto L3cfdc2;
+  #L3cfdbe.  v0:= "" @kind object;
+  #L3cfdc2.  v2:= 2I;
+  #L3cfdc4.  v2:= new `java.lang.String`[v2];
+  #L3cfdc8.  v2[v1]:= v3 @kind object;
+  #L3cfdcc.  v3:= 1I;
+  #L3cfdce.  v2[v3]:= v0 @kind object;
+  #L3cfdd2.  return v2 @kind object;
+}

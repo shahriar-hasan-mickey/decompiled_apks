@@ -1,0 +1,82 @@
+record `com.bumptech.glide.load.engine.cache.SafeKeyGenerator` @kind class @AccessFlag PUBLIC {
+  `com.bumptech.glide.util.LruCache` `com.bumptech.glide.load.engine.cache.SafeKeyGenerator.a` @AccessFlag PRIVATE_FINAL;
+  `androidx.core.util.Pools$Pool` `com.bumptech.glide.load.engine.cache.SafeKeyGenerator.b` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.cache.SafeKeyGenerator` v3 @kind this) @signature `Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3d8550.  call `<init>`(v3) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3d8556.  v0:= new `com.bumptech.glide.util.LruCache`;
+  #L3d855a.  v1:= 1000L;
+  #L3d855e.  call `<init>`(v0, v1) @signature `Lcom/bumptech/glide/util/LruCache;.<init>:(J)V` @kind direct;
+  #L3d8564.  v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.a` @type ^`com.bumptech.glide.util.LruCache` := v0 @kind object;
+  #L3d8568.  v0:= new `com.bumptech.glide.load.engine.cache.SafeKeyGenerator$a`;
+  #L3d856c.  call `<init>`(v0, v3) @signature `Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator$a;.<init>:(Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator;)V` @kind direct;
+  #L3d8572.  v1:= 10I;
+  #L3d8576.  call temp:= `threadSafe`(v1, v0) @signature `Lcom/bumptech/glide/util/pool/FactoryPools;.threadSafe:(ILcom/bumptech/glide/util/pool/FactoryPools$Factory;)Landroidx/core/util/Pools$Pool;` @kind static;
+  #L3d857c.  v0:= temp @kind object;
+  #L3d857e.  v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.b` @type ^`androidx.core.util.Pools$Pool` := v0 @kind object;
+  #L3d8582.  return @kind void;
+}
+procedure `java.lang.String` `a`(`com.bumptech.glide.load.engine.cache.SafeKeyGenerator` v2 @kind this, `com.bumptech.glide.load.Key` v3 @kind object) @signature `Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator;.a:(Lcom/bumptech/glide/load/Key;)Ljava/lang/String;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3d8470.  v0:= v2.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.b` @type ^`androidx.core.util.Pools$Pool` @kind object;
+  #L3d8474.  call temp:= `acquire`(v0) @signature `Landroidx/core/util/Pools$Pool;.acquire:()Ljava/lang/Object;` @kind interface;
+  #L3d847a.  v0:= temp @kind object;
+  #L3d847c.  call temp:= `checkNotNull`(v0) @signature `Lcom/bumptech/glide/util/Preconditions;.checkNotNull:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L3d8482.  v0:= temp @kind object;
+  #L3d8484.  v0:= (`com.bumptech.glide.load.engine.cache.SafeKeyGenerator$b`) v0 @kind object;
+  #L3d8488.  v1:= v0.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator$b.a` @type ^`java.security.MessageDigest` @kind object;
+  #L3d848c.  call `updateDiskCacheKey`(v3, v1) @signature `Lcom/bumptech/glide/load/Key;.updateDiskCacheKey:(Ljava/security/MessageDigest;)V` @kind interface;
+  #L3d8492.  v3:= v0.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator$b.a` @type ^`java.security.MessageDigest` @kind object;
+  #L3d8496.  call temp:= `digest`(v3) @signature `Ljava/security/MessageDigest;.digest:()[B` @kind virtual;
+  #L3d849c.  v3:= temp @kind object;
+  #L3d849e.  call temp:= `sha256BytesToHex`(v3) @signature `Lcom/bumptech/glide/util/Util;.sha256BytesToHex:([B)Ljava/lang/String;` @kind static;
+  #L3d84a4.  v3:= temp @kind object;
+  #L3d84a6.  v1:= v2.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.b` @type ^`androidx.core.util.Pools$Pool` @kind object;
+  #L3d84aa.  call temp:= `release`(v1, v0) @signature `Landroidx/core/util/Pools$Pool;.release:(Ljava/lang/Object;)Z` @kind interface;
+  #L3d84b0.  return v3 @kind object;
+  #L3d84b2.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3d84b4.  v1:= v2.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.b` @type ^`androidx.core.util.Pools$Pool` @kind object;
+  #L3d84b8.  call temp:= `release`(v1, v0) @signature `Landroidx/core/util/Pools$Pool;.release:(Ljava/lang/Object;)Z` @kind interface;
+  #L3d84be.  throw v3;
+  catch `java.lang.Throwable` @[L3d8488..L3d84a6] goto L3d84b2;
+}
+procedure `java.lang.String` `getSafeKey`(`com.bumptech.glide.load.engine.cache.SafeKeyGenerator` v3 @kind this, `com.bumptech.glide.load.Key` v4 @kind object) @signature `Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator;.getSafeKey:(Lcom/bumptech/glide/load/Key;)Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3d84dc.  v0:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.a` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L3d84e0.  @monitorenter v0
+  #L3d84e2.  v1:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.a` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L3d84e6.  call temp:= `get`(v1, v4) @signature `Lcom/bumptech/glide/util/LruCache;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L3d84ec.  v1:= temp @kind object;
+  #L3d84ee.  v1:= (`java.lang.String`) v1 @kind object;
+  #L3d84f2.  @monitorexit v0
+  #L3d84f4.  if v1 != 0 then goto L3d8500;
+  #L3d84f8.  call temp:= `a`(v3, v4) @signature `Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator;.a:(Lcom/bumptech/glide/load/Key;)Ljava/lang/String;` @kind direct;
+  #L3d84fe.  v1:= temp @kind object;
+  #L3d8500.  v2:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.a` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L3d8504.  @monitorenter v2
+  #L3d8506.  v0:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.a` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L3d850a.  call temp:= `put`(v0, v4, v1) @signature `Lcom/bumptech/glide/util/LruCache;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L3d8510.  @monitorexit v2
+  #L3d8512.  return v1 @kind object;
+  #L3d8514.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3d8516.  @monitorexit v2
+  #L3d8518.  throw v4;
+  #L3d851a.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3d851c.  @monitorexit v0
+  #L3d851e.  throw v4;
+  catch `java.lang.Throwable` @[L3d84e2..L3d84f4] goto L3d851a;
+  catch `java.lang.Throwable` @[L3d8506..L3d8518] goto L3d8514;
+  catch `java.lang.Throwable` @[L3d851c..L3d851e] goto L3d851a;
+}

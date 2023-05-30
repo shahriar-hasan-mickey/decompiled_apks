@@ -1,0 +1,174 @@
+record `io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` @kind class @AccessFlag FINAL extends `io.reactivex.internal.operators.flowable.FlowableCreate$BaseEmitter` @kind class {
+  `boolean` `io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.done` @AccessFlag VOLATILE;
+  `java.lang.Throwable` `io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.error` @AccessFlag ;
+  `io.reactivex.internal.queue.SpscLinkedArrayQueue` `io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.queue` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.wip` @AccessFlag FINAL;
+}
+global `long` `@@io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` v0 @kind this, `org.reactivestreams.Subscriber` v1 @kind object, `int` v2 ) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.<init>:(Lorg/reactivestreams/Subscriber;I)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L3f3e88.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BaseEmitter;.<init>:(Lorg/reactivestreams/Subscriber;)V` @kind direct;
+  #L3f3e8e.  v1:= new `io.reactivex.internal.queue.SpscLinkedArrayQueue`;
+  #L3f3e92.  call `<init>`(v1, v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.<init>:(I)V` @kind direct;
+  #L3f3e98.  v0.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` := v1 @kind object;
+  #L3f3e9c.  v1:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L3f3ea0.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L3f3ea6.  v0.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v1 @kind object;
+  #L3f3eaa.  return @kind void;
+}
+procedure `void` `drain`(`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` v13 @kind this) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.drain:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+
+  #L3f3ebc.  v0:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L3f3ec0.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L3f3ec6.  v0:= temp;
+  #L3f3ec8.  if v0 == 0 then goto L3f3ece;
+  #L3f3ecc.  return @kind void;
+  #L3f3ece.  v0:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.downstream` @type ^`org.reactivestreams.Subscriber` @kind object;
+  #L3f3ed2.  v1:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L3f3ed6.  v2:= 1I;
+  #L3f3ed8.  v3:= 1I;
+  #L3f3eda.  call temp:= `get`(v13) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.get:()J` @kind virtual;
+  #L3f3ee0.  v4:= temp @kind wide;
+  #L3f3ee2.  v6:= 0L;
+  #L3f3ee6.  v8:= v6 @kind wide;
+  #L3f3ee8.  v10:= lcmp(v8, v4);
+  #L3f3eec.  if v10 == 0 then goto L3f3f4e;
+  #L3f3ef0.  call temp:= `isCancelled`(v13) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.isCancelled:()Z` @kind virtual;
+  #L3f3ef6.  v10:= temp;
+  #L3f3ef8.  if v10 == 0 then goto L3f3f04;
+  #L3f3efc.  call `clear`(v1) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3f3f02.  return @kind void;
+  #L3f3f04.  v10:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.done` @type ^`boolean` @kind boolean;
+  #L3f3f08.  call temp:= `poll`(v1) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L3f3f0e.  v11:= temp @kind object;
+  #L3f3f10.  if v11 != 0 then goto L3f3f18;
+  #L3f3f14.  v12:= 1I;
+  #L3f3f16.  goto L3f3f1a;
+  #L3f3f18.  v12:= 0I;
+  #L3f3f1a.  if v10 == 0 then goto L3f3f3a;
+  #L3f3f1e.  if v12 == 0 then goto L3f3f3a;
+  #L3f3f22.  v0:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.error` @type ^`java.lang.Throwable` @kind object;
+  #L3f3f26.  if v0 == 0 then goto L3f3f32;
+  #L3f3f2a.  call temp:= `error`(v13, v0) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.error:(Ljava/lang/Throwable;)Z` @kind virtual;
+  #L3f3f30.  goto L3f3f38;
+  #L3f3f32.  call `complete`(v13) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.complete:()V` @kind virtual;
+  #L3f3f38.  return @kind void;
+  #L3f3f3a.  if v12 == 0 then goto L3f3f40;
+  #L3f3f3e.  goto L3f3f4e;
+  #L3f3f40.  call `onNext`(v0, v11) @signature `Lorg/reactivestreams/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L3f3f46.  v10:= 1L;
+  #L3f3f4a.  v8:= v8 + v10 @kind long;
+  #L3f3f4c.  goto L3f3ee8;
+  #L3f3f4e.  v10:= lcmp(v8, v4);
+  #L3f3f52.  if v10 != 0 then goto L3f3f96;
+  #L3f3f56.  call temp:= `isCancelled`(v13) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.isCancelled:()Z` @kind virtual;
+  #L3f3f5c.  v4:= temp;
+  #L3f3f5e.  if v4 == 0 then goto L3f3f6a;
+  #L3f3f62.  call `clear`(v1) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3f3f68.  return @kind void;
+  #L3f3f6a.  v4:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.done` @type ^`boolean` @kind boolean;
+  #L3f3f6e.  call temp:= `isEmpty`(v1) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.isEmpty:()Z` @kind virtual;
+  #L3f3f74.  v5:= temp;
+  #L3f3f76.  if v4 == 0 then goto L3f3f96;
+  #L3f3f7a.  if v5 == 0 then goto L3f3f96;
+  #L3f3f7e.  v0:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.error` @type ^`java.lang.Throwable` @kind object;
+  #L3f3f82.  if v0 == 0 then goto L3f3f8e;
+  #L3f3f86.  call temp:= `error`(v13, v0) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.error:(Ljava/lang/Throwable;)Z` @kind virtual;
+  #L3f3f8c.  goto L3f3f94;
+  #L3f3f8e.  call `complete`(v13) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.complete:()V` @kind virtual;
+  #L3f3f94.  return @kind void;
+  #L3f3f96.  v4:= lcmp(v8, v6);
+  #L3f3f9a.  if v4 == 0 then goto L3f3fa4;
+  #L3f3f9e.  call temp:= `produced`(v13, v8) @signature `Lio/reactivex/internal/util/BackpressureHelper;.produced:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L3f3fa4.  v4:= v13.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L3f3fa8.  v3:= -v3 @kind int;
+  #L3f3faa.  call temp:= `addAndGet`(v4, v3) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.addAndGet:(I)I` @kind virtual;
+  #L3f3fb0.  v3:= temp;
+  #L3f3fb2.  if v3 != 0 then goto L3f3eda;
+  #L3f3fb6.  return @kind void;
+}
+procedure `void` `onComplete`(`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` v1 @kind this) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.onComplete:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3f3fc8.  v0:= 1I;
+  #L3f3fca.  v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.done` @type ^`boolean` := v0 @kind boolean;
+  #L3f3fce.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.drain:()V` @kind virtual;
+  #L3f3fd4.  return @kind void;
+}
+procedure `void` `onNext`(`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3f3fe8.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.done` @type ^`boolean` @kind boolean;
+  #L3f3fec.  if v0 != 0 then goto L3f4028;
+  #L3f3ff0.  call temp:= `isCancelled`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.isCancelled:()Z` @kind virtual;
+  #L3f3ff6.  v0:= temp;
+  #L3f3ff8.  if v0 == 0 then goto L3f3ffe;
+  #L3f3ffc.  goto L3f4028;
+  #L3f3ffe.  if v2 != 0 then goto L3f4018;
+  #L3f4002.  v2:= new `java.lang.NullPointerException`;
+  #L3f4006.  v0:= "onNext called with null. Null values are generally not allowed in 2.x operators and sources." @kind object;
+  #L3f400a.  call `<init>`(v2, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3f4010.  call `onError`(v1, v2) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L3f4016.  return @kind void;
+  #L3f4018.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L3f401c.  call temp:= `offer`(v0, v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.offer:(Ljava/lang/Object;)Z` @kind virtual;
+  #L3f4022.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.drain:()V` @kind virtual;
+  #L3f4028.  return @kind void;
+}
+procedure `void` `onRequested`(`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` v0 @kind this) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.onRequested:()V` @AccessFlag  {
+    temp;
+
+  #L3f403c.  call `drain`(v0) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.drain:()V` @kind virtual;
+  #L3f4042.  return @kind void;
+}
+procedure `void` `onUnsubscribed`(`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` v1 @kind this) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.onUnsubscribed:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3f4054.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L3f4058.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L3f405e.  v0:= temp;
+  #L3f4060.  if v0 != 0 then goto L3f406e;
+  #L3f4064.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L3f4068.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3f406e.  return @kind void;
+}
+procedure `boolean` `tryOnError`(`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.tryOnError:(Ljava/lang/Throwable;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3f3e38.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.done` @type ^`boolean` @kind boolean;
+  #L3f3e3c.  if v0 != 0 then goto L3f3e72;
+  #L3f3e40.  call temp:= `isCancelled`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.isCancelled:()Z` @kind virtual;
+  #L3f3e46.  v0:= temp;
+  #L3f3e48.  if v0 == 0 then goto L3f3e4e;
+  #L3f3e4c.  goto L3f3e72;
+  #L3f3e4e.  if v2 != 0 then goto L3f3e60;
+  #L3f3e52.  v2:= new `java.lang.NullPointerException`;
+  #L3f3e56.  v0:= "onError called with null. Null values are generally not allowed in 2.x operators and sources." @kind object;
+  #L3f3e5a.  call `<init>`(v2, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3f3e60.  v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.error` @type ^`java.lang.Throwable` := v2 @kind object;
+  #L3f3e64.  v2:= 1I;
+  #L3f3e66.  v1.`io.reactivex.internal.operators.flowable.FlowableCreate$BufferAsyncEmitter.done` @type ^`boolean` := v2 @kind boolean;
+  #L3f3e6a.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableCreate$BufferAsyncEmitter;.drain:()V` @kind virtual;
+  #L3f3e70.  return v2;
+  #L3f3e72.  v2:= 0I;
+  #L3f3e74.  return v2;
+}

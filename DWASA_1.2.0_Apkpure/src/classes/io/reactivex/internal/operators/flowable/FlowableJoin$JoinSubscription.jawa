@@ -1,0 +1,475 @@
+record `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicInteger` @kind class, `org.reactivestreams.Subscription` @kind interface, `io.reactivex.internal.operators.flowable.FlowableGroupJoin$JoinSupport` @kind interface {
+  `java.util.concurrent.atomic.AtomicInteger` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.active` @AccessFlag FINAL;
+  `boolean` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.cancelled` @AccessFlag VOLATILE;
+  `io.reactivex.disposables.CompositeDisposable` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @AccessFlag FINAL;
+  `org.reactivestreams.Subscriber` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.downstream` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @AccessFlag FINAL;
+  `io.reactivex.functions.Function` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.leftEnd` @AccessFlag FINAL;
+  `int` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.leftIndex` @AccessFlag ;
+  `java.util.Map` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.lefts` @AccessFlag FINAL;
+  `io.reactivex.internal.queue.SpscLinkedArrayQueue` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.queue` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicLong` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.requested` @AccessFlag FINAL;
+  `io.reactivex.functions.BiFunction` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.resultSelector` @AccessFlag FINAL;
+  `io.reactivex.functions.Function` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rightEnd` @AccessFlag FINAL;
+  `int` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rightIndex` @AccessFlag ;
+  `java.util.Map` `io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rights` @AccessFlag FINAL;
+}
+global `java.lang.Integer` `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_CLOSE` @AccessFlag STATIC_FINAL;
+global `java.lang.Integer` `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_VALUE` @AccessFlag STATIC_FINAL;
+global `java.lang.Integer` `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_CLOSE` @AccessFlag STATIC_FINAL;
+global `java.lang.Integer` `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_VALUE` @AccessFlag STATIC_FINAL;
+global `long` `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3fd930.  v0:= 1I;
+  #L3fd932.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fd938.  v0:= temp @kind object;
+  #L3fd93a.  `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_VALUE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L3fd93e.  v0:= 2I;
+  #L3fd940.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fd946.  v0:= temp @kind object;
+  #L3fd948.  `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_VALUE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L3fd94c.  v0:= 3I;
+  #L3fd94e.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fd954.  v0:= temp @kind object;
+  #L3fd956.  `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_CLOSE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L3fd95a.  v0:= 4I;
+  #L3fd95c.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fd962.  v0:= temp @kind object;
+  #L3fd964.  `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_CLOSE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L3fd968.  return @kind void;
+}
+procedure `void` `<init>`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `org.reactivestreams.Subscriber` v2 @kind object, `io.reactivex.functions.Function` v3 @kind object, `io.reactivex.functions.Function` v4 @kind object, `io.reactivex.functions.BiFunction` v5 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.<init>:(Lorg/reactivestreams/Subscriber;Lio/reactivex/functions/Function;Lio/reactivex/functions/Function;Lio/reactivex/functions/BiFunction;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3fd97c.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L3fd982.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.downstream` @type ^`org.reactivestreams.Subscriber` := v2 @kind object;
+  #L3fd986.  v2:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L3fd98a.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L3fd990.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.requested` @type ^`java.util.concurrent.atomic.AtomicLong` := v2 @kind object;
+  #L3fd994.  v2:= new `io.reactivex.disposables.CompositeDisposable`;
+  #L3fd998.  call `<init>`(v2) @signature `Lio/reactivex/disposables/CompositeDisposable;.<init>:()V` @kind direct;
+  #L3fd99e.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` := v2 @kind object;
+  #L3fd9a2.  v2:= new `io.reactivex.internal.queue.SpscLinkedArrayQueue`;
+  #L3fd9a6.  call temp:= `bufferSize`() @signature `Lio/reactivex/Flowable;.bufferSize:()I` @kind static;
+  #L3fd9ac.  v0:= temp;
+  #L3fd9ae.  call `<init>`(v2, v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.<init>:(I)V` @kind direct;
+  #L3fd9b4.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` := v2 @kind object;
+  #L3fd9b8.  v2:= new `java.util.LinkedHashMap`;
+  #L3fd9bc.  call `<init>`(v2) @signature `Ljava/util/LinkedHashMap;.<init>:()V` @kind direct;
+  #L3fd9c2.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.lefts` @type ^`java.util.Map` := v2 @kind object;
+  #L3fd9c6.  v2:= new `java.util.LinkedHashMap`;
+  #L3fd9ca.  call `<init>`(v2) @signature `Ljava/util/LinkedHashMap;.<init>:()V` @kind direct;
+  #L3fd9d0.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rights` @type ^`java.util.Map` := v2 @kind object;
+  #L3fd9d4.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L3fd9d8.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L3fd9de.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L3fd9e2.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.leftEnd` @type ^`io.reactivex.functions.Function` := v3 @kind object;
+  #L3fd9e6.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rightEnd` @type ^`io.reactivex.functions.Function` := v4 @kind object;
+  #L3fd9ea.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.resultSelector` @type ^`io.reactivex.functions.BiFunction` := v5 @kind object;
+  #L3fd9ee.  v2:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L3fd9f2.  v3:= 2I;
+  #L3fd9f4.  call `<init>`(v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:(I)V` @kind direct;
+  #L3fd9fa.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.active` @type ^`java.util.concurrent.atomic.AtomicInteger` := v2 @kind object;
+  #L3fd9fe.  return @kind void;
+}
+procedure `void` `cancel`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancel:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fda10.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.cancelled` @type ^`boolean` @kind boolean;
+  #L3fda14.  if v0 == 0 then goto L3fda1a;
+  #L3fda18.  return @kind void;
+  #L3fda1a.  v0:= 1I;
+  #L3fda1c.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.cancelled` @type ^`boolean` := v0 @kind boolean;
+  #L3fda20.  call `cancelAll`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @kind virtual;
+  #L3fda26.  call temp:= `getAndIncrement`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.getAndIncrement:()I` @kind virtual;
+  #L3fda2c.  v0:= temp;
+  #L3fda2e.  if v0 != 0 then goto L3fda3c;
+  #L3fda32.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L3fda36.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3fda3c.  return @kind void;
+}
+procedure `void` `cancelAll`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3fda50.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L3fda54.  call `dispose`(v0) @signature `Lio/reactivex/disposables/CompositeDisposable;.dispose:()V` @kind virtual;
+  #L3fda5a.  return @kind void;
+}
+procedure `void` `drain`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v17 @kind this) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.drain:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+
+  #L3fda6c.  v1:= v17 @kind object;
+  #L3fda70.  call temp:= `getAndIncrement`(v17) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.getAndIncrement:()I` @kind virtual;
+  #L3fda76.  v0:= temp;
+  #L3fda78.  if v0 == 0 then goto L3fda7e;
+  #L3fda7c.  return @kind void;
+  #L3fda7e.  v2:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L3fda82.  v3:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.downstream` @type ^`org.reactivestreams.Subscriber` @kind object;
+  #L3fda86.  v0:= 1I;
+  #L3fda88.  v4:= 1I;
+  #L3fda8a.  v5:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.cancelled` @type ^`boolean` @kind boolean;
+  #L3fda8e.  if v5 == 0 then goto L3fda9a;
+  #L3fda92.  call `clear`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3fda98.  return @kind void;
+  #L3fda9a.  v5:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fda9e.  call temp:= `get`(v5) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L3fdaa4.  v5:= temp @kind object;
+  #L3fdaa6.  v5:= (`java.lang.Throwable`) v5 @kind object;
+  #L3fdaaa.  if v5 == 0 then goto L3fdac2;
+  #L3fdaae.  call `clear`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3fdab4.  call `cancelAll`(v17) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @kind virtual;
+  #L3fdaba.  call `errorAll`(v1, v3) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.errorAll:(Lorg/reactivestreams/Subscriber;)V` @kind virtual;
+  #L3fdac0.  return @kind void;
+  #L3fdac2.  v5:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.active` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L3fdac6.  call temp:= `get`(v5) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L3fdacc.  v5:= temp;
+  #L3fdace.  v6:= 0I;
+  #L3fdad0.  if v5 != 0 then goto L3fdad8;
+  #L3fdad4.  v5:= 1I;
+  #L3fdad6.  goto L3fdada;
+  #L3fdad8.  v5:= 0I;
+  #L3fdada.  call temp:= `poll`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L3fdae0.  v7:= temp @kind object;
+  #L3fdae2.  v7:= (`java.lang.Integer`) v7 @kind object;
+  #L3fdae6.  if v7 != 0 then goto L3fdaee;
+  #L3fdaea.  v8:= 1I;
+  #L3fdaec.  goto L3fdaf0;
+  #L3fdaee.  v8:= 0I;
+  #L3fdaf0.  if v5 == 0 then goto L3fdb1e;
+  #L3fdaf4.  if v8 == 0 then goto L3fdb1e;
+  #L3fdaf8.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.lefts` @type ^`java.util.Map` @kind object;
+  #L3fdafc.  call `clear`(v0) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L3fdb02.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rights` @type ^`java.util.Map` @kind object;
+  #L3fdb06.  call `clear`(v0) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L3fdb0c.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L3fdb10.  call `dispose`(v0) @signature `Lio/reactivex/disposables/CompositeDisposable;.dispose:()V` @kind virtual;
+  #L3fdb16.  call `onComplete`(v3) @signature `Lorg/reactivestreams/Subscriber;.onComplete:()V` @kind interface;
+  #L3fdb1c.  return @kind void;
+  #L3fdb1e.  if v8 == 0 then goto L3fdb32;
+  #L3fdb22.  v4:= -v4 @kind int;
+  #L3fdb24.  call temp:= `addAndGet`(v1, v4) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.addAndGet:(I)I` @kind virtual;
+  #L3fdb2a.  v4:= temp;
+  #L3fdb2c.  if v4 != 0 then goto L3fda8a;
+  #L3fdb30.  return @kind void;
+  #L3fdb32.  call temp:= `poll`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L3fdb38.  v5:= temp @kind object;
+  #L3fdb3a.  v8:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L3fdb3e.  v9:= 1L;
+  #L3fdb42.  v11:= "Could not emit value due to lack of requests" @kind object;
+  #L3fdb46.  v12:= "The resultSelector returned a null value" @kind object;
+  #L3fdb4a.  if v7 != v8 then goto L3fdc80;
+  #L3fdb4e.  v6:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.leftIndex` @type ^`int`;
+  #L3fdb52.  v7:= v6 + 1;
+  #L3fdb56.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.leftIndex` @type ^`int` := v7;
+  #L3fdb5a.  v7:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.lefts` @type ^`java.util.Map` @kind object;
+  #L3fdb5e.  call temp:= `valueOf`(v6) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fdb64.  v8:= temp @kind object;
+  #L3fdb66.  call temp:= `put`(v7, v8, v5) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fdb6c.  v7:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.leftEnd` @type ^`io.reactivex.functions.Function` @kind object;
+  #L3fdb70.  call temp:= `apply`(v7, v5) @signature `Lio/reactivex/functions/Function;.apply:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fdb76.  v7:= temp @kind object;
+  #L3fdb78.  v8:= "The leftEnd returned a null Publisher" @kind object;
+  #L3fdb7c.  call temp:= `requireNonNull`(v7, v8) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L3fdb82.  v7:= temp @kind object;
+  #L3fdb84.  v7:= (`org.reactivestreams.Publisher`) v7 @kind object;
+  #L3fdb88.  v8:= new `io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightEndSubscriber`;
+  #L3fdb8c.  call `<init>`(v8, v1, v0, v6) @signature `Lio/reactivex/internal/operators/flowable/FlowableGroupJoin$LeftRightEndSubscriber;.<init>:(Lio/reactivex/internal/operators/flowable/FlowableGroupJoin$JoinSupport;ZI)V` @kind direct;
+  #L3fdb92.  v6:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L3fdb96.  call temp:= `add`(v6, v8) @signature `Lio/reactivex/disposables/CompositeDisposable;.add:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L3fdb9c.  call `subscribe`(v7, v8) @signature `Lorg/reactivestreams/Publisher;.subscribe:(Lorg/reactivestreams/Subscriber;)V` @kind interface;
+  #L3fdba2.  v6:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fdba6.  call temp:= `get`(v6) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L3fdbac.  v6:= temp @kind object;
+  #L3fdbae.  v6:= (`java.lang.Throwable`) v6 @kind object;
+  #L3fdbb2.  if v6 == 0 then goto L3fdbca;
+  #L3fdbb6.  call `clear`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3fdbbc.  call `cancelAll`(v17) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @kind virtual;
+  #L3fdbc2.  call `errorAll`(v1, v3) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.errorAll:(Lorg/reactivestreams/Subscriber;)V` @kind virtual;
+  #L3fdbc8.  return @kind void;
+  #L3fdbca.  v6:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L3fdbce.  call temp:= `get`(v6) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L3fdbd4.  v6:= temp @kind wide;
+  #L3fdbd6.  v8:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rights` @type ^`java.util.Map` @kind object;
+  #L3fdbda.  call temp:= `values`(v8) @signature `Ljava/util/Map;.values:()Ljava/util/Collection;` @kind interface;
+  #L3fdbe0.  v8:= temp @kind object;
+  #L3fdbe2.  call temp:= `iterator`(v8) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L3fdbe8.  v8:= temp @kind object;
+  #L3fdbea.  v13:= 0L;
+  #L3fdbee.  call temp:= `hasNext`(v8) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L3fdbf4.  v16:= temp;
+  #L3fdbf6.  if v16 == 0 then goto L3fdc5c;
+  #L3fdbfa.  call temp:= `next`(v8) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L3fdc00.  v0:= temp @kind object;
+  #L3fdc02.  v15:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.resultSelector` @type ^`io.reactivex.functions.BiFunction` @kind object;
+  #L3fdc06.  call temp:= `apply`(v15, v5, v0) @signature `Lio/reactivex/functions/BiFunction;.apply:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fdc0c.  v0:= temp @kind object;
+  #L3fdc0e.  call temp:= `requireNonNull`(v0, v12) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L3fdc14.  v0:= temp @kind object;
+  #L3fdc16.  v15:= lcmp(v13, v6);
+  #L3fdc1a.  if v15 == 0 then goto L3fdc2a;
+  #L3fdc1e.  call `onNext`(v3, v0) @signature `Lorg/reactivestreams/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L3fdc24.  v13:= v13 + v9 @kind long;
+  #L3fdc26.  v0:= 1I;
+  #L3fdc28.  goto L3fdbee;
+  #L3fdc2a.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fdc2e.  v4:= new `io.reactivex.exceptions.MissingBackpressureException`;
+  #L3fdc32.  call `<init>`(v4, v11) @signature `Lio/reactivex/exceptions/MissingBackpressureException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3fdc38.  call temp:= `addThrowable`(v0, v4) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L3fdc3e.  call `clear`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3fdc44.  call `cancelAll`(v17) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @kind virtual;
+  #L3fdc4a.  call `errorAll`(v1, v3) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.errorAll:(Lorg/reactivestreams/Subscriber;)V` @kind virtual;
+  #L3fdc50.  return @kind void;
+  #L3fdc52.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3fdc54.  call `fail`(v1, v0, v3, v2) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.fail:(Ljava/lang/Throwable;Lorg/reactivestreams/Subscriber;Lio/reactivex/internal/fuseable/SimpleQueue;)V` @kind virtual;
+  #L3fdc5a.  return @kind void;
+  #L3fdc5c.  v5:= 0L;
+  #L3fdc60.  v0:= lcmp(v13, v5);
+  #L3fdc64.  if v0 == 0 then goto L3fde10;
+  #L3fdc68.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L3fdc6c.  call temp:= `produced`(v0, v13) @signature `Lio/reactivex/internal/util/BackpressureHelper;.produced:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L3fdc72.  goto L3fde10;
+  #L3fdc76.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3fdc78.  call `fail`(v1, v0, v3, v2) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.fail:(Ljava/lang/Throwable;Lorg/reactivestreams/Subscriber;Lio/reactivex/internal/fuseable/SimpleQueue;)V` @kind virtual;
+  #L3fdc7e.  return @kind void;
+  #L3fdc80.  v0:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L3fdc84.  if v7 != v0 then goto L3fddb6;
+  #L3fdc88.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rightIndex` @type ^`int`;
+  #L3fdc8c.  v7:= v0 + 1;
+  #L3fdc90.  v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rightIndex` @type ^`int` := v7;
+  #L3fdc94.  v7:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rights` @type ^`java.util.Map` @kind object;
+  #L3fdc98.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fdc9e.  v8:= temp @kind object;
+  #L3fdca0.  call temp:= `put`(v7, v8, v5) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fdca6.  v7:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rightEnd` @type ^`io.reactivex.functions.Function` @kind object;
+  #L3fdcaa.  call temp:= `apply`(v7, v5) @signature `Lio/reactivex/functions/Function;.apply:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fdcb0.  v7:= temp @kind object;
+  #L3fdcb2.  v8:= "The rightEnd returned a null Publisher" @kind object;
+  #L3fdcb6.  call temp:= `requireNonNull`(v7, v8) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L3fdcbc.  v7:= temp @kind object;
+  #L3fdcbe.  v7:= (`org.reactivestreams.Publisher`) v7 @kind object;
+  #L3fdcc2.  v8:= new `io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightEndSubscriber`;
+  #L3fdcc6.  call `<init>`(v8, v1, v6, v0) @signature `Lio/reactivex/internal/operators/flowable/FlowableGroupJoin$LeftRightEndSubscriber;.<init>:(Lio/reactivex/internal/operators/flowable/FlowableGroupJoin$JoinSupport;ZI)V` @kind direct;
+  #L3fdccc.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L3fdcd0.  call temp:= `add`(v0, v8) @signature `Lio/reactivex/disposables/CompositeDisposable;.add:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L3fdcd6.  call `subscribe`(v7, v8) @signature `Lorg/reactivestreams/Publisher;.subscribe:(Lorg/reactivestreams/Subscriber;)V` @kind interface;
+  #L3fdcdc.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fdce0.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L3fdce6.  v0:= temp @kind object;
+  #L3fdce8.  v0:= (`java.lang.Throwable`) v0 @kind object;
+  #L3fdcec.  if v0 == 0 then goto L3fdd04;
+  #L3fdcf0.  call `clear`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3fdcf6.  call `cancelAll`(v17) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @kind virtual;
+  #L3fdcfc.  call `errorAll`(v1, v3) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.errorAll:(Lorg/reactivestreams/Subscriber;)V` @kind virtual;
+  #L3fdd02.  return @kind void;
+  #L3fdd04.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L3fdd08.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L3fdd0e.  v6:= temp @kind wide;
+  #L3fdd10.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.lefts` @type ^`java.util.Map` @kind object;
+  #L3fdd14.  call temp:= `values`(v0) @signature `Ljava/util/Map;.values:()Ljava/util/Collection;` @kind interface;
+  #L3fdd1a.  v0:= temp @kind object;
+  #L3fdd1c.  call temp:= `iterator`(v0) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L3fdd22.  v0:= temp @kind object;
+  #L3fdd24.  v13:= 0L;
+  #L3fdd28.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L3fdd2e.  v8:= temp;
+  #L3fdd30.  if v8 == 0 then goto L3fdd94;
+  #L3fdd34.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L3fdd3a.  v8:= temp @kind object;
+  #L3fdd3c.  v15:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.resultSelector` @type ^`io.reactivex.functions.BiFunction` @kind object;
+  #L3fdd40.  call temp:= `apply`(v15, v8, v5) @signature `Lio/reactivex/functions/BiFunction;.apply:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fdd46.  v8:= temp @kind object;
+  #L3fdd48.  call temp:= `requireNonNull`(v8, v12) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L3fdd4e.  v8:= temp @kind object;
+  #L3fdd50.  v15:= lcmp(v13, v6);
+  #L3fdd54.  if v15 == 0 then goto L3fdd62;
+  #L3fdd58.  call `onNext`(v3, v8) @signature `Lorg/reactivestreams/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L3fdd5e.  v13:= v13 + v9 @kind long;
+  #L3fdd60.  goto L3fdd28;
+  #L3fdd62.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fdd66.  v4:= new `io.reactivex.exceptions.MissingBackpressureException`;
+  #L3fdd6a.  call `<init>`(v4, v11) @signature `Lio/reactivex/exceptions/MissingBackpressureException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3fdd70.  call temp:= `addThrowable`(v0, v4) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L3fdd76.  call `clear`(v2) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L3fdd7c.  call `cancelAll`(v17) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @kind virtual;
+  #L3fdd82.  call `errorAll`(v1, v3) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.errorAll:(Lorg/reactivestreams/Subscriber;)V` @kind virtual;
+  #L3fdd88.  return @kind void;
+  #L3fdd8a.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3fdd8c.  call `fail`(v1, v0, v3, v2) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.fail:(Ljava/lang/Throwable;Lorg/reactivestreams/Subscriber;Lio/reactivex/internal/fuseable/SimpleQueue;)V` @kind virtual;
+  #L3fdd92.  return @kind void;
+  #L3fdd94.  v5:= 0L;
+  #L3fdd98.  v0:= lcmp(v13, v5);
+  #L3fdd9c.  if v0 == 0 then goto L3fde10;
+  #L3fdda0.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L3fdda4.  call temp:= `produced`(v0, v13) @signature `Lio/reactivex/internal/util/BackpressureHelper;.produced:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L3fddaa.  goto L3fde10;
+  #L3fddac.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3fddae.  call `fail`(v1, v0, v3, v2) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.fail:(Ljava/lang/Throwable;Lorg/reactivestreams/Subscriber;Lio/reactivex/internal/fuseable/SimpleQueue;)V` @kind virtual;
+  #L3fddb4.  return @kind void;
+  #L3fddb6.  v0:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_CLOSE` @type ^`java.lang.Integer` @kind object;
+  #L3fddba.  if v7 != v0 then goto L3fdde4;
+  #L3fddbe.  v5:= (`io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightEndSubscriber`) v5 @kind object;
+  #L3fddc2.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.lefts` @type ^`java.util.Map` @kind object;
+  #L3fddc6.  v6:= v5.`io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightEndSubscriber.index` @type ^`int`;
+  #L3fddca.  call temp:= `valueOf`(v6) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fddd0.  v6:= temp @kind object;
+  #L3fddd2.  call temp:= `remove`(v0, v6) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fddd8.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L3fdddc.  call temp:= `remove`(v0, v5) @signature `Lio/reactivex/disposables/CompositeDisposable;.remove:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L3fdde2.  goto L3fde10;
+  #L3fdde4.  v0:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_CLOSE` @type ^`java.lang.Integer` @kind object;
+  #L3fdde8.  if v7 != v0 then goto L3fde10;
+  #L3fddec.  v5:= (`io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightEndSubscriber`) v5 @kind object;
+  #L3fddf0.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rights` @type ^`java.util.Map` @kind object;
+  #L3fddf4.  v6:= v5.`io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightEndSubscriber.index` @type ^`int`;
+  #L3fddf8.  call temp:= `valueOf`(v6) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L3fddfe.  v6:= temp @kind object;
+  #L3fde00.  call temp:= `remove`(v0, v6) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L3fde06.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L3fde0a.  call temp:= `remove`(v0, v5) @signature `Lio/reactivex/disposables/CompositeDisposable;.remove:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L3fde10.  v0:= 1I;
+  #L3fde12.  goto L3fda8a;
+  catch `java.lang.Throwable` @[L3fdb6c..L3fdb88] goto L3fdc76;
+  catch `java.lang.Throwable` @[L3fdc02..L3fdc16] goto L3fdc52;
+  catch `java.lang.Throwable` @[L3fdca6..L3fdcc2] goto L3fddac;
+  catch `java.lang.Throwable` @[L3fdd3c..L3fdd50] goto L3fdd8a;
+}
+procedure `void` `errorAll`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v2 @kind this, `org.reactivestreams.Subscriber` v3 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.errorAll:(Lorg/reactivestreams/Subscriber;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L3fde58.  v0:= v2.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fde5c.  call temp:= `terminate`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.terminate:(Ljava/util/concurrent/atomic/AtomicReference;)Ljava/lang/Throwable;` @kind static;
+  #L3fde62.  v0:= temp @kind object;
+  #L3fde64.  v1:= v2.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.lefts` @type ^`java.util.Map` @kind object;
+  #L3fde68.  call `clear`(v1) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L3fde6e.  v1:= v2.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.rights` @type ^`java.util.Map` @kind object;
+  #L3fde72.  call `clear`(v1) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L3fde78.  call `onError`(v3, v0) @signature `Lorg/reactivestreams/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L3fde7e.  return @kind void;
+}
+procedure `void` `fail`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `java.lang.Throwable` v2 @kind object, `org.reactivestreams.Subscriber` v3 @kind object, `io.reactivex.internal.fuseable.SimpleQueue` v4 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.fail:(Ljava/lang/Throwable;Lorg/reactivestreams/Subscriber;Lio/reactivex/internal/fuseable/SimpleQueue;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L3fde90.  call `throwIfFatal`(v2) @signature `Lio/reactivex/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L3fde96.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fde9a.  call temp:= `addThrowable`(v0, v2) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L3fdea0.  call `clear`(v4) @signature `Lio/reactivex/internal/fuseable/SimpleQueue;.clear:()V` @kind interface;
+  #L3fdea6.  call `cancelAll`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.cancelAll:()V` @kind virtual;
+  #L3fdeac.  call `errorAll`(v1, v3) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.errorAll:(Lorg/reactivestreams/Subscriber;)V` @kind virtual;
+  #L3fdeb2.  return @kind void;
+}
+procedure `void` `innerClose`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `boolean` v2 , `io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightEndSubscriber` v3 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.innerClose:(ZLio/reactivex/internal/operators/flowable/FlowableGroupJoin$LeftRightEndSubscriber;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fdec4.  @monitorenter v1
+  #L3fdec6.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L3fdeca.  if v2 == 0 then goto L3fded4;
+  #L3fdece.  v2:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_CLOSE` @type ^`java.lang.Integer` @kind object;
+  #L3fded2.  goto L3fded8;
+  #L3fded4.  v2:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_CLOSE` @type ^`java.lang.Integer` @kind object;
+  #L3fded8.  call temp:= `offer`(v0, v2, v3) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.offer:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L3fdede.  @monitorexit v1
+  #L3fdee0.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.drain:()V` @kind virtual;
+  #L3fdee6.  return @kind void;
+  #L3fdee8.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3fdeea.  @monitorexit v1
+  #L3fdeec.  throw v2;
+  catch `java.lang.Throwable` @[L3fdec6..L3fdee0] goto L3fdee8;
+  catch `java.lang.Throwable` @[L3fdeea..L3fdeec] goto L3fdee8;
+}
+procedure `void` `innerCloseError`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.innerCloseError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fdf14.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fdf18.  call temp:= `addThrowable`(v0, v2) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L3fdf1e.  v0:= temp;
+  #L3fdf20.  if v0 == 0 then goto L3fdf2c;
+  #L3fdf24.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.drain:()V` @kind virtual;
+  #L3fdf2a.  goto L3fdf32;
+  #L3fdf2c.  call `onError`(v2) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L3fdf32.  return @kind void;
+}
+procedure `void` `innerComplete`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `io.reactivex.internal.operators.flowable.FlowableGroupJoin$LeftRightSubscriber` v2 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.innerComplete:(Lio/reactivex/internal/operators/flowable/FlowableGroupJoin$LeftRightSubscriber;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fdf44.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L3fdf48.  call temp:= `delete`(v0, v2) @signature `Lio/reactivex/disposables/CompositeDisposable;.delete:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L3fdf4e.  v2:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.active` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L3fdf52.  call temp:= `decrementAndGet`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L3fdf58.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.drain:()V` @kind virtual;
+  #L3fdf5e.  return @kind void;
+}
+procedure `void` `innerError`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.innerError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fdf70.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L3fdf74.  call temp:= `addThrowable`(v0, v2) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L3fdf7a.  v0:= temp;
+  #L3fdf7c.  if v0 == 0 then goto L3fdf92;
+  #L3fdf80.  v2:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.active` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L3fdf84.  call temp:= `decrementAndGet`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L3fdf8a.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.drain:()V` @kind virtual;
+  #L3fdf90.  goto L3fdf98;
+  #L3fdf92.  call `onError`(v2) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L3fdf98.  return @kind void;
+}
+procedure `void` `innerValue`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `boolean` v2 , `java.lang.Object` v3 @kind object) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.innerValue:(ZLjava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fdfac.  @monitorenter v1
+  #L3fdfae.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L3fdfb2.  if v2 == 0 then goto L3fdfbc;
+  #L3fdfb6.  v2:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.LEFT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L3fdfba.  goto L3fdfc0;
+  #L3fdfbc.  v2:= `@@io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.RIGHT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L3fdfc0.  call temp:= `offer`(v0, v2, v3) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.offer:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L3fdfc6.  @monitorexit v1
+  #L3fdfc8.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.drain:()V` @kind virtual;
+  #L3fdfce.  return @kind void;
+  #L3fdfd0.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L3fdfd2.  @monitorexit v1
+  #L3fdfd4.  throw v2;
+  catch `java.lang.Throwable` @[L3fdfae..L3fdfc8] goto L3fdfd0;
+  catch `java.lang.Throwable` @[L3fdfd2..L3fdfd4] goto L3fdfd0;
+}
+procedure `void` `request`(`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription` v1 @kind this, `long` v2 ) @signature `Lio/reactivex/internal/operators/flowable/FlowableJoin$JoinSubscription;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fdffc.  call temp:= `validate`(v2) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.validate:(J)Z` @kind static;
+  #L3fe002.  v0:= temp;
+  #L3fe004.  if v0 == 0 then goto L3fe012;
+  #L3fe008.  v0:= v1.`io.reactivex.internal.operators.flowable.FlowableJoin$JoinSubscription.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L3fe00c.  call temp:= `add`(v0, v2) @signature `Lio/reactivex/internal/util/BackpressureHelper;.add:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L3fe012.  return @kind void;
+}

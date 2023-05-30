@@ -1,0 +1,142 @@
+record `rx.internal.operators.OnSubscribeRange$RangeProducer` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicLong` @kind class, `rx.Producer` @kind interface {
+  `rx.Subscriber` `rx.internal.operators.OnSubscribeRange$RangeProducer.childSubscriber` @AccessFlag PRIVATE_FINAL;
+  `long` `rx.internal.operators.OnSubscribeRange$RangeProducer.currentIndex` @AccessFlag PRIVATE;
+  `int` `rx.internal.operators.OnSubscribeRange$RangeProducer.endOfRange` @AccessFlag PRIVATE_FINAL;
+}
+global `long` `@@rx.internal.operators.OnSubscribeRange$RangeProducer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.operators.OnSubscribeRange$RangeProducer` v0 @kind this, `rx.Subscriber` v1 @kind object, `int` v2 , `int` v3 ) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.<init>:(Lrx/Subscriber;II)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L49b9d8.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L49b9de.  v0.`rx.internal.operators.OnSubscribeRange$RangeProducer.childSubscriber` @type ^`rx.Subscriber` := v1 @kind object;
+  #L49b9e2.  v1:= (`long`) v2 @kind i2l;
+  #L49b9e4.  v0.`rx.internal.operators.OnSubscribeRange$RangeProducer.currentIndex` @type ^`long` := v1 @kind wide;
+  #L49b9e8.  v0.`rx.internal.operators.OnSubscribeRange$RangeProducer.endOfRange` @type ^`int` := v3;
+  #L49b9ec.  return @kind void;
+}
+procedure `void` `fastPath`(`rx.internal.operators.OnSubscribeRange$RangeProducer` v8 @kind this) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.fastPath:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L49ba00.  v0:= v8.`rx.internal.operators.OnSubscribeRange$RangeProducer.endOfRange` @type ^`int`;
+  #L49ba04.  v0:= (`long`) v0 @kind i2l;
+  #L49ba06.  v2:= 1L;
+  #L49ba0a.  v0:= v0 + v2 @kind long;
+  #L49ba0c.  v4:= v8.`rx.internal.operators.OnSubscribeRange$RangeProducer.childSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L49ba10.  v5:= v8.`rx.internal.operators.OnSubscribeRange$RangeProducer.currentIndex` @type ^`long` @kind wide;
+  #L49ba14.  v7:= lcmp(v5, v0);
+  #L49ba18.  if v7 == 0 then goto L49ba3e;
+  #L49ba1c.  call temp:= `isUnsubscribed`(v4) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L49ba22.  v7:= temp;
+  #L49ba24.  if v7 == 0 then goto L49ba2a;
+  #L49ba28.  return @kind void;
+  #L49ba2a.  v7:= (`int`) v5 @kind l2i;
+  #L49ba2c.  call temp:= `valueOf`(v7) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L49ba32.  v7:= temp @kind object;
+  #L49ba34.  call `onNext`(v4, v7) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L49ba3a.  v5:= v5 + v2 @kind long;
+  #L49ba3c.  goto L49ba14;
+  #L49ba3e.  call temp:= `isUnsubscribed`(v4) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L49ba44.  v0:= temp;
+  #L49ba46.  if v0 != 0 then goto L49ba50;
+  #L49ba4a.  call `onCompleted`(v4) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L49ba50.  return @kind void;
+}
+procedure `void` `request`(`rx.internal.operators.OnSubscribeRange$RangeProducer` v5 @kind this, `long` v6 ) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L49ba64.  call temp:= `get`(v5) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.get:()J` @kind virtual;
+  #L49ba6a.  v0:= temp @kind wide;
+  #L49ba6c.  v2:= 9223372036854775807L;
+  #L49ba76.  v4:= lcmp(v0, v2);
+  #L49ba7a.  if v4 != 0 then goto L49ba80;
+  #L49ba7e.  return @kind void;
+  #L49ba80.  v0:= 0L;
+  #L49ba84.  v4:= lcmp(v6, v2);
+  #L49ba88.  if v4 != 0 then goto L49baa0;
+  #L49ba8c.  call temp:= `compareAndSet`(v5, v0, v2) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.compareAndSet:(JJ)Z` @kind virtual;
+  #L49ba92.  v2:= temp;
+  #L49ba94.  if v2 == 0 then goto L49baa0;
+  #L49ba98.  call `fastPath`(v5) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.fastPath:()V` @kind virtual;
+  #L49ba9e.  goto L49babe;
+  #L49baa0.  v2:= lcmp(v6, v0);
+  #L49baa4.  if v2 <= 0 then goto L49babe;
+  #L49baa8.  call temp:= `getAndAddRequest`(v5, v6) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L49baae.  v2:= temp @kind wide;
+  #L49bab0.  v4:= lcmp(v2, v0);
+  #L49bab4.  if v4 != 0 then goto L49babe;
+  #L49bab8.  call `slowPath`(v5, v6) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.slowPath:(J)V` @kind virtual;
+  #L49babe.  return @kind void;
+}
+procedure `void` `slowPath`(`rx.internal.operators.OnSubscribeRange$RangeProducer` v12 @kind this, `long` v13 ) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.slowPath:(J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+
+  #L49bad0.  v0:= v12.`rx.internal.operators.OnSubscribeRange$RangeProducer.endOfRange` @type ^`int`;
+  #L49bad4.  v0:= (`long`) v0 @kind i2l;
+  #L49bad6.  v2:= 1L;
+  #L49bada.  v0:= v0 + v2 @kind long;
+  #L49badc.  v4:= v12.`rx.internal.operators.OnSubscribeRange$RangeProducer.currentIndex` @type ^`long` @kind wide;
+  #L49bae0.  v6:= v12.`rx.internal.operators.OnSubscribeRange$RangeProducer.childSubscriber` @type ^`rx.Subscriber` @kind object;
+  #L49bae4.  v7:= 0L;
+  #L49bae8.  v9:= v4 @kind wide;
+  #L49baea.  v4:= v13 @kind wide;
+  #L49baec.  v13:= v7 @kind wide;
+  #L49baee.  v11:= lcmp(v13, v4);
+  #L49baf2.  if v11 == 0 then goto L49bb22;
+  #L49baf6.  v11:= lcmp(v9, v0);
+  #L49bafa.  if v11 == 0 then goto L49bb22;
+  #L49bafe.  call temp:= `isUnsubscribed`(v6) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L49bb04.  v11:= temp;
+  #L49bb06.  if v11 == 0 then goto L49bb0c;
+  #L49bb0a.  return @kind void;
+  #L49bb0c.  v11:= (`int`) v9 @kind l2i;
+  #L49bb0e.  call temp:= `valueOf`(v11) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L49bb14.  v11:= temp @kind object;
+  #L49bb16.  call `onNext`(v6, v11) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L49bb1c.  v9:= v9 + v2 @kind long;
+  #L49bb1e.  v13:= v13 + v2 @kind long;
+  #L49bb20.  goto L49baee;
+  #L49bb22.  call temp:= `isUnsubscribed`(v6) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L49bb28.  v4:= temp;
+  #L49bb2a.  if v4 == 0 then goto L49bb30;
+  #L49bb2e.  return @kind void;
+  #L49bb30.  v4:= lcmp(v9, v0);
+  #L49bb34.  if v4 != 0 then goto L49bb40;
+  #L49bb38.  call `onCompleted`(v6) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L49bb3e.  return @kind void;
+  #L49bb40.  call temp:= `get`(v12) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.get:()J` @kind virtual;
+  #L49bb46.  v4:= temp @kind wide;
+  #L49bb48.  v11:= lcmp(v4, v13);
+  #L49bb4c.  if v11 != 0 then goto L49baee;
+  #L49bb50.  v12.`rx.internal.operators.OnSubscribeRange$RangeProducer.currentIndex` @type ^`long` := v9 @kind wide;
+  #L49bb54.  v13:= -v13 @kind long;
+  #L49bb56.  call temp:= `addAndGet`(v12, v13) @signature `Lrx/internal/operators/OnSubscribeRange$RangeProducer;.addAndGet:(J)J` @kind virtual;
+  #L49bb5c.  v4:= temp @kind wide;
+  #L49bb5e.  v13:= lcmp(v4, v7);
+  #L49bb62.  if v13 != 0 then goto L49baec;
+  #L49bb66.  return @kind void;
+}

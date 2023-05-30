@@ -1,0 +1,166 @@
+record `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker` @kind class @AccessFlag FINAL extends `rx.Scheduler$Worker` @kind class, `java.lang.Runnable` @kind interface {
+  `java.util.concurrent.Executor` `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.executor` @AccessFlag FINAL;
+  `java.util.concurrent.ConcurrentLinkedQueue` `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.queue` @AccessFlag FINAL;
+  `java.util.concurrent.ScheduledExecutorService` `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.service` @AccessFlag FINAL;
+  `rx.subscriptions.CompositeSubscription` `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.wip` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker` v0 @kind this, `java.util.concurrent.Executor` v1 @kind object) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.<init>:(Ljava/util/concurrent/Executor;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b2a14.  call `<init>`(v0) @signature `Lrx/Scheduler$Worker;.<init>:()V` @kind direct;
+  #L4b2a1a.  v0.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.executor` @type ^`java.util.concurrent.Executor` := v1 @kind object;
+  #L4b2a1e.  v1:= new `java.util.concurrent.ConcurrentLinkedQueue`;
+  #L4b2a22.  call `<init>`(v1) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.<init>:()V` @kind direct;
+  #L4b2a28.  v0.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.queue` @type ^`java.util.concurrent.ConcurrentLinkedQueue` := v1 @kind object;
+  #L4b2a2c.  v1:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4b2a30.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4b2a36.  v0.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v1 @kind object;
+  #L4b2a3a.  v1:= new `rx.subscriptions.CompositeSubscription`;
+  #L4b2a3e.  call `<init>`(v1) @signature `Lrx/subscriptions/CompositeSubscription;.<init>:()V` @kind direct;
+  #L4b2a44.  v0.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` := v1 @kind object;
+  #L4b2a48.  call temp:= `getInstance`() @signature `Lrx/internal/schedulers/GenericScheduledExecutorService;.getInstance:()Ljava/util/concurrent/ScheduledExecutorService;` @kind static;
+  #L4b2a4e.  v1:= temp @kind object;
+  #L4b2a50.  v0.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.service` @type ^`java.util.concurrent.ScheduledExecutorService` := v1 @kind object;
+  #L4b2a54.  return @kind void;
+}
+procedure `boolean` `isUnsubscribed`(`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker` v1 @kind this) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b2894.  v0:= v1.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b2898.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/subscriptions/CompositeSubscription;.isUnsubscribed:()Z` @kind virtual;
+  #L4b289e.  v0:= temp;
+  #L4b28a0.  return v0;
+}
+procedure `void` `run`(`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker` v2 @kind this) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.run:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b2a68.  v0:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b2a6c.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/subscriptions/CompositeSubscription;.isUnsubscribed:()Z` @kind virtual;
+  #L4b2a72.  v0:= temp;
+  #L4b2a74.  if v0 == 0 then goto L4b2a84;
+  #L4b2a78.  v0:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.queue` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L4b2a7c.  call `clear`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.clear:()V` @kind virtual;
+  #L4b2a82.  return @kind void;
+  #L4b2a84.  v0:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.queue` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L4b2a88.  call temp:= `poll`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L4b2a8e.  v0:= temp @kind object;
+  #L4b2a90.  v0:= (`rx.internal.schedulers.ScheduledAction`) v0 @kind object;
+  #L4b2a94.  if v0 != 0 then goto L4b2a9a;
+  #L4b2a98.  return @kind void;
+  #L4b2a9a.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/internal/schedulers/ScheduledAction;.isUnsubscribed:()Z` @kind virtual;
+  #L4b2aa0.  v1:= temp;
+  #L4b2aa2.  if v1 != 0 then goto L4b2aca;
+  #L4b2aa6.  v1:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b2aaa.  call temp:= `isUnsubscribed`(v1) @signature `Lrx/subscriptions/CompositeSubscription;.isUnsubscribed:()Z` @kind virtual;
+  #L4b2ab0.  v1:= temp;
+  #L4b2ab2.  if v1 != 0 then goto L4b2abe;
+  #L4b2ab6.  call `run`(v0) @signature `Lrx/internal/schedulers/ScheduledAction;.run:()V` @kind virtual;
+  #L4b2abc.  goto L4b2aca;
+  #L4b2abe.  v0:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.queue` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L4b2ac2.  call `clear`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.clear:()V` @kind virtual;
+  #L4b2ac8.  return @kind void;
+  #L4b2aca.  v0:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b2ace.  call temp:= `decrementAndGet`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L4b2ad4.  v0:= temp;
+  #L4b2ad6.  if v0 != 0 then goto L4b2a68;
+  #L4b2ada.  return @kind void;
+}
+procedure `rx.Subscription` `schedule`(`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker` v2 @kind this, `rx.functions.Action0` v3 @kind object) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.schedule:(Lrx/functions/Action0;)Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b28b4.  call temp:= `isUnsubscribed`(v2) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.isUnsubscribed:()Z` @kind virtual;
+  #L4b28ba.  v0:= temp;
+  #L4b28bc.  if v0 == 0 then goto L4b28ca;
+  #L4b28c0.  call temp:= `unsubscribed`() @signature `Lrx/subscriptions/Subscriptions;.unsubscribed:()Lrx/Subscription;` @kind static;
+  #L4b28c6.  v3:= temp @kind object;
+  #L4b28c8.  return v3 @kind object;
+  #L4b28ca.  call temp:= `onScheduledAction`(v3) @signature `Lrx/plugins/RxJavaHooks;.onScheduledAction:(Lrx/functions/Action0;)Lrx/functions/Action0;` @kind static;
+  #L4b28d0.  v3:= temp @kind object;
+  #L4b28d2.  v0:= new `rx.internal.schedulers.ScheduledAction`;
+  #L4b28d6.  v1:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b28da.  call `<init>`(v0, v3, v1) @signature `Lrx/internal/schedulers/ScheduledAction;.<init>:(Lrx/functions/Action0;Lrx/subscriptions/CompositeSubscription;)V` @kind direct;
+  #L4b28e0.  v3:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b28e4.  call `add`(v3, v0) @signature `Lrx/subscriptions/CompositeSubscription;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L4b28ea.  v3:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.queue` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L4b28ee.  call temp:= `offer`(v3, v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.offer:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4b28f4.  v3:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b28f8.  call temp:= `getAndIncrement`(v3) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L4b28fe.  v3:= temp;
+  #L4b2900.  if v3 != 0 then goto L4b292e;
+  #L4b2904.  v3:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.executor` @type ^`java.util.concurrent.Executor` @kind object;
+  #L4b2908.  call `execute`(v3, v2) @signature `Ljava/util/concurrent/Executor;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L4b290e.  goto L4b292e;
+  #L4b2910.  v3:= Exception @type ^`java.util.concurrent.RejectedExecutionException` @kind object;
+  #L4b2912.  v1:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b2916.  call `remove`(v1, v0) @signature `Lrx/subscriptions/CompositeSubscription;.remove:(Lrx/Subscription;)V` @kind virtual;
+  #L4b291c.  v0:= v2.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b2920.  call temp:= `decrementAndGet`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L4b2926.  call `onError`(v3) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b292c.  throw v3;
+  #L4b292e.  return v0 @kind object;
+  catch `java.util.concurrent.RejectedExecutionException` @[L4b2904..L4b290e] goto L4b2910;
+}
+procedure `rx.Subscription` `schedule`(`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker` v5 @kind this, `rx.functions.Action0` v6 @kind object, `long` v7 , `java.util.concurrent.TimeUnit` v9 @kind object) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.schedule:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;)Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b2950.  v0:= 0L;
+  #L4b2954.  v2:= lcmp(v7, v0);
+  #L4b2958.  if v2 > 0 then goto L4b2966;
+  #L4b295c.  call temp:= `schedule`(v5, v6) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.schedule:(Lrx/functions/Action0;)Lrx/Subscription;` @kind virtual;
+  #L4b2962.  v6:= temp @kind object;
+  #L4b2964.  return v6 @kind object;
+  #L4b2966.  call temp:= `isUnsubscribed`(v5) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.isUnsubscribed:()Z` @kind virtual;
+  #L4b296c.  v0:= temp;
+  #L4b296e.  if v0 == 0 then goto L4b297c;
+  #L4b2972.  call temp:= `unsubscribed`() @signature `Lrx/subscriptions/Subscriptions;.unsubscribed:()Lrx/Subscription;` @kind static;
+  #L4b2978.  v6:= temp @kind object;
+  #L4b297a.  return v6 @kind object;
+  #L4b297c.  call temp:= `onScheduledAction`(v6) @signature `Lrx/plugins/RxJavaHooks;.onScheduledAction:(Lrx/functions/Action0;)Lrx/functions/Action0;` @kind static;
+  #L4b2982.  v6:= temp @kind object;
+  #L4b2984.  v0:= new `rx.subscriptions.MultipleAssignmentSubscription`;
+  #L4b2988.  call `<init>`(v0) @signature `Lrx/subscriptions/MultipleAssignmentSubscription;.<init>:()V` @kind direct;
+  #L4b298e.  v1:= new `rx.subscriptions.MultipleAssignmentSubscription`;
+  #L4b2992.  call `<init>`(v1) @signature `Lrx/subscriptions/MultipleAssignmentSubscription;.<init>:()V` @kind direct;
+  #L4b2998.  call `set`(v1, v0) @signature `Lrx/subscriptions/MultipleAssignmentSubscription;.set:(Lrx/Subscription;)V` @kind virtual;
+  #L4b299e.  v2:= v5.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b29a2.  call `add`(v2, v1) @signature `Lrx/subscriptions/CompositeSubscription;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L4b29a8.  v2:= new `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker$1`;
+  #L4b29ac.  call `<init>`(v2, v5, v1) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker$1;.<init>:(Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;Lrx/subscriptions/MultipleAssignmentSubscription;)V` @kind direct;
+  #L4b29b2.  call temp:= `create`(v2) @signature `Lrx/subscriptions/Subscriptions;.create:(Lrx/functions/Action0;)Lrx/Subscription;` @kind static;
+  #L4b29b8.  v2:= temp @kind object;
+  #L4b29ba.  v3:= new `rx.internal.schedulers.ScheduledAction`;
+  #L4b29be.  v4:= new `rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker$2`;
+  #L4b29c2.  call `<init>`(v4, v5, v1, v6, v2) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker$2;.<init>:(Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;Lrx/subscriptions/MultipleAssignmentSubscription;Lrx/functions/Action0;Lrx/Subscription;)V` @kind direct;
+  #L4b29c8.  call `<init>`(v3, v4) @signature `Lrx/internal/schedulers/ScheduledAction;.<init>:(Lrx/functions/Action0;)V` @kind direct;
+  #L4b29ce.  call `set`(v0, v3) @signature `Lrx/subscriptions/MultipleAssignmentSubscription;.set:(Lrx/Subscription;)V` @kind virtual;
+  #L4b29d4.  v6:= v5.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.service` @type ^`java.util.concurrent.ScheduledExecutorService` @kind object;
+  #L4b29d8.  call temp:= `schedule`(v6, v3, v7, v9) @signature `Ljava/util/concurrent/ScheduledExecutorService;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L4b29de.  v6:= temp @kind object;
+  #L4b29e0.  call `add`(v3, v6) @signature `Lrx/internal/schedulers/ScheduledAction;.add:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L4b29e6.  return v2 @kind object;
+  #L4b29e8.  v6:= Exception @type ^`java.util.concurrent.RejectedExecutionException` @kind object;
+  #L4b29ea.  call `onError`(v6) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4b29f0.  throw v6;
+  catch `java.util.concurrent.RejectedExecutionException` @[L4b29d4..L4b29e6] goto L4b29e8;
+}
+procedure `void` `unsubscribe`(`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker` v1 @kind this) @signature `Lrx/internal/schedulers/ExecutorScheduler$ExecutorSchedulerWorker;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b2aec.  v0:= v1.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.tasks` @type ^`rx.subscriptions.CompositeSubscription` @kind object;
+  #L4b2af0.  call `unsubscribe`(v0) @signature `Lrx/subscriptions/CompositeSubscription;.unsubscribe:()V` @kind virtual;
+  #L4b2af6.  v0:= v1.`rx.internal.schedulers.ExecutorScheduler$ExecutorSchedulerWorker.queue` @type ^`java.util.concurrent.ConcurrentLinkedQueue` @kind object;
+  #L4b2afa.  call `clear`(v0) @signature `Ljava/util/concurrent/ConcurrentLinkedQueue;.clear:()V` @kind virtual;
+  #L4b2b00.  return @kind void;
+}

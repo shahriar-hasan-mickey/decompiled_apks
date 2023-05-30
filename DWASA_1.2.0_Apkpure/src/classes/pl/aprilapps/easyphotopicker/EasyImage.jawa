@@ -1,0 +1,763 @@
+record `pl.aprilapps.easyphotopicker.EasyImage` @kind class @AccessFlag PUBLIC extends `pl.aprilapps.easyphotopicker.Constants` @kind interface {
+}
+global `java.lang.String` `@@pl.aprilapps.easyphotopicker.EasyImage.KEY_LAST_CAMERA_PHOTO` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@pl.aprilapps.easyphotopicker.EasyImage.KEY_PHOTO_URI` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@pl.aprilapps.easyphotopicker.EasyImage.KEY_TYPE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `boolean` `@@pl.aprilapps.easyphotopicker.EasyImage.SHOW_GALLERY_IN_CHOOSER` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`pl.aprilapps.easyphotopicker.EasyImage` v0 @kind this) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4852e0.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4852e6.  return @kind void;
+}
+procedure `boolean` `canDeviceHandleGallery`(`android.content.Context` v1 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.canDeviceHandleGallery:(Landroid/content/Context;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L485174.  call temp:= `plainGalleryPickerIntent`() @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.plainGalleryPickerIntent:()Landroid/content/Intent;` @kind static;
+  #L48517a.  v0:= temp @kind object;
+  #L48517c.  call temp:= `getPackageManager`(v1) @signature `Landroid/content/Context;.getPackageManager:()Landroid/content/pm/PackageManager;` @kind virtual;
+  #L485182.  v1:= temp @kind object;
+  #L485184.  call temp:= `resolveActivity`(v0, v1) @signature `Landroid/content/Intent;.resolveActivity:(Landroid/content/pm/PackageManager;)Landroid/content/ComponentName;` @kind virtual;
+  #L48518a.  v1:= temp @kind object;
+  #L48518c.  if v1 == 0 then goto L485194;
+  #L485190.  v1:= 1I;
+  #L485192.  goto L485196;
+  #L485194.  v1:= 0I;
+  #L485196.  return v1;
+}
+procedure `void` `clearConfiguration`(`android.content.Context` v1 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.clearConfiguration:(Landroid/content/Context;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4852f8.  call temp:= `getDefaultSharedPreferences`(v1) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L4852fe.  v1:= temp @kind object;
+  #L485300.  call temp:= `edit`(v1) @signature `Landroid/content/SharedPreferences;.edit:()Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485306.  v1:= temp @kind object;
+  #L485308.  v0:= "pl.aprilapps.folder_name" @kind object;
+  #L48530c.  call temp:= `remove`(v1, v0) @signature `Landroid/content/SharedPreferences$Editor;.remove:(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485312.  v1:= temp @kind object;
+  #L485314.  v0:= "pl.aprilapps.easyimage.allow_multiple" @kind object;
+  #L485318.  call temp:= `remove`(v1, v0) @signature `Landroid/content/SharedPreferences$Editor;.remove:(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L48531e.  v1:= temp @kind object;
+  #L485320.  v0:= "pl.aprilapps.easyimage.copy_taken_photos" @kind object;
+  #L485324.  call temp:= `remove`(v1, v0) @signature `Landroid/content/SharedPreferences$Editor;.remove:(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L48532a.  v1:= temp @kind object;
+  #L48532c.  v0:= "pl.aprilapps.easyimage.copy_picked_images" @kind object;
+  #L485330.  call temp:= `remove`(v1, v0) @signature `Landroid/content/SharedPreferences$Editor;.remove:(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485336.  v1:= temp @kind object;
+  #L485338.  call `apply`(v1) @signature `Landroid/content/SharedPreferences$Editor;.apply:()V` @kind interface;
+  #L48533e.  return @kind void;
+}
+procedure `pl.aprilapps.easyphotopicker.EasyImageConfiguration` `configuration`(`android.content.Context` v1 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.configuration:(Landroid/content/Context;)Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4852c4.  v0:= new `pl.aprilapps.easyphotopicker.EasyImageConfiguration`;
+  #L4852c8.  call `<init>`(v0, v1) @signature `Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L4852ce.  return v0 @kind object;
+}
+procedure `android.content.Intent` `createCameraIntent`(`android.content.Context` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createCameraIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L484f0c.  call `storeType`(v1, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.storeType:(Landroid/content/Context;I)V` @kind static;
+  #L484f12.  v2:= new `android.content.Intent`;
+  #L484f16.  v0:= "android.media.action.IMAGE_CAPTURE" @kind object;
+  #L484f1a.  call `<init>`(v2, v0) @signature `Landroid/content/Intent;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L484f20.  call temp:= `createCameraPictureFile`(v1) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createCameraPictureFile:(Landroid/content/Context;)Landroid/net/Uri;` @kind static;
+  #L484f26.  v0:= temp @kind object;
+  #L484f28.  call `grantWritePermission`(v1, v2, v0) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.grantWritePermission:(Landroid/content/Context;Landroid/content/Intent;Landroid/net/Uri;)V` @kind static;
+  #L484f2e.  v1:= "output" @kind object;
+  #L484f32.  call temp:= `putExtra`(v2, v1, v0) @signature `Landroid/content/Intent;.putExtra:(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;` @kind virtual;
+  #L484f38.  goto L484f42;
+  #L484f3a.  v1:= Exception @type ^`java.lang.Exception` @kind object;
+  #L484f3c.  call `printStackTrace`(v1) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L484f42.  return v2 @kind object;
+  catch `java.lang.Exception` @[L484f20..L484f38] goto L484f3a;
+}
+procedure `android.net.Uri` `createCameraPictureFile`(`android.content.Context` v4 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createCameraPictureFile:(Landroid/content/Context;)Landroid/net/Uri;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L485118.  call temp:= `getCameraPicturesLocation`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.getCameraPicturesLocation:(Landroid/content/Context;)Ljava/io/File;` @kind static;
+  #L48511e.  v0:= temp @kind object;
+  #L485120.  call temp:= `getUriToFile`(v4, v0) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.getUriToFile:(Landroid/content/Context;Ljava/io/File;)Landroid/net/Uri;` @kind static;
+  #L485126.  v1:= temp @kind object;
+  #L485128.  call temp:= `getDefaultSharedPreferences`(v4) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L48512e.  v4:= temp @kind object;
+  #L485130.  call temp:= `edit`(v4) @signature `Landroid/content/SharedPreferences;.edit:()Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485136.  v4:= temp @kind object;
+  #L485138.  call temp:= `toString`(v1) @signature `Landroid/net/Uri;.toString:()Ljava/lang/String;` @kind virtual;
+  #L48513e.  v2:= temp @kind object;
+  #L485140.  v3:= "pl.aprilapps.easyphotopicker.photo_uri" @kind object;
+  #L485144.  call temp:= `putString`(v4, v3, v2) @signature `Landroid/content/SharedPreferences$Editor;.putString:(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L48514a.  call temp:= `toString`(v0) @signature `Ljava/io/File;.toString:()Ljava/lang/String;` @kind virtual;
+  #L485150.  v0:= temp @kind object;
+  #L485152.  v2:= "pl.aprilapps.easyphotopicker.last_photo" @kind object;
+  #L485156.  call temp:= `putString`(v4, v2, v0) @signature `Landroid/content/SharedPreferences$Editor;.putString:(Ljava/lang/String;Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L48515c.  call `apply`(v4) @signature `Landroid/content/SharedPreferences$Editor;.apply:()V` @kind interface;
+  #L485162.  return v1 @kind object;
+}
+procedure `android.content.Intent` `createChooserIntent`(`android.content.Context` v1 @kind object, `java.lang.String` v2 @kind object, `int` v3 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;I)Landroid/content/Intent;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L485060.  v0:= 0I;
+  #L485062.  call temp:= `createChooserIntent`(v1, v2, v0, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;ZI)Landroid/content/Intent;` @kind static;
+  #L485068.  v1:= temp @kind object;
+  #L48506a.  return v1 @kind object;
+}
+procedure `android.content.Intent` `createChooserIntent`(`android.content.Context` v9 @kind object, `java.lang.String` v10 @kind object, `boolean` v11 , `int` v12 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;ZI)Landroid/content/Intent;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L484f64.  call `storeType`(v9, v12) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.storeType:(Landroid/content/Context;I)V` @kind static;
+  #L484f6a.  call temp:= `createCameraPictureFile`(v9) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createCameraPictureFile:(Landroid/content/Context;)Landroid/net/Uri;` @kind static;
+  #L484f70.  v0:= temp @kind object;
+  #L484f72.  v1:= new `java.util.ArrayList`;
+  #L484f76.  call `<init>`(v1) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L484f7c.  v2:= new `android.content.Intent`;
+  #L484f80.  v3:= "android.media.action.IMAGE_CAPTURE" @kind object;
+  #L484f84.  call `<init>`(v2, v3) @signature `Landroid/content/Intent;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L484f8a.  call temp:= `getPackageManager`(v9) @signature `Landroid/content/Context;.getPackageManager:()Landroid/content/pm/PackageManager;` @kind virtual;
+  #L484f90.  v3:= temp @kind object;
+  #L484f92.  v4:= 0I;
+  #L484f94.  call temp:= `queryIntentActivities`(v3, v2, v4) @signature `Landroid/content/pm/PackageManager;.queryIntentActivities:(Landroid/content/Intent;I)Ljava/util/List;` @kind virtual;
+  #L484f9a.  v3:= temp @kind object;
+  #L484f9c.  call temp:= `iterator`(v3) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L484fa2.  v3:= temp @kind object;
+  #L484fa4.  call temp:= `hasNext`(v3) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L484faa.  v4:= temp;
+  #L484fac.  if v4 == 0 then goto L48500c;
+  #L484fb0.  call temp:= `next`(v3) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L484fb6.  v4:= temp @kind object;
+  #L484fb8.  v4:= (`android.content.pm.ResolveInfo`) v4 @kind object;
+  #L484fbc.  v5:= v4.`android.content.pm.ResolveInfo.activityInfo` @type ^`android.content.pm.ActivityInfo` @kind object;
+  #L484fc0.  v5:= v5.`android.content.pm.ActivityInfo.packageName` @type ^`java.lang.String` @kind object;
+  #L484fc4.  v6:= new `android.content.Intent`;
+  #L484fc8.  call `<init>`(v6, v2) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Intent;)V` @kind direct;
+  #L484fce.  v7:= new `android.content.ComponentName`;
+  #L484fd2.  v8:= v4.`android.content.pm.ResolveInfo.activityInfo` @type ^`android.content.pm.ActivityInfo` @kind object;
+  #L484fd6.  v8:= v8.`android.content.pm.ActivityInfo.packageName` @type ^`java.lang.String` @kind object;
+  #L484fda.  v4:= v4.`android.content.pm.ResolveInfo.activityInfo` @type ^`android.content.pm.ActivityInfo` @kind object;
+  #L484fde.  v4:= v4.`android.content.pm.ActivityInfo.name` @type ^`java.lang.String` @kind object;
+  #L484fe2.  call `<init>`(v7, v8, v4) @signature `Landroid/content/ComponentName;.<init>:(Ljava/lang/String;Ljava/lang/String;)V` @kind direct;
+  #L484fe8.  call temp:= `setComponent`(v6, v7) @signature `Landroid/content/Intent;.setComponent:(Landroid/content/ComponentName;)Landroid/content/Intent;` @kind virtual;
+  #L484fee.  call temp:= `setPackage`(v6, v5) @signature `Landroid/content/Intent;.setPackage:(Ljava/lang/String;)Landroid/content/Intent;` @kind virtual;
+  #L484ff4.  v4:= "output" @kind object;
+  #L484ff8.  call temp:= `putExtra`(v6, v4, v0) @signature `Landroid/content/Intent;.putExtra:(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;` @kind virtual;
+  #L484ffe.  call `grantWritePermission`(v9, v6, v0) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.grantWritePermission:(Landroid/content/Context;Landroid/content/Intent;Landroid/net/Uri;)V` @kind static;
+  #L485004.  call temp:= `add`(v1, v6) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L48500a.  goto L484fa4;
+  #L48500c.  if v11 == 0 then goto L48501a;
+  #L485010.  call temp:= `createGalleryIntent`(v9, v12) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createGalleryIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L485016.  v9:= temp @kind object;
+  #L485018.  goto L485022;
+  #L48501a.  call temp:= `createDocumentsIntent`(v9, v12) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createDocumentsIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L485020.  v9:= temp @kind object;
+  #L485022.  call temp:= `createChooser`(v9, v10) @signature `Landroid/content/Intent;.createChooser:(Landroid/content/Intent;Ljava/lang/CharSequence;)Landroid/content/Intent;` @kind static;
+  #L485028.  v9:= temp @kind object;
+  #L48502a.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L485030.  v10:= temp;
+  #L485032.  v10:= new `android.os.Parcelable`[v10];
+  #L485036.  call temp:= `toArray`(v1, v10) @signature `Ljava/util/List;.toArray:([Ljava/lang/Object;)[Ljava/lang/Object;` @kind interface;
+  #L48503c.  v10:= temp @kind object;
+  #L48503e.  v10:= (`android.os.Parcelable`[]) v10 @kind object;
+  #L485042.  v11:= "android.intent.extra.INITIAL_INTENTS" @kind object;
+  #L485046.  call temp:= `putExtra`(v9, v11, v10) @signature `Landroid/content/Intent;.putExtra:(Ljava/lang/String;[Landroid/os/Parcelable;)Landroid/content/Intent;` @kind virtual;
+  #L48504c.  return v9 @kind object;
+}
+procedure `android.content.Intent` `createDocumentsIntent`(`android.content.Context` v0 @kind object, `int` v1 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createDocumentsIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @AccessFlag PRIVATE_STATIC {
+    temp;
+
+  #L48507c.  call `storeType`(v0, v1) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.storeType:(Landroid/content/Context;I)V` @kind static;
+  #L485082.  v0:= new `android.content.Intent`;
+  #L485086.  v1:= "android.intent.action.GET_CONTENT" @kind object;
+  #L48508a.  call `<init>`(v0, v1) @signature `Landroid/content/Intent;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L485090.  v1:= "image/*" @kind object;
+  #L485094.  call temp:= `setType`(v0, v1) @signature `Landroid/content/Intent;.setType:(Ljava/lang/String;)Landroid/content/Intent;` @kind virtual;
+  #L48509a.  return v0 @kind object;
+}
+procedure `android.content.Intent` `createGalleryIntent`(`android.content.Context` v2 @kind object, `int` v3 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createGalleryIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4850ac.  call `storeType`(v2, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.storeType:(Landroid/content/Context;I)V` @kind static;
+  #L4850b2.  call temp:= `plainGalleryPickerIntent`() @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.plainGalleryPickerIntent:()Landroid/content/Intent;` @kind static;
+  #L4850b8.  v3:= temp @kind object;
+  #L4850ba.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L4850be.  v1:= 18I;
+  #L4850c2.  if v0 < v1 then goto L4850e0;
+  #L4850c6.  call temp:= `configuration`(v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.configuration:(Landroid/content/Context;)Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;` @kind static;
+  #L4850cc.  v2:= temp @kind object;
+  #L4850ce.  call temp:= `allowsMultiplePickingInGallery`(v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;.allowsMultiplePickingInGallery:()Z` @kind virtual;
+  #L4850d4.  v2:= temp;
+  #L4850d6.  v0:= "android.intent.extra.ALLOW_MULTIPLE" @kind object;
+  #L4850da.  call temp:= `putExtra`(v3, v0, v2) @signature `Landroid/content/Intent;.putExtra:(Ljava/lang/String;Z)Landroid/content/Intent;` @kind virtual;
+  #L4850e0.  return v3 @kind object;
+}
+procedure `void` `grantWritePermission`(`android.content.Context` v2 @kind object, `android.content.Intent` v3 @kind object, `android.net.Uri` v4 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.grantWritePermission:(Landroid/content/Context;Landroid/content/Intent;Landroid/net/Uri;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L485350.  call temp:= `getPackageManager`(v2) @signature `Landroid/content/Context;.getPackageManager:()Landroid/content/pm/PackageManager;` @kind virtual;
+  #L485356.  v0:= temp @kind object;
+  #L485358.  v1:= 65536I;
+  #L48535c.  call temp:= `queryIntentActivities`(v0, v3, v1) @signature `Landroid/content/pm/PackageManager;.queryIntentActivities:(Landroid/content/Intent;I)Ljava/util/List;` @kind virtual;
+  #L485362.  v3:= temp @kind object;
+  #L485364.  call temp:= `iterator`(v3) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L48536a.  v3:= temp @kind object;
+  #L48536c.  call temp:= `hasNext`(v3) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L485372.  v0:= temp;
+  #L485374.  if v0 == 0 then goto L485396;
+  #L485378.  call temp:= `next`(v3) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L48537e.  v0:= temp @kind object;
+  #L485380.  v0:= (`android.content.pm.ResolveInfo`) v0 @kind object;
+  #L485384.  v0:= v0.`android.content.pm.ResolveInfo.activityInfo` @type ^`android.content.pm.ActivityInfo` @kind object;
+  #L485388.  v0:= v0.`android.content.pm.ActivityInfo.packageName` @type ^`java.lang.String` @kind object;
+  #L48538c.  v1:= 3I;
+  #L48538e.  call `grantUriPermission`(v2, v0, v4, v1) @signature `Landroid/content/Context;.grantUriPermission:(Ljava/lang/String;Landroid/net/Uri;I)V` @kind virtual;
+  #L485394.  goto L48536c;
+  #L485396.  return @kind void;
+}
+procedure `void` `handleActivityResult`(`int` v4 , `int` v5 , `android.content.Intent` v6 @kind object, `android.app.Activity` v7 @kind object, `pl.aprilapps.easyphotopicker.EasyImage$Callbacks` v8 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.handleActivityResult:(IILandroid/content/Intent;Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4853a8.  v0:= v4 ^& 876;
+  #L4853ac.  if v0 <= 0 then goto L4853b4;
+  #L4853b0.  v0:= 1I;
+  #L4853b2.  goto L4853b6;
+  #L4853b4.  v0:= 0I;
+  #L4853b6.  if v0 == 0 then goto L485476;
+  #L4853ba.  v4:= v4 ^& -16385;
+  #L4853be.  v0:= 9068I;
+  #L4853c2.  v1:= 2924I;
+  #L4853c6.  v2:= 4972I;
+  #L4853ca.  if v4 == v2 then goto L4853d6;
+  #L4853ce.  if v4 == v0 then goto L4853d6;
+  #L4853d2.  if v4 != v1 then goto L485476;
+  #L4853d6.  v3:= -1I;
+  #L4853d8.  if v5 != v3 then goto L485434;
+  #L4853dc.  if v4 != v1 then goto L4853f4;
+  #L4853e0.  call temp:= `isPhoto`(v6) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.isPhoto:(Landroid/content/Intent;)Z` @kind static;
+  #L4853e6.  v5:= temp;
+  #L4853e8.  if v5 != 0 then goto L4853f4;
+  #L4853ec.  call `onPictureReturnedFromDocuments`(v6, v7, v8) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromDocuments:(Landroid/content/Intent;Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @kind static;
+  #L4853f2.  goto L485476;
+  #L4853f4.  if v4 != v2 then goto L48540c;
+  #L4853f8.  call temp:= `isPhoto`(v6) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.isPhoto:(Landroid/content/Intent;)Z` @kind static;
+  #L4853fe.  v5:= temp;
+  #L485400.  if v5 != 0 then goto L48540c;
+  #L485404.  call `onPictureReturnedFromGallery`(v6, v7, v8) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromGallery:(Landroid/content/Intent;Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @kind static;
+  #L48540a.  goto L485476;
+  #L48540c.  if v4 != v0 then goto L485418;
+  #L485410.  call `onPictureReturnedFromCamera`(v7, v8) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromCamera:(Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @kind static;
+  #L485416.  goto L485476;
+  #L485418.  call temp:= `isPhoto`(v6) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.isPhoto:(Landroid/content/Intent;)Z` @kind static;
+  #L48541e.  v4:= temp;
+  #L485420.  if v4 == 0 then goto L48542c;
+  #L485424.  call `onPictureReturnedFromCamera`(v7, v8) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromCamera:(Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @kind static;
+  #L48542a.  goto L485476;
+  #L48542c.  call `onPictureReturnedFromDocuments`(v6, v7, v8) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromDocuments:(Landroid/content/Intent;Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @kind static;
+  #L485432.  goto L485476;
+  #L485434.  if v4 != v1 then goto L48544c;
+  #L485438.  v4:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.DOCUMENTS` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L48543c.  call temp:= `restoreType`(v7) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L485442.  v5:= temp;
+  #L485444.  call `onCanceled`(v8, v4, v5) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onCanceled:(Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L48544a.  goto L485476;
+  #L48544c.  if v4 != v2 then goto L485464;
+  #L485450.  v4:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.GALLERY` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L485454.  call temp:= `restoreType`(v7) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L48545a.  v5:= temp;
+  #L48545c.  call `onCanceled`(v8, v4, v5) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onCanceled:(Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L485462.  goto L485476;
+  #L485464.  v4:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.CAMERA` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L485468.  call temp:= `restoreType`(v7) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L48546e.  v5:= temp;
+  #L485470.  call `onCanceled`(v8, v4, v5) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onCanceled:(Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L485476.  return @kind void;
+}
+procedure `boolean` `isPhoto`(`android.content.Intent` v1 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.isPhoto:(Landroid/content/Intent;)Z` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L4851a8.  if v1 == 0 then goto L4851ca;
+  #L4851ac.  call temp:= `getData`(v1) @signature `Landroid/content/Intent;.getData:()Landroid/net/Uri;` @kind virtual;
+  #L4851b2.  v0:= temp @kind object;
+  #L4851b4.  if v0 != 0 then goto L4851c6;
+  #L4851b8.  call temp:= `getClipData`(v1) @signature `Landroid/content/Intent;.getClipData:()Landroid/content/ClipData;` @kind virtual;
+  #L4851be.  v1:= temp @kind object;
+  #L4851c0.  if v1 != 0 then goto L4851c6;
+  #L4851c4.  goto L4851ca;
+  #L4851c6.  v1:= 0I;
+  #L4851c8.  goto L4851cc;
+  #L4851ca.  v1:= 1I;
+  #L4851cc.  return v1;
+}
+procedure `java.io.File` `lastlyTakenButCanceledPhoto`(`android.content.Context` v2 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.lastlyTakenButCanceledPhoto:(Landroid/content/Context;)Ljava/io/File;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L485244.  call temp:= `getDefaultSharedPreferences`(v2) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L48524a.  v2:= temp @kind object;
+  #L48524c.  v0:= 0I;
+  #L48524e.  v1:= "pl.aprilapps.easyphotopicker.last_photo" @kind object;
+  #L485252.  call temp:= `getString`(v2, v1, v0) @signature `Landroid/content/SharedPreferences;.getString:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind interface;
+  #L485258.  v2:= temp @kind object;
+  #L48525a.  if v2 != 0 then goto L485260;
+  #L48525e.  return v0 @kind object;
+  #L485260.  v1:= new `java.io.File`;
+  #L485264.  call `<init>`(v1, v2) @signature `Ljava/io/File;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L48526a.  call temp:= `exists`(v1) @signature `Ljava/io/File;.exists:()Z` @kind virtual;
+  #L485270.  v2:= temp;
+  #L485272.  if v2 == 0 then goto L485278;
+  #L485276.  return v1 @kind object;
+  #L485278.  return v0 @kind object;
+}
+procedure `void` `onPictureReturnedFromCamera`(`android.app.Activity` v4 @kind object, `pl.aprilapps.easyphotopicker.EasyImage$Callbacks` v5 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromCamera:(Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L485488.  v0:= "pl.aprilapps.easyphotopicker.photo_uri" @kind object;
+  #L48548c.  call temp:= `getDefaultSharedPreferences`(v4) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L485492.  v1:= temp @kind object;
+  #L485494.  v2:= 0I;
+  #L485496.  call temp:= `getString`(v1, v0, v2) @signature `Landroid/content/SharedPreferences;.getString:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind interface;
+  #L48549c.  v1:= temp @kind object;
+  #L48549e.  call temp:= `isEmpty`(v1) @signature `Landroid/text/TextUtils;.isEmpty:(Ljava/lang/CharSequence;)Z` @kind static;
+  #L4854a4.  v2:= temp;
+  #L4854a6.  if v2 != 0 then goto L4854b8;
+  #L4854aa.  call temp:= `parse`(v1) @signature `Landroid/net/Uri;.parse:(Ljava/lang/String;)Landroid/net/Uri;` @kind static;
+  #L4854b0.  v1:= temp @kind object;
+  #L4854b2.  call `revokeWritePermission`(v4, v1) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.revokeWritePermission:(Landroid/content/Context;Landroid/net/Uri;)V` @kind static;
+  #L4854b8.  call temp:= `takenCameraPicture`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.takenCameraPicture:(Landroid/content/Context;)Ljava/io/File;` @kind static;
+  #L4854be.  v1:= temp @kind object;
+  #L4854c0.  v2:= new `java.util.ArrayList`;
+  #L4854c4.  call `<init>`(v2) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4854ca.  call temp:= `add`(v2, v1) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4854d0.  if v1 != 0 then goto L4854f6;
+  #L4854d4.  v1:= new `java.lang.IllegalStateException`;
+  #L4854d8.  v2:= "Unable to get the picture returned from camera" @kind object;
+  #L4854dc.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4854e2.  v2:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.CAMERA` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L4854e6.  call temp:= `restoreType`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L4854ec.  v3:= temp;
+  #L4854ee.  call `onImagePickerError`(v5, v1, v2, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onImagePickerError:(Ljava/lang/Exception;Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L4854f4.  goto L48552a;
+  #L4854f6.  call temp:= `configuration`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.configuration:(Landroid/content/Context;)Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;` @kind static;
+  #L4854fc.  v3:= temp @kind object;
+  #L4854fe.  call temp:= `shouldCopyTakenPhotosToPublicGalleryAppFolder`(v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;.shouldCopyTakenPhotosToPublicGalleryAppFolder:()Z` @kind virtual;
+  #L485504.  v3:= temp;
+  #L485506.  if v3 == 0 then goto L485518;
+  #L48550a.  call temp:= `singleFileList`(v1) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.singleFileList:(Ljava/io/File;)Ljava/util/List;` @kind static;
+  #L485510.  v1:= temp @kind object;
+  #L485512.  call `copyFilesInSeparateThread`(v4, v1) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.copyFilesInSeparateThread:(Landroid/content/Context;Ljava/util/List;)V` @kind static;
+  #L485518.  v1:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.CAMERA` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L48551c.  call temp:= `restoreType`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L485522.  v3:= temp;
+  #L485524.  call `onImagesPicked`(v5, v2, v1, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onImagesPicked:(Ljava/util/List;Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L48552a.  call temp:= `getDefaultSharedPreferences`(v4) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L485530.  v1:= temp @kind object;
+  #L485532.  call temp:= `edit`(v1) @signature `Landroid/content/SharedPreferences;.edit:()Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485538.  v1:= temp @kind object;
+  #L48553a.  v2:= "pl.aprilapps.easyphotopicker.last_photo" @kind object;
+  #L48553e.  call temp:= `remove`(v1, v2) @signature `Landroid/content/SharedPreferences$Editor;.remove:(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485544.  v1:= temp @kind object;
+  #L485546.  call temp:= `remove`(v1, v0) @signature `Landroid/content/SharedPreferences$Editor;.remove:(Ljava/lang/String;)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L48554c.  v0:= temp @kind object;
+  #L48554e.  call `apply`(v0) @signature `Landroid/content/SharedPreferences$Editor;.apply:()V` @kind interface;
+  #L485554.  goto L485570;
+  #L485556.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L485558.  call `printStackTrace`(v0) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L48555e.  v1:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.CAMERA` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L485562.  call temp:= `restoreType`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L485568.  v4:= temp;
+  #L48556a.  call `onImagePickerError`(v5, v0, v1, v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onImagePickerError:(Ljava/lang/Exception;Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L485570.  return @kind void;
+  catch `java.lang.Exception` @[L48548c..L485554] goto L485556;
+}
+procedure `void` `onPictureReturnedFromDocuments`(`android.content.Intent` v3 @kind object, `android.app.Activity` v4 @kind object, `pl.aprilapps.easyphotopicker.EasyImage$Callbacks` v5 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromDocuments:(Landroid/content/Intent;Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L485594.  call temp:= `getData`(v3) @signature `Landroid/content/Intent;.getData:()Landroid/net/Uri;` @kind virtual;
+  #L48559a.  v3:= temp @kind object;
+  #L48559c.  call temp:= `pickedExistingPicture`(v4, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.pickedExistingPicture:(Landroid/content/Context;Landroid/net/Uri;)Ljava/io/File;` @kind static;
+  #L4855a2.  v3:= temp @kind object;
+  #L4855a4.  call temp:= `singleFileList`(v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.singleFileList:(Ljava/io/File;)Ljava/util/List;` @kind static;
+  #L4855aa.  v0:= temp @kind object;
+  #L4855ac.  v1:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.DOCUMENTS` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L4855b0.  call temp:= `restoreType`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L4855b6.  v2:= temp;
+  #L4855b8.  call `onImagesPicked`(v5, v0, v1, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onImagesPicked:(Ljava/util/List;Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L4855be.  call temp:= `configuration`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.configuration:(Landroid/content/Context;)Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;` @kind static;
+  #L4855c4.  v0:= temp @kind object;
+  #L4855c6.  call temp:= `shouldCopyTakenPhotosToPublicGalleryAppFolder`(v0) @signature `Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;.shouldCopyTakenPhotosToPublicGalleryAppFolder:()Z` @kind virtual;
+  #L4855cc.  v0:= temp;
+  #L4855ce.  if v0 == 0 then goto L4855fc;
+  #L4855d2.  call temp:= `singleFileList`(v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.singleFileList:(Ljava/io/File;)Ljava/util/List;` @kind static;
+  #L4855d8.  v3:= temp @kind object;
+  #L4855da.  call `copyFilesInSeparateThread`(v4, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.copyFilesInSeparateThread:(Landroid/content/Context;Ljava/util/List;)V` @kind static;
+  #L4855e0.  goto L4855fc;
+  #L4855e2.  v3:= Exception @type ^`java.lang.Exception` @kind object;
+  #L4855e4.  call `printStackTrace`(v3) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L4855ea.  v0:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.DOCUMENTS` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L4855ee.  call temp:= `restoreType`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L4855f4.  v4:= temp;
+  #L4855f6.  call `onImagePickerError`(v5, v3, v0, v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onImagePickerError:(Ljava/lang/Exception;Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L4855fc.  return @kind void;
+  catch `java.lang.Exception` @[L485594..L4855e0] goto L4855e2;
+}
+procedure `void` `onPictureReturnedFromGallery`(`android.content.Intent` v3 @kind object, `android.app.Activity` v4 @kind object, `pl.aprilapps.easyphotopicker.EasyImage$Callbacks` v5 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.onPictureReturnedFromGallery:(Landroid/content/Intent;Landroid/app/Activity;Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L485620.  call temp:= `getClipData`(v3) @signature `Landroid/content/Intent;.getClipData:()Landroid/content/ClipData;` @kind virtual;
+  #L485626.  v0:= temp @kind object;
+  #L485628.  v1:= new `java.util.ArrayList`;
+  #L48562c.  call `<init>`(v1) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L485632.  if v0 != 0 then goto L48564e;
+  #L485636.  call temp:= `getData`(v3) @signature `Landroid/content/Intent;.getData:()Landroid/net/Uri;` @kind virtual;
+  #L48563c.  v3:= temp @kind object;
+  #L48563e.  call temp:= `pickedExistingPicture`(v4, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.pickedExistingPicture:(Landroid/content/Context;Landroid/net/Uri;)Ljava/io/File;` @kind static;
+  #L485644.  v3:= temp @kind object;
+  #L485646.  call temp:= `add`(v1, v3) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L48564c.  goto L485680;
+  #L48564e.  v3:= 0I;
+  #L485650.  call temp:= `getItemCount`(v0) @signature `Landroid/content/ClipData;.getItemCount:()I` @kind virtual;
+  #L485656.  v2:= temp;
+  #L485658.  if v3 >= v2 then goto L485680;
+  #L48565c.  call temp:= `getItemAt`(v0, v3) @signature `Landroid/content/ClipData;.getItemAt:(I)Landroid/content/ClipData$Item;` @kind virtual;
+  #L485662.  v2:= temp @kind object;
+  #L485664.  call temp:= `getUri`(v2) @signature `Landroid/content/ClipData$Item;.getUri:()Landroid/net/Uri;` @kind virtual;
+  #L48566a.  v2:= temp @kind object;
+  #L48566c.  call temp:= `pickedExistingPicture`(v4, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.pickedExistingPicture:(Landroid/content/Context;Landroid/net/Uri;)Ljava/io/File;` @kind static;
+  #L485672.  v2:= temp @kind object;
+  #L485674.  call temp:= `add`(v1, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L48567a.  v3:= v3 + 1;
+  #L48567e.  goto L485650;
+  #L485680.  call temp:= `configuration`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.configuration:(Landroid/content/Context;)Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;` @kind static;
+  #L485686.  v3:= temp @kind object;
+  #L485688.  call temp:= `shouldCopyTakenPhotosToPublicGalleryAppFolder`(v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImageConfiguration;.shouldCopyTakenPhotosToPublicGalleryAppFolder:()Z` @kind virtual;
+  #L48568e.  v3:= temp;
+  #L485690.  if v3 == 0 then goto L48569a;
+  #L485694.  call `copyFilesInSeparateThread`(v4, v1) @signature `Lpl/aprilapps/easyphotopicker/EasyImageFiles;.copyFilesInSeparateThread:(Landroid/content/Context;Ljava/util/List;)V` @kind static;
+  #L48569a.  v3:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.GALLERY` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L48569e.  call temp:= `restoreType`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L4856a4.  v0:= temp;
+  #L4856a6.  call `onImagesPicked`(v5, v1, v3, v0) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onImagesPicked:(Ljava/util/List;Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L4856ac.  goto L4856c8;
+  #L4856ae.  v3:= Exception @type ^`java.lang.Exception` @kind object;
+  #L4856b0.  call `printStackTrace`(v3) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L4856b6.  v0:= `@@pl.aprilapps.easyphotopicker.EasyImage$ImageSource.GALLERY` @type ^`pl.aprilapps.easyphotopicker.EasyImage$ImageSource` @kind object;
+  #L4856ba.  call temp:= `restoreType`(v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @kind static;
+  #L4856c0.  v4:= temp;
+  #L4856c2.  call `onImagePickerError`(v5, v3, v0, v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage$Callbacks;.onImagePickerError:(Ljava/lang/Exception;Lpl/aprilapps/easyphotopicker/EasyImage$ImageSource;I)V` @kind interface;
+  #L4856c8.  return @kind void;
+  catch `java.lang.Exception` @[L485620..L4856ac] goto L4856ae;
+}
+procedure `void` `openCamera`(`android.app.Activity` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openCamera:(Landroid/app/Activity;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4856ec.  call temp:= `createCameraIntent`(v1, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createCameraIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L4856f2.  v2:= temp @kind object;
+  #L4856f4.  v0:= 9068I;
+  #L4856f8.  call `startActivityForResult`(v1, v2, v0) @signature `Landroid/app/Activity;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L4856fe.  return @kind void;
+}
+procedure `void` `openCamera`(`android.app.Fragment` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openCamera:(Landroid/app/Fragment;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L485710.  call temp:= `getActivity`(v1) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L485716.  v0:= temp @kind object;
+  #L485718.  call temp:= `createCameraIntent`(v0, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createCameraIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L48571e.  v2:= temp @kind object;
+  #L485720.  v0:= 9068I;
+  #L485724.  call `startActivityForResult`(v1, v2, v0) @signature `Landroid/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L48572a.  return @kind void;
+}
+procedure `void` `openCamera`(`androidx.fragment.app.Fragment` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openCamera:(Landroidx/fragment/app/Fragment;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L48573c.  call temp:= `getActivity`(v1) @signature `Landroidx/fragment/app/Fragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L485742.  v0:= temp @kind object;
+  #L485744.  call temp:= `createCameraIntent`(v0, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createCameraIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L48574a.  v2:= temp @kind object;
+  #L48574c.  v0:= 9068I;
+  #L485750.  call `startActivityForResult`(v1, v2, v0) @signature `Landroidx/fragment/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L485756.  return @kind void;
+}
+procedure `void` `openChooserWithDocuments`(`android.app.Activity` v0 @kind object, `java.lang.String` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openChooserWithDocuments:(Landroid/app/Activity;Ljava/lang/String;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L485768.  call temp:= `createChooserIntent`(v0, v1, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;I)Landroid/content/Intent;` @kind static;
+  #L48576e.  v1:= temp @kind object;
+  #L485770.  v2:= 19308I;
+  #L485774.  call `startActivityForResult`(v0, v1, v2) @signature `Landroid/app/Activity;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L48577a.  goto L485784;
+  #L48577c.  v0:= Exception @type ^`java.io.IOException` @kind object;
+  #L48577e.  call `printStackTrace`(v0) @signature `Ljava/io/IOException;.printStackTrace:()V` @kind virtual;
+  #L485784.  return @kind void;
+  catch `java.io.IOException` @[L485768..L48577a] goto L48577c;
+}
+procedure `void` `openChooserWithDocuments`(`android.app.Fragment` v1 @kind object, `java.lang.String` v2 @kind object, `int` v3 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openChooserWithDocuments:(Landroid/app/Fragment;Ljava/lang/String;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4857a8.  call temp:= `getActivity`(v1) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L4857ae.  v0:= temp @kind object;
+  #L4857b0.  call temp:= `createChooserIntent`(v0, v2, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;I)Landroid/content/Intent;` @kind static;
+  #L4857b6.  v2:= temp @kind object;
+  #L4857b8.  v3:= 19308I;
+  #L4857bc.  call `startActivityForResult`(v1, v2, v3) @signature `Landroid/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L4857c2.  goto L4857cc;
+  #L4857c4.  v1:= Exception @type ^`java.io.IOException` @kind object;
+  #L4857c6.  call `printStackTrace`(v1) @signature `Ljava/io/IOException;.printStackTrace:()V` @kind virtual;
+  #L4857cc.  return @kind void;
+  catch `java.io.IOException` @[L4857a8..L4857c2] goto L4857c4;
+}
+procedure `void` `openChooserWithDocuments`(`androidx.fragment.app.Fragment` v1 @kind object, `java.lang.String` v2 @kind object, `int` v3 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openChooserWithDocuments:(Landroidx/fragment/app/Fragment;Ljava/lang/String;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4857f0.  call temp:= `getActivity`(v1) @signature `Landroidx/fragment/app/Fragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L4857f6.  v0:= temp @kind object;
+  #L4857f8.  call temp:= `createChooserIntent`(v0, v2, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;I)Landroid/content/Intent;` @kind static;
+  #L4857fe.  v2:= temp @kind object;
+  #L485800.  v3:= 19308I;
+  #L485804.  call `startActivityForResult`(v1, v2, v3) @signature `Landroidx/fragment/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L48580a.  goto L485814;
+  #L48580c.  v1:= Exception @type ^`java.io.IOException` @kind object;
+  #L48580e.  call `printStackTrace`(v1) @signature `Ljava/io/IOException;.printStackTrace:()V` @kind virtual;
+  #L485814.  return @kind void;
+  catch `java.io.IOException` @[L4857f0..L48580a] goto L48580c;
+}
+procedure `void` `openChooserWithGallery`(`android.app.Activity` v1 @kind object, `java.lang.String` v2 @kind object, `int` v3 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openChooserWithGallery:(Landroid/app/Activity;Ljava/lang/String;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L485838.  v0:= 1I;
+  #L48583a.  call temp:= `createChooserIntent`(v1, v2, v0, v3) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;ZI)Landroid/content/Intent;` @kind static;
+  #L485840.  v2:= temp @kind object;
+  #L485842.  v3:= 21356I;
+  #L485846.  call `startActivityForResult`(v1, v2, v3) @signature `Landroid/app/Activity;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L48584c.  goto L485856;
+  #L48584e.  v1:= Exception @type ^`java.io.IOException` @kind object;
+  #L485850.  call `printStackTrace`(v1) @signature `Ljava/io/IOException;.printStackTrace:()V` @kind virtual;
+  #L485856.  return @kind void;
+  catch `java.io.IOException` @[L48583a..L48584c] goto L48584e;
+}
+procedure `void` `openChooserWithGallery`(`android.app.Fragment` v2 @kind object, `java.lang.String` v3 @kind object, `int` v4 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openChooserWithGallery:(Landroid/app/Fragment;Ljava/lang/String;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L485878.  call temp:= `getActivity`(v2) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L48587e.  v0:= temp @kind object;
+  #L485880.  v1:= 1I;
+  #L485882.  call temp:= `createChooserIntent`(v0, v3, v1, v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;ZI)Landroid/content/Intent;` @kind static;
+  #L485888.  v3:= temp @kind object;
+  #L48588a.  v4:= 21356I;
+  #L48588e.  call `startActivityForResult`(v2, v3, v4) @signature `Landroid/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L485894.  goto L48589e;
+  #L485896.  v2:= Exception @type ^`java.io.IOException` @kind object;
+  #L485898.  call `printStackTrace`(v2) @signature `Ljava/io/IOException;.printStackTrace:()V` @kind virtual;
+  #L48589e.  return @kind void;
+  catch `java.io.IOException` @[L485878..L485894] goto L485896;
+}
+procedure `void` `openChooserWithGallery`(`androidx.fragment.app.Fragment` v2 @kind object, `java.lang.String` v3 @kind object, `int` v4 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openChooserWithGallery:(Landroidx/fragment/app/Fragment;Ljava/lang/String;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4858c0.  call temp:= `getActivity`(v2) @signature `Landroidx/fragment/app/Fragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L4858c6.  v0:= temp @kind object;
+  #L4858c8.  v1:= 1I;
+  #L4858ca.  call temp:= `createChooserIntent`(v0, v3, v1, v4) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createChooserIntent:(Landroid/content/Context;Ljava/lang/String;ZI)Landroid/content/Intent;` @kind static;
+  #L4858d0.  v3:= temp @kind object;
+  #L4858d2.  v4:= 21356I;
+  #L4858d6.  call `startActivityForResult`(v2, v3, v4) @signature `Landroidx/fragment/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L4858dc.  goto L4858e6;
+  #L4858de.  v2:= Exception @type ^`java.io.IOException` @kind object;
+  #L4858e0.  call `printStackTrace`(v2) @signature `Ljava/io/IOException;.printStackTrace:()V` @kind virtual;
+  #L4858e6.  return @kind void;
+  catch `java.io.IOException` @[L4858c0..L4858dc] goto L4858de;
+}
+procedure `void` `openDocuments`(`android.app.Activity` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openDocuments:(Landroid/app/Activity;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L485908.  call temp:= `createDocumentsIntent`(v1, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createDocumentsIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L48590e.  v2:= temp @kind object;
+  #L485910.  v0:= 2924I;
+  #L485914.  call `startActivityForResult`(v1, v2, v0) @signature `Landroid/app/Activity;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L48591a.  return @kind void;
+}
+procedure `void` `openDocuments`(`android.app.Fragment` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openDocuments:(Landroid/app/Fragment;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L48592c.  call temp:= `getActivity`(v1) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L485932.  v0:= temp @kind object;
+  #L485934.  call temp:= `createDocumentsIntent`(v0, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createDocumentsIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L48593a.  v2:= temp @kind object;
+  #L48593c.  v0:= 2924I;
+  #L485940.  call `startActivityForResult`(v1, v2, v0) @signature `Landroid/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L485946.  return @kind void;
+}
+procedure `void` `openDocuments`(`androidx.fragment.app.Fragment` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openDocuments:(Landroidx/fragment/app/Fragment;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L485958.  call temp:= `getContext`(v1) @signature `Landroidx/fragment/app/Fragment;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L48595e.  v0:= temp @kind object;
+  #L485960.  call temp:= `createDocumentsIntent`(v0, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createDocumentsIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L485966.  v2:= temp @kind object;
+  #L485968.  v0:= 2924I;
+  #L48596c.  call `startActivityForResult`(v1, v2, v0) @signature `Landroidx/fragment/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L485972.  return @kind void;
+}
+procedure `void` `openGallery`(`android.app.Activity` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openGallery:(Landroid/app/Activity;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L485984.  call temp:= `createGalleryIntent`(v1, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createGalleryIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L48598a.  v2:= temp @kind object;
+  #L48598c.  v0:= 4972I;
+  #L485990.  call `startActivityForResult`(v1, v2, v0) @signature `Landroid/app/Activity;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L485996.  return @kind void;
+}
+procedure `void` `openGallery`(`android.app.Fragment` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openGallery:(Landroid/app/Fragment;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4859a8.  call temp:= `getActivity`(v1) @signature `Landroid/app/Fragment;.getActivity:()Landroid/app/Activity;` @kind virtual;
+  #L4859ae.  v0:= temp @kind object;
+  #L4859b0.  call temp:= `createGalleryIntent`(v0, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createGalleryIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L4859b6.  v2:= temp @kind object;
+  #L4859b8.  v0:= 4972I;
+  #L4859bc.  call `startActivityForResult`(v1, v2, v0) @signature `Landroid/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L4859c2.  return @kind void;
+}
+procedure `void` `openGallery`(`androidx.fragment.app.Fragment` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.openGallery:(Landroidx/fragment/app/Fragment;I)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4859d4.  call temp:= `getContext`(v1) @signature `Landroidx/fragment/app/Fragment;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L4859da.  v0:= temp @kind object;
+  #L4859dc.  call temp:= `createGalleryIntent`(v0, v2) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.createGalleryIntent:(Landroid/content/Context;I)Landroid/content/Intent;` @kind static;
+  #L4859e2.  v2:= temp @kind object;
+  #L4859e4.  v0:= 4972I;
+  #L4859e8.  call `startActivityForResult`(v1, v2, v0) @signature `Landroidx/fragment/app/Fragment;.startActivityForResult:(Landroid/content/Intent;I)V` @kind virtual;
+  #L4859ee.  return @kind void;
+}
+procedure `android.content.Intent` `plainGalleryPickerIntent`() @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.plainGalleryPickerIntent:()Landroid/content/Intent;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4850f4.  v0:= new `android.content.Intent`;
+  #L4850f8.  v1:= `@@android.provider.MediaStore$Images$Media.EXTERNAL_CONTENT_URI` @type ^`android.net.Uri` @kind object;
+  #L4850fc.  v2:= "android.intent.action.PICK" @kind object;
+  #L485100.  call `<init>`(v0, v2, v1) @signature `Landroid/content/Intent;.<init>:(Ljava/lang/String;Landroid/net/Uri;)V` @kind direct;
+  #L485106.  return v0 @kind object;
+}
+procedure `int` `restoreType`(`android.content.Context` v2 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.restoreType:(Landroid/content/Context;)I` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L48521c.  call temp:= `getDefaultSharedPreferences`(v2) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L485222.  v2:= temp @kind object;
+  #L485224.  v0:= "pl.aprilapps.easyphotopicker.type" @kind object;
+  #L485228.  v1:= 0I;
+  #L48522a.  call temp:= `getInt`(v2, v0, v1) @signature `Landroid/content/SharedPreferences;.getInt:(Ljava/lang/String;I)I` @kind interface;
+  #L485230.  v2:= temp;
+  #L485232.  return v2;
+}
+procedure `void` `revokeWritePermission`(`android.content.Context` v1 @kind object, `android.net.Uri` v2 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.revokeWritePermission:(Landroid/content/Context;Landroid/net/Uri;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L485a00.  v0:= 3I;
+  #L485a02.  call `revokeUriPermission`(v1, v2, v0) @signature `Landroid/content/Context;.revokeUriPermission:(Landroid/net/Uri;I)V` @kind virtual;
+  #L485a08.  return @kind void;
+}
+procedure `void` `storeType`(`android.content.Context` v1 @kind object, `int` v2 ) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.storeType:(Landroid/content/Context;I)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L485a1c.  call temp:= `getDefaultSharedPreferences`(v1) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L485a22.  v1:= temp @kind object;
+  #L485a24.  call temp:= `edit`(v1) @signature `Landroid/content/SharedPreferences;.edit:()Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485a2a.  v1:= temp @kind object;
+  #L485a2c.  v0:= "pl.aprilapps.easyphotopicker.type" @kind object;
+  #L485a30.  call temp:= `putInt`(v1, v0, v2) @signature `Landroid/content/SharedPreferences$Editor;.putInt:(Ljava/lang/String;I)Landroid/content/SharedPreferences$Editor;` @kind interface;
+  #L485a36.  v1:= temp @kind object;
+  #L485a38.  call temp:= `commit`(v1) @signature `Landroid/content/SharedPreferences$Editor;.commit:()Z` @kind interface;
+  #L485a3e.  return @kind void;
+}
+procedure `java.io.File` `takenCameraPicture`(`android.content.Context` v2 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.takenCameraPicture:(Landroid/content/Context;)Ljava/io/File;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L48528c.  call temp:= `getDefaultSharedPreferences`(v2) @signature `Landroid/preference/PreferenceManager;.getDefaultSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;` @kind static;
+  #L485292.  v2:= temp @kind object;
+  #L485294.  v0:= 0I;
+  #L485296.  v1:= "pl.aprilapps.easyphotopicker.last_photo" @kind object;
+  #L48529a.  call temp:= `getString`(v2, v1, v0) @signature `Landroid/content/SharedPreferences;.getString:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;` @kind interface;
+  #L4852a0.  v2:= temp @kind object;
+  #L4852a2.  if v2 == 0 then goto L4852b0;
+  #L4852a6.  v0:= new `java.io.File`;
+  #L4852aa.  call `<init>`(v0, v2) @signature `Ljava/io/File;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4852b0.  return v0 @kind object;
+}
+procedure `boolean` `willHandleActivityResult`(`int` v0 , `int` v1 , `android.content.Intent` v2 @kind object) @signature `Lpl/aprilapps/easyphotopicker/EasyImage;.willHandleActivityResult:(IILandroid/content/Intent;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L4851e0.  v1:= 16384I;
+  #L4851e4.  if v0 == v1 then goto L485206;
+  #L4851e8.  v1:= 4972I;
+  #L4851ec.  if v0 == v1 then goto L485206;
+  #L4851f0.  v1:= 9068I;
+  #L4851f4.  if v0 == v1 then goto L485206;
+  #L4851f8.  v1:= 2924I;
+  #L4851fc.  if v0 != v1 then goto L485202;
+  #L485200.  goto L485206;
+  #L485202.  v0:= 0I;
+  #L485204.  return v0;
+  #L485206.  v0:= 1I;
+  #L485208.  return v0;
+}

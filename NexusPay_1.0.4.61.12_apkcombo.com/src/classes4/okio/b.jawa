@@ -1,0 +1,124 @@
+record `okio.b` @kind class @AccessFlag FINAL extends `okio.Source` @kind interface {
+  `java.io.InputStream` `okio.b.a` @AccessFlag PRIVATE_FINAL;
+  `okio.Timeout` `okio.b.b` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`okio.b` v1 @kind this, `java.io.InputStream` v2 @kind object, `okio.Timeout` v3 @kind object) @signature `Lokio/b;.<init>:(Ljava/io/InputStream;Lokio/Timeout;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1d2218.  v0:= "input" @kind object;
+  #L1d221c.  call `checkNotNullParameter`(v2, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d2222.  v0:= "timeout" @kind object;
+  #L1d2226.  call `checkNotNullParameter`(v3, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d222c.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1d2232.  v1.`okio.b.a` @type ^`java.io.InputStream` := v2 @kind object;
+  #L1d2236.  v1.`okio.b.b` @type ^`okio.Timeout` := v3 @kind object;
+  #L1d223a.  return @kind void;
+}
+procedure `void` `close`(`okio.b` v1 @kind this) @signature `Lokio/b;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1d224c.  v0:= v1.`okio.b.a` @type ^`java.io.InputStream` @kind object;
+  #L1d2250.  call `close`(v0) @signature `Ljava/io/InputStream;.close:()V` @kind virtual;
+  #L1d2256.  return @kind void;
+}
+procedure `long` `read`(`okio.b` v3 @kind this, `okio.Buffer` v4 @kind object, `long` v5 ) @signature `Lokio/b;.read:(Lokio/Buffer;J)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1d20e4.  v0:= "sink" @kind object;
+  #L1d20e8.  call `checkNotNullParameter`(v4, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d20ee.  v0:= 0L;
+  #L1d20f2.  v2:= lcmp(v5, v0);
+  #L1d20f6.  if v2 != 0 then goto L1d20fc;
+  #L1d20fa.  return v0 @kind wide;
+  #L1d20fc.  v0:= 1I;
+  #L1d20fe.  if v2 < 0 then goto L1d2106;
+  #L1d2102.  v1:= 1I;
+  #L1d2104.  goto L1d2108;
+  #L1d2106.  v1:= 0I;
+  #L1d2108.  if v1 == 0 then goto L1d21aa;
+  #L1d210c.  v1:= v3.`okio.b.b` @type ^`okio.Timeout` @kind object;
+  #L1d2110.  call `throwIfReached`(v1) @signature `Lokio/Timeout;.throwIfReached:()V` @kind virtual;
+  #L1d2116.  call temp:= `writableSegment$okio`(v4, v0) @signature `Lokio/Buffer;.writableSegment$okio:(I)Lokio/Segment;` @kind virtual;
+  #L1d211c.  v0:= temp @kind object;
+  #L1d211e.  v1:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1d2122.  v1:= v1 - 8192;
+  #L1d2126.  v1:= (`long`) v1 @kind i2l;
+  #L1d2128.  call temp:= `min`(v5, v1) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L1d212e.  v5:= temp @kind wide;
+  #L1d2130.  v6:= (`int`) v5 @kind l2i;
+  #L1d2132.  v5:= v3.`okio.b.a` @type ^`java.io.InputStream` @kind object;
+  #L1d2136.  v1:= v0.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L1d213a.  v2:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1d213e.  call temp:= `read`(v5, v1, v2, v6) @signature `Ljava/io/InputStream;.read:([BII)I` @kind virtual;
+  #L1d2144.  v5:= temp;
+  #L1d2146.  v6:= -1I;
+  #L1d2148.  if v5 != v6 then goto L1d2170;
+  #L1d214c.  v5:= v0.`okio.Segment.pos` @type ^`int`;
+  #L1d2150.  v6:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1d2154.  if v5 != v6 then goto L1d216a;
+  #L1d2158.  call temp:= `pop`(v0) @signature `Lokio/Segment;.pop:()Lokio/Segment;` @kind virtual;
+  #L1d215e.  v5:= temp @kind object;
+  #L1d2160.  v4.`okio.Buffer.head` @type ^`okio.Segment` := v5 @kind object;
+  #L1d2164.  call `recycle`(v0) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @kind static;
+  #L1d216a.  v4:= -1L;
+  #L1d216e.  return v4 @kind wide;
+  #L1d2170.  v6:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1d2174.  v6:= v6 + v5 @kind int;
+  #L1d2176.  v0.`okio.Segment.limit` @type ^`int` := v6;
+  #L1d217a.  call temp:= `size`(v4) @signature `Lokio/Buffer;.size:()J` @kind virtual;
+  #L1d2180.  v0:= temp @kind wide;
+  #L1d2182.  v5:= (`long`) v5 @kind i2l;
+  #L1d2184.  v0:= v0 + v5 @kind long;
+  #L1d2186.  call `setSize$okio`(v4, v0) @signature `Lokio/Buffer;.setSize$okio:(J)V` @kind virtual;
+  #L1d218c.  return v5 @kind wide;
+  #L1d218e.  v4:= Exception @type ^`java.lang.AssertionError` @kind object;
+  #L1d2190.  call temp:= `isAndroidGetsocknameError`(v4) @signature `Lokio/Okio;.isAndroidGetsocknameError:(Ljava/lang/AssertionError;)Z` @kind static;
+  #L1d2196.  v5:= temp;
+  #L1d2198.  if v5 == 0 then goto L1d21a8;
+  #L1d219c.  v5:= new `java.io.IOException`;
+  #L1d21a0.  call `<init>`(v5, v4) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L1d21a6.  throw v5;
+  #L1d21a8.  throw v4;
+  #L1d21aa.  v4:= new `java.lang.StringBuilder`;
+  #L1d21ae.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1d21b4.  v0:= "byteCount < 0: " @kind object;
+  #L1d21b8.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d21be.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d21c4.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d21ca.  v4:= temp @kind object;
+  #L1d21cc.  v5:= new `java.lang.IllegalArgumentException`;
+  #L1d21d0.  call temp:= `toString`(v4) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d21d6.  v4:= temp @kind object;
+  #L1d21d8.  call `<init>`(v5, v4) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d21de.  throw v5;
+  catch `java.lang.AssertionError` @[L1d210c..L1d218c] goto L1d218e;
+}
+procedure `okio.Timeout` `timeout`(`okio.b` v1 @kind this) @signature `Lokio/b;.timeout:()Lokio/Timeout;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1d2200.  v0:= v1.`okio.b.b` @type ^`okio.Timeout` @kind object;
+  #L1d2204.  return v0 @kind object;
+}
+procedure `java.lang.String` `toString`(`okio.b` v2 @kind this) @signature `Lokio/b;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1d20a0.  v0:= new `java.lang.StringBuilder`;
+  #L1d20a4.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1d20aa.  v1:= "source(" @kind object;
+  #L1d20ae.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d20b4.  v1:= v2.`okio.b.a` @type ^`java.io.InputStream` @kind object;
+  #L1d20b8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d20be.  v1:= 41I;
+  #L1d20c2.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d20c8.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d20ce.  v0:= temp @kind object;
+  #L1d20d0.  return v0 @kind object;
+}

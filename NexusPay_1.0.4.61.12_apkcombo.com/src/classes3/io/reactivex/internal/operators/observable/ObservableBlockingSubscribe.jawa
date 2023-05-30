@@ -1,0 +1,92 @@
+record `io.reactivex.internal.operators.observable.ObservableBlockingSubscribe` @kind class @AccessFlag PUBLIC_FINAL {
+}
+procedure `void` `<init>`(`io.reactivex.internal.operators.observable.ObservableBlockingSubscribe` v2 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableBlockingSubscribe;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L460ad0.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L460ad6.  v0:= new `java.lang.IllegalStateException`;
+  #L460ada.  v1:= "No instances!" @kind object;
+  #L460ade.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L460ae4.  throw v0;
+}
+procedure `void` `subscribe`(`io.reactivex.ObservableSource` v4 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableBlockingSubscribe;.subscribe:(Lio/reactivex/ObservableSource;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L460af8.  v0:= new `io.reactivex.internal.util.BlockingIgnoringReceiver`;
+  #L460afc.  call `<init>`(v0) @signature `Lio/reactivex/internal/util/BlockingIgnoringReceiver;.<init>:()V` @kind direct;
+  #L460b02.  v1:= new `io.reactivex.internal.observers.LambdaObserver`;
+  #L460b06.  call temp:= `emptyConsumer`() @signature `Lio/reactivex/internal/functions/Functions;.emptyConsumer:()Lio/reactivex/functions/Consumer;` @kind static;
+  #L460b0c.  v2:= temp @kind object;
+  #L460b0e.  call temp:= `emptyConsumer`() @signature `Lio/reactivex/internal/functions/Functions;.emptyConsumer:()Lio/reactivex/functions/Consumer;` @kind static;
+  #L460b14.  v3:= temp @kind object;
+  #L460b16.  call `<init>`(v1, v2, v0, v0, v3) @signature `Lio/reactivex/internal/observers/LambdaObserver;.<init>:(Lio/reactivex/functions/Consumer;Lio/reactivex/functions/Consumer;Lio/reactivex/functions/Action;Lio/reactivex/functions/Consumer;)V` @kind direct;
+  #L460b1c.  call `subscribe`(v4, v1) @signature `Lio/reactivex/ObservableSource;.subscribe:(Lio/reactivex/Observer;)V` @kind interface;
+  #L460b22.  call `awaitForComplete`(v0, v1) @signature `Lio/reactivex/internal/util/BlockingHelper;.awaitForComplete:(Ljava/util/concurrent/CountDownLatch;Lio/reactivex/disposables/Disposable;)V` @kind static;
+  #L460b28.  v4:= v0.`io.reactivex.internal.util.BlockingIgnoringReceiver.error` @type ^`java.lang.Throwable` @kind object;
+  #L460b2c.  if v4 != 0 then goto L460b32;
+  #L460b30.  return @kind void;
+  #L460b32.  call temp:= `wrapOrThrow`(v4) @signature `Lio/reactivex/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L460b38.  v4:= temp @kind object;
+  #L460b3a.  throw v4;
+}
+procedure `void` `subscribe`(`io.reactivex.ObservableSource` v3 @kind object, `io.reactivex.Observer` v4 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableBlockingSubscribe;.subscribe:(Lio/reactivex/ObservableSource;Lio/reactivex/Observer;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L460b4c.  v0:= new `java.util.concurrent.LinkedBlockingQueue`;
+  #L460b50.  call `<init>`(v0) @signature `Ljava/util/concurrent/LinkedBlockingQueue;.<init>:()V` @kind direct;
+  #L460b56.  v1:= new `io.reactivex.internal.observers.BlockingObserver`;
+  #L460b5a.  call `<init>`(v1, v0) @signature `Lio/reactivex/internal/observers/BlockingObserver;.<init>:(Ljava/util/Queue;)V` @kind direct;
+  #L460b60.  call `onSubscribe`(v4, v1) @signature `Lio/reactivex/Observer;.onSubscribe:(Lio/reactivex/disposables/Disposable;)V` @kind interface;
+  #L460b66.  call `subscribe`(v3, v1) @signature `Lio/reactivex/ObservableSource;.subscribe:(Lio/reactivex/Observer;)V` @kind interface;
+  #L460b6c.  call temp:= `isDisposed`(v1) @signature `Lio/reactivex/internal/observers/BlockingObserver;.isDisposed:()Z` @kind virtual;
+  #L460b72.  v3:= temp;
+  #L460b74.  if v3 == 0 then goto L460b7a;
+  #L460b78.  goto L460bc0;
+  #L460b7a.  call temp:= `poll`(v0) @signature `Ljava/util/concurrent/BlockingQueue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L460b80.  v3:= temp @kind object;
+  #L460b82.  if v3 != 0 then goto L460ba0;
+  #L460b86.  call temp:= `take`(v0) @signature `Ljava/util/concurrent/BlockingQueue;.take:()Ljava/lang/Object;` @kind interface;
+  #L460b8c.  v3:= temp @kind object;
+  #L460b8e.  goto L460ba0;
+  #L460b90.  v3:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L460b92.  call `dispose`(v1) @signature `Lio/reactivex/internal/observers/BlockingObserver;.dispose:()V` @kind virtual;
+  #L460b98.  call `onError`(v4, v3) @signature `Lio/reactivex/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L460b9e.  return @kind void;
+  #L460ba0.  call temp:= `isDisposed`(v1) @signature `Lio/reactivex/internal/observers/BlockingObserver;.isDisposed:()Z` @kind virtual;
+  #L460ba6.  v2:= temp;
+  #L460ba8.  if v2 != 0 then goto L460bc0;
+  #L460bac.  v2:= `@@io.reactivex.internal.observers.BlockingObserver.TERMINATED` @type ^`java.lang.Object` @kind object;
+  #L460bb0.  if v3 == v2 then goto L460bc0;
+  #L460bb4.  call temp:= `acceptFull`(v3, v4) @signature `Lio/reactivex/internal/util/NotificationLite;.acceptFull:(Ljava/lang/Object;Lio/reactivex/Observer;)Z` @kind static;
+  #L460bba.  v3:= temp;
+  #L460bbc.  if v3 == 0 then goto L460b6c;
+  #L460bc0.  return @kind void;
+  catch `java.lang.InterruptedException` @[L460b86..L460b8e] goto L460b90;
+}
+procedure `void` `subscribe`(`io.reactivex.ObservableSource` v2 @kind object, `io.reactivex.functions.Consumer` v3 @kind object, `io.reactivex.functions.Consumer` v4 @kind object, `io.reactivex.functions.Action` v5 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableBlockingSubscribe;.subscribe:(Lio/reactivex/ObservableSource;Lio/reactivex/functions/Consumer;Lio/reactivex/functions/Consumer;Lio/reactivex/functions/Action;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L460be4.  v0:= "onNext is null" @kind object;
+  #L460be8.  call temp:= `requireNonNull`(v3, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L460bee.  v0:= "onError is null" @kind object;
+  #L460bf2.  call temp:= `requireNonNull`(v4, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L460bf8.  v0:= "onComplete is null" @kind object;
+  #L460bfc.  call temp:= `requireNonNull`(v5, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L460c02.  v0:= new `io.reactivex.internal.observers.LambdaObserver`;
+  #L460c06.  call temp:= `emptyConsumer`() @signature `Lio/reactivex/internal/functions/Functions;.emptyConsumer:()Lio/reactivex/functions/Consumer;` @kind static;
+  #L460c0c.  v1:= temp @kind object;
+  #L460c0e.  call `<init>`(v0, v3, v4, v5, v1) @signature `Lio/reactivex/internal/observers/LambdaObserver;.<init>:(Lio/reactivex/functions/Consumer;Lio/reactivex/functions/Consumer;Lio/reactivex/functions/Action;Lio/reactivex/functions/Consumer;)V` @kind direct;
+  #L460c14.  call `subscribe`(v2, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableBlockingSubscribe;.subscribe:(Lio/reactivex/ObservableSource;Lio/reactivex/Observer;)V` @kind static;
+  #L460c1a.  return @kind void;
+}

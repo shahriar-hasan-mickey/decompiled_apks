@@ -1,0 +1,810 @@
+record `io.reactivex.rxjava3.observers.BaseTestConsumer` @kind class @AccessFlag PUBLIC_ABSTRACT {
+  `boolean` `io.reactivex.rxjava3.observers.BaseTestConsumer.checkSubscriptionOnce` @AccessFlag PROTECTED;
+  `long` `io.reactivex.rxjava3.observers.BaseTestConsumer.completions` @AccessFlag PROTECTED;
+  `java.util.concurrent.CountDownLatch` `io.reactivex.rxjava3.observers.BaseTestConsumer.done` @AccessFlag PROTECTED_FINAL;
+  `java.util.List` `io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @AccessFlag PROTECTED_FINAL;
+  `java.lang.Thread` `io.reactivex.rxjava3.observers.BaseTestConsumer.lastThread` @AccessFlag PROTECTED;
+  `java.lang.CharSequence` `io.reactivex.rxjava3.observers.BaseTestConsumer.tag` @AccessFlag PROTECTED;
+  `boolean` `io.reactivex.rxjava3.observers.BaseTestConsumer.timeout` @AccessFlag PROTECTED;
+  `java.util.List` `io.reactivex.rxjava3.observers.BaseTestConsumer.values` @AccessFlag PROTECTED_FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v2 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L51b024.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L51b02a.  v0:= new `io.reactivex.rxjava3.internal.util.VolatileSizeArrayList`;
+  #L51b02e.  call `<init>`(v0) @signature `Lio/reactivex/rxjava3/internal/util/VolatileSizeArrayList;.<init>:()V` @kind direct;
+  #L51b034.  v2.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` := v0 @kind object;
+  #L51b038.  v0:= new `io.reactivex.rxjava3.internal.util.VolatileSizeArrayList`;
+  #L51b03c.  call `<init>`(v0) @signature `Lio/reactivex/rxjava3/internal/util/VolatileSizeArrayList;.<init>:()V` @kind direct;
+  #L51b042.  v2.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` := v0 @kind object;
+  #L51b046.  v0:= new `java.util.concurrent.CountDownLatch`;
+  #L51b04a.  v1:= 1I;
+  #L51b04c.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/CountDownLatch;.<init>:(I)V` @kind direct;
+  #L51b052.  v2.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` := v0 @kind object;
+  #L51b056.  return @kind void;
+}
+procedure `java.lang.String` `valueAndClass`(`java.lang.Object` v2 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L51afac.  if v2 == 0 then goto L51aff4;
+  #L51afb0.  v0:= new `java.lang.StringBuilder`;
+  #L51afb4.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51afba.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51afc0.  v1:= " (class: " @kind object;
+  #L51afc4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51afca.  call temp:= `getClass`(v2) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L51afd0.  v2:= temp @kind object;
+  #L51afd2.  call temp:= `getSimpleName`(v2) @signature `Ljava/lang/Class;.getSimpleName:()Ljava/lang/String;` @kind virtual;
+  #L51afd8.  v2:= temp @kind object;
+  #L51afda.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51afe0.  v2:= ")" @kind object;
+  #L51afe4.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51afea.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51aff0.  v2:= temp @kind object;
+  #L51aff2.  return v2 @kind object;
+  #L51aff4.  v2:= "null" @kind object;
+  #L51aff8.  return v2 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertComplete`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v5 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertComplete:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L51a514.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.completions` @type ^`long` @kind wide;
+  #L51a518.  v2:= 0L;
+  #L51a51c.  v4:= lcmp(v0, v2);
+  #L51a520.  if v4 == 0 then goto L51a55e;
+  #L51a524.  v2:= 1L;
+  #L51a528.  v4:= lcmp(v0, v2);
+  #L51a52c.  if v4 > 0 then goto L51a532;
+  #L51a530.  return v5 @kind object;
+  #L51a532.  v2:= new `java.lang.StringBuilder`;
+  #L51a536.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51a53c.  v3:= "Multiple completions: " @kind object;
+  #L51a540.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a546.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a54c.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51a552.  v0:= temp @kind object;
+  #L51a554.  call temp:= `fail`(v5, v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a55a.  v0:= temp @kind object;
+  #L51a55c.  throw v0;
+  #L51a55e.  v0:= "Not completed" @kind object;
+  #L51a562.  call temp:= `fail`(v5, v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a568.  v0:= temp @kind object;
+  #L51a56a.  throw v0;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertEmpty`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertEmpty:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51a57c.  call temp:= `assertSubscribed`(v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertSubscribed:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a582.  v0:= temp @kind object;
+  #L51a584.  call temp:= `assertNoValues`(v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNoValues:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a58a.  v0:= temp @kind object;
+  #L51a58c.  call temp:= `assertNoErrors`(v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNoErrors:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a592.  v0:= temp @kind object;
+  #L51a594.  call temp:= `assertNotComplete`(v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNotComplete:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a59a.  v0:= temp @kind object;
+  #L51a59c.  return v0 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertError`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v5 @kind this, `io.reactivex.rxjava3.functions.Predicate` v6 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertError:(Lio/reactivex/rxjava3/functions/Predicate;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L51a5b0.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51a5b4.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51a5ba.  v0:= temp;
+  #L51a5bc.  if v0 == 0 then goto L51a62a;
+  #L51a5c0.  v1:= 0I;
+  #L51a5c2.  v2:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51a5c6.  call temp:= `iterator`(v2) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L51a5cc.  v2:= temp @kind object;
+  #L51a5ce.  call temp:= `hasNext`(v2) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L51a5d4.  v3:= temp;
+  #L51a5d6.  v4:= 1I;
+  #L51a5d8.  if v3 == 0 then goto L51a604;
+  #L51a5dc.  call temp:= `next`(v2) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L51a5e2.  v3:= temp @kind object;
+  #L51a5e4.  v3:= (`java.lang.Throwable`) v3 @kind object;
+  #L51a5e8.  call temp:= `test`(v6, v3) @signature `Lio/reactivex/rxjava3/functions/Predicate;.test:(Ljava/lang/Object;)Z` @kind interface;
+  #L51a5ee.  v3:= temp;
+  #L51a5f0.  if v3 == 0 then goto L51a5ce;
+  #L51a5f4.  v1:= 1I;
+  #L51a5f6.  goto L51a604;
+  #L51a5f8.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L51a5fa.  call temp:= `wrapOrThrow`(v6) @signature `Lio/reactivex/rxjava3/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L51a600.  v6:= temp @kind object;
+  #L51a602.  throw v6;
+  #L51a604.  if v1 == 0 then goto L51a61c;
+  #L51a608.  if v0 != v4 then goto L51a60e;
+  #L51a60c.  return v5 @kind object;
+  #L51a60e.  v6:= "Error present but other errors as well" @kind object;
+  #L51a612.  call temp:= `fail`(v5, v6) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a618.  v6:= temp @kind object;
+  #L51a61a.  throw v6;
+  #L51a61c.  v6:= "Error not present" @kind object;
+  #L51a620.  call temp:= `fail`(v5, v6) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a626.  v6:= temp @kind object;
+  #L51a628.  throw v6;
+  #L51a62a.  v6:= "No errors" @kind object;
+  #L51a62e.  call temp:= `fail`(v5, v6) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a634.  v6:= temp @kind object;
+  #L51a636.  throw v6;
+  catch `java.lang.Throwable` @[L51a5e8..L51a5f0] goto L51a5f8;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertError`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v0 @kind this, `java.lang.Class` v1 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertError:(Ljava/lang/Class;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+
+  #L51a654.  call temp:= `isInstanceOf`(v1) @signature `Lio/reactivex/rxjava3/internal/functions/Functions;.isInstanceOf:(Ljava/lang/Class;)Lio/reactivex/rxjava3/functions/Predicate;` @kind static;
+  #L51a65a.  v1:= temp @kind object;
+  #L51a65c.  call temp:= `assertError`(v0, v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertError:(Lio/reactivex/rxjava3/functions/Predicate;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a662.  v1:= temp @kind object;
+  #L51a664.  return v1 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertError`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v0 @kind this, `java.lang.Throwable` v1 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertError:(Ljava/lang/Throwable;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+
+  #L51a678.  call temp:= `equalsWith`(v1) @signature `Lio/reactivex/rxjava3/internal/functions/Functions;.equalsWith:(Ljava/lang/Object;)Lio/reactivex/rxjava3/functions/Predicate;` @kind static;
+  #L51a67e.  v1:= temp @kind object;
+  #L51a680.  call temp:= `assertError`(v0, v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertError:(Lio/reactivex/rxjava3/functions/Predicate;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a686.  v1:= temp @kind object;
+  #L51a688.  return v1 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertFailure`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this, `java.lang.Class` v2 @kind object, `java.lang.Object`[] v3 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertFailure:(Ljava/lang/Class;[Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51a69c.  call temp:= `assertSubscribed`(v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertSubscribed:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a6a2.  v0:= temp @kind object;
+  #L51a6a4.  call temp:= `assertValues`(v0, v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValues:([Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a6aa.  v3:= temp @kind object;
+  #L51a6ac.  call temp:= `assertError`(v3, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertError:(Ljava/lang/Class;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a6b2.  v2:= temp @kind object;
+  #L51a6b4.  call temp:= `assertNotComplete`(v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNotComplete:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a6ba.  v2:= temp @kind object;
+  #L51a6bc.  return v2 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertNoErrors`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v2 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNoErrors:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L51a6d0.  v0:= v2.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51a6d4.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51a6da.  v0:= temp;
+  #L51a6dc.  if v0 != 0 then goto L51a6e2;
+  #L51a6e0.  return v2 @kind object;
+  #L51a6e2.  v0:= new `java.lang.StringBuilder`;
+  #L51a6e6.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51a6ec.  v1:= "Error(s) present: " @kind object;
+  #L51a6f0.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a6f6.  v1:= v2.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51a6fa.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a700.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51a706.  v0:= temp @kind object;
+  #L51a708.  call temp:= `fail`(v2, v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a70e.  v0:= temp @kind object;
+  #L51a710.  throw v0;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertNoValues`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNoValues:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51a724.  v0:= 0I;
+  #L51a726.  call temp:= `assertValueCount`(v1, v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValueCount:(I)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a72c.  v0:= temp @kind object;
+  #L51a72e.  return v0 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertNotComplete`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v5 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNotComplete:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L51a740.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.completions` @type ^`long` @kind wide;
+  #L51a744.  v2:= 1L;
+  #L51a748.  v4:= lcmp(v0, v2);
+  #L51a74c.  if v4 == 0 then goto L51a782;
+  #L51a750.  if v4 > 0 then goto L51a756;
+  #L51a754.  return v5 @kind object;
+  #L51a756.  v2:= new `java.lang.StringBuilder`;
+  #L51a75a.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51a760.  v3:= "Multiple completions: " @kind object;
+  #L51a764.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a76a.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a770.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51a776.  v0:= temp @kind object;
+  #L51a778.  call temp:= `fail`(v5, v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a77e.  v0:= temp @kind object;
+  #L51a780.  throw v0;
+  #L51a782.  v0:= "Completed!" @kind object;
+  #L51a786.  call temp:= `fail`(v5, v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a78c.  v0:= temp @kind object;
+  #L51a78e.  throw v0;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertResult`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this, `java.lang.Object`[] v2 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertResult:([Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51a7a0.  call temp:= `assertSubscribed`(v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertSubscribed:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a7a6.  v0:= temp @kind object;
+  #L51a7a8.  call temp:= `assertValues`(v0, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValues:([Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a7ae.  v2:= temp @kind object;
+  #L51a7b0.  call temp:= `assertNoErrors`(v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNoErrors:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a7b6.  v2:= temp @kind object;
+  #L51a7b8.  call temp:= `assertComplete`(v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertComplete:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a7be.  v2:= temp @kind object;
+  #L51a7c0.  return v2 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertSubscribed`() @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertSubscribed:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValue`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this, `io.reactivex.rxjava3.functions.Predicate` v2 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValue:(Lio/reactivex/rxjava3/functions/Predicate;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51a7d4.  v0:= 0I;
+  #L51a7d6.  call temp:= `assertValueAt`(v1, v0, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValueAt:(ILio/reactivex/rxjava3/functions/Predicate;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51a7dc.  v2:= v1.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a7e0.  call temp:= `size`(v2) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51a7e6.  v2:= temp;
+  #L51a7e8.  v0:= 1I;
+  #L51a7ea.  if v2 > v0 then goto L51a7f0;
+  #L51a7ee.  return v1 @kind object;
+  #L51a7f0.  v2:= "Value present but other values as well" @kind object;
+  #L51a7f4.  call temp:= `fail`(v1, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a7fa.  v2:= temp @kind object;
+  #L51a7fc.  throw v2;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValue`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v4 @kind this, `java.lang.Object` v5 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValue:(Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L51a810.  v0:= v4.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a814.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51a81a.  v0:= temp;
+  #L51a81c.  v1:= " but was: " @kind object;
+  #L51a820.  v2:= "expected: " @kind object;
+  #L51a824.  v3:= 1I;
+  #L51a826.  if v0 != v3 then goto L51a88a;
+  #L51a82a.  v0:= v4.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a82e.  v3:= 0I;
+  #L51a830.  call temp:= `get`(v0, v3) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L51a836.  v0:= temp @kind object;
+  #L51a838.  call temp:= `equals`(v5, v0) @signature `Ljava/util/Objects;.equals:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind static;
+  #L51a83e.  v3:= temp;
+  #L51a840.  if v3 == 0 then goto L51a846;
+  #L51a844.  return v4 @kind object;
+  #L51a846.  v3:= new `java.lang.StringBuilder`;
+  #L51a84a.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51a850.  call temp:= `append`(v3, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a856.  call temp:= `valueAndClass`(v5) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51a85c.  v5:= temp @kind object;
+  #L51a85e.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a864.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a86a.  call temp:= `valueAndClass`(v0) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51a870.  v5:= temp @kind object;
+  #L51a872.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a878.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51a87e.  v5:= temp @kind object;
+  #L51a880.  call temp:= `fail`(v4, v5) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a886.  v5:= temp @kind object;
+  #L51a888.  throw v5;
+  #L51a88a.  v0:= new `java.lang.StringBuilder`;
+  #L51a88e.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51a894.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a89a.  call temp:= `valueAndClass`(v5) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51a8a0.  v5:= temp @kind object;
+  #L51a8a2.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a8a8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a8ae.  v5:= v4.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a8b2.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a8b8.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51a8be.  v5:= temp @kind object;
+  #L51a8c0.  call temp:= `fail`(v4, v5) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a8c6.  v5:= temp @kind object;
+  #L51a8c8.  throw v5;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValueAt`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this, `int` v2 , `io.reactivex.rxjava3.functions.Predicate` v3 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValueAt:(ILio/reactivex/rxjava3/functions/Predicate;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51a8dc.  v0:= v1.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a8e0.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51a8e6.  v0:= temp;
+  #L51a8e8.  if v0 == 0 then goto L51a95c;
+  #L51a8ec.  v0:= v1.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a8f0.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51a8f6.  v0:= temp;
+  #L51a8f8.  if v2 >= v0 then goto L51a930;
+  #L51a8fc.  v0:= v1.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a900.  call temp:= `get`(v0, v2) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L51a906.  v2:= temp @kind object;
+  #L51a908.  call temp:= `test`(v3, v2) @signature `Lio/reactivex/rxjava3/functions/Predicate;.test:(Ljava/lang/Object;)Z` @kind interface;
+  #L51a90e.  v2:= temp;
+  #L51a910.  if v2 == 0 then goto L51a916;
+  #L51a914.  return v1 @kind object;
+  #L51a916.  v2:= "Value not present" @kind object;
+  #L51a91a.  call temp:= `fail`(v1, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a920.  v2:= temp @kind object;
+  #L51a922.  throw v2;
+  #L51a924.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L51a926.  call temp:= `wrapOrThrow`(v2) @signature `Lio/reactivex/rxjava3/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L51a92c.  v2:= temp @kind object;
+  #L51a92e.  throw v2;
+  #L51a930.  v3:= new `java.lang.StringBuilder`;
+  #L51a934.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51a93a.  v0:= "Invalid index: " @kind object;
+  #L51a93e.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a944.  call temp:= `append`(v3, v2) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a94a.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51a950.  v2:= temp @kind object;
+  #L51a952.  call temp:= `fail`(v1, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a958.  v2:= temp @kind object;
+  #L51a95a.  throw v2;
+  #L51a95c.  v2:= "No values" @kind object;
+  #L51a960.  call temp:= `fail`(v1, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a966.  v2:= temp @kind object;
+  #L51a968.  throw v2;
+  catch `java.lang.Throwable` @[L51a8fc..L51a910] goto L51a924;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValueAt`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v2 @kind this, `int` v3 , `java.lang.Object` v4 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValueAt:(ILjava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L51a988.  v0:= v2.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a98c.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51a992.  v0:= temp;
+  #L51a994.  if v0 == 0 then goto L51aa2e;
+  #L51a998.  if v3 >= v0 then goto L51aa02;
+  #L51a99c.  v0:= v2.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51a9a0.  call temp:= `get`(v0, v3) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L51a9a6.  v3:= temp @kind object;
+  #L51a9a8.  call temp:= `equals`(v4, v3) @signature `Ljava/util/Objects;.equals:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind static;
+  #L51a9ae.  v0:= temp;
+  #L51a9b0.  if v0 == 0 then goto L51a9b6;
+  #L51a9b4.  return v2 @kind object;
+  #L51a9b6.  v0:= new `java.lang.StringBuilder`;
+  #L51a9ba.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51a9c0.  v1:= "expected: " @kind object;
+  #L51a9c4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a9ca.  call temp:= `valueAndClass`(v4) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51a9d0.  v4:= temp @kind object;
+  #L51a9d2.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a9d8.  v4:= " but was: " @kind object;
+  #L51a9dc.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a9e2.  call temp:= `valueAndClass`(v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51a9e8.  v3:= temp @kind object;
+  #L51a9ea.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51a9f0.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51a9f6.  v3:= temp @kind object;
+  #L51a9f8.  call temp:= `fail`(v2, v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51a9fe.  v3:= temp @kind object;
+  #L51aa00.  throw v3;
+  #L51aa02.  v4:= new `java.lang.StringBuilder`;
+  #L51aa06.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51aa0c.  v0:= "Invalid index: " @kind object;
+  #L51aa10.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aa16.  call temp:= `append`(v4, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aa1c.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51aa22.  v3:= temp @kind object;
+  #L51aa24.  call temp:= `fail`(v2, v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51aa2a.  v3:= temp @kind object;
+  #L51aa2c.  throw v3;
+  #L51aa2e.  v3:= "No values" @kind object;
+  #L51aa32.  call temp:= `fail`(v2, v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51aa38.  v3:= temp @kind object;
+  #L51aa3a.  throw v3;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValueCount`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v3 @kind this, `int` v4 ) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValueCount:(I)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L51aa4c.  v0:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51aa50.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51aa56.  v0:= temp;
+  #L51aa58.  if v0 != v4 then goto L51aa5e;
+  #L51aa5c.  return v3 @kind object;
+  #L51aa5e.  v1:= new `java.lang.StringBuilder`;
+  #L51aa62.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51aa68.  v2:= "Value counts differ; expected: " @kind object;
+  #L51aa6c.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aa72.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aa78.  v4:= " but was: " @kind object;
+  #L51aa7c.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aa82.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aa88.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51aa8e.  v4:= temp @kind object;
+  #L51aa90.  call temp:= `fail`(v3, v4) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51aa96.  v4:= temp @kind object;
+  #L51aa98.  throw v4;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValueSequence`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v5 @kind this, `java.lang.Iterable` v6 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValueSequence:(Ljava/lang/Iterable;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L51aaac.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51aab0.  call temp:= `iterator`(v0) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L51aab6.  v0:= temp @kind object;
+  #L51aab8.  call temp:= `iterator`(v6) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L51aabe.  v6:= temp @kind object;
+  #L51aac0.  v1:= 0I;
+  #L51aac2.  call temp:= `hasNext`(v6) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L51aac8.  v2:= temp;
+  #L51aaca.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L51aad0.  v3:= temp;
+  #L51aad2.  if v3 == 0 then goto L51ab5a;
+  #L51aad6.  if v2 != 0 then goto L51aadc;
+  #L51aada.  goto L51ab5a;
+  #L51aadc.  call temp:= `next`(v6) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L51aae2.  v2:= temp @kind object;
+  #L51aae4.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L51aaea.  v3:= temp @kind object;
+  #L51aaec.  call temp:= `equals`(v2, v3) @signature `Ljava/util/Objects;.equals:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind static;
+  #L51aaf2.  v4:= temp;
+  #L51aaf4.  if v4 == 0 then goto L51aafe;
+  #L51aaf8.  v1:= v1 + 1;
+  #L51aafc.  goto L51aac2;
+  #L51aafe.  v6:= new `java.lang.StringBuilder`;
+  #L51ab02.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51ab08.  v0:= "Values at position " @kind object;
+  #L51ab0c.  call temp:= `append`(v6, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab12.  call temp:= `append`(v6, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab18.  v0:= " differ; expected: " @kind object;
+  #L51ab1c.  call temp:= `append`(v6, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab22.  call temp:= `valueAndClass`(v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51ab28.  v0:= temp @kind object;
+  #L51ab2a.  call temp:= `append`(v6, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab30.  v0:= " but was: " @kind object;
+  #L51ab34.  call temp:= `append`(v6, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab3a.  call temp:= `valueAndClass`(v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51ab40.  v0:= temp @kind object;
+  #L51ab42.  call temp:= `append`(v6, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab48.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51ab4e.  v6:= temp @kind object;
+  #L51ab50.  call temp:= `fail`(v5, v6) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51ab56.  v6:= temp @kind object;
+  #L51ab58.  throw v6;
+  #L51ab5a.  v6:= ")" @kind object;
+  #L51ab5e.  if v3 != 0 then goto L51ab9a;
+  #L51ab62.  if v2 != 0 then goto L51ab68;
+  #L51ab66.  return v5 @kind object;
+  #L51ab68.  v0:= new `java.lang.StringBuilder`;
+  #L51ab6c.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51ab72.  v2:= "Fewer values received than expected (" @kind object;
+  #L51ab76.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab7c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab82.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ab88.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51ab8e.  v6:= temp @kind object;
+  #L51ab90.  call temp:= `fail`(v5, v6) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51ab96.  v6:= temp @kind object;
+  #L51ab98.  throw v6;
+  #L51ab9a.  v0:= new `java.lang.StringBuilder`;
+  #L51ab9e.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51aba4.  v2:= "More values received than expected (" @kind object;
+  #L51aba8.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51abae.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51abb4.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51abba.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51abc0.  v6:= temp @kind object;
+  #L51abc2.  call temp:= `fail`(v5, v6) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51abc8.  v6:= temp @kind object;
+  #L51abca.  throw v6;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValues`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v6 @kind this, `java.lang.Object`[] v7 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValues:([Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L51abdc.  v0:= v6.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51abe0.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51abe6.  v0:= temp;
+  #L51abe8.  v1:= length @variable v7;
+  #L51abea.  v2:= " but was: " @kind object;
+  #L51abee.  if v0 != v1 then goto L51ac74;
+  #L51abf2.  v1:= 0I;
+  #L51abf4.  if v1 >= v0 then goto L51ac72;
+  #L51abf8.  v3:= v6.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51abfc.  call temp:= `get`(v3, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L51ac02.  v3:= temp @kind object;
+  #L51ac04.  v4:= v7[v1] @kind object;
+  #L51ac08.  call temp:= `equals`(v4, v3) @signature `Ljava/util/Objects;.equals:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind static;
+  #L51ac0e.  v5:= temp;
+  #L51ac10.  if v5 == 0 then goto L51ac1a;
+  #L51ac14.  v1:= v1 + 1;
+  #L51ac18.  goto L51abf4;
+  #L51ac1a.  v7:= new `java.lang.StringBuilder`;
+  #L51ac1e.  call `<init>`(v7) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51ac24.  v0:= "Values at position " @kind object;
+  #L51ac28.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac2e.  call temp:= `append`(v7, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac34.  v0:= " differ; expected: " @kind object;
+  #L51ac38.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac3e.  call temp:= `valueAndClass`(v4) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51ac44.  v0:= temp @kind object;
+  #L51ac46.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac4c.  call temp:= `append`(v7, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac52.  call temp:= `valueAndClass`(v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.valueAndClass:(Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51ac58.  v0:= temp @kind object;
+  #L51ac5a.  call temp:= `append`(v7, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac60.  call temp:= `toString`(v7) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51ac66.  v7:= temp @kind object;
+  #L51ac68.  call temp:= `fail`(v6, v7) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51ac6e.  v7:= temp @kind object;
+  #L51ac70.  throw v7;
+  #L51ac72.  return v6 @kind object;
+  #L51ac74.  v1:= new `java.lang.StringBuilder`;
+  #L51ac78.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L51ac7e.  v3:= "Value count differs; expected: " @kind object;
+  #L51ac82.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac88.  v3:= length @variable v7;
+  #L51ac8a.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac90.  v3:= " " @kind object;
+  #L51ac94.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ac9a.  call temp:= `toString`(v7) @signature `Ljava/util/Arrays;.toString:([Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L51aca0.  v7:= temp @kind object;
+  #L51aca2.  call temp:= `append`(v1, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aca8.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51acae.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51acb4.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51acba.  v7:= v6.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51acbe.  call temp:= `append`(v1, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51acc4.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51acca.  v7:= temp @kind object;
+  #L51accc.  call temp:= `fail`(v6, v7) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @kind virtual;
+  #L51acd2.  v7:= temp @kind object;
+  #L51acd4.  throw v7;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `assertValuesOnly`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this, `java.lang.Object`[] v2 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValuesOnly:([Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51ace8.  call temp:= `assertSubscribed`(v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertSubscribed:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51acee.  v0:= temp @kind object;
+  #L51acf0.  call temp:= `assertValues`(v0, v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertValues:([Ljava/lang/Object;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51acf6.  v2:= temp @kind object;
+  #L51acf8.  call temp:= `assertNoErrors`(v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNoErrors:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51acfe.  v2:= temp @kind object;
+  #L51ad00.  call temp:= `assertNotComplete`(v2) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.assertNotComplete:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @kind virtual;
+  #L51ad06.  v2:= temp @kind object;
+  #L51ad08.  return v2 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `await`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v5 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.await:()Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L51ad1c.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L51ad20.  call temp:= `getCount`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L51ad26.  v0:= temp @kind wide;
+  #L51ad28.  v2:= 0L;
+  #L51ad2c.  v4:= lcmp(v0, v2);
+  #L51ad30.  if v4 != 0 then goto L51ad36;
+  #L51ad34.  return v5 @kind object;
+  #L51ad36.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L51ad3a.  call `await`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L51ad40.  return v5 @kind object;
+}
+procedure `boolean` `await`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v5 @kind this, `long` v6 , `java.util.concurrent.TimeUnit` v8 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.await:(JLjava/util/concurrent/TimeUnit;)Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L51a4c8.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L51a4cc.  call temp:= `getCount`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L51a4d2.  v0:= temp @kind wide;
+  #L51a4d4.  v2:= 0L;
+  #L51a4d8.  v4:= lcmp(v0, v2);
+  #L51a4dc.  if v4 == 0 then goto L51a4f6;
+  #L51a4e0.  v0:= v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L51a4e4.  call temp:= `await`(v0, v6, v8) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L51a4ea.  v6:= temp;
+  #L51a4ec.  if v6 == 0 then goto L51a4f2;
+  #L51a4f0.  goto L51a4f6;
+  #L51a4f2.  v6:= 0I;
+  #L51a4f4.  goto L51a4f8;
+  #L51a4f6.  v6:= 1I;
+  #L51a4f8.  v7:= v6 ^~ 1;
+  #L51a4fc.  v5.`io.reactivex.rxjava3.observers.BaseTestConsumer.timeout` @type ^`boolean` := v7 @kind boolean;
+  #L51a500.  return v6;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `awaitCount`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v7 @kind this, `int` v8 ) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.awaitCount:(I)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L51ad54.  call temp:= `currentTimeMillis`() @signature `Ljava/lang/System;.currentTimeMillis:()J` @kind static;
+  #L51ad5a.  v0:= temp @kind wide;
+  #L51ad5c.  call temp:= `currentTimeMillis`() @signature `Ljava/lang/System;.currentTimeMillis:()J` @kind static;
+  #L51ad62.  v2:= temp @kind wide;
+  #L51ad64.  v2:= v2 - v0 @kind long;
+  #L51ad66.  v4:= 5000L;
+  #L51ad6a.  v6:= lcmp(v2, v4);
+  #L51ad6e.  if v6 < 0 then goto L51ad7a;
+  #L51ad72.  v8:= 1I;
+  #L51ad74.  v7.`io.reactivex.rxjava3.observers.BaseTestConsumer.timeout` @type ^`boolean` := v8 @kind boolean;
+  #L51ad78.  goto L51ada4;
+  #L51ad7a.  v2:= v7.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L51ad7e.  call temp:= `getCount`(v2) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L51ad84.  v2:= temp @kind wide;
+  #L51ad86.  v4:= 0L;
+  #L51ad8a.  v6:= lcmp(v2, v4);
+  #L51ad8e.  if v6 != 0 then goto L51ad94;
+  #L51ad92.  goto L51ada4;
+  #L51ad94.  v2:= v7.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51ad98.  call temp:= `size`(v2) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51ad9e.  v2:= temp;
+  #L51ada0.  if v2 < v8 then goto L51ada6;
+  #L51ada4.  return v7 @kind object;
+  #L51ada6.  v2:= 10L;
+  #L51adaa.  call `sleep`(v2) @signature `Ljava/lang/Thread;.sleep:(J)V` @kind static;
+  #L51adb0.  goto L51ad5c;
+  #L51adb2.  v8:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L51adb4.  v0:= new `java.lang.RuntimeException`;
+  #L51adb8.  call `<init>`(v0, v8) @signature `Ljava/lang/RuntimeException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L51adbe.  throw v0;
+  catch `java.lang.InterruptedException` @[L51adaa..L51adb0] goto L51adb2;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `awaitDone`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this, `long` v2 , `java.util.concurrent.TimeUnit` v4 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.awaitDone:(JLjava/util/concurrent/TimeUnit;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51ade0.  v0:= v1.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L51ade4.  call temp:= `await`(v0, v2, v4) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L51adea.  v2:= temp;
+  #L51adec.  if v2 != 0 then goto L51adfc;
+  #L51adf0.  v2:= 1I;
+  #L51adf2.  v1.`io.reactivex.rxjava3.observers.BaseTestConsumer.timeout` @type ^`boolean` := v2 @kind boolean;
+  #L51adf6.  call `dispose`(v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.dispose:()V` @kind virtual;
+  #L51adfc.  return v1 @kind object;
+  #L51adfe.  v2:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L51ae00.  call `dispose`(v1) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.dispose:()V` @kind virtual;
+  #L51ae06.  call temp:= `wrapOrThrow`(v2) @signature `Lio/reactivex/rxjava3/internal/util/ExceptionHelper;.wrapOrThrow:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L51ae0c.  v2:= temp @kind object;
+  #L51ae0e.  throw v2;
+  catch `java.lang.InterruptedException` @[L51ade0..L51adfc] goto L51adfe;
+}
+procedure `void` `dispose`() @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.dispose:()V` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `java.lang.AssertionError` `fail`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v3 @kind this, `java.lang.String` v4 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.fail:(Ljava/lang/String;)Ljava/lang/AssertionError;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L51ae48.  v0:= new `java.lang.StringBuilder`;
+  #L51ae4c.  call temp:= `length`(v4) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L51ae52.  v1:= temp;
+  #L51ae54.  v1:= v1 + 64;
+  #L51ae58.  call `<init>`(v0, v1) @signature `Ljava/lang/StringBuilder;.<init>:(I)V` @kind direct;
+  #L51ae5e.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ae64.  v4:= " (" @kind object;
+  #L51ae68.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ae6e.  v4:= "latch = " @kind object;
+  #L51ae72.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ae78.  v4:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.done` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L51ae7c.  call temp:= `getCount`(v4) @signature `Ljava/util/concurrent/CountDownLatch;.getCount:()J` @kind virtual;
+  #L51ae82.  v1:= temp @kind wide;
+  #L51ae84.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ae8a.  v4:= ", " @kind object;
+  #L51ae8e.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ae94.  v1:= "values = " @kind object;
+  #L51ae98.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51ae9e.  v1:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51aea2.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51aea8.  v1:= temp;
+  #L51aeaa.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aeb0.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aeb6.  v1:= "errors = " @kind object;
+  #L51aeba.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aec0.  v1:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51aec4.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51aeca.  v1:= temp;
+  #L51aecc.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aed2.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aed8.  v4:= "completions = " @kind object;
+  #L51aedc.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aee2.  v1:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.completions` @type ^`long` @kind wide;
+  #L51aee6.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aeec.  v4:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.timeout` @type ^`boolean` @kind boolean;
+  #L51aef0.  if v4 == 0 then goto L51aefe;
+  #L51aef4.  v4:= ", timeout!" @kind object;
+  #L51aef8.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51aefe.  call temp:= `isDisposed`(v3) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.isDisposed:()Z` @kind virtual;
+  #L51af04.  v4:= temp;
+  #L51af06.  if v4 == 0 then goto L51af14;
+  #L51af0a.  v4:= ", disposed!" @kind object;
+  #L51af0e.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51af14.  v4:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.tag` @type ^`java.lang.CharSequence` @kind object;
+  #L51af18.  if v4 == 0 then goto L51af2c;
+  #L51af1c.  v1:= ", tag = " @kind object;
+  #L51af20.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51af26.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51af2c.  v4:= 41I;
+  #L51af30.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L51af36.  v4:= new `java.lang.AssertionError`;
+  #L51af3a.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L51af40.  v0:= temp @kind object;
+  #L51af42.  call `<init>`(v4, v0) @signature `Ljava/lang/AssertionError;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L51af48.  v0:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51af4c.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L51af52.  v0:= temp;
+  #L51af54.  if v0 != 0 then goto L51af98;
+  #L51af58.  v0:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51af5c.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L51af62.  v0:= temp;
+  #L51af64.  v1:= 1I;
+  #L51af66.  if v0 != v1 then goto L51af84;
+  #L51af6a.  v0:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51af6e.  v1:= 0I;
+  #L51af70.  call temp:= `get`(v0, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L51af76.  v0:= temp @kind object;
+  #L51af78.  v0:= (`java.lang.Throwable`) v0 @kind object;
+  #L51af7c.  call temp:= `initCause`(v4, v0) @signature `Ljava/lang/AssertionError;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L51af82.  goto L51af98;
+  #L51af84.  v0:= new `io.reactivex.rxjava3.exceptions.CompositeException`;
+  #L51af88.  v1:= v3.`io.reactivex.rxjava3.observers.BaseTestConsumer.errors` @type ^`java.util.List` @kind object;
+  #L51af8c.  call `<init>`(v0, v1) @signature `Lio/reactivex/rxjava3/exceptions/CompositeException;.<init>:(Ljava/lang/Iterable;)V` @kind direct;
+  #L51af92.  call temp:= `initCause`(v4, v0) @signature `Ljava/lang/AssertionError;.initCause:(Ljava/lang/Throwable;)Ljava/lang/Throwable;` @kind virtual;
+  #L51af98.  return v4 @kind object;
+}
+procedure `boolean` `isDisposed`() @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.isDisposed:()Z` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `java.util.List` `values`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v1 @kind this) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.values:()Ljava/util/List;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L51b00c.  v0:= v1.`io.reactivex.rxjava3.observers.BaseTestConsumer.values` @type ^`java.util.List` @kind object;
+  #L51b010.  return v0 @kind object;
+}
+procedure `io.reactivex.rxjava3.observers.BaseTestConsumer` `withTag`(`io.reactivex.rxjava3.observers.BaseTestConsumer` v0 @kind this, `java.lang.CharSequence` v1 @kind object) @signature `Lio/reactivex/rxjava3/observers/BaseTestConsumer;.withTag:(Ljava/lang/CharSequence;)Lio/reactivex/rxjava3/observers/BaseTestConsumer;` @AccessFlag PUBLIC_FINAL {
+    temp;
+
+  #L51ae30.  v0.`io.reactivex.rxjava3.observers.BaseTestConsumer.tag` @type ^`java.lang.CharSequence` := v1 @kind object;
+  #L51ae34.  return v0 @kind object;
+}

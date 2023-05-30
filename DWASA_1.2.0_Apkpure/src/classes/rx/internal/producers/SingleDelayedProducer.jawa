@@ -1,0 +1,99 @@
+record `rx.internal.producers.SingleDelayedProducer` @kind class @AccessFlag PUBLIC_FINAL extends `java.util.concurrent.atomic.AtomicInteger` @kind class, `rx.Producer` @kind interface {
+  `rx.Subscriber` `rx.internal.producers.SingleDelayedProducer.child` @AccessFlag FINAL;
+  `java.lang.Object` `rx.internal.producers.SingleDelayedProducer.value` @AccessFlag ;
+}
+global `int` `@@rx.internal.producers.SingleDelayedProducer.HAS_REQUEST_HAS_VALUE` @AccessFlag STATIC_FINAL;
+global `int` `@@rx.internal.producers.SingleDelayedProducer.HAS_REQUEST_NO_VALUE` @AccessFlag STATIC_FINAL;
+global `int` `@@rx.internal.producers.SingleDelayedProducer.NO_REQUEST_HAS_VALUE` @AccessFlag STATIC_FINAL;
+global `int` `@@rx.internal.producers.SingleDelayedProducer.NO_REQUEST_NO_VALUE` @AccessFlag STATIC_FINAL;
+global `long` `@@rx.internal.producers.SingleDelayedProducer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.producers.SingleDelayedProducer` v0 @kind this, `rx.Subscriber` v1 @kind object) @signature `Lrx/internal/producers/SingleDelayedProducer;.<init>:(Lrx/Subscriber;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b1bd0.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4b1bd6.  v0.`rx.internal.producers.SingleDelayedProducer.child` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4b1bda.  return @kind void;
+}
+procedure `void` `emit`(`rx.Subscriber` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/producers/SingleDelayedProducer;.emit:(Lrx/Subscriber;Ljava/lang/Object;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+
+  #L4b1bec.  call temp:= `isUnsubscribed`(v1) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4b1bf2.  v0:= temp;
+  #L4b1bf4.  if v0 == 0 then goto L4b1bfa;
+  #L4b1bf8.  return @kind void;
+  #L4b1bfa.  call `onNext`(v1, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4b1c00.  call temp:= `isUnsubscribed`(v1) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4b1c06.  v2:= temp;
+  #L4b1c08.  if v2 == 0 then goto L4b1c0e;
+  #L4b1c0c.  return @kind void;
+  #L4b1c0e.  call `onCompleted`(v1) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4b1c14.  return @kind void;
+  #L4b1c16.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b1c18.  call `throwOrReport`(v0, v1, v2) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;Ljava/lang/Object;)V` @kind static;
+  #L4b1c1e.  return @kind void;
+  catch `java.lang.Throwable` @[L4b1bfa..L4b1c00] goto L4b1c16;
+}
+procedure `void` `request`(`rx.internal.producers.SingleDelayedProducer` v3 @kind this, `long` v4 ) @signature `Lrx/internal/producers/SingleDelayedProducer;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b1c3c.  v0:= 0L;
+  #L4b1c40.  v2:= lcmp(v4, v0);
+  #L4b1c44.  if v2 < 0 then goto L4b1c94;
+  #L4b1c48.  v2:= lcmp(v4, v0);
+  #L4b1c4c.  if v2 != 0 then goto L4b1c52;
+  #L4b1c50.  return @kind void;
+  #L4b1c52.  call temp:= `get`(v3) @signature `Lrx/internal/producers/SingleDelayedProducer;.get:()I` @kind virtual;
+  #L4b1c58.  v4:= temp;
+  #L4b1c5a.  if v4 != 0 then goto L4b1c70;
+  #L4b1c5e.  v4:= 0I;
+  #L4b1c60.  v5:= 2I;
+  #L4b1c62.  call temp:= `compareAndSet`(v3, v4, v5) @signature `Lrx/internal/producers/SingleDelayedProducer;.compareAndSet:(II)Z` @kind virtual;
+  #L4b1c68.  v4:= temp;
+  #L4b1c6a.  if v4 != 0 then goto L4b1c92;
+  #L4b1c6e.  goto L4b1c52;
+  #L4b1c70.  v5:= 1I;
+  #L4b1c72.  if v4 != v5 then goto L4b1c92;
+  #L4b1c76.  v4:= 3I;
+  #L4b1c78.  call temp:= `compareAndSet`(v3, v5, v4) @signature `Lrx/internal/producers/SingleDelayedProducer;.compareAndSet:(II)Z` @kind virtual;
+  #L4b1c7e.  v4:= temp;
+  #L4b1c80.  if v4 == 0 then goto L4b1c92;
+  #L4b1c84.  v4:= v3.`rx.internal.producers.SingleDelayedProducer.child` @type ^`rx.Subscriber` @kind object;
+  #L4b1c88.  v5:= v3.`rx.internal.producers.SingleDelayedProducer.value` @type ^`java.lang.Object` @kind object;
+  #L4b1c8c.  call `emit`(v4, v5) @signature `Lrx/internal/producers/SingleDelayedProducer;.emit:(Lrx/Subscriber;Ljava/lang/Object;)V` @kind static;
+  #L4b1c92.  return @kind void;
+  #L4b1c94.  v4:= new `java.lang.IllegalArgumentException`;
+  #L4b1c98.  v5:= "n >= 0 required" @kind object;
+  #L4b1c9c.  call `<init>`(v4, v5) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b1ca2.  goto L4b1ca6;
+  #L4b1ca4.  throw v4;
+  #L4b1ca6.  goto L4b1ca4;
+}
+procedure `void` `setValue`(`rx.internal.producers.SingleDelayedProducer` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lrx/internal/producers/SingleDelayedProducer;.setValue:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b1cb8.  call temp:= `get`(v2) @signature `Lrx/internal/producers/SingleDelayedProducer;.get:()I` @kind virtual;
+  #L4b1cbe.  v0:= temp;
+  #L4b1cc0.  if v0 != 0 then goto L4b1cda;
+  #L4b1cc4.  v2.`rx.internal.producers.SingleDelayedProducer.value` @type ^`java.lang.Object` := v3 @kind object;
+  #L4b1cc8.  v0:= 0I;
+  #L4b1cca.  v1:= 1I;
+  #L4b1ccc.  call temp:= `compareAndSet`(v2, v0, v1) @signature `Lrx/internal/producers/SingleDelayedProducer;.compareAndSet:(II)Z` @kind virtual;
+  #L4b1cd2.  v0:= temp;
+  #L4b1cd4.  if v0 != 0 then goto L4b1cf8;
+  #L4b1cd8.  goto L4b1cb8;
+  #L4b1cda.  v1:= 2I;
+  #L4b1cdc.  if v0 != v1 then goto L4b1cf8;
+  #L4b1ce0.  v0:= 3I;
+  #L4b1ce2.  call temp:= `compareAndSet`(v2, v1, v0) @signature `Lrx/internal/producers/SingleDelayedProducer;.compareAndSet:(II)Z` @kind virtual;
+  #L4b1ce8.  v0:= temp;
+  #L4b1cea.  if v0 == 0 then goto L4b1cf8;
+  #L4b1cee.  v0:= v2.`rx.internal.producers.SingleDelayedProducer.child` @type ^`rx.Subscriber` @kind object;
+  #L4b1cf2.  call `emit`(v0, v3) @signature `Lrx/internal/producers/SingleDelayedProducer;.emit:(Lrx/Subscriber;Ljava/lang/Object;)V` @kind static;
+  #L4b1cf8.  return @kind void;
+}

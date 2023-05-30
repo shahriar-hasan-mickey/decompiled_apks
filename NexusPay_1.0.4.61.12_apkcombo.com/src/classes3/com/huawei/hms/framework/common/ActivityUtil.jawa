@@ -1,0 +1,78 @@
+record `com.huawei.hms.framework.common.ActivityUtil` @kind class @AccessFlag PUBLIC {
+}
+global `java.lang.String` `@@com.huawei.hms.framework.common.ActivityUtil.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.huawei.hms.framework.common.ActivityUtil` v0 @kind this) @signature `Lcom/huawei/hms/framework/common/ActivityUtil;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L206624.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L20662a.  return @kind void;
+}
+procedure `android.app.PendingIntent` `getActivities`(`android.content.Context` v2 @kind object, `int` v3 , `android.content.Intent`[] v4 @kind object, `int` v5 ) @signature `Lcom/huawei/hms/framework/common/ActivityUtil;.getActivities:(Landroid/content/Context;I[Landroid/content/Intent;I)Landroid/app/PendingIntent;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L206520.  v0:= "ActivityUtil" @kind object;
+  #L206524.  v1:= 0I;
+  #L206526.  if v2 != 0 then goto L206536;
+  #L20652a.  v2:= "context is null" @kind object;
+  #L20652e.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L206534.  return v1 @kind object;
+  #L206536.  call temp:= `getActivities`(v2, v3, v4, v5) @signature `Landroid/app/PendingIntent;.getActivities:(Landroid/content/Context;I[Landroid/content/Intent;I)Landroid/app/PendingIntent;` @kind static;
+  #L20653c.  v1:= temp @kind object;
+  #L20653e.  goto L20654c;
+  #L206540.  v2:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L206542.  v3:= "dealType rethrowFromSystemServer:" @kind object;
+  #L206546.  call `e`(v0, v3, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind static;
+  #L20654c.  return v1 @kind object;
+  catch `java.lang.RuntimeException` @[L206536..L20653e] goto L206540;
+}
+procedure `boolean` `isForeground`(`android.content.Context` v5 @kind object) @signature `Lcom/huawei/hms/framework/common/ActivityUtil;.isForeground:(Landroid/content/Context;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L206570.  v0:= "ActivityUtil" @kind object;
+  #L206574.  if v5 == 0 then goto L2065fe;
+  #L206578.  v1:= "activity" @kind object;
+  #L20657c.  call temp:= `getSystemService`(v5, v1) @signature `Lcom/huawei/hms/framework/common/ContextCompat;.getSystemService:(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L206582.  v1:= temp @kind object;
+  #L206584.  v1:= (`android.app.ActivityManager`) v1 @kind object;
+  #L206588.  if v1 == 0 then goto L2065fe;
+  #L20658c.  v2:= 0I;
+  #L20658e.  call temp:= `getRunningAppProcesses`(v1) @signature `Landroid/app/ActivityManager;.getRunningAppProcesses:()Ljava/util/List;` @kind virtual;
+  #L206594.  v2:= temp @kind object;
+  #L206596.  goto L2065a4;
+  #L206598.  v1:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L20659a.  v3:= "activityManager getRunningAppProcesses occur exception: " @kind object;
+  #L20659e.  call `w`(v0, v3, v1) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind static;
+  #L2065a4.  if v2 == 0 then goto L2065fe;
+  #L2065a8.  call temp:= `iterator`(v2) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2065ae.  v1:= temp @kind object;
+  #L2065b0.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2065b6.  v2:= temp;
+  #L2065b8.  if v2 == 0 then goto L2065fe;
+  #L2065bc.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2065c2.  v2:= temp @kind object;
+  #L2065c4.  v2:= (`android.app.ActivityManager$RunningAppProcessInfo`) v2 @kind object;
+  #L2065c8.  v3:= v2.`android.app.ActivityManager$RunningAppProcessInfo.processName` @type ^`java.lang.String` @kind object;
+  #L2065cc.  if v3 == 0 then goto L2065b0;
+  #L2065d0.  call temp:= `getPackageName`(v5) @signature `Landroid/content/Context;.getPackageName:()Ljava/lang/String;` @kind virtual;
+  #L2065d6.  v4:= temp @kind object;
+  #L2065d8.  call temp:= `equals`(v3, v4) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2065de.  v3:= temp;
+  #L2065e0.  if v3 == 0 then goto L2065b0;
+  #L2065e4.  v2:= v2.`android.app.ActivityManager$RunningAppProcessInfo.importance` @type ^`int`;
+  #L2065e8.  v3:= 100I;
+  #L2065ec.  if v2 != v3 then goto L2065b0;
+  #L2065f0.  v5:= "isForeground true" @kind object;
+  #L2065f4.  call `v`(v0, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.v:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L2065fa.  v5:= 1I;
+  #L2065fc.  return v5;
+  #L2065fe.  v5:= 0I;
+  #L206600.  return v5;
+  catch `java.lang.RuntimeException` @[L20658e..L206596] goto L206598;
+}

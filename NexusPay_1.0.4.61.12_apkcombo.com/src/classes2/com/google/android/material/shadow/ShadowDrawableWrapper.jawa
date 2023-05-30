@@ -1,0 +1,758 @@
+record `com.google.android.material.shadow.ShadowDrawableWrapper` @kind class @AccessFlag PUBLIC extends `androidx.appcompat.graphics.drawable.DrawableWrapper` @kind class {
+  `boolean` `com.google.android.material.shadow.ShadowDrawableWrapper.addPaddingForCorners` @AccessFlag PRIVATE;
+  `android.graphics.RectF` `com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @AccessFlag FINAL;
+  `float` `com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @AccessFlag ;
+  `android.graphics.Paint` `com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @AccessFlag FINAL;
+  `android.graphics.Path` `com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @AccessFlag ;
+  `boolean` `com.google.android.material.shadow.ShadowDrawableWrapper.dirty` @AccessFlag PRIVATE;
+  `android.graphics.Paint` `com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @AccessFlag FINAL;
+  `float` `com.google.android.material.shadow.ShadowDrawableWrapper.maxShadowSize` @AccessFlag ;
+  `boolean` `com.google.android.material.shadow.ShadowDrawableWrapper.printedShadowClipWarning` @AccessFlag PRIVATE;
+  `float` `com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @AccessFlag ;
+  `float` `com.google.android.material.shadow.ShadowDrawableWrapper.rawShadowSize` @AccessFlag ;
+  `float` `com.google.android.material.shadow.ShadowDrawableWrapper.rotation` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.shadow.ShadowDrawableWrapper.shadowEndColor` @AccessFlag PRIVATE_FINAL;
+  `int` `com.google.android.material.shadow.ShadowDrawableWrapper.shadowMiddleColor` @AccessFlag PRIVATE_FINAL;
+  `float` `com.google.android.material.shadow.ShadowDrawableWrapper.shadowSize` @AccessFlag ;
+  `int` `com.google.android.material.shadow.ShadowDrawableWrapper.shadowStartColor` @AccessFlag PRIVATE_FINAL;
+}
+global `double` `@@com.google.android.material.shadow.ShadowDrawableWrapper.COS_45` @AccessFlag STATIC_FINAL;
+global `float` `@@com.google.android.material.shadow.ShadowDrawableWrapper.SHADOW_BOTTOM_SCALE` @AccessFlag STATIC_FINAL;
+global `float` `@@com.google.android.material.shadow.ShadowDrawableWrapper.SHADOW_HORIZ_SCALE` @AccessFlag STATIC_FINAL;
+global `float` `@@com.google.android.material.shadow.ShadowDrawableWrapper.SHADOW_MULTIPLIER` @AccessFlag STATIC_FINAL;
+global `float` `@@com.google.android.material.shadow.ShadowDrawableWrapper.SHADOW_TOP_SCALE` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L3fb4e0.  v0:= 45.0D;
+  #L3fb4ea.  call temp:= `toRadians`(v0) @signature `Ljava/lang/Math;.toRadians:(D)D` @kind static;
+  #L3fb4f0.  v0:= temp @kind wide;
+  #L3fb4f2.  call temp:= `cos`(v0) @signature `Ljava/lang/Math;.cos:(D)D` @kind static;
+  #L3fb4f8.  v0:= temp @kind wide;
+  #L3fb4fa.  `@@com.google.android.material.shadow.ShadowDrawableWrapper.COS_45` @type ^`double` := v0 @kind wide;
+  #L3fb4fe.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this, `android.content.Context` v2 @kind object, `android.graphics.drawable.Drawable` v3 @kind object, `float` v4 , `float` v5 , `float` v6 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.<init>:(Landroid/content/Context;Landroid/graphics/drawable/Drawable;FFF)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3fb510.  call `<init>`(v1, v3) @signature `Landroidx/appcompat/graphics/drawable/DrawableWrapper;.<init>:(Landroid/graphics/drawable/Drawable;)V` @kind direct;
+  #L3fb516.  v3:= 1I;
+  #L3fb518.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.dirty` @type ^`boolean` := v3 @kind boolean;
+  #L3fb51c.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.addPaddingForCorners` @type ^`boolean` := v3 @kind boolean;
+  #L3fb520.  v3:= 0I;
+  #L3fb522.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.printedShadowClipWarning` @type ^`boolean` := v3 @kind boolean;
+  #L3fb526.  v0:= `@@com.google.android.material.R$color.design_fab_shadow_start_color` @type ^`int`;
+  #L3fb52a.  call temp:= `getColor`(v2, v0) @signature `Landroidx/core/content/ContextCompat;.getColor:(Landroid/content/Context;I)I` @kind static;
+  #L3fb530.  v0:= temp;
+  #L3fb532.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowStartColor` @type ^`int` := v0;
+  #L3fb536.  v0:= `@@com.google.android.material.R$color.design_fab_shadow_mid_color` @type ^`int`;
+  #L3fb53a.  call temp:= `getColor`(v2, v0) @signature `Landroidx/core/content/ContextCompat;.getColor:(Landroid/content/Context;I)I` @kind static;
+  #L3fb540.  v0:= temp;
+  #L3fb542.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowMiddleColor` @type ^`int` := v0;
+  #L3fb546.  v0:= `@@com.google.android.material.R$color.design_fab_shadow_end_color` @type ^`int`;
+  #L3fb54a.  call temp:= `getColor`(v2, v0) @signature `Landroidx/core/content/ContextCompat;.getColor:(Landroid/content/Context;I)I` @kind static;
+  #L3fb550.  v2:= temp;
+  #L3fb552.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowEndColor` @type ^`int` := v2;
+  #L3fb556.  v2:= new `android.graphics.Paint`;
+  #L3fb55a.  v0:= 5I;
+  #L3fb55c.  call `<init>`(v2, v0) @signature `Landroid/graphics/Paint;.<init>:(I)V` @kind direct;
+  #L3fb562.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` := v2 @kind object;
+  #L3fb566.  v0:= `@@android.graphics.Paint$Style.FILL` @type ^`android.graphics.Paint$Style` @kind object;
+  #L3fb56a.  call `setStyle`(v2, v0) @signature `Landroid/graphics/Paint;.setStyle:(Landroid/graphics/Paint$Style;)V` @kind virtual;
+  #L3fb570.  call temp:= `round`(v4) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L3fb576.  v2:= temp;
+  #L3fb578.  v2:= (`float`) v2 @kind i2f;
+  #L3fb57a.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float` := v2;
+  #L3fb57e.  v2:= new `android.graphics.RectF`;
+  #L3fb582.  call `<init>`(v2) @signature `Landroid/graphics/RectF;.<init>:()V` @kind direct;
+  #L3fb588.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` := v2 @kind object;
+  #L3fb58c.  v2:= new `android.graphics.Paint`;
+  #L3fb590.  v4:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb594.  call `<init>`(v2, v4) @signature `Landroid/graphics/Paint;.<init>:(Landroid/graphics/Paint;)V` @kind direct;
+  #L3fb59a.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` := v2 @kind object;
+  #L3fb59e.  call `setAntiAlias`(v2, v3) @signature `Landroid/graphics/Paint;.setAntiAlias:(Z)V` @kind virtual;
+  #L3fb5a4.  call `setShadowSize`(v1, v5, v6) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setShadowSize:(FF)V` @kind virtual;
+  #L3fb5aa.  return @kind void;
+}
+procedure `void` `buildComponents`(`com.google.android.material.shadow.ShadowDrawableWrapper` v6 @kind this, `android.graphics.Rect` v7 @kind object) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.buildComponents:(Landroid/graphics/Rect;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L3fb5bc.  v0:= v6.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb5c0.  v1:= 1.5F;
+  #L3fb5c4.  v1:= v1 * v0 @kind float;
+  #L3fb5c8.  v2:= v6.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb5cc.  v3:= v7.`android.graphics.Rect.left` @type ^`int`;
+  #L3fb5d0.  v3:= (`float`) v3 @kind i2f;
+  #L3fb5d2.  v3:= v3 + v0 @kind float;
+  #L3fb5d4.  v4:= v7.`android.graphics.Rect.top` @type ^`int`;
+  #L3fb5d8.  v4:= (`float`) v4 @kind i2f;
+  #L3fb5da.  v4:= v4 + v1 @kind float;
+  #L3fb5dc.  v5:= v7.`android.graphics.Rect.right` @type ^`int`;
+  #L3fb5e0.  v5:= (`float`) v5 @kind i2f;
+  #L3fb5e2.  v5:= v5 - v0 @kind float;
+  #L3fb5e4.  v7:= v7.`android.graphics.Rect.bottom` @type ^`int`;
+  #L3fb5e8.  v7:= (`float`) v7 @kind i2f;
+  #L3fb5ea.  v7:= v7 - v1 @kind float;
+  #L3fb5ec.  call `set`(v2, v3, v4, v5, v7) @signature `Landroid/graphics/RectF;.set:(FFFF)V` @kind virtual;
+  #L3fb5f2.  call temp:= `getWrappedDrawable`(v6) @signature `Landroidx/appcompat/graphics/drawable/DrawableWrapper;.getWrappedDrawable:()Landroid/graphics/drawable/Drawable;` @kind virtual;
+  #L3fb5f8.  v7:= temp @kind object;
+  #L3fb5fa.  v0:= v6.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb5fe.  v1:= v0.`android.graphics.RectF.left` @type ^`float`;
+  #L3fb602.  v1:= (`int`) v1 @kind f2i;
+  #L3fb604.  v2:= v0.`android.graphics.RectF.top` @type ^`float`;
+  #L3fb608.  v2:= (`int`) v2 @kind f2i;
+  #L3fb60a.  v3:= v0.`android.graphics.RectF.right` @type ^`float`;
+  #L3fb60e.  v3:= (`int`) v3 @kind f2i;
+  #L3fb610.  v0:= v0.`android.graphics.RectF.bottom` @type ^`float`;
+  #L3fb614.  v0:= (`int`) v0 @kind f2i;
+  #L3fb616.  call `setBounds`(v7, v1, v2, v3, v0) @signature `Landroid/graphics/drawable/Drawable;.setBounds:(IIII)V` @kind virtual;
+  #L3fb61c.  call `buildShadowCorners`(v6) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.buildShadowCorners:()V` @kind direct;
+  #L3fb622.  return @kind void;
+}
+procedure `void` `buildShadowCorners`(`com.google.android.material.shadow.ShadowDrawableWrapper` v16 @kind this) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.buildShadowCorners:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+
+  #L3fb634.  v0:= v16 @kind object;
+  #L3fb638.  v1:= new `android.graphics.RectF`;
+  #L3fb63c.  v2:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb640.  v3:= -v2 @kind float;
+  #L3fb642.  v4:= -v2 @kind float;
+  #L3fb644.  call `<init>`(v1, v3, v4, v2, v2) @signature `Landroid/graphics/RectF;.<init>:(FFFF)V` @kind direct;
+  #L3fb64a.  v2:= new `android.graphics.RectF`;
+  #L3fb64e.  call `<init>`(v2, v1) @signature `Landroid/graphics/RectF;.<init>:(Landroid/graphics/RectF;)V` @kind direct;
+  #L3fb654.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowSize` @type ^`float`;
+  #L3fb658.  v4:= -v3 @kind float;
+  #L3fb65a.  v3:= -v3 @kind float;
+  #L3fb65c.  call `inset`(v2, v4, v3) @signature `Landroid/graphics/RectF;.inset:(FF)V` @kind virtual;
+  #L3fb662.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb666.  if v3 != 0 then goto L3fb67a;
+  #L3fb66a.  v3:= new `android.graphics.Path`;
+  #L3fb66e.  call `<init>`(v3) @signature `Landroid/graphics/Path;.<init>:()V` @kind direct;
+  #L3fb674.  v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` := v3 @kind object;
+  #L3fb678.  goto L3fb680;
+  #L3fb67a.  call `reset`(v3) @signature `Landroid/graphics/Path;.reset:()V` @kind virtual;
+  #L3fb680.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb684.  v4:= `@@android.graphics.Path$FillType.EVEN_ODD` @type ^`android.graphics.Path$FillType` @kind object;
+  #L3fb688.  call `setFillType`(v3, v4) @signature `Landroid/graphics/Path;.setFillType:(Landroid/graphics/Path$FillType;)V` @kind virtual;
+  #L3fb68e.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb692.  v4:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb696.  v4:= -v4 @kind float;
+  #L3fb698.  v5:= 0I;
+  #L3fb69a.  call `moveTo`(v3, v4, v5) @signature `Landroid/graphics/Path;.moveTo:(FF)V` @kind virtual;
+  #L3fb6a0.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb6a4.  v4:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowSize` @type ^`float`;
+  #L3fb6a8.  v4:= -v4 @kind float;
+  #L3fb6aa.  call `rLineTo`(v3, v4, v5) @signature `Landroid/graphics/Path;.rLineTo:(FF)V` @kind virtual;
+  #L3fb6b0.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb6b4.  v4:= 180.0F;
+  #L3fb6b8.  v6:= 90.0F;
+  #L3fb6bc.  v7:= 0I;
+  #L3fb6be.  call `arcTo`(v3, v2, v4, v6, v7) @signature `Landroid/graphics/Path;.arcTo:(Landroid/graphics/RectF;FFZ)V` @kind virtual;
+  #L3fb6c4.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb6c8.  v4:= 270.0F;
+  #L3fb6cc.  v6:= -90.0F;
+  #L3fb6d0.  call `arcTo`(v3, v1, v4, v6, v7) @signature `Landroid/graphics/Path;.arcTo:(Landroid/graphics/RectF;FFZ)V` @kind virtual;
+  #L3fb6d6.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb6da.  call `close`(v3) @signature `Landroid/graphics/Path;.close:()V` @kind virtual;
+  #L3fb6e0.  v3:= v2.`android.graphics.RectF.top` @type ^`float`;
+  #L3fb6e4.  v11:= -v3 @kind float;
+  #L3fb6e6.  v3:= 2I;
+  #L3fb6e8.  v4:= 1I;
+  #L3fb6ea.  v6:= 3I;
+  #L3fb6ec.  v8:= fcmpl(v11, v5);
+  #L3fb6f0.  if v8 <= 0 then goto L3fb766;
+  #L3fb6f4.  v8:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb6f8.  v8:= v8 / v11 @kind float;
+  #L3fb6fa.  v9:= 1.0F;
+  #L3fb6fe.  v10:= v9 - v8 @kind float;
+  #L3fb702.  v12:= 2.0F;
+  #L3fb706.  v10:= v10 / v12 @kind float;
+  #L3fb708.  v10:= v10 + v8 @kind float;
+  #L3fb70a.  v15:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb70e.  v14:= new `android.graphics.RadialGradient`;
+  #L3fb712.  v13:= 4I;
+  #L3fb714.  v12:= new `int`[v13];
+  #L3fb718.  v12[v7]:= v7;
+  #L3fb71c.  v9:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowStartColor` @type ^`int`;
+  #L3fb720.  v12[v4]:= v9;
+  #L3fb724.  v9:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowMiddleColor` @type ^`int`;
+  #L3fb728.  v12[v3]:= v9;
+  #L3fb72c.  v9:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowEndColor` @type ^`int`;
+  #L3fb730.  v12[v6]:= v9;
+  #L3fb734.  v13:= new `float`[v13];
+  #L3fb738.  v13[v7]:= v5;
+  #L3fb73c.  v13[v4]:= v8;
+  #L3fb740.  v13[v3]:= v10;
+  #L3fb744.  v5:= 1.0F;
+  #L3fb748.  v13[v6]:= v5;
+  #L3fb74c.  v5:= `@@android.graphics.Shader$TileMode.CLAMP` @type ^`android.graphics.Shader$TileMode` @kind object;
+  #L3fb750.  v8:= v14 @kind object;
+  #L3fb752.  v9:= 0I;
+  #L3fb754.  v10:= 0I;
+  #L3fb756.  v3:= v14 @kind object;
+  #L3fb758.  v14:= v5 @kind object;
+  #L3fb75a.  call `<init>`(v8, v9, v10, v11, v12, v13, v14) @signature `Landroid/graphics/RadialGradient;.<init>:(FFF[I[FLandroid/graphics/Shader$TileMode;)V` @kind direct;
+  #L3fb760.  call temp:= `setShader`(v15, v3) @signature `Landroid/graphics/Paint;.setShader:(Landroid/graphics/Shader;)Landroid/graphics/Shader;` @kind virtual;
+  #L3fb766.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb76a.  v5:= new `android.graphics.LinearGradient`;
+  #L3fb76e.  v9:= 0I;
+  #L3fb770.  v10:= v1.`android.graphics.RectF.top` @type ^`float`;
+  #L3fb774.  v11:= 0I;
+  #L3fb776.  v12:= v2.`android.graphics.RectF.top` @type ^`float`;
+  #L3fb77a.  v13:= new `int`[v6];
+  #L3fb77e.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowStartColor` @type ^`int`;
+  #L3fb782.  v13[v7]:= v1;
+  #L3fb786.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowMiddleColor` @type ^`int`;
+  #L3fb78a.  v13[v4]:= v1;
+  #L3fb78e.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowEndColor` @type ^`int`;
+  #L3fb792.  v2:= 2I;
+  #L3fb794.  v13[v2]:= v1;
+  #L3fb798.  v14:= new `float`[v6];
+  #L3fb79c.  goto L3fb7c0;
+  #L3fb7a2.  v15:= `@@android.graphics.Shader$TileMode.CLAMP` @type ^`android.graphics.Shader$TileMode` @kind object;
+  #L3fb7a6.  v8:= v5 @kind object;
+  #L3fb7a8.  call `<init>`(v8, v9, v10, v11, v12, v13, v14, v15) @signature `Landroid/graphics/LinearGradient;.<init>:(FFFF[I[FLandroid/graphics/Shader$TileMode;)V` @kind direct;
+  #L3fb7ae.  call temp:= `setShader`(v3, v5) @signature `Landroid/graphics/Paint;.setShader:(Landroid/graphics/Shader;)Landroid/graphics/Shader;` @kind virtual;
+  #L3fb7b4.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb7b8.  call `setAntiAlias`(v1, v7) @signature `Landroid/graphics/Paint;.setAntiAlias:(Z)V` @kind virtual;
+  #L3fb7be.  return @kind void;
+  #L3fb7c0.  v14:= (0I, 1056964608I, 1065353216I) @kind object;
+  #L3fb7d3.  goto L3fb7a2;
+}
+procedure `float` `calculateHorizontalPadding`(`float` v6 , `float` v7 , `boolean` v8 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.calculateHorizontalPadding:(FFZ)F` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L3fb374.  if v8 == 0 then goto L3fb38e;
+  #L3fb378.  v0:= (`double`) v6 @kind f2d;
+  #L3fb37a.  v2:= 1.0D;
+  #L3fb37e.  v4:= `@@com.google.android.material.shadow.ShadowDrawableWrapper.COS_45` @type ^`double` @kind wide;
+  #L3fb382.  v2:= v2 - v4 @kind double;
+  #L3fb384.  v6:= (`double`) v7 @kind f2d;
+  #L3fb386.  v2:= v2 * v6 @kind double;
+  #L3fb38a.  v0:= v0 + v2 @kind double;
+  #L3fb38c.  v6:= (`float`) v0 @kind d2f;
+  #L3fb38e.  return v6;
+}
+procedure `float` `calculateVerticalPadding`(`float` v6 , `float` v7 , `boolean` v8 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.calculateVerticalPadding:(FFZ)F` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L3fb3a0.  v0:= 1.5F;
+  #L3fb3a4.  if v8 == 0 then goto L3fb3c4;
+  #L3fb3a8.  v6:= v6 * v0 @kind float;
+  #L3fb3ac.  v0:= (`double`) v6 @kind f2d;
+  #L3fb3ae.  v2:= 1.0D;
+  #L3fb3b2.  v4:= `@@com.google.android.material.shadow.ShadowDrawableWrapper.COS_45` @type ^`double` @kind wide;
+  #L3fb3b6.  v2:= v2 - v4 @kind double;
+  #L3fb3b8.  v6:= (`double`) v7 @kind f2d;
+  #L3fb3ba.  v2:= v2 * v6 @kind double;
+  #L3fb3be.  v0:= v0 + v2 @kind double;
+  #L3fb3c0.  v6:= (`float`) v0 @kind d2f;
+  #L3fb3c2.  return v6;
+  #L3fb3c4.  v6:= v6 * v0 @kind float;
+  #L3fb3c8.  return v6;
+}
+procedure `void` `drawShadow`(`com.google.android.material.shadow.ShadowDrawableWrapper` v20 @kind this, `android.graphics.Canvas` v21 @kind object) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.drawShadow:(Landroid/graphics/Canvas;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+    v19;
+
+  #L3fb820.  v0:= v20 @kind object;
+  #L3fb824.  v7:= v21 @kind object;
+  #L3fb828.  call temp:= `save`(v21) @signature `Landroid/graphics/Canvas;.save:()I` @kind virtual;
+  #L3fb82e.  v8:= temp;
+  #L3fb830.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.rotation` @type ^`float`;
+  #L3fb834.  v2:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb838.  call temp:= `centerX`(v2) @signature `Landroid/graphics/RectF;.centerX:()F` @kind virtual;
+  #L3fb83e.  v2:= temp;
+  #L3fb840.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb844.  call temp:= `centerY`(v3) @signature `Landroid/graphics/RectF;.centerY:()F` @kind virtual;
+  #L3fb84a.  v3:= temp;
+  #L3fb84c.  call `rotate`(v7, v1, v2, v3) @signature `Landroid/graphics/Canvas;.rotate:(FFF)V` @kind virtual;
+  #L3fb852.  v9:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb856.  v1:= -v9 @kind float;
+  #L3fb858.  v2:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowSize` @type ^`float`;
+  #L3fb85c.  v10:= v1 - v2 @kind float;
+  #L3fb860.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb864.  call temp:= `width`(v1) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L3fb86a.  v1:= temp;
+  #L3fb86c.  v2:= 2.0F;
+  #L3fb870.  v11:= v9 * v2 @kind float;
+  #L3fb874.  v1:= v1 - v11 @kind float;
+  #L3fb876.  v2:= 1I;
+  #L3fb878.  v3:= 0I;
+  #L3fb87a.  v4:= 0I;
+  #L3fb87c.  v1:= fcmpl(v1, v4);
+  #L3fb880.  if v1 <= 0 then goto L3fb888;
+  #L3fb884.  v12:= 1I;
+  #L3fb886.  goto L3fb88a;
+  #L3fb888.  v12:= 0I;
+  #L3fb88a.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb88e.  call temp:= `height`(v1) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L3fb894.  v1:= temp;
+  #L3fb896.  v1:= v1 - v11 @kind float;
+  #L3fb898.  v1:= fcmpl(v1, v4);
+  #L3fb89c.  if v1 <= 0 then goto L3fb8a4;
+  #L3fb8a0.  v13:= 1I;
+  #L3fb8a2.  goto L3fb8a6;
+  #L3fb8a4.  v13:= 0I;
+  #L3fb8a6.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.rawShadowSize` @type ^`float`;
+  #L3fb8aa.  v2:= 0.25F;
+  #L3fb8ae.  v2:= v2 * v1 @kind float;
+  #L3fb8b2.  v2:= v1 - v2 @kind float;
+  #L3fb8b6.  v3:= 0.5F;
+  #L3fb8ba.  v3:= v3 * v1 @kind float;
+  #L3fb8be.  v3:= v1 - v3 @kind float;
+  #L3fb8c2.  v14:= 1.0F;
+  #L3fb8c6.  v4:= v1 * v14 @kind float;
+  #L3fb8ca.  v1:= v1 - v4 @kind float;
+  #L3fb8cc.  v3:= v3 + v9 @kind float;
+  #L3fb8ce.  v15:= v9 / v3 @kind float;
+  #L3fb8d2.  v2:= v2 + v9 @kind float;
+  #L3fb8d4.  v6:= v9 / v2 @kind float;
+  #L3fb8d8.  v1:= v1 + v9 @kind float;
+  #L3fb8da.  v5:= v9 / v1 @kind float;
+  #L3fb8de.  call temp:= `save`(v21) @signature `Landroid/graphics/Canvas;.save:()I` @kind virtual;
+  #L3fb8e4.  v4:= temp;
+  #L3fb8e6.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb8ea.  v2:= v1.`android.graphics.RectF.left` @type ^`float`;
+  #L3fb8ee.  v2:= v2 + v9 @kind float;
+  #L3fb8f0.  v1:= v1.`android.graphics.RectF.top` @type ^`float`;
+  #L3fb8f4.  v1:= v1 + v9 @kind float;
+  #L3fb8f6.  call `translate`(v7, v2, v1) @signature `Landroid/graphics/Canvas;.translate:(FF)V` @kind virtual;
+  #L3fb8fc.  call `scale`(v7, v15, v6) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fb902.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb906.  v2:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb90a.  call `drawPath`(v7, v1, v2) @signature `Landroid/graphics/Canvas;.drawPath:(Landroid/graphics/Path;Landroid/graphics/Paint;)V` @kind virtual;
+  #L3fb910.  if v12 == 0 then goto L3fb968;
+  #L3fb914.  v1:= v14 / v15 @kind float;
+  #L3fb918.  call `scale`(v7, v1, v14) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fb91e.  v2:= 0I;
+  #L3fb920.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb924.  call temp:= `width`(v1) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L3fb92a.  v1:= temp;
+  #L3fb92c.  v16:= v1 - v11 @kind float;
+  #L3fb930.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb934.  v3:= -v1 @kind float;
+  #L3fb936.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb93a.  v17:= v1 @kind object;
+  #L3fb93e.  v1:= v21 @kind object;
+  #L3fb942.  v18:= v3;
+  #L3fb946.  v3:= v10;
+  #L3fb948.  v14:= v4;
+  #L3fb94a.  v4:= v16;
+  #L3fb94e.  v19:= v5;
+  #L3fb952.  v5:= v18;
+  #L3fb956.  v16:= v8;
+  #L3fb95a.  v8:= v6;
+  #L3fb95c.  v6:= v17 @kind object;
+  #L3fb960.  call `drawRect`(v1, v2, v3, v4, v5, v6) @signature `Landroid/graphics/Canvas;.drawRect:(FFFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L3fb966.  goto L3fb974;
+  #L3fb968.  v14:= v4;
+  #L3fb96a.  v19:= v5;
+  #L3fb96e.  v16:= v8;
+  #L3fb972.  v8:= v6;
+  #L3fb974.  call `restoreToCount`(v7, v14) @signature `Landroid/graphics/Canvas;.restoreToCount:(I)V` @kind virtual;
+  #L3fb97a.  call temp:= `save`(v21) @signature `Landroid/graphics/Canvas;.save:()I` @kind virtual;
+  #L3fb980.  v14:= temp;
+  #L3fb982.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb986.  v2:= v1.`android.graphics.RectF.right` @type ^`float`;
+  #L3fb98a.  v2:= v2 - v9 @kind float;
+  #L3fb98c.  v1:= v1.`android.graphics.RectF.bottom` @type ^`float`;
+  #L3fb990.  v1:= v1 - v9 @kind float;
+  #L3fb992.  call `translate`(v7, v2, v1) @signature `Landroid/graphics/Canvas;.translate:(FF)V` @kind virtual;
+  #L3fb998.  v6:= v19;
+  #L3fb99c.  call `scale`(v7, v15, v6) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fb9a2.  v1:= 180.0F;
+  #L3fb9a6.  call `rotate`(v7, v1) @signature `Landroid/graphics/Canvas;.rotate:(F)V` @kind virtual;
+  #L3fb9ac.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fb9b0.  v2:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb9b4.  call `drawPath`(v7, v1, v2) @signature `Landroid/graphics/Canvas;.drawPath:(Landroid/graphics/Path;Landroid/graphics/Paint;)V` @kind virtual;
+  #L3fb9ba.  if v12 == 0 then goto L3fba06;
+  #L3fb9be.  v1:= 1.0F;
+  #L3fb9c2.  v2:= v1 / v15 @kind float;
+  #L3fb9c6.  call `scale`(v7, v2, v1) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fb9cc.  v2:= 0I;
+  #L3fb9ce.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fb9d2.  call temp:= `width`(v1) @signature `Landroid/graphics/RectF;.width:()F` @kind virtual;
+  #L3fb9d8.  v1:= temp;
+  #L3fb9da.  v4:= v1 - v11 @kind float;
+  #L3fb9de.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb9e2.  v1:= -v1 @kind float;
+  #L3fb9e4.  v3:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowSize` @type ^`float`;
+  #L3fb9e8.  v5:= v1 + v3 @kind float;
+  #L3fb9ec.  v12:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fb9f0.  v1:= v21 @kind object;
+  #L3fb9f4.  v3:= v10;
+  #L3fb9f6.  v17:= v8;
+  #L3fb9fa.  v8:= v6;
+  #L3fb9fc.  v6:= v12 @kind object;
+  #L3fb9fe.  call `drawRect`(v1, v2, v3, v4, v5, v6) @signature `Landroid/graphics/Canvas;.drawRect:(FFFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L3fba04.  goto L3fba0c;
+  #L3fba06.  v17:= v8;
+  #L3fba0a.  v8:= v6;
+  #L3fba0c.  call `restoreToCount`(v7, v14) @signature `Landroid/graphics/Canvas;.restoreToCount:(I)V` @kind virtual;
+  #L3fba12.  call temp:= `save`(v21) @signature `Landroid/graphics/Canvas;.save:()I` @kind virtual;
+  #L3fba18.  v12:= temp;
+  #L3fba1a.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fba1e.  v2:= v1.`android.graphics.RectF.left` @type ^`float`;
+  #L3fba22.  v2:= v2 + v9 @kind float;
+  #L3fba24.  v1:= v1.`android.graphics.RectF.bottom` @type ^`float`;
+  #L3fba28.  v1:= v1 - v9 @kind float;
+  #L3fba2a.  call `translate`(v7, v2, v1) @signature `Landroid/graphics/Canvas;.translate:(FF)V` @kind virtual;
+  #L3fba30.  call `scale`(v7, v15, v8) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fba36.  v1:= 270.0F;
+  #L3fba3a.  call `rotate`(v7, v1) @signature `Landroid/graphics/Canvas;.rotate:(F)V` @kind virtual;
+  #L3fba40.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fba44.  v2:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fba48.  call `drawPath`(v7, v1, v2) @signature `Landroid/graphics/Canvas;.drawPath:(Landroid/graphics/Path;Landroid/graphics/Paint;)V` @kind virtual;
+  #L3fba4e.  if v13 == 0 then goto L3fba88;
+  #L3fba52.  v1:= 1.0F;
+  #L3fba56.  v14:= v1 / v8 @kind float;
+  #L3fba5a.  call `scale`(v7, v14, v1) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fba60.  v2:= 0I;
+  #L3fba62.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fba66.  call temp:= `height`(v1) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L3fba6c.  v1:= temp;
+  #L3fba6e.  v4:= v1 - v11 @kind float;
+  #L3fba72.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fba76.  v5:= -v1 @kind float;
+  #L3fba78.  v6:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fba7c.  v1:= v21 @kind object;
+  #L3fba80.  v3:= v10;
+  #L3fba82.  call `drawRect`(v1, v2, v3, v4, v5, v6) @signature `Landroid/graphics/Canvas;.drawRect:(FFFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L3fba88.  call `restoreToCount`(v7, v12) @signature `Landroid/graphics/Canvas;.restoreToCount:(I)V` @kind virtual;
+  #L3fba8e.  call temp:= `save`(v21) @signature `Landroid/graphics/Canvas;.save:()I` @kind virtual;
+  #L3fba94.  v8:= temp;
+  #L3fba96.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fba9a.  v2:= v1.`android.graphics.RectF.right` @type ^`float`;
+  #L3fba9e.  v2:= v2 - v9 @kind float;
+  #L3fbaa0.  v1:= v1.`android.graphics.RectF.top` @type ^`float`;
+  #L3fbaa4.  v1:= v1 + v9 @kind float;
+  #L3fbaa6.  call `translate`(v7, v2, v1) @signature `Landroid/graphics/Canvas;.translate:(FF)V` @kind virtual;
+  #L3fbaac.  v9:= v17;
+  #L3fbab0.  call `scale`(v7, v15, v9) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fbab6.  v1:= 90.0F;
+  #L3fbaba.  call `rotate`(v7, v1) @signature `Landroid/graphics/Canvas;.rotate:(F)V` @kind virtual;
+  #L3fbac0.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPath` @type ^`android.graphics.Path` @kind object;
+  #L3fbac4.  v2:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fbac8.  call `drawPath`(v7, v1, v2) @signature `Landroid/graphics/Canvas;.drawPath:(Landroid/graphics/Path;Landroid/graphics/Paint;)V` @kind virtual;
+  #L3fbace.  if v13 == 0 then goto L3fbb08;
+  #L3fbad2.  v1:= 1.0F;
+  #L3fbad6.  v14:= v1 / v9 @kind float;
+  #L3fbada.  call `scale`(v7, v14, v1) @signature `Landroid/graphics/Canvas;.scale:(FF)V` @kind virtual;
+  #L3fbae0.  v2:= 0I;
+  #L3fbae2.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.contentBounds` @type ^`android.graphics.RectF` @kind object;
+  #L3fbae6.  call temp:= `height`(v1) @signature `Landroid/graphics/RectF;.height:()F` @kind virtual;
+  #L3fbaec.  v1:= temp;
+  #L3fbaee.  v4:= v1 - v11 @kind float;
+  #L3fbaf2.  v1:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fbaf6.  v5:= -v1 @kind float;
+  #L3fbaf8.  v6:= v0.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fbafc.  v1:= v21 @kind object;
+  #L3fbb00.  v3:= v10;
+  #L3fbb02.  call `drawRect`(v1, v2, v3, v4, v5, v6) @signature `Landroid/graphics/Canvas;.drawRect:(FFFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L3fbb08.  call `restoreToCount`(v7, v8) @signature `Landroid/graphics/Canvas;.restoreToCount:(I)V` @kind virtual;
+  #L3fbb0e.  v1:= v16;
+  #L3fbb12.  call `restoreToCount`(v7, v1) @signature `Landroid/graphics/Canvas;.restoreToCount:(I)V` @kind virtual;
+  #L3fbb18.  return @kind void;
+}
+procedure `int` `toEven`(`float` v2 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.toEven:(F)I` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L3fb4b8.  call temp:= `round`(v2) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L3fb4be.  v2:= temp;
+  #L3fb4c0.  v0:= v2 %% 2;
+  #L3fb4c4.  v1:= 1I;
+  #L3fb4c6.  if v0 != v1 then goto L3fb4ce;
+  #L3fb4ca.  v2:= v2 + -1;
+  #L3fb4ce.  return v2;
+}
+procedure `void` `draw`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this, `android.graphics.Canvas` v2 @kind object) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.draw:(Landroid/graphics/Canvas;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fb7e4.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.dirty` @type ^`boolean` @kind boolean;
+  #L3fb7e8.  if v0 == 0 then goto L3fb800;
+  #L3fb7ec.  call temp:= `getBounds`(v1) @signature `Landroid/graphics/drawable/Drawable;.getBounds:()Landroid/graphics/Rect;` @kind virtual;
+  #L3fb7f2.  v0:= temp @kind object;
+  #L3fb7f4.  call `buildComponents`(v1, v0) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.buildComponents:(Landroid/graphics/Rect;)V` @kind direct;
+  #L3fb7fa.  v0:= 0I;
+  #L3fb7fc.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.dirty` @type ^`boolean` := v0 @kind boolean;
+  #L3fb800.  call `drawShadow`(v1, v2) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.drawShadow:(Landroid/graphics/Canvas;)V` @kind direct;
+  #L3fb806.  call `draw`(v1, v2) @signature `Landroidx/appcompat/graphics/drawable/DrawableWrapper;.draw:(Landroid/graphics/Canvas;)V` @kind super;
+  #L3fb80c.  return @kind void;
+}
+procedure `float` `getCornerRadius`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.getCornerRadius:()F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fb3dc.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb3e0.  return v0;
+}
+procedure `float` `getMaxShadowSize`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.getMaxShadowSize:()F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fb3f4.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb3f8.  return v0;
+}
+procedure `float` `getMinHeight`(`com.google.android.material.shadow.ShadowDrawableWrapper` v5 @kind this) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.getMinHeight:()F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3fb40c.  v0:= v5.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb410.  v1:= v5.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb414.  v2:= 1.5F;
+  #L3fb418.  v3:= v0 * v2 @kind float;
+  #L3fb41c.  v4:= 2.0F;
+  #L3fb420.  v3:= v3 / v4 @kind float;
+  #L3fb422.  v1:= v1 + v3 @kind float;
+  #L3fb424.  call temp:= `max`(v0, v1) @signature `Ljava/lang/Math;.max:(FF)F` @kind static;
+  #L3fb42a.  v0:= temp;
+  #L3fb42c.  v0:= v0 * v4 @kind float;
+  #L3fb430.  v1:= v5.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb434.  v1:= v1 * v2 @kind float;
+  #L3fb438.  v1:= v1 * v4 @kind float;
+  #L3fb43c.  v0:= v0 + v1 @kind float;
+  #L3fb43e.  return v0;
+}
+procedure `float` `getMinWidth`(`com.google.android.material.shadow.ShadowDrawableWrapper` v4 @kind this) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.getMinWidth:()F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3fb450.  v0:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb454.  v1:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb458.  v2:= 2.0F;
+  #L3fb45c.  v3:= v0 / v2 @kind float;
+  #L3fb460.  v1:= v1 + v3 @kind float;
+  #L3fb462.  call temp:= `max`(v0, v1) @signature `Ljava/lang/Math;.max:(FF)F` @kind static;
+  #L3fb468.  v0:= temp;
+  #L3fb46a.  v0:= v0 * v2 @kind float;
+  #L3fb46e.  v1:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb472.  v1:= v1 * v2 @kind float;
+  #L3fb476.  v0:= v0 + v1 @kind float;
+  #L3fb478.  return v0;
+}
+procedure `int` `getOpacity`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.getOpacity:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fb4a4.  v0:= -3I;
+  #L3fb4a6.  return v0;
+}
+procedure `boolean` `getPadding`(`com.google.android.material.shadow.ShadowDrawableWrapper` v4 @kind this, `android.graphics.Rect` v5 @kind object) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.getPadding:(Landroid/graphics/Rect;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3fb318.  v0:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb31c.  v1:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb320.  v2:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.addPaddingForCorners` @type ^`boolean` @kind boolean;
+  #L3fb324.  call temp:= `calculateVerticalPadding`(v0, v1, v2) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.calculateVerticalPadding:(FFZ)F` @kind static;
+  #L3fb32a.  v0:= temp;
+  #L3fb32c.  v0:= (`double`) v0 @kind f2d;
+  #L3fb32e.  call temp:= `ceil`(v0) @signature `Ljava/lang/Math;.ceil:(D)D` @kind static;
+  #L3fb334.  v0:= temp @kind wide;
+  #L3fb336.  v0:= (`int`) v0 @kind d2i;
+  #L3fb338.  v1:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fb33c.  v2:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fb340.  v3:= v4.`com.google.android.material.shadow.ShadowDrawableWrapper.addPaddingForCorners` @type ^`boolean` @kind boolean;
+  #L3fb344.  call temp:= `calculateHorizontalPadding`(v1, v2, v3) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.calculateHorizontalPadding:(FFZ)F` @kind static;
+  #L3fb34a.  v1:= temp;
+  #L3fb34c.  v1:= (`double`) v1 @kind f2d;
+  #L3fb34e.  call temp:= `ceil`(v1) @signature `Ljava/lang/Math;.ceil:(D)D` @kind static;
+  #L3fb354.  v1:= temp @kind wide;
+  #L3fb356.  v1:= (`int`) v1 @kind d2i;
+  #L3fb358.  call `set`(v5, v1, v0, v1, v0) @signature `Landroid/graphics/Rect;.set:(IIII)V` @kind virtual;
+  #L3fb35e.  v5:= 1I;
+  #L3fb360.  return v5;
+}
+procedure `float` `getShadowSize`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.getShadowSize:()F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fb48c.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.rawShadowSize` @type ^`float`;
+  #L3fb490.  return v0;
+}
+procedure `void` `onBoundsChange`(`com.google.android.material.shadow.ShadowDrawableWrapper` v0 @kind this, `android.graphics.Rect` v1 @kind object) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.onBoundsChange:(Landroid/graphics/Rect;)V` @AccessFlag PROTECTED {
+    temp;
+
+  #L3fbb2c.  v1:= 1I;
+  #L3fbb2e.  v0.`com.google.android.material.shadow.ShadowDrawableWrapper.dirty` @type ^`boolean` := v1 @kind boolean;
+  #L3fbb32.  return @kind void;
+}
+procedure `void` `setAddPaddingForCorners`(`com.google.android.material.shadow.ShadowDrawableWrapper` v0 @kind this, `boolean` v1 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setAddPaddingForCorners:(Z)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3fbb44.  v0.`com.google.android.material.shadow.ShadowDrawableWrapper.addPaddingForCorners` @type ^`boolean` := v1 @kind boolean;
+  #L3fbb48.  call `invalidateSelf`(v0) @signature `Landroid/graphics/drawable/Drawable;.invalidateSelf:()V` @kind virtual;
+  #L3fbb4e.  return @kind void;
+}
+procedure `void` `setAlpha`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this, `int` v2 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setAlpha:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fbb60.  call `setAlpha`(v1, v2) @signature `Landroidx/appcompat/graphics/drawable/DrawableWrapper;.setAlpha:(I)V` @kind super;
+  #L3fbb66.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fbb6a.  call `setAlpha`(v0, v2) @signature `Landroid/graphics/Paint;.setAlpha:(I)V` @kind virtual;
+  #L3fbb70.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.edgeShadowPaint` @type ^`android.graphics.Paint` @kind object;
+  #L3fbb74.  call `setAlpha`(v0, v2) @signature `Landroid/graphics/Paint;.setAlpha:(I)V` @kind virtual;
+  #L3fbb7a.  return @kind void;
+}
+procedure `void` `setCornerRadius`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this, `float` v2 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setCornerRadius:(F)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fbb8c.  call temp:= `round`(v2) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L3fbb92.  v2:= temp;
+  #L3fbb94.  v2:= (`float`) v2 @kind i2f;
+  #L3fbb96.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float`;
+  #L3fbb9a.  v0:= fcmpl(v0, v2);
+  #L3fbb9e.  if v0 != 0 then goto L3fbba4;
+  #L3fbba2.  return @kind void;
+  #L3fbba4.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.cornerRadius` @type ^`float` := v2;
+  #L3fbba8.  v2:= 1I;
+  #L3fbbaa.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.dirty` @type ^`boolean` := v2 @kind boolean;
+  #L3fbbae.  call `invalidateSelf`(v1) @signature `Landroid/graphics/drawable/Drawable;.invalidateSelf:()V` @kind virtual;
+  #L3fbbb4.  return @kind void;
+}
+procedure `void` `setMaxShadowSize`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this, `float` v2 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setMaxShadowSize:(F)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fbbc8.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.rawShadowSize` @type ^`float`;
+  #L3fbbcc.  call `setShadowSize`(v1, v0, v2) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setShadowSize:(FF)V` @kind virtual;
+  #L3fbbd2.  return @kind void;
+}
+procedure `void` `setRotation`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this, `float` v2 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setRotation:(F)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L3fbbe4.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.rotation` @type ^`float`;
+  #L3fbbe8.  v0:= fcmpl(v0, v2);
+  #L3fbbec.  if v0 == 0 then goto L3fbbfa;
+  #L3fbbf0.  v1.`com.google.android.material.shadow.ShadowDrawableWrapper.rotation` @type ^`float` := v2;
+  #L3fbbf4.  call `invalidateSelf`(v1) @signature `Landroid/graphics/drawable/Drawable;.invalidateSelf:()V` @kind virtual;
+  #L3fbbfa.  return @kind void;
+}
+procedure `void` `setShadowSize`(`com.google.android.material.shadow.ShadowDrawableWrapper` v1 @kind this, `float` v2 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setShadowSize:(F)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3fbc0c.  v0:= v1.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fbc10.  call `setShadowSize`(v1, v2, v0) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setShadowSize:(FF)V` @kind virtual;
+  #L3fbc16.  return @kind void;
+}
+procedure `void` `setShadowSize`(`com.google.android.material.shadow.ShadowDrawableWrapper` v2 @kind this, `float` v3 , `float` v4 ) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.setShadowSize:(FF)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3fbc28.  v0:= 0I;
+  #L3fbc2a.  v1:= fcmpg(v3, v0);
+  #L3fbc2e.  if v1 < 0 then goto L3fbcae;
+  #L3fbc32.  v0:= fcmpg(v4, v0);
+  #L3fbc36.  if v0 < 0 then goto L3fbcae;
+  #L3fbc3a.  call temp:= `toEven`(v3) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.toEven:(F)I` @kind static;
+  #L3fbc40.  v3:= temp;
+  #L3fbc42.  v3:= (`float`) v3 @kind i2f;
+  #L3fbc44.  call temp:= `toEven`(v4) @signature `Lcom/google/android/material/shadow/ShadowDrawableWrapper;.toEven:(F)I` @kind static;
+  #L3fbc4a.  v4:= temp;
+  #L3fbc4c.  v4:= (`float`) v4 @kind i2f;
+  #L3fbc4e.  v0:= 1I;
+  #L3fbc50.  v1:= fcmpl(v3, v4);
+  #L3fbc54.  if v1 <= 0 then goto L3fbc66;
+  #L3fbc58.  v3:= v2.`com.google.android.material.shadow.ShadowDrawableWrapper.printedShadowClipWarning` @type ^`boolean` @kind boolean;
+  #L3fbc5c.  if v3 != 0 then goto L3fbc64;
+  #L3fbc60.  v2.`com.google.android.material.shadow.ShadowDrawableWrapper.printedShadowClipWarning` @type ^`boolean` := v0 @kind boolean;
+  #L3fbc64.  v3:= v4;
+  #L3fbc66.  v1:= v2.`com.google.android.material.shadow.ShadowDrawableWrapper.rawShadowSize` @type ^`float`;
+  #L3fbc6a.  v1:= fcmpl(v1, v3);
+  #L3fbc6e.  if v1 != 0 then goto L3fbc80;
+  #L3fbc72.  v1:= v2.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float`;
+  #L3fbc76.  v1:= fcmpl(v1, v4);
+  #L3fbc7a.  if v1 != 0 then goto L3fbc80;
+  #L3fbc7e.  return @kind void;
+  #L3fbc80.  v2.`com.google.android.material.shadow.ShadowDrawableWrapper.rawShadowSize` @type ^`float` := v3;
+  #L3fbc84.  v2.`com.google.android.material.shadow.ShadowDrawableWrapper.rawMaxShadowSize` @type ^`float` := v4;
+  #L3fbc88.  v1:= 1.5F;
+  #L3fbc8c.  v3:= v3 * v1 @kind float;
+  #L3fbc90.  call temp:= `round`(v3) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L3fbc96.  v3:= temp;
+  #L3fbc98.  v3:= (`float`) v3 @kind i2f;
+  #L3fbc9a.  v2.`com.google.android.material.shadow.ShadowDrawableWrapper.shadowSize` @type ^`float` := v3;
+  #L3fbc9e.  v2.`com.google.android.material.shadow.ShadowDrawableWrapper.maxShadowSize` @type ^`float` := v4;
+  #L3fbca2.  v2.`com.google.android.material.shadow.ShadowDrawableWrapper.dirty` @type ^`boolean` := v0 @kind boolean;
+  #L3fbca6.  call `invalidateSelf`(v2) @signature `Landroid/graphics/drawable/Drawable;.invalidateSelf:()V` @kind virtual;
+  #L3fbcac.  return @kind void;
+  #L3fbcae.  v3:= new `java.lang.IllegalArgumentException`;
+  #L3fbcb2.  v4:= "invalid shadow size" @kind object;
+  #L3fbcb6.  call `<init>`(v3, v4) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3fbcbc.  throw v3;
+}

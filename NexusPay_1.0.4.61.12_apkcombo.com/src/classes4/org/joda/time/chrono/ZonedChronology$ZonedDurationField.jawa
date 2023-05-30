@@ -1,0 +1,309 @@
+record `org.joda.time.chrono.ZonedChronology$ZonedDurationField` @kind class @AccessFlag  extends `org.joda.time.field.BaseDurationField` @kind class {
+  `org.joda.time.DurationField` `org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @AccessFlag FINAL;
+  `boolean` `org.joda.time.chrono.ZonedChronology$ZonedDurationField.iTimeField` @AccessFlag FINAL;
+  `org.joda.time.DateTimeZone` `org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @AccessFlag FINAL;
+}
+global `long` `@@org.joda.time.chrono.ZonedChronology$ZonedDurationField.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v1 @kind this, `org.joda.time.DurationField` v2 @kind object, `org.joda.time.DateTimeZone` v3 @kind object) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.<init>:(Lorg/joda/time/DurationField;Lorg/joda/time/DateTimeZone;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3b93ac.  call temp:= `getType`(v2) @signature `Lorg/joda/time/DurationField;.getType:()Lorg/joda/time/DurationFieldType;` @kind virtual;
+  #L3b93b2.  v0:= temp @kind object;
+  #L3b93b4.  call `<init>`(v1, v0) @signature `Lorg/joda/time/field/BaseDurationField;.<init>:(Lorg/joda/time/DurationFieldType;)V` @kind direct;
+  #L3b93ba.  call temp:= `isSupported`(v2) @signature `Lorg/joda/time/DurationField;.isSupported:()Z` @kind virtual;
+  #L3b93c0.  v0:= temp;
+  #L3b93c2.  if v0 == 0 then goto L3b93dc;
+  #L3b93c6.  v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` := v2 @kind object;
+  #L3b93ca.  call temp:= `useTimeArithmetic`(v2) @signature `Lorg/joda/time/chrono/ZonedChronology;.useTimeArithmetic:(Lorg/joda/time/DurationField;)Z` @kind static;
+  #L3b93d0.  v2:= temp;
+  #L3b93d2.  v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iTimeField` @type ^`boolean` := v2 @kind boolean;
+  #L3b93d6.  v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` := v3 @kind object;
+  #L3b93da.  return @kind void;
+  #L3b93dc.  v2:= new `java.lang.IllegalArgumentException`;
+  #L3b93e0.  call `<init>`(v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:()V` @kind direct;
+  #L3b93e6.  throw v2;
+}
+procedure `long` `addOffset`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v1 @kind this, `long` v2 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.addOffset:(J)J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3b92b0.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b92b4.  call temp:= `convertUTCToLocal`(v0, v2) @signature `Lorg/joda/time/DateTimeZone;.convertUTCToLocal:(J)J` @kind virtual;
+  #L3b92ba.  v2:= temp @kind wide;
+  #L3b92bc.  return v2 @kind wide;
+}
+procedure `int` `getOffsetFromLocalToSubtract`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v8 @kind this, `long` v9 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetFromLocalToSubtract:(J)I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3b913c.  v0:= v8.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b9140.  call temp:= `getOffsetFromLocal`(v0, v9) @signature `Lorg/joda/time/DateTimeZone;.getOffsetFromLocal:(J)I` @kind virtual;
+  #L3b9146.  v0:= temp;
+  #L3b9148.  v1:= (`long`) v0 @kind i2l;
+  #L3b914a.  v3:= v9 - v1 @kind long;
+  #L3b914e.  v3:= v3 ^~ v9 @kind long;
+  #L3b9150.  v5:= 0L;
+  #L3b9154.  v7:= lcmp(v3, v5);
+  #L3b9158.  if v7 >= 0 then goto L3b9178;
+  #L3b915c.  v9:= v9 ^~ v1 @kind long;
+  #L3b915e.  v1:= lcmp(v9, v5);
+  #L3b9162.  if v1 < 0 then goto L3b9168;
+  #L3b9166.  goto L3b9178;
+  #L3b9168.  v9:= new `java.lang.ArithmeticException`;
+  #L3b916c.  v10:= "Subtracting time zone offset caused overflow" @kind object;
+  #L3b9170.  call `<init>`(v9, v10) @signature `Ljava/lang/ArithmeticException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3b9176.  throw v9;
+  #L3b9178.  return v0;
+}
+procedure `int` `getOffsetToAdd`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v8 @kind this, `long` v9 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetToAdd:(J)I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L3b918c.  v0:= v8.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b9190.  call temp:= `getOffset`(v0, v9) @signature `Lorg/joda/time/DateTimeZone;.getOffset:(J)I` @kind virtual;
+  #L3b9196.  v0:= temp;
+  #L3b9198.  v1:= (`long`) v0 @kind i2l;
+  #L3b919a.  v3:= v9 + v1 @kind long;
+  #L3b919e.  v3:= v3 ^~ v9 @kind long;
+  #L3b91a0.  v5:= 0L;
+  #L3b91a4.  v7:= lcmp(v3, v5);
+  #L3b91a8.  if v7 >= 0 then goto L3b91c8;
+  #L3b91ac.  v9:= v9 ^~ v1 @kind long;
+  #L3b91ae.  v1:= lcmp(v9, v5);
+  #L3b91b2.  if v1 >= 0 then goto L3b91b8;
+  #L3b91b6.  goto L3b91c8;
+  #L3b91b8.  v9:= new `java.lang.ArithmeticException`;
+  #L3b91bc.  v10:= "Adding time zone offset caused overflow" @kind object;
+  #L3b91c0.  call `<init>`(v9, v10) @signature `Ljava/lang/ArithmeticException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3b91c6.  throw v9;
+  #L3b91c8.  return v0;
+}
+procedure `long` `add`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v4 @kind this, `long` v5 , `int` v7 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.add:(JI)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b9230.  call temp:= `getOffsetToAdd`(v4, v5) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetToAdd:(J)I` @kind direct;
+  #L3b9236.  v0:= temp;
+  #L3b9238.  v1:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b923c.  v2:= (`long`) v0 @kind i2l;
+  #L3b923e.  v5:= v5 + v2 @kind long;
+  #L3b9240.  call temp:= `add`(v1, v5, v7) @signature `Lorg/joda/time/DurationField;.add:(JI)J` @kind virtual;
+  #L3b9246.  v5:= temp @kind wide;
+  #L3b9248.  v7:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iTimeField` @type ^`boolean` @kind boolean;
+  #L3b924c.  if v7 == 0 then goto L3b9252;
+  #L3b9250.  goto L3b925a;
+  #L3b9252.  call temp:= `getOffsetFromLocalToSubtract`(v4, v5) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetFromLocalToSubtract:(J)I` @kind direct;
+  #L3b9258.  v0:= temp;
+  #L3b925a.  v0:= (`long`) v0 @kind i2l;
+  #L3b925c.  v5:= v5 - v0 @kind long;
+  #L3b925e.  return v5 @kind wide;
+}
+procedure `long` `add`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v4 @kind this, `long` v5 , `long` v7 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.add:(JJ)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b9270.  call temp:= `getOffsetToAdd`(v4, v5) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetToAdd:(J)I` @kind direct;
+  #L3b9276.  v0:= temp;
+  #L3b9278.  v1:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b927c.  v2:= (`long`) v0 @kind i2l;
+  #L3b927e.  v5:= v5 + v2 @kind long;
+  #L3b9280.  call temp:= `add`(v1, v5, v7) @signature `Lorg/joda/time/DurationField;.add:(JJ)J` @kind virtual;
+  #L3b9286.  v5:= temp @kind wide;
+  #L3b9288.  v7:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iTimeField` @type ^`boolean` @kind boolean;
+  #L3b928c.  if v7 == 0 then goto L3b9292;
+  #L3b9290.  goto L3b929a;
+  #L3b9292.  call temp:= `getOffsetFromLocalToSubtract`(v4, v5) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetFromLocalToSubtract:(J)I` @kind direct;
+  #L3b9298.  v0:= temp;
+  #L3b929a.  v7:= (`long`) v0 @kind i2l;
+  #L3b929c.  v5:= v5 - v7 @kind long;
+  #L3b929e.  return v5 @kind wide;
+}
+procedure `boolean` `equals`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v4 @kind this, `java.lang.Object` v5 @kind object) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.equals:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b9050.  v0:= 1I;
+  #L3b9052.  if v4 != v5 then goto L3b9058;
+  #L3b9056.  return v0;
+  #L3b9058.  v1:= instanceof @variable v5 @type ^`org.joda.time.chrono.ZonedChronology$ZonedDurationField` @kind boolean;
+  #L3b905c.  v2:= 0I;
+  #L3b905e.  if v1 == 0 then goto L3b9094;
+  #L3b9062.  v5:= (`org.joda.time.chrono.ZonedChronology$ZonedDurationField`) v5 @kind object;
+  #L3b9066.  v1:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b906a.  v3:= v5.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b906e.  call temp:= `equals`(v1, v3) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L3b9074.  v1:= temp;
+  #L3b9076.  if v1 == 0 then goto L3b9090;
+  #L3b907a.  v1:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b907e.  v5:= v5.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b9082.  call temp:= `equals`(v1, v5) @signature `Lorg/joda/time/DateTimeZone;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L3b9088.  v5:= temp;
+  #L3b908a.  if v5 == 0 then goto L3b9090;
+  #L3b908e.  goto L3b9092;
+  #L3b9090.  v0:= 0I;
+  #L3b9092.  return v0;
+  #L3b9094.  return v2;
+}
+procedure `int` `getDifference`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v4 @kind this, `long` v5 , `long` v7 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getDifference:(JJ)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b90f8.  call temp:= `getOffsetToAdd`(v4, v7) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetToAdd:(J)I` @kind direct;
+  #L3b90fe.  v0:= temp;
+  #L3b9100.  v1:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b9104.  v2:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iTimeField` @type ^`boolean` @kind boolean;
+  #L3b9108.  if v2 == 0 then goto L3b9110;
+  #L3b910c.  v2:= v0;
+  #L3b910e.  goto L3b9118;
+  #L3b9110.  call temp:= `getOffsetToAdd`(v4, v5) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetToAdd:(J)I` @kind direct;
+  #L3b9116.  v2:= temp;
+  #L3b9118.  v2:= (`long`) v2 @kind i2l;
+  #L3b911a.  v5:= v5 + v2 @kind long;
+  #L3b911c.  v2:= (`long`) v0 @kind i2l;
+  #L3b911e.  v7:= v7 + v2 @kind long;
+  #L3b9120.  call temp:= `getDifference`(v1, v5, v7) @signature `Lorg/joda/time/DurationField;.getDifference:(JJ)I` @kind virtual;
+  #L3b9126.  v5:= temp;
+  #L3b9128.  return v5;
+}
+procedure `long` `getDifferenceAsLong`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v4 @kind this, `long` v5 , `long` v7 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getDifferenceAsLong:(JJ)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b92d0.  call temp:= `getOffsetToAdd`(v4, v7) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetToAdd:(J)I` @kind direct;
+  #L3b92d6.  v0:= temp;
+  #L3b92d8.  v1:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b92dc.  v2:= v4.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iTimeField` @type ^`boolean` @kind boolean;
+  #L3b92e0.  if v2 == 0 then goto L3b92e8;
+  #L3b92e4.  v2:= v0;
+  #L3b92e6.  goto L3b92f0;
+  #L3b92e8.  call temp:= `getOffsetToAdd`(v4, v5) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getOffsetToAdd:(J)I` @kind direct;
+  #L3b92ee.  v2:= temp;
+  #L3b92f0.  v2:= (`long`) v2 @kind i2l;
+  #L3b92f2.  v5:= v5 + v2 @kind long;
+  #L3b92f4.  v2:= (`long`) v0 @kind i2l;
+  #L3b92f6.  v7:= v7 + v2 @kind long;
+  #L3b92f8.  call temp:= `getDifferenceAsLong`(v1, v5, v7) @signature `Lorg/joda/time/DurationField;.getDifferenceAsLong:(JJ)J` @kind virtual;
+  #L3b92fe.  v5:= temp @kind wide;
+  #L3b9300.  return v5 @kind wide;
+}
+procedure `long` `getMillis`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v1 @kind this, `int` v2 , `long` v3 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getMillis:(IJ)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3b9314.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b9318.  call temp:= `addOffset`(v1, v3) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.addOffset:(J)J` @kind direct;
+  #L3b931e.  v3:= temp @kind wide;
+  #L3b9320.  call temp:= `getMillis`(v0, v2, v3) @signature `Lorg/joda/time/DurationField;.getMillis:(IJ)J` @kind virtual;
+  #L3b9326.  v2:= temp @kind wide;
+  #L3b9328.  return v2 @kind wide;
+}
+procedure `long` `getMillis`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v1 @kind this, `long` v2 , `long` v4 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getMillis:(JJ)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3b933c.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b9340.  call temp:= `addOffset`(v1, v4) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.addOffset:(J)J` @kind direct;
+  #L3b9346.  v4:= temp @kind wide;
+  #L3b9348.  call temp:= `getMillis`(v0, v2, v4) @signature `Lorg/joda/time/DurationField;.getMillis:(JJ)J` @kind virtual;
+  #L3b934e.  v2:= temp @kind wide;
+  #L3b9350.  return v2 @kind wide;
+}
+procedure `long` `getUnitMillis`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v2 @kind this) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getUnitMillis:()J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3b9364.  v0:= v2.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b9368.  call temp:= `getUnitMillis`(v0) @signature `Lorg/joda/time/DurationField;.getUnitMillis:()J` @kind virtual;
+  #L3b936e.  v0:= temp @kind wide;
+  #L3b9370.  return v0 @kind wide;
+}
+procedure `int` `getValue`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v1 @kind this, `long` v2 , `long` v4 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getValue:(JJ)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3b91dc.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b91e0.  call temp:= `addOffset`(v1, v4) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.addOffset:(J)J` @kind direct;
+  #L3b91e6.  v4:= temp @kind wide;
+  #L3b91e8.  call temp:= `getValue`(v0, v2, v4) @signature `Lorg/joda/time/DurationField;.getValue:(JJ)I` @kind virtual;
+  #L3b91ee.  v2:= temp;
+  #L3b91f0.  return v2;
+}
+procedure `long` `getValueAsLong`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v1 @kind this, `long` v2 , `long` v4 ) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.getValueAsLong:(JJ)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3b9384.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b9388.  call temp:= `addOffset`(v1, v4) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.addOffset:(J)J` @kind direct;
+  #L3b938e.  v4:= temp @kind wide;
+  #L3b9390.  call temp:= `getValueAsLong`(v0, v2, v4) @signature `Lorg/joda/time/DurationField;.getValueAsLong:(JJ)J` @kind virtual;
+  #L3b9396.  v2:= temp @kind wide;
+  #L3b9398.  return v2 @kind wide;
+}
+procedure `int` `hashCode`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v2 @kind this) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.hashCode:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3b9204.  v0:= v2.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b9208.  call temp:= `hashCode`(v0) @signature `Ljava/lang/Object;.hashCode:()I` @kind virtual;
+  #L3b920e.  v0:= temp;
+  #L3b9210.  v1:= v2.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b9214.  call temp:= `hashCode`(v1) @signature `Lorg/joda/time/DateTimeZone;.hashCode:()I` @kind virtual;
+  #L3b921a.  v1:= temp;
+  #L3b921c.  v0:= v0 ^~ v1 @kind int;
+  #L3b921e.  return v0;
+}
+procedure `boolean` `isPrecise`(`org.joda.time.chrono.ZonedChronology$ZonedDurationField` v1 @kind this) @signature `Lorg/joda/time/chrono/ZonedChronology$ZonedDurationField;.isPrecise:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3b90a8.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iTimeField` @type ^`boolean` @kind boolean;
+  #L3b90ac.  if v0 == 0 then goto L3b90be;
+  #L3b90b0.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b90b4.  call temp:= `isPrecise`(v0) @signature `Lorg/joda/time/DurationField;.isPrecise:()Z` @kind virtual;
+  #L3b90ba.  v0:= temp;
+  #L3b90bc.  goto L3b90e4;
+  #L3b90be.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iField` @type ^`org.joda.time.DurationField` @kind object;
+  #L3b90c2.  call temp:= `isPrecise`(v0) @signature `Lorg/joda/time/DurationField;.isPrecise:()Z` @kind virtual;
+  #L3b90c8.  v0:= temp;
+  #L3b90ca.  if v0 == 0 then goto L3b90e2;
+  #L3b90ce.  v0:= v1.`org.joda.time.chrono.ZonedChronology$ZonedDurationField.iZone` @type ^`org.joda.time.DateTimeZone` @kind object;
+  #L3b90d2.  call temp:= `isFixed`(v0) @signature `Lorg/joda/time/DateTimeZone;.isFixed:()Z` @kind virtual;
+  #L3b90d8.  v0:= temp;
+  #L3b90da.  if v0 == 0 then goto L3b90e2;
+  #L3b90de.  v0:= 1I;
+  #L3b90e0.  goto L3b90e4;
+  #L3b90e2.  v0:= 0I;
+  #L3b90e4.  return v0;
+}

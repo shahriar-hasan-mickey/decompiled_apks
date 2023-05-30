@@ -1,0 +1,337 @@
+record `rx.internal.operators.BackpressureUtils` @kind class @AccessFlag PUBLIC_FINAL {
+}
+global `long` `@@rx.internal.operators.BackpressureUtils.COMPLETED_MASK` @AccessFlag STATIC_FINAL;
+global `long` `@@rx.internal.operators.BackpressureUtils.REQUESTED_MASK` @AccessFlag STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.operators.BackpressureUtils` v2 @kind this) @signature `Lrx/internal/operators/BackpressureUtils;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4928b4.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4928ba.  v0:= new `java.lang.IllegalStateException`;
+  #L4928be.  v1:= "No instances!" @kind object;
+  #L4928c2.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4928c8.  throw v0;
+}
+procedure `long` `addCap`(`long` v1 , `long` v3 ) @signature `Lrx/internal/operators/BackpressureUtils;.addCap:(JJ)J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L492790.  v1:= v1 + v3 @kind long;
+  #L492792.  v3:= 0L;
+  #L492796.  v0:= lcmp(v1, v3);
+  #L49279a.  if v0 >= 0 then goto L4927a8;
+  #L49279e.  v1:= 9223372036854775807L;
+  #L4927a8.  return v1 @kind wide;
+}
+procedure `long` `getAndAddRequest`(`java.util.concurrent.atomic.AtomicLong` v4 @kind object, `long` v5 ) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4927bc.  call temp:= `get`(v4) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4927c2.  v0:= temp @kind wide;
+  #L4927c4.  call temp:= `addCap`(v0, v5) @signature `Lrx/internal/operators/BackpressureUtils;.addCap:(JJ)J` @kind static;
+  #L4927ca.  v2:= temp @kind wide;
+  #L4927cc.  call temp:= `compareAndSet`(v4, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.compareAndSet:(JJ)Z` @kind virtual;
+  #L4927d2.  v2:= temp;
+  #L4927d4.  if v2 == 0 then goto L4927bc;
+  #L4927d8.  return v0 @kind wide;
+}
+procedure `long` `multiplyCap`(`long` v7 , `long` v9 ) @signature `Lrx/internal/operators/BackpressureUtils;.multiplyCap:(JJ)J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4927ec.  v0:= v7 * v9 @kind long;
+  #L4927f0.  v2:= v7 ^| v9 @kind long;
+  #L4927f4.  v4:= 31I;
+  #L4927f8.  v2:= v2 ^>> v4 @kind long;
+  #L4927fa.  v4:= 0L;
+  #L4927fe.  v6:= lcmp(v2, v4);
+  #L492802.  if v6 == 0 then goto L492824;
+  #L492806.  v2:= lcmp(v9, v4);
+  #L49280a.  if v2 == 0 then goto L492824;
+  #L49280e.  v9:= v0 / v9 @kind long;
+  #L492812.  v2:= lcmp(v9, v7);
+  #L492816.  if v2 == 0 then goto L492824;
+  #L49281a.  v0:= 9223372036854775807L;
+  #L492824.  return v0 @kind wide;
+}
+procedure `void` `postCompleteDone`(`java.util.concurrent.atomic.AtomicLong` v1 @kind object, `java.util.Queue` v2 @kind object, `rx.Subscriber` v3 @kind object) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteDone:(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/Queue;Lrx/Subscriber;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L4928dc.  call temp:= `identity`() @signature `Lrx/internal/util/UtilityFunctions;.identity:()Lrx/functions/Func1;` @kind static;
+  #L4928e2.  v0:= temp @kind object;
+  #L4928e4.  call `postCompleteDone`(v1, v2, v3, v0) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteDone:(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/Queue;Lrx/Subscriber;Lrx/functions/Func1;)V` @kind static;
+  #L4928ea.  return @kind void;
+}
+procedure `void` `postCompleteDone`(`java.util.concurrent.atomic.AtomicLong` v9 @kind object, `java.util.Queue` v10 @kind object, `rx.Subscriber` v11 @kind object, `rx.functions.Func1` v12 @kind object) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteDone:(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/Queue;Lrx/Subscriber;Lrx/functions/Func1;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L4928fc.  call temp:= `get`(v9) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L492902.  v0:= temp @kind wide;
+  #L492904.  v2:= -9223372036854775808L;
+  #L492908.  v4:= v0 ^& v2 @kind long;
+  #L49290c.  v6:= 0L;
+  #L492910.  v8:= lcmp(v4, v6);
+  #L492914.  if v8 == 0 then goto L49291a;
+  #L492918.  return @kind void;
+  #L49291a.  v2:= v2 ^| v0 @kind long;
+  #L49291c.  call temp:= `compareAndSet`(v9, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.compareAndSet:(JJ)Z` @kind virtual;
+  #L492922.  v2:= temp;
+  #L492924.  if v2 == 0 then goto L4928fc;
+  #L492928.  v2:= lcmp(v0, v6);
+  #L49292c.  if v2 == 0 then goto L492936;
+  #L492930.  call `postCompleteDrain`(v9, v10, v11, v12) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteDrain:(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/Queue;Lrx/Subscriber;Lrx/functions/Func1;)V` @kind static;
+  #L492936.  return @kind void;
+}
+procedure `void` `postCompleteDrain`(`java.util.concurrent.atomic.AtomicLong` v10 @kind object, `java.util.Queue` v11 @kind object, `rx.Subscriber` v12 @kind object, `rx.functions.Func1` v13 @kind object) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteDrain:(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/Queue;Lrx/Subscriber;Lrx/functions/Func1;)V` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L492948.  call temp:= `get`(v10) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L49294e.  v0:= temp @kind wide;
+  #L492950.  v2:= 9223372036854775807L;
+  #L49295a.  v4:= lcmp(v0, v2);
+  #L49295e.  if v4 != 0 then goto L492994;
+  #L492962.  call temp:= `isUnsubscribed`(v12) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L492968.  v10:= temp;
+  #L49296a.  if v10 == 0 then goto L492970;
+  #L49296e.  return @kind void;
+  #L492970.  call temp:= `poll`(v11) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L492976.  v10:= temp @kind object;
+  #L492978.  if v10 != 0 then goto L492984;
+  #L49297c.  call `onCompleted`(v12) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L492982.  return @kind void;
+  #L492984.  call temp:= `call`(v13, v10) @signature `Lrx/functions/Func1;.call:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L49298a.  v10:= temp @kind object;
+  #L49298c.  call `onNext`(v12, v10) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L492992.  goto L492962;
+  #L492994.  v4:= -9223372036854775808L;
+  #L492998.  v6:= v0 @kind wide;
+  #L49299a.  v0:= v4 @kind wide;
+  #L49299c.  v8:= lcmp(v0, v6);
+  #L4929a0.  if v8 == 0 then goto L4929dc;
+  #L4929a4.  call temp:= `isUnsubscribed`(v12) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4929aa.  v8:= temp;
+  #L4929ac.  if v8 == 0 then goto L4929b2;
+  #L4929b0.  return @kind void;
+  #L4929b2.  call temp:= `poll`(v11) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L4929b8.  v8:= temp @kind object;
+  #L4929ba.  if v8 != 0 then goto L4929c6;
+  #L4929be.  call `onCompleted`(v12) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4929c4.  return @kind void;
+  #L4929c6.  call temp:= `call`(v13, v8) @signature `Lrx/functions/Func1;.call:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4929cc.  v8:= temp @kind object;
+  #L4929ce.  call `onNext`(v12, v8) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4929d4.  v8:= 1L;
+  #L4929d8.  v0:= v0 + v8 @kind long;
+  #L4929da.  goto L49299c;
+  #L4929dc.  v8:= lcmp(v0, v6);
+  #L4929e0.  if v8 != 0 then goto L492a06;
+  #L4929e4.  call temp:= `isUnsubscribed`(v12) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4929ea.  v6:= temp;
+  #L4929ec.  if v6 == 0 then goto L4929f2;
+  #L4929f0.  return @kind void;
+  #L4929f2.  call temp:= `isEmpty`(v11) @signature `Ljava/util/Queue;.isEmpty:()Z` @kind interface;
+  #L4929f8.  v6:= temp;
+  #L4929fa.  if v6 == 0 then goto L492a06;
+  #L4929fe.  call `onCompleted`(v12) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L492a04.  return @kind void;
+  #L492a06.  call temp:= `get`(v10) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L492a0c.  v6:= temp @kind wide;
+  #L492a0e.  v8:= lcmp(v6, v0);
+  #L492a12.  if v8 != 0 then goto L49299c;
+  #L492a16.  v0:= v0 ^& v2 @kind long;
+  #L492a18.  v0:= -v0 @kind long;
+  #L492a1a.  call temp:= `addAndGet`(v10, v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.addAndGet:(J)J` @kind virtual;
+  #L492a20.  v6:= temp @kind wide;
+  #L492a22.  v0:= lcmp(v6, v4);
+  #L492a26.  if v0 != 0 then goto L49299a;
+  #L492a2a.  return @kind void;
+}
+procedure `boolean` `postCompleteRequest`(`java.util.concurrent.atomic.AtomicLong` v6 @kind object, `long` v7 , `java.util.Queue` v9 @kind object, `rx.Subscriber` v10 @kind object) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteRequest:(Ljava/util/concurrent/atomic/AtomicLong;JLjava/util/Queue;Lrx/Subscriber;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L492624.  call temp:= `identity`() @signature `Lrx/internal/util/UtilityFunctions;.identity:()Lrx/functions/Func1;` @kind static;
+  #L49262a.  v5:= temp @kind object;
+  #L49262c.  v0:= v6 @kind object;
+  #L49262e.  v1:= v7 @kind wide;
+  #L492630.  v3:= v9 @kind object;
+  #L492632.  v4:= v10 @kind object;
+  #L492634.  call temp:= `postCompleteRequest`(v0, v1, v3, v4, v5) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteRequest:(Ljava/util/concurrent/atomic/AtomicLong;JLjava/util/Queue;Lrx/Subscriber;Lrx/functions/Func1;)Z` @kind static;
+  #L49263a.  v6:= temp;
+  #L49263c.  return v6;
+}
+procedure `boolean` `postCompleteRequest`(`java.util.concurrent.atomic.AtomicLong` v15 @kind object, `long` v16 , `java.util.Queue` v18 @kind object, `rx.Subscriber` v19 @kind object, `rx.functions.Func1` v20 @kind object) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteRequest:(Ljava/util/concurrent/atomic/AtomicLong;JLjava/util/Queue;Lrx/Subscriber;Lrx/functions/Func1;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+
+  #L492650.  v0:= v15 @kind object;
+  #L492652.  v1:= v16 @kind wide;
+  #L492656.  v3:= 0L;
+  #L49265a.  v5:= lcmp(v1, v3);
+  #L49265e.  if v5 < 0 then goto L4926f0;
+  #L492662.  v5:= 1I;
+  #L492664.  v6:= 0I;
+  #L492666.  v7:= -9223372036854775808L;
+  #L49266a.  v9:= lcmp(v1, v3);
+  #L49266e.  if v9 != 0 then goto L49268a;
+  #L492672.  call temp:= `get`(v15) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L492678.  v0:= temp @kind wide;
+  #L49267a.  v0:= v0 ^& v7 @kind long;
+  #L49267c.  v2:= lcmp(v0, v3);
+  #L492680.  if v2 != 0 then goto L492686;
+  #L492684.  goto L492688;
+  #L492686.  v5:= 0I;
+  #L492688.  return v5;
+  #L49268a.  call temp:= `get`(v15) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L492690.  v9:= temp @kind wide;
+  #L492692.  v11:= v9 ^& v7 @kind long;
+  #L492696.  v13:= 9223372036854775807L;
+  #L4926a0.  v13:= v13 ^& v9 @kind long;
+  #L4926a2.  call temp:= `addCap`(v13, v1) @signature `Lrx/internal/operators/BackpressureUtils;.addCap:(JJ)J` @kind static;
+  #L4926a8.  v13:= temp @kind wide;
+  #L4926aa.  v13:= v13 ^| v11 @kind long;
+  #L4926ac.  call temp:= `compareAndSet`(v15, v9, v13) @signature `Ljava/util/concurrent/atomic/AtomicLong;.compareAndSet:(JJ)Z` @kind virtual;
+  #L4926b2.  v13:= temp;
+  #L4926b4.  if v13 == 0 then goto L4926e2;
+  #L4926b8.  v1:= lcmp(v9, v7);
+  #L4926bc.  if v1 != 0 then goto L4926d4;
+  #L4926c0.  v9:= v18 @kind object;
+  #L4926c4.  v10:= v19 @kind object;
+  #L4926c8.  v13:= v20 @kind object;
+  #L4926cc.  call `postCompleteDrain`(v15, v9, v10, v13) @signature `Lrx/internal/operators/BackpressureUtils;.postCompleteDrain:(Ljava/util/concurrent/atomic/AtomicLong;Ljava/util/Queue;Lrx/Subscriber;Lrx/functions/Func1;)V` @kind static;
+  #L4926d2.  return v6;
+  #L4926d4.  v0:= lcmp(v11, v3);
+  #L4926d8.  if v0 != 0 then goto L4926de;
+  #L4926dc.  goto L4926e0;
+  #L4926de.  v5:= 0I;
+  #L4926e0.  return v5;
+  #L4926e2.  v9:= v18 @kind object;
+  #L4926e6.  v10:= v19 @kind object;
+  #L4926ea.  v13:= v20 @kind object;
+  #L4926ee.  goto L49268a;
+  #L4926f0.  v0:= new `java.lang.IllegalArgumentException`;
+  #L4926f4.  v3:= new `java.lang.StringBuilder`;
+  #L4926f8.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4926fe.  v4:= "n >= 0 required but it was " @kind object;
+  #L492702.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L492708.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49270e.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L492714.  v1:= temp @kind object;
+  #L492716.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49271c.  goto L492720;
+  #L49271e.  throw v0;
+  #L492720.  goto L49271e;
+}
+procedure `long` `produced`(`java.util.concurrent.atomic.AtomicLong` v7 @kind object, `long` v8 ) @signature `Lrx/internal/operators/BackpressureUtils;.produced:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L492838.  call temp:= `get`(v7) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L49283e.  v0:= temp @kind wide;
+  #L492840.  v2:= 9223372036854775807L;
+  #L49284a.  v4:= lcmp(v0, v2);
+  #L49284e.  if v4 != 0 then goto L492854;
+  #L492852.  return v2 @kind wide;
+  #L492854.  v2:= v0 - v8 @kind long;
+  #L492858.  v4:= 0L;
+  #L49285c.  v6:= lcmp(v2, v4);
+  #L492860.  if v6 < 0 then goto L492872;
+  #L492864.  call temp:= `compareAndSet`(v7, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.compareAndSet:(JJ)Z` @kind virtual;
+  #L49286a.  v0:= temp;
+  #L49286c.  if v0 == 0 then goto L492838;
+  #L492870.  return v2 @kind wide;
+  #L492872.  v7:= new `java.lang.IllegalStateException`;
+  #L492876.  v8:= new `java.lang.StringBuilder`;
+  #L49287a.  call `<init>`(v8) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L492880.  v9:= "More produced than requested: " @kind object;
+  #L492884.  call temp:= `append`(v8, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49288a.  call temp:= `append`(v8, v2) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L492890.  call temp:= `toString`(v8) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L492896.  v8:= temp @kind object;
+  #L492898.  call `<init>`(v7, v8) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49289e.  goto L4928a2;
+  #L4928a0.  throw v7;
+  #L4928a2.  goto L4928a0;
+}
+procedure `boolean` `validate`(`long` v3 ) @signature `Lrx/internal/operators/BackpressureUtils;.validate:(J)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L492734.  v0:= 0L;
+  #L492738.  v2:= lcmp(v3, v0);
+  #L49273c.  if v2 < 0 then goto L492750;
+  #L492740.  v2:= lcmp(v3, v0);
+  #L492744.  if v2 == 0 then goto L49274c;
+  #L492748.  v3:= 1I;
+  #L49274a.  goto L49274e;
+  #L49274c.  v3:= 0I;
+  #L49274e.  return v3;
+  #L492750.  v0:= new `java.lang.IllegalArgumentException`;
+  #L492754.  v1:= new `java.lang.StringBuilder`;
+  #L492758.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L49275e.  v2:= "n >= 0 required but it was " @kind object;
+  #L492762.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L492768.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49276e.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L492774.  v3:= temp @kind object;
+  #L492776.  call `<init>`(v0, v3) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49277c.  throw v0;
+}

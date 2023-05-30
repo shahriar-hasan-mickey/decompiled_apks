@@ -1,0 +1,111 @@
+record `com.bumptech.glide.util.ByteArrayPool` @kind class @AccessFlag PUBLIC_FINAL {
+  `java.util.Queue` `com.bumptech.glide.util.ByteArrayPool.tempQueue` @AccessFlag PRIVATE_FINAL;
+}
+global `com.bumptech.glide.util.ByteArrayPool` `@@com.bumptech.glide.util.ByteArrayPool.BYTE_ARRAY_POOL` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.bumptech.glide.util.ByteArrayPool.MAX_BYTE_ARRAY_COUNT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.bumptech.glide.util.ByteArrayPool.MAX_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.bumptech.glide.util.ByteArrayPool.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.bumptech.glide.util.ByteArrayPool.TEMP_BYTES_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/bumptech/glide/util/ByteArrayPool;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2ca560.  v0:= new `com.bumptech.glide.util.ByteArrayPool`;
+  #L2ca564.  call `<init>`(v0) @signature `Lcom/bumptech/glide/util/ByteArrayPool;.<init>:()V` @kind direct;
+  #L2ca56a.  `@@com.bumptech.glide.util.ByteArrayPool.BYTE_ARRAY_POOL` @type ^`com.bumptech.glide.util.ByteArrayPool` := v0 @kind object;
+  #L2ca56e.  return @kind void;
+}
+procedure `void` `<init>`(`com.bumptech.glide.util.ByteArrayPool` v1 @kind this) @signature `Lcom/bumptech/glide/util/ByteArrayPool;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2ca580.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2ca586.  v0:= 0I;
+  #L2ca588.  call temp:= `createQueue`(v0) @signature `Lcom/bumptech/glide/util/Util;.createQueue:(I)Ljava/util/Queue;` @kind static;
+  #L2ca58e.  v0:= temp @kind object;
+  #L2ca590.  v1.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` := v0 @kind object;
+  #L2ca594.  return @kind void;
+}
+procedure `com.bumptech.glide.util.ByteArrayPool` `get`() @signature `Lcom/bumptech/glide/util/ByteArrayPool;.get:()Lcom/bumptech/glide/util/ByteArrayPool;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L2ca548.  v0:= `@@com.bumptech.glide.util.ByteArrayPool.BYTE_ARRAY_POOL` @type ^`com.bumptech.glide.util.ByteArrayPool` @kind object;
+  #L2ca54c.  return v0 @kind object;
+}
+procedure `void` `clear`(`com.bumptech.glide.util.ByteArrayPool` v2 @kind this) @signature `Lcom/bumptech/glide/util/ByteArrayPool;.clear:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2ca5a8.  v0:= v2.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` @kind object;
+  #L2ca5ac.  @monitorenter v0
+  #L2ca5ae.  v1:= v2.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` @kind object;
+  #L2ca5b2.  call `clear`(v1) @signature `Ljava/util/Queue;.clear:()V` @kind interface;
+  #L2ca5b8.  @monitorexit v0
+  #L2ca5ba.  return @kind void;
+  #L2ca5bc.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2ca5be.  @monitorexit v0
+  #L2ca5c0.  throw v1;
+  catch `java.lang.Throwable` @[L2ca5ae..L2ca5c0] goto L2ca5bc;
+}
+procedure `byte`[] `getBytes`(`com.bumptech.glide.util.ByteArrayPool` v3 @kind this) @signature `Lcom/bumptech/glide/util/ByteArrayPool;.getBytes:()[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2ca4d8.  v0:= v3.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` @kind object;
+  #L2ca4dc.  @monitorenter v0
+  #L2ca4de.  v1:= v3.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` @kind object;
+  #L2ca4e2.  call temp:= `poll`(v1) @signature `Ljava/util/Queue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L2ca4e8.  v1:= temp @kind object;
+  #L2ca4ea.  v1:= (`byte`[]) v1 @kind object;
+  #L2ca4ee.  @monitorexit v0
+  #L2ca4f0.  if v1 != 0 then goto L2ca51c;
+  #L2ca4f4.  v0:= 65536I;
+  #L2ca4f8.  v1:= new `byte`[v0];
+  #L2ca4fc.  v0:= 3I;
+  #L2ca4fe.  v2:= "ByteArrayPool" @kind object;
+  #L2ca502.  call temp:= `isLoggable`(v2, v0) @signature `Landroid/util/Log;.isLoggable:(Ljava/lang/String;I)Z` @kind static;
+  #L2ca508.  v0:= temp;
+  #L2ca50a.  if v0 == 0 then goto L2ca51c;
+  #L2ca50e.  v0:= "ByteArrayPool" @kind object;
+  #L2ca512.  v2:= "Created temp bytes" @kind object;
+  #L2ca516.  call temp:= `d`(v0, v2) @signature `Landroid/util/Log;.d:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L2ca51c.  return v1 @kind object;
+  #L2ca51e.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2ca520.  @monitorexit v0
+  #L2ca522.  throw v1;
+  catch `java.lang.Throwable` @[L2ca4de..L2ca4f0] goto L2ca51e;
+  catch `java.lang.Throwable` @[L2ca520..L2ca522] goto L2ca51e;
+}
+procedure `boolean` `releaseBytes`(`com.bumptech.glide.util.ByteArrayPool` v4 @kind this, `byte`[] v5 @kind object) @signature `Lcom/bumptech/glide/util/ByteArrayPool;.releaseBytes:([B)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2ca47c.  v0:= length @variable v5;
+  #L2ca47e.  v1:= 0I;
+  #L2ca480.  v2:= 65536I;
+  #L2ca484.  if v0 == v2 then goto L2ca48a;
+  #L2ca488.  return v1;
+  #L2ca48a.  v0:= v4.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` @kind object;
+  #L2ca48e.  @monitorenter v0
+  #L2ca490.  v2:= v4.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` @kind object;
+  #L2ca494.  call temp:= `size`(v2) @signature `Ljava/util/Queue;.size:()I` @kind interface;
+  #L2ca49a.  v2:= temp;
+  #L2ca49c.  v3:= 32I;
+  #L2ca4a0.  if v2 >= v3 then goto L2ca4b0;
+  #L2ca4a4.  v1:= 1I;
+  #L2ca4a6.  v2:= v4.`com.bumptech.glide.util.ByteArrayPool.tempQueue` @type ^`java.util.Queue` @kind object;
+  #L2ca4aa.  call temp:= `offer`(v2, v5) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L2ca4b0.  @monitorexit v0
+  #L2ca4b2.  return v1;
+  #L2ca4b4.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2ca4b6.  @monitorexit v0
+  #L2ca4b8.  throw v5;
+  catch `java.lang.Throwable` @[L2ca490..L2ca4b8] goto L2ca4b4;
+}

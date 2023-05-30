@@ -1,0 +1,86 @@
+record `org.greenrobot.eventbus.PendingPostQueue` @kind class @AccessFlag FINAL {
+  `org.greenrobot.eventbus.PendingPost` `org.greenrobot.eventbus.PendingPostQueue.head` @AccessFlag PRIVATE;
+  `org.greenrobot.eventbus.PendingPost` `org.greenrobot.eventbus.PendingPostQueue.tail` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`org.greenrobot.eventbus.PendingPostQueue` v0 @kind this) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L482960.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L482966.  return @kind void;
+}
+procedure `void` `enqueue`(`org.greenrobot.eventbus.PendingPostQueue` v1 @kind this, `org.greenrobot.eventbus.PendingPost` v2 @kind object) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.enqueue:(Lorg/greenrobot/eventbus/PendingPost;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L482978.  @monitorenter v1
+  #L48297a.  if v2 == 0 then goto L4829c2;
+  #L48297e.  v0:= v1.`org.greenrobot.eventbus.PendingPostQueue.tail` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L482982.  if v0 == 0 then goto L482994;
+  #L482986.  v0:= v1.`org.greenrobot.eventbus.PendingPostQueue.tail` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L48298a.  v0.`org.greenrobot.eventbus.PendingPost.next` @type ^`org.greenrobot.eventbus.PendingPost` := v2 @kind object;
+  #L48298e.  v1.`org.greenrobot.eventbus.PendingPostQueue.tail` @type ^`org.greenrobot.eventbus.PendingPost` := v2 @kind object;
+  #L482992.  goto L4829a4;
+  #L482994.  v0:= v1.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L482998.  if v0 != 0 then goto L4829ae;
+  #L48299c.  v1.`org.greenrobot.eventbus.PendingPostQueue.tail` @type ^`org.greenrobot.eventbus.PendingPost` := v2 @kind object;
+  #L4829a0.  v1.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` := v2 @kind object;
+  #L4829a4.  call `notifyAll`(v1) @signature `Ljava/lang/Object;.notifyAll:()V` @kind virtual;
+  #L4829aa.  @monitorexit v1
+  #L4829ac.  return @kind void;
+  #L4829ae.  v2:= new `java.lang.IllegalStateException`;
+  #L4829b2.  v0:= "Head present, but no tail" @kind object;
+  #L4829b6.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4829bc.  throw v2;
+  #L4829be.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4829c0.  goto L4829d2;
+  #L4829c2.  v2:= new `java.lang.NullPointerException`;
+  #L4829c6.  v0:= "null cannot be enqueued" @kind object;
+  #L4829ca.  call `<init>`(v2, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4829d0.  throw v2;
+  #L4829d2.  @monitorexit v1
+  #L4829d4.  throw v2;
+  catch `java.lang.Throwable` @[L48297e..L4829aa] goto L4829be;
+  catch `java.lang.Throwable` @[L4829ae..L4829d2] goto L4829be;
+}
+procedure `org.greenrobot.eventbus.PendingPost` `poll`(`org.greenrobot.eventbus.PendingPostQueue` v2 @kind this) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:()Lorg/greenrobot/eventbus/PendingPost;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L4828d0.  @monitorenter v2
+  #L4828d2.  v0:= v2.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L4828d6.  v1:= v2.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L4828da.  if v1 == 0 then goto L4828f8;
+  #L4828de.  v1:= v2.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L4828e2.  v1:= v1.`org.greenrobot.eventbus.PendingPost.next` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L4828e6.  v2.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` := v1 @kind object;
+  #L4828ea.  v1:= v2.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L4828ee.  if v1 != 0 then goto L4828f8;
+  #L4828f2.  v1:= 0I;
+  #L4828f4.  v2.`org.greenrobot.eventbus.PendingPostQueue.tail` @type ^`org.greenrobot.eventbus.PendingPost` := v1 @kind object;
+  #L4828f8.  @monitorexit v2
+  #L4828fa.  return v0 @kind object;
+  #L4828fc.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4828fe.  @monitorexit v2
+  #L482900.  throw v0;
+  catch `java.lang.Throwable` @[L4828d2..L4828f8] goto L4828fc;
+}
+procedure `org.greenrobot.eventbus.PendingPost` `poll`(`org.greenrobot.eventbus.PendingPostQueue` v2 @kind this, `int` v3 ) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:(I)Lorg/greenrobot/eventbus/PendingPost;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L482920.  @monitorenter v2
+  #L482922.  v0:= v2.`org.greenrobot.eventbus.PendingPostQueue.head` @type ^`org.greenrobot.eventbus.PendingPost` @kind object;
+  #L482926.  if v0 != 0 then goto L482932;
+  #L48292a.  v0:= (`long`) v3 @kind i2l;
+  #L48292c.  call `wait`(v2, v0) @signature `Ljava/lang/Object;.wait:(J)V` @kind virtual;
+  #L482932.  call temp:= `poll`(v2) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:()Lorg/greenrobot/eventbus/PendingPost;` @kind virtual;
+  #L482938.  v3:= temp @kind object;
+  #L48293a.  @monitorexit v2
+  #L48293c.  return v3 @kind object;
+  #L48293e.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L482940.  @monitorexit v2
+  #L482942.  throw v3;
+  catch `java.lang.Throwable` @[L482922..L48293a] goto L48293e;
+}

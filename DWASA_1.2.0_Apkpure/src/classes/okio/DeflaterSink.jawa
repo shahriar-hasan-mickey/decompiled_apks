@@ -1,0 +1,216 @@
+record `okio.DeflaterSink` @kind class @AccessFlag PUBLIC_FINAL extends `okio.Sink` @kind interface {
+  `boolean` `okio.DeflaterSink.closed` @AccessFlag PRIVATE;
+  `java.util.zip.Deflater` `okio.DeflaterSink.deflater` @AccessFlag PRIVATE_FINAL;
+  `okio.BufferedSink` `okio.DeflaterSink.sink` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`okio.DeflaterSink` v0 @kind this, `okio.BufferedSink` v1 @kind object, `java.util.zip.Deflater` v2 @kind object) @signature `Lokio/DeflaterSink;.<init>:(Lokio/BufferedSink;Ljava/util/zip/Deflater;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L47c1f0.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L47c1f6.  if v1 == 0 then goto L47c218;
+  #L47c1fa.  if v2 == 0 then goto L47c208;
+  #L47c1fe.  v0.`okio.DeflaterSink.sink` @type ^`okio.BufferedSink` := v1 @kind object;
+  #L47c202.  v0.`okio.DeflaterSink.deflater` @type ^`java.util.zip.Deflater` := v2 @kind object;
+  #L47c206.  return @kind void;
+  #L47c208.  v1:= new `java.lang.IllegalArgumentException`;
+  #L47c20c.  v2:= "inflater == null" @kind object;
+  #L47c210.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47c216.  throw v1;
+  #L47c218.  v1:= new `java.lang.IllegalArgumentException`;
+  #L47c21c.  v2:= "source == null" @kind object;
+  #L47c220.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47c226.  throw v1;
+}
+procedure `void` `<init>`(`okio.DeflaterSink` v0 @kind this, `okio.Sink` v1 @kind object, `java.util.zip.Deflater` v2 @kind object) @signature `Lokio/DeflaterSink;.<init>:(Lokio/Sink;Ljava/util/zip/Deflater;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L47c238.  call temp:= `buffer`(v1) @signature `Lokio/Okio;.buffer:(Lokio/Sink;)Lokio/BufferedSink;` @kind static;
+  #L47c23e.  v1:= temp @kind object;
+  #L47c240.  call `<init>`(v0, v1, v2) @signature `Lokio/DeflaterSink;.<init>:(Lokio/BufferedSink;Ljava/util/zip/Deflater;)V` @kind direct;
+  #L47c246.  return @kind void;
+}
+procedure `void` `deflate`(`okio.DeflaterSink` v7 @kind this, `boolean` v8 ) @signature `Lokio/DeflaterSink;.deflate:(Z)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L47c2d8.  v0:= v7.`okio.DeflaterSink.sink` @type ^`okio.BufferedSink` @kind object;
+  #L47c2dc.  call temp:= `buffer`(v0) @signature `Lokio/BufferedSink;.buffer:()Lokio/Buffer;` @kind interface;
+  #L47c2e2.  v0:= temp @kind object;
+  #L47c2e4.  v1:= 1I;
+  #L47c2e6.  call temp:= `writableSegment`(v0, v1) @signature `Lokio/Buffer;.writableSegment:(I)Lokio/Segment;` @kind virtual;
+  #L47c2ec.  v1:= temp @kind object;
+  #L47c2ee.  if v8 == 0 then goto L47c312;
+  #L47c2f2.  v2:= v7.`okio.DeflaterSink.deflater` @type ^`java.util.zip.Deflater` @kind object;
+  #L47c2f6.  v3:= v1.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L47c2fa.  v4:= v1.`okio.Segment.limit` @type ^`int`;
+  #L47c2fe.  v5:= v1.`okio.Segment.limit` @type ^`int`;
+  #L47c302.  v5:= v5 - 8192;
+  #L47c306.  v6:= 2I;
+  #L47c308.  call temp:= `deflate`(v2, v3, v4, v5, v6) @signature `Ljava/util/zip/Deflater;.deflate:([BIII)I` @kind virtual;
+  #L47c30e.  v2:= temp;
+  #L47c310.  goto L47c32e;
+  #L47c312.  v2:= v7.`okio.DeflaterSink.deflater` @type ^`java.util.zip.Deflater` @kind object;
+  #L47c316.  v3:= v1.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L47c31a.  v4:= v1.`okio.Segment.limit` @type ^`int`;
+  #L47c31e.  v5:= v1.`okio.Segment.limit` @type ^`int`;
+  #L47c322.  v5:= v5 - 8192;
+  #L47c326.  call temp:= `deflate`(v2, v3, v4, v5) @signature `Ljava/util/zip/Deflater;.deflate:([BII)I` @kind virtual;
+  #L47c32c.  v2:= temp;
+  #L47c32e.  if v2 <= 0 then goto L47c354;
+  #L47c332.  v3:= v1.`okio.Segment.limit` @type ^`int`;
+  #L47c336.  v3:= v3 + v2 @kind int;
+  #L47c338.  v1.`okio.Segment.limit` @type ^`int` := v3;
+  #L47c33c.  v3:= v0.`okio.Buffer.size` @type ^`long` @kind wide;
+  #L47c340.  v1:= (`long`) v2 @kind i2l;
+  #L47c342.  v3:= v3 + v1 @kind long;
+  #L47c344.  v0.`okio.Buffer.size` @type ^`long` := v3 @kind wide;
+  #L47c348.  v1:= v7.`okio.DeflaterSink.sink` @type ^`okio.BufferedSink` @kind object;
+  #L47c34c.  call temp:= `emitCompleteSegments`(v1) @signature `Lokio/BufferedSink;.emitCompleteSegments:()Lokio/BufferedSink;` @kind interface;
+  #L47c352.  goto L47c2e4;
+  #L47c354.  v2:= v7.`okio.DeflaterSink.deflater` @type ^`java.util.zip.Deflater` @kind object;
+  #L47c358.  call temp:= `needsInput`(v2) @signature `Ljava/util/zip/Deflater;.needsInput:()Z` @kind virtual;
+  #L47c35e.  v2:= temp;
+  #L47c360.  if v2 == 0 then goto L47c2e4;
+  #L47c364.  v8:= v1.`okio.Segment.pos` @type ^`int`;
+  #L47c368.  v2:= v1.`okio.Segment.limit` @type ^`int`;
+  #L47c36c.  if v8 != v2 then goto L47c382;
+  #L47c370.  call temp:= `pop`(v1) @signature `Lokio/Segment;.pop:()Lokio/Segment;` @kind virtual;
+  #L47c376.  v8:= temp @kind object;
+  #L47c378.  v0.`okio.Buffer.head` @type ^`okio.Segment` := v8 @kind object;
+  #L47c37c.  call `recycle`(v1) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @kind static;
+  #L47c382.  return @kind void;
+}
+procedure `void` `close`(`okio.DeflaterSink` v2 @kind this) @signature `Lokio/DeflaterSink;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L47c258.  v0:= v2.`okio.DeflaterSink.closed` @type ^`boolean` @kind boolean;
+  #L47c25c.  if v0 == 0 then goto L47c262;
+  #L47c260.  return @kind void;
+  #L47c262.  v0:= 0I;
+  #L47c264.  call `finishDeflate`(v2) @signature `Lokio/DeflaterSink;.finishDeflate:()V` @kind virtual;
+  #L47c26a.  goto L47c26e;
+  #L47c26c.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L47c26e.  v1:= v2.`okio.DeflaterSink.deflater` @type ^`java.util.zip.Deflater` @kind object;
+  #L47c272.  call `end`(v1) @signature `Ljava/util/zip/Deflater;.end:()V` @kind virtual;
+  #L47c278.  goto L47c282;
+  #L47c27a.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L47c27c.  if v0 != 0 then goto L47c282;
+  #L47c280.  v0:= v1 @kind object;
+  #L47c282.  v1:= v2.`okio.DeflaterSink.sink` @type ^`okio.BufferedSink` @kind object;
+  #L47c286.  call `close`(v1) @signature `Lokio/BufferedSink;.close:()V` @kind interface;
+  #L47c28c.  goto L47c296;
+  #L47c28e.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L47c290.  if v0 != 0 then goto L47c296;
+  #L47c294.  v0:= v1 @kind object;
+  #L47c296.  v1:= 1I;
+  #L47c298.  v2.`okio.DeflaterSink.closed` @type ^`boolean` := v1 @kind boolean;
+  #L47c29c.  if v0 == 0 then goto L47c2a6;
+  #L47c2a0.  call `sneakyRethrow`(v0) @signature `Lokio/Util;.sneakyRethrow:(Ljava/lang/Throwable;)V` @kind static;
+  #L47c2a6.  return @kind void;
+  catch `java.lang.Throwable` @[L47c264..L47c26a] goto L47c26c;
+  catch `java.lang.Throwable` @[L47c26e..L47c278] goto L47c27a;
+  catch `java.lang.Throwable` @[L47c282..L47c28c] goto L47c28e;
+}
+procedure `void` `finishDeflate`(`okio.DeflaterSink` v1 @kind this) @signature `Lokio/DeflaterSink;.finishDeflate:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L47c394.  v0:= v1.`okio.DeflaterSink.deflater` @type ^`java.util.zip.Deflater` @kind object;
+  #L47c398.  call `finish`(v0) @signature `Ljava/util/zip/Deflater;.finish:()V` @kind virtual;
+  #L47c39e.  v0:= 0I;
+  #L47c3a0.  call `deflate`(v1, v0) @signature `Lokio/DeflaterSink;.deflate:(Z)V` @kind direct;
+  #L47c3a6.  return @kind void;
+}
+procedure `void` `flush`(`okio.DeflaterSink` v1 @kind this) @signature `Lokio/DeflaterSink;.flush:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L47c3b8.  v0:= 1I;
+  #L47c3ba.  call `deflate`(v1, v0) @signature `Lokio/DeflaterSink;.deflate:(Z)V` @kind direct;
+  #L47c3c0.  v0:= v1.`okio.DeflaterSink.sink` @type ^`okio.BufferedSink` @kind object;
+  #L47c3c4.  call `flush`(v0) @signature `Lokio/BufferedSink;.flush:()V` @kind interface;
+  #L47c3ca.  return @kind void;
+}
+procedure `okio.Timeout` `timeout`(`okio.DeflaterSink` v1 @kind this) @signature `Lokio/DeflaterSink;.timeout:()Lokio/Timeout;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L47c1d0.  v0:= v1.`okio.DeflaterSink.sink` @type ^`okio.BufferedSink` @kind object;
+  #L47c1d4.  call temp:= `timeout`(v0) @signature `Lokio/BufferedSink;.timeout:()Lokio/Timeout;` @kind interface;
+  #L47c1da.  v0:= temp @kind object;
+  #L47c1dc.  return v0 @kind object;
+}
+procedure `java.lang.String` `toString`(`okio.DeflaterSink` v2 @kind this) @signature `Lokio/DeflaterSink;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L47c18c.  v0:= new `java.lang.StringBuilder`;
+  #L47c190.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L47c196.  v1:= "DeflaterSink(" @kind object;
+  #L47c19a.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L47c1a0.  v1:= v2.`okio.DeflaterSink.sink` @type ^`okio.BufferedSink` @kind object;
+  #L47c1a4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L47c1aa.  v1:= ")" @kind object;
+  #L47c1ae.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L47c1b4.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L47c1ba.  v0:= temp @kind object;
+  #L47c1bc.  return v0 @kind object;
+}
+procedure `void` `write`(`okio.DeflaterSink` v7 @kind this, `okio.Buffer` v8 @kind object, `long` v9 ) @signature `Lokio/DeflaterSink;.write:(Lokio/Buffer;J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L47c3dc.  v0:= v8.`okio.Buffer.size` @type ^`long` @kind wide;
+  #L47c3e0.  v2:= 0L;
+  #L47c3e4.  v4:= v9 @kind wide;
+  #L47c3e6.  call `checkOffsetAndCount`(v0, v2, v4) @signature `Lokio/Util;.checkOffsetAndCount:(JJJ)V` @kind static;
+  #L47c3ec.  v0:= 0L;
+  #L47c3f0.  v2:= lcmp(v9, v0);
+  #L47c3f4.  if v2 <= 0 then goto L47c464;
+  #L47c3f8.  v0:= v8.`okio.Buffer.head` @type ^`okio.Segment` @kind object;
+  #L47c3fc.  v1:= v0.`okio.Segment.limit` @type ^`int`;
+  #L47c400.  v2:= v0.`okio.Segment.pos` @type ^`int`;
+  #L47c404.  v1:= v1 - v2 @kind int;
+  #L47c406.  v1:= (`long`) v1 @kind i2l;
+  #L47c408.  call temp:= `min`(v9, v1) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L47c40e.  v1:= temp @kind wide;
+  #L47c410.  v2:= (`int`) v1 @kind l2i;
+  #L47c412.  v1:= v7.`okio.DeflaterSink.deflater` @type ^`java.util.zip.Deflater` @kind object;
+  #L47c416.  v3:= v0.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L47c41a.  v4:= v0.`okio.Segment.pos` @type ^`int`;
+  #L47c41e.  call `setInput`(v1, v3, v4, v2) @signature `Ljava/util/zip/Deflater;.setInput:([BII)V` @kind virtual;
+  #L47c424.  v1:= 0I;
+  #L47c426.  call `deflate`(v7, v1) @signature `Lokio/DeflaterSink;.deflate:(Z)V` @kind direct;
+  #L47c42c.  v3:= v8.`okio.Buffer.size` @type ^`long` @kind wide;
+  #L47c430.  v5:= (`long`) v2 @kind i2l;
+  #L47c432.  v3:= v3 - v5 @kind long;
+  #L47c434.  v8.`okio.Buffer.size` @type ^`long` := v3 @kind wide;
+  #L47c438.  v1:= v0.`okio.Segment.pos` @type ^`int`;
+  #L47c43c.  v1:= v1 + v2 @kind int;
+  #L47c43e.  v0.`okio.Segment.pos` @type ^`int` := v1;
+  #L47c442.  v1:= v0.`okio.Segment.pos` @type ^`int`;
+  #L47c446.  v2:= v0.`okio.Segment.limit` @type ^`int`;
+  #L47c44a.  if v1 != v2 then goto L47c460;
+  #L47c44e.  call temp:= `pop`(v0) @signature `Lokio/Segment;.pop:()Lokio/Segment;` @kind virtual;
+  #L47c454.  v1:= temp @kind object;
+  #L47c456.  v8.`okio.Buffer.head` @type ^`okio.Segment` := v1 @kind object;
+  #L47c45a.  call `recycle`(v0) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @kind static;
+  #L47c460.  v9:= v9 - v5 @kind long;
+  #L47c462.  goto L47c3ec;
+  #L47c464.  return @kind void;
+}

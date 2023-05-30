@@ -1,0 +1,100 @@
+record `com.konasl.konapayment.sdk.services.factory.k` @kind class @AccessFlag  extends `com.konasl.konapayment.sdk.injectors.BaseService` @kind class, `com.konasl.konapayment.sdk.services.common.MobileKeyReplenishService` @kind interface {
+  `com.konasl.konapayment.sdk.map.client.dao.MobilePlatformDao` `com.konasl.konapayment.sdk.services.factory.k.a` @AccessFlag ;
+  `com.konasl.konapayment.sdk.dao.interfaces.WalletPropertiesDao` `com.konasl.konapayment.sdk.services.factory.k.b` @AccessFlag ;
+  `com.konasl.konapayment.sdk.services.common.MessageCodeToMessageConverterService` `com.konasl.konapayment.sdk.services.factory.k.c` @AccessFlag ;
+}
+global `java.lang.String` `@@com.konasl.konapayment.sdk.services.factory.k.d` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/konasl/konapayment/sdk/services/factory/k;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+
+  #L390dc4.  return @kind void;
+}
+procedure `void` `<init>`(`com.konasl.konapayment.sdk.services.factory.k` v0 @kind this) @signature `Lcom/konasl/konapayment/sdk/services/factory/k;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L390dd8.  call `<init>`(v0) @signature `Lcom/konasl/konapayment/sdk/injectors/BaseService;.<init>:()V` @kind direct;
+  #L390dde.  return @kind void;
+}
+procedure `void` `replenishMobileKeyDetailsIfRequired`(`com.konasl.konapayment.sdk.services.factory.k` v2 @kind this, `com.konasl.konapayment.sdk.callbacks.OnTaskFinishListener` v3 @kind object) @signature `Lcom/konasl/konapayment/sdk/services/factory/k;.replenishMobileKeyDetailsIfRequired:(Lcom/konasl/konapayment/sdk/callbacks/OnTaskFinishListener;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L390df0.  v0:= `@@com.konasl.konapayment.sdk.services.factory.k.d` @type ^`java.lang.String` @kind object;
+  #L390df4.  v1:= "In replenish request method." @kind object;
+  #L390df8.  call `debugLog`(v0, v1) @signature `Lcom/konasl/konapayment/sdk/utils/KonaLogger;.debugLog:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L390dfe.  v0:= v2.`com.konasl.konapayment.sdk.services.factory.k.b` @type ^`com.konasl.konapayment.sdk.dao.interfaces.WalletPropertiesDao` @kind object;
+  #L390e02.  call temp:= `getMobileKeyStatus`(v0) @signature `Lcom/konasl/konapayment/sdk/dao/interfaces/WalletPropertiesDao;.getMobileKeyStatus:()Lcom/konasl/konapayment/sdk/enums/MobileKeyStatus;` @kind interface;
+  #L390e08.  v0:= temp @kind object;
+  #L390e0a.  if v0 == 0 then goto L390e42;
+  #L390e0e.  v1:= `@@com.konasl.konapayment.sdk.enums.MobileKeyStatus.ACTIVE` @type ^`com.konasl.konapayment.sdk.enums.MobileKeyStatus` @kind object;
+  #L390e12.  if v0 != v1 then goto L390e26;
+  #L390e16.  v3:= `@@com.konasl.konapayment.sdk.services.factory.k.d` @type ^`java.lang.String` @kind object;
+  #L390e1a.  v0:= "Mobile keys are active." @kind object;
+  #L390e1e.  call `debugLog`(v3, v0) @signature `Lcom/konasl/konapayment/sdk/utils/KonaLogger;.debugLog:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L390e24.  goto L390e42;
+  #L390e26.  v1:= `@@com.konasl.konapayment.sdk.enums.MobileKeyStatus.ACTIVE_THRESHOLD_REACHED` @type ^`com.konasl.konapayment.sdk.enums.MobileKeyStatus` @kind object;
+  #L390e2a.  if v0 != v1 then goto L390e42;
+  #L390e2e.  v0:= `@@com.konasl.konapayment.sdk.services.factory.k.d` @type ^`java.lang.String` @kind object;
+  #L390e32.  v1:= "Mobile keys replenishment threshold reached. Need to replenish." @kind object;
+  #L390e36.  call `debugLog`(v0, v1) @signature `Lcom/konasl/konapayment/sdk/utils/KonaLogger;.debugLog:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L390e3c.  call `replenishMobileKeysDetails`(v2, v3) @signature `Lcom/konasl/konapayment/sdk/services/factory/k;.replenishMobileKeysDetails:(Lcom/konasl/konapayment/sdk/callbacks/OnTaskFinishListener;)V` @kind virtual;
+  #L390e42.  return @kind void;
+}
+procedure `void` `replenishMobileKeysDetails`(`com.konasl.konapayment.sdk.services.factory.k` v4 @kind this, `com.konasl.konapayment.sdk.callbacks.OnTaskFinishListener` v5 @kind object) @signature `Lcom/konasl/konapayment/sdk/services/factory/k;.replenishMobileKeysDetails:(Lcom/konasl/konapayment/sdk/callbacks/OnTaskFinishListener;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L390e54.  v0:= new `com.konasl.konapayment.sdk.map.client.model.requests.MobileKeysReplenishRequest`;
+  #L390e58.  call `<init>`(v0) @signature `Lcom/konasl/konapayment/sdk/map/client/model/requests/MobileKeysReplenishRequest;.<init>:()V` @kind direct;
+  #L390e5e.  v1:= v4.`com.konasl.konapayment.sdk.services.factory.k.b` @type ^`com.konasl.konapayment.sdk.dao.interfaces.WalletPropertiesDao` @kind object;
+  #L390e62.  call temp:= `getWalletPropertiesData`(v1) @signature `Lcom/konasl/konapayment/sdk/dao/interfaces/WalletPropertiesDao;.getWalletPropertiesData:()Lcom/konasl/konapayment/sdk/model/data/WalletPropertiesData;` @kind interface;
+  #L390e68.  v1:= temp @kind object;
+  #L390e6a.  v2:= `@@com.konasl.konapayment.sdk.services.factory.k.d` @type ^`java.lang.String` @kind object;
+  #L390e6e.  v3:= "Wallet properties data retrieved." @kind object;
+  #L390e72.  call `debugLog`(v2, v3) @signature `Lcom/konasl/konapayment/sdk/utils/KonaLogger;.debugLog:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L390e78.  if v1 == 0 then goto L390ee2;
+  #L390e7c.  call temp:= `getMpaId`(v1) @signature `Lcom/konasl/konapayment/sdk/model/data/WalletPropertiesData;.getMpaId:()Ljava/lang/String;` @kind virtual;
+  #L390e82.  v1:= temp @kind object;
+  #L390e84.  v2:= v4.`com.konasl.konapayment.sdk.services.factory.k.b` @type ^`com.konasl.konapayment.sdk.dao.interfaces.WalletPropertiesDao` @kind object;
+  #L390e88.  call temp:= `getCurrentMobileKeyDetails`(v2) @signature `Lcom/konasl/konapayment/sdk/dao/interfaces/WalletPropertiesDao;.getCurrentMobileKeyDetails:()Lcom/konasl/konapayment/sdk/map/client/model/MobileKeysDetails;` @kind interface;
+  #L390e8e.  v2:= temp @kind object;
+  #L390e90.  if v2 != 0 then goto L390ea4;
+  #L390e94.  v5:= `@@com.konasl.konapayment.sdk.services.factory.k.d` @type ^`java.lang.String` @kind object;
+  #L390e98.  v0:= "Replensihment mobile keys failed as there is no current mobile key in db." @kind object;
+  #L390e9c.  call `generalLog`(v5, v0) @signature `Lcom/konasl/konapayment/sdk/utils/KonaLogger;.generalLog:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L390ea2.  return @kind void;
+  #L390ea4.  call temp:= `toString`(v2) @signature `Lcom/konasl/konapayment/sdk/map/client/model/MobileKeysDetails;.toString:()Ljava/lang/String;` @kind virtual;
+  #L390eaa.  v2:= temp @kind object;
+  #L390eac.  call temp:= `getSHA256Hash`(v2) @signature `Lcom/konasl/konapayment/sdk/utils/KonaPaymentSDKUtility;.getSHA256Hash:(Ljava/lang/String;)Ljava/lang/String;` @kind static;
+  #L390eb2.  v2:= temp @kind object;
+  #L390eb4.  call `setMpaId`(v0, v1) @signature `Lcom/konasl/konapayment/sdk/map/client/model/requests/MobileKeysReplenishRequest;.setMpaId:(Ljava/lang/String;)V` @kind virtual;
+  #L390eba.  call `setKeyReferenceValue`(v0, v2) @signature `Lcom/konasl/konapayment/sdk/map/client/model/requests/MobileKeysReplenishRequest;.setKeyReferenceValue:(Ljava/lang/String;)V` @kind virtual;
+  #L390ec0.  v1:= `@@com.konasl.konapayment.sdk.services.factory.k.d` @type ^`java.lang.String` @kind object;
+  #L390ec4.  v2:= "Requesting for mobile key replenish." @kind object;
+  #L390ec8.  call `debugLog`(v1, v2) @signature `Lcom/konasl/konapayment/sdk/utils/KonaLogger;.debugLog:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L390ece.  v1:= v4.`com.konasl.konapayment.sdk.services.factory.k.a` @type ^`com.konasl.konapayment.sdk.map.client.dao.MobilePlatformDao` @kind object;
+  #L390ed2.  v2:= new `com.konasl.konapayment.sdk.services.factory.k$a`;
+  #L390ed6.  call `<init>`(v2, v4, v5) @signature `Lcom/konasl/konapayment/sdk/services/factory/k$a;.<init>:(Lcom/konasl/konapayment/sdk/services/factory/k;Lcom/konasl/konapayment/sdk/callbacks/OnTaskFinishListener;)V` @kind direct;
+  #L390edc.  call `replenishMobileKeys`(v1, v0, v2) @signature `Lcom/konasl/konapayment/sdk/map/client/dao/MobilePlatformDao;.replenishMobileKeys:(Lcom/konasl/konapayment/sdk/map/client/model/requests/MobileKeysReplenishRequest;Lcom/konasl/konapayment/sdk/map/client/model/responses/callback/ApiGateWayCallback;)V` @kind interface;
+  #L390ee2.  return @kind void;
+}
+procedure `void` `setupComponent`(`com.konasl.konapayment.sdk.services.factory.k` v1 @kind this, `com.konasl.konapayment.sdk.injectors.KonaPaymentComponent` v2 @kind object) @signature `Lcom/konasl/konapayment/sdk/services/factory/k;.setupComponent:(Lcom/konasl/konapayment/sdk/injectors/KonaPaymentComponent;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L390ef4.  call temp:= `builder`() @signature `Lcom/konasl/konapayment/sdk/services/factory/DaggerKonaPaymentServiceComponent;.builder:()Lcom/konasl/konapayment/sdk/services/factory/DaggerKonaPaymentServiceComponent$Builder;` @kind static;
+  #L390efa.  v0:= temp @kind object;
+  #L390efc.  call temp:= `konaPaymentComponent`(v0, v2) @signature `Lcom/konasl/konapayment/sdk/services/factory/DaggerKonaPaymentServiceComponent$Builder;.konaPaymentComponent:(Lcom/konasl/konapayment/sdk/injectors/KonaPaymentComponent;)Lcom/konasl/konapayment/sdk/services/factory/DaggerKonaPaymentServiceComponent$Builder;` @kind virtual;
+  #L390f02.  v2:= temp @kind object;
+  #L390f04.  call temp:= `build`(v2) @signature `Lcom/konasl/konapayment/sdk/services/factory/DaggerKonaPaymentServiceComponent$Builder;.build:()Lcom/konasl/konapayment/sdk/services/factory/KonaPaymentServiceComponent;` @kind virtual;
+  #L390f0a.  v2:= temp @kind object;
+  #L390f0c.  call `inject`(v2, v1) @signature `Lcom/konasl/konapayment/sdk/services/factory/KonaPaymentServiceComponent;.inject:(Lcom/konasl/konapayment/sdk/services/factory/k;)V` @kind interface;
+  #L390f12.  v2:= `@@com.konasl.konapayment.sdk.services.factory.k.d` @type ^`java.lang.String` @kind object;
+  #L390f16.  v0:= "Component set." @kind object;
+  #L390f1a.  call `debugLog`(v2, v0) @signature `Lcom/konasl/konapayment/sdk/utils/KonaLogger;.debugLog:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L390f20.  return @kind void;
+}

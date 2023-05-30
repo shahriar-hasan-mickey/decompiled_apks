@@ -1,0 +1,80 @@
+record `com.huawei.hms.aaid.init.AutoInitHelper` @kind class @AccessFlag PUBLIC {
+}
+procedure `void` `<init>`(`com.huawei.hms.aaid.init.AutoInitHelper` v0 @kind this) @signature `Lcom/huawei/hms/aaid/init/AutoInitHelper;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L1c52b0.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1c52b6.  return @kind void;
+}
+procedure `void` `doAutoInit`(`android.content.Context` v3 @kind object) @signature `Lcom/huawei/hms/aaid/init/AutoInitHelper;.doAutoInit:(Landroid/content/Context;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1c52c8.  v0:= "AutoInit" @kind object;
+  #L1c52cc.  call temp:= `isAutoInitEnabled`(v3) @signature `Lcom/huawei/hms/aaid/init/AutoInitHelper;.isAutoInitEnabled:(Landroid/content/Context;)Z` @kind static;
+  #L1c52d2.  v1:= temp;
+  #L1c52d4.  if v1 == 0 then goto L1c530a;
+  #L1c52d8.  v1:= "Push init start" @kind object;
+  #L1c52dc.  call `i`(v0, v1) @signature `Lcom/huawei/hms/support/log/HMSLog;.i:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L1c52e2.  v1:= new `java.lang.Thread`;
+  #L1c52e6.  v2:= new `com.huawei.hms.opendevice.f`;
+  #L1c52ea.  call `<init>`(v2, v3) @signature `Lcom/huawei/hms/opendevice/f;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L1c52f0.  call `<init>`(v1, v2) @signature `Ljava/lang/Thread;.<init>:(Ljava/lang/Runnable;)V` @kind direct;
+  #L1c52f6.  call `start`(v1) @signature `Ljava/lang/Thread;.start:()V` @kind virtual;
+  #L1c52fc.  goto L1c530a;
+  #L1c52fe.  v3:= Exception @type ^`java.lang.Exception` @kind object;
+  #L1c5300.  v1:= "Push init failed" @kind object;
+  #L1c5304.  call `e`(v0, v1, v3) @signature `Lcom/huawei/hms/support/log/HMSLog;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind static;
+  #L1c530a.  return @kind void;
+  catch `java.lang.Exception` @[L1c52cc..L1c52d4] goto L1c52fe;
+  catch `java.lang.Exception` @[L1c52dc..L1c52fc] goto L1c52fe;
+}
+procedure `boolean` `isAutoInitEnabled`(`android.content.Context` v3 @kind object) @signature `Lcom/huawei/hms/aaid/init/AutoInitHelper;.isAutoInitEnabled:(Landroid/content/Context;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1c5244.  call temp:= `a`(v3) @signature `Lcom/huawei/hms/opendevice/i;.a:(Landroid/content/Context;)Lcom/huawei/hms/opendevice/i;` @kind static;
+  #L1c524a.  v0:= temp @kind object;
+  #L1c524c.  v1:= "push_kit_auto_init_enabled" @kind object;
+  #L1c5250.  call temp:= `containsKey`(v0, v1) @signature `Lcom/huawei/hms/aaid/utils/PushPreferences;.containsKey:(Ljava/lang/String;)Z` @kind virtual;
+  #L1c5256.  v2:= temp;
+  #L1c5258.  if v2 == 0 then goto L1c5266;
+  #L1c525c.  call temp:= `getBoolean`(v0, v1) @signature `Lcom/huawei/hms/aaid/utils/PushPreferences;.getBoolean:(Ljava/lang/String;)Z` @kind virtual;
+  #L1c5262.  v3:= temp;
+  #L1c5264.  return v3;
+  #L1c5266.  call temp:= `getPackageManager`(v3) @signature `Landroid/content/Context;.getPackageManager:()Landroid/content/pm/PackageManager;` @kind virtual;
+  #L1c526c.  v0:= temp @kind object;
+  #L1c526e.  call temp:= `getPackageName`(v3) @signature `Landroid/content/Context;.getPackageName:()Ljava/lang/String;` @kind virtual;
+  #L1c5274.  v3:= temp @kind object;
+  #L1c5276.  v2:= 128I;
+  #L1c527a.  call temp:= `getApplicationInfo`(v0, v3, v2) @signature `Landroid/content/pm/PackageManager;.getApplicationInfo:(Ljava/lang/String;I)Landroid/content/pm/ApplicationInfo;` @kind virtual;
+  #L1c5280.  v3:= temp @kind object;
+  #L1c5282.  v3:= v3.`android.content.pm.ApplicationInfo.metaData` @type ^`android.os.Bundle` @kind object;
+  #L1c5286.  call temp:= `getBoolean`(v3, v1) @signature `Landroid/os/Bundle;.getBoolean:(Ljava/lang/String;)Z` @kind virtual;
+  #L1c528c.  v3:= temp;
+  #L1c528e.  return v3;
+  #L1c5290.  v3:= 0I;
+  #L1c5292.  return v3;
+  catch `android.content.pm.PackageManager$NameNotFoundException` @[L1c5266..L1c528e] goto L1c5290;
+}
+procedure `void` `setAutoInitEnabled`(`android.content.Context` v3 @kind object, `boolean` v4 ) @signature `Lcom/huawei/hms/aaid/init/AutoInitHelper;.setAutoInitEnabled:(Landroid/content/Context;Z)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1c5334.  call temp:= `a`(v3) @signature `Lcom/huawei/hms/opendevice/i;.a:(Landroid/content/Context;)Lcom/huawei/hms/opendevice/i;` @kind static;
+  #L1c533a.  v0:= temp @kind object;
+  #L1c533c.  v1:= "push_kit_auto_init_enabled" @kind object;
+  #L1c5340.  call temp:= `getBoolean`(v0, v1) @signature `Lcom/huawei/hms/aaid/utils/PushPreferences;.getBoolean:(Ljava/lang/String;)Z` @kind virtual;
+  #L1c5346.  v2:= temp;
+  #L1c5348.  call `saveBoolean`(v0, v1, v4) @signature `Lcom/huawei/hms/aaid/utils/PushPreferences;.saveBoolean:(Ljava/lang/String;Z)V` @kind virtual;
+  #L1c534e.  if v4 == 0 then goto L1c535c;
+  #L1c5352.  if v2 != 0 then goto L1c535c;
+  #L1c5356.  call `doAutoInit`(v3) @signature `Lcom/huawei/hms/aaid/init/AutoInitHelper;.doAutoInit:(Landroid/content/Context;)V` @kind static;
+  #L1c535c.  return @kind void;
+}

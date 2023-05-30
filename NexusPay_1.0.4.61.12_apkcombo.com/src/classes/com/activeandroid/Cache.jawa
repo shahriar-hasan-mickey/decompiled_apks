@@ -1,0 +1,304 @@
+record `com.activeandroid.Cache` @kind class @AccessFlag PUBLIC_FINAL {
+}
+global `int` `@@com.activeandroid.Cache.DEFAULT_CACHE_SIZE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `android.content.Context` `@@com.activeandroid.Cache.sContext` @AccessFlag PRIVATE_STATIC;
+global `com.activeandroid.DatabaseHelper` `@@com.activeandroid.Cache.sDatabaseHelper` @AccessFlag PRIVATE_STATIC;
+global `androidx.collection.LruCache` `@@com.activeandroid.Cache.sEntities` @AccessFlag PRIVATE_STATIC;
+global `boolean` `@@com.activeandroid.Cache.sIsInitialized` @AccessFlag PRIVATE_STATIC;
+global `com.activeandroid.ModelInfo` `@@com.activeandroid.Cache.sModelInfo` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lcom/activeandroid/Cache;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+
+  #L37f280.  return @kind void;
+}
+procedure `void` `<init>`(`com.activeandroid.Cache` v0 @kind this) @signature `Lcom/activeandroid/Cache;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L37f294.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L37f29a.  return @kind void;
+}
+procedure `void` `addEntity`(`com.activeandroid.Model` v3 @kind object) @signature `Lcom/activeandroid/Cache;.addEntity:(Lcom/activeandroid/Model;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L37f2ac.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f2b0.  @monitorenter v0
+  #L37f2b2.  v1:= `@@com.activeandroid.Cache.sEntities` @type ^`androidx.collection.LruCache` @kind object;
+  #L37f2b6.  call temp:= `getIdentifier`(v3) @signature `Lcom/activeandroid/Cache;.getIdentifier:(Lcom/activeandroid/Model;)Ljava/lang/String;` @kind static;
+  #L37f2bc.  v2:= temp @kind object;
+  #L37f2be.  call temp:= `put`(v1, v2, v3) @signature `Landroidx/collection/LruCache;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L37f2c4.  @monitorexit v0
+  #L37f2c6.  return @kind void;
+  #L37f2c8.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f2ca.  @monitorexit v0
+  #L37f2cc.  throw v3;
+  catch `java.lang.Throwable` @[L37f2b2..L37f2c4] goto L37f2c8;
+}
+procedure `void` `clear`() @signature `Lcom/activeandroid/Cache;.clear:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f2ec.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f2f0.  @monitorenter v0
+  #L37f2f2.  v1:= `@@com.activeandroid.Cache.sEntities` @type ^`androidx.collection.LruCache` @kind object;
+  #L37f2f6.  call `evictAll`(v1) @signature `Landroidx/collection/LruCache;.evictAll:()V` @kind virtual;
+  #L37f2fc.  v1:= "Cache cleared." @kind object;
+  #L37f300.  call temp:= `v`(v1) @signature `Lcom/activeandroid/util/Log;.v:(Ljava/lang/String;)I` @kind static;
+  #L37f306.  @monitorexit v0
+  #L37f308.  return @kind void;
+  #L37f30a.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f30c.  @monitorexit v0
+  #L37f30e.  throw v1;
+  catch `java.lang.Throwable` @[L37f2f2..L37f306] goto L37f30a;
+}
+procedure `void` `closeDatabase`() @signature `Lcom/activeandroid/Cache;.closeDatabase:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f32c.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f330.  @monitorenter v0
+  #L37f332.  v1:= `@@com.activeandroid.Cache.sDatabaseHelper` @type ^`com.activeandroid.DatabaseHelper` @kind object;
+  #L37f336.  call `close`(v1) @signature `Landroid/database/sqlite/SQLiteOpenHelper;.close:()V` @kind virtual;
+  #L37f33c.  @monitorexit v0
+  #L37f33e.  return @kind void;
+  #L37f340.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f342.  @monitorexit v0
+  #L37f344.  throw v1;
+  catch `java.lang.Throwable` @[L37f332..L37f33c] goto L37f340;
+}
+procedure `void` `dispose`() @signature `Lcom/activeandroid/Cache;.dispose:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f364.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f368.  @monitorenter v0
+  #L37f36a.  call `closeDatabase`() @signature `Lcom/activeandroid/Cache;.closeDatabase:()V` @kind static;
+  #L37f370.  v1:= 0I;
+  #L37f372.  `@@com.activeandroid.Cache.sEntities` @type ^`androidx.collection.LruCache` := v1 @kind object;
+  #L37f376.  `@@com.activeandroid.Cache.sModelInfo` @type ^`com.activeandroid.ModelInfo` := v1 @kind object;
+  #L37f37a.  `@@com.activeandroid.Cache.sDatabaseHelper` @type ^`com.activeandroid.DatabaseHelper` := v1 @kind object;
+  #L37f37e.  v1:= 0I;
+  #L37f380.  `@@com.activeandroid.Cache.sIsInitialized` @type ^`boolean` := v1 @kind boolean;
+  #L37f384.  v1:= "ActiveAndroid disposed. Call initialize to use library." @kind object;
+  #L37f388.  call temp:= `v`(v1) @signature `Lcom/activeandroid/util/Log;.v:(Ljava/lang/String;)I` @kind static;
+  #L37f38e.  @monitorexit v0
+  #L37f390.  return @kind void;
+  #L37f392.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f394.  @monitorexit v0
+  #L37f396.  throw v1;
+  catch `java.lang.Throwable` @[L37f36a..L37f38e] goto L37f392;
+}
+procedure `android.content.Context` `getContext`() @signature `Lcom/activeandroid/Cache;.getContext:()Landroid/content/Context;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L37f074.  v0:= `@@com.activeandroid.Cache.sContext` @type ^`android.content.Context` @kind object;
+  #L37f078.  return v0 @kind object;
+}
+procedure `com.activeandroid.Model` `getEntity`(`java.lang.Class` v2 @kind object, `long` v3 ) @signature `Lcom/activeandroid/Cache;.getEntity:(Ljava/lang/Class;J)Lcom/activeandroid/Model;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f0dc.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f0e0.  @monitorenter v0
+  #L37f0e2.  v1:= `@@com.activeandroid.Cache.sEntities` @type ^`androidx.collection.LruCache` @kind object;
+  #L37f0e6.  call temp:= `valueOf`(v3) @signature `Ljava/lang/Long;.valueOf:(J)Ljava/lang/Long;` @kind static;
+  #L37f0ec.  v3:= temp @kind object;
+  #L37f0ee.  call temp:= `getIdentifier`(v2, v3) @signature `Lcom/activeandroid/Cache;.getIdentifier:(Ljava/lang/Class;Ljava/lang/Long;)Ljava/lang/String;` @kind static;
+  #L37f0f4.  v2:= temp @kind object;
+  #L37f0f6.  call temp:= `get`(v1, v2) @signature `Landroidx/collection/LruCache;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L37f0fc.  v2:= temp @kind object;
+  #L37f0fe.  v2:= (`com.activeandroid.Model`) v2 @kind object;
+  #L37f102.  @monitorexit v0
+  #L37f104.  return v2 @kind object;
+  #L37f106.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f108.  @monitorexit v0
+  #L37f10a.  throw v2;
+  catch `java.lang.Throwable` @[L37f0e2..L37f102] goto L37f106;
+}
+procedure `java.lang.String` `getIdentifier`(`com.activeandroid.Model` v1 @kind object) @signature `Lcom/activeandroid/Cache;.getIdentifier:(Lcom/activeandroid/Model;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L37f198.  call temp:= `getClass`(v1) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L37f19e.  v0:= temp @kind object;
+  #L37f1a0.  call temp:= `getId`(v1) @signature `Lcom/activeandroid/Model;.getId:()Ljava/lang/Long;` @kind virtual;
+  #L37f1a6.  v1:= temp @kind object;
+  #L37f1a8.  call temp:= `getIdentifier`(v0, v1) @signature `Lcom/activeandroid/Cache;.getIdentifier:(Ljava/lang/Class;Ljava/lang/Long;)Ljava/lang/String;` @kind static;
+  #L37f1ae.  v1:= temp @kind object;
+  #L37f1b0.  return v1 @kind object;
+}
+procedure `java.lang.String` `getIdentifier`(`java.lang.Class` v1 @kind object, `java.lang.Long` v2 @kind object) @signature `Lcom/activeandroid/Cache;.getIdentifier:(Ljava/lang/Class;Ljava/lang/Long;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L37f1c4.  v0:= new `java.lang.StringBuilder`;
+  #L37f1c8.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L37f1ce.  call temp:= `getTableName`(v1) @signature `Lcom/activeandroid/Cache;.getTableName:(Ljava/lang/Class;)Ljava/lang/String;` @kind static;
+  #L37f1d4.  v1:= temp @kind object;
+  #L37f1d6.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L37f1dc.  v1:= "@" @kind object;
+  #L37f1e0.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L37f1e6.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L37f1ec.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L37f1f2.  v1:= temp @kind object;
+  #L37f1f4.  return v1 @kind object;
+}
+procedure `com.activeandroid.serializer.TypeSerializer` `getParserForType`(`java.lang.Class` v2 @kind object) @signature `Lcom/activeandroid/Cache;.getParserForType:(Ljava/lang/Class;)Lcom/activeandroid/serializer/TypeSerializer;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f160.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f164.  @monitorenter v0
+  #L37f166.  v1:= `@@com.activeandroid.Cache.sModelInfo` @type ^`com.activeandroid.ModelInfo` @kind object;
+  #L37f16a.  call temp:= `getTypeSerializer`(v1, v2) @signature `Lcom/activeandroid/ModelInfo;.getTypeSerializer:(Ljava/lang/Class;)Lcom/activeandroid/serializer/TypeSerializer;` @kind virtual;
+  #L37f170.  v2:= temp @kind object;
+  #L37f172.  @monitorexit v0
+  #L37f174.  return v2 @kind object;
+  #L37f176.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f178.  @monitorexit v0
+  #L37f17a.  throw v2;
+  catch `java.lang.Throwable` @[L37f166..L37f172] goto L37f176;
+}
+procedure `com.activeandroid.TableInfo` `getTableInfo`(`java.lang.Class` v2 @kind object) @signature `Lcom/activeandroid/Cache;.getTableInfo:(Ljava/lang/Class;)Lcom/activeandroid/TableInfo;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f128.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f12c.  @monitorenter v0
+  #L37f12e.  v1:= `@@com.activeandroid.Cache.sModelInfo` @type ^`com.activeandroid.ModelInfo` @kind object;
+  #L37f132.  call temp:= `getTableInfo`(v1, v2) @signature `Lcom/activeandroid/ModelInfo;.getTableInfo:(Ljava/lang/Class;)Lcom/activeandroid/TableInfo;` @kind virtual;
+  #L37f138.  v2:= temp @kind object;
+  #L37f13a.  @monitorexit v0
+  #L37f13c.  return v2 @kind object;
+  #L37f13e.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f140.  @monitorexit v0
+  #L37f142.  throw v2;
+  catch `java.lang.Throwable` @[L37f12e..L37f13a] goto L37f13e;
+}
+procedure `java.util.Collection` `getTableInfos`() @signature `Lcom/activeandroid/Cache;.getTableInfos:()Ljava/util/Collection;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f248.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f24c.  @monitorenter v0
+  #L37f24e.  v1:= `@@com.activeandroid.Cache.sModelInfo` @type ^`com.activeandroid.ModelInfo` @kind object;
+  #L37f252.  call temp:= `getTableInfos`(v1) @signature `Lcom/activeandroid/ModelInfo;.getTableInfos:()Ljava/util/Collection;` @kind virtual;
+  #L37f258.  v1:= temp @kind object;
+  #L37f25a.  @monitorexit v0
+  #L37f25c.  return v1 @kind object;
+  #L37f25e.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f260.  @monitorexit v0
+  #L37f262.  throw v1;
+  catch `java.lang.Throwable` @[L37f24e..L37f25a] goto L37f25e;
+}
+procedure `java.lang.String` `getTableName`(`java.lang.Class` v2 @kind object) @signature `Lcom/activeandroid/Cache;.getTableName:(Ljava/lang/Class;)Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f208.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f20c.  @monitorenter v0
+  #L37f20e.  v1:= `@@com.activeandroid.Cache.sModelInfo` @type ^`com.activeandroid.ModelInfo` @kind object;
+  #L37f212.  call temp:= `getTableInfo`(v1, v2) @signature `Lcom/activeandroid/ModelInfo;.getTableInfo:(Ljava/lang/Class;)Lcom/activeandroid/TableInfo;` @kind virtual;
+  #L37f218.  v2:= temp @kind object;
+  #L37f21a.  call temp:= `getTableName`(v2) @signature `Lcom/activeandroid/TableInfo;.getTableName:()Ljava/lang/String;` @kind virtual;
+  #L37f220.  v2:= temp @kind object;
+  #L37f222.  @monitorexit v0
+  #L37f224.  return v2 @kind object;
+  #L37f226.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f228.  @monitorexit v0
+  #L37f22a.  throw v2;
+  catch `java.lang.Throwable` @[L37f20e..L37f222] goto L37f226;
+}
+procedure `void` `initialize`(`com.activeandroid.Configuration` v2 @kind object) @signature `Lcom/activeandroid/Cache;.initialize:(Lcom/activeandroid/Configuration;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f3b4.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f3b8.  @monitorenter v0
+  #L37f3ba.  v1:= `@@com.activeandroid.Cache.sIsInitialized` @type ^`boolean` @kind boolean;
+  #L37f3be.  if v1 == 0 then goto L37f3d0;
+  #L37f3c2.  v2:= "ActiveAndroid already initialized." @kind object;
+  #L37f3c6.  call temp:= `v`(v2) @signature `Lcom/activeandroid/util/Log;.v:(Ljava/lang/String;)I` @kind static;
+  #L37f3cc.  @monitorexit v0
+  #L37f3ce.  return @kind void;
+  #L37f3d0.  call temp:= `getContext`(v2) @signature `Lcom/activeandroid/Configuration;.getContext:()Landroid/content/Context;` @kind virtual;
+  #L37f3d6.  v1:= temp @kind object;
+  #L37f3d8.  `@@com.activeandroid.Cache.sContext` @type ^`android.content.Context` := v1 @kind object;
+  #L37f3dc.  v1:= new `com.activeandroid.ModelInfo`;
+  #L37f3e0.  call `<init>`(v1, v2) @signature `Lcom/activeandroid/ModelInfo;.<init>:(Lcom/activeandroid/Configuration;)V` @kind direct;
+  #L37f3e6.  `@@com.activeandroid.Cache.sModelInfo` @type ^`com.activeandroid.ModelInfo` := v1 @kind object;
+  #L37f3ea.  v1:= new `com.activeandroid.DatabaseHelper`;
+  #L37f3ee.  call `<init>`(v1, v2) @signature `Lcom/activeandroid/DatabaseHelper;.<init>:(Lcom/activeandroid/Configuration;)V` @kind direct;
+  #L37f3f4.  `@@com.activeandroid.Cache.sDatabaseHelper` @type ^`com.activeandroid.DatabaseHelper` := v1 @kind object;
+  #L37f3f8.  v1:= new `androidx.collection.LruCache`;
+  #L37f3fc.  call temp:= `getCacheSize`(v2) @signature `Lcom/activeandroid/Configuration;.getCacheSize:()I` @kind virtual;
+  #L37f402.  v2:= temp;
+  #L37f404.  call `<init>`(v1, v2) @signature `Landroidx/collection/LruCache;.<init>:(I)V` @kind direct;
+  #L37f40a.  `@@com.activeandroid.Cache.sEntities` @type ^`androidx.collection.LruCache` := v1 @kind object;
+  #L37f40e.  call temp:= `openDatabase`() @signature `Lcom/activeandroid/Cache;.openDatabase:()Landroid/database/sqlite/SQLiteDatabase;` @kind static;
+  #L37f414.  v2:= 1I;
+  #L37f416.  `@@com.activeandroid.Cache.sIsInitialized` @type ^`boolean` := v2 @kind boolean;
+  #L37f41a.  v2:= "ActiveAndroid initialized successfully." @kind object;
+  #L37f41e.  call temp:= `v`(v2) @signature `Lcom/activeandroid/util/Log;.v:(Ljava/lang/String;)I` @kind static;
+  #L37f424.  @monitorexit v0
+  #L37f426.  return @kind void;
+  #L37f428.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f42a.  @monitorexit v0
+  #L37f42c.  throw v2;
+  catch `java.lang.Throwable` @[L37f3ba..L37f3cc] goto L37f428;
+  catch `java.lang.Throwable` @[L37f3d0..L37f424] goto L37f428;
+}
+procedure `boolean` `isInitialized`() @signature `Lcom/activeandroid/Cache;.isInitialized:()Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L37f0c4.  v0:= `@@com.activeandroid.Cache.sIsInitialized` @type ^`boolean` @kind boolean;
+  #L37f0c8.  return v0;
+}
+procedure `android.database.sqlite.SQLiteDatabase` `openDatabase`() @signature `Lcom/activeandroid/Cache;.openDatabase:()Landroid/database/sqlite/SQLiteDatabase;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f08c.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f090.  @monitorenter v0
+  #L37f092.  v1:= `@@com.activeandroid.Cache.sDatabaseHelper` @type ^`com.activeandroid.DatabaseHelper` @kind object;
+  #L37f096.  call temp:= `getWritableDatabase`(v1) @signature `Landroid/database/sqlite/SQLiteOpenHelper;.getWritableDatabase:()Landroid/database/sqlite/SQLiteDatabase;` @kind virtual;
+  #L37f09c.  v1:= temp @kind object;
+  #L37f09e.  @monitorexit v0
+  #L37f0a0.  return v1 @kind object;
+  #L37f0a2.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f0a4.  @monitorexit v0
+  #L37f0a6.  throw v1;
+  catch `java.lang.Throwable` @[L37f092..L37f09e] goto L37f0a2;
+}
+procedure `void` `removeEntity`(`com.activeandroid.Model` v2 @kind object) @signature `Lcom/activeandroid/Cache;.removeEntity:(Lcom/activeandroid/Model;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L37f454.  v0:= constclass @type ^`com.activeandroid.Cache` @kind object;
+  #L37f458.  @monitorenter v0
+  #L37f45a.  v1:= `@@com.activeandroid.Cache.sEntities` @type ^`androidx.collection.LruCache` @kind object;
+  #L37f45e.  call temp:= `getIdentifier`(v2) @signature `Lcom/activeandroid/Cache;.getIdentifier:(Lcom/activeandroid/Model;)Ljava/lang/String;` @kind static;
+  #L37f464.  v2:= temp @kind object;
+  #L37f466.  call temp:= `remove`(v1, v2) @signature `Landroidx/collection/LruCache;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L37f46c.  @monitorexit v0
+  #L37f46e.  return @kind void;
+  #L37f470.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L37f472.  @monitorexit v0
+  #L37f474.  throw v2;
+  catch `java.lang.Throwable` @[L37f45a..L37f46c] goto L37f470;
+}

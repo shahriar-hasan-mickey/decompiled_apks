@@ -1,0 +1,44 @@
+record `okio.AsyncTimeout$a` @kind class @AccessFlag FINAL extends `java.lang.Thread` @kind class {
+}
+procedure `void` `<init>`(`okio.AsyncTimeout$a` v1 @kind this) @signature `Lokio/AsyncTimeout$a;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1c9c64.  v0:= "Okio Watchdog" @kind object;
+  #L1c9c68.  call `<init>`(v1, v0) @signature `Ljava/lang/Thread;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1c9c6e.  v0:= 1I;
+  #L1c9c70.  call `setDaemon`(v1, v0) @signature `Ljava/lang/Thread;.setDaemon:(Z)V` @kind virtual;
+  #L1c9c76.  return @kind void;
+}
+procedure `void` `run`(`okio.AsyncTimeout$a` v3 @kind this) @signature `Lokio/AsyncTimeout$a;.run:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1c9c88.  v0:= constclass @type ^`okio.AsyncTimeout` @kind object;
+  #L1c9c8c.  @monitorenter v0
+  #L1c9c8e.  v1:= `@@okio.AsyncTimeout.Companion` @type ^`okio.AsyncTimeout$Companion` @kind object;
+  #L1c9c92.  call temp:= `awaitTimeout$okio`(v1) @signature `Lokio/AsyncTimeout$Companion;.awaitTimeout$okio:()Lokio/AsyncTimeout;` @kind virtual;
+  #L1c9c98.  v1:= temp @kind object;
+  #L1c9c9a.  call temp:= `access$getHead$cp`() @signature `Lokio/AsyncTimeout;.access$getHead$cp:()Lokio/AsyncTimeout;` @kind static;
+  #L1c9ca0.  v2:= temp @kind object;
+  #L1c9ca2.  if v1 != v2 then goto L1c9cb2;
+  #L1c9ca6.  v1:= 0I;
+  #L1c9ca8.  call `access$setHead$cp`(v1) @signature `Lokio/AsyncTimeout;.access$setHead$cp:(Lokio/AsyncTimeout;)V` @kind static;
+  #L1c9cae.  @monitorexit v0
+  #L1c9cb0.  return @kind void;
+  #L1c9cb2.  v2:= `@@kotlin.Unit.INSTANCE` @type ^`kotlin.Unit` @kind object;
+  #L1c9cb6.  @monitorexit v0
+  #L1c9cb8.  if v1 == 0 then goto L1c9c88;
+  #L1c9cbc.  call `timedOut`(v1) @signature `Lokio/AsyncTimeout;.timedOut:()V` @kind virtual;
+  #L1c9cc2.  goto L1c9c88;
+  #L1c9cc4.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1c9cc6.  @monitorexit v0
+  #L1c9cc8.  throw v1;
+  catch `java.lang.InterruptedException` @[L1c9c88..L1c9c8e] goto L1c9c88;
+  catch `java.lang.Throwable` @[L1c9c8e..L1c9cae] goto L1c9cc4;
+  catch `java.lang.InterruptedException` @[L1c9cae..L1c9cb0] goto L1c9c88;
+  catch `java.lang.Throwable` @[L1c9cb2..L1c9cb6] goto L1c9cc4;
+  catch `java.lang.InterruptedException` @[L1c9cb6..L1c9cca] goto L1c9c88;
+}

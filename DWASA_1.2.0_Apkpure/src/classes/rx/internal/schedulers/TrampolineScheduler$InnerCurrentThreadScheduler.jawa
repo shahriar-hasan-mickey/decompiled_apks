@@ -1,0 +1,113 @@
+record `rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler` @kind class @AccessFlag FINAL extends `rx.Scheduler$Worker` @kind class, `rx.Subscription` @kind interface {
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.counter` @AccessFlag FINAL;
+  `rx.subscriptions.BooleanSubscription` `rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.innerSubscription` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.PriorityBlockingQueue` `rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.queue` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.wip` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler` v1 @kind this) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b3e5c.  call `<init>`(v1) @signature `Lrx/Scheduler$Worker;.<init>:()V` @kind direct;
+  #L4b3e62.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4b3e66.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4b3e6c.  v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.counter` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L4b3e70.  v0:= new `java.util.concurrent.PriorityBlockingQueue`;
+  #L4b3e74.  call `<init>`(v0) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.<init>:()V` @kind direct;
+  #L4b3e7a.  v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.queue` @type ^`java.util.concurrent.PriorityBlockingQueue` := v0 @kind object;
+  #L4b3e7e.  v0:= new `rx.subscriptions.BooleanSubscription`;
+  #L4b3e82.  call `<init>`(v0) @signature `Lrx/subscriptions/BooleanSubscription;.<init>:()V` @kind direct;
+  #L4b3e88.  v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.innerSubscription` @type ^`rx.subscriptions.BooleanSubscription` := v0 @kind object;
+  #L4b3e8c.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4b3e90.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L4b3e96.  v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L4b3e9a.  return @kind void;
+}
+procedure `rx.Subscription` `enqueue`(`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler` v1 @kind this, `rx.functions.Action0` v2 @kind object, `long` v3 ) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.enqueue:(Lrx/functions/Action0;J)Lrx/Subscription;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4b3d50.  v0:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.innerSubscription` @type ^`rx.subscriptions.BooleanSubscription` @kind object;
+  #L4b3d54.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/subscriptions/BooleanSubscription;.isUnsubscribed:()Z` @kind virtual;
+  #L4b3d5a.  v0:= temp;
+  #L4b3d5c.  if v0 == 0 then goto L4b3d6a;
+  #L4b3d60.  call temp:= `unsubscribed`() @signature `Lrx/subscriptions/Subscriptions;.unsubscribed:()Lrx/Subscription;` @kind static;
+  #L4b3d66.  v2:= temp @kind object;
+  #L4b3d68.  return v2 @kind object;
+  #L4b3d6a.  v0:= new `rx.internal.schedulers.TrampolineScheduler$TimedAction`;
+  #L4b3d6e.  call temp:= `valueOf`(v3) @signature `Ljava/lang/Long;.valueOf:(J)Ljava/lang/Long;` @kind static;
+  #L4b3d74.  v3:= temp @kind object;
+  #L4b3d76.  v4:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.counter` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b3d7a.  call temp:= `incrementAndGet`(v4) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.incrementAndGet:()I` @kind virtual;
+  #L4b3d80.  v4:= temp;
+  #L4b3d82.  call `<init>`(v0, v2, v3, v4) @signature `Lrx/internal/schedulers/TrampolineScheduler$TimedAction;.<init>:(Lrx/functions/Action0;Ljava/lang/Long;I)V` @kind direct;
+  #L4b3d88.  v2:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.queue` @type ^`java.util.concurrent.PriorityBlockingQueue` @kind object;
+  #L4b3d8c.  call temp:= `add`(v2, v0) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.add:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4b3d92.  v2:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b3d96.  call temp:= `getAndIncrement`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L4b3d9c.  v2:= temp;
+  #L4b3d9e.  if v2 != 0 then goto L4b3dda;
+  #L4b3da2.  v2:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.queue` @type ^`java.util.concurrent.PriorityBlockingQueue` @kind object;
+  #L4b3da6.  call temp:= `poll`(v2) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L4b3dac.  v2:= temp @kind object;
+  #L4b3dae.  v2:= (`rx.internal.schedulers.TrampolineScheduler$TimedAction`) v2 @kind object;
+  #L4b3db2.  if v2 == 0 then goto L4b3dc0;
+  #L4b3db6.  v2:= v2.`rx.internal.schedulers.TrampolineScheduler$TimedAction.action` @type ^`rx.functions.Action0` @kind object;
+  #L4b3dba.  call `call`(v2) @signature `Lrx/functions/Action0;.call:()V` @kind interface;
+  #L4b3dc0.  v2:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L4b3dc4.  call temp:= `decrementAndGet`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L4b3dca.  v2:= temp;
+  #L4b3dcc.  if v2 > 0 then goto L4b3da2;
+  #L4b3dd0.  call temp:= `unsubscribed`() @signature `Lrx/subscriptions/Subscriptions;.unsubscribed:()Lrx/Subscription;` @kind static;
+  #L4b3dd6.  v2:= temp @kind object;
+  #L4b3dd8.  return v2 @kind object;
+  #L4b3dda.  v2:= new `rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler$1`;
+  #L4b3dde.  call `<init>`(v2, v1, v0) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler$1;.<init>:(Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;Lrx/internal/schedulers/TrampolineScheduler$TimedAction;)V` @kind direct;
+  #L4b3de4.  call temp:= `create`(v2) @signature `Lrx/subscriptions/Subscriptions;.create:(Lrx/functions/Action0;)Lrx/Subscription;` @kind static;
+  #L4b3dea.  v2:= temp @kind object;
+  #L4b3dec.  return v2 @kind object;
+}
+procedure `boolean` `isUnsubscribed`(`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler` v1 @kind this) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b3d30.  v0:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.innerSubscription` @type ^`rx.subscriptions.BooleanSubscription` @kind object;
+  #L4b3d34.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/subscriptions/BooleanSubscription;.isUnsubscribed:()Z` @kind virtual;
+  #L4b3d3a.  v0:= temp;
+  #L4b3d3c.  return v0;
+}
+procedure `rx.Subscription` `schedule`(`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler` v2 @kind this, `rx.functions.Action0` v3 @kind object) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.schedule:(Lrx/functions/Action0;)Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b3e00.  call temp:= `now`(v2) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.now:()J` @kind virtual;
+  #L4b3e06.  v0:= temp @kind wide;
+  #L4b3e08.  call temp:= `enqueue`(v2, v3, v0) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.enqueue:(Lrx/functions/Action0;J)Lrx/Subscription;` @kind direct;
+  #L4b3e0e.  v3:= temp @kind object;
+  #L4b3e10.  return v3 @kind object;
+}
+procedure `rx.Subscription` `schedule`(`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler` v2 @kind this, `rx.functions.Action0` v3 @kind object, `long` v4 , `java.util.concurrent.TimeUnit` v6 @kind object) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.schedule:(Lrx/functions/Action0;JLjava/util/concurrent/TimeUnit;)Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b3e24.  call temp:= `now`(v2) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.now:()J` @kind virtual;
+  #L4b3e2a.  v0:= temp @kind wide;
+  #L4b3e2c.  call temp:= `toMillis`(v6, v4) @signature `Ljava/util/concurrent/TimeUnit;.toMillis:(J)J` @kind virtual;
+  #L4b3e32.  v4:= temp @kind wide;
+  #L4b3e34.  v0:= v0 + v4 @kind long;
+  #L4b3e36.  v4:= new `rx.internal.schedulers.SleepingAction`;
+  #L4b3e3a.  call `<init>`(v4, v3, v2, v0) @signature `Lrx/internal/schedulers/SleepingAction;.<init>:(Lrx/functions/Action0;Lrx/Scheduler$Worker;J)V` @kind direct;
+  #L4b3e40.  call temp:= `enqueue`(v2, v4, v0) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.enqueue:(Lrx/functions/Action0;J)Lrx/Subscription;` @kind direct;
+  #L4b3e46.  v3:= temp @kind object;
+  #L4b3e48.  return v3 @kind object;
+}
+procedure `void` `unsubscribe`(`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler` v1 @kind this) @signature `Lrx/internal/schedulers/TrampolineScheduler$InnerCurrentThreadScheduler;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b3eac.  v0:= v1.`rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.innerSubscription` @type ^`rx.subscriptions.BooleanSubscription` @kind object;
+  #L4b3eb0.  call `unsubscribe`(v0) @signature `Lrx/subscriptions/BooleanSubscription;.unsubscribe:()V` @kind virtual;
+  #L4b3eb6.  return @kind void;
+}

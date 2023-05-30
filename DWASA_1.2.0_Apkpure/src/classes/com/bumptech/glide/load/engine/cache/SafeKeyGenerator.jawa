@@ -1,0 +1,62 @@
+record `com.bumptech.glide.load.engine.cache.SafeKeyGenerator` @kind class @AccessFlag  {
+  `com.bumptech.glide.util.LruCache` `com.bumptech.glide.load.engine.cache.SafeKeyGenerator.loadIdToSafeHash` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`com.bumptech.glide.load.engine.cache.SafeKeyGenerator` v2 @kind this) @signature `Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L2bd068.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2bd06e.  v0:= new `com.bumptech.glide.util.LruCache`;
+  #L2bd072.  v1:= 1000I;
+  #L2bd076.  call `<init>`(v0, v1) @signature `Lcom/bumptech/glide/util/LruCache;.<init>:(I)V` @kind direct;
+  #L2bd07c.  v2.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.loadIdToSafeHash` @type ^`com.bumptech.glide.util.LruCache` := v0 @kind object;
+  #L2bd080.  return @kind void;
+}
+procedure `java.lang.String` `getSafeKey`(`com.bumptech.glide.load.engine.cache.SafeKeyGenerator` v3 @kind this, `com.bumptech.glide.load.Key` v4 @kind object) @signature `Lcom/bumptech/glide/load/engine/cache/SafeKeyGenerator;.getSafeKey:(Lcom/bumptech/glide/load/Key;)Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2bcfb8.  v0:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.loadIdToSafeHash` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L2bcfbc.  @monitorenter v0
+  #L2bcfbe.  v1:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.loadIdToSafeHash` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L2bcfc2.  call temp:= `get`(v1, v4) @signature `Lcom/bumptech/glide/util/LruCache;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2bcfc8.  v1:= temp @kind object;
+  #L2bcfca.  v1:= (`java.lang.String`) v1 @kind object;
+  #L2bcfce.  @monitorexit v0
+  #L2bcfd0.  if v1 != 0 then goto L2bd024;
+  #L2bcfd4.  v0:= "SHA-256" @kind object;
+  #L2bcfd8.  call temp:= `getInstance`(v0) @signature `Ljava/security/MessageDigest;.getInstance:(Ljava/lang/String;)Ljava/security/MessageDigest;` @kind static;
+  #L2bcfde.  v0:= temp @kind object;
+  #L2bcfe0.  call `updateDiskCacheKey`(v4, v0) @signature `Lcom/bumptech/glide/load/Key;.updateDiskCacheKey:(Ljava/security/MessageDigest;)V` @kind interface;
+  #L2bcfe6.  call temp:= `digest`(v0) @signature `Ljava/security/MessageDigest;.digest:()[B` @kind virtual;
+  #L2bcfec.  v0:= temp @kind object;
+  #L2bcfee.  call temp:= `sha256BytesToHex`(v0) @signature `Lcom/bumptech/glide/util/Util;.sha256BytesToHex:([B)Ljava/lang/String;` @kind static;
+  #L2bcff4.  v1:= temp @kind object;
+  #L2bcff6.  goto L2bd00a;
+  #L2bcff8.  v0:= Exception @type ^`java.security.NoSuchAlgorithmException` @kind object;
+  #L2bcffa.  call `printStackTrace`(v0) @signature `Ljava/security/NoSuchAlgorithmException;.printStackTrace:()V` @kind virtual;
+  #L2bd000.  goto L2bd00a;
+  #L2bd002.  v0:= Exception @type ^`java.io.UnsupportedEncodingException` @kind object;
+  #L2bd004.  call `printStackTrace`(v0) @signature `Ljava/io/UnsupportedEncodingException;.printStackTrace:()V` @kind virtual;
+  #L2bd00a.  v0:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.loadIdToSafeHash` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L2bd00e.  @monitorenter v0
+  #L2bd010.  v2:= v3.`com.bumptech.glide.load.engine.cache.SafeKeyGenerator.loadIdToSafeHash` @type ^`com.bumptech.glide.util.LruCache` @kind object;
+  #L2bd014.  call temp:= `put`(v2, v4, v1) @signature `Lcom/bumptech/glide/util/LruCache;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L2bd01a.  @monitorexit v0
+  #L2bd01c.  goto L2bd024;
+  #L2bd01e.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2bd020.  @monitorexit v0
+  #L2bd022.  throw v4;
+  #L2bd024.  return v1 @kind object;
+  #L2bd026.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2bd028.  @monitorexit v0
+  #L2bd02a.  throw v4;
+  catch `java.lang.Throwable` @[L2bcfbe..L2bcfd0] goto L2bd026;
+  catch `java.io.UnsupportedEncodingException` @[L2bcfd4..L2bcff6] goto L2bd002;
+  catch `java.security.NoSuchAlgorithmException` @[L2bcfd4..L2bcff6] goto L2bcff8;
+  catch `java.lang.Throwable` @[L2bd010..L2bd022] goto L2bd01e;
+  catch `java.lang.Throwable` @[L2bd028..L2bd02a] goto L2bd026;
+}

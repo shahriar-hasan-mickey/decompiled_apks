@@ -1,0 +1,329 @@
+record `org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` @kind class @AccessFlag PUBLIC extends `org.eclipse.paho.client.mqttv3.internal.wire.MqttPersistableWireMessage` @kind class {
+  `byte`[] `org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.encodedPayload` @AccessFlag PRIVATE;
+  `org.eclipse.paho.client.mqttv3.MqttMessage` `org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @AccessFlag PRIVATE;
+  `java.lang.String` `org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.topicName` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v3 @kind this, `byte` v4 , `byte`[] v5 @kind object) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.<init>:(B[B)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L386de4.  v0:= 3I;
+  #L386de6.  call `<init>`(v3, v0) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPersistableWireMessage;.<init>:(B)V` @kind direct;
+  #L386dec.  v1:= 0I;
+  #L386dee.  v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.encodedPayload` @type ^`byte`[] := v1 @kind object;
+  #L386df2.  v1:= new `org.eclipse.paho.client.mqttv3.internal.wire.MqttReceivedMessage`;
+  #L386df6.  call `<init>`(v1) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttReceivedMessage;.<init>:()V` @kind direct;
+  #L386dfc.  v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` := v1 @kind object;
+  #L386e00.  v2:= v4 ^> 1;
+  #L386e04.  v0:= v0 ^& v2 @kind int;
+  #L386e06.  call `setQos`(v1, v0) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.setQos:(I)V` @kind virtual;
+  #L386e0c.  v0:= v4 ^& 1;
+  #L386e10.  v1:= 1I;
+  #L386e12.  if v0 != v1 then goto L386e20;
+  #L386e16.  v0:= v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386e1a.  call `setRetained`(v0, v1) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.setRetained:(Z)V` @kind virtual;
+  #L386e20.  v0:= 8I;
+  #L386e24.  v4:= v4 ^& v0 @kind int;
+  #L386e26.  if v4 != v0 then goto L386e38;
+  #L386e2a.  v4:= v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386e2e.  v4:= (`org.eclipse.paho.client.mqttv3.internal.wire.MqttReceivedMessage`) v4 @kind object;
+  #L386e32.  call `setDuplicate`(v4, v1) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttReceivedMessage;.setDuplicate:(Z)V` @kind virtual;
+  #L386e38.  v4:= new `java.io.ByteArrayInputStream`;
+  #L386e3c.  call `<init>`(v4, v5) @signature `Ljava/io/ByteArrayInputStream;.<init>:([B)V` @kind direct;
+  #L386e42.  v0:= new `org.eclipse.paho.client.mqttv3.internal.wire.CountingInputStream`;
+  #L386e46.  call `<init>`(v0, v4) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/CountingInputStream;.<init>:(Ljava/io/InputStream;)V` @kind direct;
+  #L386e4c.  v4:= new `java.io.DataInputStream`;
+  #L386e50.  call `<init>`(v4, v0) @signature `Ljava/io/DataInputStream;.<init>:(Ljava/io/InputStream;)V` @kind direct;
+  #L386e56.  call temp:= `decodeUTF8`(v3, v4) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttWireMessage;.decodeUTF8:(Ljava/io/DataInputStream;)Ljava/lang/String;` @kind virtual;
+  #L386e5c.  v1:= temp @kind object;
+  #L386e5e.  v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.topicName` @type ^`java.lang.String` := v1 @kind object;
+  #L386e62.  v1:= v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386e66.  call temp:= `getQos`(v1) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.getQos:()I` @kind virtual;
+  #L386e6c.  v1:= temp;
+  #L386e6e.  if v1 <= 0 then goto L386e7e;
+  #L386e72.  call temp:= `readUnsignedShort`(v4) @signature `Ljava/io/DataInputStream;.readUnsignedShort:()I` @kind virtual;
+  #L386e78.  v1:= temp;
+  #L386e7a.  v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage.msgId` @type ^`int` := v1;
+  #L386e7e.  v5:= length @variable v5;
+  #L386e80.  call temp:= `getCounter`(v0) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/CountingInputStream;.getCounter:()I` @kind virtual;
+  #L386e86.  v0:= temp;
+  #L386e88.  v5:= v5 - v0 @kind int;
+  #L386e8a.  v5:= new `byte`[v5];
+  #L386e8e.  call `readFully`(v4, v5) @signature `Ljava/io/DataInputStream;.readFully:([B)V` @kind virtual;
+  #L386e94.  call `close`(v4) @signature `Ljava/io/DataInputStream;.close:()V` @kind virtual;
+  #L386e9a.  v4:= v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386e9e.  call `setPayload`(v4, v5) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.setPayload:([B)V` @kind virtual;
+  #L386ea4.  return @kind void;
+}
+procedure `void` `<init>`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v1 @kind this, `java.lang.String` v2 @kind object, `org.eclipse.paho.client.mqttv3.MqttMessage` v3 @kind object) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.<init>:(Ljava/lang/String;Lorg/eclipse/paho/client/mqttv3/MqttMessage;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L386eb8.  v0:= 3I;
+  #L386eba.  call `<init>`(v1, v0) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPersistableWireMessage;.<init>:(B)V` @kind direct;
+  #L386ec0.  v0:= 0I;
+  #L386ec2.  v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.encodedPayload` @type ^`byte`[] := v0 @kind object;
+  #L386ec6.  v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.topicName` @type ^`java.lang.String` := v2 @kind object;
+  #L386eca.  v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` := v3 @kind object;
+  #L386ece.  return @kind void;
+}
+procedure `byte`[] `encodePayload`(`org.eclipse.paho.client.mqttv3.MqttMessage` v0 @kind object) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.encodePayload:(Lorg/eclipse/paho/client/mqttv3/MqttMessage;)[B` @AccessFlag PROTECTED_STATIC {
+    temp;
+
+  #L386a64.  call temp:= `getPayload`(v0) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.getPayload:()[B` @kind virtual;
+  #L386a6a.  v0:= temp @kind object;
+  #L386a6c.  return v0 @kind object;
+}
+procedure `org.eclipse.paho.client.mqttv3.MqttMessage` `getMessage`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v1 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.getMessage:()Lorg/eclipse/paho/client/mqttv3/MqttMessage;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L386dcc.  v0:= v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386dd0.  return v0 @kind object;
+}
+procedure `byte` `getMessageInfo`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v2 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.getMessageInfo:()B` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+
+  #L386a0c.  v0:= v2.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386a10.  call temp:= `getQos`(v0) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.getQos:()I` @kind virtual;
+  #L386a16.  v0:= temp;
+  #L386a18.  v0:= v0 ^< 1;
+  #L386a1c.  v0:= (`byte`) v0 @kind i2b;
+  #L386a1e.  v1:= v2.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386a22.  call temp:= `isRetained`(v1) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.isRetained:()Z` @kind virtual;
+  #L386a28.  v1:= temp;
+  #L386a2a.  if v1 == 0 then goto L386a34;
+  #L386a2e.  v0:= v0 ^| 1;
+  #L386a32.  v0:= (`byte`) v0 @kind i2b;
+  #L386a34.  v1:= v2.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386a38.  call temp:= `isDuplicate`(v1) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.isDuplicate:()Z` @kind virtual;
+  #L386a3e.  v1:= temp;
+  #L386a40.  if v1 != 0 then goto L386a4c;
+  #L386a44.  v1:= v2.`org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage.duplicate` @type ^`boolean` @kind boolean;
+  #L386a48.  if v1 == 0 then goto L386a52;
+  #L386a4c.  v0:= v0 ^| 8;
+  #L386a50.  v0:= (`byte`) v0 @kind i2b;
+  #L386a52.  return v0;
+}
+procedure `byte`[] `getPayload`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v1 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.getPayload:()[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L386a80.  v0:= v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.encodedPayload` @type ^`byte`[] @kind object;
+  #L386a84.  if v0 != 0 then goto L386a98;
+  #L386a88.  v0:= v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386a8c.  call temp:= `encodePayload`(v0) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.encodePayload:(Lorg/eclipse/paho/client/mqttv3/MqttMessage;)[B` @kind static;
+  #L386a92.  v0:= temp @kind object;
+  #L386a94.  v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.encodedPayload` @type ^`byte`[] := v0 @kind object;
+  #L386a98.  v0:= v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.encodedPayload` @type ^`byte`[] @kind object;
+  #L386a9c.  return v0 @kind object;
+}
+procedure `int` `getPayloadLength`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v1 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.getPayloadLength:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L386b28.  call temp:= `getPayload`(v1) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.getPayload:()[B` @kind virtual;
+  #L386b2e.  v0:= temp @kind object;
+  #L386b30.  v0:= length @variable v0;
+  #L386b32.  goto L386b36;
+  #L386b34.  v0:= 0I;
+  #L386b36.  return v0;
+  catch `org.eclipse.paho.client.mqttv3.MqttException` @[L386b28..L386b32] goto L386b34;
+}
+procedure `java.lang.String` `getTopicName`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v1 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.getTopicName:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L386b58.  v0:= v1.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.topicName` @type ^`java.lang.String` @kind object;
+  #L386b5c.  return v0 @kind object;
+}
+procedure `byte`[] `getVariableHeader`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v3 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.getVariableHeader:()[B` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L386ab0.  v0:= new `java.io.ByteArrayOutputStream`;
+  #L386ab4.  call `<init>`(v0) @signature `Ljava/io/ByteArrayOutputStream;.<init>:()V` @kind direct;
+  #L386aba.  v1:= new `java.io.DataOutputStream`;
+  #L386abe.  call `<init>`(v1, v0) @signature `Ljava/io/DataOutputStream;.<init>:(Ljava/io/OutputStream;)V` @kind direct;
+  #L386ac4.  v2:= v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.topicName` @type ^`java.lang.String` @kind object;
+  #L386ac8.  call `encodeUTF8`(v3, v1, v2) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttWireMessage;.encodeUTF8:(Ljava/io/DataOutputStream;Ljava/lang/String;)V` @kind virtual;
+  #L386ace.  v2:= v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386ad2.  call temp:= `getQos`(v2) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.getQos:()I` @kind virtual;
+  #L386ad8.  v2:= temp;
+  #L386ada.  if v2 <= 0 then goto L386ae8;
+  #L386ade.  v2:= v3.`org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage.msgId` @type ^`int`;
+  #L386ae2.  call `writeShort`(v1, v2) @signature `Ljava/io/DataOutputStream;.writeShort:(I)V` @kind virtual;
+  #L386ae8.  call `flush`(v1) @signature `Ljava/io/DataOutputStream;.flush:()V` @kind virtual;
+  #L386aee.  call temp:= `toByteArray`(v0) @signature `Ljava/io/ByteArrayOutputStream;.toByteArray:()[B` @kind virtual;
+  #L386af4.  v0:= temp @kind object;
+  #L386af6.  return v0 @kind object;
+  #L386af8.  v0:= Exception @type ^`java.io.IOException` @kind object;
+  #L386afa.  v1:= new `org.eclipse.paho.client.mqttv3.MqttException`;
+  #L386afe.  call `<init>`(v1, v0) @signature `Lorg/eclipse/paho/client/mqttv3/MqttException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L386b04.  throw v1;
+  catch `java.io.IOException` @[L386ab0..L386af6] goto L386af8;
+}
+procedure `boolean` `isMessageIdRequired`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v1 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.isMessageIdRequired:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3869f8.  v0:= 1I;
+  #L3869fa.  return v0;
+}
+procedure `void` `setMessageId`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v2 @kind this, `int` v3 ) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.setMessageId:(I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L386ee0.  call `setMessageId`(v2, v3) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttWireMessage;.setMessageId:(I)V` @kind super;
+  #L386ee6.  v0:= v2.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386eea.  v1:= instanceof @variable v0 @type ^`org.eclipse.paho.client.mqttv3.internal.wire.MqttReceivedMessage` @kind boolean;
+  #L386eee.  if v1 == 0 then goto L386efc;
+  #L386ef2.  v0:= (`org.eclipse.paho.client.mqttv3.internal.wire.MqttReceivedMessage`) v0 @kind object;
+  #L386ef6.  call `setMessageId`(v0, v3) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttReceivedMessage;.setMessageId:(I)V` @kind virtual;
+  #L386efc.  return @kind void;
+}
+procedure `java.lang.String` `toString`(`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish` v8 @kind this) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttPublish;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L386b70.  v0:= new `java.lang.StringBuffer`;
+  #L386b74.  call `<init>`(v0) @signature `Ljava/lang/StringBuffer;.<init>:()V` @kind direct;
+  #L386b7a.  v1:= v8.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386b7e.  call temp:= `getPayload`(v1) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.getPayload:()[B` @kind virtual;
+  #L386b84.  v1:= temp @kind object;
+  #L386b86.  v2:= length @variable v1;
+  #L386b88.  v3:= 20I;
+  #L386b8c.  call temp:= `min`(v2, v3) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L386b92.  v2:= temp;
+  #L386b94.  v3:= 0I;
+  #L386b96.  v4:= 0I;
+  #L386b98.  if v4 >= v2 then goto L386be4;
+  #L386b9c.  v5:= v1[v4] @kind byte;
+  #L386ba0.  call temp:= `toHexString`(v5) @signature `Ljava/lang/Integer;.toHexString:(I)Ljava/lang/String;` @kind static;
+  #L386ba6.  v5:= temp @kind object;
+  #L386ba8.  call temp:= `length`(v5) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L386bae.  v6:= temp;
+  #L386bb0.  v7:= 1I;
+  #L386bb2.  if v6 != v7 then goto L386bd8;
+  #L386bb6.  v6:= new `java.lang.StringBuilder`;
+  #L386bba.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386bc0.  v7:= "0" @kind object;
+  #L386bc4.  call temp:= `append`(v6, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386bca.  call temp:= `append`(v6, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386bd0.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386bd6.  v5:= temp @kind object;
+  #L386bd8.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386bde.  v4:= v4 + 1;
+  #L386be2.  goto L386b98;
+  #L386be4.  v4:= new `java.lang.String`;
+  #L386be8.  v5:= "UTF-8" @kind object;
+  #L386bec.  call `<init>`(v4, v1, v3, v2, v5) @signature `Ljava/lang/String;.<init>:([BIILjava/lang/String;)V` @kind direct;
+  #L386bf2.  goto L386bf8;
+  #L386bf4.  v4:= "?" @kind object;
+  #L386bf8.  v2:= new `java.lang.StringBuffer`;
+  #L386bfc.  call `<init>`(v2) @signature `Ljava/lang/StringBuffer;.<init>:()V` @kind direct;
+  #L386c02.  call temp:= `toString`(v8) @signature `Lorg/eclipse/paho/client/mqttv3/internal/wire/MqttWireMessage;.toString:()Ljava/lang/String;` @kind super;
+  #L386c08.  v3:= temp @kind object;
+  #L386c0a.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386c10.  v3:= new `java.lang.StringBuilder`;
+  #L386c14.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386c1a.  v5:= " qos:" @kind object;
+  #L386c1e.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386c24.  v5:= v8.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386c28.  call temp:= `getQos`(v5) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.getQos:()I` @kind virtual;
+  #L386c2e.  v5:= temp;
+  #L386c30.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386c36.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386c3c.  v3:= temp @kind object;
+  #L386c3e.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386c44.  v3:= v8.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386c48.  call temp:= `getQos`(v3) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.getQos:()I` @kind virtual;
+  #L386c4e.  v3:= temp;
+  #L386c50.  if v3 <= 0 then goto L386c80;
+  #L386c54.  v3:= new `java.lang.StringBuilder`;
+  #L386c58.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386c5e.  v5:= " msgId:" @kind object;
+  #L386c62.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386c68.  v5:= v8.`org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage.msgId` @type ^`int`;
+  #L386c6c.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386c72.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386c78.  v3:= temp @kind object;
+  #L386c7a.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386c80.  v3:= new `java.lang.StringBuilder`;
+  #L386c84.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386c8a.  v5:= " retained:" @kind object;
+  #L386c8e.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386c94.  v5:= v8.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.message` @type ^`org.eclipse.paho.client.mqttv3.MqttMessage` @kind object;
+  #L386c98.  call temp:= `isRetained`(v5) @signature `Lorg/eclipse/paho/client/mqttv3/MqttMessage;.isRetained:()Z` @kind virtual;
+  #L386c9e.  v5:= temp;
+  #L386ca0.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Z)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386ca6.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386cac.  v3:= temp @kind object;
+  #L386cae.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386cb4.  v3:= new `java.lang.StringBuilder`;
+  #L386cb8.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386cbe.  v5:= " dup:" @kind object;
+  #L386cc2.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386cc8.  v5:= v8.`org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage.duplicate` @type ^`boolean` @kind boolean;
+  #L386ccc.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Z)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386cd2.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386cd8.  v3:= temp @kind object;
+  #L386cda.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386ce0.  v3:= new `java.lang.StringBuilder`;
+  #L386ce4.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386cea.  v5:= " topic:\"" @kind object;
+  #L386cee.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386cf4.  v5:= v8.`org.eclipse.paho.client.mqttv3.internal.wire.MqttPublish.topicName` @type ^`java.lang.String` @kind object;
+  #L386cf8.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386cfe.  v5:= "\"" @kind object;
+  #L386d02.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d08.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386d0e.  v3:= temp @kind object;
+  #L386d10.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386d16.  v3:= new `java.lang.StringBuilder`;
+  #L386d1a.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386d20.  v6:= " payload:[hex:" @kind object;
+  #L386d24.  call temp:= `append`(v3, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d2a.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d30.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386d36.  v0:= temp @kind object;
+  #L386d38.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386d3e.  v0:= new `java.lang.StringBuilder`;
+  #L386d42.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386d48.  v3:= " utf8:\"" @kind object;
+  #L386d4c.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d52.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d58.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d5e.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386d64.  v0:= temp @kind object;
+  #L386d66.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386d6c.  v0:= new `java.lang.StringBuilder`;
+  #L386d70.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L386d76.  v3:= " length:" @kind object;
+  #L386d7a.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d80.  v1:= length @variable v1;
+  #L386d82.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d88.  v1:= "]" @kind object;
+  #L386d8c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L386d92.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386d98.  v0:= temp @kind object;
+  #L386d9a.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuffer;.append:(Ljava/lang/String;)Ljava/lang/StringBuffer;` @kind virtual;
+  #L386da0.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuffer;.toString:()Ljava/lang/String;` @kind virtual;
+  #L386da6.  v0:= temp @kind object;
+  #L386da8.  return v0 @kind object;
+  catch `java.lang.Exception` @[L386be4..L386bf2] goto L386bf4;
+}

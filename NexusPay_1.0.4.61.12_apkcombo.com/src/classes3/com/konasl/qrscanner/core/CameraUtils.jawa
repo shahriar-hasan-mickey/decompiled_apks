@@ -1,0 +1,97 @@
+record `com.konasl.qrscanner.core.CameraUtils` @kind class @AccessFlag PUBLIC {
+}
+procedure `void` `<init>`(`com.konasl.qrscanner.core.CameraUtils` v0 @kind this) @signature `Lcom/konasl/qrscanner/core/CameraUtils;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L3aa658.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3aa65e.  return @kind void;
+}
+procedure `android.hardware.Camera` `getCameraInstance`() @signature `Lcom/konasl/qrscanner/core/CameraUtils;.getCameraInstance:()Landroid/hardware/Camera;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L3aa534.  call temp:= `getDefaultCameraId`() @signature `Lcom/konasl/qrscanner/core/CameraUtils;.getDefaultCameraId:()I` @kind static;
+  #L3aa53a.  v0:= temp;
+  #L3aa53c.  call temp:= `getCameraInstance`(v0) @signature `Lcom/konasl/qrscanner/core/CameraUtils;.getCameraInstance:(I)Landroid/hardware/Camera;` @kind static;
+  #L3aa542.  v0:= temp @kind object;
+  #L3aa544.  return v0 @kind object;
+}
+procedure `android.hardware.Camera` `getCameraInstance`(`int` v1 ) @signature `Lcom/konasl/qrscanner/core/CameraUtils;.getCameraInstance:(I)Landroid/hardware/Camera;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L3aa558.  v0:= -1I;
+  #L3aa55a.  if v1 != v0 then goto L3aa568;
+  #L3aa55e.  call temp:= `open`() @signature `Landroid/hardware/Camera;.open:()Landroid/hardware/Camera;` @kind static;
+  #L3aa564.  v1:= temp @kind object;
+  #L3aa566.  goto L3aa574;
+  #L3aa568.  call temp:= `open`(v1) @signature `Landroid/hardware/Camera;.open:(I)Landroid/hardware/Camera;` @kind static;
+  #L3aa56e.  v1:= temp @kind object;
+  #L3aa570.  goto L3aa574;
+  #L3aa572.  v1:= 0I;
+  #L3aa574.  return v1 @kind object;
+  catch `java.lang.Exception` @[L3aa55e..L3aa570] goto L3aa572;
+}
+procedure `int` `getDefaultCameraId`() @signature `Lcom/konasl/qrscanner/core/CameraUtils;.getDefaultCameraId:()I` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L3aa60c.  call temp:= `getNumberOfCameras`() @signature `Landroid/hardware/Camera;.getNumberOfCameras:()I` @kind static;
+  #L3aa612.  v0:= temp;
+  #L3aa614.  v1:= new `android.hardware.Camera$CameraInfo`;
+  #L3aa618.  call `<init>`(v1) @signature `Landroid/hardware/Camera$CameraInfo;.<init>:()V` @kind direct;
+  #L3aa61e.  v2:= -1I;
+  #L3aa620.  v3:= 0I;
+  #L3aa622.  v2:= 0I;
+  #L3aa624.  v3:= -1I;
+  #L3aa626.  if v2 >= v0 then goto L3aa646;
+  #L3aa62a.  call `getCameraInfo`(v2, v1) @signature `Landroid/hardware/Camera;.getCameraInfo:(ILandroid/hardware/Camera$CameraInfo;)V` @kind static;
+  #L3aa630.  v3:= v1.`android.hardware.Camera$CameraInfo.facing` @type ^`int`;
+  #L3aa634.  if v3 != 0 then goto L3aa63a;
+  #L3aa638.  return v2;
+  #L3aa63a.  v3:= v2 + 1;
+  #L3aa63e.  v4:= v3;
+  #L3aa640.  v3:= v2;
+  #L3aa642.  v2:= v4;
+  #L3aa644.  goto L3aa626;
+  #L3aa646.  return v3;
+}
+procedure `boolean` `isFlashSupported`(`android.hardware.Camera` v3 @kind object) @signature `Lcom/konasl/qrscanner/core/CameraUtils;.isFlashSupported:(Landroid/hardware/Camera;)Z` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3aa598.  v0:= 0I;
+  #L3aa59a.  if v3 == 0 then goto L3aa5fa;
+  #L3aa59e.  call temp:= `getParameters`(v3) @signature `Landroid/hardware/Camera;.getParameters:()Landroid/hardware/Camera$Parameters;` @kind virtual;
+  #L3aa5a4.  v3:= temp @kind object;
+  #L3aa5a6.  call temp:= `getFlashMode`(v3) @signature `Landroid/hardware/Camera$Parameters;.getFlashMode:()Ljava/lang/String;` @kind virtual;
+  #L3aa5ac.  v1:= temp @kind object;
+  #L3aa5ae.  if v1 != 0 then goto L3aa5b4;
+  #L3aa5b2.  return v0;
+  #L3aa5b4.  call temp:= `getSupportedFlashModes`(v3) @signature `Landroid/hardware/Camera$Parameters;.getSupportedFlashModes:()Ljava/util/List;` @kind virtual;
+  #L3aa5ba.  v3:= temp @kind object;
+  #L3aa5bc.  if v3 == 0 then goto L3aa5fa;
+  #L3aa5c0.  call temp:= `isEmpty`(v3) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L3aa5c6.  v1:= temp;
+  #L3aa5c8.  if v1 != 0 then goto L3aa5fa;
+  #L3aa5cc.  call temp:= `size`(v3) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L3aa5d2.  v1:= temp;
+  #L3aa5d4.  v2:= 1I;
+  #L3aa5d6.  if v1 != v2 then goto L3aa5f8;
+  #L3aa5da.  call temp:= `get`(v3, v0) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L3aa5e0.  v3:= temp @kind object;
+  #L3aa5e2.  v3:= (`java.lang.String`) v3 @kind object;
+  #L3aa5e6.  v1:= "off" @kind object;
+  #L3aa5ea.  call temp:= `equals`(v3, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L3aa5f0.  v3:= temp;
+  #L3aa5f2.  if v3 == 0 then goto L3aa5f8;
+  #L3aa5f6.  goto L3aa5fa;
+  #L3aa5f8.  return v2;
+  #L3aa5fa.  return v0;
+}

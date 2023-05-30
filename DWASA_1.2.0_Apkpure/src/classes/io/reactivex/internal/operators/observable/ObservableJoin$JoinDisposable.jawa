@@ -1,0 +1,410 @@
+record `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicInteger` @kind class, `io.reactivex.disposables.Disposable` @kind interface, `io.reactivex.internal.operators.observable.ObservableGroupJoin$JoinSupport` @kind interface {
+  `java.util.concurrent.atomic.AtomicInteger` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.active` @AccessFlag FINAL;
+  `boolean` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.cancelled` @AccessFlag VOLATILE;
+  `io.reactivex.disposables.CompositeDisposable` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @AccessFlag FINAL;
+  `io.reactivex.Observer` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.downstream` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @AccessFlag FINAL;
+  `io.reactivex.functions.Function` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.leftEnd` @AccessFlag FINAL;
+  `int` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.leftIndex` @AccessFlag ;
+  `java.util.Map` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.lefts` @AccessFlag FINAL;
+  `io.reactivex.internal.queue.SpscLinkedArrayQueue` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.queue` @AccessFlag FINAL;
+  `io.reactivex.functions.BiFunction` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.resultSelector` @AccessFlag FINAL;
+  `io.reactivex.functions.Function` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rightEnd` @AccessFlag FINAL;
+  `int` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rightIndex` @AccessFlag ;
+  `java.util.Map` `io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rights` @AccessFlag FINAL;
+}
+global `java.lang.Integer` `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_CLOSE` @AccessFlag STATIC_FINAL;
+global `java.lang.Integer` `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_VALUE` @AccessFlag STATIC_FINAL;
+global `java.lang.Integer` `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.RIGHT_CLOSE` @AccessFlag STATIC_FINAL;
+global `java.lang.Integer` `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.RIGHT_VALUE` @AccessFlag STATIC_FINAL;
+global `long` `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L42830c.  v0:= 1I;
+  #L42830e.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L428314.  v0:= temp @kind object;
+  #L428316.  `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_VALUE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L42831a.  v0:= 2I;
+  #L42831c.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L428322.  v0:= temp @kind object;
+  #L428324.  `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.RIGHT_VALUE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L428328.  v0:= 3I;
+  #L42832a.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L428330.  v0:= temp @kind object;
+  #L428332.  `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_CLOSE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L428336.  v0:= 4I;
+  #L428338.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L42833e.  v0:= temp @kind object;
+  #L428340.  `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.RIGHT_CLOSE` @type ^`java.lang.Integer` := v0 @kind object;
+  #L428344.  return @kind void;
+}
+procedure `void` `<init>`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this, `io.reactivex.Observer` v2 @kind object, `io.reactivex.functions.Function` v3 @kind object, `io.reactivex.functions.Function` v4 @kind object, `io.reactivex.functions.BiFunction` v5 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.<init>:(Lio/reactivex/Observer;Lio/reactivex/functions/Function;Lio/reactivex/functions/Function;Lio/reactivex/functions/BiFunction;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L428358.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L42835e.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.downstream` @type ^`io.reactivex.Observer` := v2 @kind object;
+  #L428362.  v2:= new `io.reactivex.disposables.CompositeDisposable`;
+  #L428366.  call `<init>`(v2) @signature `Lio/reactivex/disposables/CompositeDisposable;.<init>:()V` @kind direct;
+  #L42836c.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` := v2 @kind object;
+  #L428370.  v2:= new `io.reactivex.internal.queue.SpscLinkedArrayQueue`;
+  #L428374.  call temp:= `bufferSize`() @signature `Lio/reactivex/Observable;.bufferSize:()I` @kind static;
+  #L42837a.  v0:= temp;
+  #L42837c.  call `<init>`(v2, v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.<init>:(I)V` @kind direct;
+  #L428382.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` := v2 @kind object;
+  #L428386.  v2:= new `java.util.LinkedHashMap`;
+  #L42838a.  call `<init>`(v2) @signature `Ljava/util/LinkedHashMap;.<init>:()V` @kind direct;
+  #L428390.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.lefts` @type ^`java.util.Map` := v2 @kind object;
+  #L428394.  v2:= new `java.util.LinkedHashMap`;
+  #L428398.  call `<init>`(v2) @signature `Ljava/util/LinkedHashMap;.<init>:()V` @kind direct;
+  #L42839e.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rights` @type ^`java.util.Map` := v2 @kind object;
+  #L4283a2.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4283a6.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L4283ac.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L4283b0.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.leftEnd` @type ^`io.reactivex.functions.Function` := v3 @kind object;
+  #L4283b4.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rightEnd` @type ^`io.reactivex.functions.Function` := v4 @kind object;
+  #L4283b8.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.resultSelector` @type ^`io.reactivex.functions.BiFunction` := v5 @kind object;
+  #L4283bc.  v2:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L4283c0.  v3:= 2I;
+  #L4283c2.  call `<init>`(v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:(I)V` @kind direct;
+  #L4283c8.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.active` @type ^`java.util.concurrent.atomic.AtomicInteger` := v2 @kind object;
+  #L4283cc.  return @kind void;
+}
+procedure `void` `cancelAll`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.cancelAll:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4283e0.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L4283e4.  call `dispose`(v0) @signature `Lio/reactivex/disposables/CompositeDisposable;.dispose:()V` @kind virtual;
+  #L4283ea.  return @kind void;
+}
+procedure `void` `dispose`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.dispose:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4283fc.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.cancelled` @type ^`boolean` @kind boolean;
+  #L428400.  if v0 != 0 then goto L428426;
+  #L428404.  v0:= 1I;
+  #L428406.  v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.cancelled` @type ^`boolean` := v0 @kind boolean;
+  #L42840a.  call `cancelAll`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.cancelAll:()V` @kind virtual;
+  #L428410.  call temp:= `getAndIncrement`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.getAndIncrement:()I` @kind virtual;
+  #L428416.  v0:= temp;
+  #L428418.  if v0 != 0 then goto L428426;
+  #L42841c.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L428420.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L428426.  return @kind void;
+}
+procedure `void` `drain`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v10 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.drain:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L428438.  call temp:= `getAndIncrement`(v10) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.getAndIncrement:()I` @kind virtual;
+  #L42843e.  v0:= temp;
+  #L428440.  if v0 == 0 then goto L428446;
+  #L428444.  return @kind void;
+  #L428446.  v0:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L42844a.  v1:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L42844e.  v2:= 1I;
+  #L428450.  v3:= 1I;
+  #L428452.  v4:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.cancelled` @type ^`boolean` @kind boolean;
+  #L428456.  if v4 == 0 then goto L428462;
+  #L42845a.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L428460.  return @kind void;
+  #L428462.  v4:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L428466.  call temp:= `get`(v4) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L42846c.  v4:= temp @kind object;
+  #L42846e.  v4:= (`java.lang.Throwable`) v4 @kind object;
+  #L428472.  if v4 == 0 then goto L42848a;
+  #L428476.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L42847c.  call `cancelAll`(v10) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.cancelAll:()V` @kind virtual;
+  #L428482.  call `errorAll`(v10, v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.errorAll:(Lio/reactivex/Observer;)V` @kind virtual;
+  #L428488.  return @kind void;
+  #L42848a.  v4:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.active` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L42848e.  call temp:= `get`(v4) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.get:()I` @kind virtual;
+  #L428494.  v4:= temp;
+  #L428496.  v5:= 0I;
+  #L428498.  if v4 != 0 then goto L4284a0;
+  #L42849c.  v4:= 1I;
+  #L42849e.  goto L4284a2;
+  #L4284a0.  v4:= 0I;
+  #L4284a2.  call temp:= `poll`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L4284a8.  v6:= temp @kind object;
+  #L4284aa.  v6:= (`java.lang.Integer`) v6 @kind object;
+  #L4284ae.  if v6 != 0 then goto L4284b6;
+  #L4284b2.  v7:= 1I;
+  #L4284b4.  goto L4284b8;
+  #L4284b6.  v7:= 0I;
+  #L4284b8.  if v4 == 0 then goto L4284e6;
+  #L4284bc.  if v7 == 0 then goto L4284e6;
+  #L4284c0.  v0:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.lefts` @type ^`java.util.Map` @kind object;
+  #L4284c4.  call `clear`(v0) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L4284ca.  v0:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rights` @type ^`java.util.Map` @kind object;
+  #L4284ce.  call `clear`(v0) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L4284d4.  v0:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L4284d8.  call `dispose`(v0) @signature `Lio/reactivex/disposables/CompositeDisposable;.dispose:()V` @kind virtual;
+  #L4284de.  call `onComplete`(v1) @signature `Lio/reactivex/Observer;.onComplete:()V` @kind interface;
+  #L4284e4.  return @kind void;
+  #L4284e6.  if v7 == 0 then goto L4284fa;
+  #L4284ea.  v3:= -v3 @kind int;
+  #L4284ec.  call temp:= `addAndGet`(v10, v3) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.addAndGet:(I)I` @kind virtual;
+  #L4284f2.  v3:= temp;
+  #L4284f4.  if v3 != 0 then goto L428452;
+  #L4284f8.  return @kind void;
+  #L4284fa.  call temp:= `poll`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L428500.  v4:= temp @kind object;
+  #L428502.  v7:= `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L428506.  v8:= "The resultSelector returned a null value" @kind object;
+  #L42850a.  if v6 != v7 then goto L4285e2;
+  #L42850e.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.leftIndex` @type ^`int`;
+  #L428512.  v6:= v5 + 1;
+  #L428516.  v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.leftIndex` @type ^`int` := v6;
+  #L42851a.  v6:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.lefts` @type ^`java.util.Map` @kind object;
+  #L42851e.  call temp:= `valueOf`(v5) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L428524.  v7:= temp @kind object;
+  #L428526.  call temp:= `put`(v6, v7, v4) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L42852c.  v6:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.leftEnd` @type ^`io.reactivex.functions.Function` @kind object;
+  #L428530.  call temp:= `apply`(v6, v4) @signature `Lio/reactivex/functions/Function;.apply:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L428536.  v6:= temp @kind object;
+  #L428538.  v7:= "The leftEnd returned a null ObservableSource" @kind object;
+  #L42853c.  call temp:= `requireNonNull`(v6, v7) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L428542.  v6:= temp @kind object;
+  #L428544.  v6:= (`io.reactivex.ObservableSource`) v6 @kind object;
+  #L428548.  v7:= new `io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightEndObserver`;
+  #L42854c.  call `<init>`(v7, v10, v2, v5) @signature `Lio/reactivex/internal/operators/observable/ObservableGroupJoin$LeftRightEndObserver;.<init>:(Lio/reactivex/internal/operators/observable/ObservableGroupJoin$JoinSupport;ZI)V` @kind direct;
+  #L428552.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L428556.  call temp:= `add`(v5, v7) @signature `Lio/reactivex/disposables/CompositeDisposable;.add:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L42855c.  call `subscribe`(v6, v7) @signature `Lio/reactivex/ObservableSource;.subscribe:(Lio/reactivex/Observer;)V` @kind interface;
+  #L428562.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L428566.  call temp:= `get`(v5) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L42856c.  v5:= temp @kind object;
+  #L42856e.  v5:= (`java.lang.Throwable`) v5 @kind object;
+  #L428572.  if v5 == 0 then goto L42858a;
+  #L428576.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L42857c.  call `cancelAll`(v10) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.cancelAll:()V` @kind virtual;
+  #L428582.  call `errorAll`(v10, v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.errorAll:(Lio/reactivex/Observer;)V` @kind virtual;
+  #L428588.  return @kind void;
+  #L42858a.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rights` @type ^`java.util.Map` @kind object;
+  #L42858e.  call temp:= `values`(v5) @signature `Ljava/util/Map;.values:()Ljava/util/Collection;` @kind interface;
+  #L428594.  v5:= temp @kind object;
+  #L428596.  call temp:= `iterator`(v5) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L42859c.  v5:= temp @kind object;
+  #L42859e.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4285a4.  v6:= temp;
+  #L4285a6.  if v6 == 0 then goto L428452;
+  #L4285aa.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4285b0.  v6:= temp @kind object;
+  #L4285b2.  v7:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.resultSelector` @type ^`io.reactivex.functions.BiFunction` @kind object;
+  #L4285b6.  call temp:= `apply`(v7, v4, v6) @signature `Lio/reactivex/functions/BiFunction;.apply:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4285bc.  v6:= temp @kind object;
+  #L4285be.  call temp:= `requireNonNull`(v6, v8) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L4285c4.  v6:= temp @kind object;
+  #L4285c6.  call `onNext`(v1, v6) @signature `Lio/reactivex/Observer;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L4285cc.  goto L42859e;
+  #L4285ce.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4285d0.  call `fail`(v10, v2, v1, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.fail:(Ljava/lang/Throwable;Lio/reactivex/Observer;Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L4285d6.  return @kind void;
+  #L4285d8.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4285da.  call `fail`(v10, v2, v1, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.fail:(Ljava/lang/Throwable;Lio/reactivex/Observer;Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L4285e0.  return @kind void;
+  #L4285e2.  v7:= `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.RIGHT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L4285e6.  if v6 != v7 then goto L4286be;
+  #L4285ea.  v6:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rightIndex` @type ^`int`;
+  #L4285ee.  v7:= v6 + 1;
+  #L4285f2.  v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rightIndex` @type ^`int` := v7;
+  #L4285f6.  v7:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rights` @type ^`java.util.Map` @kind object;
+  #L4285fa.  call temp:= `valueOf`(v6) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L428600.  v9:= temp @kind object;
+  #L428602.  call temp:= `put`(v7, v9, v4) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L428608.  v7:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rightEnd` @type ^`io.reactivex.functions.Function` @kind object;
+  #L42860c.  call temp:= `apply`(v7, v4) @signature `Lio/reactivex/functions/Function;.apply:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L428612.  v7:= temp @kind object;
+  #L428614.  v9:= "The rightEnd returned a null ObservableSource" @kind object;
+  #L428618.  call temp:= `requireNonNull`(v7, v9) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L42861e.  v7:= temp @kind object;
+  #L428620.  v7:= (`io.reactivex.ObservableSource`) v7 @kind object;
+  #L428624.  v9:= new `io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightEndObserver`;
+  #L428628.  call `<init>`(v9, v10, v5, v6) @signature `Lio/reactivex/internal/operators/observable/ObservableGroupJoin$LeftRightEndObserver;.<init>:(Lio/reactivex/internal/operators/observable/ObservableGroupJoin$JoinSupport;ZI)V` @kind direct;
+  #L42862e.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L428632.  call temp:= `add`(v5, v9) @signature `Lio/reactivex/disposables/CompositeDisposable;.add:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L428638.  call `subscribe`(v7, v9) @signature `Lio/reactivex/ObservableSource;.subscribe:(Lio/reactivex/Observer;)V` @kind interface;
+  #L42863e.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L428642.  call temp:= `get`(v5) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L428648.  v5:= temp @kind object;
+  #L42864a.  v5:= (`java.lang.Throwable`) v5 @kind object;
+  #L42864e.  if v5 == 0 then goto L428666;
+  #L428652.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L428658.  call `cancelAll`(v10) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.cancelAll:()V` @kind virtual;
+  #L42865e.  call `errorAll`(v10, v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.errorAll:(Lio/reactivex/Observer;)V` @kind virtual;
+  #L428664.  return @kind void;
+  #L428666.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.lefts` @type ^`java.util.Map` @kind object;
+  #L42866a.  call temp:= `values`(v5) @signature `Ljava/util/Map;.values:()Ljava/util/Collection;` @kind interface;
+  #L428670.  v5:= temp @kind object;
+  #L428672.  call temp:= `iterator`(v5) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L428678.  v5:= temp @kind object;
+  #L42867a.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L428680.  v6:= temp;
+  #L428682.  if v6 == 0 then goto L428452;
+  #L428686.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L42868c.  v6:= temp @kind object;
+  #L42868e.  v7:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.resultSelector` @type ^`io.reactivex.functions.BiFunction` @kind object;
+  #L428692.  call temp:= `apply`(v7, v6, v4) @signature `Lio/reactivex/functions/BiFunction;.apply:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L428698.  v6:= temp @kind object;
+  #L42869a.  call temp:= `requireNonNull`(v6, v8) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L4286a0.  v6:= temp @kind object;
+  #L4286a2.  call `onNext`(v1, v6) @signature `Lio/reactivex/Observer;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L4286a8.  goto L42867a;
+  #L4286aa.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4286ac.  call `fail`(v10, v2, v1, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.fail:(Ljava/lang/Throwable;Lio/reactivex/Observer;Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L4286b2.  return @kind void;
+  #L4286b4.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4286b6.  call `fail`(v10, v2, v1, v0) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.fail:(Ljava/lang/Throwable;Lio/reactivex/Observer;Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @kind virtual;
+  #L4286bc.  return @kind void;
+  #L4286be.  v5:= `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_CLOSE` @type ^`java.lang.Integer` @kind object;
+  #L4286c2.  if v6 != v5 then goto L4286ee;
+  #L4286c6.  v4:= (`io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightEndObserver`) v4 @kind object;
+  #L4286ca.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.lefts` @type ^`java.util.Map` @kind object;
+  #L4286ce.  v6:= v4.`io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightEndObserver.index` @type ^`int`;
+  #L4286d2.  call temp:= `valueOf`(v6) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L4286d8.  v6:= temp @kind object;
+  #L4286da.  call temp:= `remove`(v5, v6) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4286e0.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L4286e4.  call temp:= `remove`(v5, v4) @signature `Lio/reactivex/disposables/CompositeDisposable;.remove:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L4286ea.  goto L428452;
+  #L4286ee.  v4:= (`io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightEndObserver`) v4 @kind object;
+  #L4286f2.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rights` @type ^`java.util.Map` @kind object;
+  #L4286f6.  v6:= v4.`io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightEndObserver.index` @type ^`int`;
+  #L4286fa.  call temp:= `valueOf`(v6) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L428700.  v6:= temp @kind object;
+  #L428702.  call temp:= `remove`(v5, v6) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L428708.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L42870c.  call temp:= `remove`(v5, v4) @signature `Lio/reactivex/disposables/CompositeDisposable;.remove:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L428712.  goto L428452;
+  catch `java.lang.Throwable` @[L42852c..L428548] goto L4285d8;
+  catch `java.lang.Throwable` @[L4285b2..L4285c6] goto L4285ce;
+  catch `java.lang.Throwable` @[L428608..L428624] goto L4286b4;
+  catch `java.lang.Throwable` @[L42868e..L4286a2] goto L4286aa;
+}
+procedure `void` `errorAll`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v2 @kind this, `io.reactivex.Observer` v3 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.errorAll:(Lio/reactivex/Observer;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L428758.  v0:= v2.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L42875c.  call temp:= `terminate`(v0) @signature `Lio/reactivex/internal/util/ExceptionHelper;.terminate:(Ljava/util/concurrent/atomic/AtomicReference;)Ljava/lang/Throwable;` @kind static;
+  #L428762.  v0:= temp @kind object;
+  #L428764.  v1:= v2.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.lefts` @type ^`java.util.Map` @kind object;
+  #L428768.  call `clear`(v1) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L42876e.  v1:= v2.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.rights` @type ^`java.util.Map` @kind object;
+  #L428772.  call `clear`(v1) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L428778.  call `onError`(v3, v0) @signature `Lio/reactivex/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L42877e.  return @kind void;
+}
+procedure `void` `fail`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this, `java.lang.Throwable` v2 @kind object, `io.reactivex.Observer` v3 @kind object, `io.reactivex.internal.queue.SpscLinkedArrayQueue` v4 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.fail:(Ljava/lang/Throwable;Lio/reactivex/Observer;Lio/reactivex/internal/queue/SpscLinkedArrayQueue;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L428790.  call `throwIfFatal`(v2) @signature `Lio/reactivex/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L428796.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L42879a.  call temp:= `addThrowable`(v0, v2) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L4287a0.  call `clear`(v4) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L4287a6.  call `cancelAll`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.cancelAll:()V` @kind virtual;
+  #L4287ac.  call `errorAll`(v1, v3) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.errorAll:(Lio/reactivex/Observer;)V` @kind virtual;
+  #L4287b2.  return @kind void;
+}
+procedure `void` `innerClose`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this, `boolean` v2 , `io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightEndObserver` v3 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.innerClose:(ZLio/reactivex/internal/operators/observable/ObservableGroupJoin$LeftRightEndObserver;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4287c4.  @monitorenter v1
+  #L4287c6.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L4287ca.  if v2 == 0 then goto L4287d4;
+  #L4287ce.  v2:= `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_CLOSE` @type ^`java.lang.Integer` @kind object;
+  #L4287d2.  goto L4287d8;
+  #L4287d4.  v2:= `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.RIGHT_CLOSE` @type ^`java.lang.Integer` @kind object;
+  #L4287d8.  call temp:= `offer`(v0, v2, v3) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.offer:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4287de.  @monitorexit v1
+  #L4287e0.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.drain:()V` @kind virtual;
+  #L4287e6.  return @kind void;
+  #L4287e8.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4287ea.  @monitorexit v1
+  #L4287ec.  throw v2;
+  catch `java.lang.Throwable` @[L4287c6..L4287e0] goto L4287e8;
+  catch `java.lang.Throwable` @[L4287ea..L4287ec] goto L4287e8;
+}
+procedure `void` `innerCloseError`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.innerCloseError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L428814.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L428818.  call temp:= `addThrowable`(v0, v2) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L42881e.  v0:= temp;
+  #L428820.  if v0 == 0 then goto L42882c;
+  #L428824.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.drain:()V` @kind virtual;
+  #L42882a.  goto L428832;
+  #L42882c.  call `onError`(v2) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L428832.  return @kind void;
+}
+procedure `void` `innerComplete`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this, `io.reactivex.internal.operators.observable.ObservableGroupJoin$LeftRightObserver` v2 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.innerComplete:(Lio/reactivex/internal/operators/observable/ObservableGroupJoin$LeftRightObserver;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L428844.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.disposables` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L428848.  call temp:= `delete`(v0, v2) @signature `Lio/reactivex/disposables/CompositeDisposable;.delete:(Lio/reactivex/disposables/Disposable;)Z` @kind virtual;
+  #L42884e.  v2:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.active` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L428852.  call temp:= `decrementAndGet`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L428858.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.drain:()V` @kind virtual;
+  #L42885e.  return @kind void;
+}
+procedure `void` `innerError`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.innerError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L428870.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.error` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L428874.  call temp:= `addThrowable`(v0, v2) @signature `Lio/reactivex/internal/util/ExceptionHelper;.addThrowable:(Ljava/util/concurrent/atomic/AtomicReference;Ljava/lang/Throwable;)Z` @kind static;
+  #L42887a.  v0:= temp;
+  #L42887c.  if v0 == 0 then goto L428892;
+  #L428880.  v2:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.active` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L428884.  call temp:= `decrementAndGet`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.decrementAndGet:()I` @kind virtual;
+  #L42888a.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.drain:()V` @kind virtual;
+  #L428890.  goto L428898;
+  #L428892.  call `onError`(v2) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L428898.  return @kind void;
+}
+procedure `void` `innerValue`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this, `boolean` v2 , `java.lang.Object` v3 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.innerValue:(ZLjava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4288ac.  @monitorenter v1
+  #L4288ae.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.queue` @type ^`io.reactivex.internal.queue.SpscLinkedArrayQueue` @kind object;
+  #L4288b2.  if v2 == 0 then goto L4288bc;
+  #L4288b6.  v2:= `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.LEFT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L4288ba.  goto L4288c0;
+  #L4288bc.  v2:= `@@io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.RIGHT_VALUE` @type ^`java.lang.Integer` @kind object;
+  #L4288c0.  call temp:= `offer`(v0, v2, v3) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.offer:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4288c6.  @monitorexit v1
+  #L4288c8.  call `drain`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.drain:()V` @kind virtual;
+  #L4288ce.  return @kind void;
+  #L4288d0.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4288d2.  @monitorexit v1
+  #L4288d4.  throw v2;
+  catch `java.lang.Throwable` @[L4288ae..L4288c8] goto L4288d0;
+  catch `java.lang.Throwable` @[L4288d2..L4288d4] goto L4288d0;
+}
+procedure `boolean` `isDisposed`(`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableJoin$JoinDisposable;.isDisposed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4282f4.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableJoin$JoinDisposable.cancelled` @type ^`boolean` @kind boolean;
+  #L4282f8.  return v0;
+}

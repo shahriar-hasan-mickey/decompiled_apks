@@ -1,0 +1,1 @@
+ALTER TABLE  UserInfoModel ADD COLUMN referenceNumber TEXT;

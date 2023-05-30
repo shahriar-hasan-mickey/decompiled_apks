@@ -1,0 +1,44 @@
+record `org.greenrobot.eventbus.AsyncPoster` @kind class @AccessFlag  extends `java.lang.Runnable` @kind interface, `org.greenrobot.eventbus.Poster` @kind interface {
+  `org.greenrobot.eventbus.EventBus` `org.greenrobot.eventbus.AsyncPoster.eventBus` @AccessFlag PRIVATE_FINAL;
+  `org.greenrobot.eventbus.PendingPostQueue` `org.greenrobot.eventbus.AsyncPoster.queue` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`org.greenrobot.eventbus.AsyncPoster` v0 @kind this, `org.greenrobot.eventbus.EventBus` v1 @kind object) @signature `Lorg/greenrobot/eventbus/AsyncPoster;.<init>:(Lorg/greenrobot/eventbus/EventBus;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L480fdc.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L480fe2.  v0.`org.greenrobot.eventbus.AsyncPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` := v1 @kind object;
+  #L480fe6.  v1:= new `org.greenrobot.eventbus.PendingPostQueue`;
+  #L480fea.  call `<init>`(v1) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.<init>:()V` @kind direct;
+  #L480ff0.  v0.`org.greenrobot.eventbus.AsyncPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` := v1 @kind object;
+  #L480ff4.  return @kind void;
+}
+procedure `void` `enqueue`(`org.greenrobot.eventbus.AsyncPoster` v0 @kind this, `org.greenrobot.eventbus.Subscription` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lorg/greenrobot/eventbus/AsyncPoster;.enqueue:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L481008.  call temp:= `obtainPendingPost`(v1, v2) @signature `Lorg/greenrobot/eventbus/PendingPost;.obtainPendingPost:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)Lorg/greenrobot/eventbus/PendingPost;` @kind static;
+  #L48100e.  v1:= temp @kind object;
+  #L481010.  v2:= v0.`org.greenrobot.eventbus.AsyncPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L481014.  call `enqueue`(v2, v1) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.enqueue:(Lorg/greenrobot/eventbus/PendingPost;)V` @kind virtual;
+  #L48101a.  v1:= v0.`org.greenrobot.eventbus.AsyncPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L48101e.  call temp:= `getExecutorService`(v1) @signature `Lorg/greenrobot/eventbus/EventBus;.getExecutorService:()Ljava/util/concurrent/ExecutorService;` @kind virtual;
+  #L481024.  v1:= temp @kind object;
+  #L481026.  call `execute`(v1, v0) @signature `Ljava/util/concurrent/ExecutorService;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L48102c.  return @kind void;
+}
+procedure `void` `run`(`org.greenrobot.eventbus.AsyncPoster` v2 @kind this) @signature `Lorg/greenrobot/eventbus/AsyncPoster;.run:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L481040.  v0:= v2.`org.greenrobot.eventbus.AsyncPoster.queue` @type ^`org.greenrobot.eventbus.PendingPostQueue` @kind object;
+  #L481044.  call temp:= `poll`(v0) @signature `Lorg/greenrobot/eventbus/PendingPostQueue;.poll:()Lorg/greenrobot/eventbus/PendingPost;` @kind virtual;
+  #L48104a.  v0:= temp @kind object;
+  #L48104c.  if v0 == 0 then goto L48105c;
+  #L481050.  v1:= v2.`org.greenrobot.eventbus.AsyncPoster.eventBus` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L481054.  call `invokeSubscriber`(v1, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/PendingPost;)V` @kind virtual;
+  #L48105a.  return @kind void;
+  #L48105c.  v0:= new `java.lang.IllegalStateException`;
+  #L481060.  v1:= "No pending post available" @kind object;
+  #L481064.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L48106a.  throw v0;
+}

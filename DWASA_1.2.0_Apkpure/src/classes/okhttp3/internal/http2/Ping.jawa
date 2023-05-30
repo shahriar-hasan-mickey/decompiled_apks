@@ -1,0 +1,120 @@
+record `okhttp3.internal.http2.Ping` @kind class @AccessFlag FINAL {
+  `java.util.concurrent.CountDownLatch` `okhttp3.internal.http2.Ping.latch` @AccessFlag PRIVATE_FINAL;
+  `long` `okhttp3.internal.http2.Ping.received` @AccessFlag PRIVATE;
+  `long` `okhttp3.internal.http2.Ping.sent` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`okhttp3.internal.http2.Ping` v2 @kind this) @signature `Lokhttp3/internal/http2/Ping;.<init>:()V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4721c0.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4721c6.  v0:= new `java.util.concurrent.CountDownLatch`;
+  #L4721ca.  v1:= 1I;
+  #L4721cc.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/CountDownLatch;.<init>:(I)V` @kind direct;
+  #L4721d2.  v2.`okhttp3.internal.http2.Ping.latch` @type ^`java.util.concurrent.CountDownLatch` := v0 @kind object;
+  #L4721d6.  v0:= -1L;
+  #L4721da.  v2.`okhttp3.internal.http2.Ping.sent` @type ^`long` := v0 @kind wide;
+  #L4721de.  v2.`okhttp3.internal.http2.Ping.received` @type ^`long` := v0 @kind wide;
+  #L4721e2.  return @kind void;
+}
+procedure `void` `cancel`(`okhttp3.internal.http2.Ping` v5 @kind this) @signature `Lokhttp3/internal/http2/Ping;.cancel:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4721f4.  v0:= v5.`okhttp3.internal.http2.Ping.received` @type ^`long` @kind wide;
+  #L4721f8.  v2:= -1L;
+  #L4721fc.  v4:= lcmp(v0, v2);
+  #L472200.  if v4 != 0 then goto L472226;
+  #L472204.  v0:= v5.`okhttp3.internal.http2.Ping.sent` @type ^`long` @kind wide;
+  #L472208.  v4:= lcmp(v0, v2);
+  #L47220c.  if v4 == 0 then goto L472226;
+  #L472210.  v2:= 1L;
+  #L472214.  v0:= v0 - v2 @kind long;
+  #L472216.  v5.`okhttp3.internal.http2.Ping.received` @type ^`long` := v0 @kind wide;
+  #L47221a.  v0:= v5.`okhttp3.internal.http2.Ping.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L47221e.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L472224.  return @kind void;
+  #L472226.  v0:= new `java.lang.IllegalStateException`;
+  #L47222a.  call `<init>`(v0) @signature `Ljava/lang/IllegalStateException;.<init>:()V` @kind direct;
+  #L472230.  throw v0;
+}
+procedure `void` `receive`(`okhttp3.internal.http2.Ping` v5 @kind this) @signature `Lokhttp3/internal/http2/Ping;.receive:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L472244.  v0:= v5.`okhttp3.internal.http2.Ping.received` @type ^`long` @kind wide;
+  #L472248.  v2:= -1L;
+  #L47224c.  v4:= lcmp(v0, v2);
+  #L472250.  if v4 != 0 then goto L472278;
+  #L472254.  v0:= v5.`okhttp3.internal.http2.Ping.sent` @type ^`long` @kind wide;
+  #L472258.  v4:= lcmp(v0, v2);
+  #L47225c.  if v4 == 0 then goto L472278;
+  #L472260.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L472266.  v0:= temp @kind wide;
+  #L472268.  v5.`okhttp3.internal.http2.Ping.received` @type ^`long` := v0 @kind wide;
+  #L47226c.  v0:= v5.`okhttp3.internal.http2.Ping.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L472270.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L472276.  return @kind void;
+  #L472278.  v0:= new `java.lang.IllegalStateException`;
+  #L47227c.  call `<init>`(v0) @signature `Ljava/lang/IllegalStateException;.<init>:()V` @kind direct;
+  #L472282.  throw v0;
+}
+procedure `long` `roundTripTime`(`okhttp3.internal.http2.Ping` v4 @kind this) @signature `Lokhttp3/internal/http2/Ping;.roundTripTime:()J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L472164.  v0:= v4.`okhttp3.internal.http2.Ping.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L472168.  call `await`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L47216e.  v0:= v4.`okhttp3.internal.http2.Ping.received` @type ^`long` @kind wide;
+  #L472172.  v2:= v4.`okhttp3.internal.http2.Ping.sent` @type ^`long` @kind wide;
+  #L472176.  v0:= v0 - v2 @kind long;
+  #L472178.  return v0 @kind wide;
+}
+procedure `long` `roundTripTime`(`okhttp3.internal.http2.Ping` v2 @kind this, `long` v3 , `java.util.concurrent.TimeUnit` v5 @kind object) @signature `Lokhttp3/internal/http2/Ping;.roundTripTime:(JLjava/util/concurrent/TimeUnit;)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L47218c.  v0:= v2.`okhttp3.internal.http2.Ping.latch` @type ^`java.util.concurrent.CountDownLatch` @kind object;
+  #L472190.  call temp:= `await`(v0, v3, v5) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L472196.  v3:= temp;
+  #L472198.  if v3 == 0 then goto L4721a8;
+  #L47219c.  v3:= v2.`okhttp3.internal.http2.Ping.received` @type ^`long` @kind wide;
+  #L4721a0.  v0:= v2.`okhttp3.internal.http2.Ping.sent` @type ^`long` @kind wide;
+  #L4721a4.  v3:= v3 - v0 @kind long;
+  #L4721a6.  return v3 @kind wide;
+  #L4721a8.  v3:= -2L;
+  #L4721ac.  return v3 @kind wide;
+}
+procedure `void` `send`(`okhttp3.internal.http2.Ping` v5 @kind this) @signature `Lokhttp3/internal/http2/Ping;.send:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L472294.  v0:= v5.`okhttp3.internal.http2.Ping.sent` @type ^`long` @kind wide;
+  #L472298.  v2:= -1L;
+  #L47229c.  v4:= lcmp(v0, v2);
+  #L4722a0.  if v4 != 0 then goto L4722b2;
+  #L4722a4.  call temp:= `nanoTime`() @signature `Ljava/lang/System;.nanoTime:()J` @kind static;
+  #L4722aa.  v0:= temp @kind wide;
+  #L4722ac.  v5.`okhttp3.internal.http2.Ping.sent` @type ^`long` := v0 @kind wide;
+  #L4722b0.  return @kind void;
+  #L4722b2.  v0:= new `java.lang.IllegalStateException`;
+  #L4722b6.  call `<init>`(v0) @signature `Ljava/lang/IllegalStateException;.<init>:()V` @kind direct;
+  #L4722bc.  throw v0;
+}

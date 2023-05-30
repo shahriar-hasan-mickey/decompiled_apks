@@ -1,0 +1,1543 @@
+record `org.greenrobot.greendao.AbstractDao` @kind class @AccessFlag PUBLIC_ABSTRACT {
+  `org.greenrobot.greendao.internal.DaoConfig` `org.greenrobot.greendao.AbstractDao.config` @AccessFlag PROTECTED_FINAL;
+  `org.greenrobot.greendao.database.Database` `org.greenrobot.greendao.AbstractDao.db` @AccessFlag PROTECTED_FINAL;
+  `org.greenrobot.greendao.identityscope.IdentityScope` `org.greenrobot.greendao.AbstractDao.identityScope` @AccessFlag PROTECTED_FINAL;
+  `org.greenrobot.greendao.identityscope.IdentityScopeLong` `org.greenrobot.greendao.AbstractDao.identityScopeLong` @AccessFlag PROTECTED_FINAL;
+  `boolean` `org.greenrobot.greendao.AbstractDao.isStandardSQLite` @AccessFlag PROTECTED_FINAL;
+  `int` `org.greenrobot.greendao.AbstractDao.pkOrdinal` @AccessFlag PROTECTED_FINAL;
+  `org.greenrobot.greendao.rx.RxDao` `org.greenrobot.greendao.AbstractDao.rxDao` @AccessFlag PRIVATE_VOLATILE;
+  `org.greenrobot.greendao.rx.RxDao` `org.greenrobot.greendao.AbstractDao.rxDaoPlain` @AccessFlag PRIVATE_VOLATILE;
+  `org.greenrobot.greendao.AbstractDaoSession` `org.greenrobot.greendao.AbstractDao.session` @AccessFlag PROTECTED_FINAL;
+  `org.greenrobot.greendao.internal.TableStatements` `org.greenrobot.greendao.AbstractDao.statements` @AccessFlag PROTECTED_FINAL;
+}
+procedure `void` `<init>`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `org.greenrobot.greendao.internal.DaoConfig` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.<init>:(Lorg/greenrobot/greendao/internal/DaoConfig;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L38a2ac.  v0:= 0I;
+  #L38a2ae.  call `<init>`(v1, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.<init>:(Lorg/greenrobot/greendao/internal/DaoConfig;Lorg/greenrobot/greendao/AbstractDaoSession;)V` @kind direct;
+  #L38a2b4.  return @kind void;
+}
+procedure `void` `<init>`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `org.greenrobot.greendao.internal.DaoConfig` v2 @kind object, `org.greenrobot.greendao.AbstractDaoSession` v3 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.<init>:(Lorg/greenrobot/greendao/internal/DaoConfig;Lorg/greenrobot/greendao/AbstractDaoSession;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L38a2c8.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L38a2ce.  v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` := v2 @kind object;
+  #L38a2d2.  v1.`org.greenrobot.greendao.AbstractDao.session` @type ^`org.greenrobot.greendao.AbstractDaoSession` := v3 @kind object;
+  #L38a2d6.  v3:= v2.`org.greenrobot.greendao.internal.DaoConfig.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a2da.  v1.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` := v3 @kind object;
+  #L38a2de.  call temp:= `getRawDatabase`(v3) @signature `Lorg/greenrobot/greendao/database/Database;.getRawDatabase:()Ljava/lang/Object;` @kind interface;
+  #L38a2e4.  v3:= temp @kind object;
+  #L38a2e6.  v3:= instanceof @variable v3 @type ^`android.database.sqlite.SQLiteDatabase` @kind boolean;
+  #L38a2ea.  v1.`org.greenrobot.greendao.AbstractDao.isStandardSQLite` @type ^`boolean` := v3 @kind boolean;
+  #L38a2ee.  call temp:= `getIdentityScope`(v2) @signature `Lorg/greenrobot/greendao/internal/DaoConfig;.getIdentityScope:()Lorg/greenrobot/greendao/identityscope/IdentityScope;` @kind virtual;
+  #L38a2f4.  v3:= temp @kind object;
+  #L38a2f6.  v1.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` := v3 @kind object;
+  #L38a2fa.  v0:= instanceof @variable v3 @type ^`org.greenrobot.greendao.identityscope.IdentityScopeLong` @kind boolean;
+  #L38a2fe.  if v0 == 0 then goto L38a30c;
+  #L38a302.  v3:= (`org.greenrobot.greendao.identityscope.IdentityScopeLong`) v3 @kind object;
+  #L38a306.  v1.`org.greenrobot.greendao.AbstractDao.identityScopeLong` @type ^`org.greenrobot.greendao.identityscope.IdentityScopeLong` := v3 @kind object;
+  #L38a30a.  goto L38a312;
+  #L38a30c.  v3:= 0I;
+  #L38a30e.  v1.`org.greenrobot.greendao.AbstractDao.identityScopeLong` @type ^`org.greenrobot.greendao.identityscope.IdentityScopeLong` := v3 @kind object;
+  #L38a312.  v3:= v2.`org.greenrobot.greendao.internal.DaoConfig.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a316.  v1.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` := v3 @kind object;
+  #L38a31a.  v2:= v2.`org.greenrobot.greendao.internal.DaoConfig.pkProperty` @type ^`org.greenrobot.greendao.Property` @kind object;
+  #L38a31e.  if v2 == 0 then goto L38a328;
+  #L38a322.  v2:= v2.`org.greenrobot.greendao.Property.ordinal` @type ^`int`;
+  #L38a326.  goto L38a32a;
+  #L38a328.  v2:= -1I;
+  #L38a32a.  v1.`org.greenrobot.greendao.AbstractDao.pkOrdinal` @type ^`int` := v2;
+  #L38a32e.  return @kind void;
+}
+procedure `void` `deleteByKeyInsideSynchronized`(`org.greenrobot.greendao.AbstractDao` v4 @kind this, `java.lang.Object` v5 @kind object, `org.greenrobot.greendao.database.DatabaseStatement` v6 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKeyInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L38a584.  v0:= instanceof @variable v5 @type ^`java.lang.Long` @kind boolean;
+  #L38a588.  v1:= 1I;
+  #L38a58a.  if v0 == 0 then goto L38a5a2;
+  #L38a58e.  v5:= (`java.lang.Long`) v5 @kind object;
+  #L38a592.  call temp:= `longValue`(v5) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L38a598.  v2:= temp @kind wide;
+  #L38a59a.  call `bindLong`(v6, v1, v2) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.bindLong:(IJ)V` @kind interface;
+  #L38a5a0.  goto L38a5b4;
+  #L38a5a2.  if v5 == 0 then goto L38a5bc;
+  #L38a5a6.  call temp:= `toString`(v5) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38a5ac.  v5:= temp @kind object;
+  #L38a5ae.  call `bindString`(v6, v1, v5) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.bindString:(ILjava/lang/String;)V` @kind interface;
+  #L38a5b4.  call `execute`(v6) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.execute:()V` @kind interface;
+  #L38a5ba.  return @kind void;
+  #L38a5bc.  v5:= new `org.greenrobot.greendao.DaoException`;
+  #L38a5c0.  v6:= "Cannot delete entity, key is null" @kind object;
+  #L38a5c4.  call `<init>`(v5, v6) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L38a5ca.  throw v5;
+}
+procedure `void` `deleteInTxInternal`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `java.lang.Iterable` v4 @kind object, `java.lang.Iterable` v5 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteInTxInternal:(Ljava/lang/Iterable;Ljava/lang/Iterable;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L38a61c.  call `assertSinglePk`(v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.assertSinglePk:()V` @kind virtual;
+  #L38a622.  v0:= v3.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a626.  call temp:= `getDeleteStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getDeleteStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38a62c.  v0:= temp @kind object;
+  #L38a62e.  v1:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a632.  call `beginTransaction`(v1) @signature `Lorg/greenrobot/greendao/database/Database;.beginTransaction:()V` @kind interface;
+  #L38a638.  @monitorenter v0
+  #L38a63a.  v1:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a63e.  if v1 == 0 then goto L38a658;
+  #L38a642.  v1:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a646.  call `lock`(v1) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.lock:()V` @kind interface;
+  #L38a64c.  v1:= new `java.util.ArrayList`;
+  #L38a650.  call `<init>`(v1) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L38a656.  goto L38a65a;
+  #L38a658.  v1:= 0I;
+  #L38a65a.  if v4 == 0 then goto L38a698;
+  #L38a65e.  call temp:= `iterator`(v4) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38a664.  v4:= temp @kind object;
+  #L38a666.  call temp:= `hasNext`(v4) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38a66c.  v2:= temp;
+  #L38a66e.  if v2 == 0 then goto L38a698;
+  #L38a672.  call temp:= `next`(v4) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38a678.  v2:= temp @kind object;
+  #L38a67a.  call temp:= `getKeyVerified`(v3, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKeyVerified:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L38a680.  v2:= temp @kind object;
+  #L38a682.  call `deleteByKeyInsideSynchronized`(v3, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKeyInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)V` @kind direct;
+  #L38a688.  if v1 == 0 then goto L38a666;
+  #L38a68c.  call temp:= `add`(v1, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L38a692.  goto L38a666;
+  #L38a694.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a696.  goto L38a6ca;
+  #L38a698.  if v5 == 0 then goto L38a6de;
+  #L38a69c.  call temp:= `iterator`(v5) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38a6a2.  v4:= temp @kind object;
+  #L38a6a4.  call temp:= `hasNext`(v4) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38a6aa.  v5:= temp;
+  #L38a6ac.  if v5 == 0 then goto L38a6de;
+  #L38a6b0.  call temp:= `next`(v4) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38a6b6.  v5:= temp @kind object;
+  #L38a6b8.  call `deleteByKeyInsideSynchronized`(v3, v5, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKeyInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)V` @kind direct;
+  #L38a6be.  if v1 == 0 then goto L38a6a4;
+  #L38a6c2.  call temp:= `add`(v1, v5) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L38a6c8.  goto L38a6a4;
+  #L38a6ca.  v5:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a6ce.  if v5 == 0 then goto L38a6dc;
+  #L38a6d2.  v5:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a6d6.  call `unlock`(v5) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L38a6dc.  throw v4;
+  #L38a6de.  v4:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a6e2.  if v4 == 0 then goto L38a6f0;
+  #L38a6e6.  v4:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a6ea.  call `unlock`(v4) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L38a6f0.  @monitorexit v0
+  #L38a6f2.  v4:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a6f6.  call `setTransactionSuccessful`(v4) @signature `Lorg/greenrobot/greendao/database/Database;.setTransactionSuccessful:()V` @kind interface;
+  #L38a6fc.  if v1 == 0 then goto L38a712;
+  #L38a700.  v4:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a704.  if v4 == 0 then goto L38a712;
+  #L38a708.  v4:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a70c.  call `remove`(v4, v1) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.remove:(Ljava/lang/Iterable;)V` @kind interface;
+  #L38a712.  v4:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a716.  call `endTransaction`(v4) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a71c.  return @kind void;
+  #L38a71e.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a720.  @monitorexit v0
+  #L38a722.  throw v4;
+  #L38a724.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a726.  v5:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a72a.  call `endTransaction`(v5) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a730.  throw v4;
+  catch `java.lang.Throwable` @[L38a638..L38a63a] goto L38a724;
+  catch `java.lang.Throwable` @[L38a63a..L38a656] goto L38a71e;
+  catch `java.lang.Throwable` @[L38a65e..L38a6c8] goto L38a694;
+  catch `java.lang.Throwable` @[L38a6ca..L38a6f2] goto L38a71e;
+  catch `java.lang.Throwable` @[L38a6f2..L38a712] goto L38a724;
+  catch `java.lang.Throwable` @[L38a720..L38a722] goto L38a71e;
+  catch `java.lang.Throwable` @[L38a722..L38a724] goto L38a724;
+}
+procedure `long` `executeInsert`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.Object` v3 @kind object, `org.greenrobot.greendao.database.DatabaseStatement` v4 @kind object, `boolean` v5 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.executeInsert:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L389ff0.  v0:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L389ff4.  call temp:= `isDbLockedByCurrentThread`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.isDbLockedByCurrentThread:()Z` @kind interface;
+  #L389ffa.  v0:= temp;
+  #L389ffc.  if v0 == 0 then goto L38a00a;
+  #L38a000.  call temp:= `insertInsideTx`(v2, v3, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInsideTx:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)J` @kind direct;
+  #L38a006.  v0:= temp @kind wide;
+  #L38a008.  goto L38a030;
+  #L38a00a.  v0:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a00e.  call `beginTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.beginTransaction:()V` @kind interface;
+  #L38a014.  call temp:= `insertInsideTx`(v2, v3, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInsideTx:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)J` @kind direct;
+  #L38a01a.  v0:= temp @kind wide;
+  #L38a01c.  v4:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a020.  call `setTransactionSuccessful`(v4) @signature `Lorg/greenrobot/greendao/database/Database;.setTransactionSuccessful:()V` @kind interface;
+  #L38a026.  v4:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a02a.  call `endTransaction`(v4) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a030.  if v5 == 0 then goto L38a03c;
+  #L38a034.  v4:= 1I;
+  #L38a036.  call `updateKeyAfterInsertAndAttach`(v2, v3, v0, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateKeyAfterInsertAndAttach:(Ljava/lang/Object;JZ)V` @kind virtual;
+  #L38a03c.  return v0 @kind wide;
+  #L38a03e.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a040.  v4:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a044.  call `endTransaction`(v4) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a04a.  throw v3;
+  catch `java.lang.Throwable` @[L38a014..L38a026] goto L38a03e;
+}
+procedure `void` `executeInsertInTx`(`org.greenrobot.greendao.AbstractDao` v5 @kind this, `org.greenrobot.greendao.database.DatabaseStatement` v6 @kind object, `java.lang.Iterable` v7 @kind object, `boolean` v8 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.executeInsertInTx:(Lorg/greenrobot/greendao/database/DatabaseStatement;Ljava/lang/Iterable;Z)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L38a7a8.  v0:= v5.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a7ac.  call `beginTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.beginTransaction:()V` @kind interface;
+  #L38a7b2.  @monitorenter v6
+  #L38a7b4.  v0:= v5.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a7b8.  if v0 == 0 then goto L38a7c6;
+  #L38a7bc.  v0:= v5.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a7c0.  call `lock`(v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.lock:()V` @kind interface;
+  #L38a7c6.  v0:= v5.`org.greenrobot.greendao.AbstractDao.isStandardSQLite` @type ^`boolean` @kind boolean;
+  #L38a7ca.  v1:= 0I;
+  #L38a7cc.  if v0 == 0 then goto L38a81a;
+  #L38a7d0.  call temp:= `getRawStatement`(v6) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.getRawStatement:()Ljava/lang/Object;` @kind interface;
+  #L38a7d6.  v0:= temp @kind object;
+  #L38a7d8.  v0:= (`android.database.sqlite.SQLiteStatement`) v0 @kind object;
+  #L38a7dc.  call temp:= `iterator`(v7) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38a7e2.  v7:= temp @kind object;
+  #L38a7e4.  call temp:= `hasNext`(v7) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38a7ea.  v2:= temp;
+  #L38a7ec.  if v2 == 0 then goto L38a858;
+  #L38a7f0.  call temp:= `next`(v7) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38a7f6.  v2:= temp @kind object;
+  #L38a7f8.  call `bindValues`(v5, v0, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Landroid/database/sqlite/SQLiteStatement;Ljava/lang/Object;)V` @kind virtual;
+  #L38a7fe.  if v8 == 0 then goto L38a812;
+  #L38a802.  call temp:= `executeInsert`(v0) @signature `Landroid/database/sqlite/SQLiteStatement;.executeInsert:()J` @kind virtual;
+  #L38a808.  v3:= temp @kind wide;
+  #L38a80a.  call `updateKeyAfterInsertAndAttach`(v5, v2, v3, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateKeyAfterInsertAndAttach:(Ljava/lang/Object;JZ)V` @kind virtual;
+  #L38a810.  goto L38a7e4;
+  #L38a812.  call `execute`(v0) @signature `Landroid/database/sqlite/SQLiteStatement;.execute:()V` @kind virtual;
+  #L38a818.  goto L38a7e4;
+  #L38a81a.  call temp:= `iterator`(v7) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38a820.  v7:= temp @kind object;
+  #L38a822.  call temp:= `hasNext`(v7) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38a828.  v0:= temp;
+  #L38a82a.  if v0 == 0 then goto L38a858;
+  #L38a82e.  call temp:= `next`(v7) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38a834.  v0:= temp @kind object;
+  #L38a836.  call `bindValues`(v5, v6, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Lorg/greenrobot/greendao/database/DatabaseStatement;Ljava/lang/Object;)V` @kind virtual;
+  #L38a83c.  if v8 == 0 then goto L38a850;
+  #L38a840.  call temp:= `executeInsert`(v6) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.executeInsert:()J` @kind interface;
+  #L38a846.  v2:= temp @kind wide;
+  #L38a848.  call `updateKeyAfterInsertAndAttach`(v5, v0, v2, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateKeyAfterInsertAndAttach:(Ljava/lang/Object;JZ)V` @kind virtual;
+  #L38a84e.  goto L38a822;
+  #L38a850.  call `execute`(v6) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.execute:()V` @kind interface;
+  #L38a856.  goto L38a822;
+  #L38a858.  v7:= v5.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a85c.  if v7 == 0 then goto L38a86a;
+  #L38a860.  v7:= v5.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a864.  call `unlock`(v7) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L38a86a.  @monitorexit v6
+  #L38a86c.  v6:= v5.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a870.  call `setTransactionSuccessful`(v6) @signature `Lorg/greenrobot/greendao/database/Database;.setTransactionSuccessful:()V` @kind interface;
+  #L38a876.  v6:= v5.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a87a.  call `endTransaction`(v6) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a880.  return @kind void;
+  #L38a882.  v7:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a884.  v8:= v5.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a888.  if v8 == 0 then goto L38a896;
+  #L38a88c.  v8:= v5.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a890.  call `unlock`(v8) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L38a896.  throw v7;
+  #L38a898.  v7:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a89a.  @monitorexit v6
+  #L38a89c.  throw v7;
+  #L38a89e.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a8a0.  v7:= v5.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a8a4.  call `endTransaction`(v7) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a8aa.  throw v6;
+  catch `java.lang.Throwable` @[L38a7b2..L38a7b4] goto L38a89e;
+  catch `java.lang.Throwable` @[L38a7b4..L38a7c6] goto L38a898;
+  catch `java.lang.Throwable` @[L38a7c6..L38a856] goto L38a882;
+  catch `java.lang.Throwable` @[L38a858..L38a86c] goto L38a898;
+  catch `java.lang.Throwable` @[L38a86c..L38a876] goto L38a89e;
+  catch `java.lang.Throwable` @[L38a884..L38a89c] goto L38a898;
+  catch `java.lang.Throwable` @[L38a89c..L38a89e] goto L38a89e;
+}
+procedure `long` `insertInsideTx`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.Object` v3 @kind object, `org.greenrobot.greendao.database.DatabaseStatement` v4 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInsideTx:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L38a090.  @monitorenter v4
+  #L38a092.  v0:= v2.`org.greenrobot.greendao.AbstractDao.isStandardSQLite` @type ^`boolean` @kind boolean;
+  #L38a096.  if v0 == 0 then goto L38a0b8;
+  #L38a09a.  call temp:= `getRawStatement`(v4) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.getRawStatement:()Ljava/lang/Object;` @kind interface;
+  #L38a0a0.  v0:= temp @kind object;
+  #L38a0a2.  v0:= (`android.database.sqlite.SQLiteStatement`) v0 @kind object;
+  #L38a0a6.  call `bindValues`(v2, v0, v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Landroid/database/sqlite/SQLiteStatement;Ljava/lang/Object;)V` @kind virtual;
+  #L38a0ac.  call temp:= `executeInsert`(v0) @signature `Landroid/database/sqlite/SQLiteStatement;.executeInsert:()J` @kind virtual;
+  #L38a0b2.  v0:= temp @kind wide;
+  #L38a0b4.  @monitorexit v4
+  #L38a0b6.  return v0 @kind wide;
+  #L38a0b8.  call `bindValues`(v2, v4, v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Lorg/greenrobot/greendao/database/DatabaseStatement;Ljava/lang/Object;)V` @kind virtual;
+  #L38a0be.  call temp:= `executeInsert`(v4) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.executeInsert:()J` @kind interface;
+  #L38a0c4.  v0:= temp @kind wide;
+  #L38a0c6.  @monitorexit v4
+  #L38a0c8.  return v0 @kind wide;
+  #L38a0ca.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a0cc.  @monitorexit v4
+  #L38a0ce.  throw v3;
+  catch `java.lang.Throwable` @[L38a092..L38a0ce] goto L38a0ca;
+}
+procedure `void` `loadAllUnlockOnWindowBounds`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `android.database.Cursor` v4 @kind object, `android.database.CursorWindow` v5 @kind object, `java.util.List` v6 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAllUnlockOnWindowBounds:(Landroid/database/Cursor;Landroid/database/CursorWindow;Ljava/util/List;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L38a9d4.  call temp:= `getStartPosition`(v5) @signature `Landroid/database/CursorWindow;.getStartPosition:()I` @kind virtual;
+  #L38a9da.  v0:= temp;
+  #L38a9dc.  call temp:= `getNumRows`(v5) @signature `Landroid/database/CursorWindow;.getNumRows:()I` @kind virtual;
+  #L38a9e2.  v5:= temp;
+  #L38a9e4.  v0:= v0 + v5 @kind int;
+  #L38a9e6.  v5:= 0I;
+  #L38a9e8.  v1:= 0I;
+  #L38a9ea.  call temp:= `loadCurrent`(v3, v4, v5, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadCurrent:(Landroid/database/Cursor;IZ)Ljava/lang/Object;` @kind virtual;
+  #L38a9f0.  v2:= temp @kind object;
+  #L38a9f2.  call temp:= `add`(v6, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L38a9f8.  v1:= v1 + 1;
+  #L38a9fc.  if v1 < v0 then goto L38aa24;
+  #L38aa00.  call temp:= `moveToNextUnlocked`(v3, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.moveToNextUnlocked:(Landroid/database/Cursor;)Landroid/database/CursorWindow;` @kind direct;
+  #L38aa06.  v0:= temp @kind object;
+  #L38aa08.  if v0 != 0 then goto L38aa0e;
+  #L38aa0c.  goto L38aa30;
+  #L38aa0e.  call temp:= `getStartPosition`(v0) @signature `Landroid/database/CursorWindow;.getStartPosition:()I` @kind virtual;
+  #L38aa14.  v2:= temp;
+  #L38aa16.  call temp:= `getNumRows`(v0) @signature `Landroid/database/CursorWindow;.getNumRows:()I` @kind virtual;
+  #L38aa1c.  v0:= temp;
+  #L38aa1e.  v2:= v2 + v0 @kind int;
+  #L38aa20.  v0:= v2;
+  #L38aa22.  goto L38aa32;
+  #L38aa24.  call temp:= `moveToNext`(v4) @signature `Landroid/database/Cursor;.moveToNext:()Z` @kind interface;
+  #L38aa2a.  v2:= temp;
+  #L38aa2c.  if v2 != 0 then goto L38aa32;
+  #L38aa30.  return @kind void;
+  #L38aa32.  v1:= v1 + 1;
+  #L38aa36.  goto L38a9ea;
+}
+procedure `android.database.CursorWindow` `moveToNextUnlocked`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `android.database.Cursor` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.moveToNextUnlocked:(Landroid/database/Cursor;)Landroid/database/CursorWindow;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L389a24.  v0:= v1.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389a28.  call `unlock`(v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L389a2e.  call temp:= `moveToNext`(v2) @signature `Landroid/database/Cursor;.moveToNext:()Z` @kind interface;
+  #L389a34.  v0:= temp;
+  #L389a36.  if v0 == 0 then goto L389a52;
+  #L389a3a.  v2:= (`android.database.CrossProcessCursor`) v2 @kind object;
+  #L389a3e.  call temp:= `getWindow`(v2) @signature `Landroid/database/CrossProcessCursor;.getWindow:()Landroid/database/CursorWindow;` @kind interface;
+  #L389a44.  v2:= temp @kind object;
+  #L389a46.  v0:= v1.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389a4a.  call `lock`(v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.lock:()V` @kind interface;
+  #L389a50.  return v2 @kind object;
+  #L389a52.  v2:= 0I;
+  #L389a54.  goto L389a46;
+  #L389a56.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L389a58.  v0:= v1.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389a5c.  call `lock`(v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.lock:()V` @kind interface;
+  #L389a62.  throw v2;
+  catch `java.lang.Throwable` @[L389a2e..L389a46] goto L389a56;
+}
+procedure `void` `assertSinglePk`(`org.greenrobot.greendao.AbstractDao` v3 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.assertSinglePk:()V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L38a340.  v0:= v3.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38a344.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.pkColumns` @type ^`java.lang.String`[] @kind object;
+  #L38a348.  v0:= length @variable v0;
+  #L38a34a.  v1:= 1I;
+  #L38a34c.  if v0 != v1 then goto L38a352;
+  #L38a350.  return @kind void;
+  #L38a352.  v0:= new `org.greenrobot.greendao.DaoException`;
+  #L38a356.  v1:= new `java.lang.StringBuilder`;
+  #L38a35a.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L38a360.  call temp:= `append`(v1, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a366.  v2:= " (" @kind object;
+  #L38a36a.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a370.  v2:= v3.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38a374.  v2:= v2.`org.greenrobot.greendao.internal.DaoConfig.tablename` @type ^`java.lang.String` @kind object;
+  #L38a378.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a37e.  v2:= ") does not have a single-column primary key" @kind object;
+  #L38a382.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a388.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38a38e.  v1:= temp @kind object;
+  #L38a390.  call `<init>`(v0, v1) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L38a396.  throw v0;
+}
+procedure `void` `attachEntity`(`org.greenrobot.greendao.AbstractDao` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;)V` @AccessFlag PROTECTED {
+    temp;
+
+  #L38a3a8.  return @kind void;
+}
+procedure `void` `attachEntity`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Object` v2 @kind object, `java.lang.Object` v3 @kind object, `boolean` v4 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;Ljava/lang/Object;Z)V` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L38a3bc.  call `attachEntity`(v1, v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;)V` @kind virtual;
+  #L38a3c2.  v0:= v1.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a3c6.  if v0 == 0 then goto L38a3e0;
+  #L38a3ca.  if v2 == 0 then goto L38a3e0;
+  #L38a3ce.  if v4 == 0 then goto L38a3da;
+  #L38a3d2.  call `put`(v0, v2, v3) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.put:(Ljava/lang/Object;Ljava/lang/Object;)V` @kind interface;
+  #L38a3d8.  goto L38a3e0;
+  #L38a3da.  call `putNoLock`(v0, v2, v3) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.putNoLock:(Ljava/lang/Object;Ljava/lang/Object;)V` @kind interface;
+  #L38a3e0.  return @kind void;
+}
+procedure `void` `bindValues`(`android.database.sqlite.SQLiteStatement` v0 @kind object, `java.lang.Object` v1 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Landroid/database/sqlite/SQLiteStatement;Ljava/lang/Object;)V` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `void` `bindValues`(`org.greenrobot.greendao.database.DatabaseStatement` v0 @kind object, `java.lang.Object` v1 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Lorg/greenrobot/greendao/database/DatabaseStatement;Ljava/lang/Object;)V` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `long` `count`(`org.greenrobot.greendao.AbstractDao` v2 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.count:()J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L389fc8.  v0:= v2.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L389fcc.  call temp:= `getCountStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getCountStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L389fd2.  v0:= temp @kind object;
+  #L389fd4.  call temp:= `simpleQueryForLong`(v0) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.simpleQueryForLong:()J` @kind interface;
+  #L389fda.  v0:= temp @kind wide;
+  #L389fdc.  return v0 @kind wide;
+}
+procedure `void` `delete`(`org.greenrobot.greendao.AbstractDao` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.delete:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L38a3f4.  call `assertSinglePk`(v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.assertSinglePk:()V` @kind virtual;
+  #L38a3fa.  call temp:= `getKeyVerified`(v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKeyVerified:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L38a400.  v1:= temp @kind object;
+  #L38a402.  call `deleteByKey`(v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKey:(Ljava/lang/Object;)V` @kind virtual;
+  #L38a408.  return @kind void;
+}
+procedure `void` `deleteAll`(`org.greenrobot.greendao.AbstractDao` v3 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteAll:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L38a41c.  v0:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a420.  v1:= new `java.lang.StringBuilder`;
+  #L38a424.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L38a42a.  v2:= "DELETE FROM '" @kind object;
+  #L38a42e.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a434.  v2:= v3.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38a438.  v2:= v2.`org.greenrobot.greendao.internal.DaoConfig.tablename` @type ^`java.lang.String` @kind object;
+  #L38a43c.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a442.  v2:= "'" @kind object;
+  #L38a446.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a44c.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38a452.  v1:= temp @kind object;
+  #L38a454.  call `execSQL`(v0, v1) @signature `Lorg/greenrobot/greendao/database/Database;.execSQL:(Ljava/lang/String;)V` @kind interface;
+  #L38a45a.  v0:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a45e.  if v0 == 0 then goto L38a468;
+  #L38a462.  call `clear`(v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.clear:()V` @kind interface;
+  #L38a468.  return @kind void;
+}
+procedure `void` `deleteByKey`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKey:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L38a47c.  call `assertSinglePk`(v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.assertSinglePk:()V` @kind virtual;
+  #L38a482.  v0:= v2.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a486.  call temp:= `getDeleteStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getDeleteStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38a48c.  v0:= temp @kind object;
+  #L38a48e.  v1:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a492.  call temp:= `isDbLockedByCurrentThread`(v1) @signature `Lorg/greenrobot/greendao/database/Database;.isDbLockedByCurrentThread:()Z` @kind interface;
+  #L38a498.  v1:= temp;
+  #L38a49a.  if v1 == 0 then goto L38a4b0;
+  #L38a49e.  @monitorenter v0
+  #L38a4a0.  call `deleteByKeyInsideSynchronized`(v2, v3, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKeyInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)V` @kind direct;
+  #L38a4a6.  @monitorexit v0
+  #L38a4a8.  goto L38a4d8;
+  #L38a4aa.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a4ac.  @monitorexit v0
+  #L38a4ae.  throw v3;
+  #L38a4b0.  v1:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a4b4.  call `beginTransaction`(v1) @signature `Lorg/greenrobot/greendao/database/Database;.beginTransaction:()V` @kind interface;
+  #L38a4ba.  @monitorenter v0
+  #L38a4bc.  call `deleteByKeyInsideSynchronized`(v2, v3, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKeyInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;)V` @kind direct;
+  #L38a4c2.  @monitorexit v0
+  #L38a4c4.  v0:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a4c8.  call `setTransactionSuccessful`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.setTransactionSuccessful:()V` @kind interface;
+  #L38a4ce.  v0:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a4d2.  call `endTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a4d8.  v0:= v2.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a4dc.  if v0 == 0 then goto L38a4e6;
+  #L38a4e0.  call `remove`(v0, v3) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.remove:(Ljava/lang/Object;)V` @kind interface;
+  #L38a4e6.  return @kind void;
+  #L38a4e8.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a4ea.  @monitorexit v0
+  #L38a4ec.  throw v3;
+  #L38a4ee.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38a4f0.  v0:= v2.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a4f4.  call `endTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38a4fa.  throw v3;
+  catch `java.lang.Throwable` @[L38a4a0..L38a4ae] goto L38a4aa;
+  catch `java.lang.Throwable` @[L38a4ba..L38a4bc] goto L38a4ee;
+  catch `java.lang.Throwable` @[L38a4bc..L38a4c4] goto L38a4e8;
+  catch `java.lang.Throwable` @[L38a4c4..L38a4ce] goto L38a4ee;
+  catch `java.lang.Throwable` @[L38a4ea..L38a4ec] goto L38a4e8;
+  catch `java.lang.Throwable` @[L38a4ec..L38a4ee] goto L38a4ee;
+}
+procedure `void` `deleteByKeyInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Iterable` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKeyInTx:(Ljava/lang/Iterable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a544.  v0:= 0I;
+  #L38a546.  call `deleteInTxInternal`(v1, v0, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteInTxInternal:(Ljava/lang/Iterable;Ljava/lang/Iterable;)V` @kind direct;
+  #L38a54c.  return @kind void;
+}
+procedure `void` `deleteByKeyInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Object`[] v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteByKeyInTx:([Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a560.  call temp:= `asList`(v2) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L38a566.  v2:= temp @kind object;
+  #L38a568.  v0:= 0I;
+  #L38a56a.  call `deleteInTxInternal`(v1, v0, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteInTxInternal:(Ljava/lang/Iterable;Ljava/lang/Iterable;)V` @kind direct;
+  #L38a570.  return @kind void;
+}
+procedure `void` `deleteInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Iterable` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteInTx:(Ljava/lang/Iterable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a5dc.  v0:= 0I;
+  #L38a5de.  call `deleteInTxInternal`(v1, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteInTxInternal:(Ljava/lang/Iterable;Ljava/lang/Iterable;)V` @kind direct;
+  #L38a5e4.  return @kind void;
+}
+procedure `void` `deleteInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Object`[] v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteInTx:([Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a5f8.  call temp:= `asList`(v2) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L38a5fe.  v2:= temp @kind object;
+  #L38a600.  v0:= 0I;
+  #L38a602.  call `deleteInTxInternal`(v1, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.deleteInTxInternal:(Ljava/lang/Iterable;Ljava/lang/Iterable;)V` @kind direct;
+  #L38a608.  return @kind void;
+}
+procedure `boolean` `detach`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.detach:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L389a80.  v0:= v2.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389a84.  if v0 == 0 then goto L389a9e;
+  #L389a88.  call temp:= `getKeyVerified`(v2, v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKeyVerified:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L389a8e.  v0:= temp @kind object;
+  #L389a90.  v1:= v2.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389a94.  call temp:= `detach`(v1, v0, v3) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.detach:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind interface;
+  #L389a9a.  v3:= temp;
+  #L389a9c.  return v3;
+  #L389a9e.  v3:= 0I;
+  #L389aa0.  return v3;
+}
+procedure `void` `detachAll`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.detachAll:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a788.  v0:= v1.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38a78c.  if v0 == 0 then goto L38a796;
+  #L38a790.  call `clear`(v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.clear:()V` @kind interface;
+  #L38a796.  return @kind void;
+}
+procedure `java.lang.String`[] `getAllColumns`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getAllColumns:()[Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L389d84.  v0:= v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L389d88.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.allColumns` @type ^`java.lang.String`[] @kind object;
+  #L389d8c.  return v0 @kind object;
+}
+procedure `org.greenrobot.greendao.database.Database` `getDatabase`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getDatabase:()Lorg/greenrobot/greendao/database/Database;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a18c.  v0:= v1.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38a190.  return v0 @kind object;
+}
+procedure `java.lang.Object` `getKey`(`java.lang.Object` v0 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKey:(Ljava/lang/Object;)Ljava/lang/Object;` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `java.lang.Object` `getKeyVerified`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKeyVerified:(Ljava/lang/Object;)Ljava/lang/Object;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L389ab4.  call temp:= `getKey`(v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKey:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L389aba.  v0:= temp @kind object;
+  #L389abc.  if v0 != 0 then goto L389ae4;
+  #L389ac0.  if v2 != 0 then goto L389ad4;
+  #L389ac4.  v2:= new `java.lang.NullPointerException`;
+  #L389ac8.  v0:= "Entity may not be null" @kind object;
+  #L389acc.  call `<init>`(v2, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L389ad2.  throw v2;
+  #L389ad4.  v2:= new `org.greenrobot.greendao.DaoException`;
+  #L389ad8.  v0:= "Entity has no key" @kind object;
+  #L389adc.  call `<init>`(v2, v0) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L389ae2.  throw v2;
+  #L389ae4.  return v0 @kind object;
+}
+procedure `java.lang.String`[] `getNonPkColumns`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getNonPkColumns:()[Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L389da0.  v0:= v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L389da4.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.nonPkColumns` @type ^`java.lang.String`[] @kind object;
+  #L389da8.  return v0 @kind object;
+}
+procedure `java.lang.String`[] `getPkColumns`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getPkColumns:()[Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L389dbc.  v0:= v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L389dc0.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.pkColumns` @type ^`java.lang.String`[] @kind object;
+  #L389dc4.  return v0 @kind object;
+}
+procedure `org.greenrobot.greendao.Property` `getPkProperty`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getPkProperty:()Lorg/greenrobot/greendao/Property;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a154.  v0:= v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38a158.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.pkProperty` @type ^`org.greenrobot.greendao.Property` @kind object;
+  #L38a15c.  return v0 @kind object;
+}
+procedure `org.greenrobot.greendao.Property`[] `getProperties`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getProperties:()[Lorg/greenrobot/greendao/Property;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a170.  v0:= v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38a174.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.properties` @type ^`org.greenrobot.greendao.Property`[] @kind object;
+  #L38a178.  return v0 @kind object;
+}
+procedure `org.greenrobot.greendao.AbstractDaoSession` `getSession`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getSession:()Lorg/greenrobot/greendao/AbstractDaoSession;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a13c.  v0:= v1.`org.greenrobot.greendao.AbstractDao.session` @type ^`org.greenrobot.greendao.AbstractDaoSession` @kind object;
+  #L38a140.  return v0 @kind object;
+}
+procedure `org.greenrobot.greendao.internal.TableStatements` `getStatements`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getStatements:()Lorg/greenrobot/greendao/internal/TableStatements;` @AccessFlag  {
+    temp;
+    v0;
+
+  #L38a1a4.  v0:= v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38a1a8.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a1ac.  return v0 @kind object;
+}
+procedure `java.lang.String` `getTablename`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.getTablename:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L389d68.  v0:= v1.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L389d6c.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.tablename` @type ^`java.lang.String` @kind object;
+  #L389d70.  return v0 @kind object;
+}
+procedure `boolean` `hasKey`(`java.lang.Object` v0 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.hasKey:(Ljava/lang/Object;)Z` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `long` `insert`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insert:(Ljava/lang/Object;)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L38a068.  v0:= v2.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a06c.  call temp:= `getInsertStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getInsertStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38a072.  v0:= temp @kind object;
+  #L38a074.  v1:= 1I;
+  #L38a076.  call temp:= `executeInsert`(v2, v3, v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.executeInsert:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)J` @kind direct;
+  #L38a07c.  v0:= temp @kind wide;
+  #L38a07e.  return v0 @kind wide;
+}
+procedure `void` `insertInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Iterable` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInTx:(Ljava/lang/Iterable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a8fc.  call temp:= `isEntityUpdateable`(v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.isEntityUpdateable:()Z` @kind virtual;
+  #L38a902.  v0:= temp;
+  #L38a904.  call `insertInTx`(v1, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInTx:(Ljava/lang/Iterable;Z)V` @kind virtual;
+  #L38a90a.  return @kind void;
+}
+procedure `void` `insertInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Iterable` v2 @kind object, `boolean` v3 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInTx:(Ljava/lang/Iterable;Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a91c.  v0:= v1.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a920.  call temp:= `getInsertStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getInsertStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38a926.  v0:= temp @kind object;
+  #L38a928.  call `executeInsertInTx`(v1, v0, v2, v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.executeInsertInTx:(Lorg/greenrobot/greendao/database/DatabaseStatement;Ljava/lang/Iterable;Z)V` @kind direct;
+  #L38a92e.  return @kind void;
+}
+procedure `void` `insertInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Object`[] v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInTx:([Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a940.  call temp:= `asList`(v2) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L38a946.  v2:= temp @kind object;
+  #L38a948.  call temp:= `isEntityUpdateable`(v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.isEntityUpdateable:()Z` @kind virtual;
+  #L38a94e.  v0:= temp;
+  #L38a950.  call `insertInTx`(v1, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInTx:(Ljava/lang/Iterable;Z)V` @kind virtual;
+  #L38a956.  return @kind void;
+}
+procedure `long` `insertOrReplace`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertOrReplace:(Ljava/lang/Object;)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L38a0ec.  v0:= v2.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a0f0.  call temp:= `getInsertOrReplaceStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getInsertOrReplaceStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38a0f6.  v0:= temp @kind object;
+  #L38a0f8.  v1:= 1I;
+  #L38a0fa.  call temp:= `executeInsert`(v2, v3, v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.executeInsert:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)J` @kind direct;
+  #L38a100.  v0:= temp @kind wide;
+  #L38a102.  return v0 @kind wide;
+}
+procedure `void` `insertOrReplaceInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Iterable` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertOrReplaceInTx:(Ljava/lang/Iterable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a968.  call temp:= `isEntityUpdateable`(v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.isEntityUpdateable:()Z` @kind virtual;
+  #L38a96e.  v0:= temp;
+  #L38a970.  call `insertOrReplaceInTx`(v1, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertOrReplaceInTx:(Ljava/lang/Iterable;Z)V` @kind virtual;
+  #L38a976.  return @kind void;
+}
+procedure `void` `insertOrReplaceInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Iterable` v2 @kind object, `boolean` v3 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertOrReplaceInTx:(Ljava/lang/Iterable;Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a988.  v0:= v1.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a98c.  call temp:= `getInsertOrReplaceStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getInsertOrReplaceStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38a992.  v0:= temp @kind object;
+  #L38a994.  call `executeInsertInTx`(v1, v0, v2, v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.executeInsertInTx:(Lorg/greenrobot/greendao/database/DatabaseStatement;Ljava/lang/Iterable;Z)V` @kind direct;
+  #L38a99a.  return @kind void;
+}
+procedure `void` `insertOrReplaceInTx`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Object`[] v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertOrReplaceInTx:([Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a9ac.  call temp:= `asList`(v2) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L38a9b2.  v2:= temp @kind object;
+  #L38a9b4.  call temp:= `isEntityUpdateable`(v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.isEntityUpdateable:()Z` @kind virtual;
+  #L38a9ba.  v0:= temp;
+  #L38a9bc.  call `insertOrReplaceInTx`(v1, v2, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertOrReplaceInTx:(Ljava/lang/Iterable;Z)V` @kind virtual;
+  #L38a9c2.  return @kind void;
+}
+procedure `long` `insertWithoutSettingPk`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertWithoutSettingPk:(Ljava/lang/Object;)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L38a114.  v0:= v2.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a118.  call temp:= `getInsertOrReplaceStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getInsertOrReplaceStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38a11e.  v0:= temp @kind object;
+  #L38a120.  v1:= 0I;
+  #L38a122.  call temp:= `executeInsert`(v2, v3, v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.executeInsert:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)J` @kind direct;
+  #L38a128.  v0:= temp @kind wide;
+  #L38a12a.  return v0 @kind wide;
+}
+procedure `boolean` `isEntityUpdateable`() @signature `Lorg/greenrobot/greendao/AbstractDao;.isEntityUpdateable:()Z` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `java.lang.Object` `load`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `java.lang.Object` v4 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.load:(Ljava/lang/Object;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L389af8.  call `assertSinglePk`(v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.assertSinglePk:()V` @kind virtual;
+  #L389afe.  if v4 != 0 then goto L389b06;
+  #L389b02.  v4:= 0I;
+  #L389b04.  return v4 @kind object;
+  #L389b06.  v0:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389b0a.  if v0 == 0 then goto L389b1c;
+  #L389b0e.  call temp:= `get`(v0, v4) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L389b14.  v0:= temp @kind object;
+  #L389b16.  if v0 == 0 then goto L389b1c;
+  #L389b1a.  return v0 @kind object;
+  #L389b1c.  v0:= v3.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L389b20.  call temp:= `getSelectByKey`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getSelectByKey:()Ljava/lang/String;` @kind virtual;
+  #L389b26.  v0:= temp @kind object;
+  #L389b28.  v1:= 1I;
+  #L389b2a.  v1:= new `java.lang.String`[v1];
+  #L389b2e.  v2:= 0I;
+  #L389b30.  call temp:= `toString`(v4) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L389b36.  v4:= temp @kind object;
+  #L389b38.  v1[v2]:= v4 @kind object;
+  #L389b3c.  v4:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L389b40.  call temp:= `rawQuery`(v4, v0, v1) @signature `Lorg/greenrobot/greendao/database/Database;.rawQuery:(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;` @kind interface;
+  #L389b46.  v4:= temp @kind object;
+  #L389b48.  call temp:= `loadUniqueAndCloseCursor`(v3, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadUniqueAndCloseCursor:(Landroid/database/Cursor;)Ljava/lang/Object;` @kind virtual;
+  #L389b4e.  v4:= temp @kind object;
+  #L389b50.  return v4 @kind object;
+}
+procedure `java.util.List` `loadAll`(`org.greenrobot.greendao.AbstractDao` v3 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAll:()Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L389dd8.  v0:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L389ddc.  v1:= v3.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L389de0.  call temp:= `getSelectAll`(v1) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getSelectAll:()Ljava/lang/String;` @kind virtual;
+  #L389de6.  v1:= temp @kind object;
+  #L389de8.  v2:= 0I;
+  #L389dea.  call temp:= `rawQuery`(v0, v1, v2) @signature `Lorg/greenrobot/greendao/database/Database;.rawQuery:(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;` @kind interface;
+  #L389df0.  v0:= temp @kind object;
+  #L389df2.  call temp:= `loadAllAndCloseCursor`(v3, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAllAndCloseCursor:(Landroid/database/Cursor;)Ljava/util/List;` @kind virtual;
+  #L389df8.  v0:= temp @kind object;
+  #L389dfa.  return v0 @kind object;
+}
+procedure `java.util.List` `loadAllAndCloseCursor`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `android.database.Cursor` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAllAndCloseCursor:(Landroid/database/Cursor;)Ljava/util/List;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L389e0c.  call temp:= `loadAllFromCursor`(v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAllFromCursor:(Landroid/database/Cursor;)Ljava/util/List;` @kind virtual;
+  #L389e12.  v0:= temp @kind object;
+  #L389e14.  call `close`(v2) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L389e1a.  return v0 @kind object;
+  #L389e1c.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L389e1e.  call `close`(v2) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L389e24.  throw v0;
+  catch `java.lang.Throwable` @[L389e0c..L389e14] goto L389e1c;
+}
+procedure `java.util.List` `loadAllFromCursor`(`org.greenrobot.greendao.AbstractDao` v6 @kind this, `android.database.Cursor` v7 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAllFromCursor:(Landroid/database/Cursor;)Ljava/util/List;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L389e44.  call temp:= `getCount`(v7) @signature `Landroid/database/Cursor;.getCount:()I` @kind interface;
+  #L389e4a.  v0:= temp;
+  #L389e4c.  if v0 != 0 then goto L389e5c;
+  #L389e50.  v7:= new `java.util.ArrayList`;
+  #L389e54.  call `<init>`(v7) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L389e5a.  return v7 @kind object;
+  #L389e5c.  v1:= new `java.util.ArrayList`;
+  #L389e60.  call `<init>`(v1, v0) @signature `Ljava/util/ArrayList;.<init>:(I)V` @kind direct;
+  #L389e66.  v2:= 0I;
+  #L389e68.  v3:= instanceof @variable v7 @type ^`android.database.CrossProcessCursor` @kind boolean;
+  #L389e6c.  v4:= 0I;
+  #L389e6e.  if v3 == 0 then goto L389ede;
+  #L389e72.  v2:= v7 @kind object;
+  #L389e74.  v2:= (`android.database.CrossProcessCursor`) v2 @kind object;
+  #L389e78.  call temp:= `getWindow`(v2) @signature `Landroid/database/CrossProcessCursor;.getWindow:()Landroid/database/CursorWindow;` @kind interface;
+  #L389e7e.  v2:= temp @kind object;
+  #L389e80.  if v2 == 0 then goto L389ede;
+  #L389e84.  call temp:= `getNumRows`(v2) @signature `Landroid/database/CursorWindow;.getNumRows:()I` @kind virtual;
+  #L389e8a.  v3:= temp;
+  #L389e8c.  if v3 != v0 then goto L389e9e;
+  #L389e90.  v7:= new `org.greenrobot.greendao.internal.FastCursor`;
+  #L389e94.  call `<init>`(v7, v2) @signature `Lorg/greenrobot/greendao/internal/FastCursor;.<init>:(Landroid/database/CursorWindow;)V` @kind direct;
+  #L389e9a.  v3:= 1I;
+  #L389e9c.  goto L389ee0;
+  #L389e9e.  v3:= new `java.lang.StringBuilder`;
+  #L389ea2.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L389ea8.  v5:= "Window vs. result size: " @kind object;
+  #L389eac.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389eb2.  call temp:= `getNumRows`(v2) @signature `Landroid/database/CursorWindow;.getNumRows:()I` @kind virtual;
+  #L389eb8.  v5:= temp;
+  #L389eba.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389ec0.  v5:= "/" @kind object;
+  #L389ec4.  call temp:= `append`(v3, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389eca.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389ed0.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L389ed6.  v3:= temp @kind object;
+  #L389ed8.  call temp:= `d`(v3) @signature `Lorg/greenrobot/greendao/DaoLog;.d:(Ljava/lang/String;)I` @kind static;
+  #L389ede.  v3:= 0I;
+  #L389ee0.  call temp:= `moveToFirst`(v7) @signature `Landroid/database/Cursor;.moveToFirst:()Z` @kind interface;
+  #L389ee6.  v5:= temp;
+  #L389ee8.  if v5 == 0 then goto L389f58;
+  #L389eec.  v5:= v6.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389ef0.  if v5 == 0 then goto L389f04;
+  #L389ef4.  call `lock`(v5) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.lock:()V` @kind interface;
+  #L389efa.  v5:= v6.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389efe.  call `reserveRoom`(v5, v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.reserveRoom:(I)V` @kind interface;
+  #L389f04.  if v3 != 0 then goto L389f1c;
+  #L389f08.  if v2 == 0 then goto L389f1c;
+  #L389f0c.  v0:= v6.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389f10.  if v0 == 0 then goto L389f1c;
+  #L389f14.  call `loadAllUnlockOnWindowBounds`(v6, v7, v2, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAllUnlockOnWindowBounds:(Landroid/database/Cursor;Landroid/database/CursorWindow;Ljava/util/List;)V` @kind direct;
+  #L389f1a.  goto L389f36;
+  #L389f1c.  call temp:= `loadCurrent`(v6, v7, v4, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadCurrent:(Landroid/database/Cursor;IZ)Ljava/lang/Object;` @kind virtual;
+  #L389f22.  v0:= temp @kind object;
+  #L389f24.  call temp:= `add`(v1, v0) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L389f2a.  call temp:= `moveToNext`(v7) @signature `Landroid/database/Cursor;.moveToNext:()Z` @kind interface;
+  #L389f30.  v0:= temp;
+  #L389f32.  if v0 != 0 then goto L389f1c;
+  #L389f36.  v7:= v6.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389f3a.  if v7 == 0 then goto L389f58;
+  #L389f3e.  call `unlock`(v7) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L389f44.  goto L389f58;
+  #L389f46.  v7:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L389f48.  v0:= v6.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389f4c.  if v0 == 0 then goto L389f56;
+  #L389f50.  call `unlock`(v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L389f56.  throw v7;
+  #L389f58.  return v1 @kind object;
+  catch `java.lang.Throwable` @[L389f0c..L389f32] goto L389f46;
+}
+procedure `java.lang.Object` `loadByRowId`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `long` v2 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadByRowId:(J)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L389b64.  v0:= 1I;
+  #L389b66.  v0:= new `java.lang.String`[v0];
+  #L389b6a.  call temp:= `toString`(v2) @signature `Ljava/lang/Long;.toString:(J)Ljava/lang/String;` @kind static;
+  #L389b70.  v2:= temp @kind object;
+  #L389b72.  v3:= 0I;
+  #L389b74.  v0[v3]:= v2 @kind object;
+  #L389b78.  v2:= v1.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L389b7c.  v3:= v1.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L389b80.  call temp:= `getSelectByRowId`(v3) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getSelectByRowId:()Ljava/lang/String;` @kind virtual;
+  #L389b86.  v3:= temp @kind object;
+  #L389b88.  call temp:= `rawQuery`(v2, v3, v0) @signature `Lorg/greenrobot/greendao/database/Database;.rawQuery:(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;` @kind interface;
+  #L389b8e.  v2:= temp @kind object;
+  #L389b90.  call temp:= `loadUniqueAndCloseCursor`(v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadUniqueAndCloseCursor:(Landroid/database/Cursor;)Ljava/lang/Object;` @kind virtual;
+  #L389b96.  v2:= temp @kind object;
+  #L389b98.  return v2 @kind object;
+}
+procedure `java.lang.Object` `loadCurrent`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `android.database.Cursor` v4 @kind object, `int` v5 , `boolean` v6 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadCurrent:(Landroid/database/Cursor;IZ)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L389bac.  v0:= v3.`org.greenrobot.greendao.AbstractDao.identityScopeLong` @type ^`org.greenrobot.greendao.identityscope.IdentityScopeLong` @kind object;
+  #L389bb0.  v1:= 0I;
+  #L389bb2.  if v0 == 0 then goto L389c26;
+  #L389bb6.  if v5 == 0 then goto L389bce;
+  #L389bba.  v0:= v3.`org.greenrobot.greendao.AbstractDao.pkOrdinal` @type ^`int`;
+  #L389bbe.  v0:= v0 + v5 @kind int;
+  #L389bc0.  call temp:= `isNull`(v4, v0) @signature `Landroid/database/Cursor;.isNull:(I)Z` @kind interface;
+  #L389bc6.  v0:= temp;
+  #L389bc8.  if v0 == 0 then goto L389bce;
+  #L389bcc.  return v1 @kind object;
+  #L389bce.  v0:= v3.`org.greenrobot.greendao.AbstractDao.pkOrdinal` @type ^`int`;
+  #L389bd2.  v0:= v0 + v5 @kind int;
+  #L389bd4.  call temp:= `getLong`(v4, v0) @signature `Landroid/database/Cursor;.getLong:(I)J` @kind interface;
+  #L389bda.  v0:= temp @kind wide;
+  #L389bdc.  v2:= v3.`org.greenrobot.greendao.AbstractDao.identityScopeLong` @type ^`org.greenrobot.greendao.identityscope.IdentityScopeLong` @kind object;
+  #L389be0.  if v6 == 0 then goto L389bee;
+  #L389be4.  call temp:= `get2`(v2, v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScopeLong;.get2:(J)Ljava/lang/Object;` @kind virtual;
+  #L389bea.  v2:= temp @kind object;
+  #L389bec.  goto L389bf6;
+  #L389bee.  call temp:= `get2NoLock`(v2, v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScopeLong;.get2NoLock:(J)Ljava/lang/Object;` @kind virtual;
+  #L389bf4.  v2:= temp @kind object;
+  #L389bf6.  if v2 == 0 then goto L389bfc;
+  #L389bfa.  return v2 @kind object;
+  #L389bfc.  call temp:= `readEntity`(v3, v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.readEntity:(Landroid/database/Cursor;I)Ljava/lang/Object;` @kind virtual;
+  #L389c02.  v4:= temp @kind object;
+  #L389c04.  call `attachEntity`(v3, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;)V` @kind virtual;
+  #L389c0a.  if v6 == 0 then goto L389c1a;
+  #L389c0e.  v5:= v3.`org.greenrobot.greendao.AbstractDao.identityScopeLong` @type ^`org.greenrobot.greendao.identityscope.IdentityScopeLong` @kind object;
+  #L389c12.  call `put2`(v5, v0, v4) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScopeLong;.put2:(JLjava/lang/Object;)V` @kind virtual;
+  #L389c18.  goto L389c24;
+  #L389c1a.  v5:= v3.`org.greenrobot.greendao.AbstractDao.identityScopeLong` @type ^`org.greenrobot.greendao.identityscope.IdentityScopeLong` @kind object;
+  #L389c1e.  call `put2NoLock`(v5, v0, v4) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScopeLong;.put2NoLock:(JLjava/lang/Object;)V` @kind virtual;
+  #L389c24.  return v4 @kind object;
+  #L389c26.  v0:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389c2a.  if v0 == 0 then goto L389c70;
+  #L389c2e.  call temp:= `readKey`(v3, v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.readKey:(Landroid/database/Cursor;I)Ljava/lang/Object;` @kind virtual;
+  #L389c34.  v0:= temp @kind object;
+  #L389c36.  if v5 == 0 then goto L389c40;
+  #L389c3a.  if v0 != 0 then goto L389c40;
+  #L389c3e.  return v1 @kind object;
+  #L389c40.  v1:= v3.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L389c44.  if v6 == 0 then goto L389c52;
+  #L389c48.  call temp:= `get`(v1, v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L389c4e.  v1:= temp @kind object;
+  #L389c50.  goto L389c5a;
+  #L389c52.  call temp:= `getNoLock`(v1, v0) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.getNoLock:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L389c58.  v1:= temp @kind object;
+  #L389c5a.  if v1 == 0 then goto L389c60;
+  #L389c5e.  return v1 @kind object;
+  #L389c60.  call temp:= `readEntity`(v3, v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.readEntity:(Landroid/database/Cursor;I)Ljava/lang/Object;` @kind virtual;
+  #L389c66.  v4:= temp @kind object;
+  #L389c68.  call `attachEntity`(v3, v0, v4, v6) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;Ljava/lang/Object;Z)V` @kind virtual;
+  #L389c6e.  return v4 @kind object;
+  #L389c70.  if v5 == 0 then goto L389c82;
+  #L389c74.  call temp:= `readKey`(v3, v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.readKey:(Landroid/database/Cursor;I)Ljava/lang/Object;` @kind virtual;
+  #L389c7a.  v6:= temp @kind object;
+  #L389c7c.  if v6 != 0 then goto L389c82;
+  #L389c80.  return v1 @kind object;
+  #L389c82.  call temp:= `readEntity`(v3, v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.readEntity:(Landroid/database/Cursor;I)Ljava/lang/Object;` @kind virtual;
+  #L389c88.  v4:= temp @kind object;
+  #L389c8a.  call `attachEntity`(v3, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;)V` @kind virtual;
+  #L389c90.  return v4 @kind object;
+}
+procedure `java.lang.Object` `loadCurrentOther`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `org.greenrobot.greendao.AbstractDao` v2 @kind object, `android.database.Cursor` v3 @kind object, `int` v4 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadCurrentOther:(Lorg/greenrobot/greendao/AbstractDao;Landroid/database/Cursor;I)Ljava/lang/Object;` @AccessFlag PROTECTED_FINAL {
+    temp;
+    v0;
+
+  #L389ca4.  v0:= 1I;
+  #L389ca6.  call temp:= `loadCurrent`(v2, v3, v4, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadCurrent:(Landroid/database/Cursor;IZ)Ljava/lang/Object;` @kind virtual;
+  #L389cac.  v2:= temp @kind object;
+  #L389cae.  return v2 @kind object;
+}
+procedure `java.lang.Object` `loadUnique`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `android.database.Cursor` v4 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadUnique:(Landroid/database/Cursor;)Ljava/lang/Object;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L389cc0.  call temp:= `moveToFirst`(v4) @signature `Landroid/database/Cursor;.moveToFirst:()Z` @kind interface;
+  #L389cc6.  v0:= temp;
+  #L389cc8.  if v0 != 0 then goto L389cd0;
+  #L389ccc.  v4:= 0I;
+  #L389cce.  return v4 @kind object;
+  #L389cd0.  call temp:= `isLast`(v4) @signature `Landroid/database/Cursor;.isLast:()Z` @kind interface;
+  #L389cd6.  v0:= temp;
+  #L389cd8.  if v0 == 0 then goto L389cea;
+  #L389cdc.  v0:= 0I;
+  #L389cde.  v1:= 1I;
+  #L389ce0.  call temp:= `loadCurrent`(v3, v4, v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadCurrent:(Landroid/database/Cursor;IZ)Ljava/lang/Object;` @kind virtual;
+  #L389ce6.  v4:= temp @kind object;
+  #L389ce8.  return v4 @kind object;
+  #L389cea.  v0:= new `org.greenrobot.greendao.DaoException`;
+  #L389cee.  v1:= new `java.lang.StringBuilder`;
+  #L389cf2.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L389cf8.  v2:= "Expected unique result, but count was " @kind object;
+  #L389cfc.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389d02.  call temp:= `getCount`(v4) @signature `Landroid/database/Cursor;.getCount:()I` @kind interface;
+  #L389d08.  v4:= temp;
+  #L389d0a.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389d10.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L389d16.  v4:= temp @kind object;
+  #L389d18.  call `<init>`(v0, v4) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L389d1e.  throw v0;
+}
+procedure `java.lang.Object` `loadUniqueAndCloseCursor`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `android.database.Cursor` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadUniqueAndCloseCursor:(Landroid/database/Cursor;)Ljava/lang/Object;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L389d30.  call temp:= `loadUnique`(v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadUnique:(Landroid/database/Cursor;)Ljava/lang/Object;` @kind virtual;
+  #L389d36.  v0:= temp @kind object;
+  #L389d38.  call `close`(v2) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L389d3e.  return v0 @kind object;
+  #L389d40.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L389d42.  call `close`(v2) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L389d48.  throw v0;
+  catch `java.lang.Throwable` @[L389d30..L389d38] goto L389d40;
+}
+procedure `org.greenrobot.greendao.query.QueryBuilder` `queryBuilder`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.queryBuilder:()Lorg/greenrobot/greendao/query/QueryBuilder;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a230.  call temp:= `internalCreate`(v1) @signature `Lorg/greenrobot/greendao/query/QueryBuilder;.internalCreate:(Lorg/greenrobot/greendao/AbstractDao;)Lorg/greenrobot/greendao/query/QueryBuilder;` @kind static;
+  #L38a236.  v0:= temp @kind object;
+  #L38a238.  return v0 @kind object;
+}
+procedure `java.util.List` `queryRaw`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `java.lang.String` v4 @kind object, `java.lang.String`[] v5 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.queryRaw:(Ljava/lang/String;[Ljava/lang/String;)Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L389f78.  v0:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L389f7c.  v1:= new `java.lang.StringBuilder`;
+  #L389f80.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L389f86.  v2:= v3.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L389f8a.  call temp:= `getSelectAll`(v2) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getSelectAll:()Ljava/lang/String;` @kind virtual;
+  #L389f90.  v2:= temp @kind object;
+  #L389f92.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389f98.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L389f9e.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L389fa4.  v4:= temp @kind object;
+  #L389fa6.  call temp:= `rawQuery`(v0, v4, v5) @signature `Lorg/greenrobot/greendao/database/Database;.rawQuery:(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;` @kind interface;
+  #L389fac.  v4:= temp @kind object;
+  #L389fae.  call temp:= `loadAllAndCloseCursor`(v3, v4) @signature `Lorg/greenrobot/greendao/AbstractDao;.loadAllAndCloseCursor:(Landroid/database/Cursor;)Ljava/util/List;` @kind virtual;
+  #L389fb4.  v4:= temp @kind object;
+  #L389fb6.  return v4 @kind object;
+}
+procedure `org.greenrobot.greendao.query.Query` `queryRawCreate`(`org.greenrobot.greendao.AbstractDao` v0 @kind this, `java.lang.String` v1 @kind object, `java.lang.Object`[] v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.queryRawCreate:(Ljava/lang/String;[Ljava/lang/Object;)Lorg/greenrobot/greendao/query/Query;` @AccessFlag PUBLIC {
+    temp;
+
+  #L38a1c0.  call temp:= `asList`(v2) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L38a1c6.  v2:= temp @kind object;
+  #L38a1c8.  call temp:= `queryRawCreateListArgs`(v0, v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.queryRawCreateListArgs:(Ljava/lang/String;Ljava/util/Collection;)Lorg/greenrobot/greendao/query/Query;` @kind virtual;
+  #L38a1ce.  v1:= temp @kind object;
+  #L38a1d0.  return v1 @kind object;
+}
+procedure `org.greenrobot.greendao.query.Query` `queryRawCreateListArgs`(`org.greenrobot.greendao.AbstractDao` v2 @kind this, `java.lang.String` v3 @kind object, `java.util.Collection` v4 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.queryRawCreateListArgs:(Ljava/lang/String;Ljava/util/Collection;)Lorg/greenrobot/greendao/query/Query;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L38a1e4.  v0:= new `java.lang.StringBuilder`;
+  #L38a1e8.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L38a1ee.  v1:= v2.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38a1f2.  call temp:= `getSelectAll`(v1) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getSelectAll:()Ljava/lang/String;` @kind virtual;
+  #L38a1f8.  v1:= temp @kind object;
+  #L38a1fa.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a200.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38a206.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38a20c.  v3:= temp @kind object;
+  #L38a20e.  call temp:= `toArray`(v4) @signature `Ljava/util/Collection;.toArray:()[Ljava/lang/Object;` @kind interface;
+  #L38a214.  v4:= temp @kind object;
+  #L38a216.  call temp:= `internalCreate`(v2, v3, v4) @signature `Lorg/greenrobot/greendao/query/Query;.internalCreate:(Lorg/greenrobot/greendao/AbstractDao;Ljava/lang/String;[Ljava/lang/Object;)Lorg/greenrobot/greendao/query/Query;` @kind static;
+  #L38a21c.  v3:= temp @kind object;
+  #L38a21e.  return v3 @kind object;
+}
+procedure `java.lang.Object` `readEntity`(`android.database.Cursor` v0 @kind object, `int` v1 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.readEntity:(Landroid/database/Cursor;I)Ljava/lang/Object;` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `void` `readEntity`(`android.database.Cursor` v0 @kind object, `java.lang.Object` v1 @kind object, `int` v2 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.readEntity:(Landroid/database/Cursor;Ljava/lang/Object;I)V` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `java.lang.Object` `readKey`(`android.database.Cursor` v0 @kind object, `int` v1 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.readKey:(Landroid/database/Cursor;I)Ljava/lang/Object;` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `void` `refresh`(`org.greenrobot.greendao.AbstractDao` v6 @kind this, `java.lang.Object` v7 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.refresh:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L38aa48.  call `assertSinglePk`(v6) @signature `Lorg/greenrobot/greendao/AbstractDao;.assertSinglePk:()V` @kind virtual;
+  #L38aa4e.  call temp:= `getKeyVerified`(v6, v7) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKeyVerified:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L38aa54.  v0:= temp @kind object;
+  #L38aa56.  v1:= v6.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38aa5a.  call temp:= `getSelectByKey`(v1) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getSelectByKey:()Ljava/lang/String;` @kind virtual;
+  #L38aa60.  v1:= temp @kind object;
+  #L38aa62.  v2:= 1I;
+  #L38aa64.  v3:= new `java.lang.String`[v2];
+  #L38aa68.  call temp:= `toString`(v0) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38aa6e.  v4:= temp @kind object;
+  #L38aa70.  v5:= 0I;
+  #L38aa72.  v3[v5]:= v4 @kind object;
+  #L38aa76.  v4:= v6.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38aa7a.  call temp:= `rawQuery`(v4, v1, v3) @signature `Lorg/greenrobot/greendao/database/Database;.rawQuery:(Ljava/lang/String;[Ljava/lang/String;)Landroid/database/Cursor;` @kind interface;
+  #L38aa80.  v1:= temp @kind object;
+  #L38aa82.  call temp:= `moveToFirst`(v1) @signature `Landroid/database/Cursor;.moveToFirst:()Z` @kind interface;
+  #L38aa88.  v3:= temp;
+  #L38aa8a.  if v3 == 0 then goto L38aae4;
+  #L38aa8e.  call temp:= `isLast`(v1) @signature `Landroid/database/Cursor;.isLast:()Z` @kind interface;
+  #L38aa94.  v3:= temp;
+  #L38aa96.  if v3 == 0 then goto L38aaae;
+  #L38aa9a.  call `readEntity`(v6, v1, v7, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.readEntity:(Landroid/database/Cursor;Ljava/lang/Object;I)V` @kind virtual;
+  #L38aaa0.  call `attachEntity`(v6, v0, v7, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;Ljava/lang/Object;Z)V` @kind virtual;
+  #L38aaa6.  call `close`(v1) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L38aaac.  return @kind void;
+  #L38aaae.  v7:= new `org.greenrobot.greendao.DaoException`;
+  #L38aab2.  v0:= new `java.lang.StringBuilder`;
+  #L38aab6.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L38aabc.  v2:= "Expected unique result, but count was " @kind object;
+  #L38aac0.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38aac6.  call temp:= `getCount`(v1) @signature `Landroid/database/Cursor;.getCount:()I` @kind interface;
+  #L38aacc.  v2:= temp;
+  #L38aace.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38aad4.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38aada.  v0:= temp @kind object;
+  #L38aadc.  call `<init>`(v7, v0) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L38aae2.  throw v7;
+  #L38aae4.  v2:= new `org.greenrobot.greendao.DaoException`;
+  #L38aae8.  v3:= new `java.lang.StringBuilder`;
+  #L38aaec.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L38aaf2.  v4:= "Entity does not exist in the database anymore: " @kind object;
+  #L38aaf6.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38aafc.  call temp:= `getClass`(v7) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L38ab02.  v7:= temp @kind object;
+  #L38ab04.  call temp:= `append`(v3, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38ab0a.  v7:= " with key " @kind object;
+  #L38ab0e.  call temp:= `append`(v3, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38ab14.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L38ab1a.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38ab20.  v7:= temp @kind object;
+  #L38ab22.  call `<init>`(v2, v7) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L38ab28.  throw v2;
+  #L38ab2a.  v7:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38ab2c.  call `close`(v1) @signature `Landroid/database/Cursor;.close:()V` @kind interface;
+  #L38ab32.  throw v7;
+  catch `java.lang.Throwable` @[L38aa82..L38aaa6] goto L38ab2a;
+  catch `java.lang.Throwable` @[L38aaae..L38ab2a] goto L38ab2a;
+}
+procedure `org.greenrobot.greendao.rx.RxDao` `rx`(`org.greenrobot.greendao.AbstractDao` v2 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.rx:()Lorg/greenrobot/greendao/rx/RxDao;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L38a24c.  v0:= v2.`org.greenrobot.greendao.AbstractDao.rxDao` @type ^`org.greenrobot.greendao.rx.RxDao` @kind object;
+  #L38a250.  if v0 != 0 then goto L38a26a;
+  #L38a254.  v0:= new `org.greenrobot.greendao.rx.RxDao`;
+  #L38a258.  call temp:= `io`() @signature `Lrx/schedulers/Schedulers;.io:()Lrx/Scheduler;` @kind static;
+  #L38a25e.  v1:= temp @kind object;
+  #L38a260.  call `<init>`(v0, v2, v1) @signature `Lorg/greenrobot/greendao/rx/RxDao;.<init>:(Lorg/greenrobot/greendao/AbstractDao;Lrx/Scheduler;)V` @kind direct;
+  #L38a266.  v2.`org.greenrobot.greendao.AbstractDao.rxDao` @type ^`org.greenrobot.greendao.rx.RxDao` := v0 @kind object;
+  #L38a26a.  v0:= v2.`org.greenrobot.greendao.AbstractDao.rxDao` @type ^`org.greenrobot.greendao.rx.RxDao` @kind object;
+  #L38a26e.  return v0 @kind object;
+}
+procedure `org.greenrobot.greendao.rx.RxDao` `rxPlain`(`org.greenrobot.greendao.AbstractDao` v1 @kind this) @signature `Lorg/greenrobot/greendao/AbstractDao;.rxPlain:()Lorg/greenrobot/greendao/rx/RxDao;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38a280.  v0:= v1.`org.greenrobot.greendao.AbstractDao.rxDaoPlain` @type ^`org.greenrobot.greendao.rx.RxDao` @kind object;
+  #L38a284.  if v0 != 0 then goto L38a296;
+  #L38a288.  v0:= new `org.greenrobot.greendao.rx.RxDao`;
+  #L38a28c.  call `<init>`(v0, v1) @signature `Lorg/greenrobot/greendao/rx/RxDao;.<init>:(Lorg/greenrobot/greendao/AbstractDao;)V` @kind direct;
+  #L38a292.  v1.`org.greenrobot.greendao.AbstractDao.rxDaoPlain` @type ^`org.greenrobot.greendao.rx.RxDao` := v0 @kind object;
+  #L38a296.  v0:= v1.`org.greenrobot.greendao.AbstractDao.rxDaoPlain` @type ^`org.greenrobot.greendao.rx.RxDao` @kind object;
+  #L38a29a.  return v0 @kind object;
+}
+procedure `void` `save`(`org.greenrobot.greendao.AbstractDao` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.save:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L38ab58.  call temp:= `hasKey`(v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.hasKey:(Ljava/lang/Object;)Z` @kind virtual;
+  #L38ab5e.  v0:= temp;
+  #L38ab60.  if v0 == 0 then goto L38ab6c;
+  #L38ab64.  call `update`(v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.update:(Ljava/lang/Object;)V` @kind virtual;
+  #L38ab6a.  goto L38ab72;
+  #L38ab6c.  call temp:= `insert`(v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.insert:(Ljava/lang/Object;)J` @kind virtual;
+  #L38ab72.  return @kind void;
+}
+procedure `void` `saveInTx`(`org.greenrobot.greendao.AbstractDao` v4 @kind this, `java.lang.Iterable` v5 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.saveInTx:(Ljava/lang/Iterable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L38ab84.  call temp:= `iterator`(v5) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38ab8a.  v0:= temp @kind object;
+  #L38ab8c.  v1:= 0I;
+  #L38ab8e.  v2:= 0I;
+  #L38ab90.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38ab96.  v3:= temp;
+  #L38ab98.  if v3 == 0 then goto L38abbc;
+  #L38ab9c.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38aba2.  v3:= temp @kind object;
+  #L38aba4.  call temp:= `hasKey`(v4, v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.hasKey:(Ljava/lang/Object;)Z` @kind virtual;
+  #L38abaa.  v3:= temp;
+  #L38abac.  if v3 == 0 then goto L38abb6;
+  #L38abb0.  v1:= v1 + 1;
+  #L38abb4.  goto L38ab90;
+  #L38abb6.  v2:= v2 + 1;
+  #L38abba.  goto L38ab90;
+  #L38abbc.  if v1 <= 0 then goto L38ac4a;
+  #L38abc0.  if v2 <= 0 then goto L38ac4a;
+  #L38abc4.  v0:= new `java.util.ArrayList`;
+  #L38abc8.  call `<init>`(v0, v1) @signature `Ljava/util/ArrayList;.<init>:(I)V` @kind direct;
+  #L38abce.  v1:= new `java.util.ArrayList`;
+  #L38abd2.  call `<init>`(v1, v2) @signature `Ljava/util/ArrayList;.<init>:(I)V` @kind direct;
+  #L38abd8.  call temp:= `iterator`(v5) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38abde.  v5:= temp @kind object;
+  #L38abe0.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38abe6.  v2:= temp;
+  #L38abe8.  if v2 == 0 then goto L38ac10;
+  #L38abec.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38abf2.  v2:= temp @kind object;
+  #L38abf4.  call temp:= `hasKey`(v4, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.hasKey:(Ljava/lang/Object;)Z` @kind virtual;
+  #L38abfa.  v3:= temp;
+  #L38abfc.  if v3 == 0 then goto L38ac08;
+  #L38ac00.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L38ac06.  goto L38abe0;
+  #L38ac08.  call temp:= `add`(v1, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L38ac0e.  goto L38abe0;
+  #L38ac10.  v5:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ac14.  call `beginTransaction`(v5) @signature `Lorg/greenrobot/greendao/database/Database;.beginTransaction:()V` @kind interface;
+  #L38ac1a.  call `updateInTx`(v4, v0) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInTx:(Ljava/lang/Iterable;)V` @kind virtual;
+  #L38ac20.  call `insertInTx`(v4, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInTx:(Ljava/lang/Iterable;)V` @kind virtual;
+  #L38ac26.  v5:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ac2a.  call `setTransactionSuccessful`(v5) @signature `Lorg/greenrobot/greendao/database/Database;.setTransactionSuccessful:()V` @kind interface;
+  #L38ac30.  v5:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ac34.  call `endTransaction`(v5) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38ac3a.  goto L38ac60;
+  #L38ac3c.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38ac3e.  v0:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ac42.  call `endTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38ac48.  throw v5;
+  #L38ac4a.  if v2 <= 0 then goto L38ac56;
+  #L38ac4e.  call `insertInTx`(v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.insertInTx:(Ljava/lang/Iterable;)V` @kind virtual;
+  #L38ac54.  goto L38ac60;
+  #L38ac56.  if v1 <= 0 then goto L38ac60;
+  #L38ac5a.  call `updateInTx`(v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInTx:(Ljava/lang/Iterable;)V` @kind virtual;
+  #L38ac60.  return @kind void;
+  catch `java.lang.Throwable` @[L38ac1a..L38ac30] goto L38ac3c;
+}
+procedure `void` `saveInTx`(`org.greenrobot.greendao.AbstractDao` v0 @kind this, `java.lang.Object`[] v1 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.saveInTx:([Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L38ac80.  call temp:= `asList`(v1) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L38ac86.  v1:= temp @kind object;
+  #L38ac88.  call `saveInTx`(v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.saveInTx:(Ljava/lang/Iterable;)V` @kind virtual;
+  #L38ac8e.  return @kind void;
+}
+procedure `void` `update`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `java.lang.Object` v4 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.update:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L38aca0.  call `assertSinglePk`(v3) @signature `Lorg/greenrobot/greendao/AbstractDao;.assertSinglePk:()V` @kind virtual;
+  #L38aca6.  v0:= v3.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38acaa.  call temp:= `getUpdateStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getUpdateStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38acb0.  v0:= temp @kind object;
+  #L38acb2.  v1:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38acb6.  call temp:= `isDbLockedByCurrentThread`(v1) @signature `Lorg/greenrobot/greendao/database/Database;.isDbLockedByCurrentThread:()Z` @kind interface;
+  #L38acbc.  v1:= temp;
+  #L38acbe.  v2:= 1I;
+  #L38acc0.  if v1 == 0 then goto L38acf2;
+  #L38acc4.  @monitorenter v0
+  #L38acc6.  v1:= v3.`org.greenrobot.greendao.AbstractDao.isStandardSQLite` @type ^`boolean` @kind boolean;
+  #L38acca.  if v1 == 0 then goto L38ace2;
+  #L38acce.  call temp:= `getRawStatement`(v0) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.getRawStatement:()Ljava/lang/Object;` @kind interface;
+  #L38acd4.  v1:= temp @kind object;
+  #L38acd6.  v1:= (`android.database.sqlite.SQLiteStatement`) v1 @kind object;
+  #L38acda.  call `updateInsideSynchronized`(v3, v4, v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInsideSynchronized:(Ljava/lang/Object;Landroid/database/sqlite/SQLiteStatement;Z)V` @kind virtual;
+  #L38ace0.  goto L38ace8;
+  #L38ace2.  call `updateInsideSynchronized`(v3, v4, v0, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)V` @kind virtual;
+  #L38ace8.  @monitorexit v0
+  #L38acea.  goto L38ad1a;
+  #L38acec.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38acee.  @monitorexit v0
+  #L38acf0.  throw v4;
+  #L38acf2.  v1:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38acf6.  call `beginTransaction`(v1) @signature `Lorg/greenrobot/greendao/database/Database;.beginTransaction:()V` @kind interface;
+  #L38acfc.  @monitorenter v0
+  #L38acfe.  call `updateInsideSynchronized`(v3, v4, v0, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)V` @kind virtual;
+  #L38ad04.  @monitorexit v0
+  #L38ad06.  v4:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ad0a.  call `setTransactionSuccessful`(v4) @signature `Lorg/greenrobot/greendao/database/Database;.setTransactionSuccessful:()V` @kind interface;
+  #L38ad10.  v4:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ad14.  call `endTransaction`(v4) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38ad1a.  return @kind void;
+  #L38ad1c.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38ad1e.  @monitorexit v0
+  #L38ad20.  throw v4;
+  #L38ad22.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38ad24.  v0:= v3.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ad28.  call `endTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38ad2e.  throw v4;
+  catch `java.lang.Throwable` @[L38acc6..L38acf0] goto L38acec;
+  catch `java.lang.Throwable` @[L38acfc..L38acfe] goto L38ad22;
+  catch `java.lang.Throwable` @[L38acfe..L38ad06] goto L38ad1c;
+  catch `java.lang.Throwable` @[L38ad06..L38ad10] goto L38ad22;
+  catch `java.lang.Throwable` @[L38ad1e..L38ad20] goto L38ad1c;
+  catch `java.lang.Throwable` @[L38ad20..L38ad22] goto L38ad22;
+}
+procedure `void` `updateInTx`(`org.greenrobot.greendao.AbstractDao` v4 @kind this, `java.lang.Iterable` v5 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInTx:(Ljava/lang/Iterable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L38ad78.  v0:= v4.`org.greenrobot.greendao.AbstractDao.statements` @type ^`org.greenrobot.greendao.internal.TableStatements` @kind object;
+  #L38ad7c.  call temp:= `getUpdateStatement`(v0) @signature `Lorg/greenrobot/greendao/internal/TableStatements;.getUpdateStatement:()Lorg/greenrobot/greendao/database/DatabaseStatement;` @kind virtual;
+  #L38ad82.  v0:= temp @kind object;
+  #L38ad84.  v1:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ad88.  call `beginTransaction`(v1) @signature `Lorg/greenrobot/greendao/database/Database;.beginTransaction:()V` @kind interface;
+  #L38ad8e.  @monitorenter v0
+  #L38ad90.  v1:= v4.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38ad94.  if v1 == 0 then goto L38ada2;
+  #L38ad98.  v1:= v4.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38ad9c.  call `lock`(v1) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.lock:()V` @kind interface;
+  #L38ada2.  v1:= v4.`org.greenrobot.greendao.AbstractDao.isStandardSQLite` @type ^`boolean` @kind boolean;
+  #L38ada6.  v2:= 0I;
+  #L38ada8.  if v1 == 0 then goto L38addc;
+  #L38adac.  call temp:= `getRawStatement`(v0) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.getRawStatement:()Ljava/lang/Object;` @kind interface;
+  #L38adb2.  v1:= temp @kind object;
+  #L38adb4.  v1:= (`android.database.sqlite.SQLiteStatement`) v1 @kind object;
+  #L38adb8.  call temp:= `iterator`(v5) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38adbe.  v5:= temp @kind object;
+  #L38adc0.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38adc6.  v3:= temp;
+  #L38adc8.  if v3 == 0 then goto L38ae00;
+  #L38adcc.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38add2.  v3:= temp @kind object;
+  #L38add4.  call `updateInsideSynchronized`(v4, v3, v1, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInsideSynchronized:(Ljava/lang/Object;Landroid/database/sqlite/SQLiteStatement;Z)V` @kind virtual;
+  #L38adda.  goto L38adc0;
+  #L38addc.  call temp:= `iterator`(v5) @signature `Ljava/lang/Iterable;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L38ade2.  v5:= temp @kind object;
+  #L38ade4.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L38adea.  v1:= temp;
+  #L38adec.  if v1 == 0 then goto L38ae00;
+  #L38adf0.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L38adf6.  v1:= temp @kind object;
+  #L38adf8.  call `updateInsideSynchronized`(v4, v1, v0, v2) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)V` @kind virtual;
+  #L38adfe.  goto L38ade4;
+  #L38ae00.  v5:= v4.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38ae04.  if v5 == 0 then goto L38ae12;
+  #L38ae08.  v5:= v4.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38ae0c.  call `unlock`(v5) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L38ae12.  @monitorexit v0
+  #L38ae14.  v5:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ae18.  call `setTransactionSuccessful`(v5) @signature `Lorg/greenrobot/greendao/database/Database;.setTransactionSuccessful:()V` @kind interface;
+  #L38ae1e.  v5:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ae22.  call `endTransaction`(v5) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38ae28.  v5:= 0I;
+  #L38ae2a.  goto L38ae6a;
+  #L38ae2c.  v5:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L38ae2e.  throw v5;
+  #L38ae30.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38ae32.  v1:= v4.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38ae36.  if v1 == 0 then goto L38ae44;
+  #L38ae3a.  v1:= v4.`org.greenrobot.greendao.AbstractDao.identityScope` @type ^`org.greenrobot.greendao.identityscope.IdentityScope` @kind object;
+  #L38ae3e.  call `unlock`(v1) @signature `Lorg/greenrobot/greendao/identityscope/IdentityScope;.unlock:()V` @kind interface;
+  #L38ae44.  throw v5;
+  #L38ae46.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38ae48.  @monitorexit v0
+  #L38ae4a.  throw v5;
+  #L38ae4c.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L38ae4e.  v0:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ae52.  call `endTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38ae58.  throw v5;
+  #L38ae5a.  v5:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L38ae5c.  throw v5;
+  #L38ae5e.  v5:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L38ae60.  v0:= v4.`org.greenrobot.greendao.AbstractDao.db` @type ^`org.greenrobot.greendao.database.Database` @kind object;
+  #L38ae64.  call `endTransaction`(v0) @signature `Lorg/greenrobot/greendao/database/Database;.endTransaction:()V` @kind interface;
+  #L38ae6a.  if v5 != 0 then goto L38ae70;
+  #L38ae6e.  return @kind void;
+  #L38ae70.  throw v5;
+  #L38ae72.  v0:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L38ae74.  v1:= "Could not end transaction (rethrowing initial exception)" @kind object;
+  #L38ae78.  call temp:= `w`(v1, v0) @signature `Lorg/greenrobot/greendao/DaoLog;.w:(Ljava/lang/String;Ljava/lang/Throwable;)I` @kind static;
+  #L38ae7e.  throw v5;
+  catch `java.lang.RuntimeException` @[L38ad8e..L38ad90] goto L38ae5e;
+  catch `java.lang.Throwable` @[L38ad8e..L38ad90] goto L38ae4c;
+  catch `java.lang.Throwable` @[L38ad90..L38ada2] goto L38ae46;
+  catch `java.lang.Throwable` @[L38ada2..L38adfe] goto L38ae30;
+  catch `java.lang.Throwable` @[L38ae00..L38ae14] goto L38ae46;
+  catch `java.lang.RuntimeException` @[L38ae14..L38ae1e] goto L38ae5e;
+  catch `java.lang.Throwable` @[L38ae14..L38ae1e] goto L38ae4c;
+  catch `java.lang.RuntimeException` @[L38ae1e..L38ae28] goto L38ae2c;
+  catch `java.lang.Throwable` @[L38ae32..L38ae4a] goto L38ae46;
+  catch `java.lang.RuntimeException` @[L38ae4a..L38ae4c] goto L38ae5e;
+  catch `java.lang.Throwable` @[L38ae4a..L38ae4c] goto L38ae4c;
+  catch `java.lang.RuntimeException` @[L38ae4e..L38ae58] goto L38ae5a;
+  catch `java.lang.RuntimeException` @[L38ae60..L38ae6a] goto L38ae72;
+}
+procedure `void` `updateInTx`(`org.greenrobot.greendao.AbstractDao` v0 @kind this, `java.lang.Object`[] v1 @kind object) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInTx:([Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L38aef8.  call temp:= `asList`(v1) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L38aefe.  v1:= temp @kind object;
+  #L38af00.  call `updateInTx`(v0, v1) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInTx:(Ljava/lang/Iterable;)V` @kind virtual;
+  #L38af06.  return @kind void;
+}
+procedure `void` `updateInsideSynchronized`(`org.greenrobot.greendao.AbstractDao` v4 @kind this, `java.lang.Object` v5 @kind object, `android.database.sqlite.SQLiteStatement` v6 @kind object, `boolean` v7 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInsideSynchronized:(Ljava/lang/Object;Landroid/database/sqlite/SQLiteStatement;Z)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L38af18.  call `bindValues`(v4, v6, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Landroid/database/sqlite/SQLiteStatement;Ljava/lang/Object;)V` @kind virtual;
+  #L38af1e.  v0:= v4.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38af22.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.allColumns` @type ^`java.lang.String`[] @kind object;
+  #L38af26.  v0:= length @variable v0;
+  #L38af28.  v0:= v0 + 1;
+  #L38af2c.  call temp:= `getKey`(v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKey:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L38af32.  v1:= temp @kind object;
+  #L38af34.  v2:= instanceof @variable v1 @type ^`java.lang.Long` @kind boolean;
+  #L38af38.  if v2 == 0 then goto L38af52;
+  #L38af3c.  v2:= v1 @kind object;
+  #L38af3e.  v2:= (`java.lang.Long`) v2 @kind object;
+  #L38af42.  call temp:= `longValue`(v2) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L38af48.  v2:= temp @kind wide;
+  #L38af4a.  call `bindLong`(v6, v0, v2) @signature `Landroid/database/sqlite/SQLiteStatement;.bindLong:(IJ)V` @kind virtual;
+  #L38af50.  goto L38af64;
+  #L38af52.  if v1 == 0 then goto L38af72;
+  #L38af56.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38af5c.  v2:= temp @kind object;
+  #L38af5e.  call `bindString`(v6, v0, v2) @signature `Landroid/database/sqlite/SQLiteStatement;.bindString:(ILjava/lang/String;)V` @kind virtual;
+  #L38af64.  call `execute`(v6) @signature `Landroid/database/sqlite/SQLiteStatement;.execute:()V` @kind virtual;
+  #L38af6a.  call `attachEntity`(v4, v1, v5, v7) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;Ljava/lang/Object;Z)V` @kind virtual;
+  #L38af70.  return @kind void;
+  #L38af72.  v5:= new `org.greenrobot.greendao.DaoException`;
+  #L38af76.  v6:= "Cannot update entity without key - was it inserted before?" @kind object;
+  #L38af7a.  call `<init>`(v5, v6) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L38af80.  throw v5;
+}
+procedure `void` `updateInsideSynchronized`(`org.greenrobot.greendao.AbstractDao` v4 @kind this, `java.lang.Object` v5 @kind object, `org.greenrobot.greendao.database.DatabaseStatement` v6 @kind object, `boolean` v7 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateInsideSynchronized:(Ljava/lang/Object;Lorg/greenrobot/greendao/database/DatabaseStatement;Z)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L38af94.  call `bindValues`(v4, v6, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.bindValues:(Lorg/greenrobot/greendao/database/DatabaseStatement;Ljava/lang/Object;)V` @kind virtual;
+  #L38af9a.  v0:= v4.`org.greenrobot.greendao.AbstractDao.config` @type ^`org.greenrobot.greendao.internal.DaoConfig` @kind object;
+  #L38af9e.  v0:= v0.`org.greenrobot.greendao.internal.DaoConfig.allColumns` @type ^`java.lang.String`[] @kind object;
+  #L38afa2.  v0:= length @variable v0;
+  #L38afa4.  v0:= v0 + 1;
+  #L38afa8.  call temp:= `getKey`(v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.getKey:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L38afae.  v1:= temp @kind object;
+  #L38afb0.  v2:= instanceof @variable v1 @type ^`java.lang.Long` @kind boolean;
+  #L38afb4.  if v2 == 0 then goto L38afce;
+  #L38afb8.  v2:= v1 @kind object;
+  #L38afba.  v2:= (`java.lang.Long`) v2 @kind object;
+  #L38afbe.  call temp:= `longValue`(v2) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L38afc4.  v2:= temp @kind wide;
+  #L38afc6.  call `bindLong`(v6, v0, v2) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.bindLong:(IJ)V` @kind interface;
+  #L38afcc.  goto L38afe0;
+  #L38afce.  if v1 == 0 then goto L38afee;
+  #L38afd2.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L38afd8.  v2:= temp @kind object;
+  #L38afda.  call `bindString`(v6, v0, v2) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.bindString:(ILjava/lang/String;)V` @kind interface;
+  #L38afe0.  call `execute`(v6) @signature `Lorg/greenrobot/greendao/database/DatabaseStatement;.execute:()V` @kind interface;
+  #L38afe6.  call `attachEntity`(v4, v1, v5, v7) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;Ljava/lang/Object;Z)V` @kind virtual;
+  #L38afec.  return @kind void;
+  #L38afee.  v5:= new `org.greenrobot.greendao.DaoException`;
+  #L38aff2.  v6:= "Cannot update entity without key - was it inserted before?" @kind object;
+  #L38aff6.  call `<init>`(v5, v6) @signature `Lorg/greenrobot/greendao/DaoException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L38affc.  throw v5;
+}
+procedure `java.lang.Object` `updateKeyAfterInsert`(`java.lang.Object` v0 @kind object, `long` v1 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateKeyAfterInsert:(Ljava/lang/Object;J)Ljava/lang/Object;` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `void` `updateKeyAfterInsertAndAttach`(`org.greenrobot.greendao.AbstractDao` v3 @kind this, `java.lang.Object` v4 @kind object, `long` v5 , `boolean` v7 ) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateKeyAfterInsertAndAttach:(Ljava/lang/Object;JZ)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L38b010.  v0:= -1L;
+  #L38b014.  v2:= lcmp(v5, v0);
+  #L38b018.  if v2 == 0 then goto L38b02c;
+  #L38b01c.  call temp:= `updateKeyAfterInsert`(v3, v4, v5) @signature `Lorg/greenrobot/greendao/AbstractDao;.updateKeyAfterInsert:(Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L38b022.  v5:= temp @kind object;
+  #L38b024.  call `attachEntity`(v3, v5, v4, v7) @signature `Lorg/greenrobot/greendao/AbstractDao;.attachEntity:(Ljava/lang/Object;Ljava/lang/Object;Z)V` @kind virtual;
+  #L38b02a.  goto L38b036;
+  #L38b02c.  v4:= "Could not insert row (executeInsert returned -1)" @kind object;
+  #L38b030.  call temp:= `w`(v4) @signature `Lorg/greenrobot/greendao/DaoLog;.w:(Ljava/lang/String;)I` @kind static;
+  #L38b036.  return @kind void;
+}

@@ -1,0 +1,1003 @@
+record `org.greenrobot.eventbus.EventBus` @kind class @AccessFlag PUBLIC {
+  `org.greenrobot.eventbus.AsyncPoster` `org.greenrobot.eventbus.EventBus.asyncPoster` @AccessFlag PRIVATE_FINAL;
+  `org.greenrobot.eventbus.BackgroundPoster` `org.greenrobot.eventbus.EventBus.backgroundPoster` @AccessFlag PRIVATE_FINAL;
+  `java.lang.ThreadLocal` `org.greenrobot.eventbus.EventBus.currentPostingThreadState` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.EventBus.eventInheritance` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.ExecutorService` `org.greenrobot.eventbus.EventBus.executorService` @AccessFlag PRIVATE_FINAL;
+  `int` `org.greenrobot.eventbus.EventBus.indexCount` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.EventBus.logNoSubscriberMessages` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.EventBus.logSubscriberExceptions` @AccessFlag PRIVATE_FINAL;
+  `org.greenrobot.eventbus.Logger` `org.greenrobot.eventbus.EventBus.logger` @AccessFlag PRIVATE_FINAL;
+  `org.greenrobot.eventbus.Poster` `org.greenrobot.eventbus.EventBus.mainThreadPoster` @AccessFlag PRIVATE_FINAL;
+  `org.greenrobot.eventbus.MainThreadSupport` `org.greenrobot.eventbus.EventBus.mainThreadSupport` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.EventBus.sendNoSubscriberEvent` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.EventBus.sendSubscriberExceptionEvent` @AccessFlag PRIVATE_FINAL;
+  `java.util.Map` `org.greenrobot.eventbus.EventBus.stickyEvents` @AccessFlag PRIVATE_FINAL;
+  `org.greenrobot.eventbus.SubscriberMethodFinder` `org.greenrobot.eventbus.EventBus.subscriberMethodFinder` @AccessFlag PRIVATE_FINAL;
+  `java.util.Map` `org.greenrobot.eventbus.EventBus.subscriptionsByEventType` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.EventBus.throwSubscriberException` @AccessFlag PRIVATE_FINAL;
+  `java.util.Map` `org.greenrobot.eventbus.EventBus.typesBySubscriber` @AccessFlag PRIVATE_FINAL;
+}
+global `org.greenrobot.eventbus.EventBusBuilder` `@@org.greenrobot.eventbus.EventBus.DEFAULT_BUILDER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@org.greenrobot.eventbus.EventBus.TAG` @AccessFlag PUBLIC_STATIC;
+global `org.greenrobot.eventbus.EventBus` `@@org.greenrobot.eventbus.EventBus.defaultInstance` @AccessFlag STATIC_VOLATILE;
+global `java.util.Map` `@@org.greenrobot.eventbus.EventBus.eventTypesCache` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lorg/greenrobot/eventbus/EventBus;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L481a60.  v0:= new `org.greenrobot.eventbus.EventBusBuilder`;
+  #L481a64.  call `<init>`(v0) @signature `Lorg/greenrobot/eventbus/EventBusBuilder;.<init>:()V` @kind direct;
+  #L481a6a.  `@@org.greenrobot.eventbus.EventBus.DEFAULT_BUILDER` @type ^`org.greenrobot.eventbus.EventBusBuilder` := v0 @kind object;
+  #L481a6e.  v0:= new `java.util.HashMap`;
+  #L481a72.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L481a78.  `@@org.greenrobot.eventbus.EventBus.eventTypesCache` @type ^`java.util.Map` := v0 @kind object;
+  #L481a7c.  return @kind void;
+}
+procedure `void` `<init>`(`org.greenrobot.eventbus.EventBus` v1 @kind this) @signature `Lorg/greenrobot/eventbus/EventBus;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L481a90.  v0:= `@@org.greenrobot.eventbus.EventBus.DEFAULT_BUILDER` @type ^`org.greenrobot.eventbus.EventBusBuilder` @kind object;
+  #L481a94.  call `<init>`(v1, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.<init>:(Lorg/greenrobot/eventbus/EventBusBuilder;)V` @kind direct;
+  #L481a9a.  return @kind void;
+}
+procedure `void` `<init>`(`org.greenrobot.eventbus.EventBus` v4 @kind this, `org.greenrobot.eventbus.EventBusBuilder` v5 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.<init>:(Lorg/greenrobot/eventbus/EventBusBuilder;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L481aac.  call `<init>`(v4) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L481ab2.  v0:= new `org.greenrobot.eventbus.EventBus$1`;
+  #L481ab6.  call `<init>`(v0, v4) @signature `Lorg/greenrobot/eventbus/EventBus$1;.<init>:(Lorg/greenrobot/eventbus/EventBus;)V` @kind direct;
+  #L481abc.  v4.`org.greenrobot.eventbus.EventBus.currentPostingThreadState` @type ^`java.lang.ThreadLocal` := v0 @kind object;
+  #L481ac0.  call temp:= `getLogger`(v5) @signature `Lorg/greenrobot/eventbus/EventBusBuilder;.getLogger:()Lorg/greenrobot/eventbus/Logger;` @kind virtual;
+  #L481ac6.  v0:= temp @kind object;
+  #L481ac8.  v4.`org.greenrobot.eventbus.EventBus.logger` @type ^`org.greenrobot.eventbus.Logger` := v0 @kind object;
+  #L481acc.  v0:= new `java.util.HashMap`;
+  #L481ad0.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L481ad6.  v4.`org.greenrobot.eventbus.EventBus.subscriptionsByEventType` @type ^`java.util.Map` := v0 @kind object;
+  #L481ada.  v0:= new `java.util.HashMap`;
+  #L481ade.  call `<init>`(v0) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L481ae4.  v4.`org.greenrobot.eventbus.EventBus.typesBySubscriber` @type ^`java.util.Map` := v0 @kind object;
+  #L481ae8.  v0:= new `java.util.concurrent.ConcurrentHashMap`;
+  #L481aec.  call `<init>`(v0) @signature `Ljava/util/concurrent/ConcurrentHashMap;.<init>:()V` @kind direct;
+  #L481af2.  v4.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` := v0 @kind object;
+  #L481af6.  call temp:= `getMainThreadSupport`(v5) @signature `Lorg/greenrobot/eventbus/EventBusBuilder;.getMainThreadSupport:()Lorg/greenrobot/eventbus/MainThreadSupport;` @kind virtual;
+  #L481afc.  v0:= temp @kind object;
+  #L481afe.  v4.`org.greenrobot.eventbus.EventBus.mainThreadSupport` @type ^`org.greenrobot.eventbus.MainThreadSupport` := v0 @kind object;
+  #L481b02.  v0:= v4.`org.greenrobot.eventbus.EventBus.mainThreadSupport` @type ^`org.greenrobot.eventbus.MainThreadSupport` @kind object;
+  #L481b06.  if v0 == 0 then goto L481b14;
+  #L481b0a.  call temp:= `createPoster`(v0, v4) @signature `Lorg/greenrobot/eventbus/MainThreadSupport;.createPoster:(Lorg/greenrobot/eventbus/EventBus;)Lorg/greenrobot/eventbus/Poster;` @kind interface;
+  #L481b10.  v0:= temp @kind object;
+  #L481b12.  goto L481b16;
+  #L481b14.  v0:= 0I;
+  #L481b16.  v4.`org.greenrobot.eventbus.EventBus.mainThreadPoster` @type ^`org.greenrobot.eventbus.Poster` := v0 @kind object;
+  #L481b1a.  v0:= new `org.greenrobot.eventbus.BackgroundPoster`;
+  #L481b1e.  call `<init>`(v0, v4) @signature `Lorg/greenrobot/eventbus/BackgroundPoster;.<init>:(Lorg/greenrobot/eventbus/EventBus;)V` @kind direct;
+  #L481b24.  v4.`org.greenrobot.eventbus.EventBus.backgroundPoster` @type ^`org.greenrobot.eventbus.BackgroundPoster` := v0 @kind object;
+  #L481b28.  v0:= new `org.greenrobot.eventbus.AsyncPoster`;
+  #L481b2c.  call `<init>`(v0, v4) @signature `Lorg/greenrobot/eventbus/AsyncPoster;.<init>:(Lorg/greenrobot/eventbus/EventBus;)V` @kind direct;
+  #L481b32.  v4.`org.greenrobot.eventbus.EventBus.asyncPoster` @type ^`org.greenrobot.eventbus.AsyncPoster` := v0 @kind object;
+  #L481b36.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.subscriberInfoIndexes` @type ^`java.util.List` @kind object;
+  #L481b3a.  if v0 == 0 then goto L481b4c;
+  #L481b3e.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.subscriberInfoIndexes` @type ^`java.util.List` @kind object;
+  #L481b42.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L481b48.  v0:= temp;
+  #L481b4a.  goto L481b4e;
+  #L481b4c.  v0:= 0I;
+  #L481b4e.  v4.`org.greenrobot.eventbus.EventBus.indexCount` @type ^`int` := v0;
+  #L481b52.  v0:= new `org.greenrobot.eventbus.SubscriberMethodFinder`;
+  #L481b56.  v1:= v5.`org.greenrobot.eventbus.EventBusBuilder.subscriberInfoIndexes` @type ^`java.util.List` @kind object;
+  #L481b5a.  v2:= v5.`org.greenrobot.eventbus.EventBusBuilder.strictMethodVerification` @type ^`boolean` @kind boolean;
+  #L481b5e.  v3:= v5.`org.greenrobot.eventbus.EventBusBuilder.ignoreGeneratedIndex` @type ^`boolean` @kind boolean;
+  #L481b62.  call `<init>`(v0, v1, v2, v3) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.<init>:(Ljava/util/List;ZZ)V` @kind direct;
+  #L481b68.  v4.`org.greenrobot.eventbus.EventBus.subscriberMethodFinder` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder` := v0 @kind object;
+  #L481b6c.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.logSubscriberExceptions` @type ^`boolean` @kind boolean;
+  #L481b70.  v4.`org.greenrobot.eventbus.EventBus.logSubscriberExceptions` @type ^`boolean` := v0 @kind boolean;
+  #L481b74.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.logNoSubscriberMessages` @type ^`boolean` @kind boolean;
+  #L481b78.  v4.`org.greenrobot.eventbus.EventBus.logNoSubscriberMessages` @type ^`boolean` := v0 @kind boolean;
+  #L481b7c.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.sendSubscriberExceptionEvent` @type ^`boolean` @kind boolean;
+  #L481b80.  v4.`org.greenrobot.eventbus.EventBus.sendSubscriberExceptionEvent` @type ^`boolean` := v0 @kind boolean;
+  #L481b84.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.sendNoSubscriberEvent` @type ^`boolean` @kind boolean;
+  #L481b88.  v4.`org.greenrobot.eventbus.EventBus.sendNoSubscriberEvent` @type ^`boolean` := v0 @kind boolean;
+  #L481b8c.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.throwSubscriberException` @type ^`boolean` @kind boolean;
+  #L481b90.  v4.`org.greenrobot.eventbus.EventBus.throwSubscriberException` @type ^`boolean` := v0 @kind boolean;
+  #L481b94.  v0:= v5.`org.greenrobot.eventbus.EventBusBuilder.eventInheritance` @type ^`boolean` @kind boolean;
+  #L481b98.  v4.`org.greenrobot.eventbus.EventBus.eventInheritance` @type ^`boolean` := v0 @kind boolean;
+  #L481b9c.  v5:= v5.`org.greenrobot.eventbus.EventBusBuilder.executorService` @type ^`java.util.concurrent.ExecutorService` @kind object;
+  #L481ba0.  v4.`org.greenrobot.eventbus.EventBus.executorService` @type ^`java.util.concurrent.ExecutorService` := v5 @kind object;
+  #L481ba4.  return @kind void;
+}
+procedure `void` `addInterfaces`(`java.util.List` v4 @kind object, `java.lang.Class`[] v5 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.addInterfaces:(Ljava/util/List;[Ljava/lang/Class;)V` @AccessFlag STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L481bb8.  v0:= length @variable v5;
+  #L481bba.  v1:= 0I;
+  #L481bbc.  if v1 >= v0 then goto L481bea;
+  #L481bc0.  v2:= v5[v1] @kind object;
+  #L481bc4.  call temp:= `contains`(v4, v2) @signature `Ljava/util/List;.contains:(Ljava/lang/Object;)Z` @kind interface;
+  #L481bca.  v3:= temp;
+  #L481bcc.  if v3 != 0 then goto L481be4;
+  #L481bd0.  call temp:= `add`(v4, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L481bd6.  call temp:= `getInterfaces`(v2) @signature `Ljava/lang/Class;.getInterfaces:()[Ljava/lang/Class;` @kind virtual;
+  #L481bdc.  v2:= temp @kind object;
+  #L481bde.  call `addInterfaces`(v4, v2) @signature `Lorg/greenrobot/eventbus/EventBus;.addInterfaces:(Ljava/util/List;[Ljava/lang/Class;)V` @kind static;
+  #L481be4.  v1:= v1 + 1;
+  #L481be8.  goto L481bbc;
+  #L481bea.  return @kind void;
+}
+procedure `org.greenrobot.eventbus.EventBusBuilder` `builder`() @signature `Lorg/greenrobot/eventbus/EventBus;.builder:()Lorg/greenrobot/eventbus/EventBusBuilder;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L481a2c.  v0:= new `org.greenrobot.eventbus.EventBusBuilder`;
+  #L481a30.  call `<init>`(v0) @signature `Lorg/greenrobot/eventbus/EventBusBuilder;.<init>:()V` @kind direct;
+  #L481a36.  return v0 @kind object;
+}
+procedure `void` `checkPostStickyEventToSubscription`(`org.greenrobot.eventbus.EventBus` v1 @kind this, `org.greenrobot.eventbus.Subscription` v2 @kind object, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.checkPostStickyEventToSubscription:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L481c8c.  if v3 == 0 then goto L481c9e;
+  #L481c90.  call temp:= `isMainThread`(v1) @signature `Lorg/greenrobot/eventbus/EventBus;.isMainThread:()Z` @kind direct;
+  #L481c96.  v0:= temp;
+  #L481c98.  call `postToSubscription`(v1, v2, v3, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.postToSubscription:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;Z)V` @kind direct;
+  #L481c9e.  return @kind void;
+}
+procedure `void` `clearCaches`() @signature `Lorg/greenrobot/eventbus/EventBus;.clearCaches:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L481cb0.  call `clearCaches`() @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.clearCaches:()V` @kind static;
+  #L481cb6.  v0:= `@@org.greenrobot.eventbus.EventBus.eventTypesCache` @type ^`java.util.Map` @kind object;
+  #L481cba.  call `clear`(v0) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L481cc0.  return @kind void;
+}
+procedure `org.greenrobot.eventbus.EventBus` `getDefault`() @signature `Lorg/greenrobot/eventbus/EventBus;.getDefault:()Lorg/greenrobot/eventbus/EventBus;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4819dc.  v0:= `@@org.greenrobot.eventbus.EventBus.defaultInstance` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L4819e0.  if v0 != 0 then goto L481a0a;
+  #L4819e4.  v0:= constclass @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L4819e8.  @monitorenter v0
+  #L4819ea.  v1:= `@@org.greenrobot.eventbus.EventBus.defaultInstance` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L4819ee.  if v1 != 0 then goto L481a00;
+  #L4819f2.  v1:= new `org.greenrobot.eventbus.EventBus`;
+  #L4819f6.  call `<init>`(v1) @signature `Lorg/greenrobot/eventbus/EventBus;.<init>:()V` @kind direct;
+  #L4819fc.  `@@org.greenrobot.eventbus.EventBus.defaultInstance` @type ^`org.greenrobot.eventbus.EventBus` := v1 @kind object;
+  #L481a00.  @monitorexit v0
+  #L481a02.  goto L481a0a;
+  #L481a04.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L481a06.  @monitorexit v0
+  #L481a08.  throw v1;
+  #L481a0a.  v0:= `@@org.greenrobot.eventbus.EventBus.defaultInstance` @type ^`org.greenrobot.eventbus.EventBus` @kind object;
+  #L481a0e.  return v0 @kind object;
+  catch `java.lang.Throwable` @[L4819ea..L481a08] goto L481a04;
+}
+procedure `void` `handleSubscriberException`(`org.greenrobot.eventbus.EventBus` v4 @kind this, `org.greenrobot.eventbus.Subscription` v5 @kind object, `java.lang.Object` v6 @kind object, `java.lang.Throwable` v7 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.handleSubscriberException:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;Ljava/lang/Throwable;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L481cd4.  v0:= instanceof @variable v6 @type ^`org.greenrobot.eventbus.SubscriberExceptionEvent` @kind boolean;
+  #L481cd8.  if v0 == 0 then goto L481d7c;
+  #L481cdc.  v0:= v4.`org.greenrobot.eventbus.EventBus.logSubscriberExceptions` @type ^`boolean` @kind boolean;
+  #L481ce0.  if v0 == 0 then goto L481dfc;
+  #L481ce4.  v0:= v4.`org.greenrobot.eventbus.EventBus.logger` @type ^`org.greenrobot.eventbus.Logger` @kind object;
+  #L481ce8.  v1:= `@@java.util.logging.Level.SEVERE` @type ^`java.util.logging.Level` @kind object;
+  #L481cec.  v2:= new `java.lang.StringBuilder`;
+  #L481cf0.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L481cf6.  v3:= "SubscriberExceptionEvent subscriber " @kind object;
+  #L481cfa.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481d00.  v5:= v5.`org.greenrobot.eventbus.Subscription.subscriber` @type ^`java.lang.Object` @kind object;
+  #L481d04.  call temp:= `getClass`(v5) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L481d0a.  v5:= temp @kind object;
+  #L481d0c.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481d12.  v5:= " threw an exception" @kind object;
+  #L481d16.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481d1c.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L481d22.  v5:= temp @kind object;
+  #L481d24.  call `log`(v0, v1, v5, v7) @signature `Lorg/greenrobot/eventbus/Logger;.log:(Ljava/util/logging/Level;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind interface;
+  #L481d2a.  v6:= (`org.greenrobot.eventbus.SubscriberExceptionEvent`) v6 @kind object;
+  #L481d2e.  v5:= v4.`org.greenrobot.eventbus.EventBus.logger` @type ^`org.greenrobot.eventbus.Logger` @kind object;
+  #L481d32.  v7:= `@@java.util.logging.Level.SEVERE` @type ^`java.util.logging.Level` @kind object;
+  #L481d36.  v0:= new `java.lang.StringBuilder`;
+  #L481d3a.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L481d40.  v1:= "Initial event " @kind object;
+  #L481d44.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481d4a.  v1:= v6.`org.greenrobot.eventbus.SubscriberExceptionEvent.causingEvent` @type ^`java.lang.Object` @kind object;
+  #L481d4e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481d54.  v1:= " caused exception in " @kind object;
+  #L481d58.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481d5e.  v1:= v6.`org.greenrobot.eventbus.SubscriberExceptionEvent.causingSubscriber` @type ^`java.lang.Object` @kind object;
+  #L481d62.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481d68.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L481d6e.  v0:= temp @kind object;
+  #L481d70.  v6:= v6.`org.greenrobot.eventbus.SubscriberExceptionEvent.throwable` @type ^`java.lang.Throwable` @kind object;
+  #L481d74.  call `log`(v5, v7, v0, v6) @signature `Lorg/greenrobot/eventbus/Logger;.log:(Ljava/util/logging/Level;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind interface;
+  #L481d7a.  goto L481dfc;
+  #L481d7c.  v0:= v4.`org.greenrobot.eventbus.EventBus.throwSubscriberException` @type ^`boolean` @kind boolean;
+  #L481d80.  if v0 != 0 then goto L481dfe;
+  #L481d84.  v0:= v4.`org.greenrobot.eventbus.EventBus.logSubscriberExceptions` @type ^`boolean` @kind boolean;
+  #L481d88.  if v0 == 0 then goto L481de0;
+  #L481d8c.  v0:= v4.`org.greenrobot.eventbus.EventBus.logger` @type ^`org.greenrobot.eventbus.Logger` @kind object;
+  #L481d90.  v1:= `@@java.util.logging.Level.SEVERE` @type ^`java.util.logging.Level` @kind object;
+  #L481d94.  v2:= new `java.lang.StringBuilder`;
+  #L481d98.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L481d9e.  v3:= "Could not dispatch event: " @kind object;
+  #L481da2.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481da8.  call temp:= `getClass`(v6) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L481dae.  v3:= temp @kind object;
+  #L481db0.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481db6.  v3:= " to subscribing class " @kind object;
+  #L481dba.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481dc0.  v3:= v5.`org.greenrobot.eventbus.Subscription.subscriber` @type ^`java.lang.Object` @kind object;
+  #L481dc4.  call temp:= `getClass`(v3) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L481dca.  v3:= temp @kind object;
+  #L481dcc.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481dd2.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L481dd8.  v2:= temp @kind object;
+  #L481dda.  call `log`(v0, v1, v2, v7) @signature `Lorg/greenrobot/eventbus/Logger;.log:(Ljava/util/logging/Level;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind interface;
+  #L481de0.  v0:= v4.`org.greenrobot.eventbus.EventBus.sendSubscriberExceptionEvent` @type ^`boolean` @kind boolean;
+  #L481de4.  if v0 == 0 then goto L481dfc;
+  #L481de8.  v0:= new `org.greenrobot.eventbus.SubscriberExceptionEvent`;
+  #L481dec.  v5:= v5.`org.greenrobot.eventbus.Subscription.subscriber` @type ^`java.lang.Object` @kind object;
+  #L481df0.  call `<init>`(v0, v4, v7, v6, v5) @signature `Lorg/greenrobot/eventbus/SubscriberExceptionEvent;.<init>:(Lorg/greenrobot/eventbus/EventBus;Ljava/lang/Throwable;Ljava/lang/Object;Ljava/lang/Object;)V` @kind direct;
+  #L481df6.  call `post`(v4, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.post:(Ljava/lang/Object;)V` @kind virtual;
+  #L481dfc.  return @kind void;
+  #L481dfe.  v5:= new `org.greenrobot.eventbus.EventBusException`;
+  #L481e02.  v6:= "Invoking subscriber failed" @kind object;
+  #L481e06.  call `<init>`(v5, v6, v7) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L481e0c.  throw v5;
+}
+procedure `boolean` `isMainThread`(`org.greenrobot.eventbus.EventBus` v1 @kind this) @signature `Lorg/greenrobot/eventbus/EventBus;.isMainThread:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4816f4.  v0:= v1.`org.greenrobot.eventbus.EventBus.mainThreadSupport` @type ^`org.greenrobot.eventbus.MainThreadSupport` @kind object;
+  #L4816f8.  if v0 == 0 then goto L481706;
+  #L4816fc.  call temp:= `isMainThread`(v0) @signature `Lorg/greenrobot/eventbus/MainThreadSupport;.isMainThread:()Z` @kind interface;
+  #L481702.  v0:= temp;
+  #L481704.  goto L481708;
+  #L481706.  v0:= 1I;
+  #L481708.  return v0;
+}
+procedure `java.util.List` `lookupAllEventTypes`(`java.lang.Class` v4 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.lookupAllEventTypes:(Ljava/lang/Class;)Ljava/util/List;` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L481948.  v0:= `@@org.greenrobot.eventbus.EventBus.eventTypesCache` @type ^`java.util.Map` @kind object;
+  #L48194c.  @monitorenter v0
+  #L48194e.  v1:= `@@org.greenrobot.eventbus.EventBus.eventTypesCache` @type ^`java.util.Map` @kind object;
+  #L481952.  call temp:= `get`(v1, v4) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L481958.  v1:= temp @kind object;
+  #L48195a.  v1:= (`java.util.List`) v1 @kind object;
+  #L48195e.  if v1 != 0 then goto L48199a;
+  #L481962.  v1:= new `java.util.ArrayList`;
+  #L481966.  call `<init>`(v1) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L48196c.  v2:= v4 @kind object;
+  #L48196e.  if v2 == 0 then goto L481990;
+  #L481972.  call temp:= `add`(v1, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L481978.  call temp:= `getInterfaces`(v2) @signature `Ljava/lang/Class;.getInterfaces:()[Ljava/lang/Class;` @kind virtual;
+  #L48197e.  v3:= temp @kind object;
+  #L481980.  call `addInterfaces`(v1, v3) @signature `Lorg/greenrobot/eventbus/EventBus;.addInterfaces:(Ljava/util/List;[Ljava/lang/Class;)V` @kind static;
+  #L481986.  call temp:= `getSuperclass`(v2) @signature `Ljava/lang/Class;.getSuperclass:()Ljava/lang/Class;` @kind virtual;
+  #L48198c.  v2:= temp @kind object;
+  #L48198e.  goto L48196e;
+  #L481990.  v2:= `@@org.greenrobot.eventbus.EventBus.eventTypesCache` @type ^`java.util.Map` @kind object;
+  #L481994.  call temp:= `put`(v2, v4, v1) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L48199a.  @monitorexit v0
+  #L48199c.  return v1 @kind object;
+  #L48199e.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4819a0.  @monitorexit v0
+  #L4819a2.  goto L4819a6;
+  #L4819a4.  throw v4;
+  #L4819a6.  goto L4819a4;
+  catch `java.lang.Throwable` @[L48194e..L4819a2] goto L48199e;
+}
+procedure `void` `postSingleEvent`(`org.greenrobot.eventbus.EventBus` v6 @kind this, `java.lang.Object` v7 @kind object, `org.greenrobot.eventbus.EventBus$PostingThreadState` v8 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.postSingleEvent:(Ljava/lang/Object;Lorg/greenrobot/eventbus/EventBus$PostingThreadState;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L481f54.  call temp:= `getClass`(v7) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L481f5a.  v0:= temp @kind object;
+  #L481f5c.  v1:= v6.`org.greenrobot.eventbus.EventBus.eventInheritance` @type ^`boolean` @kind boolean;
+  #L481f60.  if v1 == 0 then goto L481f98;
+  #L481f64.  call temp:= `lookupAllEventTypes`(v0) @signature `Lorg/greenrobot/eventbus/EventBus;.lookupAllEventTypes:(Ljava/lang/Class;)Ljava/util/List;` @kind static;
+  #L481f6a.  v1:= temp @kind object;
+  #L481f6c.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L481f72.  v2:= temp;
+  #L481f74.  v3:= 0I;
+  #L481f76.  v4:= 0I;
+  #L481f78.  if v3 >= v2 then goto L481fa0;
+  #L481f7c.  call temp:= `get`(v1, v3) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L481f82.  v5:= temp @kind object;
+  #L481f84.  v5:= (`java.lang.Class`) v5 @kind object;
+  #L481f88.  call temp:= `postSingleEventForEventType`(v6, v7, v8, v5) @signature `Lorg/greenrobot/eventbus/EventBus;.postSingleEventForEventType:(Ljava/lang/Object;Lorg/greenrobot/eventbus/EventBus$PostingThreadState;Ljava/lang/Class;)Z` @kind direct;
+  #L481f8e.  v5:= temp;
+  #L481f90.  v4:= v4 ^| v5 @kind int;
+  #L481f92.  v3:= v3 + 1;
+  #L481f96.  goto L481f78;
+  #L481f98.  call temp:= `postSingleEventForEventType`(v6, v7, v8, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.postSingleEventForEventType:(Ljava/lang/Object;Lorg/greenrobot/eventbus/EventBus$PostingThreadState;Ljava/lang/Class;)Z` @kind direct;
+  #L481f9e.  v4:= temp;
+  #L481fa0.  if v4 != 0 then goto L482004;
+  #L481fa4.  v8:= v6.`org.greenrobot.eventbus.EventBus.logNoSubscriberMessages` @type ^`boolean` @kind boolean;
+  #L481fa8.  if v8 == 0 then goto L481fdc;
+  #L481fac.  v8:= v6.`org.greenrobot.eventbus.EventBus.logger` @type ^`org.greenrobot.eventbus.Logger` @kind object;
+  #L481fb0.  v1:= `@@java.util.logging.Level.FINE` @type ^`java.util.logging.Level` @kind object;
+  #L481fb4.  v2:= new `java.lang.StringBuilder`;
+  #L481fb8.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L481fbe.  v3:= "No subscribers registered for event " @kind object;
+  #L481fc2.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481fc8.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481fce.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L481fd4.  v2:= temp @kind object;
+  #L481fd6.  call `log`(v8, v1, v2) @signature `Lorg/greenrobot/eventbus/Logger;.log:(Ljava/util/logging/Level;Ljava/lang/String;)V` @kind interface;
+  #L481fdc.  v8:= v6.`org.greenrobot.eventbus.EventBus.sendNoSubscriberEvent` @type ^`boolean` @kind boolean;
+  #L481fe0.  if v8 == 0 then goto L482004;
+  #L481fe4.  v8:= constclass @type ^`org.greenrobot.eventbus.NoSubscriberEvent` @kind object;
+  #L481fe8.  if v0 == v8 then goto L482004;
+  #L481fec.  v8:= constclass @type ^`org.greenrobot.eventbus.SubscriberExceptionEvent` @kind object;
+  #L481ff0.  if v0 == v8 then goto L482004;
+  #L481ff4.  v8:= new `org.greenrobot.eventbus.NoSubscriberEvent`;
+  #L481ff8.  call `<init>`(v8, v6, v7) @signature `Lorg/greenrobot/eventbus/NoSubscriberEvent;.<init>:(Lorg/greenrobot/eventbus/EventBus;Ljava/lang/Object;)V` @kind direct;
+  #L481ffe.  call `post`(v6, v8) @signature `Lorg/greenrobot/eventbus/EventBus;.post:(Ljava/lang/Object;)V` @kind virtual;
+  #L482004.  return @kind void;
+}
+procedure `boolean` `postSingleEventForEventType`(`org.greenrobot.eventbus.EventBus` v4 @kind this, `java.lang.Object` v5 @kind object, `org.greenrobot.eventbus.EventBus$PostingThreadState` v6 @kind object, `java.lang.Class` v7 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.postSingleEventForEventType:(Ljava/lang/Object;Lorg/greenrobot/eventbus/EventBus$PostingThreadState;Ljava/lang/Class;)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L481750.  @monitorenter v4
+  #L481752.  v0:= v4.`org.greenrobot.eventbus.EventBus.subscriptionsByEventType` @type ^`java.util.Map` @kind object;
+  #L481756.  call temp:= `get`(v0, v7) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L48175c.  v7:= temp @kind object;
+  #L48175e.  v7:= (`java.util.concurrent.CopyOnWriteArrayList`) v7 @kind object;
+  #L481762.  @monitorexit v4
+  #L481764.  v0:= 0I;
+  #L481766.  if v7 == 0 then goto L4817d4;
+  #L48176a.  call temp:= `isEmpty`(v7) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.isEmpty:()Z` @kind virtual;
+  #L481770.  v1:= temp;
+  #L481772.  if v1 != 0 then goto L4817d4;
+  #L481776.  call temp:= `iterator`(v7) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.iterator:()Ljava/util/Iterator;` @kind virtual;
+  #L48177c.  v7:= temp @kind object;
+  #L48177e.  call temp:= `hasNext`(v7) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L481784.  v1:= temp;
+  #L481786.  if v1 == 0 then goto L4817d0;
+  #L48178a.  call temp:= `next`(v7) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L481790.  v1:= temp @kind object;
+  #L481792.  v1:= (`org.greenrobot.eventbus.Subscription`) v1 @kind object;
+  #L481796.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.event` @type ^`java.lang.Object` := v5 @kind object;
+  #L48179a.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.subscription` @type ^`org.greenrobot.eventbus.Subscription` := v1 @kind object;
+  #L48179e.  v2:= 0I;
+  #L4817a0.  v3:= v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.isMainThread` @type ^`boolean` @kind boolean;
+  #L4817a4.  call `postToSubscription`(v4, v1, v5, v3) @signature `Lorg/greenrobot/eventbus/EventBus;.postToSubscription:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;Z)V` @kind direct;
+  #L4817aa.  v1:= v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.canceled` @type ^`boolean` @kind boolean;
+  #L4817ae.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.event` @type ^`java.lang.Object` := v2 @kind object;
+  #L4817b2.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.subscription` @type ^`org.greenrobot.eventbus.Subscription` := v2 @kind object;
+  #L4817b6.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.canceled` @type ^`boolean` := v0 @kind boolean;
+  #L4817ba.  if v1 == 0 then goto L48177e;
+  #L4817be.  goto L4817d0;
+  #L4817c0.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4817c2.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.event` @type ^`java.lang.Object` := v2 @kind object;
+  #L4817c6.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.subscription` @type ^`org.greenrobot.eventbus.Subscription` := v2 @kind object;
+  #L4817ca.  v6.`org.greenrobot.eventbus.EventBus$PostingThreadState.canceled` @type ^`boolean` := v0 @kind boolean;
+  #L4817ce.  throw v5;
+  #L4817d0.  v5:= 1I;
+  #L4817d2.  return v5;
+  #L4817d4.  return v0;
+  #L4817d6.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4817d8.  @monitorexit v4
+  #L4817da.  goto L4817de;
+  #L4817dc.  throw v5;
+  #L4817de.  goto L4817dc;
+  catch `java.lang.Throwable` @[L481752..L481764] goto L4817d6;
+  catch `java.lang.Throwable` @[L4817a0..L4817ae] goto L4817c0;
+  catch `java.lang.Throwable` @[L4817d8..L4817da] goto L4817d6;
+}
+procedure `void` `postToSubscription`(`org.greenrobot.eventbus.EventBus` v2 @kind this, `org.greenrobot.eventbus.Subscription` v3 @kind object, `java.lang.Object` v4 @kind object, `boolean` v5 ) @signature `Lorg/greenrobot/eventbus/EventBus;.postToSubscription:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;Z)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L482064.  v0:= `@@org.greenrobot.eventbus.EventBus$2.$SwitchMap$org$greenrobot$eventbus$ThreadMode` @type ^`int`[] @kind object;
+  #L482068.  v1:= v3.`org.greenrobot.eventbus.Subscription.subscriberMethod` @type ^`org.greenrobot.eventbus.SubscriberMethod` @kind object;
+  #L48206c.  v1:= v1.`org.greenrobot.eventbus.SubscriberMethod.threadMode` @type ^`org.greenrobot.eventbus.ThreadMode` @kind object;
+  #L482070.  call temp:= `ordinal`(v1) @signature `Lorg/greenrobot/eventbus/ThreadMode;.ordinal:()I` @kind virtual;
+  #L482076.  v1:= temp;
+  #L482078.  v0:= v0[v1];
+  #L48207c.  v1:= 1I;
+  #L48207e.  if v0 == v1 then goto L482124;
+  #L482082.  v1:= 2I;
+  #L482084.  if v0 == v1 then goto L48210c;
+  #L482088.  v1:= 3I;
+  #L48208a.  if v0 == v1 then goto L4820f4;
+  #L48208e.  v1:= 4I;
+  #L482090.  if v0 == v1 then goto L4820dc;
+  #L482094.  v5:= 5I;
+  #L482096.  if v0 != v5 then goto L4820a6;
+  #L48209a.  v5:= v2.`org.greenrobot.eventbus.EventBus.asyncPoster` @type ^`org.greenrobot.eventbus.AsyncPoster` @kind object;
+  #L48209e.  call `enqueue`(v5, v3, v4) @signature `Lorg/greenrobot/eventbus/AsyncPoster;.enqueue:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind virtual;
+  #L4820a4.  goto L48212a;
+  #L4820a6.  v4:= new `java.lang.IllegalStateException`;
+  #L4820aa.  v5:= new `java.lang.StringBuilder`;
+  #L4820ae.  call `<init>`(v5) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4820b4.  v0:= "Unknown thread mode: " @kind object;
+  #L4820b8.  call temp:= `append`(v5, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4820be.  v3:= v3.`org.greenrobot.eventbus.Subscription.subscriberMethod` @type ^`org.greenrobot.eventbus.SubscriberMethod` @kind object;
+  #L4820c2.  v3:= v3.`org.greenrobot.eventbus.SubscriberMethod.threadMode` @type ^`org.greenrobot.eventbus.ThreadMode` @kind object;
+  #L4820c6.  call temp:= `append`(v5, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4820cc.  call temp:= `toString`(v5) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4820d2.  v3:= temp @kind object;
+  #L4820d4.  call `<init>`(v4, v3) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4820da.  throw v4;
+  #L4820dc.  if v5 == 0 then goto L4820ec;
+  #L4820e0.  v5:= v2.`org.greenrobot.eventbus.EventBus.backgroundPoster` @type ^`org.greenrobot.eventbus.BackgroundPoster` @kind object;
+  #L4820e4.  call `enqueue`(v5, v3, v4) @signature `Lorg/greenrobot/eventbus/BackgroundPoster;.enqueue:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind virtual;
+  #L4820ea.  goto L48212a;
+  #L4820ec.  call `invokeSubscriber`(v2, v3, v4) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind virtual;
+  #L4820f2.  goto L48212a;
+  #L4820f4.  v5:= v2.`org.greenrobot.eventbus.EventBus.mainThreadPoster` @type ^`org.greenrobot.eventbus.Poster` @kind object;
+  #L4820f8.  if v5 == 0 then goto L482104;
+  #L4820fc.  call `enqueue`(v5, v3, v4) @signature `Lorg/greenrobot/eventbus/Poster;.enqueue:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind interface;
+  #L482102.  goto L48212a;
+  #L482104.  call `invokeSubscriber`(v2, v3, v4) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind virtual;
+  #L48210a.  goto L48212a;
+  #L48210c.  if v5 == 0 then goto L482118;
+  #L482110.  call `invokeSubscriber`(v2, v3, v4) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind virtual;
+  #L482116.  goto L48212a;
+  #L482118.  v5:= v2.`org.greenrobot.eventbus.EventBus.mainThreadPoster` @type ^`org.greenrobot.eventbus.Poster` @kind object;
+  #L48211c.  call `enqueue`(v5, v3, v4) @signature `Lorg/greenrobot/eventbus/Poster;.enqueue:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind interface;
+  #L482122.  goto L48212a;
+  #L482124.  call `invokeSubscriber`(v2, v3, v4) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind virtual;
+  #L48212a.  return @kind void;
+}
+procedure `void` `subscribe`(`org.greenrobot.eventbus.EventBus` v7 @kind this, `java.lang.Object` v8 @kind object, `org.greenrobot.eventbus.SubscriberMethod` v9 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.subscribe:(Ljava/lang/Object;Lorg/greenrobot/eventbus/SubscriberMethod;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4821dc.  v0:= v9.`org.greenrobot.eventbus.SubscriberMethod.eventType` @type ^`java.lang.Class` @kind object;
+  #L4821e0.  v1:= new `org.greenrobot.eventbus.Subscription`;
+  #L4821e4.  call `<init>`(v1, v8, v9) @signature `Lorg/greenrobot/eventbus/Subscription;.<init>:(Ljava/lang/Object;Lorg/greenrobot/eventbus/SubscriberMethod;)V` @kind direct;
+  #L4821ea.  v2:= v7.`org.greenrobot.eventbus.EventBus.subscriptionsByEventType` @type ^`java.util.Map` @kind object;
+  #L4821ee.  call temp:= `get`(v2, v0) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4821f4.  v2:= temp @kind object;
+  #L4821f6.  v2:= (`java.util.concurrent.CopyOnWriteArrayList`) v2 @kind object;
+  #L4821fa.  if v2 != 0 then goto L482214;
+  #L4821fe.  v2:= new `java.util.concurrent.CopyOnWriteArrayList`;
+  #L482202.  call `<init>`(v2) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.<init>:()V` @kind direct;
+  #L482208.  v3:= v7.`org.greenrobot.eventbus.EventBus.subscriptionsByEventType` @type ^`java.util.Map` @kind object;
+  #L48220c.  call temp:= `put`(v3, v0, v2) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482212.  goto L482220;
+  #L482214.  call temp:= `contains`(v2, v1) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.contains:(Ljava/lang/Object;)Z` @kind virtual;
+  #L48221a.  v3:= temp;
+  #L48221c.  if v3 != 0 then goto L482302;
+  #L482220.  call temp:= `size`(v2) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.size:()I` @kind virtual;
+  #L482226.  v3:= temp;
+  #L482228.  v4:= 0I;
+  #L48222a.  if v4 > v3 then goto L48225c;
+  #L48222e.  if v4 == v3 then goto L482256;
+  #L482232.  v5:= v9.`org.greenrobot.eventbus.SubscriberMethod.priority` @type ^`int`;
+  #L482236.  call temp:= `get`(v2, v4) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.get:(I)Ljava/lang/Object;` @kind virtual;
+  #L48223c.  v6:= temp @kind object;
+  #L48223e.  v6:= (`org.greenrobot.eventbus.Subscription`) v6 @kind object;
+  #L482242.  v6:= v6.`org.greenrobot.eventbus.Subscription.subscriberMethod` @type ^`org.greenrobot.eventbus.SubscriberMethod` @kind object;
+  #L482246.  v6:= v6.`org.greenrobot.eventbus.SubscriberMethod.priority` @type ^`int`;
+  #L48224a.  if v5 <= v6 then goto L482250;
+  #L48224e.  goto L482256;
+  #L482250.  v4:= v4 + 1;
+  #L482254.  goto L48222a;
+  #L482256.  call `add`(v2, v4, v1) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.add:(ILjava/lang/Object;)V` @kind virtual;
+  #L48225c.  v2:= v7.`org.greenrobot.eventbus.EventBus.typesBySubscriber` @type ^`java.util.Map` @kind object;
+  #L482260.  call temp:= `get`(v2, v8) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482266.  v2:= temp @kind object;
+  #L482268.  v2:= (`java.util.List`) v2 @kind object;
+  #L48226c.  if v2 != 0 then goto L482284;
+  #L482270.  v2:= new `java.util.ArrayList`;
+  #L482274.  call `<init>`(v2) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L48227a.  v3:= v7.`org.greenrobot.eventbus.EventBus.typesBySubscriber` @type ^`java.util.Map` @kind object;
+  #L48227e.  call temp:= `put`(v3, v8, v2) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482284.  call temp:= `add`(v2, v0) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L48228a.  v8:= v9.`org.greenrobot.eventbus.SubscriberMethod.sticky` @type ^`boolean` @kind boolean;
+  #L48228e.  if v8 == 0 then goto L482300;
+  #L482292.  v8:= v7.`org.greenrobot.eventbus.EventBus.eventInheritance` @type ^`boolean` @kind boolean;
+  #L482296.  if v8 == 0 then goto L4822ee;
+  #L48229a.  v8:= v7.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L48229e.  call temp:= `entrySet`(v8) @signature `Ljava/util/Map;.entrySet:()Ljava/util/Set;` @kind interface;
+  #L4822a4.  v8:= temp @kind object;
+  #L4822a6.  call temp:= `iterator`(v8) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L4822ac.  v8:= temp @kind object;
+  #L4822ae.  call temp:= `hasNext`(v8) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4822b4.  v9:= temp;
+  #L4822b6.  if v9 == 0 then goto L482300;
+  #L4822ba.  call temp:= `next`(v8) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4822c0.  v9:= temp @kind object;
+  #L4822c2.  v9:= (`java.util.Map$Entry`) v9 @kind object;
+  #L4822c6.  call temp:= `getKey`(v9) @signature `Ljava/util/Map$Entry;.getKey:()Ljava/lang/Object;` @kind interface;
+  #L4822cc.  v2:= temp @kind object;
+  #L4822ce.  v2:= (`java.lang.Class`) v2 @kind object;
+  #L4822d2.  call temp:= `isAssignableFrom`(v0, v2) @signature `Ljava/lang/Class;.isAssignableFrom:(Ljava/lang/Class;)Z` @kind virtual;
+  #L4822d8.  v2:= temp;
+  #L4822da.  if v2 == 0 then goto L4822ae;
+  #L4822de.  call temp:= `getValue`(v9) @signature `Ljava/util/Map$Entry;.getValue:()Ljava/lang/Object;` @kind interface;
+  #L4822e4.  v9:= temp @kind object;
+  #L4822e6.  call `checkPostStickyEventToSubscription`(v7, v1, v9) @signature `Lorg/greenrobot/eventbus/EventBus;.checkPostStickyEventToSubscription:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind direct;
+  #L4822ec.  goto L4822ae;
+  #L4822ee.  v8:= v7.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L4822f2.  call temp:= `get`(v8, v0) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4822f8.  v8:= temp @kind object;
+  #L4822fa.  call `checkPostStickyEventToSubscription`(v7, v1, v8) @signature `Lorg/greenrobot/eventbus/EventBus;.checkPostStickyEventToSubscription:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind direct;
+  #L482300.  return @kind void;
+  #L482302.  v9:= new `org.greenrobot.eventbus.EventBusException`;
+  #L482306.  v1:= new `java.lang.StringBuilder`;
+  #L48230a.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L482310.  v2:= "Subscriber " @kind object;
+  #L482314.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48231a.  call temp:= `getClass`(v8) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L482320.  v8:= temp @kind object;
+  #L482322.  call temp:= `append`(v1, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L482328.  v8:= " already registered to event " @kind object;
+  #L48232c.  call temp:= `append`(v1, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L482332.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L482338.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L48233e.  v8:= temp @kind object;
+  #L482340.  call `<init>`(v9, v8) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L482346.  goto L48234a;
+  #L482348.  throw v9;
+  #L48234a.  goto L482348;
+}
+procedure `void` `unsubscribeByEventType`(`org.greenrobot.eventbus.EventBus` v5 @kind this, `java.lang.Object` v6 @kind object, `java.lang.Class` v7 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.unsubscribeByEventType:(Ljava/lang/Object;Ljava/lang/Class;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L482408.  v0:= v5.`org.greenrobot.eventbus.EventBus.subscriptionsByEventType` @type ^`java.util.Map` @kind object;
+  #L48240c.  call temp:= `get`(v0, v7) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482412.  v7:= temp @kind object;
+  #L482414.  v7:= (`java.util.List`) v7 @kind object;
+  #L482418.  if v7 == 0 then goto L48245a;
+  #L48241c.  call temp:= `size`(v7) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L482422.  v0:= temp;
+  #L482424.  v1:= 0I;
+  #L482426.  v2:= v0;
+  #L482428.  v0:= 0I;
+  #L48242a.  if v0 >= v2 then goto L48245a;
+  #L48242e.  call temp:= `get`(v7, v0) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L482434.  v3:= temp @kind object;
+  #L482436.  v3:= (`org.greenrobot.eventbus.Subscription`) v3 @kind object;
+  #L48243a.  v4:= v3.`org.greenrobot.eventbus.Subscription.subscriber` @type ^`java.lang.Object` @kind object;
+  #L48243e.  if v4 != v6 then goto L482454;
+  #L482442.  v3.`org.greenrobot.eventbus.Subscription.active` @type ^`boolean` := v1 @kind boolean;
+  #L482446.  call temp:= `remove`(v7, v0) @signature `Ljava/util/List;.remove:(I)Ljava/lang/Object;` @kind interface;
+  #L48244c.  v0:= v0 + -1;
+  #L482450.  v2:= v2 + -1;
+  #L482454.  v0:= v0 + 1;
+  #L482458.  goto L48242a;
+  #L48245a.  return @kind void;
+}
+procedure `void` `cancelEventDelivery`(`org.greenrobot.eventbus.EventBus` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.cancelEventDelivery:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L481bfc.  v0:= v2.`org.greenrobot.eventbus.EventBus.currentPostingThreadState` @type ^`java.lang.ThreadLocal` @kind object;
+  #L481c00.  call temp:= `get`(v0) @signature `Ljava/lang/ThreadLocal;.get:()Ljava/lang/Object;` @kind virtual;
+  #L481c06.  v0:= temp @kind object;
+  #L481c08.  v0:= (`org.greenrobot.eventbus.EventBus$PostingThreadState`) v0 @kind object;
+  #L481c0c.  v1:= v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isPosting` @type ^`boolean` @kind boolean;
+  #L481c10.  if v1 == 0 then goto L481c6c;
+  #L481c14.  if v3 == 0 then goto L481c5c;
+  #L481c18.  v1:= v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.event` @type ^`java.lang.Object` @kind object;
+  #L481c1c.  if v1 != v3 then goto L481c4c;
+  #L481c20.  v3:= v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.subscription` @type ^`org.greenrobot.eventbus.Subscription` @kind object;
+  #L481c24.  v3:= v3.`org.greenrobot.eventbus.Subscription.subscriberMethod` @type ^`org.greenrobot.eventbus.SubscriberMethod` @kind object;
+  #L481c28.  v3:= v3.`org.greenrobot.eventbus.SubscriberMethod.threadMode` @type ^`org.greenrobot.eventbus.ThreadMode` @kind object;
+  #L481c2c.  v1:= `@@org.greenrobot.eventbus.ThreadMode.POSTING` @type ^`org.greenrobot.eventbus.ThreadMode` @kind object;
+  #L481c30.  if v3 != v1 then goto L481c3c;
+  #L481c34.  v3:= 1I;
+  #L481c36.  v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.canceled` @type ^`boolean` := v3 @kind boolean;
+  #L481c3a.  return @kind void;
+  #L481c3c.  v3:= new `org.greenrobot.eventbus.EventBusException`;
+  #L481c40.  v0:= " event handlers may only abort the incoming event" @kind object;
+  #L481c44.  call `<init>`(v3, v0) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L481c4a.  throw v3;
+  #L481c4c.  v3:= new `org.greenrobot.eventbus.EventBusException`;
+  #L481c50.  v0:= "Only the currently handled event may be aborted" @kind object;
+  #L481c54.  call `<init>`(v3, v0) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L481c5a.  throw v3;
+  #L481c5c.  v3:= new `org.greenrobot.eventbus.EventBusException`;
+  #L481c60.  v0:= "Event may not be null" @kind object;
+  #L481c64.  call `<init>`(v3, v0) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L481c6a.  throw v3;
+  #L481c6c.  v3:= new `org.greenrobot.eventbus.EventBusException`;
+  #L481c70.  v0:= "This method may only be called from inside event handling methods on the posting thread" @kind object;
+  #L481c74.  call `<init>`(v3, v0) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L481c7a.  throw v3;
+}
+procedure `java.util.concurrent.ExecutorService` `getExecutorService`(`org.greenrobot.eventbus.EventBus` v1 @kind this) @signature `Lorg/greenrobot/eventbus/EventBus;.getExecutorService:()Ljava/util/concurrent/ExecutorService;` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4819c4.  v0:= v1.`org.greenrobot.eventbus.EventBus.executorService` @type ^`java.util.concurrent.ExecutorService` @kind object;
+  #L4819c8.  return v0 @kind object;
+}
+procedure `org.greenrobot.eventbus.Logger` `getLogger`(`org.greenrobot.eventbus.EventBus` v1 @kind this) @signature `Lorg/greenrobot/eventbus/EventBus;.getLogger:()Lorg/greenrobot/eventbus/Logger;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L481a48.  v0:= v1.`org.greenrobot.eventbus.EventBus.logger` @type ^`org.greenrobot.eventbus.Logger` @kind object;
+  #L481a4c.  return v0 @kind object;
+}
+procedure `java.lang.Object` `getStickyEvent`(`org.greenrobot.eventbus.EventBus` v2 @kind this, `java.lang.Class` v3 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.getStickyEvent:(Ljava/lang/Class;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L481870.  v0:= v2.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L481874.  @monitorenter v0
+  #L481876.  v1:= v2.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L48187a.  call temp:= `get`(v1, v3) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L481880.  v1:= temp @kind object;
+  #L481882.  call temp:= `cast`(v3, v1) @signature `Ljava/lang/Class;.cast:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L481888.  v3:= temp @kind object;
+  #L48188a.  @monitorexit v0
+  #L48188c.  return v3 @kind object;
+  #L48188e.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L481890.  @monitorexit v0
+  #L481892.  throw v3;
+  catch `java.lang.Throwable` @[L481876..L481892] goto L48188e;
+}
+procedure `boolean` `hasSubscriberForEvent`(`org.greenrobot.eventbus.EventBus` v5 @kind this, `java.lang.Class` v6 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.hasSubscriberForEvent:(Ljava/lang/Class;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L481670.  call temp:= `lookupAllEventTypes`(v6) @signature `Lorg/greenrobot/eventbus/EventBus;.lookupAllEventTypes:(Ljava/lang/Class;)Ljava/util/List;` @kind static;
+  #L481676.  v6:= temp @kind object;
+  #L481678.  v0:= 0I;
+  #L48167a.  if v6 == 0 then goto L4816cc;
+  #L48167e.  call temp:= `size`(v6) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L481684.  v1:= temp;
+  #L481686.  v2:= 0I;
+  #L481688.  if v2 >= v1 then goto L4816cc;
+  #L48168c.  call temp:= `get`(v6, v2) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L481692.  v3:= temp @kind object;
+  #L481694.  v3:= (`java.lang.Class`) v3 @kind object;
+  #L481698.  @monitorenter v5
+  #L48169a.  v4:= v5.`org.greenrobot.eventbus.EventBus.subscriptionsByEventType` @type ^`java.util.Map` @kind object;
+  #L48169e.  call temp:= `get`(v4, v3) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4816a4.  v3:= temp @kind object;
+  #L4816a6.  v3:= (`java.util.concurrent.CopyOnWriteArrayList`) v3 @kind object;
+  #L4816aa.  @monitorexit v5
+  #L4816ac.  if v3 == 0 then goto L4816c0;
+  #L4816b0.  call temp:= `isEmpty`(v3) @signature `Ljava/util/concurrent/CopyOnWriteArrayList;.isEmpty:()Z` @kind virtual;
+  #L4816b6.  v3:= temp;
+  #L4816b8.  if v3 != 0 then goto L4816c0;
+  #L4816bc.  v6:= 1I;
+  #L4816be.  return v6;
+  #L4816c0.  v2:= v2 + 1;
+  #L4816c4.  goto L481688;
+  #L4816c6.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4816c8.  @monitorexit v5
+  #L4816ca.  throw v6;
+  #L4816cc.  return v0;
+  catch `java.lang.Throwable` @[L48169a..L4816ac] goto L4816c6;
+  catch `java.lang.Throwable` @[L4816c8..L4816ca] goto L4816c6;
+}
+procedure `void` `invokeSubscriber`(`org.greenrobot.eventbus.EventBus` v2 @kind this, `org.greenrobot.eventbus.PendingPost` v3 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/PendingPost;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L481e20.  v0:= v3.`org.greenrobot.eventbus.PendingPost.event` @type ^`java.lang.Object` @kind object;
+  #L481e24.  v1:= v3.`org.greenrobot.eventbus.PendingPost.subscription` @type ^`org.greenrobot.eventbus.Subscription` @kind object;
+  #L481e28.  call `releasePendingPost`(v3) @signature `Lorg/greenrobot/eventbus/PendingPost;.releasePendingPost:(Lorg/greenrobot/eventbus/PendingPost;)V` @kind static;
+  #L481e2e.  v3:= v1.`org.greenrobot.eventbus.Subscription.active` @type ^`boolean` @kind boolean;
+  #L481e32.  if v3 == 0 then goto L481e3c;
+  #L481e36.  call `invokeSubscriber`(v2, v1, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @kind virtual;
+  #L481e3c.  return @kind void;
+}
+procedure `void` `invokeSubscriber`(`org.greenrobot.eventbus.EventBus` v4 @kind this, `org.greenrobot.eventbus.Subscription` v5 @kind object, `java.lang.Object` v6 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.invokeSubscriber:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L481e50.  v0:= v5.`org.greenrobot.eventbus.Subscription.subscriberMethod` @type ^`org.greenrobot.eventbus.SubscriberMethod` @kind object;
+  #L481e54.  v0:= v0.`org.greenrobot.eventbus.SubscriberMethod.method` @type ^`java.lang.reflect.Method` @kind object;
+  #L481e58.  v1:= v5.`org.greenrobot.eventbus.Subscription.subscriber` @type ^`java.lang.Object` @kind object;
+  #L481e5c.  v2:= 1I;
+  #L481e5e.  v2:= new `java.lang.Object`[v2];
+  #L481e62.  v3:= 0I;
+  #L481e64.  v2[v3]:= v6 @kind object;
+  #L481e68.  call temp:= `invoke`(v0, v1, v2) @signature `Ljava/lang/reflect/Method;.invoke:(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L481e6e.  goto L481e92;
+  #L481e70.  v5:= Exception @type ^`java.lang.IllegalAccessException` @kind object;
+  #L481e72.  v6:= new `java.lang.IllegalStateException`;
+  #L481e76.  v0:= "Unexpected exception" @kind object;
+  #L481e7a.  call `<init>`(v6, v0, v5) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L481e80.  throw v6;
+  #L481e82.  v0:= Exception @type ^`java.lang.reflect.InvocationTargetException` @kind object;
+  #L481e84.  call temp:= `getCause`(v0) @signature `Ljava/lang/reflect/InvocationTargetException;.getCause:()Ljava/lang/Throwable;` @kind virtual;
+  #L481e8a.  v0:= temp @kind object;
+  #L481e8c.  call `handleSubscriberException`(v4, v5, v6, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.handleSubscriberException:(Lorg/greenrobot/eventbus/Subscription;Ljava/lang/Object;Ljava/lang/Throwable;)V` @kind direct;
+  #L481e92.  return @kind void;
+  catch `java.lang.reflect.InvocationTargetException` @[L481e50..L481e6e] goto L481e82;
+  catch `java.lang.IllegalAccessException` @[L481e50..L481e6e] goto L481e70;
+}
+procedure `boolean` `isRegistered`(`org.greenrobot.eventbus.EventBus` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.isRegistered:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L48171c.  @monitorenter v1
+  #L48171e.  v0:= v1.`org.greenrobot.eventbus.EventBus.typesBySubscriber` @type ^`java.util.Map` @kind object;
+  #L481722.  call temp:= `containsKey`(v0, v2) @signature `Ljava/util/Map;.containsKey:(Ljava/lang/Object;)Z` @kind interface;
+  #L481728.  v2:= temp;
+  #L48172a.  @monitorexit v1
+  #L48172c.  return v2;
+  #L48172e.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L481730.  @monitorexit v1
+  #L481732.  throw v2;
+  catch `java.lang.Throwable` @[L48171e..L48172a] goto L48172e;
+}
+procedure `void` `post`(`org.greenrobot.eventbus.EventBus` v3 @kind this, `java.lang.Object` v4 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.post:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L481eb4.  v0:= v3.`org.greenrobot.eventbus.EventBus.currentPostingThreadState` @type ^`java.lang.ThreadLocal` @kind object;
+  #L481eb8.  call temp:= `get`(v0) @signature `Ljava/lang/ThreadLocal;.get:()Ljava/lang/Object;` @kind virtual;
+  #L481ebe.  v0:= temp @kind object;
+  #L481ec0.  v0:= (`org.greenrobot.eventbus.EventBus$PostingThreadState`) v0 @kind object;
+  #L481ec4.  v1:= v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.eventQueue` @type ^`java.util.List` @kind object;
+  #L481ec8.  call temp:= `add`(v1, v4) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L481ece.  v4:= v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isPosting` @type ^`boolean` @kind boolean;
+  #L481ed2.  if v4 != 0 then goto L481f34;
+  #L481ed6.  call temp:= `isMainThread`(v3) @signature `Lorg/greenrobot/eventbus/EventBus;.isMainThread:()Z` @kind direct;
+  #L481edc.  v4:= temp;
+  #L481ede.  v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isMainThread` @type ^`boolean` := v4 @kind boolean;
+  #L481ee2.  v4:= 1I;
+  #L481ee4.  v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isPosting` @type ^`boolean` := v4 @kind boolean;
+  #L481ee8.  v4:= v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.canceled` @type ^`boolean` @kind boolean;
+  #L481eec.  if v4 != 0 then goto L481f24;
+  #L481ef0.  v4:= 0I;
+  #L481ef2.  call temp:= `isEmpty`(v1) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L481ef8.  v2:= temp;
+  #L481efa.  if v2 != 0 then goto L481f0e;
+  #L481efe.  call temp:= `remove`(v1, v4) @signature `Ljava/util/List;.remove:(I)Ljava/lang/Object;` @kind interface;
+  #L481f04.  v2:= temp @kind object;
+  #L481f06.  call `postSingleEvent`(v3, v2, v0) @signature `Lorg/greenrobot/eventbus/EventBus;.postSingleEvent:(Ljava/lang/Object;Lorg/greenrobot/eventbus/EventBus$PostingThreadState;)V` @kind direct;
+  #L481f0c.  goto L481ef0;
+  #L481f0e.  v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isPosting` @type ^`boolean` := v4 @kind boolean;
+  #L481f12.  v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isMainThread` @type ^`boolean` := v4 @kind boolean;
+  #L481f16.  goto L481f34;
+  #L481f18.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L481f1a.  v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isPosting` @type ^`boolean` := v4 @kind boolean;
+  #L481f1e.  v0.`org.greenrobot.eventbus.EventBus$PostingThreadState.isMainThread` @type ^`boolean` := v4 @kind boolean;
+  #L481f22.  throw v1;
+  #L481f24.  v4:= new `org.greenrobot.eventbus.EventBusException`;
+  #L481f28.  v0:= "Internal error. Abort state was not reset" @kind object;
+  #L481f2c.  call `<init>`(v4, v0) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L481f32.  throw v4;
+  #L481f34.  return @kind void;
+  catch `java.lang.Throwable` @[L481ef2..L481f0c] goto L481f18;
+}
+procedure `void` `postSticky`(`org.greenrobot.eventbus.EventBus` v3 @kind this, `java.lang.Object` v4 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.postSticky:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L482018.  v0:= v3.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L48201c.  @monitorenter v0
+  #L48201e.  v1:= v3.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L482022.  call temp:= `getClass`(v4) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L482028.  v2:= temp @kind object;
+  #L48202a.  call temp:= `put`(v1, v2, v4) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482030.  @monitorexit v0
+  #L482032.  call `post`(v3, v4) @signature `Lorg/greenrobot/eventbus/EventBus;.post:(Ljava/lang/Object;)V` @kind virtual;
+  #L482038.  return @kind void;
+  #L48203a.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L48203c.  @monitorexit v0
+  #L48203e.  throw v4;
+  catch `java.lang.Throwable` @[L48201e..L482032] goto L48203a;
+  catch `java.lang.Throwable` @[L48203c..L48203e] goto L48203a;
+}
+procedure `void` `register`(`org.greenrobot.eventbus.EventBus` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.register:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L48213c.  call temp:= `getClass`(v3) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L482142.  v0:= temp @kind object;
+  #L482144.  v1:= v2.`org.greenrobot.eventbus.EventBus.subscriberMethodFinder` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder` @kind object;
+  #L482148.  call temp:= `findSubscriberMethods`(v1, v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findSubscriberMethods:(Ljava/lang/Class;)Ljava/util/List;` @kind virtual;
+  #L48214e.  v0:= temp @kind object;
+  #L482150.  @monitorenter v2
+  #L482152.  call temp:= `iterator`(v0) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L482158.  v0:= temp @kind object;
+  #L48215a.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L482160.  v1:= temp;
+  #L482162.  if v1 == 0 then goto L48217a;
+  #L482166.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L48216c.  v1:= temp @kind object;
+  #L48216e.  v1:= (`org.greenrobot.eventbus.SubscriberMethod`) v1 @kind object;
+  #L482172.  call `subscribe`(v2, v3, v1) @signature `Lorg/greenrobot/eventbus/EventBus;.subscribe:(Ljava/lang/Object;Lorg/greenrobot/eventbus/SubscriberMethod;)V` @kind direct;
+  #L482178.  goto L48215a;
+  #L48217a.  @monitorexit v2
+  #L48217c.  return @kind void;
+  #L48217e.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L482180.  @monitorexit v2
+  #L482182.  goto L482186;
+  #L482184.  throw v3;
+  #L482186.  goto L482184;
+  catch `java.lang.Throwable` @[L482152..L482182] goto L48217e;
+}
+procedure `void` `removeAllStickyEvents`(`org.greenrobot.eventbus.EventBus` v2 @kind this) @signature `Lorg/greenrobot/eventbus/EventBus;.removeAllStickyEvents:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4821a4.  v0:= v2.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L4821a8.  @monitorenter v0
+  #L4821aa.  v1:= v2.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L4821ae.  call `clear`(v1) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L4821b4.  @monitorexit v0
+  #L4821b6.  return @kind void;
+  #L4821b8.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4821ba.  @monitorexit v0
+  #L4821bc.  throw v1;
+  catch `java.lang.Throwable` @[L4821aa..L4821bc] goto L4821b8;
+}
+procedure `java.lang.Object` `removeStickyEvent`(`org.greenrobot.eventbus.EventBus` v2 @kind this, `java.lang.Class` v3 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.removeStickyEvent:(Ljava/lang/Class;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4818b0.  v0:= v2.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L4818b4.  @monitorenter v0
+  #L4818b6.  v1:= v2.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L4818ba.  call temp:= `remove`(v1, v3) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4818c0.  v1:= temp @kind object;
+  #L4818c2.  call temp:= `cast`(v3, v1) @signature `Ljava/lang/Class;.cast:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4818c8.  v3:= temp @kind object;
+  #L4818ca.  @monitorexit v0
+  #L4818cc.  return v3 @kind object;
+  #L4818ce.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4818d0.  @monitorexit v0
+  #L4818d2.  throw v3;
+  catch `java.lang.Throwable` @[L4818b6..L4818d2] goto L4818ce;
+}
+procedure `boolean` `removeStickyEvent`(`org.greenrobot.eventbus.EventBus` v3 @kind this, `java.lang.Object` v4 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.removeStickyEvent:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L481810.  v0:= v3.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L481814.  @monitorenter v0
+  #L481816.  call temp:= `getClass`(v4) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L48181c.  v1:= temp @kind object;
+  #L48181e.  v2:= v3.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L481822.  call temp:= `get`(v2, v1) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L481828.  v2:= temp @kind object;
+  #L48182a.  call temp:= `equals`(v4, v2) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L481830.  v4:= temp;
+  #L481832.  if v4 == 0 then goto L481846;
+  #L481836.  v4:= v3.`org.greenrobot.eventbus.EventBus.stickyEvents` @type ^`java.util.Map` @kind object;
+  #L48183a.  call temp:= `remove`(v4, v1) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L481840.  v4:= 1I;
+  #L481842.  @monitorexit v0
+  #L481844.  return v4;
+  #L481846.  v4:= 0I;
+  #L481848.  @monitorexit v0
+  #L48184a.  return v4;
+  #L48184c.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L48184e.  @monitorexit v0
+  #L481850.  throw v4;
+  catch `java.lang.Throwable` @[L481816..L481850] goto L48184c;
+}
+procedure `java.lang.String` `toString`(`org.greenrobot.eventbus.EventBus` v2 @kind this) @signature `Lorg/greenrobot/eventbus/EventBus;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4818f0.  v0:= new `java.lang.StringBuilder`;
+  #L4818f4.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4818fa.  v1:= "EventBus[indexCount=" @kind object;
+  #L4818fe.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481904.  v1:= v2.`org.greenrobot.eventbus.EventBus.indexCount` @type ^`int`;
+  #L481908.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48190e.  v1:= ", eventInheritance=" @kind object;
+  #L481912.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481918.  v1:= v2.`org.greenrobot.eventbus.EventBus.eventInheritance` @type ^`boolean` @kind boolean;
+  #L48191c.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Z)Ljava/lang/StringBuilder;` @kind virtual;
+  #L481922.  v1:= "]" @kind object;
+  #L481926.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48192c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L481932.  v0:= temp @kind object;
+  #L481934.  return v0 @kind object;
+}
+procedure `void` `unregister`(`org.greenrobot.eventbus.EventBus` v4 @kind this, `java.lang.Object` v5 @kind object) @signature `Lorg/greenrobot/eventbus/EventBus;.unregister:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L48235c.  @monitorenter v4
+  #L48235e.  v0:= v4.`org.greenrobot.eventbus.EventBus.typesBySubscriber` @type ^`java.util.Map` @kind object;
+  #L482362.  call temp:= `get`(v0, v5) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482368.  v0:= temp @kind object;
+  #L48236a.  v0:= (`java.util.List`) v0 @kind object;
+  #L48236e.  if v0 == 0 then goto L4823a6;
+  #L482372.  call temp:= `iterator`(v0) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L482378.  v0:= temp @kind object;
+  #L48237a.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L482380.  v1:= temp;
+  #L482382.  if v1 == 0 then goto L48239a;
+  #L482386.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L48238c.  v1:= temp @kind object;
+  #L48238e.  v1:= (`java.lang.Class`) v1 @kind object;
+  #L482392.  call `unsubscribeByEventType`(v4, v5, v1) @signature `Lorg/greenrobot/eventbus/EventBus;.unsubscribeByEventType:(Ljava/lang/Object;Ljava/lang/Class;)V` @kind direct;
+  #L482398.  goto L48237a;
+  #L48239a.  v0:= v4.`org.greenrobot.eventbus.EventBus.typesBySubscriber` @type ^`java.util.Map` @kind object;
+  #L48239e.  call temp:= `remove`(v0, v5) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4823a4.  goto L4823de;
+  #L4823a6.  v0:= v4.`org.greenrobot.eventbus.EventBus.logger` @type ^`org.greenrobot.eventbus.Logger` @kind object;
+  #L4823aa.  v1:= `@@java.util.logging.Level.WARNING` @type ^`java.util.logging.Level` @kind object;
+  #L4823ae.  v2:= new `java.lang.StringBuilder`;
+  #L4823b2.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4823b8.  v3:= "Subscriber to unregister was not registered before: " @kind object;
+  #L4823bc.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4823c2.  call temp:= `getClass`(v5) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L4823c8.  v5:= temp @kind object;
+  #L4823ca.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4823d0.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4823d6.  v5:= temp @kind object;
+  #L4823d8.  call `log`(v0, v1, v5) @signature `Lorg/greenrobot/eventbus/Logger;.log:(Ljava/util/logging/Level;Ljava/lang/String;)V` @kind interface;
+  #L4823de.  @monitorexit v4
+  #L4823e0.  return @kind void;
+  #L4823e2.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4823e4.  @monitorexit v4
+  #L4823e6.  goto L4823ea;
+  #L4823e8.  throw v5;
+  #L4823ea.  goto L4823e8;
+  catch `java.lang.Throwable` @[L48235e..L4823de] goto L4823e2;
+}

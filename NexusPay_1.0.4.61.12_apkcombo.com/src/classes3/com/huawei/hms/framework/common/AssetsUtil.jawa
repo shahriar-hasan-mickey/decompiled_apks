@@ -1,0 +1,109 @@
+record `com.huawei.hms.framework.common.AssetsUtil` @kind class @AccessFlag PUBLIC {
+}
+global `java.util.concurrent.ExecutorService` `@@com.huawei.hms.framework.common.AssetsUtil.EXECUTOR_SERVICE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.huawei.hms.framework.common.AssetsUtil.GET_SP_TIMEOUT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.framework.common.AssetsUtil.TAG` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.huawei.hms.framework.common.AssetsUtil.THREAD_NAME` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/framework/common/AssetsUtil;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L206808.  v0:= "AssetsUtil_Operate" @kind object;
+  #L20680c.  call temp:= `newSingleThreadExecutor`(v0) @signature `Lcom/huawei/hms/framework/common/ExecutorsUtils;.newSingleThreadExecutor:(Ljava/lang/String;)Ljava/util/concurrent/ExecutorService;` @kind static;
+  #L206812.  v0:= temp @kind object;
+  #L206814.  `@@com.huawei.hms.framework.common.AssetsUtil.EXECUTOR_SERVICE` @type ^`java.util.concurrent.ExecutorService` := v0 @kind object;
+  #L206818.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.framework.common.AssetsUtil` v0 @kind this) @signature `Lcom/huawei/hms/framework/common/AssetsUtil;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L20682c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L206832.  return @kind void;
+}
+procedure `java.lang.String`[] `list`(`android.content.Context` v5 @kind object, `java.lang.String` v6 @kind object) @signature `Lcom/huawei/hms/framework/common/AssetsUtil;.list:(Landroid/content/Context;Ljava/lang/String;)[Ljava/lang/String;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L2066fc.  v0:= 0I;
+  #L2066fe.  v1:= "AssetsUtil" @kind object;
+  #L206702.  if v5 != 0 then goto L206716;
+  #L206706.  v5:= "context is null" @kind object;
+  #L20670a.  call `w`(v1, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L206710.  v5:= new `java.lang.String`[v0];
+  #L206714.  return v5 @kind object;
+  #L206716.  v2:= new `java.util.concurrent.FutureTask`;
+  #L20671a.  v3:= new `com.huawei.hms.framework.common.AssetsUtil$1`;
+  #L20671e.  call `<init>`(v3, v5, v6) @signature `Lcom/huawei/hms/framework/common/AssetsUtil$1;.<init>:(Landroid/content/Context;Ljava/lang/String;)V` @kind direct;
+  #L206724.  call `<init>`(v2, v3) @signature `Ljava/util/concurrent/FutureTask;.<init>:(Ljava/util/concurrent/Callable;)V` @kind direct;
+  #L20672a.  v5:= `@@com.huawei.hms.framework.common.AssetsUtil.EXECUTOR_SERVICE` @type ^`java.util.concurrent.ExecutorService` @kind object;
+  #L20672e.  call `execute`(v5, v2) @signature `Ljava/util/concurrent/ExecutorService;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L206734.  v5:= 5L;
+  #L206738.  v3:= 1I;
+  #L20673a.  v4:= `@@java.util.concurrent.TimeUnit.SECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L20673e.  call temp:= `get`(v2, v5, v4) @signature `Ljava/util/concurrent/FutureTask;.get:(JLjava/util/concurrent/TimeUnit;)Ljava/lang/Object;` @kind virtual;
+  #L206744.  v5:= temp @kind object;
+  #L206746.  v5:= (`java.lang.String`[]) v5 @kind object;
+  #L20674a.  call temp:= `cancel`(v2, v3) @signature `Ljava/util/concurrent/FutureTask;.cancel:(Z)Z` @kind virtual;
+  #L206750.  return v5 @kind object;
+  #L206752.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L206754.  goto L2067b2;
+  #L206756.  v5:= "get local config files from sp task occur unknown Exception" @kind object;
+  #L20675a.  call `w`(v1, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L206760.  v5:= new `java.lang.String`[v0];
+  #L206764.  call temp:= `cancel`(v2, v3) @signature `Ljava/util/concurrent/FutureTask;.cancel:(Z)Z` @kind virtual;
+  #L20676a.  return v5 @kind object;
+  #L20676c.  v5:= "get local config files from sp task timed out" @kind object;
+  #L206770.  call `w`(v1, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L206776.  v5:= new `java.lang.String`[v0];
+  #L20677a.  call temp:= `cancel`(v2, v3) @signature `Ljava/util/concurrent/FutureTask;.cancel:(Z)Z` @kind virtual;
+  #L206780.  return v5 @kind object;
+  #L206782.  v5:= Exception @type ^`java.util.concurrent.ExecutionException` @kind object;
+  #L206784.  v6:= "get local config files from sp task failed" @kind object;
+  #L206788.  call `w`(v1, v6, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind static;
+  #L20678e.  v5:= new `java.lang.String`[v0];
+  #L206792.  call temp:= `cancel`(v2, v3) @signature `Ljava/util/concurrent/FutureTask;.cancel:(Z)Z` @kind virtual;
+  #L206798.  return v5 @kind object;
+  #L20679a.  v5:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L20679c.  v6:= "get local config files from sp task interrupted" @kind object;
+  #L2067a0.  call `w`(v1, v6, v5) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind static;
+  #L2067a6.  v5:= new `java.lang.String`[v0];
+  #L2067aa.  call temp:= `cancel`(v2, v3) @signature `Ljava/util/concurrent/FutureTask;.cancel:(Z)Z` @kind virtual;
+  #L2067b0.  return v5 @kind object;
+  #L2067b2.  call temp:= `cancel`(v2, v3) @signature `Ljava/util/concurrent/FutureTask;.cancel:(Z)Z` @kind virtual;
+  #L2067b8.  throw v5;
+  catch `java.lang.InterruptedException` @[L20673a..L20674a] goto L20679a;
+  catch `java.util.concurrent.ExecutionException` @[L20673a..L20674a] goto L206782;
+  catch `java.util.concurrent.TimeoutException` @[L20673a..L20674a] goto L20676c;
+  catch `java.lang.Exception` @[L20673a..L20674a] goto L206756;
+  catch `java.lang.Throwable` @[L20673a..L20674a] goto L206752;
+  catch `java.lang.Throwable` @[L206756..L206764] goto L206752;
+  catch `java.lang.Throwable` @[L20676c..L20677a] goto L206752;
+  catch `java.lang.Throwable` @[L206784..L206792] goto L206752;
+  catch `java.lang.Throwable` @[L20679c..L2067aa] goto L206752;
+}
+procedure `java.io.InputStream` `open`(`android.content.Context` v2 @kind object, `java.lang.String` v3 @kind object) @signature `Lcom/huawei/hms/framework/common/AssetsUtil;.open:(Landroid/content/Context;Ljava/lang/String;)Ljava/io/InputStream;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2066a4.  v0:= "AssetsUtil" @kind object;
+  #L2066a8.  v1:= 0I;
+  #L2066aa.  if v2 != 0 then goto L2066ba;
+  #L2066ae.  v2:= "context is null" @kind object;
+  #L2066b2.  call `w`(v0, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.w:(Ljava/lang/String;Ljava/lang/Object;)V` @kind static;
+  #L2066b8.  return v1 @kind object;
+  #L2066ba.  call temp:= `getAssets`(v2) @signature `Landroid/content/Context;.getAssets:()Landroid/content/res/AssetManager;` @kind virtual;
+  #L2066c0.  v2:= temp @kind object;
+  #L2066c2.  call temp:= `open`(v2, v3) @signature `Landroid/content/res/AssetManager;.open:(Ljava/lang/String;)Ljava/io/InputStream;` @kind virtual;
+  #L2066c8.  v1:= temp @kind object;
+  #L2066ca.  goto L2066d8;
+  #L2066cc.  v2:= Exception @type ^`java.lang.RuntimeException` @kind object;
+  #L2066ce.  v3:= "AssetManager has been destroyed" @kind object;
+  #L2066d2.  call `e`(v0, v3, v2) @signature `Lcom/huawei/hms/framework/common/Logger;.e:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V` @kind static;
+  #L2066d8.  return v1 @kind object;
+  catch `java.lang.RuntimeException` @[L2066c2..L2066ca] goto L2066cc;
+}

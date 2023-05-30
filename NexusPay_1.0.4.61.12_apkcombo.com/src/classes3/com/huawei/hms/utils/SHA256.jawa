@@ -1,0 +1,92 @@
+record `com.huawei.hms.utils.SHA256` @kind class @AccessFlag PUBLIC_ABSTRACT {
+}
+procedure `void` `<init>`(`com.huawei.hms.utils.SHA256` v0 @kind this) @signature `Lcom/huawei/hms/utils/SHA256;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L2cf560.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2cf566.  return @kind void;
+}
+procedure `byte`[] `digest`(`java.io.File` v6 @kind object) @signature `Lcom/huawei/hms/utils/SHA256;.digest:(Ljava/io/File;)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L2cf494.  v0:= 0I;
+  #L2cf496.  v1:= 0I;
+  #L2cf498.  v2:= "SHA-256" @kind object;
+  #L2cf49c.  call temp:= `getInstance`(v2) @signature `Ljava/security/MessageDigest;.getInstance:(Ljava/lang/String;)Ljava/security/MessageDigest;` @kind static;
+  #L2cf4a2.  v2:= temp @kind object;
+  #L2cf4a4.  v3:= new `java.io.BufferedInputStream`;
+  #L2cf4a8.  v4:= new `java.io.FileInputStream`;
+  #L2cf4ac.  call `<init>`(v4, v6) @signature `Ljava/io/FileInputStream;.<init>:(Ljava/io/File;)V` @kind direct;
+  #L2cf4b2.  call `<init>`(v3, v4) @signature `Ljava/io/BufferedInputStream;.<init>:(Ljava/io/InputStream;)V` @kind direct;
+  #L2cf4b8.  v6:= 4096I;
+  #L2cf4bc.  v6:= new `byte`[v6];
+  #L2cf4c0.  v1:= 0I;
+  #L2cf4c2.  call temp:= `read`(v3, v6) @signature `Ljava/io/InputStream;.read:([B)I` @kind virtual;
+  #L2cf4c8.  v4:= temp;
+  #L2cf4ca.  v5:= -1I;
+  #L2cf4cc.  if v4 == v5 then goto L2cf4da;
+  #L2cf4d0.  v1:= v1 + v4 @kind int;
+  #L2cf4d2.  call `update`(v2, v6, v0, v4) @signature `Ljava/security/MessageDigest;.update:([BII)V` @kind virtual;
+  #L2cf4d8.  goto L2cf4c2;
+  #L2cf4da.  if v1 <= 0 then goto L2cf4ee;
+  #L2cf4de.  call temp:= `digest`(v2) @signature `Ljava/security/MessageDigest;.digest:()[B` @kind virtual;
+  #L2cf4e4.  v6:= temp @kind object;
+  #L2cf4e6.  call `closeQuietly`(v3) @signature `Lcom/huawei/hms/utils/IOUtils;.closeQuietly:(Ljava/io/InputStream;)V` @kind static;
+  #L2cf4ec.  return v6 @kind object;
+  #L2cf4ee.  call `closeQuietly`(v3) @signature `Lcom/huawei/hms/utils/IOUtils;.closeQuietly:(Ljava/io/InputStream;)V` @kind static;
+  #L2cf4f4.  goto L2cf512;
+  #L2cf4f6.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2cf4f8.  v1:= v3 @kind object;
+  #L2cf4fa.  goto L2cf51a;
+  #L2cf4fc.  v1:= v3 @kind object;
+  #L2cf4fe.  v6:= "SHA256" @kind object;
+  #L2cf502.  v2:= "An exception occurred while computing file 'SHA-256'." @kind object;
+  #L2cf506.  call `e`(v6, v2) @signature `Lcom/huawei/hms/support/log/HMSLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2cf50c.  call `closeQuietly`(v1) @signature `Lcom/huawei/hms/utils/IOUtils;.closeQuietly:(Ljava/io/InputStream;)V` @kind static;
+  #L2cf512.  v6:= new `byte`[v0];
+  #L2cf516.  return v6 @kind object;
+  #L2cf518.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2cf51a.  call `closeQuietly`(v1) @signature `Lcom/huawei/hms/utils/IOUtils;.closeQuietly:(Ljava/io/InputStream;)V` @kind static;
+  #L2cf520.  throw v6;
+  catch `java.security.NoSuchAlgorithmException` @[L2cf498..L2cf4b8] goto L2cf4fe;
+  catch `java.io.IOException` @[L2cf498..L2cf4b8] goto L2cf4fe;
+  catch `java.lang.Throwable` @[L2cf498..L2cf4b8] goto L2cf518;
+  catch `java.security.NoSuchAlgorithmException` @[L2cf4bc..L2cf4e6] goto L2cf4fc;
+  catch `java.io.IOException` @[L2cf4bc..L2cf4e6] goto L2cf4fc;
+  catch `java.lang.Throwable` @[L2cf4bc..L2cf4e6] goto L2cf4f6;
+  catch `java.lang.Throwable` @[L2cf4fe..L2cf50c] goto L2cf518;
+}
+procedure `byte`[] `digest`(`byte`[] v2 @kind object) @signature `Lcom/huawei/hms/utils/SHA256;.digest:([B)[B` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2cf420.  v0:= "SHA-256" @kind object;
+  #L2cf424.  call temp:= `getInstance`(v0) @signature `Ljava/security/MessageDigest;.getInstance:(Ljava/lang/String;)Ljava/security/MessageDigest;` @kind static;
+  #L2cf42a.  v0:= temp @kind object;
+  #L2cf42c.  call temp:= `digest`(v0, v2) @signature `Ljava/security/MessageDigest;.digest:([B)[B` @kind virtual;
+  #L2cf432.  v2:= temp @kind object;
+  #L2cf434.  return v2 @kind object;
+  #L2cf436.  v2:= Exception @type ^`java.security.NoSuchAlgorithmException` @kind object;
+  #L2cf438.  v0:= new `java.lang.StringBuilder`;
+  #L2cf43c.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L2cf442.  v1:= "NoSuchAlgorithmException" @kind object;
+  #L2cf446.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2cf44c.  call temp:= `getMessage`(v2) @signature `Ljava/security/NoSuchAlgorithmException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L2cf452.  v2:= temp @kind object;
+  #L2cf454.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L2cf45a.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L2cf460.  v2:= temp @kind object;
+  #L2cf462.  v0:= "SHA256" @kind object;
+  #L2cf466.  call `e`(v0, v2) @signature `Lcom/huawei/hms/support/log/HMSLog;.e:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L2cf46c.  v2:= 0I;
+  #L2cf46e.  v2:= new `byte`[v2];
+  #L2cf472.  return v2 @kind object;
+  catch `java.security.NoSuchAlgorithmException` @[L2cf420..L2cf434] goto L2cf436;
+}

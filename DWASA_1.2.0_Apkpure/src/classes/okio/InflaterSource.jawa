@@ -1,0 +1,205 @@
+record `okio.InflaterSource` @kind class @AccessFlag PUBLIC_FINAL extends `okio.Source` @kind interface {
+  `int` `okio.InflaterSource.bufferBytesHeldByInflater` @AccessFlag PRIVATE;
+  `boolean` `okio.InflaterSource.closed` @AccessFlag PRIVATE;
+  `java.util.zip.Inflater` `okio.InflaterSource.inflater` @AccessFlag PRIVATE_FINAL;
+  `okio.BufferedSource` `okio.InflaterSource.source` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`okio.InflaterSource` v0 @kind this, `okio.BufferedSource` v1 @kind object, `java.util.zip.Inflater` v2 @kind object) @signature `Lokio/InflaterSource;.<init>:(Lokio/BufferedSource;Ljava/util/zip/Inflater;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L47d5f8.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L47d5fe.  if v1 == 0 then goto L47d620;
+  #L47d602.  if v2 == 0 then goto L47d610;
+  #L47d606.  v0.`okio.InflaterSource.source` @type ^`okio.BufferedSource` := v1 @kind object;
+  #L47d60a.  v0.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` := v2 @kind object;
+  #L47d60e.  return @kind void;
+  #L47d610.  v1:= new `java.lang.IllegalArgumentException`;
+  #L47d614.  v2:= "inflater == null" @kind object;
+  #L47d618.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47d61e.  throw v1;
+  #L47d620.  v1:= new `java.lang.IllegalArgumentException`;
+  #L47d624.  v2:= "source == null" @kind object;
+  #L47d628.  call `<init>`(v1, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47d62e.  throw v1;
+}
+procedure `void` `<init>`(`okio.InflaterSource` v0 @kind this, `okio.Source` v1 @kind object, `java.util.zip.Inflater` v2 @kind object) @signature `Lokio/InflaterSource;.<init>:(Lokio/Source;Ljava/util/zip/Inflater;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L47d640.  call temp:= `buffer`(v1) @signature `Lokio/Okio;.buffer:(Lokio/Source;)Lokio/BufferedSource;` @kind static;
+  #L47d646.  v1:= temp @kind object;
+  #L47d648.  call `<init>`(v0, v1, v2) @signature `Lokio/InflaterSource;.<init>:(Lokio/BufferedSource;Ljava/util/zip/Inflater;)V` @kind direct;
+  #L47d64e.  return @kind void;
+}
+procedure `void` `releaseInflatedBytes`(`okio.InflaterSource` v4 @kind this) @signature `Lokio/InflaterSource;.releaseInflatedBytes:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L47d698.  v0:= v4.`okio.InflaterSource.bufferBytesHeldByInflater` @type ^`int`;
+  #L47d69c.  if v0 != 0 then goto L47d6a2;
+  #L47d6a0.  return @kind void;
+  #L47d6a2.  v1:= v4.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d6a6.  call temp:= `getRemaining`(v1) @signature `Ljava/util/zip/Inflater;.getRemaining:()I` @kind virtual;
+  #L47d6ac.  v1:= temp;
+  #L47d6ae.  v0:= v0 - v1 @kind int;
+  #L47d6b0.  v1:= v4.`okio.InflaterSource.bufferBytesHeldByInflater` @type ^`int`;
+  #L47d6b4.  v1:= v1 - v0 @kind int;
+  #L47d6b6.  v4.`okio.InflaterSource.bufferBytesHeldByInflater` @type ^`int` := v1;
+  #L47d6ba.  v1:= v4.`okio.InflaterSource.source` @type ^`okio.BufferedSource` @kind object;
+  #L47d6be.  v2:= (`long`) v0 @kind i2l;
+  #L47d6c0.  call `skip`(v1, v2) @signature `Lokio/BufferedSource;.skip:(J)V` @kind interface;
+  #L47d6c6.  return @kind void;
+}
+procedure `void` `close`(`okio.InflaterSource` v1 @kind this) @signature `Lokio/InflaterSource;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L47d660.  v0:= v1.`okio.InflaterSource.closed` @type ^`boolean` @kind boolean;
+  #L47d664.  if v0 == 0 then goto L47d66a;
+  #L47d668.  return @kind void;
+  #L47d66a.  v0:= v1.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d66e.  call `end`(v0) @signature `Ljava/util/zip/Inflater;.end:()V` @kind virtual;
+  #L47d674.  v0:= 1I;
+  #L47d676.  v1.`okio.InflaterSource.closed` @type ^`boolean` := v0 @kind boolean;
+  #L47d67a.  v0:= v1.`okio.InflaterSource.source` @type ^`okio.BufferedSource` @kind object;
+  #L47d67e.  call `close`(v0) @signature `Lokio/BufferedSource;.close:()V` @kind interface;
+  #L47d684.  return @kind void;
+}
+procedure `long` `read`(`okio.InflaterSource` v4 @kind this, `okio.Buffer` v5 @kind object, `long` v6 ) @signature `Lokio/InflaterSource;.read:(Lokio/Buffer;J)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L47d49c.  v0:= 0L;
+  #L47d4a0.  v2:= lcmp(v6, v0);
+  #L47d4a4.  if v2 < 0 then goto L47d584;
+  #L47d4a8.  v2:= v4.`okio.InflaterSource.closed` @type ^`boolean` @kind boolean;
+  #L47d4ac.  if v2 != 0 then goto L47d574;
+  #L47d4b0.  v2:= lcmp(v6, v0);
+  #L47d4b4.  if v2 != 0 then goto L47d4ba;
+  #L47d4b8.  return v0 @kind wide;
+  #L47d4ba.  call temp:= `refill`(v4) @signature `Lokio/InflaterSource;.refill:()Z` @kind virtual;
+  #L47d4c0.  v6:= temp;
+  #L47d4c2.  v7:= 1I;
+  #L47d4c4.  call temp:= `writableSegment`(v5, v7) @signature `Lokio/Buffer;.writableSegment:(I)Lokio/Segment;` @kind virtual;
+  #L47d4ca.  v7:= temp @kind object;
+  #L47d4cc.  v0:= v4.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d4d0.  v1:= v7.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L47d4d4.  v2:= v7.`okio.Segment.limit` @type ^`int`;
+  #L47d4d8.  v3:= v7.`okio.Segment.limit` @type ^`int`;
+  #L47d4dc.  v3:= v3 - 8192;
+  #L47d4e0.  call temp:= `inflate`(v0, v1, v2, v3) @signature `Ljava/util/zip/Inflater;.inflate:([BII)I` @kind virtual;
+  #L47d4e6.  v0:= temp;
+  #L47d4e8.  if v0 <= 0 then goto L47d504;
+  #L47d4ec.  v6:= v7.`okio.Segment.limit` @type ^`int`;
+  #L47d4f0.  v6:= v6 + v0 @kind int;
+  #L47d4f2.  v7.`okio.Segment.limit` @type ^`int` := v6;
+  #L47d4f6.  v6:= v5.`okio.Buffer.size` @type ^`long` @kind wide;
+  #L47d4fa.  v0:= (`long`) v0 @kind i2l;
+  #L47d4fc.  v6:= v6 + v0 @kind long;
+  #L47d4fe.  v5.`okio.Buffer.size` @type ^`long` := v6 @kind wide;
+  #L47d502.  return v0 @kind wide;
+  #L47d504.  v0:= v4.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d508.  call temp:= `finished`(v0) @signature `Ljava/util/zip/Inflater;.finished:()Z` @kind virtual;
+  #L47d50e.  v0:= temp;
+  #L47d510.  if v0 != 0 then goto L47d53c;
+  #L47d514.  v0:= v4.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d518.  call temp:= `needsDictionary`(v0) @signature `Ljava/util/zip/Inflater;.needsDictionary:()Z` @kind virtual;
+  #L47d51e.  v0:= temp;
+  #L47d520.  if v0 == 0 then goto L47d526;
+  #L47d524.  goto L47d53c;
+  #L47d526.  if v6 != 0 then goto L47d52c;
+  #L47d52a.  goto L47d4ba;
+  #L47d52c.  v5:= new `java.io.EOFException`;
+  #L47d530.  v6:= "source exhausted prematurely" @kind object;
+  #L47d534.  call `<init>`(v5, v6) @signature `Ljava/io/EOFException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47d53a.  throw v5;
+  #L47d53c.  call `releaseInflatedBytes`(v4) @signature `Lokio/InflaterSource;.releaseInflatedBytes:()V` @kind direct;
+  #L47d542.  v6:= v7.`okio.Segment.pos` @type ^`int`;
+  #L47d546.  v0:= v7.`okio.Segment.limit` @type ^`int`;
+  #L47d54a.  if v6 != v0 then goto L47d560;
+  #L47d54e.  call temp:= `pop`(v7) @signature `Lokio/Segment;.pop:()Lokio/Segment;` @kind virtual;
+  #L47d554.  v6:= temp @kind object;
+  #L47d556.  v5.`okio.Buffer.head` @type ^`okio.Segment` := v6 @kind object;
+  #L47d55a.  call `recycle`(v7) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @kind static;
+  #L47d560.  v5:= -1L;
+  #L47d564.  return v5 @kind wide;
+  #L47d566.  v5:= Exception @type ^`java.util.zip.DataFormatException` @kind object;
+  #L47d568.  v6:= new `java.io.IOException`;
+  #L47d56c.  call `<init>`(v6, v5) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/Throwable;)V` @kind direct;
+  #L47d572.  throw v6;
+  #L47d574.  v5:= new `java.lang.IllegalStateException`;
+  #L47d578.  v6:= "closed" @kind object;
+  #L47d57c.  call `<init>`(v5, v6) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47d582.  throw v5;
+  #L47d584.  v5:= new `java.lang.IllegalArgumentException`;
+  #L47d588.  v0:= new `java.lang.StringBuilder`;
+  #L47d58c.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L47d592.  v1:= "byteCount < 0: " @kind object;
+  #L47d596.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L47d59c.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L47d5a2.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L47d5a8.  v6:= temp @kind object;
+  #L47d5aa.  call `<init>`(v5, v6) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47d5b0.  goto L47d5b4;
+  #L47d5b2.  throw v5;
+  #L47d5b4.  goto L47d5b2;
+  catch `java.util.zip.DataFormatException` @[L47d4c4..L47d560] goto L47d566;
+}
+procedure `boolean` `refill`(`okio.InflaterSource` v5 @kind this) @signature `Lokio/InflaterSource;.refill:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L47d408.  v0:= v5.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d40c.  call temp:= `needsInput`(v0) @signature `Ljava/util/zip/Inflater;.needsInput:()Z` @kind virtual;
+  #L47d412.  v0:= temp;
+  #L47d414.  v1:= 0I;
+  #L47d416.  if v0 != 0 then goto L47d41c;
+  #L47d41a.  return v1;
+  #L47d41c.  call `releaseInflatedBytes`(v5) @signature `Lokio/InflaterSource;.releaseInflatedBytes:()V` @kind direct;
+  #L47d422.  v0:= v5.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d426.  call temp:= `getRemaining`(v0) @signature `Ljava/util/zip/Inflater;.getRemaining:()I` @kind virtual;
+  #L47d42c.  v0:= temp;
+  #L47d42e.  if v0 != 0 then goto L47d47c;
+  #L47d432.  v0:= v5.`okio.InflaterSource.source` @type ^`okio.BufferedSource` @kind object;
+  #L47d436.  call temp:= `exhausted`(v0) @signature `Lokio/BufferedSource;.exhausted:()Z` @kind interface;
+  #L47d43c.  v0:= temp;
+  #L47d43e.  if v0 == 0 then goto L47d446;
+  #L47d442.  v0:= 1I;
+  #L47d444.  return v0;
+  #L47d446.  v0:= v5.`okio.InflaterSource.source` @type ^`okio.BufferedSource` @kind object;
+  #L47d44a.  call temp:= `buffer`(v0) @signature `Lokio/BufferedSource;.buffer:()Lokio/Buffer;` @kind interface;
+  #L47d450.  v0:= temp @kind object;
+  #L47d452.  v0:= v0.`okio.Buffer.head` @type ^`okio.Segment` @kind object;
+  #L47d456.  v2:= v0.`okio.Segment.limit` @type ^`int`;
+  #L47d45a.  v3:= v0.`okio.Segment.pos` @type ^`int`;
+  #L47d45e.  v2:= v2 - v3 @kind int;
+  #L47d460.  v5.`okio.InflaterSource.bufferBytesHeldByInflater` @type ^`int` := v2;
+  #L47d464.  v2:= v5.`okio.InflaterSource.inflater` @type ^`java.util.zip.Inflater` @kind object;
+  #L47d468.  v3:= v0.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L47d46c.  v0:= v0.`okio.Segment.pos` @type ^`int`;
+  #L47d470.  v4:= v5.`okio.InflaterSource.bufferBytesHeldByInflater` @type ^`int`;
+  #L47d474.  call `setInput`(v2, v3, v0, v4) @signature `Ljava/util/zip/Inflater;.setInput:([BII)V` @kind virtual;
+  #L47d47a.  return v1;
+  #L47d47c.  v0:= new `java.lang.IllegalStateException`;
+  #L47d480.  v1:= "?" @kind object;
+  #L47d484.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L47d48a.  throw v0;
+}
+procedure `okio.Timeout` `timeout`(`okio.InflaterSource` v1 @kind this) @signature `Lokio/InflaterSource;.timeout:()Lokio/Timeout;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L47d5d8.  v0:= v1.`okio.InflaterSource.source` @type ^`okio.BufferedSource` @kind object;
+  #L47d5dc.  call temp:= `timeout`(v0) @signature `Lokio/BufferedSource;.timeout:()Lokio/Timeout;` @kind interface;
+  #L47d5e2.  v0:= temp @kind object;
+  #L47d5e4.  return v0 @kind object;
+}

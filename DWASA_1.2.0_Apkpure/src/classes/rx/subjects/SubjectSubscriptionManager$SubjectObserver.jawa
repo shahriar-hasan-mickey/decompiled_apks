@@ -1,0 +1,196 @@
+record `rx.subjects.SubjectSubscriptionManager$SubjectObserver` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Observer` @kind interface {
+  `rx.Subscriber` `rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @AccessFlag FINAL;
+  `boolean` `rx.subjects.SubjectSubscriptionManager$SubjectObserver.caughtUp` @AccessFlag VOLATILE;
+  `boolean` `rx.subjects.SubjectSubscriptionManager$SubjectObserver.emitting` @AccessFlag ;
+  `boolean` `rx.subjects.SubjectSubscriptionManager$SubjectObserver.fastPath` @AccessFlag ;
+  `boolean` `rx.subjects.SubjectSubscriptionManager$SubjectObserver.first` @AccessFlag ;
+  `java.lang.Object` `rx.subjects.SubjectSubscriptionManager$SubjectObserver.index` @AccessFlag PRIVATE_VOLATILE;
+  `java.util.List` `rx.subjects.SubjectSubscriptionManager$SubjectObserver.queue` @AccessFlag ;
+}
+procedure `void` `<init>`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this, `rx.Subscriber` v2 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.<init>:(Lrx/Subscriber;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4c5210.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4c5216.  v0:= 1I;
+  #L4c5218.  v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.first` @type ^`boolean` := v0 @kind boolean;
+  #L4c521c.  v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @type ^`rx.Subscriber` := v2 @kind object;
+  #L4c5220.  return @kind void;
+}
+procedure `void` `accept`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.accept:(Ljava/lang/Object;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c5234.  if v2 == 0 then goto L4c5242;
+  #L4c5238.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c523c.  call temp:= `accept`(v0, v2) @signature `Lrx/internal/operators/NotificationLite;.accept:(Lrx/Observer;Ljava/lang/Object;)Z` @kind static;
+  #L4c5242.  return @kind void;
+}
+procedure `void` `emitFirst`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.emitFirst:(Ljava/lang/Object;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c5254.  @monitorenter v1
+  #L4c5256.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.first` @type ^`boolean` @kind boolean;
+  #L4c525a.  if v0 == 0 then goto L4c5288;
+  #L4c525e.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.emitting` @type ^`boolean` @kind boolean;
+  #L4c5262.  if v0 == 0 then goto L4c5268;
+  #L4c5266.  goto L4c5288;
+  #L4c5268.  v0:= 0I;
+  #L4c526a.  v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.first` @type ^`boolean` := v0 @kind boolean;
+  #L4c526e.  if v2 == 0 then goto L4c5274;
+  #L4c5272.  v0:= 1I;
+  #L4c5274.  v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.emitting` @type ^`boolean` := v0 @kind boolean;
+  #L4c5278.  @monitorexit v1
+  #L4c527a.  if v2 == 0 then goto L4c5286;
+  #L4c527e.  v0:= 0I;
+  #L4c5280.  call `emitLoop`(v1, v0, v2) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.emitLoop:(Ljava/util/List;Ljava/lang/Object;)V` @kind virtual;
+  #L4c5286.  return @kind void;
+  #L4c5288.  @monitorexit v1
+  #L4c528a.  return @kind void;
+  #L4c528c.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c528e.  @monitorexit v1
+  #L4c5290.  throw v2;
+  catch `java.lang.Throwable` @[L4c5256..L4c527a] goto L4c528c;
+  catch `java.lang.Throwable` @[L4c5288..L4c5290] goto L4c528c;
+}
+procedure `void` `emitLoop`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v4 @kind this, `java.util.List` v5 @kind object, `java.lang.Object` v6 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.emitLoop:(Ljava/util/List;Ljava/lang/Object;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4c52b8.  v0:= 1I;
+  #L4c52ba.  v1:= 1I;
+  #L4c52bc.  v2:= 0I;
+  #L4c52be.  if v5 == 0 then goto L4c52ec;
+  #L4c52c2.  call temp:= `iterator`(v5) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L4c52c8.  v5:= temp @kind object;
+  #L4c52ca.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4c52d0.  v3:= temp;
+  #L4c52d2.  if v3 == 0 then goto L4c52ec;
+  #L4c52d6.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4c52dc.  v3:= temp @kind object;
+  #L4c52de.  call `accept`(v4, v3) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.accept:(Ljava/lang/Object;)V` @kind virtual;
+  #L4c52e4.  goto L4c52ca;
+  #L4c52e6.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c52e8.  v0:= 0I;
+  #L4c52ea.  goto L4c5324;
+  #L4c52ec.  if v1 == 0 then goto L4c52f8;
+  #L4c52f0.  call `accept`(v4, v6) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.accept:(Ljava/lang/Object;)V` @kind virtual;
+  #L4c52f6.  v1:= 0I;
+  #L4c52f8.  @monitorenter v4
+  #L4c52fa.  v5:= v4.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.queue` @type ^`java.util.List` @kind object;
+  #L4c52fe.  v3:= 0I;
+  #L4c5300.  v4.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.queue` @type ^`java.util.List` := v3 @kind object;
+  #L4c5304.  if v5 != 0 then goto L4c5310;
+  #L4c5308.  v4.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.emitting` @type ^`boolean` := v2 @kind boolean;
+  #L4c530c.  @monitorexit v4
+  #L4c530e.  return @kind void;
+  #L4c5310.  @monitorexit v4
+  #L4c5312.  goto L4c52bc;
+  #L4c5314.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c5316.  v0:= 0I;
+  #L4c5318.  @monitorexit v4
+  #L4c531a.  throw v5;
+  #L4c531c.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c531e.  goto L4c5324;
+  #L4c5320.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c5322.  goto L4c5318;
+  #L4c5324.  if v0 != 0 then goto L4c5338;
+  #L4c5328.  @monitorenter v4
+  #L4c532a.  v4.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.emitting` @type ^`boolean` := v2 @kind boolean;
+  #L4c532e.  @monitorexit v4
+  #L4c5330.  goto L4c5338;
+  #L4c5332.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c5334.  @monitorexit v4
+  #L4c5336.  throw v5;
+  #L4c5338.  goto L4c533c;
+  #L4c533a.  throw v5;
+  #L4c533c.  goto L4c533a;
+  catch `java.lang.Throwable` @[L4c52c2..L4c52fa] goto L4c52e6;
+  catch `java.lang.Throwable` @[L4c52fa..L4c530c] goto L4c5314;
+  catch `java.lang.Throwable` @[L4c530c..L4c530e] goto L4c5320;
+  catch `java.lang.Throwable` @[L4c5310..L4c5312] goto L4c5314;
+  catch `java.lang.Throwable` @[L4c5318..L4c531a] goto L4c5320;
+  catch `java.lang.Throwable` @[L4c531a..L4c531c] goto L4c531c;
+  catch `java.lang.Throwable` @[L4c532a..L4c5336] goto L4c5332;
+}
+procedure `void` `emitNext`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.emitNext:(Ljava/lang/Object;)V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c5394.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.fastPath` @type ^`boolean` @kind boolean;
+  #L4c5398.  if v0 != 0 then goto L4c53e0;
+  #L4c539c.  @monitorenter v1
+  #L4c539e.  v0:= 0I;
+  #L4c53a0.  v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.first` @type ^`boolean` := v0 @kind boolean;
+  #L4c53a4.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.emitting` @type ^`boolean` @kind boolean;
+  #L4c53a8.  if v0 == 0 then goto L4c53d0;
+  #L4c53ac.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.queue` @type ^`java.util.List` @kind object;
+  #L4c53b0.  if v0 != 0 then goto L4c53c2;
+  #L4c53b4.  v0:= new `java.util.ArrayList`;
+  #L4c53b8.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4c53be.  v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.queue` @type ^`java.util.List` := v0 @kind object;
+  #L4c53c2.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.queue` @type ^`java.util.List` @kind object;
+  #L4c53c6.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4c53cc.  @monitorexit v1
+  #L4c53ce.  return @kind void;
+  #L4c53d0.  @monitorexit v1
+  #L4c53d2.  v0:= 1I;
+  #L4c53d4.  v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.fastPath` @type ^`boolean` := v0 @kind boolean;
+  #L4c53d8.  goto L4c53e0;
+  #L4c53da.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4c53dc.  @monitorexit v1
+  #L4c53de.  throw v2;
+  #L4c53e0.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c53e4.  call temp:= `accept`(v0, v2) @signature `Lrx/internal/operators/NotificationLite;.accept:(Lrx/Observer;Ljava/lang/Object;)Z` @kind static;
+  #L4c53ea.  return @kind void;
+  catch `java.lang.Throwable` @[L4c53a0..L4c53d2] goto L4c53da;
+  catch `java.lang.Throwable` @[L4c53dc..L4c53de] goto L4c53da;
+}
+procedure `rx.Observer` `getActual`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.getActual:()Lrx/Observer;` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4c51f8.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c51fc.  return v0 @kind object;
+}
+procedure `java.lang.Object` `index`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.index:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c51e0.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.index` @type ^`java.lang.Object` @kind object;
+  #L4c51e4.  return v0 @kind object;
+}
+procedure `void` `index`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.index:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4c5410.  v0.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.index` @type ^`java.lang.Object` := v1 @kind object;
+  #L4c5414.  return @kind void;
+}
+procedure `void` `onCompleted`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c5428.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c542c.  call `onCompleted`(v0) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4c5432.  return @kind void;
+}
+procedure `void` `onError`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c5444.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c5448.  call `onError`(v0, v2) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4c544e.  return @kind void;
+}
+procedure `void` `onNext`(`rx.subjects.SubjectSubscriptionManager$SubjectObserver` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/subjects/SubjectSubscriptionManager$SubjectObserver;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c5460.  v0:= v1.`rx.subjects.SubjectSubscriptionManager$SubjectObserver.actual` @type ^`rx.Subscriber` @kind object;
+  #L4c5464.  call `onNext`(v0, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4c546a.  return @kind void;
+}

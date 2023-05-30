@@ -1,0 +1,360 @@
+record `rx.internal.operators.OperatorReplay$BoundedReplayBuffer` @kind class @AccessFlag  extends `java.util.concurrent.atomic.AtomicReference` @kind class, `rx.internal.operators.OperatorReplay$ReplayBuffer` @kind interface {
+  `long` `rx.internal.operators.OperatorReplay$BoundedReplayBuffer.index` @AccessFlag ;
+  `int` `rx.internal.operators.OperatorReplay$BoundedReplayBuffer.size` @AccessFlag ;
+  `rx.internal.operators.OperatorReplay$Node` `rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @AccessFlag ;
+}
+global `long` `@@rx.internal.operators.OperatorReplay$BoundedReplayBuffer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v4 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4a6274.  call `<init>`(v4) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L4a627a.  v0:= new `rx.internal.operators.OperatorReplay$Node`;
+  #L4a627e.  v1:= 0I;
+  #L4a6280.  v2:= 0L;
+  #L4a6284.  call `<init>`(v0, v1, v2) @signature `Lrx/internal/operators/OperatorReplay$Node;.<init>:(Ljava/lang/Object;J)V` @kind direct;
+  #L4a628a.  v4.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @type ^`rx.internal.operators.OperatorReplay$Node` := v0 @kind object;
+  #L4a628e.  call `set`(v4, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.set:(Ljava/lang/Object;)V` @kind virtual;
+  #L4a6294.  return @kind void;
+}
+procedure `void` `addLast`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v1 @kind this, `rx.internal.operators.OperatorReplay$Node` v2 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.addLast:(Lrx/internal/operators/OperatorReplay$Node;)V` @AccessFlag FINAL {
+    temp;
+    v0;
+
+  #L4a62a8.  v0:= v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @type ^`rx.internal.operators.OperatorReplay$Node` @kind object;
+  #L4a62ac.  call `set`(v0, v2) @signature `Lrx/internal/operators/OperatorReplay$Node;.set:(Ljava/lang/Object;)V` @kind virtual;
+  #L4a62b2.  v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @type ^`rx.internal.operators.OperatorReplay$Node` := v2 @kind object;
+  #L4a62b6.  v2:= v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.size` @type ^`int`;
+  #L4a62ba.  v2:= v2 + 1;
+  #L4a62be.  v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.size` @type ^`int` := v2;
+  #L4a62c2.  return @kind void;
+}
+procedure `void` `collect`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v3 @kind this, `java.util.Collection` v4 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.collect:(Ljava/util/Collection;)V` @AccessFlag FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4a62d4.  call temp:= `getInitialHead`(v3) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.getInitialHead:()Lrx/internal/operators/OperatorReplay$Node;` @kind virtual;
+  #L4a62da.  v0:= temp @kind object;
+  #L4a62dc.  call temp:= `get`(v0) @signature `Lrx/internal/operators/OperatorReplay$Node;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4a62e2.  v0:= temp @kind object;
+  #L4a62e4.  v0:= (`rx.internal.operators.OperatorReplay$Node`) v0 @kind object;
+  #L4a62e8.  if v0 == 0 then goto L4a6322;
+  #L4a62ec.  v1:= v0.`rx.internal.operators.OperatorReplay$Node.value` @type ^`java.lang.Object` @kind object;
+  #L4a62f0.  call temp:= `leaveTransform`(v3, v1) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.leaveTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4a62f6.  v1:= temp @kind object;
+  #L4a62f8.  call temp:= `isCompleted`(v1) @signature `Lrx/internal/operators/NotificationLite;.isCompleted:(Ljava/lang/Object;)Z` @kind static;
+  #L4a62fe.  v2:= temp;
+  #L4a6300.  if v2 != 0 then goto L4a6322;
+  #L4a6304.  call temp:= `isError`(v1) @signature `Lrx/internal/operators/NotificationLite;.isError:(Ljava/lang/Object;)Z` @kind static;
+  #L4a630a.  v2:= temp;
+  #L4a630c.  if v2 == 0 then goto L4a6312;
+  #L4a6310.  goto L4a6322;
+  #L4a6312.  call temp:= `getValue`(v1) @signature `Lrx/internal/operators/NotificationLite;.getValue:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L4a6318.  v1:= temp @kind object;
+  #L4a631a.  call temp:= `add`(v4, v1) @signature `Ljava/util/Collection;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4a6320.  goto L4a62dc;
+  #L4a6322.  return @kind void;
+}
+procedure `void` `complete`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v6 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.complete:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4a6334.  call temp:= `completed`() @signature `Lrx/internal/operators/NotificationLite;.completed:()Ljava/lang/Object;` @kind static;
+  #L4a633a.  v0:= temp @kind object;
+  #L4a633c.  call temp:= `enterTransform`(v6, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.enterTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4a6342.  v0:= temp @kind object;
+  #L4a6344.  v1:= new `rx.internal.operators.OperatorReplay$Node`;
+  #L4a6348.  v2:= v6.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.index` @type ^`long` @kind wide;
+  #L4a634c.  v4:= 1L;
+  #L4a6350.  v2:= v2 + v4 @kind long;
+  #L4a6352.  v6.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.index` @type ^`long` := v2 @kind wide;
+  #L4a6356.  call `<init>`(v1, v0, v2) @signature `Lrx/internal/operators/OperatorReplay$Node;.<init>:(Ljava/lang/Object;J)V` @kind direct;
+  #L4a635c.  call `addLast`(v6, v1) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.addLast:(Lrx/internal/operators/OperatorReplay$Node;)V` @kind virtual;
+  #L4a6362.  call `truncateFinal`(v6) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.truncateFinal:()V` @kind virtual;
+  #L4a6368.  return @kind void;
+}
+procedure `java.lang.Object` `enterTransform`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.enterTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @AccessFlag  {
+    temp;
+
+  #L4a622c.  return v1 @kind object;
+}
+procedure `void` `error`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v5 @kind this, `java.lang.Throwable` v6 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.error:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4a637c.  call temp:= `error`(v6) @signature `Lrx/internal/operators/NotificationLite;.error:(Ljava/lang/Throwable;)Ljava/lang/Object;` @kind static;
+  #L4a6382.  v6:= temp @kind object;
+  #L4a6384.  call temp:= `enterTransform`(v5, v6) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.enterTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4a638a.  v6:= temp @kind object;
+  #L4a638c.  v0:= new `rx.internal.operators.OperatorReplay$Node`;
+  #L4a6390.  v1:= v5.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.index` @type ^`long` @kind wide;
+  #L4a6394.  v3:= 1L;
+  #L4a6398.  v1:= v1 + v3 @kind long;
+  #L4a639a.  v5.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.index` @type ^`long` := v1 @kind wide;
+  #L4a639e.  call `<init>`(v0, v6, v1) @signature `Lrx/internal/operators/OperatorReplay$Node;.<init>:(Ljava/lang/Object;J)V` @kind direct;
+  #L4a63a4.  call `addLast`(v5, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.addLast:(Lrx/internal/operators/OperatorReplay$Node;)V` @kind virtual;
+  #L4a63aa.  call `truncateFinal`(v5) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.truncateFinal:()V` @kind virtual;
+  #L4a63b0.  return @kind void;
+}
+procedure `rx.internal.operators.OperatorReplay$Node` `getInitialHead`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v1 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.getInitialHead:()Lrx/internal/operators/OperatorReplay$Node;` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4a6254.  call temp:= `get`(v1) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4a625a.  v0:= temp @kind object;
+  #L4a625c.  v0:= (`rx.internal.operators.OperatorReplay$Node`) v0 @kind object;
+  #L4a6260.  return v0 @kind object;
+}
+procedure `boolean` `hasCompleted`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v1 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.hasCompleted:()Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4a61ac.  v0:= v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @type ^`rx.internal.operators.OperatorReplay$Node` @kind object;
+  #L4a61b0.  v0:= v0.`rx.internal.operators.OperatorReplay$Node.value` @type ^`java.lang.Object` @kind object;
+  #L4a61b4.  if v0 == 0 then goto L4a61d8;
+  #L4a61b8.  v0:= v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @type ^`rx.internal.operators.OperatorReplay$Node` @kind object;
+  #L4a61bc.  v0:= v0.`rx.internal.operators.OperatorReplay$Node.value` @type ^`java.lang.Object` @kind object;
+  #L4a61c0.  call temp:= `leaveTransform`(v1, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.leaveTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4a61c6.  v0:= temp @kind object;
+  #L4a61c8.  call temp:= `isCompleted`(v0) @signature `Lrx/internal/operators/NotificationLite;.isCompleted:(Ljava/lang/Object;)Z` @kind static;
+  #L4a61ce.  v0:= temp;
+  #L4a61d0.  if v0 == 0 then goto L4a61d8;
+  #L4a61d4.  v0:= 1I;
+  #L4a61d6.  goto L4a61da;
+  #L4a61d8.  v0:= 0I;
+  #L4a61da.  return v0;
+}
+procedure `boolean` `hasError`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v1 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.hasError:()Z` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4a61ec.  v0:= v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @type ^`rx.internal.operators.OperatorReplay$Node` @kind object;
+  #L4a61f0.  v0:= v0.`rx.internal.operators.OperatorReplay$Node.value` @type ^`java.lang.Object` @kind object;
+  #L4a61f4.  if v0 == 0 then goto L4a6218;
+  #L4a61f8.  v0:= v1.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.tail` @type ^`rx.internal.operators.OperatorReplay$Node` @kind object;
+  #L4a61fc.  v0:= v0.`rx.internal.operators.OperatorReplay$Node.value` @type ^`java.lang.Object` @kind object;
+  #L4a6200.  call temp:= `leaveTransform`(v1, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.leaveTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4a6206.  v0:= temp @kind object;
+  #L4a6208.  call temp:= `isError`(v0) @signature `Lrx/internal/operators/NotificationLite;.isError:(Ljava/lang/Object;)Z` @kind static;
+  #L4a620e.  v0:= temp;
+  #L4a6210.  if v0 == 0 then goto L4a6218;
+  #L4a6214.  v0:= 1I;
+  #L4a6216.  goto L4a621a;
+  #L4a6218.  v0:= 0I;
+  #L4a621a.  return v0;
+}
+procedure `java.lang.Object` `leaveTransform`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.leaveTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @AccessFlag  {
+    temp;
+
+  #L4a6240.  return v1 @kind object;
+}
+procedure `void` `next`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v5 @kind this, `java.lang.Object` v6 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.next:(Ljava/lang/Object;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4a63c4.  call temp:= `next`(v6) @signature `Lrx/internal/operators/NotificationLite;.next:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L4a63ca.  v6:= temp @kind object;
+  #L4a63cc.  call temp:= `enterTransform`(v5, v6) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.enterTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4a63d2.  v6:= temp @kind object;
+  #L4a63d4.  v0:= new `rx.internal.operators.OperatorReplay$Node`;
+  #L4a63d8.  v1:= v5.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.index` @type ^`long` @kind wide;
+  #L4a63dc.  v3:= 1L;
+  #L4a63e0.  v1:= v1 + v3 @kind long;
+  #L4a63e2.  v5.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.index` @type ^`long` := v1 @kind wide;
+  #L4a63e6.  call `<init>`(v0, v6, v1) @signature `Lrx/internal/operators/OperatorReplay$Node;.<init>:(Ljava/lang/Object;J)V` @kind direct;
+  #L4a63ec.  call `addLast`(v5, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.addLast:(Lrx/internal/operators/OperatorReplay$Node;)V` @kind virtual;
+  #L4a63f2.  call `truncate`(v5) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.truncate:()V` @kind virtual;
+  #L4a63f8.  return @kind void;
+}
+procedure `void` `removeFirst`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v2 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.removeFirst:()V` @AccessFlag FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4a640c.  call temp:= `get`(v2) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4a6412.  v0:= temp @kind object;
+  #L4a6414.  v0:= (`rx.internal.operators.OperatorReplay$Node`) v0 @kind object;
+  #L4a6418.  call temp:= `get`(v0) @signature `Lrx/internal/operators/OperatorReplay$Node;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4a641e.  v0:= temp @kind object;
+  #L4a6420.  v0:= (`rx.internal.operators.OperatorReplay$Node`) v0 @kind object;
+  #L4a6424.  if v0 == 0 then goto L4a643c;
+  #L4a6428.  v1:= v2.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.size` @type ^`int`;
+  #L4a642c.  v1:= v1 + -1;
+  #L4a6430.  v2.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.size` @type ^`int` := v1;
+  #L4a6434.  call `setFirst`(v2, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.setFirst:(Lrx/internal/operators/OperatorReplay$Node;)V` @kind virtual;
+  #L4a643a.  return @kind void;
+  #L4a643c.  v0:= new `java.lang.IllegalStateException`;
+  #L4a6440.  v1:= "Empty list!" @kind object;
+  #L4a6444.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4a644a.  throw v0;
+}
+procedure `void` `removeSome`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v2 @kind this, `int` v3 ) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.removeSome:(I)V` @AccessFlag FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L4a645c.  call temp:= `get`(v2) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4a6462.  v0:= temp @kind object;
+  #L4a6464.  v0:= (`rx.internal.operators.OperatorReplay$Node`) v0 @kind object;
+  #L4a6468.  if v3 <= 0 then goto L4a648a;
+  #L4a646c.  call temp:= `get`(v0) @signature `Lrx/internal/operators/OperatorReplay$Node;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4a6472.  v0:= temp @kind object;
+  #L4a6474.  v0:= (`rx.internal.operators.OperatorReplay$Node`) v0 @kind object;
+  #L4a6478.  v3:= v3 + -1;
+  #L4a647c.  v1:= v2.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.size` @type ^`int`;
+  #L4a6480.  v1:= v1 + -1;
+  #L4a6484.  v2.`rx.internal.operators.OperatorReplay$BoundedReplayBuffer.size` @type ^`int` := v1;
+  #L4a6488.  goto L4a6468;
+  #L4a648a.  call `setFirst`(v2, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.setFirst:(Lrx/internal/operators/OperatorReplay$Node;)V` @kind virtual;
+  #L4a6490.  return @kind void;
+}
+procedure `void` `replay`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v11 @kind this, `rx.internal.operators.OperatorReplay$InnerProducer` v12 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.replay:(Lrx/internal/operators/OperatorReplay$InnerProducer;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+
+  #L4a64a4.  @monitorenter v12
+  #L4a64a6.  v0:= v12.`rx.internal.operators.OperatorReplay$InnerProducer.emitting` @type ^`boolean` @kind boolean;
+  #L4a64aa.  v1:= 1I;
+  #L4a64ac.  if v0 == 0 then goto L4a64b8;
+  #L4a64b0.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.missed` @type ^`boolean` := v1 @kind boolean;
+  #L4a64b4.  @monitorexit v12
+  #L4a64b6.  return @kind void;
+  #L4a64b8.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.emitting` @type ^`boolean` := v1 @kind boolean;
+  #L4a64bc.  @monitorexit v12
+  #L4a64be.  call temp:= `isUnsubscribed`(v12) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.isUnsubscribed:()Z` @kind virtual;
+  #L4a64c4.  v0:= temp;
+  #L4a64c6.  if v0 == 0 then goto L4a64cc;
+  #L4a64ca.  return @kind void;
+  #L4a64cc.  call temp:= `index`(v12) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.index:()Ljava/lang/Object;` @kind virtual;
+  #L4a64d2.  v0:= temp @kind object;
+  #L4a64d4.  v0:= (`rx.internal.operators.OperatorReplay$Node`) v0 @kind object;
+  #L4a64d8.  if v0 != 0 then goto L4a64f2;
+  #L4a64dc.  call temp:= `getInitialHead`(v11) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.getInitialHead:()Lrx/internal/operators/OperatorReplay$Node;` @kind virtual;
+  #L4a64e2.  v0:= temp @kind object;
+  #L4a64e4.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.index` @type ^`java.lang.Object` := v0 @kind object;
+  #L4a64e8.  v1:= v0.`rx.internal.operators.OperatorReplay$Node.index` @type ^`long` @kind wide;
+  #L4a64ec.  call `addTotalRequested`(v12, v1) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.addTotalRequested:(J)V` @kind virtual;
+  #L4a64f2.  call temp:= `isUnsubscribed`(v12) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.isUnsubscribed:()Z` @kind virtual;
+  #L4a64f8.  v1:= temp;
+  #L4a64fa.  if v1 == 0 then goto L4a6500;
+  #L4a64fe.  return @kind void;
+  #L4a6500.  v1:= v12.`rx.internal.operators.OperatorReplay$InnerProducer.child` @type ^`rx.Subscriber` @kind object;
+  #L4a6504.  if v1 != 0 then goto L4a650a;
+  #L4a6508.  return @kind void;
+  #L4a650a.  call temp:= `get`(v12) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.get:()J` @kind virtual;
+  #L4a6510.  v2:= temp @kind wide;
+  #L4a6512.  v4:= 0L;
+  #L4a6516.  v6:= v4 @kind wide;
+  #L4a6518.  v8:= lcmp(v6, v2);
+  #L4a651c.  if v8 == 0 then goto L4a65aa;
+  #L4a6520.  call temp:= `get`(v0) @signature `Lrx/internal/operators/OperatorReplay$Node;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4a6526.  v8:= temp @kind object;
+  #L4a6528.  v8:= (`rx.internal.operators.OperatorReplay$Node`) v8 @kind object;
+  #L4a652c.  if v8 == 0 then goto L4a65aa;
+  #L4a6530.  v0:= v8.`rx.internal.operators.OperatorReplay$Node.value` @type ^`java.lang.Object` @kind object;
+  #L4a6534.  call temp:= `leaveTransform`(v11, v0) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.leaveTransform:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4a653a.  v0:= temp @kind object;
+  #L4a653c.  v9:= 0I;
+  #L4a653e.  call temp:= `accept`(v1, v0) @signature `Lrx/internal/operators/NotificationLite;.accept:(Lrx/Observer;Ljava/lang/Object;)Z` @kind static;
+  #L4a6544.  v10:= temp;
+  #L4a6546.  if v10 == 0 then goto L4a6550;
+  #L4a654a.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.index` @type ^`java.lang.Object` := v9 @kind object;
+  #L4a654e.  return @kind void;
+  #L4a6550.  v9:= 1L;
+  #L4a6554.  v6:= v6 + v9 @kind long;
+  #L4a6556.  call temp:= `isUnsubscribed`(v12) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.isUnsubscribed:()Z` @kind virtual;
+  #L4a655c.  v0:= temp;
+  #L4a655e.  if v0 == 0 then goto L4a6564;
+  #L4a6562.  return @kind void;
+  #L4a6564.  v0:= v8 @kind object;
+  #L4a6566.  goto L4a6518;
+  #L4a6568.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a656a.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.index` @type ^`java.lang.Object` := v9 @kind object;
+  #L4a656e.  call `throwIfFatal`(v2) @signature `Lrx/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L4a6574.  call `unsubscribe`(v12) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.unsubscribe:()V` @kind virtual;
+  #L4a657a.  call temp:= `isError`(v0) @signature `Lrx/internal/operators/NotificationLite;.isError:(Ljava/lang/Object;)Z` @kind static;
+  #L4a6580.  v12:= temp;
+  #L4a6582.  if v12 != 0 then goto L4a65a8;
+  #L4a6586.  call temp:= `isCompleted`(v0) @signature `Lrx/internal/operators/NotificationLite;.isCompleted:(Ljava/lang/Object;)Z` @kind static;
+  #L4a658c.  v12:= temp;
+  #L4a658e.  if v12 != 0 then goto L4a65a8;
+  #L4a6592.  call temp:= `getValue`(v0) @signature `Lrx/internal/operators/NotificationLite;.getValue:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L4a6598.  v12:= temp @kind object;
+  #L4a659a.  call temp:= `addValueAsLastCause`(v2, v12) @signature `Lrx/exceptions/OnErrorThrowable;.addValueAsLastCause:(Ljava/lang/Throwable;Ljava/lang/Object;)Ljava/lang/Throwable;` @kind static;
+  #L4a65a0.  v12:= temp @kind object;
+  #L4a65a2.  call `onError`(v1, v12) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4a65a8.  return @kind void;
+  #L4a65aa.  v1:= lcmp(v6, v4);
+  #L4a65ae.  if v1 == 0 then goto L4a65ce;
+  #L4a65b2.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.index` @type ^`java.lang.Object` := v0 @kind object;
+  #L4a65b6.  v0:= 9223372036854775807L;
+  #L4a65c0.  v4:= lcmp(v2, v0);
+  #L4a65c4.  if v4 == 0 then goto L4a65ce;
+  #L4a65c8.  call temp:= `produced`(v12, v6) @signature `Lrx/internal/operators/OperatorReplay$InnerProducer;.produced:(J)J` @kind virtual;
+  #L4a65ce.  @monitorenter v12
+  #L4a65d0.  v0:= v12.`rx.internal.operators.OperatorReplay$InnerProducer.missed` @type ^`boolean` @kind boolean;
+  #L4a65d4.  v1:= 0I;
+  #L4a65d6.  if v0 != 0 then goto L4a65e2;
+  #L4a65da.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.emitting` @type ^`boolean` := v1 @kind boolean;
+  #L4a65de.  @monitorexit v12
+  #L4a65e0.  return @kind void;
+  #L4a65e2.  v12.`rx.internal.operators.OperatorReplay$InnerProducer.missed` @type ^`boolean` := v1 @kind boolean;
+  #L4a65e6.  @monitorexit v12
+  #L4a65e8.  goto L4a64be;
+  #L4a65ec.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a65ee.  @monitorexit v12
+  #L4a65f0.  throw v0;
+  #L4a65f2.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a65f4.  @monitorexit v12
+  #L4a65f6.  goto L4a65fa;
+  #L4a65f8.  throw v0;
+  #L4a65fa.  goto L4a65f8;
+  catch `java.lang.Throwable` @[L4a64a6..L4a64be] goto L4a65f2;
+  catch `java.lang.Throwable` @[L4a653e..L4a654e] goto L4a6568;
+  catch `java.lang.Throwable` @[L4a65d0..L4a65f0] goto L4a65ec;
+  catch `java.lang.Throwable` @[L4a65f4..L4a65f6] goto L4a65f2;
+}
+procedure `void` `setFirst`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v0 @kind this, `rx.internal.operators.OperatorReplay$Node` v1 @kind object) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.setFirst:(Lrx/internal/operators/OperatorReplay$Node;)V` @AccessFlag FINAL {
+    temp;
+
+  #L4a6638.  call `set`(v0, v1) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.set:(Ljava/lang/Object;)V` @kind virtual;
+  #L4a663e.  return @kind void;
+}
+procedure `void` `truncate`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v0 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.truncate:()V` @AccessFlag  {
+    temp;
+
+  #L4a6650.  return @kind void;
+}
+procedure `void` `truncateFinal`(`rx.internal.operators.OperatorReplay$BoundedReplayBuffer` v0 @kind this) @signature `Lrx/internal/operators/OperatorReplay$BoundedReplayBuffer;.truncateFinal:()V` @AccessFlag  {
+    temp;
+
+  #L4a6664.  return @kind void;
+}

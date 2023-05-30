@@ -1,0 +1,503 @@
+record `rx.internal.operators.OperatorSwitch$SwitchSubscriber` @kind class @AccessFlag FINAL extends `rx.Subscriber` @kind class {
+  `rx.Subscriber` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.child` @AccessFlag FINAL;
+  `boolean` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.delayError` @AccessFlag FINAL;
+  `boolean` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.emitting` @AccessFlag ;
+  `java.lang.Throwable` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @AccessFlag ;
+  `java.util.concurrent.atomic.AtomicLong` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @AccessFlag FINAL;
+  `boolean` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.innerActive` @AccessFlag ;
+  `boolean` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.mainDone` @AccessFlag VOLATILE;
+  `boolean` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.missed` @AccessFlag ;
+  `rx.Producer` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.producer` @AccessFlag ;
+  `rx.internal.util.atomic.SpscLinkedArrayQueue` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.queue` @AccessFlag FINAL;
+  `long` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.requested` @AccessFlag ;
+  `rx.subscriptions.SerialSubscription` `rx.internal.operators.OperatorSwitch$SwitchSubscriber.serial` @AccessFlag FINAL;
+}
+global `java.lang.Throwable` `@@rx.internal.operators.OperatorSwitch$SwitchSubscriber.TERMINAL_ERROR` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4a9440.  v0:= new `java.lang.Throwable`;
+  #L4a9444.  v1:= "Terminal error" @kind object;
+  #L4a9448.  call `<init>`(v0, v1) @signature `Ljava/lang/Throwable;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4a944e.  `@@rx.internal.operators.OperatorSwitch$SwitchSubscriber.TERMINAL_ERROR` @type ^`java.lang.Throwable` := v0 @kind object;
+  #L4a9452.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v0 @kind this, `rx.Subscriber` v1 @kind object, `boolean` v2 ) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.<init>:(Lrx/Subscriber;Z)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L4a9464.  call `<init>`(v0) @signature `Lrx/Subscriber;.<init>:()V` @kind direct;
+  #L4a946a.  v0.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.child` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4a946e.  v1:= new `rx.subscriptions.SerialSubscription`;
+  #L4a9472.  call `<init>`(v1) @signature `Lrx/subscriptions/SerialSubscription;.<init>:()V` @kind direct;
+  #L4a9478.  v0.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.serial` @type ^`rx.subscriptions.SerialSubscription` := v1 @kind object;
+  #L4a947c.  v0.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.delayError` @type ^`boolean` := v2 @kind boolean;
+  #L4a9480.  v1:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L4a9484.  call `<init>`(v1) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4a948a.  v0.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @type ^`java.util.concurrent.atomic.AtomicLong` := v1 @kind object;
+  #L4a948e.  v1:= new `rx.internal.util.atomic.SpscLinkedArrayQueue`;
+  #L4a9492.  v2:= `@@rx.internal.util.RxRingBuffer.SIZE` @type ^`int`;
+  #L4a9496.  call `<init>`(v1, v2) @signature `Lrx/internal/util/atomic/SpscLinkedArrayQueue;.<init>:(I)V` @kind direct;
+  #L4a949c.  v0.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.queue` @type ^`rx.internal.util.atomic.SpscLinkedArrayQueue` := v1 @kind object;
+  #L4a94a0.  return @kind void;
+}
+procedure `boolean` `checkTerminated`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v2 @kind this, `boolean` v3 , `boolean` v4 , `java.lang.Throwable` v5 @kind object, `rx.internal.util.atomic.SpscLinkedArrayQueue` v6 @kind object, `rx.Subscriber` v7 @kind object, `boolean` v8 ) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.checkTerminated:(ZZLjava/lang/Throwable;Lrx/internal/util/atomic/SpscLinkedArrayQueue;Lrx/Subscriber;Z)Z` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+
+  #L4a935c.  v0:= v2.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.delayError` @type ^`boolean` @kind boolean;
+  #L4a9360.  v1:= 1I;
+  #L4a9362.  if v0 == 0 then goto L4a9386;
+  #L4a9366.  if v3 == 0 then goto L4a93ac;
+  #L4a936a.  if v4 != 0 then goto L4a93ac;
+  #L4a936e.  if v8 == 0 then goto L4a93ac;
+  #L4a9372.  if v5 == 0 then goto L4a937e;
+  #L4a9376.  call `onError`(v7, v5) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4a937c.  goto L4a9384;
+  #L4a937e.  call `onCompleted`(v7) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4a9384.  return v1;
+  #L4a9386.  if v5 == 0 then goto L4a9398;
+  #L4a938a.  call `clear`(v6) @signature `Lrx/internal/util/atomic/SpscLinkedArrayQueue;.clear:()V` @kind virtual;
+  #L4a9390.  call `onError`(v7, v5) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4a9396.  return v1;
+  #L4a9398.  if v3 == 0 then goto L4a93ac;
+  #L4a939c.  if v4 != 0 then goto L4a93ac;
+  #L4a93a0.  if v8 == 0 then goto L4a93ac;
+  #L4a93a4.  call `onCompleted`(v7) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4a93aa.  return v1;
+  #L4a93ac.  v3:= 0I;
+  #L4a93ae.  return v3;
+}
+procedure `void` `childRequested`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v3 @kind this, `long` v4 ) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.childRequested:(J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4a94b4.  @monitorenter v3
+  #L4a94b6.  v0:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.producer` @type ^`rx.Producer` @kind object;
+  #L4a94ba.  v1:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.requested` @type ^`long` @kind wide;
+  #L4a94be.  call temp:= `addCap`(v1, v4) @signature `Lrx/internal/operators/BackpressureUtils;.addCap:(JJ)J` @kind static;
+  #L4a94c4.  v1:= temp @kind wide;
+  #L4a94c6.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.requested` @type ^`long` := v1 @kind wide;
+  #L4a94ca.  @monitorexit v3
+  #L4a94cc.  if v0 == 0 then goto L4a94d6;
+  #L4a94d0.  call `request`(v0, v4) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L4a94d6.  call `drain`(v3) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.drain:()V` @kind virtual;
+  #L4a94dc.  return @kind void;
+  #L4a94de.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a94e0.  @monitorexit v3
+  #L4a94e2.  throw v4;
+  catch `java.lang.Throwable` @[L4a94b6..L4a94cc] goto L4a94de;
+  catch `java.lang.Throwable` @[L4a94e0..L4a94e2] goto L4a94de;
+}
+procedure `void` `clearProducer`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v1 @kind this) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.clearProducer:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L4a9508.  @monitorenter v1
+  #L4a950a.  v0:= 0I;
+  #L4a950c.  v1.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.producer` @type ^`rx.Producer` := v0 @kind object;
+  #L4a9510.  @monitorexit v1
+  #L4a9512.  return @kind void;
+  #L4a9514.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a9516.  @monitorexit v1
+  #L4a9518.  throw v0;
+  catch `java.lang.Throwable` @[L4a950c..L4a9518] goto L4a9514;
+}
+procedure `void` `complete`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v3 @kind this, `long` v4 ) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.complete:(J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4a9538.  @monitorenter v3
+  #L4a953a.  v0:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a953e.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4a9544.  v0:= temp @kind wide;
+  #L4a9546.  v2:= lcmp(v0, v4);
+  #L4a954a.  if v2 == 0 then goto L4a9552;
+  #L4a954e.  @monitorexit v3
+  #L4a9550.  return @kind void;
+  #L4a9552.  v4:= 0I;
+  #L4a9554.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.innerActive` @type ^`boolean` := v4 @kind boolean;
+  #L4a9558.  v4:= 0I;
+  #L4a955a.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.producer` @type ^`rx.Producer` := v4 @kind object;
+  #L4a955e.  @monitorexit v3
+  #L4a9560.  call `drain`(v3) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.drain:()V` @kind virtual;
+  #L4a9566.  return @kind void;
+  #L4a9568.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a956a.  @monitorexit v3
+  #L4a956c.  throw v4;
+  catch `java.lang.Throwable` @[L4a953a..L4a9560] goto L4a9568;
+  catch `java.lang.Throwable` @[L4a956a..L4a956c] goto L4a9568;
+}
+procedure `void` `drain`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v19 @kind this) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.drain:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+
+  #L4a9594.  v8:= v19 @kind object;
+  #L4a9598.  @monitorenter v19
+  #L4a959a.  v0:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.emitting` @type ^`boolean` @kind boolean;
+  #L4a959e.  v1:= 1I;
+  #L4a95a0.  if v0 == 0 then goto L4a95ac;
+  #L4a95a4.  v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.missed` @type ^`boolean` := v1 @kind boolean;
+  #L4a95a8.  @monitorexit v19
+  #L4a95aa.  return @kind void;
+  #L4a95ac.  v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.emitting` @type ^`boolean` := v1 @kind boolean;
+  #L4a95b0.  v0:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.innerActive` @type ^`boolean` @kind boolean;
+  #L4a95b4.  v1:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.requested` @type ^`long` @kind wide;
+  #L4a95b8.  v3:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` @kind object;
+  #L4a95bc.  if v3 == 0 then goto L4a95d8;
+  #L4a95c0.  v4:= `@@rx.internal.operators.OperatorSwitch$SwitchSubscriber.TERMINAL_ERROR` @type ^`java.lang.Throwable` @kind object;
+  #L4a95c4.  if v3 == v4 then goto L4a95d8;
+  #L4a95c8.  v4:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.delayError` @type ^`boolean` @kind boolean;
+  #L4a95cc.  if v4 != 0 then goto L4a95d8;
+  #L4a95d0.  v4:= `@@rx.internal.operators.OperatorSwitch$SwitchSubscriber.TERMINAL_ERROR` @type ^`java.lang.Throwable` @kind object;
+  #L4a95d4.  v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` := v4 @kind object;
+  #L4a95d8.  @monitorexit v19
+  #L4a95da.  v9:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.queue` @type ^`rx.internal.util.atomic.SpscLinkedArrayQueue` @kind object;
+  #L4a95de.  v10:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a95e2.  v11:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a95e6.  v4:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.mainDone` @type ^`boolean` @kind boolean;
+  #L4a95ea.  v12:= v1 @kind wide;
+  #L4a95ec.  v14:= v3 @kind object;
+  #L4a95ee.  v15:= v4;
+  #L4a95f0.  v1:= 0L;
+  #L4a95f4.  v16:= v1 @kind wide;
+  #L4a95f8.  v1:= lcmp(v16, v12);
+  #L4a95fc.  if v1 == 0 then goto L4a9680;
+  #L4a9600.  call temp:= `isUnsubscribed`(v11) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4a9606.  v1:= temp;
+  #L4a9608.  if v1 == 0 then goto L4a960e;
+  #L4a960c.  return @kind void;
+  #L4a960e.  call temp:= `isEmpty`(v9) @signature `Lrx/internal/util/atomic/SpscLinkedArrayQueue;.isEmpty:()Z` @kind virtual;
+  #L4a9614.  v18:= temp;
+  #L4a9616.  v1:= v19 @kind object;
+  #L4a961a.  v2:= v15;
+  #L4a961c.  v3:= v0;
+  #L4a961e.  v4:= v14 @kind object;
+  #L4a9620.  v5:= v9 @kind object;
+  #L4a9622.  v6:= v11 @kind object;
+  #L4a9624.  v7:= v18;
+  #L4a9628.  call temp:= `checkTerminated`(v1, v2, v3, v4, v5, v6, v7) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.checkTerminated:(ZZLjava/lang/Throwable;Lrx/internal/util/atomic/SpscLinkedArrayQueue;Lrx/Subscriber;Z)Z` @kind virtual;
+  #L4a962e.  v1:= temp;
+  #L4a9630.  if v1 == 0 then goto L4a9636;
+  #L4a9634.  return @kind void;
+  #L4a9636.  if v18 == 0 then goto L4a963c;
+  #L4a963a.  goto L4a9680;
+  #L4a963c.  call temp:= `poll`(v9) @signature `Lrx/internal/util/atomic/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L4a9642.  v1:= temp @kind object;
+  #L4a9644.  v1:= (`rx.internal.operators.OperatorSwitch$InnerSubscriber`) v1 @kind object;
+  #L4a9648.  call temp:= `poll`(v9) @signature `Lrx/internal/util/atomic/SpscLinkedArrayQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L4a964e.  v2:= temp @kind object;
+  #L4a9650.  call temp:= `getValue`(v2) @signature `Lrx/internal/operators/NotificationLite;.getValue:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L4a9656.  v2:= temp @kind object;
+  #L4a9658.  call temp:= `get`(v10) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4a965e.  v3:= temp @kind wide;
+  #L4a9660.  call temp:= `access$000`(v1) @signature `Lrx/internal/operators/OperatorSwitch$InnerSubscriber;.access$000:(Lrx/internal/operators/OperatorSwitch$InnerSubscriber;)J` @kind static;
+  #L4a9666.  v5:= temp @kind wide;
+  #L4a9668.  v1:= lcmp(v3, v5);
+  #L4a966c.  if v1 != 0 then goto L4a95f8;
+  #L4a9670.  call `onNext`(v11, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4a9676.  v1:= 1L;
+  #L4a967a.  v16:= v16 + v1 @kind long;
+  #L4a967e.  goto L4a95f8;
+  #L4a9680.  v1:= lcmp(v16, v12);
+  #L4a9684.  if v1 != 0 then goto L4a96bc;
+  #L4a9688.  call temp:= `isUnsubscribed`(v11) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4a968e.  v1:= temp;
+  #L4a9690.  if v1 == 0 then goto L4a9696;
+  #L4a9694.  return @kind void;
+  #L4a9696.  v2:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.mainDone` @type ^`boolean` @kind boolean;
+  #L4a969a.  call temp:= `isEmpty`(v9) @signature `Lrx/internal/util/atomic/SpscLinkedArrayQueue;.isEmpty:()Z` @kind virtual;
+  #L4a96a0.  v7:= temp;
+  #L4a96a2.  v1:= v19 @kind object;
+  #L4a96a6.  v3:= v0;
+  #L4a96a8.  v4:= v14 @kind object;
+  #L4a96aa.  v5:= v9 @kind object;
+  #L4a96ac.  v6:= v11 @kind object;
+  #L4a96ae.  call temp:= `checkTerminated`(v1, v2, v3, v4, v5, v6, v7) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.checkTerminated:(ZZLjava/lang/Throwable;Lrx/internal/util/atomic/SpscLinkedArrayQueue;Lrx/Subscriber;Z)Z` @kind virtual;
+  #L4a96b4.  v0:= temp;
+  #L4a96b6.  if v0 == 0 then goto L4a96bc;
+  #L4a96ba.  return @kind void;
+  #L4a96bc.  @monitorenter v19
+  #L4a96be.  v0:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.requested` @type ^`long` @kind wide;
+  #L4a96c2.  v2:= 9223372036854775807L;
+  #L4a96cc.  v4:= lcmp(v0, v2);
+  #L4a96d0.  if v4 == 0 then goto L4a96dc;
+  #L4a96d4.  v0:= v0 - v16 @kind long;
+  #L4a96d8.  v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.requested` @type ^`long` := v0 @kind wide;
+  #L4a96dc.  v12:= v0 @kind wide;
+  #L4a96de.  v0:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.missed` @type ^`boolean` @kind boolean;
+  #L4a96e2.  v1:= 0I;
+  #L4a96e4.  if v0 != 0 then goto L4a96f0;
+  #L4a96e8.  v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.emitting` @type ^`boolean` := v1 @kind boolean;
+  #L4a96ec.  @monitorexit v19
+  #L4a96ee.  return @kind void;
+  #L4a96f0.  v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.missed` @type ^`boolean` := v1 @kind boolean;
+  #L4a96f4.  v15:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.mainDone` @type ^`boolean` @kind boolean;
+  #L4a96f8.  v0:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.innerActive` @type ^`boolean` @kind boolean;
+  #L4a96fc.  v14:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` @kind object;
+  #L4a9700.  if v14 == 0 then goto L4a971c;
+  #L4a9704.  v1:= `@@rx.internal.operators.OperatorSwitch$SwitchSubscriber.TERMINAL_ERROR` @type ^`java.lang.Throwable` @kind object;
+  #L4a9708.  if v14 == v1 then goto L4a971c;
+  #L4a970c.  v1:= v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.delayError` @type ^`boolean` @kind boolean;
+  #L4a9710.  if v1 != 0 then goto L4a971c;
+  #L4a9714.  v1:= `@@rx.internal.operators.OperatorSwitch$SwitchSubscriber.TERMINAL_ERROR` @type ^`java.lang.Throwable` @kind object;
+  #L4a9718.  v8.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` := v1 @kind object;
+  #L4a971c.  @monitorexit v19
+  #L4a971e.  goto L4a95f0;
+  #L4a9722.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a9724.  @monitorexit v19
+  #L4a9726.  throw v0;
+  #L4a9728.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a972a.  @monitorexit v19
+  #L4a972c.  goto L4a9730;
+  #L4a972e.  throw v0;
+  #L4a9730.  goto L4a972e;
+  catch `java.lang.Throwable` @[L4a959a..L4a95da] goto L4a9728;
+  catch `java.lang.Throwable` @[L4a96be..L4a9726] goto L4a9722;
+  catch `java.lang.Throwable` @[L4a972a..L4a972c] goto L4a9728;
+}
+procedure `void` `emit`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v5 @kind this, `java.lang.Object` v6 @kind object, `rx.internal.operators.OperatorSwitch$InnerSubscriber` v7 @kind object) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.emit:(Ljava/lang/Object;Lrx/internal/operators/OperatorSwitch$InnerSubscriber;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4a9764.  @monitorenter v5
+  #L4a9766.  v0:= v5.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a976a.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4a9770.  v0:= temp @kind wide;
+  #L4a9772.  call temp:= `access$000`(v7) @signature `Lrx/internal/operators/OperatorSwitch$InnerSubscriber;.access$000:(Lrx/internal/operators/OperatorSwitch$InnerSubscriber;)J` @kind static;
+  #L4a9778.  v2:= temp @kind wide;
+  #L4a977a.  v4:= lcmp(v0, v2);
+  #L4a977e.  if v4 == 0 then goto L4a9786;
+  #L4a9782.  @monitorexit v5
+  #L4a9784.  return @kind void;
+  #L4a9786.  v0:= v5.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.queue` @type ^`rx.internal.util.atomic.SpscLinkedArrayQueue` @kind object;
+  #L4a978a.  call temp:= `next`(v6) @signature `Lrx/internal/operators/NotificationLite;.next:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L4a9790.  v6:= temp @kind object;
+  #L4a9792.  call temp:= `offer`(v0, v7, v6) @signature `Lrx/internal/util/atomic/SpscLinkedArrayQueue;.offer:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4a9798.  @monitorexit v5
+  #L4a979a.  call `drain`(v5) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.drain:()V` @kind virtual;
+  #L4a97a0.  return @kind void;
+  #L4a97a2.  v6:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a97a4.  @monitorexit v5
+  #L4a97a6.  throw v6;
+  catch `java.lang.Throwable` @[L4a9766..L4a979a] goto L4a97a2;
+  catch `java.lang.Throwable` @[L4a97a4..L4a97a6] goto L4a97a2;
+}
+procedure `void` `error`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v3 @kind this, `java.lang.Throwable` v4 @kind object, `long` v5 ) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.error:(Ljava/lang/Throwable;J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4a97cc.  @monitorenter v3
+  #L4a97ce.  v0:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a97d2.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4a97d8.  v0:= temp @kind wide;
+  #L4a97da.  v2:= lcmp(v0, v5);
+  #L4a97de.  if v2 != 0 then goto L4a97f8;
+  #L4a97e2.  call temp:= `updateError`(v3, v4) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.updateError:(Ljava/lang/Throwable;)Z` @kind virtual;
+  #L4a97e8.  v5:= temp;
+  #L4a97ea.  v6:= 0I;
+  #L4a97ec.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.innerActive` @type ^`boolean` := v6 @kind boolean;
+  #L4a97f0.  v6:= 0I;
+  #L4a97f2.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.producer` @type ^`rx.Producer` := v6 @kind object;
+  #L4a97f6.  goto L4a97fa;
+  #L4a97f8.  v5:= 1I;
+  #L4a97fa.  @monitorexit v3
+  #L4a97fc.  if v5 == 0 then goto L4a9808;
+  #L4a9800.  call `drain`(v3) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.drain:()V` @kind virtual;
+  #L4a9806.  goto L4a980e;
+  #L4a9808.  call `pluginError`(v3, v4) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.pluginError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4a980e.  return @kind void;
+  #L4a9810.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a9812.  @monitorexit v3
+  #L4a9814.  throw v4;
+  catch `java.lang.Throwable` @[L4a97ce..L4a97fc] goto L4a9810;
+  catch `java.lang.Throwable` @[L4a9812..L4a9814] goto L4a9810;
+}
+procedure `void` `init`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v2 @kind this) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.init:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L4a983c.  v0:= v2.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a9840.  v1:= v2.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.serial` @type ^`rx.subscriptions.SerialSubscription` @kind object;
+  #L4a9844.  call `add`(v0, v1) @signature `Lrx/Subscriber;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L4a984a.  v0:= v2.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a984e.  v1:= new `rx.internal.operators.OperatorSwitch$SwitchSubscriber$1`;
+  #L4a9852.  call `<init>`(v1, v2) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber$1;.<init>:(Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;)V` @kind direct;
+  #L4a9858.  call temp:= `create`(v1) @signature `Lrx/subscriptions/Subscriptions;.create:(Lrx/functions/Action0;)Lrx/Subscription;` @kind static;
+  #L4a985e.  v1:= temp @kind object;
+  #L4a9860.  call `add`(v0, v1) @signature `Lrx/Subscriber;.add:(Lrx/Subscription;)V` @kind virtual;
+  #L4a9866.  v0:= v2.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.child` @type ^`rx.Subscriber` @kind object;
+  #L4a986a.  v1:= new `rx.internal.operators.OperatorSwitch$SwitchSubscriber$2`;
+  #L4a986e.  call `<init>`(v1, v2) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber$2;.<init>:(Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;)V` @kind direct;
+  #L4a9874.  call `setProducer`(v0, v1) @signature `Lrx/Subscriber;.setProducer:(Lrx/Producer;)V` @kind virtual;
+  #L4a987a.  return @kind void;
+}
+procedure `void` `innerProducer`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v3 @kind this, `rx.Producer` v4 @kind object, `long` v5 ) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.innerProducer:(Lrx/Producer;J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4a988c.  @monitorenter v3
+  #L4a988e.  v0:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a9892.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.get:()J` @kind virtual;
+  #L4a9898.  v0:= temp @kind wide;
+  #L4a989a.  v2:= lcmp(v0, v5);
+  #L4a989e.  if v2 == 0 then goto L4a98a6;
+  #L4a98a2.  @monitorexit v3
+  #L4a98a4.  return @kind void;
+  #L4a98a6.  v5:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.requested` @type ^`long` @kind wide;
+  #L4a98aa.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.producer` @type ^`rx.Producer` := v4 @kind object;
+  #L4a98ae.  @monitorexit v3
+  #L4a98b0.  call `request`(v4, v5) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L4a98b6.  return @kind void;
+  #L4a98b8.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a98ba.  @monitorexit v3
+  #L4a98bc.  throw v4;
+  catch `java.lang.Throwable` @[L4a988e..L4a98b0] goto L4a98b8;
+  catch `java.lang.Throwable` @[L4a98ba..L4a98bc] goto L4a98b8;
+}
+procedure `void` `onCompleted`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v1 @kind this) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a98e4.  v0:= 1I;
+  #L4a98e6.  v1.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.mainDone` @type ^`boolean` := v0 @kind boolean;
+  #L4a98ea.  call `drain`(v1) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.drain:()V` @kind virtual;
+  #L4a98f0.  return @kind void;
+}
+procedure `void` `onError`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a9904.  @monitorenter v1
+  #L4a9906.  call temp:= `updateError`(v1, v2) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.updateError:(Ljava/lang/Throwable;)Z` @kind virtual;
+  #L4a990c.  v0:= temp;
+  #L4a990e.  @monitorexit v1
+  #L4a9910.  if v0 == 0 then goto L4a9922;
+  #L4a9914.  v2:= 1I;
+  #L4a9916.  v1.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.mainDone` @type ^`boolean` := v2 @kind boolean;
+  #L4a991a.  call `drain`(v1) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.drain:()V` @kind virtual;
+  #L4a9920.  goto L4a9928;
+  #L4a9922.  call `pluginError`(v1, v2) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.pluginError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4a9928.  return @kind void;
+  #L4a992a.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a992c.  @monitorexit v1
+  #L4a992e.  throw v2;
+  catch `java.lang.Throwable` @[L4a9906..L4a9910] goto L4a992a;
+  catch `java.lang.Throwable` @[L4a992c..L4a992e] goto L4a992a;
+}
+procedure `void` `onNext`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v0 @kind this, `java.lang.Object` v1 @kind object) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC_SYNTHETIC {
+    temp;
+
+  #L4a9954.  v1:= (`rx.Observable`) v1 @kind object;
+  #L4a9958.  call `onNext`(v0, v1) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.onNext:(Lrx/Observable;)V` @kind virtual;
+  #L4a995e.  return @kind void;
+}
+procedure `void` `onNext`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v3 @kind this, `rx.Observable` v4 @kind object) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.onNext:(Lrx/Observable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4a9970.  v0:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.index` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L4a9974.  call temp:= `incrementAndGet`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.incrementAndGet:()J` @kind virtual;
+  #L4a997a.  v0:= temp @kind wide;
+  #L4a997c.  v2:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.serial` @type ^`rx.subscriptions.SerialSubscription` @kind object;
+  #L4a9980.  call temp:= `get`(v2) @signature `Lrx/subscriptions/SerialSubscription;.get:()Lrx/Subscription;` @kind virtual;
+  #L4a9986.  v2:= temp @kind object;
+  #L4a9988.  if v2 == 0 then goto L4a9992;
+  #L4a998c.  call `unsubscribe`(v2) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4a9992.  @monitorenter v3
+  #L4a9994.  v2:= new `rx.internal.operators.OperatorSwitch$InnerSubscriber`;
+  #L4a9998.  call `<init>`(v2, v0, v3) @signature `Lrx/internal/operators/OperatorSwitch$InnerSubscriber;.<init>:(JLrx/internal/operators/OperatorSwitch$SwitchSubscriber;)V` @kind direct;
+  #L4a999e.  v0:= 1I;
+  #L4a99a0.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.innerActive` @type ^`boolean` := v0 @kind boolean;
+  #L4a99a4.  v0:= 0I;
+  #L4a99a6.  v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.producer` @type ^`rx.Producer` := v0 @kind object;
+  #L4a99aa.  @monitorexit v3
+  #L4a99ac.  v0:= v3.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.serial` @type ^`rx.subscriptions.SerialSubscription` @kind object;
+  #L4a99b0.  call `set`(v0, v2) @signature `Lrx/subscriptions/SerialSubscription;.set:(Lrx/Subscription;)V` @kind virtual;
+  #L4a99b6.  call temp:= `unsafeSubscribe`(v4, v2) @signature `Lrx/Observable;.unsafeSubscribe:(Lrx/Subscriber;)Lrx/Subscription;` @kind virtual;
+  #L4a99bc.  return @kind void;
+  #L4a99be.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4a99c0.  @monitorexit v3
+  #L4a99c2.  throw v4;
+  catch `java.lang.Throwable` @[L4a9994..L4a99ac] goto L4a99be;
+  catch `java.lang.Throwable` @[L4a99c0..L4a99c2] goto L4a99be;
+}
+procedure `void` `pluginError`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v0 @kind this, `java.lang.Throwable` v1 @kind object) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.pluginError:(Ljava/lang/Throwable;)V` @AccessFlag  {
+    temp;
+
+  #L4a99e8.  call `onError`(v1) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4a99ee.  return @kind void;
+}
+procedure `boolean` `updateError`(`rx.internal.operators.OperatorSwitch$SwitchSubscriber` v5 @kind this, `java.lang.Throwable` v6 @kind object) @signature `Lrx/internal/operators/OperatorSwitch$SwitchSubscriber;.updateError:(Ljava/lang/Throwable;)Z` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4a93c0.  v0:= v5.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` @kind object;
+  #L4a93c4.  v1:= `@@rx.internal.operators.OperatorSwitch$SwitchSubscriber.TERMINAL_ERROR` @type ^`java.lang.Throwable` @kind object;
+  #L4a93c8.  v2:= 0I;
+  #L4a93ca.  if v0 != v1 then goto L4a93d0;
+  #L4a93ce.  return v2;
+  #L4a93d0.  v1:= 1I;
+  #L4a93d2.  if v0 != 0 then goto L4a93dc;
+  #L4a93d6.  v5.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` := v6 @kind object;
+  #L4a93da.  goto L4a942c;
+  #L4a93dc.  v3:= instanceof @variable v0 @type ^`rx.exceptions.CompositeException` @kind boolean;
+  #L4a93e0.  if v3 == 0 then goto L4a9410;
+  #L4a93e4.  v2:= new `java.util.ArrayList`;
+  #L4a93e8.  v0:= (`rx.exceptions.CompositeException`) v0 @kind object;
+  #L4a93ec.  call temp:= `getExceptions`(v0) @signature `Lrx/exceptions/CompositeException;.getExceptions:()Ljava/util/List;` @kind virtual;
+  #L4a93f2.  v0:= temp @kind object;
+  #L4a93f4.  call `<init>`(v2, v0) @signature `Ljava/util/ArrayList;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L4a93fa.  call temp:= `add`(v2, v6) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4a9400.  v6:= new `rx.exceptions.CompositeException`;
+  #L4a9404.  call `<init>`(v6, v2) @signature `Lrx/exceptions/CompositeException;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L4a940a.  v5.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` := v6 @kind object;
+  #L4a940e.  goto L4a942c;
+  #L4a9410.  v3:= new `rx.exceptions.CompositeException`;
+  #L4a9414.  v4:= 2I;
+  #L4a9416.  v4:= new `java.lang.Throwable`[v4];
+  #L4a941a.  v4[v2]:= v0 @kind object;
+  #L4a941e.  v4[v1]:= v6 @kind object;
+  #L4a9422.  call `<init>`(v3, v4) @signature `Lrx/exceptions/CompositeException;.<init>:([Ljava/lang/Throwable;)V` @kind direct;
+  #L4a9428.  v5.`rx.internal.operators.OperatorSwitch$SwitchSubscriber.error` @type ^`java.lang.Throwable` := v3 @kind object;
+  #L4a942c.  return v1;
+}

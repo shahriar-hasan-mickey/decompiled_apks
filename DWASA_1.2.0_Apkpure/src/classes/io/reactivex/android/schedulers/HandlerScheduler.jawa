@@ -1,0 +1,50 @@
+record `io.reactivex.android.schedulers.HandlerScheduler` @kind class @AccessFlag FINAL extends `io.reactivex.Scheduler` @kind class {
+  `boolean` `io.reactivex.android.schedulers.HandlerScheduler.async` @AccessFlag PRIVATE_FINAL;
+  `android.os.Handler` `io.reactivex.android.schedulers.HandlerScheduler.handler` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.android.schedulers.HandlerScheduler` v0 @kind this, `android.os.Handler` v1 @kind object, `boolean` v2 ) @signature `Lio/reactivex/android/schedulers/HandlerScheduler;.<init>:(Landroid/os/Handler;Z)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L3e3f88.  call `<init>`(v0) @signature `Lio/reactivex/Scheduler;.<init>:()V` @kind direct;
+  #L3e3f8e.  v0.`io.reactivex.android.schedulers.HandlerScheduler.handler` @type ^`android.os.Handler` := v1 @kind object;
+  #L3e3f92.  v0.`io.reactivex.android.schedulers.HandlerScheduler.async` @type ^`boolean` := v2 @kind boolean;
+  #L3e3f96.  return @kind void;
+}
+procedure `io.reactivex.Scheduler$Worker` `createWorker`(`io.reactivex.android.schedulers.HandlerScheduler` v3 @kind this) @signature `Lio/reactivex/android/schedulers/HandlerScheduler;.createWorker:()Lio/reactivex/Scheduler$Worker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3e3f00.  v0:= new `io.reactivex.android.schedulers.HandlerScheduler$HandlerWorker`;
+  #L3e3f04.  v1:= v3.`io.reactivex.android.schedulers.HandlerScheduler.handler` @type ^`android.os.Handler` @kind object;
+  #L3e3f08.  v2:= v3.`io.reactivex.android.schedulers.HandlerScheduler.async` @type ^`boolean` @kind boolean;
+  #L3e3f0c.  call `<init>`(v0, v1, v2) @signature `Lio/reactivex/android/schedulers/HandlerScheduler$HandlerWorker;.<init>:(Landroid/os/Handler;Z)V` @kind direct;
+  #L3e3f12.  return v0 @kind object;
+}
+procedure `io.reactivex.disposables.Disposable` `scheduleDirect`(`io.reactivex.android.schedulers.HandlerScheduler` v2 @kind this, `java.lang.Runnable` v3 @kind object, `long` v4 , `java.util.concurrent.TimeUnit` v6 @kind object) @signature `Lio/reactivex/android/schedulers/HandlerScheduler;.scheduleDirect:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3e3f24.  if v3 == 0 then goto L3e3f66;
+  #L3e3f28.  if v6 == 0 then goto L3e3f56;
+  #L3e3f2c.  call temp:= `onSchedule`(v3) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onSchedule:(Ljava/lang/Runnable;)Ljava/lang/Runnable;` @kind static;
+  #L3e3f32.  v3:= temp @kind object;
+  #L3e3f34.  v0:= new `io.reactivex.android.schedulers.HandlerScheduler$ScheduledRunnable`;
+  #L3e3f38.  v1:= v2.`io.reactivex.android.schedulers.HandlerScheduler.handler` @type ^`android.os.Handler` @kind object;
+  #L3e3f3c.  call `<init>`(v0, v1, v3) @signature `Lio/reactivex/android/schedulers/HandlerScheduler$ScheduledRunnable;.<init>:(Landroid/os/Handler;Ljava/lang/Runnable;)V` @kind direct;
+  #L3e3f42.  v3:= v2.`io.reactivex.android.schedulers.HandlerScheduler.handler` @type ^`android.os.Handler` @kind object;
+  #L3e3f46.  call temp:= `toMillis`(v6, v4) @signature `Ljava/util/concurrent/TimeUnit;.toMillis:(J)J` @kind virtual;
+  #L3e3f4c.  v4:= temp @kind wide;
+  #L3e3f4e.  call temp:= `postDelayed`(v3, v0, v4) @signature `Landroid/os/Handler;.postDelayed:(Ljava/lang/Runnable;J)Z` @kind virtual;
+  #L3e3f54.  return v0 @kind object;
+  #L3e3f56.  v3:= new `java.lang.NullPointerException`;
+  #L3e3f5a.  v4:= "unit == null" @kind object;
+  #L3e3f5e.  call `<init>`(v3, v4) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3e3f64.  throw v3;
+  #L3e3f66.  v3:= new `java.lang.NullPointerException`;
+  #L3e3f6a.  v4:= "run == null" @kind object;
+  #L3e3f6e.  call `<init>`(v3, v4) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3e3f74.  throw v3;
+}

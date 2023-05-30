@@ -1,0 +1,81 @@
+record `rx.internal.schedulers.SchedulerWhen` @kind class @AccessFlag PUBLIC extends `rx.Scheduler` @kind class, `rx.Subscription` @kind interface {
+  `rx.Scheduler` `rx.internal.schedulers.SchedulerWhen.actualScheduler` @AccessFlag PRIVATE_FINAL;
+  `rx.Subscription` `rx.internal.schedulers.SchedulerWhen.subscription` @AccessFlag PRIVATE_FINAL;
+  `rx.Observer` `rx.internal.schedulers.SchedulerWhen.workerObserver` @AccessFlag PRIVATE_FINAL;
+}
+global `rx.Subscription` `@@rx.internal.schedulers.SchedulerWhen.SUBSCRIBED` @AccessFlag STATIC_FINAL;
+global `rx.Subscription` `@@rx.internal.schedulers.SchedulerWhen.UNSUBSCRIBED` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/internal/schedulers/SchedulerWhen;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b3ba0.  v0:= new `rx.internal.schedulers.SchedulerWhen$3`;
+  #L4b3ba4.  call `<init>`(v0) @signature `Lrx/internal/schedulers/SchedulerWhen$3;.<init>:()V` @kind direct;
+  #L4b3baa.  `@@rx.internal.schedulers.SchedulerWhen.SUBSCRIBED` @type ^`rx.Subscription` := v0 @kind object;
+  #L4b3bae.  call temp:= `unsubscribed`() @signature `Lrx/subscriptions/Subscriptions;.unsubscribed:()Lrx/Subscription;` @kind static;
+  #L4b3bb4.  v0:= temp @kind object;
+  #L4b3bb6.  `@@rx.internal.schedulers.SchedulerWhen.UNSUBSCRIBED` @type ^`rx.Subscription` := v0 @kind object;
+  #L4b3bba.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.SchedulerWhen` v1 @kind this, `rx.functions.Func1` v2 @kind object, `rx.Scheduler` v3 @kind object) @signature `Lrx/internal/schedulers/SchedulerWhen;.<init>:(Lrx/functions/Func1;Lrx/Scheduler;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b3bcc.  call `<init>`(v1) @signature `Lrx/Scheduler;.<init>:()V` @kind direct;
+  #L4b3bd2.  v1.`rx.internal.schedulers.SchedulerWhen.actualScheduler` @type ^`rx.Scheduler` := v3 @kind object;
+  #L4b3bd6.  call temp:= `create`() @signature `Lrx/subjects/PublishSubject;.create:()Lrx/subjects/PublishSubject;` @kind static;
+  #L4b3bdc.  v3:= temp @kind object;
+  #L4b3bde.  v0:= new `rx.observers.SerializedObserver`;
+  #L4b3be2.  call `<init>`(v0, v3) @signature `Lrx/observers/SerializedObserver;.<init>:(Lrx/Observer;)V` @kind direct;
+  #L4b3be8.  v1.`rx.internal.schedulers.SchedulerWhen.workerObserver` @type ^`rx.Observer` := v0 @kind object;
+  #L4b3bec.  call temp:= `onBackpressureBuffer`(v3) @signature `Lrx/subjects/PublishSubject;.onBackpressureBuffer:()Lrx/Observable;` @kind virtual;
+  #L4b3bf2.  v3:= temp @kind object;
+  #L4b3bf4.  call temp:= `call`(v2, v3) @signature `Lrx/functions/Func1;.call:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4b3bfa.  v2:= temp @kind object;
+  #L4b3bfc.  v2:= (`rx.Completable`) v2 @kind object;
+  #L4b3c00.  call temp:= `subscribe`(v2) @signature `Lrx/Completable;.subscribe:()Lrx/Subscription;` @kind virtual;
+  #L4b3c06.  v2:= temp @kind object;
+  #L4b3c08.  v1.`rx.internal.schedulers.SchedulerWhen.subscription` @type ^`rx.Subscription` := v2 @kind object;
+  #L4b3c0c.  return @kind void;
+}
+procedure `rx.Scheduler$Worker` `createWorker`(`rx.internal.schedulers.SchedulerWhen` v4 @kind this) @signature `Lrx/internal/schedulers/SchedulerWhen;.createWorker:()Lrx/Scheduler$Worker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4b3b48.  v0:= v4.`rx.internal.schedulers.SchedulerWhen.actualScheduler` @type ^`rx.Scheduler` @kind object;
+  #L4b3b4c.  call temp:= `createWorker`(v0) @signature `Lrx/Scheduler;.createWorker:()Lrx/Scheduler$Worker;` @kind virtual;
+  #L4b3b52.  v0:= temp @kind object;
+  #L4b3b54.  call temp:= `create`() @signature `Lrx/internal/operators/BufferUntilSubscriber;.create:()Lrx/internal/operators/BufferUntilSubscriber;` @kind static;
+  #L4b3b5a.  v1:= temp @kind object;
+  #L4b3b5c.  v2:= new `rx.observers.SerializedObserver`;
+  #L4b3b60.  call `<init>`(v2, v1) @signature `Lrx/observers/SerializedObserver;.<init>:(Lrx/Observer;)V` @kind direct;
+  #L4b3b66.  v3:= new `rx.internal.schedulers.SchedulerWhen$1`;
+  #L4b3b6a.  call `<init>`(v3, v4, v0) @signature `Lrx/internal/schedulers/SchedulerWhen$1;.<init>:(Lrx/internal/schedulers/SchedulerWhen;Lrx/Scheduler$Worker;)V` @kind direct;
+  #L4b3b70.  call temp:= `map`(v1, v3) @signature `Lrx/internal/operators/BufferUntilSubscriber;.map:(Lrx/functions/Func1;)Lrx/Observable;` @kind virtual;
+  #L4b3b76.  v1:= temp @kind object;
+  #L4b3b78.  v3:= new `rx.internal.schedulers.SchedulerWhen$2`;
+  #L4b3b7c.  call `<init>`(v3, v4, v0, v2) @signature `Lrx/internal/schedulers/SchedulerWhen$2;.<init>:(Lrx/internal/schedulers/SchedulerWhen;Lrx/Scheduler$Worker;Lrx/Observer;)V` @kind direct;
+  #L4b3b82.  v0:= v4.`rx.internal.schedulers.SchedulerWhen.workerObserver` @type ^`rx.Observer` @kind object;
+  #L4b3b86.  call `onNext`(v0, v1) @signature `Lrx/Observer;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L4b3b8c.  return v3 @kind object;
+}
+procedure `boolean` `isUnsubscribed`(`rx.internal.schedulers.SchedulerWhen` v1 @kind this) @signature `Lrx/internal/schedulers/SchedulerWhen;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b3b28.  v0:= v1.`rx.internal.schedulers.SchedulerWhen.subscription` @type ^`rx.Subscription` @kind object;
+  #L4b3b2c.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscription;.isUnsubscribed:()Z` @kind interface;
+  #L4b3b32.  v0:= temp;
+  #L4b3b34.  return v0;
+}
+procedure `void` `unsubscribe`(`rx.internal.schedulers.SchedulerWhen` v1 @kind this) @signature `Lrx/internal/schedulers/SchedulerWhen;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b3c20.  v0:= v1.`rx.internal.schedulers.SchedulerWhen.subscription` @type ^`rx.Subscription` @kind object;
+  #L4b3c24.  call `unsubscribe`(v0) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4b3c2a.  return @kind void;
+}

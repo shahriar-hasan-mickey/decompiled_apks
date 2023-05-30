@@ -1,0 +1,816 @@
+record `io.jsonwebtoken.impl.DefaultJwtParser` @kind class @AccessFlag PUBLIC extends `io.jsonwebtoken.JwtParser` @kind interface {
+  `com.fasterxml.jackson.databind.ObjectMapper` `io.jsonwebtoken.impl.DefaultJwtParser.a` @AccessFlag PRIVATE;
+  `byte`[] `io.jsonwebtoken.impl.DefaultJwtParser.b` @AccessFlag PRIVATE;
+  `java.security.Key` `io.jsonwebtoken.impl.DefaultJwtParser.c` @AccessFlag PRIVATE;
+  `io.jsonwebtoken.SigningKeyResolver` `io.jsonwebtoken.impl.DefaultJwtParser.d` @AccessFlag PRIVATE;
+  `io.jsonwebtoken.CompressionCodecResolver` `io.jsonwebtoken.impl.DefaultJwtParser.e` @AccessFlag PRIVATE;
+  `io.jsonwebtoken.Claims` `io.jsonwebtoken.impl.DefaultJwtParser.f` @AccessFlag ;
+  `io.jsonwebtoken.Clock` `io.jsonwebtoken.impl.DefaultJwtParser.g` @AccessFlag PRIVATE;
+  `long` `io.jsonwebtoken.impl.DefaultJwtParser.h` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`io.jsonwebtoken.impl.DefaultJwtParser` v2 @kind this) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L40d900.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L40d906.  v0:= new `com.fasterxml.jackson.databind.ObjectMapper`;
+  #L40d90a.  call `<init>`(v0) @signature `Lcom/fasterxml/jackson/databind/ObjectMapper;.<init>:()V` @kind direct;
+  #L40d910.  v2.`io.jsonwebtoken.impl.DefaultJwtParser.a` @type ^`com.fasterxml.jackson.databind.ObjectMapper` := v0 @kind object;
+  #L40d914.  v0:= new `io.jsonwebtoken.impl.compression.DefaultCompressionCodecResolver`;
+  #L40d918.  call `<init>`(v0) @signature `Lio/jsonwebtoken/impl/compression/DefaultCompressionCodecResolver;.<init>:()V` @kind direct;
+  #L40d91e.  v2.`io.jsonwebtoken.impl.DefaultJwtParser.e` @type ^`io.jsonwebtoken.CompressionCodecResolver` := v0 @kind object;
+  #L40d922.  v0:= new `io.jsonwebtoken.impl.DefaultClaims`;
+  #L40d926.  call `<init>`(v0) @signature `Lio/jsonwebtoken/impl/DefaultClaims;.<init>:()V` @kind direct;
+  #L40d92c.  v2.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` := v0 @kind object;
+  #L40d930.  v0:= `@@io.jsonwebtoken.impl.DefaultClock.INSTANCE` @type ^`io.jsonwebtoken.Clock` @kind object;
+  #L40d934.  v2.`io.jsonwebtoken.impl.DefaultJwtParser.g` @type ^`io.jsonwebtoken.Clock` := v0 @kind object;
+  #L40d938.  v0:= 0L;
+  #L40d93c.  v2.`io.jsonwebtoken.impl.DefaultJwtParser.h` @type ^`long` := v0 @kind wide;
+  #L40d940.  return @kind void;
+}
+procedure `void` `a`(`io.jsonwebtoken.impl.DefaultJwtParser` v9 @kind this, `io.jsonwebtoken.Header` v10 @kind object, `io.jsonwebtoken.Claims` v11 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.a:(Lio/jsonwebtoken/Header;Lio/jsonwebtoken/Claims;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+
+  #L40d954.  v0:= v9.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d958.  call temp:= `keySet`(v0) @signature `Ljava/util/Map;.keySet:()Ljava/util/Set;` @kind interface;
+  #L40d95e.  v0:= temp @kind object;
+  #L40d960.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L40d966.  v0:= temp @kind object;
+  #L40d968.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L40d96e.  v1:= temp;
+  #L40d970.  if v1 == 0 then goto L40da8a;
+  #L40d974.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L40d97a.  v1:= temp @kind object;
+  #L40d97c.  v1:= (`java.lang.String`) v1 @kind object;
+  #L40d980.  v2:= v9.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d984.  call temp:= `get`(v2, v1) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L40d98a.  v2:= temp @kind object;
+  #L40d98c.  call temp:= `get`(v11, v1) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L40d992.  v3:= temp @kind object;
+  #L40d994.  v4:= "iat" @kind object;
+  #L40d998.  call temp:= `equals`(v4, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L40d99e.  v4:= temp;
+  #L40d9a0.  if v4 != 0 then goto L40d9f4;
+  #L40d9a4.  v4:= "exp" @kind object;
+  #L40d9a8.  call temp:= `equals`(v4, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L40d9ae.  v4:= temp;
+  #L40d9b0.  if v4 != 0 then goto L40d9f4;
+  #L40d9b4.  v4:= "nbf" @kind object;
+  #L40d9b8.  call temp:= `equals`(v4, v1) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L40d9be.  v4:= temp;
+  #L40d9c0.  if v4 == 0 then goto L40d9c6;
+  #L40d9c4.  goto L40d9f4;
+  #L40d9c6.  v4:= instanceof @variable v2 @type ^`java.util.Date` @kind boolean;
+  #L40d9ca.  if v4 == 0 then goto L40da10;
+  #L40d9ce.  if v3 == 0 then goto L40da10;
+  #L40d9d2.  v4:= instanceof @variable v3 @type ^`java.lang.Long` @kind boolean;
+  #L40d9d6.  if v4 == 0 then goto L40da10;
+  #L40d9da.  v4:= new `java.util.Date`;
+  #L40d9de.  v3:= (`java.lang.Long`) v3 @kind object;
+  #L40d9e2.  call temp:= `longValue`(v3) @signature `Ljava/lang/Long;.longValue:()J` @kind virtual;
+  #L40d9e8.  v5:= temp @kind wide;
+  #L40d9ea.  call `<init>`(v4, v5) @signature `Ljava/util/Date;.<init>:(J)V` @kind direct;
+  #L40d9f0.  v3:= v4 @kind object;
+  #L40d9f2.  goto L40da10;
+  #L40d9f4.  v2:= v9.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d9f8.  v3:= constclass @type ^`java.util.Date` @kind object;
+  #L40d9fc.  call temp:= `get`(v2, v1, v3) @signature `Lio/jsonwebtoken/Claims;.get:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind interface;
+  #L40da02.  v2:= temp @kind object;
+  #L40da04.  v3:= constclass @type ^`java.util.Date` @kind object;
+  #L40da08.  call temp:= `get`(v11, v1, v3) @signature `Lio/jsonwebtoken/Claims;.get:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind interface;
+  #L40da0e.  v3:= temp @kind object;
+  #L40da10.  v4:= 0I;
+  #L40da12.  v5:= 1I;
+  #L40da14.  v6:= 0I;
+  #L40da16.  v7:= 2I;
+  #L40da18.  if v3 != 0 then goto L40da40;
+  #L40da1c.  v3:= new `java.lang.Object`[v7];
+  #L40da20.  v3[v6]:= v1 @kind object;
+  #L40da24.  v3[v5]:= v2 @kind object;
+  #L40da28.  v4:= "Expected %s claim to be: %s, but was not present in the JWT claims." @kind object;
+  #L40da2c.  call temp:= `format`(v4, v3) @signature `Ljava/lang/String;.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L40da32.  v3:= temp @kind object;
+  #L40da34.  v4:= new `io.jsonwebtoken.MissingClaimException`;
+  #L40da38.  call `<init>`(v4, v10, v11, v3) @signature `Lio/jsonwebtoken/MissingClaimException;.<init>:(Lio/jsonwebtoken/Header;Lio/jsonwebtoken/Claims;Ljava/lang/String;)V` @kind direct;
+  #L40da3e.  goto L40da74;
+  #L40da40.  call temp:= `equals`(v2, v3) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L40da46.  v8:= temp;
+  #L40da48.  if v8 != 0 then goto L40da74;
+  #L40da4c.  v4:= 3I;
+  #L40da4e.  v4:= new `java.lang.Object`[v4];
+  #L40da52.  v4[v6]:= v1 @kind object;
+  #L40da56.  v4[v5]:= v2 @kind object;
+  #L40da5a.  v4[v7]:= v3 @kind object;
+  #L40da5e.  v3:= "Expected %s claim to be: %s, but was: %s." @kind object;
+  #L40da62.  call temp:= `format`(v3, v4) @signature `Ljava/lang/String;.format:(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L40da68.  v3:= temp @kind object;
+  #L40da6a.  v4:= new `io.jsonwebtoken.IncorrectClaimException`;
+  #L40da6e.  call `<init>`(v4, v10, v11, v3) @signature `Lio/jsonwebtoken/IncorrectClaimException;.<init>:(Lio/jsonwebtoken/Header;Lio/jsonwebtoken/Claims;Ljava/lang/String;)V` @kind direct;
+  #L40da74.  if v4 != 0 then goto L40da7c;
+  #L40da78.  goto L40d968;
+  #L40da7c.  call `setClaimName`(v4, v1) @signature `Lio/jsonwebtoken/InvalidClaimException;.setClaimName:(Ljava/lang/String;)V` @kind virtual;
+  #L40da82.  call `setClaimValue`(v4, v2) @signature `Lio/jsonwebtoken/InvalidClaimException;.setClaimValue:(Ljava/lang/Object;)V` @kind virtual;
+  #L40da88.  throw v4;
+  #L40da8a.  return @kind void;
+}
+procedure `io.jsonwebtoken.impl.crypto.JwtSignatureValidator` `createSignatureValidator`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `io.jsonwebtoken.SignatureAlgorithm` v2 @kind object, `java.security.Key` v3 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.createSignatureValidator:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)Lio/jsonwebtoken/impl/crypto/JwtSignatureValidator;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L40d7fc.  v0:= new `io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator`;
+  #L40d800.  call `<init>`(v0, v2, v3) @signature `Lio/jsonwebtoken/impl/crypto/DefaultJwtSignatureValidator;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @kind direct;
+  #L40d806.  return v0 @kind object;
+}
+procedure `boolean` `isSigned`(`io.jsonwebtoken.impl.DefaultJwtParser` v6 @kind this, `java.lang.String` v7 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.isSigned:(Ljava/lang/String;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L40cec4.  v0:= 0I;
+  #L40cec6.  if v7 != 0 then goto L40cecc;
+  #L40ceca.  return v0;
+  #L40cecc.  v1:= 0I;
+  #L40cece.  v2:= 0I;
+  #L40ced0.  call temp:= `length`(v7) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L40ced6.  v3:= temp;
+  #L40ced8.  if v1 >= v3 then goto L40cf10;
+  #L40cedc.  call temp:= `charAt`(v7, v1) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L40cee2.  v3:= temp;
+  #L40cee4.  v4:= 2I;
+  #L40cee6.  v5:= 46I;
+  #L40ceea.  if v2 != v4 then goto L40cf02;
+  #L40ceee.  call temp:= `isWhitespace`(v3) @signature `Ljava/lang/Character;.isWhitespace:(C)Z` @kind static;
+  #L40cef4.  v7:= temp;
+  #L40cef6.  if v7 != 0 then goto L40cf00;
+  #L40cefa.  if v3 == v5 then goto L40cf00;
+  #L40cefe.  v0:= 1I;
+  #L40cf00.  return v0;
+  #L40cf02.  if v3 != v5 then goto L40cf0a;
+  #L40cf06.  v2:= v2 + 1;
+  #L40cf0a.  v1:= v1 + 1;
+  #L40cf0e.  goto L40ced0;
+  #L40cf10.  return v0;
+}
+procedure `io.jsonwebtoken.Jwt` `parse`(`io.jsonwebtoken.impl.DefaultJwtParser` v17 @kind this, `java.lang.String` v18 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parse:(Ljava/lang/String;)Lio/jsonwebtoken/Jwt;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+
+  #L40cf98.  v1:= v17 @kind object;
+  #L40cf9c.  v0:= v18 @kind object;
+  #L40cfa0.  v2:= "JWT String argument cannot be null or empty." @kind object;
+  #L40cfa4.  call `hasText`(v0, v2) @signature `Lio/jsonwebtoken/lang/Assert;.hasText:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L40cfaa.  v2:= new `java.lang.StringBuilder`;
+  #L40cfae.  v3:= 128I;
+  #L40cfb2.  call `<init>`(v2, v3) @signature `Ljava/lang/StringBuilder;.<init>:(I)V` @kind direct;
+  #L40cfb8.  call temp:= `toCharArray`(v18) @signature `Ljava/lang/String;.toCharArray:()[C` @kind virtual;
+  #L40cfbe.  v3:= temp @kind object;
+  #L40cfc0.  v4:= length @variable v3;
+  #L40cfc2.  v5:= 0I;
+  #L40cfc4.  v6:= 0I;
+  #L40cfc6.  v9:= v6 @kind object;
+  #L40cfc8.  v10:= v9 @kind object;
+  #L40cfca.  v7:= 0I;
+  #L40cfcc.  v8:= 0I;
+  #L40cfce.  v11:= 46I;
+  #L40cfd2.  v12:= 1I;
+  #L40cfd4.  if v7 >= v4 then goto L40d01e;
+  #L40cfd8.  v13:= v3[v7] @kind char;
+  #L40cfdc.  if v13 != v11 then goto L40d012;
+  #L40cfe0.  call temp:= `clean`(v2) @signature `Lio/jsonwebtoken/lang/Strings;.clean:(Ljava/lang/CharSequence;)Ljava/lang/CharSequence;` @kind static;
+  #L40cfe6.  v11:= temp @kind object;
+  #L40cfe8.  if v11 == 0 then goto L40cff6;
+  #L40cfec.  call temp:= `toString`(v11) @signature `Ljava/lang/CharSequence;.toString:()Ljava/lang/String;` @kind interface;
+  #L40cff2.  v11:= temp @kind object;
+  #L40cff4.  goto L40cff8;
+  #L40cff6.  v11:= v6 @kind object;
+  #L40cff8.  if v8 != 0 then goto L40d000;
+  #L40cffc.  v10:= v11 @kind object;
+  #L40cffe.  goto L40d006;
+  #L40d000.  if v8 != v12 then goto L40d006;
+  #L40d004.  v9:= v11 @kind object;
+  #L40d006.  v8:= v8 + 1;
+  #L40d00a.  call `setLength`(v2, v5) @signature `Ljava/lang/StringBuilder;.setLength:(I)V` @kind virtual;
+  #L40d010.  goto L40d018;
+  #L40d012.  call temp:= `append`(v2, v13) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d018.  v7:= v7 + 1;
+  #L40d01c.  goto L40cfce;
+  #L40d01e.  v3:= 2I;
+  #L40d020.  if v8 != v3 then goto L40d52c;
+  #L40d024.  call temp:= `length`(v2) @signature `Ljava/lang/StringBuilder;.length:()I` @kind virtual;
+  #L40d02a.  v3:= temp;
+  #L40d02c.  if v3 <= 0 then goto L40d03a;
+  #L40d030.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d036.  v2:= temp @kind object;
+  #L40d038.  goto L40d03c;
+  #L40d03a.  v2:= v6 @kind object;
+  #L40d03c.  if v9 == 0 then goto L40d4f4;
+  #L40d040.  if v10 == 0 then goto L40d080;
+  #L40d044.  v0:= `@@io.jsonwebtoken.impl.TextCodec.BASE64URL` @type ^`io.jsonwebtoken.impl.TextCodec` @kind object;
+  #L40d048.  call temp:= `decodeToString`(v0, v10) @signature `Lio/jsonwebtoken/impl/TextCodec;.decodeToString:(Ljava/lang/String;)Ljava/lang/String;` @kind interface;
+  #L40d04e.  v0:= temp @kind object;
+  #L40d050.  call temp:= `readValue`(v1, v0) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.readValue:(Ljava/lang/String;)Ljava/util/Map;` @kind virtual;
+  #L40d056.  v0:= temp @kind object;
+  #L40d058.  if v2 == 0 then goto L40d068;
+  #L40d05c.  v3:= new `io.jsonwebtoken.impl.DefaultJwsHeader`;
+  #L40d060.  call `<init>`(v3, v0) @signature `Lio/jsonwebtoken/impl/DefaultJwsHeader;.<init>:(Ljava/util/Map;)V` @kind direct;
+  #L40d066.  goto L40d072;
+  #L40d068.  v3:= new `io.jsonwebtoken.impl.DefaultHeader`;
+  #L40d06c.  call `<init>`(v3, v0) @signature `Lio/jsonwebtoken/impl/DefaultHeader;.<init>:(Ljava/util/Map;)V` @kind direct;
+  #L40d072.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.e` @type ^`io.jsonwebtoken.CompressionCodecResolver` @kind object;
+  #L40d076.  call temp:= `resolveCompressionCodec`(v0, v3) @signature `Lio/jsonwebtoken/CompressionCodecResolver;.resolveCompressionCodec:(Lio/jsonwebtoken/Header;)Lio/jsonwebtoken/CompressionCodec;` @kind interface;
+  #L40d07c.  v0:= temp @kind object;
+  #L40d07e.  goto L40d084;
+  #L40d080.  v0:= v6 @kind object;
+  #L40d082.  v3:= v0 @kind object;
+  #L40d084.  if v0 == 0 then goto L40d0ac;
+  #L40d088.  v4:= `@@io.jsonwebtoken.impl.TextCodec.BASE64URL` @type ^`io.jsonwebtoken.impl.TextCodec` @kind object;
+  #L40d08c.  call temp:= `decode`(v4, v9) @signature `Lio/jsonwebtoken/impl/TextCodec;.decode:(Ljava/lang/String;)[B` @kind interface;
+  #L40d092.  v4:= temp @kind object;
+  #L40d094.  call temp:= `decompress`(v0, v4) @signature `Lio/jsonwebtoken/CompressionCodec;.decompress:([B)[B` @kind interface;
+  #L40d09a.  v0:= temp @kind object;
+  #L40d09c.  v4:= new `java.lang.String`;
+  #L40d0a0.  v7:= `@@io.jsonwebtoken.lang.Strings.UTF_8` @type ^`java.nio.charset.Charset` @kind object;
+  #L40d0a4.  call `<init>`(v4, v0, v7) @signature `Ljava/lang/String;.<init>:([BLjava/nio/charset/Charset;)V` @kind direct;
+  #L40d0aa.  goto L40d0b8;
+  #L40d0ac.  v0:= `@@io.jsonwebtoken.impl.TextCodec.BASE64URL` @type ^`io.jsonwebtoken.impl.TextCodec` @kind object;
+  #L40d0b0.  call temp:= `decodeToString`(v0, v9) @signature `Lio/jsonwebtoken/impl/TextCodec;.decodeToString:(Ljava/lang/String;)Ljava/lang/String;` @kind interface;
+  #L40d0b6.  v4:= temp @kind object;
+  #L40d0b8.  call temp:= `charAt`(v4, v5) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L40d0be.  v0:= temp;
+  #L40d0c0.  v7:= 123I;
+  #L40d0c4.  if v0 != v7 then goto L40d0f6;
+  #L40d0c8.  call temp:= `length`(v4) @signature `Ljava/lang/String;.length:()I` @kind virtual;
+  #L40d0ce.  v0:= temp;
+  #L40d0d0.  v0:= v0 - v12 @kind int;
+  #L40d0d2.  call temp:= `charAt`(v4, v0) @signature `Ljava/lang/String;.charAt:(I)C` @kind virtual;
+  #L40d0d8.  v0:= temp;
+  #L40d0da.  v7:= 125I;
+  #L40d0de.  if v0 != v7 then goto L40d0f6;
+  #L40d0e2.  call temp:= `readValue`(v1, v4) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.readValue:(Ljava/lang/String;)Ljava/util/Map;` @kind virtual;
+  #L40d0e8.  v0:= temp @kind object;
+  #L40d0ea.  v7:= new `io.jsonwebtoken.impl.DefaultClaims`;
+  #L40d0ee.  call `<init>`(v7, v0) @signature `Lio/jsonwebtoken/impl/DefaultClaims;.<init>:(Ljava/util/Map;)V` @kind direct;
+  #L40d0f4.  goto L40d0f8;
+  #L40d0f6.  v7:= v6 @kind object;
+  #L40d0f8.  if v2 == 0 then goto L40d2f2;
+  #L40d0fc.  v0:= v3 @kind object;
+  #L40d0fe.  v0:= (`io.jsonwebtoken.JwsHeader`) v0 @kind object;
+  #L40d102.  if v3 == 0 then goto L40d122;
+  #L40d106.  call temp:= `getAlgorithm`(v0) @signature `Lio/jsonwebtoken/JwsHeader;.getAlgorithm:()Ljava/lang/String;` @kind interface;
+  #L40d10c.  v8:= temp @kind object;
+  #L40d10e.  call temp:= `hasText`(v8) @signature `Lio/jsonwebtoken/lang/Strings;.hasText:(Ljava/lang/String;)Z` @kind static;
+  #L40d114.  v13:= temp;
+  #L40d116.  if v13 == 0 then goto L40d122;
+  #L40d11a.  call temp:= `forName`(v8) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.forName:(Ljava/lang/String;)Lio/jsonwebtoken/SignatureAlgorithm;` @kind static;
+  #L40d120.  v6:= temp @kind object;
+  #L40d122.  if v6 == 0 then goto L40d2e2;
+  #L40d126.  v8:= `@@io.jsonwebtoken.SignatureAlgorithm.NONE` @type ^`io.jsonwebtoken.SignatureAlgorithm` @kind object;
+  #L40d12a.  if v6 == v8 then goto L40d2e2;
+  #L40d12e.  v8:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.c` @type ^`java.security.Key` @kind object;
+  #L40d132.  if v8 == 0 then goto L40d150;
+  #L40d136.  v8:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.b` @type ^`byte`[] @kind object;
+  #L40d13a.  if v8 != 0 then goto L40d140;
+  #L40d13e.  goto L40d150;
+  #L40d140.  v0:= new `java.lang.IllegalStateException`;
+  #L40d144.  v2:= "A key object and key bytes cannot both be specified. Choose either." @kind object;
+  #L40d148.  call `<init>`(v0, v2) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d14e.  throw v0;
+  #L40d150.  v8:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.c` @type ^`java.security.Key` @kind object;
+  #L40d154.  if v8 != 0 then goto L40d160;
+  #L40d158.  v8:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.b` @type ^`byte`[] @kind object;
+  #L40d15c.  if v8 == 0 then goto L40d1b2;
+  #L40d160.  v8:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.d` @type ^`io.jsonwebtoken.SigningKeyResolver` @kind object;
+  #L40d164.  if v8 == 0 then goto L40d1b2;
+  #L40d168.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.c` @type ^`java.security.Key` @kind object;
+  #L40d16c.  if v0 == 0 then goto L40d176;
+  #L40d170.  v0:= "a key object" @kind object;
+  #L40d174.  goto L40d17a;
+  #L40d176.  v0:= "key bytes" @kind object;
+  #L40d17a.  v2:= new `java.lang.IllegalStateException`;
+  #L40d17e.  v3:= new `java.lang.StringBuilder`;
+  #L40d182.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d188.  v4:= "A signing key resolver and " @kind object;
+  #L40d18c.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d192.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d198.  v0:= " cannot both be specified. Choose either." @kind object;
+  #L40d19c.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d1a2.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d1a8.  v0:= temp @kind object;
+  #L40d1aa.  call `<init>`(v2, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d1b0.  throw v2;
+  #L40d1b2.  v8:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.c` @type ^`java.security.Key` @kind object;
+  #L40d1b6.  if v8 != 0 then goto L40d21a;
+  #L40d1ba.  v13:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.b` @type ^`byte`[] @kind object;
+  #L40d1be.  call temp:= `isEmpty`(v13) @signature `Lio/jsonwebtoken/lang/Objects;.isEmpty:([B)Z` @kind static;
+  #L40d1c4.  v14:= temp;
+  #L40d1c6.  if v14 == 0 then goto L40d1ea;
+  #L40d1ca.  v14:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.d` @type ^`io.jsonwebtoken.SigningKeyResolver` @kind object;
+  #L40d1ce.  if v14 == 0 then goto L40d1ea;
+  #L40d1d2.  if v7 == 0 then goto L40d1e0;
+  #L40d1d6.  call temp:= `resolveSigningKey`(v14, v0, v7) @signature `Lio/jsonwebtoken/SigningKeyResolver;.resolveSigningKey:(Lio/jsonwebtoken/JwsHeader;Lio/jsonwebtoken/Claims;)Ljava/security/Key;` @kind interface;
+  #L40d1dc.  v0:= temp @kind object;
+  #L40d1de.  goto L40d1e8;
+  #L40d1e0.  call temp:= `resolveSigningKey`(v14, v0, v4) @signature `Lio/jsonwebtoken/SigningKeyResolver;.resolveSigningKey:(Lio/jsonwebtoken/JwsHeader;Ljava/lang/String;)Ljava/security/Key;` @kind interface;
+  #L40d1e6.  v0:= temp @kind object;
+  #L40d1e8.  v8:= v0 @kind object;
+  #L40d1ea.  call temp:= `isEmpty`(v13) @signature `Lio/jsonwebtoken/lang/Objects;.isEmpty:([B)Z` @kind static;
+  #L40d1f0.  v0:= temp;
+  #L40d1f2.  if v0 != 0 then goto L40d21a;
+  #L40d1f6.  call temp:= `isHmac`(v6) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.isHmac:()Z` @kind virtual;
+  #L40d1fc.  v0:= temp;
+  #L40d1fe.  v8:= "Key bytes can only be specified for HMAC signatures. Please specify a PublicKey or PrivateKey instance." @kind object;
+  #L40d202.  call `isTrue`(v0, v8) @signature `Lio/jsonwebtoken/lang/Assert;.isTrue:(ZLjava/lang/String;)V` @kind static;
+  #L40d208.  v8:= new `javax.crypto.spec.SecretKeySpec`;
+  #L40d20c.  call temp:= `getJcaName`(v6) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.getJcaName:()Ljava/lang/String;` @kind virtual;
+  #L40d212.  v0:= temp @kind object;
+  #L40d214.  call `<init>`(v8, v13, v0) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L40d21a.  v0:= "A signing key must be specified if the specified JWT is digitally signed." @kind object;
+  #L40d21e.  call `notNull`(v8, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40d224.  v0:= new `java.lang.StringBuilder`;
+  #L40d228.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d22e.  call temp:= `append`(v0, v10) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d234.  call temp:= `append`(v0, v11) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d23a.  call temp:= `append`(v0, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d240.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d246.  v0:= temp @kind object;
+  #L40d248.  call temp:= `createSignatureValidator`(v1, v6, v8) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.createSignatureValidator:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)Lio/jsonwebtoken/impl/crypto/JwtSignatureValidator;` @kind virtual;
+  #L40d24e.  v6:= temp @kind object;
+  #L40d250.  call temp:= `isValid`(v6, v0, v2) @signature `Lio/jsonwebtoken/impl/crypto/JwtSignatureValidator;.isValid:(Ljava/lang/String;Ljava/lang/String;)Z` @kind interface;
+  #L40d256.  v0:= temp;
+  #L40d258.  if v0 == 0 then goto L40d25e;
+  #L40d25c.  goto L40d2f2;
+  #L40d25e.  v0:= new `io.jsonwebtoken.SignatureException`;
+  #L40d262.  v2:= "JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted." @kind object;
+  #L40d266.  call `<init>`(v0, v2) @signature `Lio/jsonwebtoken/SignatureException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d26c.  throw v0;
+  #L40d26e.  v0:= Exception @type ^`java.lang.IllegalArgumentException` @kind object;
+  #L40d270.  v2:= v0 @kind object;
+  #L40d272.  call temp:= `getValue`(v6) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.getValue:()Ljava/lang/String;` @kind virtual;
+  #L40d278.  v0:= temp @kind object;
+  #L40d27a.  v3:= new `java.lang.StringBuilder`;
+  #L40d27e.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d284.  v4:= "The parsed JWT indicates it was signed with the " @kind object;
+  #L40d288.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d28e.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d294.  v4:= " signature algorithm, but the specified signing key of type " @kind object;
+  #L40d298.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d29e.  call temp:= `getClass`(v8) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L40d2a4.  v4:= temp @kind object;
+  #L40d2a6.  call temp:= `getName`(v4) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L40d2ac.  v4:= temp @kind object;
+  #L40d2ae.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d2b4.  v4:= " may not be used to validate " @kind object;
+  #L40d2b8.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d2be.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d2c4.  v0:= " signatures.  Because the specified signing key reflects a specific and expected algorithm, and the JWT does not reflect this algorithm, it is likely that the JWT was not expected and therefore should not be trusted.  Another possibility is that the parser was configured with the incorrect signing key, but this cannot be assumed for security reasons." @kind object;
+  #L40d2c8.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d2ce.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d2d4.  v0:= temp @kind object;
+  #L40d2d6.  v3:= new `io.jsonwebtoken.UnsupportedJwtException`;
+  #L40d2da.  call `<init>`(v3, v0, v2) @signature `Lio/jsonwebtoken/UnsupportedJwtException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40d2e0.  throw v3;
+  #L40d2e2.  v0:= new `io.jsonwebtoken.MalformedJwtException`;
+  #L40d2e6.  v2:= "JWT string has a digest/signature, but the header does not reference a valid signature algorithm." @kind object;
+  #L40d2ea.  call `<init>`(v0, v2) @signature `Lio/jsonwebtoken/MalformedJwtException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d2f0.  throw v0;
+  #L40d2f2.  v8:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.h` @type ^`long` @kind wide;
+  #L40d2f6.  v10:= 0L;
+  #L40d2fa.  v0:= lcmp(v8, v10);
+  #L40d2fe.  if v0 <= 0 then goto L40d304;
+  #L40d302.  v5:= 1I;
+  #L40d304.  if v7 == 0 then goto L40d4c0;
+  #L40d308.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.g` @type ^`io.jsonwebtoken.Clock` @kind object;
+  #L40d30c.  call temp:= `now`(v0) @signature `Lio/jsonwebtoken/Clock;.now:()Ljava/util/Date;` @kind interface;
+  #L40d312.  v0:= temp @kind object;
+  #L40d314.  call temp:= `getTime`(v0) @signature `Ljava/util/Date;.getTime:()J` @kind virtual;
+  #L40d31a.  v8:= temp @kind wide;
+  #L40d31c.  call temp:= `getExpiration`(v7) @signature `Lio/jsonwebtoken/Claims;.getExpiration:()Ljava/util/Date;` @kind interface;
+  #L40d322.  v6:= temp @kind object;
+  #L40d324.  v10:= " milliseconds." @kind object;
+  #L40d328.  v11:= " milliseconds.  Allowed clock skew: " @kind object;
+  #L40d32c.  v12:= ", a difference of " @kind object;
+  #L40d330.  v13:= ". Current time: " @kind object;
+  #L40d334.  v14:= "yyyy-MM-dd'T'HH:mm:ss'Z'" @kind object;
+  #L40d338.  v15:= v2 @kind object;
+  #L40d33a.  if v6 == 0 then goto L40d3f6;
+  #L40d33e.  v18:= v3 @kind object;
+  #L40d342.  v2:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.h` @type ^`long` @kind wide;
+  #L40d346.  v2:= v8 - v2 @kind long;
+  #L40d34a.  v16:= v4 @kind object;
+  #L40d34e.  if v5 == 0 then goto L40d35e;
+  #L40d352.  v4:= new `java.util.Date`;
+  #L40d356.  call `<init>`(v4, v2) @signature `Ljava/util/Date;.<init>:(J)V` @kind direct;
+  #L40d35c.  goto L40d360;
+  #L40d35e.  v4:= v0 @kind object;
+  #L40d360.  call temp:= `after`(v4, v6) @signature `Ljava/util/Date;.after:(Ljava/util/Date;)Z` @kind virtual;
+  #L40d366.  v4:= temp;
+  #L40d368.  if v4 != 0 then goto L40d372;
+  #L40d36c.  v3:= v18 @kind object;
+  #L40d370.  goto L40d3fa;
+  #L40d372.  v4:= new `java.text.SimpleDateFormat`;
+  #L40d376.  call `<init>`(v4, v14) @signature `Ljava/text/SimpleDateFormat;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d37c.  call temp:= `format`(v4, v6) @signature `Ljava/text/SimpleDateFormat;.format:(Ljava/util/Date;)Ljava/lang/String;` @kind virtual;
+  #L40d382.  v5:= temp @kind object;
+  #L40d384.  call temp:= `format`(v4, v0) @signature `Ljava/text/SimpleDateFormat;.format:(Ljava/util/Date;)Ljava/lang/String;` @kind virtual;
+  #L40d38a.  v0:= temp @kind object;
+  #L40d38c.  call temp:= `getTime`(v6) @signature `Ljava/util/Date;.getTime:()J` @kind virtual;
+  #L40d392.  v8:= temp @kind wide;
+  #L40d394.  v2:= v2 - v8 @kind long;
+  #L40d396.  v4:= new `java.lang.StringBuilder`;
+  #L40d39a.  call `<init>`(v4) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d3a0.  v6:= "JWT expired at " @kind object;
+  #L40d3a4.  call temp:= `append`(v4, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3aa.  call temp:= `append`(v4, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3b0.  call temp:= `append`(v4, v13) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3b6.  call temp:= `append`(v4, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3bc.  call temp:= `append`(v4, v12) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3c2.  call temp:= `append`(v4, v2) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3c8.  call temp:= `append`(v4, v11) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3ce.  v2:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.h` @type ^`long` @kind wide;
+  #L40d3d2.  call temp:= `append`(v4, v2) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3d8.  call temp:= `append`(v4, v10) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d3de.  call temp:= `toString`(v4) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d3e4.  v0:= temp @kind object;
+  #L40d3e6.  v2:= new `io.jsonwebtoken.ExpiredJwtException`;
+  #L40d3ea.  v3:= v18 @kind object;
+  #L40d3ee.  call `<init>`(v2, v3, v7, v0) @signature `Lio/jsonwebtoken/ExpiredJwtException;.<init>:(Lio/jsonwebtoken/Header;Lio/jsonwebtoken/Claims;Ljava/lang/String;)V` @kind direct;
+  #L40d3f4.  throw v2;
+  #L40d3f6.  v16:= v4 @kind object;
+  #L40d3fa.  call temp:= `getNotBefore`(v7) @signature `Lio/jsonwebtoken/Claims;.getNotBefore:()Ljava/util/Date;` @kind interface;
+  #L40d400.  v2:= temp @kind object;
+  #L40d402.  if v2 == 0 then goto L40d4b8;
+  #L40d406.  v18:= v3 @kind object;
+  #L40d40a.  v3:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.h` @type ^`long` @kind wide;
+  #L40d40e.  v8:= v8 + v3 @kind long;
+  #L40d410.  if v5 == 0 then goto L40d420;
+  #L40d414.  v3:= new `java.util.Date`;
+  #L40d418.  call `<init>`(v3, v8) @signature `Ljava/util/Date;.<init>:(J)V` @kind direct;
+  #L40d41e.  goto L40d422;
+  #L40d420.  v3:= v0 @kind object;
+  #L40d422.  call temp:= `before`(v3, v2) @signature `Ljava/util/Date;.before:(Ljava/util/Date;)Z` @kind virtual;
+  #L40d428.  v3:= temp;
+  #L40d42a.  if v3 != 0 then goto L40d434;
+  #L40d42e.  v3:= v18 @kind object;
+  #L40d432.  goto L40d4b8;
+  #L40d434.  v3:= new `java.text.SimpleDateFormat`;
+  #L40d438.  call `<init>`(v3, v14) @signature `Ljava/text/SimpleDateFormat;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d43e.  call temp:= `format`(v3, v2) @signature `Ljava/text/SimpleDateFormat;.format:(Ljava/util/Date;)Ljava/lang/String;` @kind virtual;
+  #L40d444.  v4:= temp @kind object;
+  #L40d446.  call temp:= `format`(v3, v0) @signature `Ljava/text/SimpleDateFormat;.format:(Ljava/util/Date;)Ljava/lang/String;` @kind virtual;
+  #L40d44c.  v0:= temp @kind object;
+  #L40d44e.  call temp:= `getTime`(v2) @signature `Ljava/util/Date;.getTime:()J` @kind virtual;
+  #L40d454.  v2:= temp @kind wide;
+  #L40d456.  v2:= v2 - v8 @kind long;
+  #L40d458.  v5:= new `java.lang.StringBuilder`;
+  #L40d45c.  call `<init>`(v5) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d462.  v6:= "JWT must not be accepted before " @kind object;
+  #L40d466.  call temp:= `append`(v5, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d46c.  call temp:= `append`(v5, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d472.  call temp:= `append`(v5, v13) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d478.  call temp:= `append`(v5, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d47e.  call temp:= `append`(v5, v12) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d484.  call temp:= `append`(v5, v2) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d48a.  call temp:= `append`(v5, v11) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d490.  v2:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.h` @type ^`long` @kind wide;
+  #L40d494.  call temp:= `append`(v5, v2) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d49a.  call temp:= `append`(v5, v10) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d4a0.  call temp:= `toString`(v5) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d4a6.  v0:= temp @kind object;
+  #L40d4a8.  v2:= new `io.jsonwebtoken.PrematureJwtException`;
+  #L40d4ac.  v3:= v18 @kind object;
+  #L40d4b0.  call `<init>`(v2, v3, v7, v0) @signature `Lio/jsonwebtoken/PrematureJwtException;.<init>:(Lio/jsonwebtoken/Header;Lio/jsonwebtoken/Claims;Ljava/lang/String;)V` @kind direct;
+  #L40d4b6.  throw v2;
+  #L40d4b8.  call `a`(v1, v3, v7) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.a:(Lio/jsonwebtoken/Header;Lio/jsonwebtoken/Claims;)V` @kind direct;
+  #L40d4be.  goto L40d4c6;
+  #L40d4c0.  v15:= v2 @kind object;
+  #L40d4c2.  v16:= v4 @kind object;
+  #L40d4c6.  if v7 == 0 then goto L40d4ce;
+  #L40d4ca.  v4:= v7 @kind object;
+  #L40d4cc.  goto L40d4d2;
+  #L40d4ce.  v4:= v16 @kind object;
+  #L40d4d2.  if v15 == 0 then goto L40d4e8;
+  #L40d4d6.  v0:= new `io.jsonwebtoken.impl.DefaultJws`;
+  #L40d4da.  v3:= (`io.jsonwebtoken.JwsHeader`) v3 @kind object;
+  #L40d4de.  v2:= v15 @kind object;
+  #L40d4e0.  call `<init>`(v0, v3, v4, v2) @signature `Lio/jsonwebtoken/impl/DefaultJws;.<init>:(Lio/jsonwebtoken/JwsHeader;Ljava/lang/Object;Ljava/lang/String;)V` @kind direct;
+  #L40d4e6.  return v0 @kind object;
+  #L40d4e8.  v0:= new `io.jsonwebtoken.impl.DefaultJwt`;
+  #L40d4ec.  call `<init>`(v0, v3, v4) @signature `Lio/jsonwebtoken/impl/DefaultJwt;.<init>:(Lio/jsonwebtoken/Header;Ljava/lang/Object;)V` @kind direct;
+  #L40d4f2.  return v0 @kind object;
+  #L40d4f4.  v2:= new `io.jsonwebtoken.MalformedJwtException`;
+  #L40d4f8.  v3:= new `java.lang.StringBuilder`;
+  #L40d4fc.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d502.  v4:= "JWT string '" @kind object;
+  #L40d506.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d50c.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d512.  v0:= "' is missing a body/payload." @kind object;
+  #L40d516.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d51c.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d522.  v0:= temp @kind object;
+  #L40d524.  call `<init>`(v2, v0) @signature `Lio/jsonwebtoken/MalformedJwtException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d52a.  throw v2;
+  #L40d52c.  v0:= new `java.lang.StringBuilder`;
+  #L40d530.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d536.  v2:= "JWT strings must contain exactly 2 period characters. Found: " @kind object;
+  #L40d53a.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d540.  call temp:= `append`(v0, v8) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d546.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d54c.  v0:= temp @kind object;
+  #L40d54e.  v2:= new `io.jsonwebtoken.MalformedJwtException`;
+  #L40d552.  call `<init>`(v2, v0) @signature `Lio/jsonwebtoken/MalformedJwtException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40d558.  throw v2;
+  catch `java.lang.IllegalArgumentException` @[L40d248..L40d250] goto L40d26e;
+}
+procedure `java.lang.Object` `parse`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object, `io.jsonwebtoken.JwtHandler` v3 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parse:(Ljava/lang/String;Lio/jsonwebtoken/JwtHandler;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d818.  v0:= "JwtHandler argument cannot be null." @kind object;
+  #L40d81c.  call `notNull`(v3, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40d822.  v0:= "JWT String argument cannot be null or empty." @kind object;
+  #L40d826.  call `hasText`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.hasText:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L40d82c.  call temp:= `parse`(v1, v2) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parse:(Ljava/lang/String;)Lio/jsonwebtoken/Jwt;` @kind virtual;
+  #L40d832.  v2:= temp @kind object;
+  #L40d834.  v0:= instanceof @variable v2 @type ^`io.jsonwebtoken.Jws` @kind boolean;
+  #L40d838.  if v0 == 0 then goto L40d864;
+  #L40d83c.  v2:= (`io.jsonwebtoken.Jws`) v2 @kind object;
+  #L40d840.  call temp:= `getBody`(v2) @signature `Lio/jsonwebtoken/Jwt;.getBody:()Ljava/lang/Object;` @kind interface;
+  #L40d846.  v0:= temp @kind object;
+  #L40d848.  v0:= instanceof @variable v0 @type ^`io.jsonwebtoken.Claims` @kind boolean;
+  #L40d84c.  if v0 == 0 then goto L40d85a;
+  #L40d850.  call temp:= `onClaimsJws`(v3, v2) @signature `Lio/jsonwebtoken/JwtHandler;.onClaimsJws:(Lio/jsonwebtoken/Jws;)Ljava/lang/Object;` @kind interface;
+  #L40d856.  v2:= temp @kind object;
+  #L40d858.  return v2 @kind object;
+  #L40d85a.  call temp:= `onPlaintextJws`(v3, v2) @signature `Lio/jsonwebtoken/JwtHandler;.onPlaintextJws:(Lio/jsonwebtoken/Jws;)Ljava/lang/Object;` @kind interface;
+  #L40d860.  v2:= temp @kind object;
+  #L40d862.  return v2 @kind object;
+  #L40d864.  call temp:= `getBody`(v2) @signature `Lio/jsonwebtoken/Jwt;.getBody:()Ljava/lang/Object;` @kind interface;
+  #L40d86a.  v0:= temp @kind object;
+  #L40d86c.  v0:= instanceof @variable v0 @type ^`io.jsonwebtoken.Claims` @kind boolean;
+  #L40d870.  if v0 == 0 then goto L40d87e;
+  #L40d874.  call temp:= `onClaimsJwt`(v3, v2) @signature `Lio/jsonwebtoken/JwtHandler;.onClaimsJwt:(Lio/jsonwebtoken/Jwt;)Ljava/lang/Object;` @kind interface;
+  #L40d87a.  v2:= temp @kind object;
+  #L40d87c.  return v2 @kind object;
+  #L40d87e.  call temp:= `onPlaintextJwt`(v3, v2) @signature `Lio/jsonwebtoken/JwtHandler;.onPlaintextJwt:(Lio/jsonwebtoken/Jwt;)Ljava/lang/Object;` @kind interface;
+  #L40d884.  v2:= temp @kind object;
+  #L40d886.  return v2 @kind object;
+}
+procedure `io.jsonwebtoken.Jws` `parseClaimsJws`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parseClaimsJws:(Ljava/lang/String;)Lio/jsonwebtoken/Jws;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40cf24.  v0:= new `io.jsonwebtoken.impl.DefaultJwtParser$d`;
+  #L40cf28.  call `<init>`(v0, v1) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser$d;.<init>:(Lio/jsonwebtoken/impl/DefaultJwtParser;)V` @kind direct;
+  #L40cf2e.  call temp:= `parse`(v1, v2, v0) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parse:(Ljava/lang/String;Lio/jsonwebtoken/JwtHandler;)Ljava/lang/Object;` @kind virtual;
+  #L40cf34.  v2:= temp @kind object;
+  #L40cf36.  v2:= (`io.jsonwebtoken.Jws`) v2 @kind object;
+  #L40cf3a.  return v2 @kind object;
+}
+procedure `io.jsonwebtoken.Jwt` `parseClaimsJwt`(`io.jsonwebtoken.impl.DefaultJwtParser` v2 @kind this, `java.lang.String` v3 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parseClaimsJwt:(Ljava/lang/String;)Lio/jsonwebtoken/Jwt;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L40d57c.  v0:= new `io.jsonwebtoken.impl.DefaultJwtParser$b`;
+  #L40d580.  call `<init>`(v0, v2) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser$b;.<init>:(Lio/jsonwebtoken/impl/DefaultJwtParser;)V` @kind direct;
+  #L40d586.  call temp:= `parse`(v2, v3, v0) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parse:(Ljava/lang/String;Lio/jsonwebtoken/JwtHandler;)Ljava/lang/Object;` @kind virtual;
+  #L40d58c.  v3:= temp @kind object;
+  #L40d58e.  v3:= (`io.jsonwebtoken.Jwt`) v3 @kind object;
+  #L40d592.  return v3 @kind object;
+  #L40d594.  v3:= Exception @type ^`java.lang.IllegalArgumentException` @kind object;
+  #L40d596.  v0:= new `io.jsonwebtoken.UnsupportedJwtException`;
+  #L40d59a.  v1:= "Signed JWSs are not supported." @kind object;
+  #L40d59e.  call `<init>`(v0, v1, v3) @signature `Lio/jsonwebtoken/UnsupportedJwtException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40d5a4.  throw v0;
+  catch `java.lang.IllegalArgumentException` @[L40d57c..L40d592] goto L40d594;
+}
+procedure `io.jsonwebtoken.Jws` `parsePlaintextJws`(`io.jsonwebtoken.impl.DefaultJwtParser` v2 @kind this, `java.lang.String` v3 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parsePlaintextJws:(Ljava/lang/String;)Lio/jsonwebtoken/Jws;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L40cf4c.  v0:= new `io.jsonwebtoken.impl.DefaultJwtParser$c`;
+  #L40cf50.  call `<init>`(v0, v2) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser$c;.<init>:(Lio/jsonwebtoken/impl/DefaultJwtParser;)V` @kind direct;
+  #L40cf56.  call temp:= `parse`(v2, v3, v0) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parse:(Ljava/lang/String;Lio/jsonwebtoken/JwtHandler;)Ljava/lang/Object;` @kind virtual;
+  #L40cf5c.  v3:= temp @kind object;
+  #L40cf5e.  v3:= (`io.jsonwebtoken.Jws`) v3 @kind object;
+  #L40cf62.  return v3 @kind object;
+  #L40cf64.  v3:= Exception @type ^`java.lang.IllegalArgumentException` @kind object;
+  #L40cf66.  v0:= new `io.jsonwebtoken.UnsupportedJwtException`;
+  #L40cf6a.  v1:= "Signed JWSs are not supported." @kind object;
+  #L40cf6e.  call `<init>`(v0, v1, v3) @signature `Lio/jsonwebtoken/UnsupportedJwtException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40cf74.  throw v0;
+  catch `java.lang.IllegalArgumentException` @[L40cf4c..L40cf62] goto L40cf64;
+}
+procedure `io.jsonwebtoken.Jwt` `parsePlaintextJwt`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parsePlaintextJwt:(Ljava/lang/String;)Lio/jsonwebtoken/Jwt;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d5c8.  v0:= new `io.jsonwebtoken.impl.DefaultJwtParser$a`;
+  #L40d5cc.  call `<init>`(v0, v1) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser$a;.<init>:(Lio/jsonwebtoken/impl/DefaultJwtParser;)V` @kind direct;
+  #L40d5d2.  call temp:= `parse`(v1, v2, v0) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.parse:(Ljava/lang/String;Lio/jsonwebtoken/JwtHandler;)Ljava/lang/Object;` @kind virtual;
+  #L40d5d8.  v2:= temp @kind object;
+  #L40d5da.  v2:= (`io.jsonwebtoken.Jwt`) v2 @kind object;
+  #L40d5de.  return v2 @kind object;
+}
+procedure `java.util.Map` `readValue`(`io.jsonwebtoken.impl.DefaultJwtParser` v4 @kind this, `java.lang.String` v5 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.readValue:(Ljava/lang/String;)Ljava/util/Map;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L40d898.  v0:= v4.`io.jsonwebtoken.impl.DefaultJwtParser.a` @type ^`com.fasterxml.jackson.databind.ObjectMapper` @kind object;
+  #L40d89c.  v1:= constclass @type ^`java.util.Map` @kind object;
+  #L40d8a0.  call temp:= `readValue`(v0, v5, v1) @signature `Lcom/fasterxml/jackson/databind/ObjectMapper;.readValue:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L40d8a6.  v0:= temp @kind object;
+  #L40d8a8.  v0:= (`java.util.Map`) v0 @kind object;
+  #L40d8ac.  return v0 @kind object;
+  #L40d8ae.  v0:= Exception @type ^`java.io.IOException` @kind object;
+  #L40d8b0.  v1:= new `io.jsonwebtoken.MalformedJwtException`;
+  #L40d8b4.  v2:= new `java.lang.StringBuilder`;
+  #L40d8b8.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d8be.  v3:= "Unable to read JSON value: " @kind object;
+  #L40d8c2.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d8c8.  call temp:= `append`(v2, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d8ce.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d8d4.  v5:= temp @kind object;
+  #L40d8d6.  call `<init>`(v1, v5, v0) @signature `Lio/jsonwebtoken/MalformedJwtException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40d8dc.  throw v1;
+  catch `java.io.IOException` @[L40d898..L40d8ac] goto L40d8ae;
+}
+procedure `io.jsonwebtoken.JwtParser` `require`(`io.jsonwebtoken.impl.DefaultJwtParser` v2 @kind this, `java.lang.String` v3 @kind object, `java.lang.Object` v4 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.require:(Ljava/lang/String;Ljava/lang/Object;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L40d5f0.  v0:= "claim name cannot be null or empty." @kind object;
+  #L40d5f4.  call `hasText`(v3, v0) @signature `Lio/jsonwebtoken/lang/Assert;.hasText:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L40d5fa.  v0:= new `java.lang.StringBuilder`;
+  #L40d5fe.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40d604.  v1:= "The value cannot be null for claim name: " @kind object;
+  #L40d608.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d60e.  call temp:= `append`(v0, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40d614.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40d61a.  v0:= temp @kind object;
+  #L40d61c.  call `notNull`(v4, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40d622.  v0:= v2.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d626.  call temp:= `put`(v0, v3, v4) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L40d62c.  return v2 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `requireAudience`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.requireAudience:(Ljava/lang/String;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d640.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d644.  call temp:= `setAudience`(v0, v2) @signature `Lio/jsonwebtoken/Claims;.setAudience:(Ljava/lang/String;)Lio/jsonwebtoken/Claims;` @kind interface;
+  #L40d64a.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `requireExpiration`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.util.Date` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.requireExpiration:(Ljava/util/Date;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d65c.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d660.  call temp:= `setExpiration`(v0, v2) @signature `Lio/jsonwebtoken/Claims;.setExpiration:(Ljava/util/Date;)Lio/jsonwebtoken/Claims;` @kind interface;
+  #L40d666.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `requireId`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.requireId:(Ljava/lang/String;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d678.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d67c.  call temp:= `setId`(v0, v2) @signature `Lio/jsonwebtoken/Claims;.setId:(Ljava/lang/String;)Lio/jsonwebtoken/Claims;` @kind interface;
+  #L40d682.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `requireIssuedAt`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.util.Date` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.requireIssuedAt:(Ljava/util/Date;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d694.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d698.  call temp:= `setIssuedAt`(v0, v2) @signature `Lio/jsonwebtoken/Claims;.setIssuedAt:(Ljava/util/Date;)Lio/jsonwebtoken/Claims;` @kind interface;
+  #L40d69e.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `requireIssuer`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.requireIssuer:(Ljava/lang/String;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d6b0.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d6b4.  call temp:= `setIssuer`(v0, v2) @signature `Lio/jsonwebtoken/Claims;.setIssuer:(Ljava/lang/String;)Lio/jsonwebtoken/Claims;` @kind interface;
+  #L40d6ba.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `requireNotBefore`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.util.Date` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.requireNotBefore:(Ljava/util/Date;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d6cc.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d6d0.  call temp:= `setNotBefore`(v0, v2) @signature `Lio/jsonwebtoken/Claims;.setNotBefore:(Ljava/util/Date;)Lio/jsonwebtoken/Claims;` @kind interface;
+  #L40d6d6.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `requireSubject`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.requireSubject:(Ljava/lang/String;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d6e8.  v0:= v1.`io.jsonwebtoken.impl.DefaultJwtParser.f` @type ^`io.jsonwebtoken.Claims` @kind object;
+  #L40d6ec.  call temp:= `setSubject`(v0, v2) @signature `Lio/jsonwebtoken/Claims;.setSubject:(Ljava/lang/String;)Lio/jsonwebtoken/Claims;` @kind interface;
+  #L40d6f2.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `setAllowedClockSkewSeconds`(`io.jsonwebtoken.impl.DefaultJwtParser` v2 @kind this, `long` v3 ) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.setAllowedClockSkewSeconds:(J)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L40d704.  v0:= 1000L;
+  #L40d708.  v3:= v3 * v0 @kind long;
+  #L40d70c.  v0:= 0L;
+  #L40d710.  call temp:= `max`(v0, v3) @signature `Ljava/lang/Math;.max:(JJ)J` @kind static;
+  #L40d716.  v3:= temp @kind wide;
+  #L40d718.  v2.`io.jsonwebtoken.impl.DefaultJwtParser.h` @type ^`long` := v3 @kind wide;
+  #L40d71c.  return v2 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `setClock`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `io.jsonwebtoken.Clock` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.setClock:(Lio/jsonwebtoken/Clock;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d730.  v0:= "Clock instance cannot be null." @kind object;
+  #L40d734.  call `notNull`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40d73a.  v1.`io.jsonwebtoken.impl.DefaultJwtParser.g` @type ^`io.jsonwebtoken.Clock` := v2 @kind object;
+  #L40d73e.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `setCompressionCodecResolver`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `io.jsonwebtoken.CompressionCodecResolver` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.setCompressionCodecResolver:(Lio/jsonwebtoken/CompressionCodecResolver;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d750.  v0:= "compressionCodecResolver cannot be null." @kind object;
+  #L40d754.  call `notNull`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40d75a.  v1.`io.jsonwebtoken.impl.DefaultJwtParser.e` @type ^`io.jsonwebtoken.CompressionCodecResolver` := v2 @kind object;
+  #L40d75e.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `setSigningKey`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.setSigningKey:(Ljava/lang/String;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d790.  v0:= "signing key cannot be null or empty." @kind object;
+  #L40d794.  call `hasText`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.hasText:(Ljava/lang/String;Ljava/lang/String;)V` @kind static;
+  #L40d79a.  v0:= `@@io.jsonwebtoken.impl.TextCodec.BASE64` @type ^`io.jsonwebtoken.impl.TextCodec` @kind object;
+  #L40d79e.  call temp:= `decode`(v0, v2) @signature `Lio/jsonwebtoken/impl/TextCodec;.decode:(Ljava/lang/String;)[B` @kind interface;
+  #L40d7a4.  v2:= temp @kind object;
+  #L40d7a6.  v1.`io.jsonwebtoken.impl.DefaultJwtParser.b` @type ^`byte`[] := v2 @kind object;
+  #L40d7aa.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `setSigningKey`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `java.security.Key` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.setSigningKey:(Ljava/security/Key;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d7bc.  v0:= "signing key cannot be null." @kind object;
+  #L40d7c0.  call `notNull`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40d7c6.  v1.`io.jsonwebtoken.impl.DefaultJwtParser.c` @type ^`java.security.Key` := v2 @kind object;
+  #L40d7ca.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `setSigningKey`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `byte`[] v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.setSigningKey:([B)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d770.  v0:= "signing key cannot be null or empty." @kind object;
+  #L40d774.  call `notEmpty`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notEmpty:([BLjava/lang/String;)V` @kind static;
+  #L40d77a.  v1.`io.jsonwebtoken.impl.DefaultJwtParser.b` @type ^`byte`[] := v2 @kind object;
+  #L40d77e.  return v1 @kind object;
+}
+procedure `io.jsonwebtoken.JwtParser` `setSigningKeyResolver`(`io.jsonwebtoken.impl.DefaultJwtParser` v1 @kind this, `io.jsonwebtoken.SigningKeyResolver` v2 @kind object) @signature `Lio/jsonwebtoken/impl/DefaultJwtParser;.setSigningKeyResolver:(Lio/jsonwebtoken/SigningKeyResolver;)Lio/jsonwebtoken/JwtParser;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40d7dc.  v0:= "SigningKeyResolver cannot be null." @kind object;
+  #L40d7e0.  call `notNull`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.notNull:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L40d7e6.  v1.`io.jsonwebtoken.impl.DefaultJwtParser.d` @type ^`io.jsonwebtoken.SigningKeyResolver` := v2 @kind object;
+  #L40d7ea.  return v1 @kind object;
+}

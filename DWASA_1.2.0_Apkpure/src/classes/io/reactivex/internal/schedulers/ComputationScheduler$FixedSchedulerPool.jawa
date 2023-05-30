@@ -1,0 +1,102 @@
+record `io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool` @kind class @AccessFlag FINAL extends `io.reactivex.internal.schedulers.SchedulerMultiWorkerSupport` @kind interface {
+  `int` `io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.cores` @AccessFlag FINAL;
+  `io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`[] `io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.eventLoops` @AccessFlag FINAL;
+  `long` `io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.n` @AccessFlag ;
+}
+procedure `void` `<init>`(`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool` v3 @kind this, `int` v4 , `java.util.concurrent.ThreadFactory` v5 @kind object) @signature `Lio/reactivex/internal/schedulers/ComputationScheduler$FixedSchedulerPool;.<init>:(ILjava/util/concurrent/ThreadFactory;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L43faec.  call `<init>`(v3) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L43faf2.  v3.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.cores` @type ^`int` := v4;
+  #L43faf6.  v0:= new `io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`[v4];
+  #L43fafa.  v3.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.eventLoops` @type ^`io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`[] := v0 @kind object;
+  #L43fafe.  v0:= 0I;
+  #L43fb00.  if v0 >= v4 then goto L43fb1c;
+  #L43fb04.  v1:= v3.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.eventLoops` @type ^`io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`[] @kind object;
+  #L43fb08.  v2:= new `io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`;
+  #L43fb0c.  call `<init>`(v2, v5) @signature `Lio/reactivex/internal/schedulers/ComputationScheduler$PoolWorker;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L43fb12.  v1[v0]:= v2 @kind object;
+  #L43fb16.  v0:= v0 + 1;
+  #L43fb1a.  goto L43fb00;
+  #L43fb1c.  return @kind void;
+}
+procedure `void` `createWorkers`(`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool` v6 @kind this, `int` v7 , `io.reactivex.internal.schedulers.SchedulerMultiWorkerSupport$WorkerCallback` v8 @kind object) @signature `Lio/reactivex/internal/schedulers/ComputationScheduler$FixedSchedulerPool;.createWorkers:(ILio/reactivex/internal/schedulers/SchedulerMultiWorkerSupport$WorkerCallback;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L43fb30.  v0:= v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.cores` @type ^`int`;
+  #L43fb34.  v1:= 0I;
+  #L43fb36.  if v0 != 0 then goto L43fb4e;
+  #L43fb3a.  if v1 >= v7 then goto L43fb8a;
+  #L43fb3e.  v0:= `@@io.reactivex.internal.schedulers.ComputationScheduler.SHUTDOWN_WORKER` @type ^`io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker` @kind object;
+  #L43fb42.  call `onWorker`(v8, v1, v0) @signature `Lio/reactivex/internal/schedulers/SchedulerMultiWorkerSupport$WorkerCallback;.onWorker:(ILio/reactivex/Scheduler$Worker;)V` @kind interface;
+  #L43fb48.  v1:= v1 + 1;
+  #L43fb4c.  goto L43fb3a;
+  #L43fb4e.  v2:= v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.n` @type ^`long` @kind wide;
+  #L43fb52.  v3:= (`int`) v2 @kind l2i;
+  #L43fb54.  v3:= v3 %% v0 @kind int;
+  #L43fb56.  v2:= 0I;
+  #L43fb58.  if v2 >= v7 then goto L43fb84;
+  #L43fb5c.  v4:= new `io.reactivex.internal.schedulers.ComputationScheduler$EventLoopWorker`;
+  #L43fb60.  v5:= v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.eventLoops` @type ^`io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`[] @kind object;
+  #L43fb64.  v5:= v5[v3] @kind object;
+  #L43fb68.  call `<init>`(v4, v5) @signature `Lio/reactivex/internal/schedulers/ComputationScheduler$EventLoopWorker;.<init>:(Lio/reactivex/internal/schedulers/ComputationScheduler$PoolWorker;)V` @kind direct;
+  #L43fb6e.  call `onWorker`(v8, v2, v4) @signature `Lio/reactivex/internal/schedulers/SchedulerMultiWorkerSupport$WorkerCallback;.onWorker:(ILio/reactivex/Scheduler$Worker;)V` @kind interface;
+  #L43fb74.  v3:= v3 + 1;
+  #L43fb78.  if v3 != v0 then goto L43fb7e;
+  #L43fb7c.  v3:= 0I;
+  #L43fb7e.  v2:= v2 + 1;
+  #L43fb82.  goto L43fb58;
+  #L43fb84.  v7:= (`long`) v3 @kind i2l;
+  #L43fb86.  v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.n` @type ^`long` := v7 @kind wide;
+  #L43fb8a.  return @kind void;
+}
+procedure `io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker` `getEventLoop`(`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool` v6 @kind this) @signature `Lio/reactivex/internal/schedulers/ComputationScheduler$FixedSchedulerPool;.getEventLoop:()Lio/reactivex/internal/schedulers/ComputationScheduler$PoolWorker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L43fab0.  v0:= v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.cores` @type ^`int`;
+  #L43fab4.  if v0 != 0 then goto L43fabe;
+  #L43fab8.  v0:= `@@io.reactivex.internal.schedulers.ComputationScheduler.SHUTDOWN_WORKER` @type ^`io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker` @kind object;
+  #L43fabc.  return v0 @kind object;
+  #L43fabe.  v1:= v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.eventLoops` @type ^`io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`[] @kind object;
+  #L43fac2.  v2:= v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.n` @type ^`long` @kind wide;
+  #L43fac6.  v4:= 1L;
+  #L43faca.  v4:= v4 + v2 @kind long;
+  #L43facc.  v6.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.n` @type ^`long` := v4 @kind wide;
+  #L43fad0.  v4:= (`long`) v0 @kind i2l;
+  #L43fad2.  v2:= v2 %% v4 @kind long;
+  #L43fad4.  v0:= (`int`) v2 @kind l2i;
+  #L43fad6.  v0:= v1[v0] @kind object;
+  #L43fada.  return v0 @kind object;
+}
+procedure `void` `shutdown`(`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool` v4 @kind this) @signature `Lio/reactivex/internal/schedulers/ComputationScheduler$FixedSchedulerPool;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L43fb9c.  v0:= v4.`io.reactivex.internal.schedulers.ComputationScheduler$FixedSchedulerPool.eventLoops` @type ^`io.reactivex.internal.schedulers.ComputationScheduler$PoolWorker`[] @kind object;
+  #L43fba0.  v1:= length @variable v0;
+  #L43fba2.  v2:= 0I;
+  #L43fba4.  if v2 >= v1 then goto L43fbb8;
+  #L43fba8.  v3:= v0[v2] @kind object;
+  #L43fbac.  call `dispose`(v3) @signature `Lio/reactivex/internal/schedulers/ComputationScheduler$PoolWorker;.dispose:()V` @kind virtual;
+  #L43fbb2.  v2:= v2 + 1;
+  #L43fbb6.  goto L43fba4;
+  #L43fbb8.  return @kind void;
+}

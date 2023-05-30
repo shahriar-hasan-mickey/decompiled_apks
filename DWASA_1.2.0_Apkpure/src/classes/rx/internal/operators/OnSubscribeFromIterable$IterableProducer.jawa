@@ -1,0 +1,138 @@
+record `rx.internal.operators.OnSubscribeFromIterable$IterableProducer` @kind class @AccessFlag FINAL extends `java.util.concurrent.atomic.AtomicLong` @kind class, `rx.Producer` @kind interface {
+  `java.util.Iterator` `rx.internal.operators.OnSubscribeFromIterable$IterableProducer.it` @AccessFlag PRIVATE_FINAL;
+  `rx.Subscriber` `rx.internal.operators.OnSubscribeFromIterable$IterableProducer.o` @AccessFlag PRIVATE_FINAL;
+}
+global `long` `@@rx.internal.operators.OnSubscribeFromIterable$IterableProducer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.operators.OnSubscribeFromIterable$IterableProducer` v0 @kind this, `rx.Subscriber` v1 @kind object, `java.util.Iterator` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.<init>:(Lrx/Subscriber;Ljava/util/Iterator;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L4997e0.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L4997e6.  v0.`rx.internal.operators.OnSubscribeFromIterable$IterableProducer.o` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4997ea.  v0.`rx.internal.operators.OnSubscribeFromIterable$IterableProducer.it` @type ^`java.util.Iterator` := v2 @kind object;
+  #L4997ee.  return @kind void;
+}
+procedure `void` `fastPath`(`rx.internal.operators.OnSubscribeFromIterable$IterableProducer` v3 @kind this) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.fastPath:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L499800.  v0:= v3.`rx.internal.operators.OnSubscribeFromIterable$IterableProducer.o` @type ^`rx.Subscriber` @kind object;
+  #L499804.  v1:= v3.`rx.internal.operators.OnSubscribeFromIterable$IterableProducer.it` @type ^`java.util.Iterator` @kind object;
+  #L499808.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L49980e.  v2:= temp;
+  #L499810.  if v2 == 0 then goto L499816;
+  #L499814.  return @kind void;
+  #L499816.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L49981c.  v2:= temp @kind object;
+  #L49981e.  call `onNext`(v0, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L499824.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L49982a.  v2:= temp;
+  #L49982c.  if v2 == 0 then goto L499832;
+  #L499830.  return @kind void;
+  #L499832.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L499838.  v2:= temp;
+  #L49983a.  if v2 != 0 then goto L499808;
+  #L49983e.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L499844.  v1:= temp;
+  #L499846.  if v1 != 0 then goto L499850;
+  #L49984a.  call `onCompleted`(v0) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L499850.  return @kind void;
+  #L499852.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L499854.  call `throwOrReport`(v1, v0) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;)V` @kind static;
+  #L49985a.  return @kind void;
+  #L49985c.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L49985e.  call `throwOrReport`(v1, v0) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;)V` @kind static;
+  #L499864.  return @kind void;
+  catch `java.lang.Throwable` @[L499816..L49981e] goto L49985c;
+  catch `java.lang.Throwable` @[L499832..L49983a] goto L499852;
+}
+procedure `void` `request`(`rx.internal.operators.OnSubscribeFromIterable$IterableProducer` v5 @kind this, `long` v6 ) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L499890.  call temp:= `get`(v5) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.get:()J` @kind virtual;
+  #L499896.  v0:= temp @kind wide;
+  #L499898.  v2:= 9223372036854775807L;
+  #L4998a2.  v4:= lcmp(v0, v2);
+  #L4998a6.  if v4 != 0 then goto L4998ac;
+  #L4998aa.  return @kind void;
+  #L4998ac.  v0:= 0L;
+  #L4998b0.  v4:= lcmp(v6, v2);
+  #L4998b4.  if v4 != 0 then goto L4998cc;
+  #L4998b8.  call temp:= `compareAndSet`(v5, v0, v2) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.compareAndSet:(JJ)Z` @kind virtual;
+  #L4998be.  v2:= temp;
+  #L4998c0.  if v2 == 0 then goto L4998cc;
+  #L4998c4.  call `fastPath`(v5) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.fastPath:()V` @kind virtual;
+  #L4998ca.  goto L4998ea;
+  #L4998cc.  v2:= lcmp(v6, v0);
+  #L4998d0.  if v2 <= 0 then goto L4998ea;
+  #L4998d4.  call temp:= `getAndAddRequest`(v5, v6) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L4998da.  v2:= temp @kind wide;
+  #L4998dc.  v4:= lcmp(v2, v0);
+  #L4998e0.  if v4 != 0 then goto L4998ea;
+  #L4998e4.  call `slowPath`(v5, v6) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.slowPath:(J)V` @kind virtual;
+  #L4998ea.  return @kind void;
+}
+procedure `void` `slowPath`(`rx.internal.operators.OnSubscribeFromIterable$IterableProducer` v8 @kind this, `long` v9 ) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.slowPath:(J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4998fc.  v0:= v8.`rx.internal.operators.OnSubscribeFromIterable$IterableProducer.o` @type ^`rx.Subscriber` @kind object;
+  #L499900.  v1:= v8.`rx.internal.operators.OnSubscribeFromIterable$IterableProducer.it` @type ^`java.util.Iterator` @kind object;
+  #L499904.  v2:= 0L;
+  #L499908.  v4:= v9 @kind wide;
+  #L49990a.  v9:= v2 @kind wide;
+  #L49990c.  v6:= lcmp(v9, v4);
+  #L499910.  if v6 == 0 then goto L49997a;
+  #L499914.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L49991a.  v6:= temp;
+  #L49991c.  if v6 == 0 then goto L499922;
+  #L499920.  return @kind void;
+  #L499922.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L499928.  v6:= temp @kind object;
+  #L49992a.  call `onNext`(v0, v6) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L499930.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L499936.  v6:= temp;
+  #L499938.  if v6 == 0 then goto L49993e;
+  #L49993c.  return @kind void;
+  #L49993e.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L499944.  v6:= temp;
+  #L499946.  if v6 != 0 then goto L49995e;
+  #L49994a.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L499950.  v9:= temp;
+  #L499952.  if v9 != 0 then goto L49995c;
+  #L499956.  call `onCompleted`(v0) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L49995c.  return @kind void;
+  #L49995e.  v6:= 1L;
+  #L499962.  v9:= v9 + v6 @kind long;
+  #L499964.  goto L49990c;
+  #L499966.  v9:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L499968.  call `throwOrReport`(v9, v0) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;)V` @kind static;
+  #L49996e.  return @kind void;
+  #L499970.  v9:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L499972.  call `throwOrReport`(v9, v0) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;)V` @kind static;
+  #L499978.  return @kind void;
+  #L49997a.  call temp:= `get`(v8) @signature `Lrx/internal/operators/OnSubscribeFromIterable$IterableProducer;.get:()J` @kind virtual;
+  #L499980.  v4:= temp @kind wide;
+  #L499982.  v6:= lcmp(v9, v4);
+  #L499986.  if v6 != 0 then goto L49990c;
+  #L49998a.  call temp:= `produced`(v8, v9) @signature `Lrx/internal/operators/BackpressureUtils;.produced:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L499990.  v4:= temp @kind wide;
+  #L499992.  v9:= lcmp(v4, v2);
+  #L499996.  if v9 != 0 then goto L49990a;
+  #L49999a.  return @kind void;
+  catch `java.lang.Throwable` @[L499922..L49992a] goto L499970;
+  catch `java.lang.Throwable` @[L49993e..L499946] goto L499966;
+}

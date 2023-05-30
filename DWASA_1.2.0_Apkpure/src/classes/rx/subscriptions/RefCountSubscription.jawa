@@ -1,0 +1,120 @@
+record `rx.subscriptions.RefCountSubscription` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Subscription` @kind interface {
+  `rx.Subscription` `rx.subscriptions.RefCountSubscription.actual` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `rx.subscriptions.RefCountSubscription.state` @AccessFlag FINAL;
+}
+global `rx.subscriptions.RefCountSubscription$State` `@@rx.subscriptions.RefCountSubscription.EMPTY_STATE` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lrx/subscriptions/RefCountSubscription;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4c6784.  v0:= new `rx.subscriptions.RefCountSubscription$State`;
+  #L4c6788.  v1:= 0I;
+  #L4c678a.  call `<init>`(v0, v1, v1) @signature `Lrx/subscriptions/RefCountSubscription$State;.<init>:(ZI)V` @kind direct;
+  #L4c6790.  `@@rx.subscriptions.RefCountSubscription.EMPTY_STATE` @type ^`rx.subscriptions.RefCountSubscription$State` := v0 @kind object;
+  #L4c6794.  return @kind void;
+}
+procedure `void` `<init>`(`rx.subscriptions.RefCountSubscription` v2 @kind this, `rx.Subscription` v3 @kind object) @signature `Lrx/subscriptions/RefCountSubscription;.<init>:(Lrx/Subscription;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4c67a8.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4c67ae.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L4c67b2.  v1:= `@@rx.subscriptions.RefCountSubscription.EMPTY_STATE` @type ^`rx.subscriptions.RefCountSubscription$State` @kind object;
+  #L4c67b6.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L4c67bc.  v2.`rx.subscriptions.RefCountSubscription.state` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L4c67c0.  if v3 == 0 then goto L4c67ca;
+  #L4c67c4.  v2.`rx.subscriptions.RefCountSubscription.actual` @type ^`rx.Subscription` := v3 @kind object;
+  #L4c67c8.  return @kind void;
+  #L4c67ca.  v3:= new `java.lang.IllegalArgumentException`;
+  #L4c67ce.  v0:= "s" @kind object;
+  #L4c67d2.  call `<init>`(v3, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4c67d8.  throw v3;
+}
+procedure `void` `unsubscribeActualIfApplicable`(`rx.subscriptions.RefCountSubscription` v1 @kind this, `rx.subscriptions.RefCountSubscription$State` v2 @kind object) @signature `Lrx/subscriptions/RefCountSubscription;.unsubscribeActualIfApplicable:(Lrx/subscriptions/RefCountSubscription$State;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L4c6870.  v0:= v2.`rx.subscriptions.RefCountSubscription$State.isUnsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6874.  if v0 == 0 then goto L4c688a;
+  #L4c6878.  v2:= v2.`rx.subscriptions.RefCountSubscription$State.children` @type ^`int`;
+  #L4c687c.  if v2 != 0 then goto L4c688a;
+  #L4c6880.  v2:= v1.`rx.subscriptions.RefCountSubscription.actual` @type ^`rx.Subscription` @kind object;
+  #L4c6884.  call `unsubscribe`(v2) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4c688a.  return @kind void;
+}
+procedure `rx.Subscription` `get`(`rx.subscriptions.RefCountSubscription` v3 @kind this) @signature `Lrx/subscriptions/RefCountSubscription;.get:()Lrx/Subscription;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c6730.  v0:= v3.`rx.subscriptions.RefCountSubscription.state` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4c6734.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c673a.  v1:= temp @kind object;
+  #L4c673c.  v1:= (`rx.subscriptions.RefCountSubscription$State`) v1 @kind object;
+  #L4c6740.  v2:= v1.`rx.subscriptions.RefCountSubscription$State.isUnsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6744.  if v2 == 0 then goto L4c6752;
+  #L4c6748.  call temp:= `unsubscribed`() @signature `Lrx/subscriptions/Subscriptions;.unsubscribed:()Lrx/Subscription;` @kind static;
+  #L4c674e.  v0:= temp @kind object;
+  #L4c6750.  return v0 @kind object;
+  #L4c6752.  call temp:= `addChild`(v1) @signature `Lrx/subscriptions/RefCountSubscription$State;.addChild:()Lrx/subscriptions/RefCountSubscription$State;` @kind virtual;
+  #L4c6758.  v2:= temp @kind object;
+  #L4c675a.  call temp:= `compareAndSet`(v0, v1, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4c6760.  v1:= temp;
+  #L4c6762.  if v1 == 0 then goto L4c6734;
+  #L4c6766.  v0:= new `rx.subscriptions.RefCountSubscription$InnerSubscription`;
+  #L4c676a.  call `<init>`(v0, v3) @signature `Lrx/subscriptions/RefCountSubscription$InnerSubscription;.<init>:(Lrx/subscriptions/RefCountSubscription;)V` @kind direct;
+  #L4c6770.  return v0 @kind object;
+}
+procedure `boolean` `isUnsubscribed`(`rx.subscriptions.RefCountSubscription` v1 @kind this) @signature `Lrx/subscriptions/RefCountSubscription;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c6708.  v0:= v1.`rx.subscriptions.RefCountSubscription.state` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4c670c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c6712.  v0:= temp @kind object;
+  #L4c6714.  v0:= (`rx.subscriptions.RefCountSubscription$State`) v0 @kind object;
+  #L4c6718.  v0:= v0.`rx.subscriptions.RefCountSubscription$State.isUnsubscribed` @type ^`boolean` @kind boolean;
+  #L4c671c.  return v0;
+}
+procedure `void` `unsubscribe`(`rx.subscriptions.RefCountSubscription` v3 @kind this) @signature `Lrx/subscriptions/RefCountSubscription;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c67ec.  v0:= v3.`rx.subscriptions.RefCountSubscription.state` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4c67f0.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c67f6.  v1:= temp @kind object;
+  #L4c67f8.  v1:= (`rx.subscriptions.RefCountSubscription$State`) v1 @kind object;
+  #L4c67fc.  v2:= v1.`rx.subscriptions.RefCountSubscription$State.isUnsubscribed` @type ^`boolean` @kind boolean;
+  #L4c6800.  if v2 == 0 then goto L4c6806;
+  #L4c6804.  return @kind void;
+  #L4c6806.  call temp:= `unsubscribe`(v1) @signature `Lrx/subscriptions/RefCountSubscription$State;.unsubscribe:()Lrx/subscriptions/RefCountSubscription$State;` @kind virtual;
+  #L4c680c.  v2:= temp @kind object;
+  #L4c680e.  call temp:= `compareAndSet`(v0, v1, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4c6814.  v1:= temp;
+  #L4c6816.  if v1 == 0 then goto L4c67f0;
+  #L4c681a.  call `unsubscribeActualIfApplicable`(v3, v2) @signature `Lrx/subscriptions/RefCountSubscription;.unsubscribeActualIfApplicable:(Lrx/subscriptions/RefCountSubscription$State;)V` @kind direct;
+  #L4c6820.  return @kind void;
+}
+procedure `void` `unsubscribeAChild`(`rx.subscriptions.RefCountSubscription` v3 @kind this) @signature `Lrx/subscriptions/RefCountSubscription;.unsubscribeAChild:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c6834.  v0:= v3.`rx.subscriptions.RefCountSubscription.state` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4c6838.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L4c683e.  v1:= temp @kind object;
+  #L4c6840.  v1:= (`rx.subscriptions.RefCountSubscription$State`) v1 @kind object;
+  #L4c6844.  call temp:= `removeChild`(v1) @signature `Lrx/subscriptions/RefCountSubscription$State;.removeChild:()Lrx/subscriptions/RefCountSubscription$State;` @kind virtual;
+  #L4c684a.  v2:= temp @kind object;
+  #L4c684c.  call temp:= `compareAndSet`(v0, v1, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L4c6852.  v1:= temp;
+  #L4c6854.  if v1 == 0 then goto L4c6838;
+  #L4c6858.  call `unsubscribeActualIfApplicable`(v3, v2) @signature `Lrx/subscriptions/RefCountSubscription;.unsubscribeActualIfApplicable:(Lrx/subscriptions/RefCountSubscription$State;)V` @kind direct;
+  #L4c685e.  return @kind void;
+}

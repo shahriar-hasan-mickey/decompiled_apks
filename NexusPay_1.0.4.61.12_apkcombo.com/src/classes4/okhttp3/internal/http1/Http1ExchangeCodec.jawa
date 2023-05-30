@@ -1,0 +1,657 @@
+record `okhttp3.internal.http1.Http1ExchangeCodec` @kind class @AccessFlag PUBLIC_FINAL extends `okhttp3.internal.http.ExchangeCodec` @kind interface {
+  `int` `okhttp3.internal.http1.Http1ExchangeCodec.a` @AccessFlag PRIVATE;
+  `okhttp3.internal.http1.HeadersReader` `okhttp3.internal.http1.Http1ExchangeCodec.b` @AccessFlag PRIVATE_FINAL;
+  `okhttp3.Headers` `okhttp3.internal.http1.Http1ExchangeCodec.c` @AccessFlag PRIVATE;
+  `okhttp3.OkHttpClient` `okhttp3.internal.http1.Http1ExchangeCodec.d` @AccessFlag PRIVATE_FINAL;
+  `okhttp3.internal.connection.RealConnection` `okhttp3.internal.http1.Http1ExchangeCodec.e` @AccessFlag PRIVATE_FINAL;
+  `okio.BufferedSource` `okhttp3.internal.http1.Http1ExchangeCodec.f` @AccessFlag PRIVATE_FINAL;
+  `okio.BufferedSink` `okhttp3.internal.http1.Http1ExchangeCodec.g` @AccessFlag PRIVATE_FINAL;
+}
+global `okhttp3.internal.http1.Http1ExchangeCodec$Companion` `@@okhttp3.internal.http1.Http1ExchangeCodec.Companion` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L1b63c0.  v0:= new `okhttp3.internal.http1.Http1ExchangeCodec$Companion`;
+  #L1b63c4.  v1:= 0I;
+  #L1b63c6.  call `<init>`(v0, v1) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec$Companion;.<init>:(Lkotlin/jvm/internal/DefaultConstructorMarker;)V` @kind direct;
+  #L1b63cc.  `@@okhttp3.internal.http1.Http1ExchangeCodec.Companion` @type ^`okhttp3.internal.http1.Http1ExchangeCodec$Companion` := v0 @kind object;
+  #L1b63d0.  return @kind void;
+}
+procedure `void` `<init>`(`okhttp3.internal.http1.Http1ExchangeCodec` v1 @kind this, `okhttp3.OkHttpClient` v2 @kind object, `okhttp3.internal.connection.RealConnection` v3 @kind object, `okio.BufferedSource` v4 @kind object, `okio.BufferedSink` v5 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.<init>:(Lokhttp3/OkHttpClient;Lokhttp3/internal/connection/RealConnection;Lokio/BufferedSource;Lokio/BufferedSink;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1b63e4.  v0:= "connection" @kind object;
+  #L1b63e8.  call `checkNotNullParameter`(v3, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b63ee.  v0:= "source" @kind object;
+  #L1b63f2.  call `checkNotNullParameter`(v4, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b63f8.  v0:= "sink" @kind object;
+  #L1b63fc.  call `checkNotNullParameter`(v5, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b6402.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1b6408.  v1.`okhttp3.internal.http1.Http1ExchangeCodec.d` @type ^`okhttp3.OkHttpClient` := v2 @kind object;
+  #L1b640c.  v1.`okhttp3.internal.http1.Http1ExchangeCodec.e` @type ^`okhttp3.internal.connection.RealConnection` := v3 @kind object;
+  #L1b6410.  v1.`okhttp3.internal.http1.Http1ExchangeCodec.f` @type ^`okio.BufferedSource` := v4 @kind object;
+  #L1b6414.  v1.`okhttp3.internal.http1.Http1ExchangeCodec.g` @type ^`okio.BufferedSink` := v5 @kind object;
+  #L1b6418.  v2:= new `okhttp3.internal.http1.HeadersReader`;
+  #L1b641c.  v3:= v1.`okhttp3.internal.http1.Http1ExchangeCodec.f` @type ^`okio.BufferedSource` @kind object;
+  #L1b6420.  call `<init>`(v2, v3) @signature `Lokhttp3/internal/http1/HeadersReader;.<init>:(Lokio/BufferedSource;)V` @kind direct;
+  #L1b6426.  v1.`okhttp3.internal.http1.Http1ExchangeCodec.b` @type ^`okhttp3.internal.http1.HeadersReader` := v2 @kind object;
+  #L1b642a.  return @kind void;
+}
+procedure `void` `a`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this, `okio.ForwardingTimeout` v3 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.a:(Lokio/ForwardingTimeout;)V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b64a4.  call temp:= `delegate`(v3) @signature `Lokio/ForwardingTimeout;.delegate:()Lokio/Timeout;` @kind virtual;
+  #L1b64aa.  v0:= temp @kind object;
+  #L1b64ac.  v1:= `@@okio.Timeout.NONE` @type ^`okio.Timeout` @kind object;
+  #L1b64b0.  call temp:= `setDelegate`(v3, v1) @signature `Lokio/ForwardingTimeout;.setDelegate:(Lokio/Timeout;)Lokio/ForwardingTimeout;` @kind virtual;
+  #L1b64b6.  call temp:= `clearDeadline`(v0) @signature `Lokio/Timeout;.clearDeadline:()Lokio/Timeout;` @kind virtual;
+  #L1b64bc.  call temp:= `clearTimeout`(v0) @signature `Lokio/Timeout;.clearTimeout:()Lokio/Timeout;` @kind virtual;
+  #L1b64c2.  return @kind void;
+}
+procedure `void` `access$detachTimeout`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object, `okio.ForwardingTimeout` v1 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$detachTimeout:(Lokhttp3/internal/http1/Http1ExchangeCodec;Lokio/ForwardingTimeout;)V` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b643c.  call `a`(v0, v1) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.a:(Lokio/ForwardingTimeout;)V` @kind direct;
+  #L1b6442.  return @kind void;
+}
+procedure `okhttp3.OkHttpClient` `access$getClient$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$getClient$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;)Lokhttp3/OkHttpClient;` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b5eac.  v0:= v0.`okhttp3.internal.http1.Http1ExchangeCodec.d` @type ^`okhttp3.OkHttpClient` @kind object;
+  #L1b5eb0.  return v0 @kind object;
+}
+procedure `okhttp3.internal.http1.HeadersReader` `access$getHeadersReader$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$getHeadersReader$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;)Lokhttp3/internal/http1/HeadersReader;` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b602c.  v0:= v0.`okhttp3.internal.http1.Http1ExchangeCodec.b` @type ^`okhttp3.internal.http1.HeadersReader` @kind object;
+  #L1b6030.  return v0 @kind object;
+}
+procedure `okio.BufferedSink` `access$getSink$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$getSink$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;)Lokio/BufferedSink;` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b6044.  v0:= v0.`okhttp3.internal.http1.Http1ExchangeCodec.g` @type ^`okio.BufferedSink` @kind object;
+  #L1b6048.  return v0 @kind object;
+}
+procedure `okio.BufferedSource` `access$getSource$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$getSource$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;)Lokio/BufferedSource;` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b605c.  v0:= v0.`okhttp3.internal.http1.Http1ExchangeCodec.f` @type ^`okio.BufferedSource` @kind object;
+  #L1b6060.  return v0 @kind object;
+}
+procedure `int` `access$getState$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$getState$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;)I` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b5de8.  v0:= v0.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b5dec.  return v0;
+}
+procedure `okhttp3.Headers` `access$getTrailers$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$getTrailers$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;)Lokhttp3/Headers;` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b5e48.  v0:= v0.`okhttp3.internal.http1.Http1ExchangeCodec.c` @type ^`okhttp3.Headers` @kind object;
+  #L1b5e4c.  return v0 @kind object;
+}
+procedure `void` `access$setState$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object, `int` v1 ) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$setState$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;I)V` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b6454.  v0.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v1;
+  #L1b6458.  return @kind void;
+}
+procedure `void` `access$setTrailers$p`(`okhttp3.internal.http1.Http1ExchangeCodec` v0 @kind object, `okhttp3.Headers` v1 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.access$setTrailers$p:(Lokhttp3/internal/http1/Http1ExchangeCodec;Lokhttp3/Headers;)V` @AccessFlag PUBLIC_STATIC_FINAL_SYNTHETIC {
+    temp;
+
+  #L1b646c.  v0.`okhttp3.internal.http1.Http1ExchangeCodec.c` @type ^`okhttp3.Headers` := v1 @kind object;
+  #L1b6470.  return @kind void;
+}
+procedure `boolean` `b`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this, `okhttp3.Request` v3 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.b:(Lokhttp3/Request;)Z` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b5d68.  v0:= "Transfer-Encoding" @kind object;
+  #L1b5d6c.  call temp:= `header`(v3, v0) @signature `Lokhttp3/Request;.header:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L1b5d72.  v3:= temp @kind object;
+  #L1b5d74.  v0:= "chunked" @kind object;
+  #L1b5d78.  v1:= 1I;
+  #L1b5d7a.  call temp:= `equals`(v0, v3, v1) @signature `Lkotlin/text/StringsKt;.equals:(Ljava/lang/String;Ljava/lang/String;Z)Z` @kind static;
+  #L1b5d80.  v3:= temp;
+  #L1b5d82.  return v3;
+}
+procedure `boolean` `c`(`okhttp3.internal.http1.Http1ExchangeCodec` v3 @kind this, `okhttp3.Response` v4 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.c:(Lokhttp3/Response;)Z` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1b5d94.  v0:= "Transfer-Encoding" @kind object;
+  #L1b5d98.  v1:= 0I;
+  #L1b5d9a.  v2:= 2I;
+  #L1b5d9c.  call temp:= `header$default`(v4, v0, v1, v2, v1) @signature `Lokhttp3/Response;.header$default:(Lokhttp3/Response;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;` @kind static;
+  #L1b5da2.  v4:= temp @kind object;
+  #L1b5da4.  v0:= "chunked" @kind object;
+  #L1b5da8.  v1:= 1I;
+  #L1b5daa.  call temp:= `equals`(v0, v4, v1) @signature `Lkotlin/text/StringsKt;.equals:(Ljava/lang/String;Ljava/lang/String;Z)Z` @kind static;
+  #L1b5db0.  v4:= temp;
+  #L1b5db2.  return v4;
+}
+procedure `okio.Sink` `d`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.d:()Lokio/Sink;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b60fc.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b6100.  v1:= 1I;
+  #L1b6102.  if v0 != v1 then goto L1b6108;
+  #L1b6106.  goto L1b610a;
+  #L1b6108.  v1:= 0I;
+  #L1b610a.  if v1 == 0 then goto L1b6120;
+  #L1b610e.  v0:= 2I;
+  #L1b6110.  v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v0;
+  #L1b6114.  v0:= new `okhttp3.internal.http1.Http1ExchangeCodec$b`;
+  #L1b6118.  call `<init>`(v0, v2) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec$b;.<init>:(Lokhttp3/internal/http1/Http1ExchangeCodec;)V` @kind direct;
+  #L1b611e.  return v0 @kind object;
+  #L1b6120.  v0:= new `java.lang.StringBuilder`;
+  #L1b6124.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b612a.  v1:= "state: " @kind object;
+  #L1b612e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6134.  v1:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b6138.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b613e.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6144.  v0:= temp @kind object;
+  #L1b6146.  v1:= new `java.lang.IllegalStateException`;
+  #L1b614a.  call temp:= `toString`(v0) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6150.  v0:= temp @kind object;
+  #L1b6152.  call `<init>`(v1, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b6158.  throw v1;
+}
+procedure `okio.Source` `e`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this, `okhttp3.HttpUrl` v3 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.e:(Lokhttp3/HttpUrl;)Lokio/Source;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b61dc.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b61e0.  v1:= 4I;
+  #L1b61e2.  if v0 != v1 then goto L1b61ea;
+  #L1b61e6.  v0:= 1I;
+  #L1b61e8.  goto L1b61ec;
+  #L1b61ea.  v0:= 0I;
+  #L1b61ec.  if v0 == 0 then goto L1b6202;
+  #L1b61f0.  v0:= 5I;
+  #L1b61f2.  v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v0;
+  #L1b61f6.  v0:= new `okhttp3.internal.http1.Http1ExchangeCodec$c`;
+  #L1b61fa.  call `<init>`(v0, v2, v3) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec$c;.<init>:(Lokhttp3/internal/http1/Http1ExchangeCodec;Lokhttp3/HttpUrl;)V` @kind direct;
+  #L1b6200.  return v0 @kind object;
+  #L1b6202.  v3:= new `java.lang.StringBuilder`;
+  #L1b6206.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b620c.  v0:= "state: " @kind object;
+  #L1b6210.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6216.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b621a.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6220.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6226.  v3:= temp @kind object;
+  #L1b6228.  v0:= new `java.lang.IllegalStateException`;
+  #L1b622c.  call temp:= `toString`(v3) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6232.  v3:= temp @kind object;
+  #L1b6234.  call `<init>`(v0, v3) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b623a.  throw v0;
+}
+procedure `okio.Source` `f`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this, `long` v3 ) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.f:(J)Lokio/Source;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b624c.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b6250.  v1:= 4I;
+  #L1b6252.  if v0 != v1 then goto L1b625a;
+  #L1b6256.  v0:= 1I;
+  #L1b6258.  goto L1b625c;
+  #L1b625a.  v0:= 0I;
+  #L1b625c.  if v0 == 0 then goto L1b6272;
+  #L1b6260.  v0:= 5I;
+  #L1b6262.  v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v0;
+  #L1b6266.  v0:= new `okhttp3.internal.http1.Http1ExchangeCodec$d`;
+  #L1b626a.  call `<init>`(v0, v2, v3) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec$d;.<init>:(Lokhttp3/internal/http1/Http1ExchangeCodec;J)V` @kind direct;
+  #L1b6270.  return v0 @kind object;
+  #L1b6272.  v3:= new `java.lang.StringBuilder`;
+  #L1b6276.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b627c.  v4:= "state: " @kind object;
+  #L1b6280.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6286.  v4:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b628a.  call temp:= `append`(v3, v4) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6290.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6296.  v3:= temp @kind object;
+  #L1b6298.  v4:= new `java.lang.IllegalStateException`;
+  #L1b629c.  call temp:= `toString`(v3) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b62a2.  v3:= temp @kind object;
+  #L1b62a4.  call `<init>`(v4, v3) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b62aa.  throw v4;
+}
+procedure `okio.Sink` `g`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.g:()Lokio/Sink;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b616c.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b6170.  v1:= 1I;
+  #L1b6172.  if v0 != v1 then goto L1b6178;
+  #L1b6176.  goto L1b617a;
+  #L1b6178.  v1:= 0I;
+  #L1b617a.  if v1 == 0 then goto L1b6190;
+  #L1b617e.  v0:= 2I;
+  #L1b6180.  v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v0;
+  #L1b6184.  v0:= new `okhttp3.internal.http1.Http1ExchangeCodec$e`;
+  #L1b6188.  call `<init>`(v0, v2) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec$e;.<init>:(Lokhttp3/internal/http1/Http1ExchangeCodec;)V` @kind direct;
+  #L1b618e.  return v0 @kind object;
+  #L1b6190.  v0:= new `java.lang.StringBuilder`;
+  #L1b6194.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b619a.  v1:= "state: " @kind object;
+  #L1b619e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b61a4.  v1:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b61a8.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b61ae.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b61b4.  v0:= temp @kind object;
+  #L1b61b6.  v1:= new `java.lang.IllegalStateException`;
+  #L1b61ba.  call temp:= `toString`(v0) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b61c0.  v0:= temp @kind object;
+  #L1b61c2.  call `<init>`(v1, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b61c8.  throw v1;
+}
+procedure `okio.Source` `h`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.h:()Lokio/Source;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b62bc.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b62c0.  v1:= 4I;
+  #L1b62c2.  if v0 != v1 then goto L1b62ca;
+  #L1b62c6.  v0:= 1I;
+  #L1b62c8.  goto L1b62cc;
+  #L1b62ca.  v0:= 0I;
+  #L1b62cc.  if v0 == 0 then goto L1b62f0;
+  #L1b62d0.  v0:= 5I;
+  #L1b62d2.  v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v0;
+  #L1b62d6.  call temp:= `getConnection`(v2) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.getConnection:()Lokhttp3/internal/connection/RealConnection;` @kind virtual;
+  #L1b62dc.  v0:= temp @kind object;
+  #L1b62de.  call `noNewExchanges$okhttp`(v0) @signature `Lokhttp3/internal/connection/RealConnection;.noNewExchanges$okhttp:()V` @kind virtual;
+  #L1b62e4.  v0:= new `okhttp3.internal.http1.Http1ExchangeCodec$f`;
+  #L1b62e8.  call `<init>`(v0, v2) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec$f;.<init>:(Lokhttp3/internal/http1/Http1ExchangeCodec;)V` @kind direct;
+  #L1b62ee.  return v0 @kind object;
+  #L1b62f0.  v0:= new `java.lang.StringBuilder`;
+  #L1b62f4.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b62fa.  v1:= "state: " @kind object;
+  #L1b62fe.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6304.  v1:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b6308.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b630e.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6314.  v0:= temp @kind object;
+  #L1b6316.  v1:= new `java.lang.IllegalStateException`;
+  #L1b631a.  call temp:= `toString`(v0) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6320.  v0:= temp @kind object;
+  #L1b6322.  call `<init>`(v1, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b6328.  throw v1;
+}
+procedure `void` `cancel`(`okhttp3.internal.http1.Http1ExchangeCodec` v1 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.cancel:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1b6484.  call temp:= `getConnection`(v1) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.getConnection:()Lokhttp3/internal/connection/RealConnection;` @kind virtual;
+  #L1b648a.  v0:= temp @kind object;
+  #L1b648c.  call `cancel`(v0) @signature `Lokhttp3/internal/connection/RealConnection;.cancel:()V` @kind virtual;
+  #L1b6492.  return @kind void;
+}
+procedure `okio.Sink` `createRequestBody`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this, `okhttp3.Request` v3 @kind object, `long` v4 ) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.createRequestBody:(Lokhttp3/Request;J)Lokio/Sink;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1b6074.  v0:= "request" @kind object;
+  #L1b6078.  call `checkNotNullParameter`(v3, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b607e.  call temp:= `body`(v3) @signature `Lokhttp3/Request;.body:()Lokhttp3/RequestBody;` @kind virtual;
+  #L1b6084.  v0:= temp @kind object;
+  #L1b6086.  if v0 == 0 then goto L1b60b0;
+  #L1b608a.  call temp:= `body`(v3) @signature `Lokhttp3/Request;.body:()Lokhttp3/RequestBody;` @kind virtual;
+  #L1b6090.  v0:= temp @kind object;
+  #L1b6092.  call temp:= `isDuplex`(v0) @signature `Lokhttp3/RequestBody;.isDuplex:()Z` @kind virtual;
+  #L1b6098.  v0:= temp;
+  #L1b609a.  if v0 != 0 then goto L1b60a0;
+  #L1b609e.  goto L1b60b0;
+  #L1b60a0.  v3:= new `java.net.ProtocolException`;
+  #L1b60a4.  v4:= "Duplex connections are not supported for HTTP/1" @kind object;
+  #L1b60a8.  call `<init>`(v3, v4) @signature `Ljava/net/ProtocolException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b60ae.  throw v3;
+  #L1b60b0.  call temp:= `b`(v2, v3) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.b:(Lokhttp3/Request;)Z` @kind direct;
+  #L1b60b6.  v3:= temp;
+  #L1b60b8.  if v3 == 0 then goto L1b60c6;
+  #L1b60bc.  call temp:= `d`(v2) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.d:()Lokio/Sink;` @kind direct;
+  #L1b60c2.  v3:= temp @kind object;
+  #L1b60c4.  goto L1b60da;
+  #L1b60c6.  v0:= -1L;
+  #L1b60ca.  v3:= lcmp(v4, v0);
+  #L1b60ce.  if v3 == 0 then goto L1b60dc;
+  #L1b60d2.  call temp:= `g`(v2) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.g:()Lokio/Sink;` @kind direct;
+  #L1b60d8.  v3:= temp @kind object;
+  #L1b60da.  return v3 @kind object;
+  #L1b60dc.  v3:= new `java.lang.IllegalStateException`;
+  #L1b60e0.  v4:= "Cannot stream a request body without chunked encoding or a known content length!" @kind object;
+  #L1b60e4.  call `<init>`(v3, v4) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b60ea.  throw v3;
+}
+procedure `void` `finishRequest`(`okhttp3.internal.http1.Http1ExchangeCodec` v1 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.finishRequest:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1b64d4.  v0:= v1.`okhttp3.internal.http1.Http1ExchangeCodec.g` @type ^`okio.BufferedSink` @kind object;
+  #L1b64d8.  call `flush`(v0) @signature `Lokio/BufferedSink;.flush:()V` @kind interface;
+  #L1b64de.  return @kind void;
+}
+procedure `void` `flushRequest`(`okhttp3.internal.http1.Http1ExchangeCodec` v1 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.flushRequest:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1b64f0.  v0:= v1.`okhttp3.internal.http1.Http1ExchangeCodec.g` @type ^`okio.BufferedSink` @kind object;
+  #L1b64f4.  call `flush`(v0) @signature `Lokio/BufferedSink;.flush:()V` @kind interface;
+  #L1b64fa.  return @kind void;
+}
+procedure `okhttp3.internal.connection.RealConnection` `getConnection`(`okhttp3.internal.http1.Http1ExchangeCodec` v1 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.getConnection:()Lokhttp3/internal/connection/RealConnection;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1b6014.  v0:= v1.`okhttp3.internal.http1.Http1ExchangeCodec.e` @type ^`okhttp3.internal.connection.RealConnection` @kind object;
+  #L1b6018.  return v0 @kind object;
+}
+procedure `boolean` `isClosed`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.isClosed:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+
+  #L1b5dc4.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b5dc8.  v1:= 6I;
+  #L1b5dca.  if v0 != v1 then goto L1b5dd2;
+  #L1b5dce.  v0:= 1I;
+  #L1b5dd0.  goto L1b5dd4;
+  #L1b5dd2.  v0:= 0I;
+  #L1b5dd4.  return v0;
+}
+procedure `okio.Source` `openResponseBodySource`(`okhttp3.internal.http1.Http1ExchangeCodec` v4 @kind this, `okhttp3.Response` v5 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.openResponseBodySource:(Lokhttp3/Response;)Lokio/Source;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1b633c.  v0:= "response" @kind object;
+  #L1b6340.  call `checkNotNullParameter`(v5, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b6346.  call temp:= `promisesBody`(v5) @signature `Lokhttp3/internal/http/HttpHeaders;.promisesBody:(Lokhttp3/Response;)Z` @kind static;
+  #L1b634c.  v0:= temp;
+  #L1b634e.  if v0 != 0 then goto L1b6360;
+  #L1b6352.  v0:= 0L;
+  #L1b6356.  call temp:= `f`(v4, v0) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.f:(J)Lokio/Source;` @kind direct;
+  #L1b635c.  v5:= temp @kind object;
+  #L1b635e.  goto L1b63ac;
+  #L1b6360.  call temp:= `c`(v4, v5) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.c:(Lokhttp3/Response;)Z` @kind direct;
+  #L1b6366.  v0:= temp;
+  #L1b6368.  if v0 == 0 then goto L1b6386;
+  #L1b636c.  call temp:= `request`(v5) @signature `Lokhttp3/Response;.request:()Lokhttp3/Request;` @kind virtual;
+  #L1b6372.  v5:= temp @kind object;
+  #L1b6374.  call temp:= `url`(v5) @signature `Lokhttp3/Request;.url:()Lokhttp3/HttpUrl;` @kind virtual;
+  #L1b637a.  v5:= temp @kind object;
+  #L1b637c.  call temp:= `e`(v4, v5) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.e:(Lokhttp3/HttpUrl;)Lokio/Source;` @kind direct;
+  #L1b6382.  v5:= temp @kind object;
+  #L1b6384.  goto L1b63ac;
+  #L1b6386.  call temp:= `headersContentLength`(v5) @signature `Lokhttp3/internal/Util;.headersContentLength:(Lokhttp3/Response;)J` @kind static;
+  #L1b638c.  v0:= temp @kind wide;
+  #L1b638e.  v2:= -1L;
+  #L1b6392.  v5:= lcmp(v0, v2);
+  #L1b6396.  if v5 == 0 then goto L1b63a4;
+  #L1b639a.  call temp:= `f`(v4, v0) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.f:(J)Lokio/Source;` @kind direct;
+  #L1b63a0.  v5:= temp @kind object;
+  #L1b63a2.  goto L1b63ac;
+  #L1b63a4.  call temp:= `h`(v4) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.h:()Lokio/Source;` @kind direct;
+  #L1b63aa.  v5:= temp @kind object;
+  #L1b63ac.  return v5 @kind object;
+}
+procedure `okhttp3.Response$Builder` `readResponseHeaders`(`okhttp3.internal.http1.Http1ExchangeCodec` v4 @kind this, `boolean` v5 ) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.readResponseHeaders:(Z)Lokhttp3/Response$Builder;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1b5ec4.  v0:= v4.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b5ec8.  v1:= 3I;
+  #L1b5eca.  v2:= 1I;
+  #L1b5ecc.  if v0 == v2 then goto L1b5ed8;
+  #L1b5ed0.  if v0 != v1 then goto L1b5ed6;
+  #L1b5ed4.  goto L1b5ed8;
+  #L1b5ed6.  v2:= 0I;
+  #L1b5ed8.  if v2 == 0 then goto L1b5fb8;
+  #L1b5edc.  v0:= `@@okhttp3.internal.http.StatusLine.Companion` @type ^`okhttp3.internal.http.StatusLine$Companion` @kind object;
+  #L1b5ee0.  v2:= v4.`okhttp3.internal.http1.Http1ExchangeCodec.b` @type ^`okhttp3.internal.http1.HeadersReader` @kind object;
+  #L1b5ee4.  call temp:= `readLine`(v2) @signature `Lokhttp3/internal/http1/HeadersReader;.readLine:()Ljava/lang/String;` @kind virtual;
+  #L1b5eea.  v2:= temp @kind object;
+  #L1b5eec.  call temp:= `parse`(v0, v2) @signature `Lokhttp3/internal/http/StatusLine$Companion;.parse:(Ljava/lang/String;)Lokhttp3/internal/http/StatusLine;` @kind virtual;
+  #L1b5ef2.  v0:= temp @kind object;
+  #L1b5ef4.  v2:= new `okhttp3.Response$Builder`;
+  #L1b5ef8.  call `<init>`(v2) @signature `Lokhttp3/Response$Builder;.<init>:()V` @kind direct;
+  #L1b5efe.  v3:= v0.`okhttp3.internal.http.StatusLine.protocol` @type ^`okhttp3.Protocol` @kind object;
+  #L1b5f02.  call temp:= `protocol`(v2, v3) @signature `Lokhttp3/Response$Builder;.protocol:(Lokhttp3/Protocol;)Lokhttp3/Response$Builder;` @kind virtual;
+  #L1b5f08.  v2:= temp @kind object;
+  #L1b5f0a.  v3:= v0.`okhttp3.internal.http.StatusLine.code` @type ^`int`;
+  #L1b5f0e.  call temp:= `code`(v2, v3) @signature `Lokhttp3/Response$Builder;.code:(I)Lokhttp3/Response$Builder;` @kind virtual;
+  #L1b5f14.  v2:= temp @kind object;
+  #L1b5f16.  v3:= v0.`okhttp3.internal.http.StatusLine.message` @type ^`java.lang.String` @kind object;
+  #L1b5f1a.  call temp:= `message`(v2, v3) @signature `Lokhttp3/Response$Builder;.message:(Ljava/lang/String;)Lokhttp3/Response$Builder;` @kind virtual;
+  #L1b5f20.  v2:= temp @kind object;
+  #L1b5f22.  v3:= v4.`okhttp3.internal.http1.Http1ExchangeCodec.b` @type ^`okhttp3.internal.http1.HeadersReader` @kind object;
+  #L1b5f26.  call temp:= `readHeaders`(v3) @signature `Lokhttp3/internal/http1/HeadersReader;.readHeaders:()Lokhttp3/Headers;` @kind virtual;
+  #L1b5f2c.  v3:= temp @kind object;
+  #L1b5f2e.  call temp:= `headers`(v2, v3) @signature `Lokhttp3/Response$Builder;.headers:(Lokhttp3/Headers;)Lokhttp3/Response$Builder;` @kind virtual;
+  #L1b5f34.  v2:= temp @kind object;
+  #L1b5f36.  v3:= 100I;
+  #L1b5f3a.  if v5 == 0 then goto L1b5f4a;
+  #L1b5f3e.  v5:= v0.`okhttp3.internal.http.StatusLine.code` @type ^`int`;
+  #L1b5f42.  if v5 != v3 then goto L1b5f4a;
+  #L1b5f46.  v2:= 0I;
+  #L1b5f48.  goto L1b5f5e;
+  #L1b5f4a.  v5:= v0.`okhttp3.internal.http.StatusLine.code` @type ^`int`;
+  #L1b5f4e.  if v5 != v3 then goto L1b5f58;
+  #L1b5f52.  v4.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v1;
+  #L1b5f56.  goto L1b5f5e;
+  #L1b5f58.  v5:= 4I;
+  #L1b5f5a.  v4.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v5;
+  #L1b5f5e.  return v2 @kind object;
+  #L1b5f60.  v5:= Exception @type ^`java.io.EOFException` @kind object;
+  #L1b5f62.  call temp:= `getConnection`(v4) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.getConnection:()Lokhttp3/internal/connection/RealConnection;` @kind virtual;
+  #L1b5f68.  v0:= temp @kind object;
+  #L1b5f6a.  call temp:= `route`(v0) @signature `Lokhttp3/internal/connection/RealConnection;.route:()Lokhttp3/Route;` @kind virtual;
+  #L1b5f70.  v0:= temp @kind object;
+  #L1b5f72.  call temp:= `address`(v0) @signature `Lokhttp3/Route;.address:()Lokhttp3/Address;` @kind virtual;
+  #L1b5f78.  v0:= temp @kind object;
+  #L1b5f7a.  call temp:= `url`(v0) @signature `Lokhttp3/Address;.url:()Lokhttp3/HttpUrl;` @kind virtual;
+  #L1b5f80.  v0:= temp @kind object;
+  #L1b5f82.  call temp:= `redact`(v0) @signature `Lokhttp3/HttpUrl;.redact:()Ljava/lang/String;` @kind virtual;
+  #L1b5f88.  v0:= temp @kind object;
+  #L1b5f8a.  v1:= new `java.io.IOException`;
+  #L1b5f8e.  v2:= new `java.lang.StringBuilder`;
+  #L1b5f92.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b5f98.  v3:= "unexpected end of stream on " @kind object;
+  #L1b5f9c.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b5fa2.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b5fa8.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b5fae.  v0:= temp @kind object;
+  #L1b5fb0.  call `<init>`(v1, v0, v5) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L1b5fb6.  throw v1;
+  #L1b5fb8.  v5:= new `java.lang.StringBuilder`;
+  #L1b5fbc.  call `<init>`(v5) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b5fc2.  v0:= "state: " @kind object;
+  #L1b5fc6.  call temp:= `append`(v5, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b5fcc.  v0:= v4.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b5fd0.  call temp:= `append`(v5, v0) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b5fd6.  call temp:= `toString`(v5) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b5fdc.  v5:= temp @kind object;
+  #L1b5fde.  v0:= new `java.lang.IllegalStateException`;
+  #L1b5fe2.  call temp:= `toString`(v5) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b5fe8.  v5:= temp @kind object;
+  #L1b5fea.  call `<init>`(v0, v5) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b5ff0.  throw v0;
+  catch `java.io.EOFException` @[L1b5edc..L1b5f5e] goto L1b5f60;
+}
+procedure `long` `reportedContentLength`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this, `okhttp3.Response` v3 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.reportedContentLength:(Lokhttp3/Response;)J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1b5e00.  v0:= "response" @kind object;
+  #L1b5e04.  call `checkNotNullParameter`(v3, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b5e0a.  call temp:= `promisesBody`(v3) @signature `Lokhttp3/internal/http/HttpHeaders;.promisesBody:(Lokhttp3/Response;)Z` @kind static;
+  #L1b5e10.  v0:= temp;
+  #L1b5e12.  if v0 != 0 then goto L1b5e1c;
+  #L1b5e16.  v0:= 0L;
+  #L1b5e1a.  goto L1b5e36;
+  #L1b5e1c.  call temp:= `c`(v2, v3) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.c:(Lokhttp3/Response;)Z` @kind direct;
+  #L1b5e22.  v0:= temp;
+  #L1b5e24.  if v0 == 0 then goto L1b5e2e;
+  #L1b5e28.  v0:= -1L;
+  #L1b5e2c.  goto L1b5e36;
+  #L1b5e2e.  call temp:= `headersContentLength`(v3) @signature `Lokhttp3/internal/Util;.headersContentLength:(Lokhttp3/Response;)J` @kind static;
+  #L1b5e34.  v0:= temp @kind wide;
+  #L1b5e36.  return v0 @kind wide;
+}
+procedure `void` `skipConnectBody`(`okhttp3.internal.http1.Http1ExchangeCodec` v4 @kind this, `okhttp3.Response` v5 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.skipConnectBody:(Lokhttp3/Response;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1b650c.  v0:= "response" @kind object;
+  #L1b6510.  call `checkNotNullParameter`(v5, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b6516.  call temp:= `headersContentLength`(v5) @signature `Lokhttp3/internal/Util;.headersContentLength:(Lokhttp3/Response;)J` @kind static;
+  #L1b651c.  v0:= temp @kind wide;
+  #L1b651e.  v2:= -1L;
+  #L1b6522.  v5:= lcmp(v0, v2);
+  #L1b6526.  if v5 != 0 then goto L1b652c;
+  #L1b652a.  return @kind void;
+  #L1b652c.  call temp:= `f`(v4, v0) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.f:(J)Lokio/Source;` @kind direct;
+  #L1b6532.  v5:= temp @kind object;
+  #L1b6534.  v0:= 2147483647I;
+  #L1b653a.  v1:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L1b653e.  call temp:= `skipAll`(v5, v0, v1) @signature `Lokhttp3/internal/Util;.skipAll:(Lokio/Source;ILjava/util/concurrent/TimeUnit;)Z` @kind static;
+  #L1b6544.  call `close`(v5) @signature `Lokio/Source;.close:()V` @kind interface;
+  #L1b654a.  return @kind void;
+}
+procedure `okhttp3.Headers` `trailers`(`okhttp3.internal.http1.Http1ExchangeCodec` v2 @kind this) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.trailers:()Lokhttp3/Headers;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1b5e60.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b5e64.  v1:= 6I;
+  #L1b5e66.  if v0 != v1 then goto L1b5e6e;
+  #L1b5e6a.  v0:= 1I;
+  #L1b5e6c.  goto L1b5e70;
+  #L1b5e6e.  v0:= 0I;
+  #L1b5e70.  if v0 == 0 then goto L1b5e84;
+  #L1b5e74.  v0:= v2.`okhttp3.internal.http1.Http1ExchangeCodec.c` @type ^`okhttp3.Headers` @kind object;
+  #L1b5e78.  if v0 == 0 then goto L1b5e7e;
+  #L1b5e7c.  goto L1b5e82;
+  #L1b5e7e.  v0:= `@@okhttp3.internal.Util.EMPTY_HEADERS` @type ^`okhttp3.Headers` @kind object;
+  #L1b5e82.  return v0 @kind object;
+  #L1b5e84.  v0:= new `java.lang.IllegalStateException`;
+  #L1b5e88.  v1:= "too early; can't read the trailers yet" @kind object;
+  #L1b5e8c.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b5e92.  v1:= temp @kind object;
+  #L1b5e94.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b5e9a.  throw v0;
+}
+procedure `void` `writeRequest`(`okhttp3.internal.http1.Http1ExchangeCodec` v5 @kind this, `okhttp3.Headers` v6 @kind object, `java.lang.String` v7 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.writeRequest:(Lokhttp3/Headers;Ljava/lang/String;)V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L1b655c.  v0:= "headers" @kind object;
+  #L1b6560.  call `checkNotNullParameter`(v6, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b6566.  v0:= "requestLine" @kind object;
+  #L1b656a.  call `checkNotNullParameter`(v7, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b6570.  v0:= v5.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b6574.  v1:= 0I;
+  #L1b6576.  v2:= 1I;
+  #L1b6578.  if v0 != 0 then goto L1b6580;
+  #L1b657c.  v0:= 1I;
+  #L1b657e.  goto L1b6582;
+  #L1b6580.  v0:= 0I;
+  #L1b6582.  if v0 == 0 then goto L1b65f4;
+  #L1b6586.  v0:= v5.`okhttp3.internal.http1.Http1ExchangeCodec.g` @type ^`okio.BufferedSink` @kind object;
+  #L1b658a.  call temp:= `writeUtf8`(v0, v7) @signature `Lokio/BufferedSink;.writeUtf8:(Ljava/lang/String;)Lokio/BufferedSink;` @kind interface;
+  #L1b6590.  v7:= temp @kind object;
+  #L1b6592.  v0:= "\r\n" @kind object;
+  #L1b6596.  call temp:= `writeUtf8`(v7, v0) @signature `Lokio/BufferedSink;.writeUtf8:(Ljava/lang/String;)Lokio/BufferedSink;` @kind interface;
+  #L1b659c.  call temp:= `size`(v6) @signature `Lokhttp3/Headers;.size:()I` @kind virtual;
+  #L1b65a2.  v7:= temp;
+  #L1b65a4.  if v1 >= v7 then goto L1b65e4;
+  #L1b65a8.  v3:= v5.`okhttp3.internal.http1.Http1ExchangeCodec.g` @type ^`okio.BufferedSink` @kind object;
+  #L1b65ac.  call temp:= `name`(v6, v1) @signature `Lokhttp3/Headers;.name:(I)Ljava/lang/String;` @kind virtual;
+  #L1b65b2.  v4:= temp @kind object;
+  #L1b65b4.  call temp:= `writeUtf8`(v3, v4) @signature `Lokio/BufferedSink;.writeUtf8:(Ljava/lang/String;)Lokio/BufferedSink;` @kind interface;
+  #L1b65ba.  v3:= temp @kind object;
+  #L1b65bc.  v4:= ": " @kind object;
+  #L1b65c0.  call temp:= `writeUtf8`(v3, v4) @signature `Lokio/BufferedSink;.writeUtf8:(Ljava/lang/String;)Lokio/BufferedSink;` @kind interface;
+  #L1b65c6.  v3:= temp @kind object;
+  #L1b65c8.  call temp:= `value`(v6, v1) @signature `Lokhttp3/Headers;.value:(I)Ljava/lang/String;` @kind virtual;
+  #L1b65ce.  v4:= temp @kind object;
+  #L1b65d0.  call temp:= `writeUtf8`(v3, v4) @signature `Lokio/BufferedSink;.writeUtf8:(Ljava/lang/String;)Lokio/BufferedSink;` @kind interface;
+  #L1b65d6.  v3:= temp @kind object;
+  #L1b65d8.  call temp:= `writeUtf8`(v3, v0) @signature `Lokio/BufferedSink;.writeUtf8:(Ljava/lang/String;)Lokio/BufferedSink;` @kind interface;
+  #L1b65de.  v1:= v1 + 1;
+  #L1b65e2.  goto L1b65a4;
+  #L1b65e4.  v6:= v5.`okhttp3.internal.http1.Http1ExchangeCodec.g` @type ^`okio.BufferedSink` @kind object;
+  #L1b65e8.  call temp:= `writeUtf8`(v6, v0) @signature `Lokio/BufferedSink;.writeUtf8:(Ljava/lang/String;)Lokio/BufferedSink;` @kind interface;
+  #L1b65ee.  v5.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int` := v2;
+  #L1b65f2.  return @kind void;
+  #L1b65f4.  v6:= new `java.lang.StringBuilder`;
+  #L1b65f8.  call `<init>`(v6) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1b65fe.  v7:= "state: " @kind object;
+  #L1b6602.  call temp:= `append`(v6, v7) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6608.  v7:= v5.`okhttp3.internal.http1.Http1ExchangeCodec.a` @type ^`int`;
+  #L1b660c.  call temp:= `append`(v6, v7) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1b6612.  call temp:= `toString`(v6) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6618.  v6:= temp @kind object;
+  #L1b661a.  v7:= new `java.lang.IllegalStateException`;
+  #L1b661e.  call temp:= `toString`(v6) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1b6624.  v6:= temp @kind object;
+  #L1b6626.  call `<init>`(v7, v6) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1b662c.  throw v7;
+}
+procedure `void` `writeRequestHeaders`(`okhttp3.internal.http1.Http1ExchangeCodec` v3 @kind this, `okhttp3.Request` v4 @kind object) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.writeRequestHeaders:(Lokhttp3/Request;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L1b6640.  v0:= "request" @kind object;
+  #L1b6644.  call `checkNotNullParameter`(v4, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b664a.  v0:= `@@okhttp3.internal.http.RequestLine.INSTANCE` @type ^`okhttp3.internal.http.RequestLine` @kind object;
+  #L1b664e.  call temp:= `getConnection`(v3) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.getConnection:()Lokhttp3/internal/connection/RealConnection;` @kind virtual;
+  #L1b6654.  v1:= temp @kind object;
+  #L1b6656.  call temp:= `route`(v1) @signature `Lokhttp3/internal/connection/RealConnection;.route:()Lokhttp3/Route;` @kind virtual;
+  #L1b665c.  v1:= temp @kind object;
+  #L1b665e.  call temp:= `proxy`(v1) @signature `Lokhttp3/Route;.proxy:()Ljava/net/Proxy;` @kind virtual;
+  #L1b6664.  v1:= temp @kind object;
+  #L1b6666.  call temp:= `type`(v1) @signature `Ljava/net/Proxy;.type:()Ljava/net/Proxy$Type;` @kind virtual;
+  #L1b666c.  v1:= temp @kind object;
+  #L1b666e.  v2:= "connection.route().proxy.type()" @kind object;
+  #L1b6672.  call `checkNotNullExpressionValue`(v1, v2) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1b6678.  call temp:= `get`(v0, v4, v1) @signature `Lokhttp3/internal/http/RequestLine;.get:(Lokhttp3/Request;Ljava/net/Proxy$Type;)Ljava/lang/String;` @kind virtual;
+  #L1b667e.  v0:= temp @kind object;
+  #L1b6680.  call temp:= `headers`(v4) @signature `Lokhttp3/Request;.headers:()Lokhttp3/Headers;` @kind virtual;
+  #L1b6686.  v4:= temp @kind object;
+  #L1b6688.  call `writeRequest`(v3, v4, v0) @signature `Lokhttp3/internal/http1/Http1ExchangeCodec;.writeRequest:(Lokhttp3/Headers;Ljava/lang/String;)V` @kind virtual;
+  #L1b668e.  return @kind void;
+}

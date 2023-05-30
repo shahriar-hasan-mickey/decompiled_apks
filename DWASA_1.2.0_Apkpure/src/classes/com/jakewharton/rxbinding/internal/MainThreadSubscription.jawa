@@ -1,0 +1,72 @@
+record `com.jakewharton.rxbinding.internal.MainThreadSubscription` @kind class @AccessFlag PUBLIC_ABSTRACT extends `rx.Subscription` @kind interface, `java.lang.Runnable` @kind interface {
+  `int` `com.jakewharton.rxbinding.internal.MainThreadSubscription.unsubscribed` @AccessFlag PRIVATE_VOLATILE;
+}
+global `android.os.Handler` `@@com.jakewharton.rxbinding.internal.MainThreadSubscription.mainThread` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.atomic.AtomicIntegerFieldUpdater` `@@com.jakewharton.rxbinding.internal.MainThreadSubscription.unsubscribedUpdater` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L357a44.  v0:= new `android.os.Handler`;
+  #L357a48.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L357a4e.  v1:= temp @kind object;
+  #L357a50.  call `<init>`(v0, v1) @signature `Landroid/os/Handler;.<init>:(Landroid/os/Looper;)V` @kind direct;
+  #L357a56.  `@@com.jakewharton.rxbinding.internal.MainThreadSubscription.mainThread` @type ^`android.os.Handler` := v0 @kind object;
+  #L357a5a.  v0:= constclass @type ^`com.jakewharton.rxbinding.internal.MainThreadSubscription` @kind object;
+  #L357a5e.  v1:= "unsubscribed" @kind object;
+  #L357a62.  call temp:= `newUpdater`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.newUpdater:(Ljava/lang/Class;Ljava/lang/String;)Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;` @kind static;
+  #L357a68.  v0:= temp @kind object;
+  #L357a6a.  `@@com.jakewharton.rxbinding.internal.MainThreadSubscription.unsubscribedUpdater` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` := v0 @kind object;
+  #L357a6e.  return @kind void;
+}
+procedure `void` `<init>`(`com.jakewharton.rxbinding.internal.MainThreadSubscription` v0 @kind this) @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L357a80.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L357a86.  return @kind void;
+}
+procedure `boolean` `isUnsubscribed`(`com.jakewharton.rxbinding.internal.MainThreadSubscription` v1 @kind this) @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.isUnsubscribed:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L357a24.  v0:= v1.`com.jakewharton.rxbinding.internal.MainThreadSubscription.unsubscribed` @type ^`int`;
+  #L357a28.  if v0 == 0 then goto L357a30;
+  #L357a2c.  v0:= 1I;
+  #L357a2e.  goto L357a32;
+  #L357a30.  v0:= 0I;
+  #L357a32.  return v0;
+}
+procedure `void` `onUnsubscribe`() @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.onUnsubscribe:()V` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}
+procedure `void` `run`(`com.jakewharton.rxbinding.internal.MainThreadSubscription` v0 @kind this) @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.run:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+
+  #L357a98.  call `onUnsubscribe`(v0) @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.onUnsubscribe:()V` @kind virtual;
+  #L357a9e.  return @kind void;
+}
+procedure `void` `unsubscribe`(`com.jakewharton.rxbinding.internal.MainThreadSubscription` v3 @kind this) @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.unsubscribe:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L357ab0.  v0:= `@@com.jakewharton.rxbinding.internal.MainThreadSubscription.unsubscribedUpdater` @type ^`java.util.concurrent.atomic.AtomicIntegerFieldUpdater` @kind object;
+  #L357ab4.  v1:= 0I;
+  #L357ab6.  v2:= 1I;
+  #L357ab8.  call temp:= `compareAndSet`(v0, v3, v1, v2) @signature `Ljava/util/concurrent/atomic/AtomicIntegerFieldUpdater;.compareAndSet:(Ljava/lang/Object;II)Z` @kind virtual;
+  #L357abe.  v0:= temp;
+  #L357ac0.  if v0 == 0 then goto L357aea;
+  #L357ac4.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L357aca.  v0:= temp @kind object;
+  #L357acc.  call temp:= `myLooper`() @signature `Landroid/os/Looper;.myLooper:()Landroid/os/Looper;` @kind static;
+  #L357ad2.  v1:= temp @kind object;
+  #L357ad4.  if v0 != v1 then goto L357ae0;
+  #L357ad8.  call `onUnsubscribe`(v3) @signature `Lcom/jakewharton/rxbinding/internal/MainThreadSubscription;.onUnsubscribe:()V` @kind virtual;
+  #L357ade.  goto L357aea;
+  #L357ae0.  v0:= `@@com.jakewharton.rxbinding.internal.MainThreadSubscription.mainThread` @type ^`android.os.Handler` @kind object;
+  #L357ae4.  call temp:= `post`(v0, v3) @signature `Landroid/os/Handler;.post:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L357aea.  return @kind void;
+}

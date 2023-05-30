@@ -1,0 +1,190 @@
+record `okio.SegmentPool` @kind class @AccessFlag PUBLIC_FINAL {
+}
+global `okio.SegmentPool` `@@okio.SegmentPool.INSTANCE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@okio.SegmentPool.a` @AccessFlag PRIVATE_STATIC_FINAL;
+global `okio.Segment` `@@okio.SegmentPool.b` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@okio.SegmentPool.c` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.atomic.AtomicReference`[] `@@okio.SegmentPool.d` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lokio/SegmentPool;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L1d6494.  v0:= new `okio.SegmentPool`;
+  #L1d6498.  call `<init>`(v0) @signature `Lokio/SegmentPool;.<init>:()V` @kind direct;
+  #L1d649e.  `@@okio.SegmentPool.INSTANCE` @type ^`okio.SegmentPool` := v0 @kind object;
+  #L1d64a2.  v0:= new `okio.Segment`;
+  #L1d64a6.  v7:= 0I;
+  #L1d64a8.  v2:= new `byte`[v7];
+  #L1d64ac.  v3:= 0I;
+  #L1d64ae.  v4:= 0I;
+  #L1d64b0.  v5:= 0I;
+  #L1d64b2.  v6:= 0I;
+  #L1d64b4.  v1:= v0 @kind object;
+  #L1d64b6.  call `<init>`(v1, v2, v3, v4, v5, v6) @signature `Lokio/Segment;.<init>:([BIIZZ)V` @kind direct;
+  #L1d64bc.  `@@okio.SegmentPool.b` @type ^`okio.Segment` := v0 @kind object;
+  #L1d64c0.  call temp:= `getRuntime`() @signature `Ljava/lang/Runtime;.getRuntime:()Ljava/lang/Runtime;` @kind static;
+  #L1d64c6.  v0:= temp @kind object;
+  #L1d64c8.  call temp:= `availableProcessors`(v0) @signature `Ljava/lang/Runtime;.availableProcessors:()I` @kind virtual;
+  #L1d64ce.  v0:= temp;
+  #L1d64d0.  v0:= v0 * 2;
+  #L1d64d4.  v0:= v0 + -1;
+  #L1d64d8.  call temp:= `highestOneBit`(v0) @signature `Ljava/lang/Integer;.highestOneBit:(I)I` @kind static;
+  #L1d64de.  v0:= temp;
+  #L1d64e0.  `@@okio.SegmentPool.c` @type ^`int` := v0;
+  #L1d64e4.  v1:= new `java.util.concurrent.atomic.AtomicReference`[v0];
+  #L1d64e8.  if v7 >= v0 then goto L1d6500;
+  #L1d64ec.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L1d64f0.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L1d64f6.  v1[v7]:= v2 @kind object;
+  #L1d64fa.  v7:= v7 + 1;
+  #L1d64fe.  goto L1d64e8;
+  #L1d6500.  `@@okio.SegmentPool.d` @type ^`java.util.concurrent.atomic.AtomicReference`[] := v1 @kind object;
+  #L1d6504.  return @kind void;
+}
+procedure `void` `<init>`(`okio.SegmentPool` v0 @kind this) @signature `Lokio/SegmentPool;.<init>:()V` @AccessFlag PRIVATE_CONSTRUCTOR {
+    temp;
+
+  #L1d6518.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1d651e.  return @kind void;
+}
+procedure `java.util.concurrent.atomic.AtomicReference` `a`(`okio.SegmentPool` v6 @kind this) @signature `Lokio/SegmentPool;.a:()Ljava/util/concurrent/atomic/AtomicReference;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L1d63e0.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L1d63e6.  v0:= temp @kind object;
+  #L1d63e8.  v1:= "Thread.currentThread()" @kind object;
+  #L1d63ec.  call `checkNotNullExpressionValue`(v0, v1) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d63f2.  call temp:= `getId`(v0) @signature `Ljava/lang/Thread;.getId:()J` @kind virtual;
+  #L1d63f8.  v0:= temp @kind wide;
+  #L1d63fa.  v2:= `@@okio.SegmentPool.c` @type ^`int`;
+  #L1d63fe.  v2:= (`long`) v2 @kind i2l;
+  #L1d6400.  v4:= 1L;
+  #L1d6404.  v2:= v2 - v4 @kind long;
+  #L1d6406.  v0:= v0 ^& v2 @kind long;
+  #L1d6408.  v1:= (`int`) v0 @kind l2i;
+  #L1d640a.  v0:= `@@okio.SegmentPool.d` @type ^`java.util.concurrent.atomic.AtomicReference`[] @kind object;
+  #L1d640e.  v0:= v0[v1] @kind object;
+  #L1d6412.  return v0 @kind object;
+}
+procedure `void` `recycle`(`okio.Segment` v5 @kind object) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @AccessFlag PUBLIC_STATIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L1d6530.  v0:= "segment" @kind object;
+  #L1d6534.  call `checkNotNullParameter`(v5, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d653a.  v0:= v5.`okio.Segment.next` @type ^`okio.Segment` @kind object;
+  #L1d653e.  v1:= 0I;
+  #L1d6540.  if v0 != 0 then goto L1d6550;
+  #L1d6544.  v0:= v5.`okio.Segment.prev` @type ^`okio.Segment` @kind object;
+  #L1d6548.  if v0 != 0 then goto L1d6550;
+  #L1d654c.  v0:= 1I;
+  #L1d654e.  goto L1d6552;
+  #L1d6550.  v0:= 0I;
+  #L1d6552.  if v0 == 0 then goto L1d65bc;
+  #L1d6556.  v0:= v5.`okio.Segment.shared` @type ^`boolean` @kind boolean;
+  #L1d655a.  if v0 == 0 then goto L1d6560;
+  #L1d655e.  return @kind void;
+  #L1d6560.  v0:= `@@okio.SegmentPool.INSTANCE` @type ^`okio.SegmentPool` @kind object;
+  #L1d6564.  call temp:= `a`(v0) @signature `Lokio/SegmentPool;.a:()Ljava/util/concurrent/atomic/AtomicReference;` @kind direct;
+  #L1d656a.  v0:= temp @kind object;
+  #L1d656c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L1d6572.  v2:= temp @kind object;
+  #L1d6574.  v2:= (`okio.Segment`) v2 @kind object;
+  #L1d6578.  v3:= `@@okio.SegmentPool.b` @type ^`okio.Segment` @kind object;
+  #L1d657c.  if v2 != v3 then goto L1d6582;
+  #L1d6580.  return @kind void;
+  #L1d6582.  if v2 == 0 then goto L1d658c;
+  #L1d6586.  v3:= v2.`okio.Segment.limit` @type ^`int`;
+  #L1d658a.  goto L1d658e;
+  #L1d658c.  v3:= 0I;
+  #L1d658e.  v4:= `@@okio.SegmentPool.a` @type ^`int`;
+  #L1d6592.  if v3 < v4 then goto L1d6598;
+  #L1d6596.  return @kind void;
+  #L1d6598.  v5.`okio.Segment.next` @type ^`okio.Segment` := v2 @kind object;
+  #L1d659c.  v5.`okio.Segment.pos` @type ^`int` := v1;
+  #L1d65a0.  v3:= v3 + 8192;
+  #L1d65a4.  v5.`okio.Segment.limit` @type ^`int` := v3;
+  #L1d65a8.  call temp:= `compareAndSet`(v0, v2, v5) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L1d65ae.  v0:= temp;
+  #L1d65b0.  if v0 != 0 then goto L1d65ba;
+  #L1d65b4.  v0:= 0I;
+  #L1d65b6.  v5.`okio.Segment.next` @type ^`okio.Segment` := v0 @kind object;
+  #L1d65ba.  return @kind void;
+  #L1d65bc.  v5:= new `java.lang.IllegalArgumentException`;
+  #L1d65c0.  v0:= "Failed requirement." @kind object;
+  #L1d65c4.  call temp:= `toString`(v0) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d65ca.  v0:= temp @kind object;
+  #L1d65cc.  call `<init>`(v5, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d65d2.  throw v5;
+}
+procedure `okio.Segment` `take`() @signature `Lokio/SegmentPool;.take:()Lokio/Segment;` @AccessFlag PUBLIC_STATIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L1d6424.  v0:= `@@okio.SegmentPool.INSTANCE` @type ^`okio.SegmentPool` @kind object;
+  #L1d6428.  call temp:= `a`(v0) @signature `Lokio/SegmentPool;.a:()Ljava/util/concurrent/atomic/AtomicReference;` @kind direct;
+  #L1d642e.  v0:= temp @kind object;
+  #L1d6430.  v1:= `@@okio.SegmentPool.b` @type ^`okio.Segment` @kind object;
+  #L1d6434.  call temp:= `getAndSet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L1d643a.  v1:= temp @kind object;
+  #L1d643c.  v1:= (`okio.Segment`) v1 @kind object;
+  #L1d6440.  v2:= `@@okio.SegmentPool.b` @type ^`okio.Segment` @kind object;
+  #L1d6444.  if v1 != v2 then goto L1d6454;
+  #L1d6448.  v0:= new `okio.Segment`;
+  #L1d644c.  call `<init>`(v0) @signature `Lokio/Segment;.<init>:()V` @kind direct;
+  #L1d6452.  return v0 @kind object;
+  #L1d6454.  v2:= 0I;
+  #L1d6456.  if v1 != 0 then goto L1d646c;
+  #L1d645a.  call `set`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.set:(Ljava/lang/Object;)V` @kind virtual;
+  #L1d6460.  v0:= new `okio.Segment`;
+  #L1d6464.  call `<init>`(v0) @signature `Lokio/Segment;.<init>:()V` @kind direct;
+  #L1d646a.  return v0 @kind object;
+  #L1d646c.  v3:= v1.`okio.Segment.next` @type ^`okio.Segment` @kind object;
+  #L1d6470.  call `set`(v0, v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.set:(Ljava/lang/Object;)V` @kind virtual;
+  #L1d6476.  v1.`okio.Segment.next` @type ^`okio.Segment` := v2 @kind object;
+  #L1d647a.  v0:= 0I;
+  #L1d647c.  v1.`okio.Segment.limit` @type ^`int` := v0;
+  #L1d6480.  return v1 @kind object;
+}
+procedure `int` `getByteCount`(`okio.SegmentPool` v1 @kind this) @signature `Lokio/SegmentPool;.getByteCount:()I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L1d6394.  call temp:= `a`(v1) @signature `Lokio/SegmentPool;.a:()Ljava/util/concurrent/atomic/AtomicReference;` @kind direct;
+  #L1d639a.  v0:= temp @kind object;
+  #L1d639c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L1d63a2.  v0:= temp @kind object;
+  #L1d63a4.  v0:= (`okio.Segment`) v0 @kind object;
+  #L1d63a8.  if v0 == 0 then goto L1d63b2;
+  #L1d63ac.  v0:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1d63b0.  return v0;
+  #L1d63b2.  v0:= 0I;
+  #L1d63b4.  return v0;
+}
+procedure `int` `getMAX_SIZE`(`okio.SegmentPool` v1 @kind this) @signature `Lokio/SegmentPool;.getMAX_SIZE:()I` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L1d63c8.  v0:= `@@okio.SegmentPool.a` @type ^`int`;
+  #L1d63cc.  return v0;
+}

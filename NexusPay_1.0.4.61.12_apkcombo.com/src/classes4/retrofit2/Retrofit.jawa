@@ -1,0 +1,487 @@
+record `retrofit2.Retrofit` @kind class @AccessFlag PUBLIC_FINAL {
+  `okhttp3.HttpUrl` `retrofit2.Retrofit.baseUrl` @AccessFlag FINAL;
+  `java.util.List` `retrofit2.Retrofit.callAdapterFactories` @AccessFlag FINAL;
+  `okhttp3.Call$Factory` `retrofit2.Retrofit.callFactory` @AccessFlag FINAL;
+  `java.util.concurrent.Executor` `retrofit2.Retrofit.callbackExecutor` @AccessFlag FINAL;
+  `java.util.List` `retrofit2.Retrofit.converterFactories` @AccessFlag FINAL;
+  `java.util.Map` `retrofit2.Retrofit.serviceMethodCache` @AccessFlag PRIVATE_FINAL;
+  `boolean` `retrofit2.Retrofit.validateEagerly` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`retrofit2.Retrofit` v1 @kind this, `okhttp3.Call$Factory` v2 @kind object, `okhttp3.HttpUrl` v3 @kind object, `java.util.List` v4 @kind object, `java.util.List` v5 @kind object, `java.util.concurrent.Executor` v6 @kind object, `boolean` v7 ) @signature `Lretrofit2/Retrofit;.<init>:(Lokhttp3/Call$Factory;Lokhttp3/HttpUrl;Ljava/util/List;Ljava/util/List;Ljava/util/concurrent/Executor;Z)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L49842c.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L498432.  v0:= new `java.util.concurrent.ConcurrentHashMap`;
+  #L498436.  call `<init>`(v0) @signature `Ljava/util/concurrent/ConcurrentHashMap;.<init>:()V` @kind direct;
+  #L49843c.  v1.`retrofit2.Retrofit.serviceMethodCache` @type ^`java.util.Map` := v0 @kind object;
+  #L498440.  v1.`retrofit2.Retrofit.callFactory` @type ^`okhttp3.Call$Factory` := v2 @kind object;
+  #L498444.  v1.`retrofit2.Retrofit.baseUrl` @type ^`okhttp3.HttpUrl` := v3 @kind object;
+  #L498448.  v1.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` := v4 @kind object;
+  #L49844c.  v1.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` := v5 @kind object;
+  #L498450.  v1.`retrofit2.Retrofit.callbackExecutor` @type ^`java.util.concurrent.Executor` := v6 @kind object;
+  #L498454.  v1.`retrofit2.Retrofit.validateEagerly` @type ^`boolean` := v7 @kind boolean;
+  #L498458.  return @kind void;
+}
+procedure `void` `validateServiceInterface`(`retrofit2.Retrofit` v5 @kind this, `java.lang.Class` v6 @kind object) @signature `Lretrofit2/Retrofit;.validateServiceInterface:(Ljava/lang/Class;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L49846c.  call temp:= `isInterface`(v6) @signature `Ljava/lang/Class;.isInterface:()Z` @kind virtual;
+  #L498472.  v0:= temp;
+  #L498474.  if v0 == 0 then goto L49855e;
+  #L498478.  v0:= new `java.util.ArrayDeque`;
+  #L49847c.  v1:= 1I;
+  #L49847e.  call `<init>`(v0, v1) @signature `Ljava/util/ArrayDeque;.<init>:(I)V` @kind direct;
+  #L498484.  call temp:= `add`(v0, v6) @signature `Ljava/util/Deque;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L49848a.  call temp:= `isEmpty`(v0) @signature `Ljava/util/Deque;.isEmpty:()Z` @kind interface;
+  #L498490.  v1:= temp;
+  #L498492.  if v1 != 0 then goto L49850c;
+  #L498496.  call temp:= `removeFirst`(v0) @signature `Ljava/util/Deque;.removeFirst:()Ljava/lang/Object;` @kind interface;
+  #L49849c.  v1:= temp @kind object;
+  #L49849e.  v1:= (`java.lang.Class`) v1 @kind object;
+  #L4984a2.  call temp:= `getTypeParameters`(v1) @signature `Ljava/lang/Class;.getTypeParameters:()[Ljava/lang/reflect/TypeVariable;` @kind virtual;
+  #L4984a8.  v2:= temp @kind object;
+  #L4984aa.  v2:= length @variable v2;
+  #L4984ac.  if v2 == 0 then goto L4984fc;
+  #L4984b0.  v0:= new `java.lang.StringBuilder`;
+  #L4984b4.  v2:= "Type parameters are unsupported on " @kind object;
+  #L4984b8.  call `<init>`(v0, v2) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4984be.  call temp:= `getName`(v1) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L4984c4.  v2:= temp @kind object;
+  #L4984c6.  call temp:= `append`(v0, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4984cc.  if v1 == v6 then goto L4984e8;
+  #L4984d0.  v1:= " which is an interface of " @kind object;
+  #L4984d4.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4984da.  call temp:= `getName`(v6) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L4984e0.  v6:= temp @kind object;
+  #L4984e2.  call temp:= `append`(v0, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4984e8.  v6:= new `java.lang.IllegalArgumentException`;
+  #L4984ec.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4984f2.  v0:= temp @kind object;
+  #L4984f4.  call `<init>`(v6, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4984fa.  throw v6;
+  #L4984fc.  call temp:= `getInterfaces`(v1) @signature `Ljava/lang/Class;.getInterfaces:()[Ljava/lang/Class;` @kind virtual;
+  #L498502.  v1:= temp @kind object;
+  #L498504.  call temp:= `addAll`(v0, v1) @signature `Ljava/util/Collections;.addAll:(Ljava/util/Collection;[Ljava/lang/Object;)Z` @kind static;
+  #L49850a.  goto L49848a;
+  #L49850c.  v0:= v5.`retrofit2.Retrofit.validateEagerly` @type ^`boolean` @kind boolean;
+  #L498510.  if v0 == 0 then goto L49855c;
+  #L498514.  call temp:= `get`() @signature `Lretrofit2/Platform;.get:()Lretrofit2/Platform;` @kind static;
+  #L49851a.  v0:= temp @kind object;
+  #L49851c.  call temp:= `getDeclaredMethods`(v6) @signature `Ljava/lang/Class;.getDeclaredMethods:()[Ljava/lang/reflect/Method;` @kind virtual;
+  #L498522.  v6:= temp @kind object;
+  #L498524.  v1:= length @variable v6;
+  #L498526.  v2:= 0I;
+  #L498528.  if v2 >= v1 then goto L49855c;
+  #L49852c.  v3:= v6[v2] @kind object;
+  #L498530.  call temp:= `isDefaultMethod`(v0, v3) @signature `Lretrofit2/Platform;.isDefaultMethod:(Ljava/lang/reflect/Method;)Z` @kind virtual;
+  #L498536.  v4:= temp;
+  #L498538.  if v4 != 0 then goto L498556;
+  #L49853c.  call temp:= `getModifiers`(v3) @signature `Ljava/lang/reflect/Method;.getModifiers:()I` @kind virtual;
+  #L498542.  v4:= temp;
+  #L498544.  call temp:= `isStatic`(v4) @signature `Ljava/lang/reflect/Modifier;.isStatic:(I)Z` @kind static;
+  #L49854a.  v4:= temp;
+  #L49854c.  if v4 != 0 then goto L498556;
+  #L498550.  call temp:= `loadServiceMethod`(v5, v3) @signature `Lretrofit2/Retrofit;.loadServiceMethod:(Ljava/lang/reflect/Method;)Lretrofit2/ServiceMethod;` @kind virtual;
+  #L498556.  v2:= v2 + 1;
+  #L49855a.  goto L498528;
+  #L49855c.  return @kind void;
+  #L49855e.  v6:= new `java.lang.IllegalArgumentException`;
+  #L498562.  v0:= "API declarations must be interfaces." @kind object;
+  #L498566.  call `<init>`(v6, v0) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49856c.  throw v6;
+}
+procedure `okhttp3.HttpUrl` `baseUrl`(`retrofit2.Retrofit` v1 @kind this) @signature `Lretrofit2/Retrofit;.baseUrl:()Lokhttp3/HttpUrl;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497f1c.  v0:= v1.`retrofit2.Retrofit.baseUrl` @type ^`okhttp3.HttpUrl` @kind object;
+  #L497f20.  return v0 @kind object;
+}
+procedure `retrofit2.CallAdapter` `callAdapter`(`retrofit2.Retrofit` v1 @kind this, `java.lang.reflect.Type` v2 @kind object, `java.lang.annotation.Annotation`[] v3 @kind object) @signature `Lretrofit2/Retrofit;.callAdapter:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;)Lretrofit2/CallAdapter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497f34.  v0:= 0I;
+  #L497f36.  call temp:= `nextCallAdapter`(v1, v0, v2, v3) @signature `Lretrofit2/Retrofit;.nextCallAdapter:(Lretrofit2/CallAdapter$Factory;Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;)Lretrofit2/CallAdapter;` @kind virtual;
+  #L497f3c.  v2:= temp @kind object;
+  #L497f3e.  return v2 @kind object;
+}
+procedure `java.util.List` `callAdapterFactories`(`retrofit2.Retrofit` v1 @kind this) @signature `Lretrofit2/Retrofit;.callAdapterFactories:()Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497ebc.  v0:= v1.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` @kind object;
+  #L497ec0.  return v0 @kind object;
+}
+procedure `okhttp3.Call$Factory` `callFactory`(`retrofit2.Retrofit` v1 @kind this) @signature `Lretrofit2/Retrofit;.callFactory:()Lokhttp3/Call$Factory;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497f04.  v0:= v1.`retrofit2.Retrofit.callFactory` @type ^`okhttp3.Call$Factory` @kind object;
+  #L497f08.  return v0 @kind object;
+}
+procedure `java.util.concurrent.Executor` `callbackExecutor`(`retrofit2.Retrofit` v1 @kind this) @signature `Lretrofit2/Retrofit;.callbackExecutor:()Ljava/util/concurrent/Executor;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497eec.  v0:= v1.`retrofit2.Retrofit.callbackExecutor` @type ^`java.util.concurrent.Executor` @kind object;
+  #L497ef0.  return v0 @kind object;
+}
+procedure `java.util.List` `converterFactories`(`retrofit2.Retrofit` v1 @kind this) @signature `Lretrofit2/Retrofit;.converterFactories:()Ljava/util/List;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L497ed4.  v0:= v1.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L497ed8.  return v0 @kind object;
+}
+procedure `java.lang.Object` `create`(`retrofit2.Retrofit` v3 @kind this, `java.lang.Class` v4 @kind object) @signature `Lretrofit2/Retrofit;.create:(Ljava/lang/Class;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L497e7c.  call `validateServiceInterface`(v3, v4) @signature `Lretrofit2/Retrofit;.validateServiceInterface:(Ljava/lang/Class;)V` @kind direct;
+  #L497e82.  call temp:= `getClassLoader`(v4) @signature `Ljava/lang/Class;.getClassLoader:()Ljava/lang/ClassLoader;` @kind virtual;
+  #L497e88.  v0:= temp @kind object;
+  #L497e8a.  v1:= 1I;
+  #L497e8c.  v1:= new `java.lang.Class`[v1];
+  #L497e90.  v2:= 0I;
+  #L497e92.  v1[v2]:= v4 @kind object;
+  #L497e96.  v2:= new `retrofit2.Retrofit$1`;
+  #L497e9a.  call `<init>`(v2, v3, v4) @signature `Lretrofit2/Retrofit$1;.<init>:(Lretrofit2/Retrofit;Ljava/lang/Class;)V` @kind direct;
+  #L497ea0.  call temp:= `newProxyInstance`(v0, v1, v2) @signature `Ljava/lang/reflect/Proxy;.newProxyInstance:(Ljava/lang/ClassLoader;[Ljava/lang/Class;Ljava/lang/reflect/InvocationHandler;)Ljava/lang/Object;` @kind static;
+  #L497ea6.  v4:= temp @kind object;
+  #L497ea8.  return v4 @kind object;
+}
+procedure `retrofit2.ServiceMethod` `loadServiceMethod`(`retrofit2.Retrofit` v3 @kind this, `java.lang.reflect.Method` v4 @kind object) @signature `Lretrofit2/Retrofit;.loadServiceMethod:(Ljava/lang/reflect/Method;)Lretrofit2/ServiceMethod;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4983c4.  v0:= v3.`retrofit2.Retrofit.serviceMethodCache` @type ^`java.util.Map` @kind object;
+  #L4983c8.  call temp:= `get`(v0, v4) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4983ce.  v0:= temp @kind object;
+  #L4983d0.  v0:= (`retrofit2.ServiceMethod`) v0 @kind object;
+  #L4983d4.  if v0 == 0 then goto L4983da;
+  #L4983d8.  return v0 @kind object;
+  #L4983da.  v0:= v3.`retrofit2.Retrofit.serviceMethodCache` @type ^`java.util.Map` @kind object;
+  #L4983de.  @monitorenter v0
+  #L4983e0.  v1:= v3.`retrofit2.Retrofit.serviceMethodCache` @type ^`java.util.Map` @kind object;
+  #L4983e4.  call temp:= `get`(v1, v4) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L4983ea.  v1:= temp @kind object;
+  #L4983ec.  v1:= (`retrofit2.ServiceMethod`) v1 @kind object;
+  #L4983f0.  if v1 != 0 then goto L498406;
+  #L4983f4.  call temp:= `parseAnnotations`(v3, v4) @signature `Lretrofit2/ServiceMethod;.parseAnnotations:(Lretrofit2/Retrofit;Ljava/lang/reflect/Method;)Lretrofit2/ServiceMethod;` @kind static;
+  #L4983fa.  v1:= temp @kind object;
+  #L4983fc.  v2:= v3.`retrofit2.Retrofit.serviceMethodCache` @type ^`java.util.Map` @kind object;
+  #L498400.  call temp:= `put`(v2, v4, v1) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L498406.  @monitorexit v0
+  #L498408.  return v1 @kind object;
+  #L49840a.  v4:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L49840c.  @monitorexit v0
+  #L49840e.  throw v4;
+  catch `java.lang.Throwable` @[L4983e0..L49840e] goto L49840a;
+}
+procedure `retrofit2.Retrofit$Builder` `newBuilder`(`retrofit2.Retrofit` v1 @kind this) @signature `Lretrofit2/Retrofit;.newBuilder:()Lretrofit2/Retrofit$Builder;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4983a8.  v0:= new `retrofit2.Retrofit$Builder`;
+  #L4983ac.  call `<init>`(v0, v1) @signature `Lretrofit2/Retrofit$Builder;.<init>:(Lretrofit2/Retrofit;)V` @kind direct;
+  #L4983b2.  return v0 @kind object;
+}
+procedure `retrofit2.CallAdapter` `nextCallAdapter`(`retrofit2.Retrofit` v4 @kind this, `retrofit2.CallAdapter$Factory` v5 @kind object, `java.lang.reflect.Type` v6 @kind object, `java.lang.annotation.Annotation`[] v7 @kind object) @signature `Lretrofit2/Retrofit;.nextCallAdapter:(Lretrofit2/CallAdapter$Factory;Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;)Lretrofit2/CallAdapter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L497f50.  v0:= "returnType == null" @kind object;
+  #L497f54.  call temp:= `requireNonNull`(v6, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L497f5a.  v0:= "annotations == null" @kind object;
+  #L497f5e.  call temp:= `requireNonNull`(v7, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L497f64.  v0:= v4.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` @kind object;
+  #L497f68.  call temp:= `indexOf`(v0, v5) @signature `Ljava/util/List;.indexOf:(Ljava/lang/Object;)I` @kind interface;
+  #L497f6e.  v0:= temp;
+  #L497f70.  v0:= v0 + 1;
+  #L497f74.  v1:= v4.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` @kind object;
+  #L497f78.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L497f7e.  v1:= temp;
+  #L497f80.  v2:= v0;
+  #L497f82.  if v2 >= v1 then goto L497faa;
+  #L497f86.  v3:= v4.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` @kind object;
+  #L497f8a.  call temp:= `get`(v3, v2) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L497f90.  v3:= temp @kind object;
+  #L497f92.  v3:= (`retrofit2.CallAdapter$Factory`) v3 @kind object;
+  #L497f96.  call temp:= `get`(v3, v6, v7, v4) @signature `Lretrofit2/CallAdapter$Factory;.get:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/CallAdapter;` @kind virtual;
+  #L497f9c.  v3:= temp @kind object;
+  #L497f9e.  if v3 == 0 then goto L497fa4;
+  #L497fa2.  return v3 @kind object;
+  #L497fa4.  v2:= v2 + 1;
+  #L497fa8.  goto L497f82;
+  #L497faa.  v7:= new `java.lang.StringBuilder`;
+  #L497fae.  v1:= "Could not locate call adapter for " @kind object;
+  #L497fb2.  call `<init>`(v7, v1) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L497fb8.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L497fbe.  v6:= ".\n" @kind object;
+  #L497fc2.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L497fc8.  v6:= "\n   * " @kind object;
+  #L497fcc.  if v5 == 0 then goto L49801c;
+  #L497fd0.  v5:= "  Skipped:" @kind object;
+  #L497fd4.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L497fda.  v5:= 0I;
+  #L497fdc.  if v5 >= v0 then goto L498012;
+  #L497fe0.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L497fe6.  v1:= v4.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` @kind object;
+  #L497fea.  call temp:= `get`(v1, v5) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L497ff0.  v1:= temp @kind object;
+  #L497ff2.  v1:= (`retrofit2.CallAdapter$Factory`) v1 @kind object;
+  #L497ff6.  call temp:= `getClass`(v1) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L497ffc.  v1:= temp @kind object;
+  #L497ffe.  call temp:= `getName`(v1) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L498004.  v1:= temp @kind object;
+  #L498006.  call temp:= `append`(v7, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49800c.  v5:= v5 + 1;
+  #L498010.  goto L497fdc;
+  #L498012.  v5:= 10I;
+  #L498016.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49801c.  v5:= "  Tried:" @kind object;
+  #L498020.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498026.  v5:= v4.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` @kind object;
+  #L49802a.  call temp:= `size`(v5) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L498030.  v5:= temp;
+  #L498032.  if v0 >= v5 then goto L498068;
+  #L498036.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49803c.  v1:= v4.`retrofit2.Retrofit.callAdapterFactories` @type ^`java.util.List` @kind object;
+  #L498040.  call temp:= `get`(v1, v0) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L498046.  v1:= temp @kind object;
+  #L498048.  v1:= (`retrofit2.CallAdapter$Factory`) v1 @kind object;
+  #L49804c.  call temp:= `getClass`(v1) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L498052.  v1:= temp @kind object;
+  #L498054.  call temp:= `getName`(v1) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L49805a.  v1:= temp @kind object;
+  #L49805c.  call temp:= `append`(v7, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498062.  v0:= v0 + 1;
+  #L498066.  goto L498032;
+  #L498068.  v5:= new `java.lang.IllegalArgumentException`;
+  #L49806c.  call temp:= `toString`(v7) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L498072.  v6:= temp @kind object;
+  #L498074.  call `<init>`(v5, v6) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49807a.  throw v5;
+}
+procedure `retrofit2.Converter` `nextRequestBodyConverter`(`retrofit2.Retrofit` v4 @kind this, `retrofit2.Converter$Factory` v5 @kind object, `java.lang.reflect.Type` v6 @kind object, `java.lang.annotation.Annotation`[] v7 @kind object, `java.lang.annotation.Annotation`[] v8 @kind object) @signature `Lretrofit2/Retrofit;.nextRequestBodyConverter:(Lretrofit2/Converter$Factory;Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;[Ljava/lang/annotation/Annotation;)Lretrofit2/Converter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L49808c.  v0:= "type == null" @kind object;
+  #L498090.  call temp:= `requireNonNull`(v6, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L498096.  v0:= "parameterAnnotations == null" @kind object;
+  #L49809a.  call temp:= `requireNonNull`(v7, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L4980a0.  v0:= "methodAnnotations == null" @kind object;
+  #L4980a4.  call temp:= `requireNonNull`(v8, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L4980aa.  v0:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L4980ae.  call temp:= `indexOf`(v0, v5) @signature `Ljava/util/List;.indexOf:(Ljava/lang/Object;)I` @kind interface;
+  #L4980b4.  v0:= temp;
+  #L4980b6.  v0:= v0 + 1;
+  #L4980ba.  v1:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L4980be.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4980c4.  v1:= temp;
+  #L4980c6.  v2:= v0;
+  #L4980c8.  if v2 >= v1 then goto L4980f0;
+  #L4980cc.  v3:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L4980d0.  call temp:= `get`(v3, v2) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4980d6.  v3:= temp @kind object;
+  #L4980d8.  v3:= (`retrofit2.Converter$Factory`) v3 @kind object;
+  #L4980dc.  call temp:= `requestBodyConverter`(v3, v6, v7, v8, v4) @signature `Lretrofit2/Converter$Factory;.requestBodyConverter:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/Converter;` @kind virtual;
+  #L4980e2.  v3:= temp @kind object;
+  #L4980e4.  if v3 == 0 then goto L4980ea;
+  #L4980e8.  return v3 @kind object;
+  #L4980ea.  v2:= v2 + 1;
+  #L4980ee.  goto L4980c8;
+  #L4980f0.  v7:= new `java.lang.StringBuilder`;
+  #L4980f4.  v8:= "Could not locate RequestBody converter for " @kind object;
+  #L4980f8.  call `<init>`(v7, v8) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4980fe.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498104.  v6:= ".\n" @kind object;
+  #L498108.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49810e.  v6:= "\n   * " @kind object;
+  #L498112.  if v5 == 0 then goto L498162;
+  #L498116.  v5:= "  Skipped:" @kind object;
+  #L49811a.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498120.  v5:= 0I;
+  #L498122.  if v5 >= v0 then goto L498158;
+  #L498126.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49812c.  v8:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L498130.  call temp:= `get`(v8, v5) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L498136.  v8:= temp @kind object;
+  #L498138.  v8:= (`retrofit2.Converter$Factory`) v8 @kind object;
+  #L49813c.  call temp:= `getClass`(v8) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L498142.  v8:= temp @kind object;
+  #L498144.  call temp:= `getName`(v8) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L49814a.  v8:= temp @kind object;
+  #L49814c.  call temp:= `append`(v7, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498152.  v5:= v5 + 1;
+  #L498156.  goto L498122;
+  #L498158.  v5:= 10I;
+  #L49815c.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498162.  v5:= "  Tried:" @kind object;
+  #L498166.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49816c.  v5:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L498170.  call temp:= `size`(v5) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L498176.  v5:= temp;
+  #L498178.  if v0 >= v5 then goto L4981ae;
+  #L49817c.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498182.  v8:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L498186.  call temp:= `get`(v8, v0) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L49818c.  v8:= temp @kind object;
+  #L49818e.  v8:= (`retrofit2.Converter$Factory`) v8 @kind object;
+  #L498192.  call temp:= `getClass`(v8) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L498198.  v8:= temp @kind object;
+  #L49819a.  call temp:= `getName`(v8) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L4981a0.  v8:= temp @kind object;
+  #L4981a2.  call temp:= `append`(v7, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4981a8.  v0:= v0 + 1;
+  #L4981ac.  goto L498178;
+  #L4981ae.  v5:= new `java.lang.IllegalArgumentException`;
+  #L4981b2.  call temp:= `toString`(v7) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4981b8.  v6:= temp @kind object;
+  #L4981ba.  call `<init>`(v5, v6) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4981c0.  throw v5;
+}
+procedure `retrofit2.Converter` `nextResponseBodyConverter`(`retrofit2.Retrofit` v4 @kind this, `retrofit2.Converter$Factory` v5 @kind object, `java.lang.reflect.Type` v6 @kind object, `java.lang.annotation.Annotation`[] v7 @kind object) @signature `Lretrofit2/Retrofit;.nextResponseBodyConverter:(Lretrofit2/Converter$Factory;Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;)Lretrofit2/Converter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4981d4.  v0:= "type == null" @kind object;
+  #L4981d8.  call temp:= `requireNonNull`(v6, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L4981de.  v0:= "annotations == null" @kind object;
+  #L4981e2.  call temp:= `requireNonNull`(v7, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L4981e8.  v0:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L4981ec.  call temp:= `indexOf`(v0, v5) @signature `Ljava/util/List;.indexOf:(Ljava/lang/Object;)I` @kind interface;
+  #L4981f2.  v0:= temp;
+  #L4981f4.  v0:= v0 + 1;
+  #L4981f8.  v1:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L4981fc.  call temp:= `size`(v1) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L498202.  v1:= temp;
+  #L498204.  v2:= v0;
+  #L498206.  if v2 >= v1 then goto L49822e;
+  #L49820a.  v3:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L49820e.  call temp:= `get`(v3, v2) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L498214.  v3:= temp @kind object;
+  #L498216.  v3:= (`retrofit2.Converter$Factory`) v3 @kind object;
+  #L49821a.  call temp:= `responseBodyConverter`(v3, v6, v7, v4) @signature `Lretrofit2/Converter$Factory;.responseBodyConverter:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/Converter;` @kind virtual;
+  #L498220.  v3:= temp @kind object;
+  #L498222.  if v3 == 0 then goto L498228;
+  #L498226.  return v3 @kind object;
+  #L498228.  v2:= v2 + 1;
+  #L49822c.  goto L498206;
+  #L49822e.  v7:= new `java.lang.StringBuilder`;
+  #L498232.  v1:= "Could not locate ResponseBody converter for " @kind object;
+  #L498236.  call `<init>`(v7, v1) @signature `Ljava/lang/StringBuilder;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49823c.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498242.  v6:= ".\n" @kind object;
+  #L498246.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49824c.  v6:= "\n   * " @kind object;
+  #L498250.  if v5 == 0 then goto L4982a0;
+  #L498254.  v5:= "  Skipped:" @kind object;
+  #L498258.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49825e.  v5:= 0I;
+  #L498260.  if v5 >= v0 then goto L498296;
+  #L498264.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49826a.  v1:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L49826e.  call temp:= `get`(v1, v5) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L498274.  v1:= temp @kind object;
+  #L498276.  v1:= (`retrofit2.Converter$Factory`) v1 @kind object;
+  #L49827a.  call temp:= `getClass`(v1) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L498280.  v1:= temp @kind object;
+  #L498282.  call temp:= `getName`(v1) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L498288.  v1:= temp @kind object;
+  #L49828a.  call temp:= `append`(v7, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498290.  v5:= v5 + 1;
+  #L498294.  goto L498260;
+  #L498296.  v5:= 10I;
+  #L49829a.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(C)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4982a0.  v5:= "  Tried:" @kind object;
+  #L4982a4.  call temp:= `append`(v7, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4982aa.  v5:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L4982ae.  call temp:= `size`(v5) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L4982b4.  v5:= temp;
+  #L4982b6.  if v0 >= v5 then goto L4982ec;
+  #L4982ba.  call temp:= `append`(v7, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4982c0.  v1:= v4.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L4982c4.  call temp:= `get`(v1, v0) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L4982ca.  v1:= temp @kind object;
+  #L4982cc.  v1:= (`retrofit2.Converter$Factory`) v1 @kind object;
+  #L4982d0.  call temp:= `getClass`(v1) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L4982d6.  v1:= temp @kind object;
+  #L4982d8.  call temp:= `getName`(v1) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L4982de.  v1:= temp @kind object;
+  #L4982e0.  call temp:= `append`(v7, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4982e6.  v0:= v0 + 1;
+  #L4982ea.  goto L4982b6;
+  #L4982ec.  v5:= new `java.lang.IllegalArgumentException`;
+  #L4982f0.  call temp:= `toString`(v7) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4982f6.  v6:= temp @kind object;
+  #L4982f8.  call `<init>`(v5, v6) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4982fe.  throw v5;
+}
+procedure `retrofit2.Converter` `requestBodyConverter`(`retrofit2.Retrofit` v1 @kind this, `java.lang.reflect.Type` v2 @kind object, `java.lang.annotation.Annotation`[] v3 @kind object, `java.lang.annotation.Annotation`[] v4 @kind object) @signature `Lretrofit2/Retrofit;.requestBodyConverter:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;[Ljava/lang/annotation/Annotation;)Lretrofit2/Converter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L498310.  v0:= 0I;
+  #L498312.  call temp:= `nextRequestBodyConverter`(v1, v0, v2, v3, v4) @signature `Lretrofit2/Retrofit;.nextRequestBodyConverter:(Lretrofit2/Converter$Factory;Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;[Ljava/lang/annotation/Annotation;)Lretrofit2/Converter;` @kind virtual;
+  #L498318.  v2:= temp @kind object;
+  #L49831a.  return v2 @kind object;
+}
+procedure `retrofit2.Converter` `responseBodyConverter`(`retrofit2.Retrofit` v1 @kind this, `java.lang.reflect.Type` v2 @kind object, `java.lang.annotation.Annotation`[] v3 @kind object) @signature `Lretrofit2/Retrofit;.responseBodyConverter:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;)Lretrofit2/Converter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L49832c.  v0:= 0I;
+  #L49832e.  call temp:= `nextResponseBodyConverter`(v1, v0, v2, v3) @signature `Lretrofit2/Retrofit;.nextResponseBodyConverter:(Lretrofit2/Converter$Factory;Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;)Lretrofit2/Converter;` @kind virtual;
+  #L498334.  v2:= temp @kind object;
+  #L498336.  return v2 @kind object;
+}
+procedure `retrofit2.Converter` `stringConverter`(`retrofit2.Retrofit` v3 @kind this, `java.lang.reflect.Type` v4 @kind object, `java.lang.annotation.Annotation`[] v5 @kind object) @signature `Lretrofit2/Retrofit;.stringConverter:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;)Lretrofit2/Converter;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L498348.  v0:= "type == null" @kind object;
+  #L49834c.  call temp:= `requireNonNull`(v4, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L498352.  v0:= "annotations == null" @kind object;
+  #L498356.  call temp:= `requireNonNull`(v5, v0) @signature `Ljava/util/Objects;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L49835c.  v0:= v3.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L498360.  call temp:= `size`(v0) @signature `Ljava/util/List;.size:()I` @kind interface;
+  #L498366.  v0:= temp;
+  #L498368.  v1:= 0I;
+  #L49836a.  if v1 >= v0 then goto L498392;
+  #L49836e.  v2:= v3.`retrofit2.Retrofit.converterFactories` @type ^`java.util.List` @kind object;
+  #L498372.  call temp:= `get`(v2, v1) @signature `Ljava/util/List;.get:(I)Ljava/lang/Object;` @kind interface;
+  #L498378.  v2:= temp @kind object;
+  #L49837a.  v2:= (`retrofit2.Converter$Factory`) v2 @kind object;
+  #L49837e.  call temp:= `stringConverter`(v2, v4, v5, v3) @signature `Lretrofit2/Converter$Factory;.stringConverter:(Ljava/lang/reflect/Type;[Ljava/lang/annotation/Annotation;Lretrofit2/Retrofit;)Lretrofit2/Converter;` @kind virtual;
+  #L498384.  v2:= temp @kind object;
+  #L498386.  if v2 == 0 then goto L49838c;
+  #L49838a.  return v2 @kind object;
+  #L49838c.  v1:= v1 + 1;
+  #L498390.  goto L49836a;
+  #L498392.  v4:= `@@retrofit2.BuiltInConverters$ToStringConverter.INSTANCE` @type ^`retrofit2.BuiltInConverters$ToStringConverter` @kind object;
+  #L498396.  return v4 @kind object;
+}

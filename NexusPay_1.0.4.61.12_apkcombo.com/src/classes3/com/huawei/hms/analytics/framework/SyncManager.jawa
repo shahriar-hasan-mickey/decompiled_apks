@@ -1,0 +1,102 @@
+record `com.huawei.hms.analytics.framework.SyncManager` @kind class @AccessFlag PUBLIC {
+  `java.util.Map` `com.huawei.hms.analytics.framework.SyncManager.countDownLatchMap` @AccessFlag PRIVATE_FINAL;
+}
+global `com.huawei.hms.analytics.framework.SyncManager` `@@com.huawei.hms.analytics.framework.SyncManager.INSTANCE` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1e0080.  v0:= new `com.huawei.hms.analytics.framework.SyncManager`;
+  #L1e0084.  call `<init>`(v0) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.<init>:()V` @kind direct;
+  #L1e008a.  `@@com.huawei.hms.analytics.framework.SyncManager.INSTANCE` @type ^`com.huawei.hms.analytics.framework.SyncManager` := v0 @kind object;
+  #L1e008e.  return @kind void;
+}
+procedure `void` `<init>`(`com.huawei.hms.analytics.framework.SyncManager` v1 @kind this) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1e00a0.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1e00a6.  v0:= new `java.util.concurrent.ConcurrentHashMap`;
+  #L1e00aa.  call `<init>`(v0) @signature `Ljava/util/concurrent/ConcurrentHashMap;.<init>:()V` @kind direct;
+  #L1e00b0.  v1.`com.huawei.hms.analytics.framework.SyncManager.countDownLatchMap` @type ^`java.util.Map` := v0 @kind object;
+  #L1e00b4.  return @kind void;
+}
+procedure `java.util.concurrent.CountDownLatch` `getCountDownLatch`(`com.huawei.hms.analytics.framework.SyncManager` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.getCountDownLatch:(Ljava/lang/String;)Ljava/util/concurrent/CountDownLatch;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L1e005c.  v0:= v1.`com.huawei.hms.analytics.framework.SyncManager.countDownLatchMap` @type ^`java.util.Map` @kind object;
+  #L1e0060.  call temp:= `get`(v0, v2) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L1e0066.  v2:= temp @kind object;
+  #L1e0068.  v2:= (`java.util.concurrent.CountDownLatch`) v2 @kind object;
+  #L1e006c.  return v2 @kind object;
+}
+procedure `com.huawei.hms.analytics.framework.SyncManager` `getInstance`() @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.getInstance:()Lcom/huawei/hms/analytics/framework/SyncManager;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L1e0044.  v0:= `@@com.huawei.hms.analytics.framework.SyncManager.INSTANCE` @type ^`com.huawei.hms.analytics.framework.SyncManager` @kind object;
+  #L1e0048.  return v0 @kind object;
+}
+procedure `void` `removeDownLatch`(`com.huawei.hms.analytics.framework.SyncManager` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.removeDownLatch:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L1e0140.  v0:= v1.`com.huawei.hms.analytics.framework.SyncManager.countDownLatchMap` @type ^`java.util.Map` @kind object;
+  #L1e0144.  call temp:= `remove`(v0, v2) @signature `Ljava/util/Map;.remove:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L1e014a.  return @kind void;
+}
+procedure `void` `setCountDownLatch`(`com.huawei.hms.analytics.framework.SyncManager` v1 @kind this, `java.lang.String` v2 @kind object, `java.util.concurrent.CountDownLatch` v3 @kind object) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.setCountDownLatch:(Ljava/lang/String;Ljava/util/concurrent/CountDownLatch;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L1e015c.  v0:= v1.`com.huawei.hms.analytics.framework.SyncManager.countDownLatchMap` @type ^`java.util.Map` @kind object;
+  #L1e0160.  call temp:= `put`(v0, v2, v3) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L1e0166.  return @kind void;
+}
+procedure `void` `await`(`com.huawei.hms.analytics.framework.SyncManager` v0 @kind this, `java.lang.String` v1 @kind object) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.await:(Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L1e00c8.  call temp:= `getCountDownLatch`(v0, v1) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.getCountDownLatch:(Ljava/lang/String;)Ljava/util/concurrent/CountDownLatch;` @kind direct;
+  #L1e00ce.  v1:= temp @kind object;
+  #L1e00d0.  if v1 == 0 then goto L1e00da;
+  #L1e00d4.  call `await`(v1) @signature `Ljava/util/concurrent/CountDownLatch;.await:()V` @kind virtual;
+  #L1e00da.  return @kind void;
+}
+procedure `void` `await`(`com.huawei.hms.analytics.framework.SyncManager` v1 @kind this, `java.lang.String` v2 @kind object, `long` v3 ) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.await:(Ljava/lang/String;J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1e00ec.  call temp:= `getCountDownLatch`(v1, v2) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.getCountDownLatch:(Ljava/lang/String;)Ljava/util/concurrent/CountDownLatch;` @kind direct;
+  #L1e00f2.  v2:= temp @kind object;
+  #L1e00f4.  if v2 == 0 then goto L1e0102;
+  #L1e00f8.  v0:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L1e00fc.  call temp:= `await`(v2, v3, v0) @signature `Ljava/util/concurrent/CountDownLatch;.await:(JLjava/util/concurrent/TimeUnit;)Z` @kind virtual;
+  #L1e0102.  return @kind void;
+}
+procedure `void` `countDown`(`com.huawei.hms.analytics.framework.SyncManager` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.countDown:(Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1e0114.  call temp:= `getCountDownLatch`(v1, v2) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.getCountDownLatch:(Ljava/lang/String;)Ljava/util/concurrent/CountDownLatch;` @kind direct;
+  #L1e011a.  v0:= temp @kind object;
+  #L1e011c.  if v0 == 0 then goto L1e012c;
+  #L1e0120.  call `countDown`(v0) @signature `Ljava/util/concurrent/CountDownLatch;.countDown:()V` @kind virtual;
+  #L1e0126.  call `removeDownLatch`(v1, v2) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.removeDownLatch:(Ljava/lang/String;)V` @kind direct;
+  #L1e012c.  return @kind void;
+}
+procedure `void` `start`(`com.huawei.hms.analytics.framework.SyncManager` v2 @kind this, `java.lang.String` v3 @kind object) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.start:(Ljava/lang/String;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1e0178.  v0:= v2.`com.huawei.hms.analytics.framework.SyncManager.countDownLatchMap` @type ^`java.util.Map` @kind object;
+  #L1e017c.  call temp:= `containsKey`(v0, v3) @signature `Ljava/util/Map;.containsKey:(Ljava/lang/Object;)Z` @kind interface;
+  #L1e0182.  v0:= temp;
+  #L1e0184.  if v0 != 0 then goto L1e019a;
+  #L1e0188.  v0:= new `java.util.concurrent.CountDownLatch`;
+  #L1e018c.  v1:= 1I;
+  #L1e018e.  call `<init>`(v0, v1) @signature `Ljava/util/concurrent/CountDownLatch;.<init>:(I)V` @kind direct;
+  #L1e0194.  call `setCountDownLatch`(v2, v3, v0) @signature `Lcom/huawei/hms/analytics/framework/SyncManager;.setCountDownLatch:(Ljava/lang/String;Ljava/util/concurrent/CountDownLatch;)V` @kind direct;
+  #L1e019a.  return @kind void;
+}

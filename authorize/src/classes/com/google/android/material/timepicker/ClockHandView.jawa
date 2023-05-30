@@ -1,0 +1,577 @@
+record `com.google.android.material.timepicker.ClockHandView` @kind class @AccessFlag  extends `android.view.View` @kind class {
+  `boolean` `com.google.android.material.timepicker.ClockHandView.animatingOnTouchUp` @AccessFlag PRIVATE;
+  `float` `com.google.android.material.timepicker.ClockHandView.centerDotRadius` @AccessFlag PRIVATE_FINAL;
+  `boolean` `com.google.android.material.timepicker.ClockHandView.changedDuringTouch` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.timepicker.ClockHandView.circleRadius` @AccessFlag PRIVATE;
+  `double` `com.google.android.material.timepicker.ClockHandView.degRad` @AccessFlag PRIVATE;
+  `float` `com.google.android.material.timepicker.ClockHandView.downX` @AccessFlag PRIVATE;
+  `float` `com.google.android.material.timepicker.ClockHandView.downY` @AccessFlag PRIVATE;
+  `boolean` `com.google.android.material.timepicker.ClockHandView.isInTapRegion` @AccessFlag PRIVATE;
+  `java.util.List` `com.google.android.material.timepicker.ClockHandView.listeners` @AccessFlag PRIVATE_FINAL;
+  `com.google.android.material.timepicker.ClockHandView$OnActionUpListener` `com.google.android.material.timepicker.ClockHandView.onActionUpListener` @AccessFlag PRIVATE;
+  `float` `com.google.android.material.timepicker.ClockHandView.originalDeg` @AccessFlag PRIVATE;
+  `android.graphics.Paint` `com.google.android.material.timepicker.ClockHandView.paint` @AccessFlag PRIVATE_FINAL;
+  `android.animation.ValueAnimator` `com.google.android.material.timepicker.ClockHandView.rotationAnimator` @AccessFlag PRIVATE;
+  `int` `com.google.android.material.timepicker.ClockHandView.scaledTouchSlop` @AccessFlag PRIVATE;
+  `android.graphics.RectF` `com.google.android.material.timepicker.ClockHandView.selectorBox` @AccessFlag PRIVATE_FINAL;
+  `int` `com.google.android.material.timepicker.ClockHandView.selectorRadius` @AccessFlag PRIVATE_FINAL;
+  `int` `com.google.android.material.timepicker.ClockHandView.selectorStrokeWidth` @AccessFlag PRIVATE_FINAL;
+}
+global `int` `@@com.google.android.material.timepicker.ClockHandView.ANIMATION_DURATION` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this, `android.content.Context` v2 @kind object @name `context`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.<init>:(Landroid/content/Context;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2273f0.  v0:= 0I;
+  #L2273f2.  call `<init>`(v1, v2, v0) @signature `Lcom/google/android/material/timepicker/ClockHandView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @kind direct;
+  #L2273f8.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this, `android.content.Context` v2 @kind object @name `context`, `android.util.AttributeSet` v3 @kind object @name `attrs`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L22740c.  v0:= `@@com.google.android.material.R$attr.materialClockStyle` @type ^`int`;
+  #L227410.  call `<init>`(v1, v2, v3, v0) @signature `Lcom/google/android/material/timepicker/ClockHandView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @kind direct;
+  #L227416.  return @kind void;
+}
+procedure `void` `<init>`(`com.google.android.material.timepicker.ClockHandView` v5 @kind this, `android.content.Context` v6 @kind object @name `context`, `android.util.AttributeSet` v7 @kind object @name `attrs`, `int` v8 @name `defStyleAttr`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L227428.  call `<init>`(v5, v6, v7, v8) @signature `Landroid/view/View;.<init>:(Landroid/content/Context;Landroid/util/AttributeSet;I)V` @kind direct;
+  #L22742e.  v0:= new `java.util.ArrayList`;
+  #L227432.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L227438.  v5.`com.google.android.material.timepicker.ClockHandView.listeners` @type ^`java.util.List` := v0 @kind object;
+  #L22743c.  v0:= new `android.graphics.Paint`;
+  #L227440.  call `<init>`(v0) @signature `Landroid/graphics/Paint;.<init>:()V` @kind direct;
+  #L227446.  v5.`com.google.android.material.timepicker.ClockHandView.paint` @type ^`android.graphics.Paint` := v0 @kind object;
+  #L22744a.  v1:= new `android.graphics.RectF`;
+  #L22744e.  call `<init>`(v1) @signature `Landroid/graphics/RectF;.<init>:()V` @kind direct;
+  #L227454.  v5.`com.google.android.material.timepicker.ClockHandView.selectorBox` @type ^`android.graphics.RectF` := v1 @kind object;
+  #L227458.  v1:= `@@com.google.android.material.R$styleable.ClockHandView` @type ^`int`[] @kind object;
+  #L22745c.  v2:= `@@com.google.android.material.R$style.Widget_MaterialComponents_TimePicker_Clock` @type ^`int`;
+  #L227460.  call temp:= `obtainStyledAttributes`(v6, v7, v1, v8, v2) @signature `Landroid/content/Context;.obtainStyledAttributes:(Landroid/util/AttributeSet;[III)Landroid/content/res/TypedArray;` @kind virtual;
+  #L227466.  v1:= temp @kind object;
+  #L227468.  v2:= `@@com.google.android.material.R$styleable.ClockHandView_materialCircleRadius` @type ^`int`;
+  #L22746c.  v3:= 0I;
+  #L22746e.  call temp:= `getDimensionPixelSize`(v1, v2, v3) @signature `Landroid/content/res/TypedArray;.getDimensionPixelSize:(II)I` @kind virtual;
+  #L227474.  v2:= temp;
+  #L227476.  v5.`com.google.android.material.timepicker.ClockHandView.circleRadius` @type ^`int` := v2;
+  #L22747a.  v2:= `@@com.google.android.material.R$styleable.ClockHandView_selectorSize` @type ^`int`;
+  #L22747e.  call temp:= `getDimensionPixelSize`(v1, v2, v3) @signature `Landroid/content/res/TypedArray;.getDimensionPixelSize:(II)I` @kind virtual;
+  #L227484.  v2:= temp;
+  #L227486.  v5.`com.google.android.material.timepicker.ClockHandView.selectorRadius` @type ^`int` := v2;
+  #L22748a.  call temp:= `getResources`(v5) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L227490.  v2:= temp @kind object;
+  #L227492.  v4:= `@@com.google.android.material.R$dimen.material_clock_hand_stroke_width` @type ^`int`;
+  #L227496.  call temp:= `getDimensionPixelSize`(v2, v4) @signature `Landroid/content/res/Resources;.getDimensionPixelSize:(I)I` @kind virtual;
+  #L22749c.  v4:= temp;
+  #L22749e.  v5.`com.google.android.material.timepicker.ClockHandView.selectorStrokeWidth` @type ^`int` := v4;
+  #L2274a2.  v4:= `@@com.google.android.material.R$dimen.material_clock_hand_center_dot_radius` @type ^`int`;
+  #L2274a6.  call temp:= `getDimensionPixelSize`(v2, v4) @signature `Landroid/content/res/Resources;.getDimensionPixelSize:(I)I` @kind virtual;
+  #L2274ac.  v4:= temp;
+  #L2274ae.  v4:= (`float`) v4 @kind i2f;
+  #L2274b0.  v5.`com.google.android.material.timepicker.ClockHandView.centerDotRadius` @type ^`float` := v4;
+  #L2274b4.  v4:= `@@com.google.android.material.R$styleable.ClockHandView_clockHandColor` @type ^`int`;
+  #L2274b8.  call temp:= `getColor`(v1, v4, v3) @signature `Landroid/content/res/TypedArray;.getColor:(II)I` @kind virtual;
+  #L2274be.  v3:= temp;
+  #L2274c0.  v4:= 1I;
+  #L2274c2.  call `setAntiAlias`(v0, v4) @signature `Landroid/graphics/Paint;.setAntiAlias:(Z)V` @kind virtual;
+  #L2274c8.  call `setColor`(v0, v3) @signature `Landroid/graphics/Paint;.setColor:(I)V` @kind virtual;
+  #L2274ce.  v0:= 0I;
+  #L2274d0.  call `setHandRotation`(v5, v0) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotation:(F)V` @kind virtual;
+  #L2274d6.  call temp:= `get`(v6) @signature `Landroid/view/ViewConfiguration;.get:(Landroid/content/Context;)Landroid/view/ViewConfiguration;` @kind static;
+  #L2274dc.  v0:= temp @kind object;
+  #L2274de.  call temp:= `getScaledTouchSlop`(v0) @signature `Landroid/view/ViewConfiguration;.getScaledTouchSlop:()I` @kind virtual;
+  #L2274e4.  v0:= temp;
+  #L2274e6.  v5.`com.google.android.material.timepicker.ClockHandView.scaledTouchSlop` @type ^`int` := v0;
+  #L2274ea.  v0:= 2I;
+  #L2274ec.  call `setImportantForAccessibility`(v5, v0) @signature `Landroidx/core/view/ViewCompat;.setImportantForAccessibility:(Landroid/view/View;I)V` @kind static;
+  #L2274f2.  call `recycle`(v1) @signature `Landroid/content/res/TypedArray;.recycle:()V` @kind virtual;
+  #L2274f8.  return @kind void;
+}
+procedure `void` `access$000`(`com.google.android.material.timepicker.ClockHandView` v0 @kind object @name `x0`, `float` v1 @name `x1`, `boolean` v2 @name `x2`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.access$000:(Lcom/google/android/material/timepicker/ClockHandView;FZ)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L22750c.  call `setHandRotationInternal`(v0, v1, v2) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotationInternal:(FZ)V` @kind direct;
+  #L227512.  return @kind void;
+}
+procedure `void` `drawSelector`(`com.google.android.material.timepicker.ClockHandView` v20 @kind this, `android.graphics.Canvas` v21 @kind object @name `canvas`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.drawSelector:(Landroid/graphics/Canvas;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+    v19;
+
+  #L227540.  v0:= v20 @kind object;
+  #L227544.  v7:= v21 @kind object;
+  #L227548.  call temp:= `getHeight`(v20) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getHeight:()I` @kind virtual;
+  #L22754e.  v1:= temp;
+  #L227550.  v8:= v1 / 2;
+  #L227554.  call temp:= `getWidth`(v20) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getWidth:()I` @kind virtual;
+  #L22755a.  v1:= temp;
+  #L22755c.  v9:= v1 / 2;
+  #L227560.  v1:= (`float`) v9 @kind i2f;
+  #L227562.  v2:= v0.`com.google.android.material.timepicker.ClockHandView.circleRadius` @type ^`int`;
+  #L227566.  v2:= (`float`) v2 @kind i2f;
+  #L227568.  v3:= v0.`com.google.android.material.timepicker.ClockHandView.degRad` @type ^`double` @kind wide;
+  #L22756c.  call temp:= `cos`(v3) @signature `Ljava/lang/Math;.cos:(D)D` @kind static;
+  #L227572.  v3:= temp @kind wide;
+  #L227574.  v3:= (`float`) v3 @kind d2f;
+  #L227576.  v2:= v2 * v3 @kind float;
+  #L227578.  v10:= v1 + v2 @kind float;
+  #L22757c.  v1:= (`float`) v8 @kind i2f;
+  #L22757e.  v2:= v0.`com.google.android.material.timepicker.ClockHandView.circleRadius` @type ^`int`;
+  #L227582.  v2:= (`float`) v2 @kind i2f;
+  #L227584.  v3:= v0.`com.google.android.material.timepicker.ClockHandView.degRad` @type ^`double` @kind wide;
+  #L227588.  call temp:= `sin`(v3) @signature `Ljava/lang/Math;.sin:(D)D` @kind static;
+  #L22758e.  v3:= temp @kind wide;
+  #L227590.  v3:= (`float`) v3 @kind d2f;
+  #L227592.  v2:= v2 * v3 @kind float;
+  #L227594.  v11:= v1 + v2 @kind float;
+  #L227598.  v1:= v0.`com.google.android.material.timepicker.ClockHandView.paint` @type ^`android.graphics.Paint` @kind object;
+  #L22759c.  v2:= 0I;
+  #L22759e.  call `setStrokeWidth`(v1, v2) @signature `Landroid/graphics/Paint;.setStrokeWidth:(F)V` @kind virtual;
+  #L2275a4.  v1:= v0.`com.google.android.material.timepicker.ClockHandView.selectorRadius` @type ^`int`;
+  #L2275a8.  v1:= (`float`) v1 @kind i2f;
+  #L2275aa.  v2:= v0.`com.google.android.material.timepicker.ClockHandView.paint` @type ^`android.graphics.Paint` @kind object;
+  #L2275ae.  call `drawCircle`(v7, v10, v11, v1, v2) @signature `Landroid/graphics/Canvas;.drawCircle:(FFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L2275b4.  v1:= v0.`com.google.android.material.timepicker.ClockHandView.degRad` @type ^`double` @kind wide;
+  #L2275b8.  call temp:= `sin`(v1) @signature `Ljava/lang/Math;.sin:(D)D` @kind static;
+  #L2275be.  v12:= temp @kind wide;
+  #L2275c0.  v1:= v0.`com.google.android.material.timepicker.ClockHandView.degRad` @type ^`double` @kind wide;
+  #L2275c4.  call temp:= `cos`(v1) @signature `Ljava/lang/Math;.cos:(D)D` @kind static;
+  #L2275ca.  v14:= temp @kind wide;
+  #L2275cc.  v1:= v0.`com.google.android.material.timepicker.ClockHandView.circleRadius` @type ^`int`;
+  #L2275d0.  v2:= v0.`com.google.android.material.timepicker.ClockHandView.selectorRadius` @type ^`int`;
+  #L2275d4.  v1:= v1 - v2 @kind int;
+  #L2275d6.  v6:= (`float`) v1 @kind i2f;
+  #L2275d8.  v1:= (`double`) v6 @kind f2d;
+  #L2275da.  v1:= v1 * v14 @kind double;
+  #L2275dc.  v1:= (`int`) v1 @kind d2i;
+  #L2275de.  v1:= v1 + v9 @kind int;
+  #L2275e0.  v5:= (`float`) v1 @kind i2f;
+  #L2275e2.  v1:= (`double`) v6 @kind f2d;
+  #L2275e4.  v1:= v1 * v12 @kind double;
+  #L2275e6.  v1:= (`int`) v1 @kind d2i;
+  #L2275e8.  v1:= v1 + v8 @kind int;
+  #L2275ea.  v4:= (`float`) v1 @kind i2f;
+  #L2275ec.  v1:= v0.`com.google.android.material.timepicker.ClockHandView.paint` @type ^`android.graphics.Paint` @kind object;
+  #L2275f0.  v2:= v0.`com.google.android.material.timepicker.ClockHandView.selectorStrokeWidth` @type ^`int`;
+  #L2275f4.  v2:= (`float`) v2 @kind i2f;
+  #L2275f6.  call `setStrokeWidth`(v1, v2) @signature `Landroid/graphics/Paint;.setStrokeWidth:(F)V` @kind virtual;
+  #L2275fc.  v2:= (`float`) v9 @kind i2f;
+  #L2275fe.  v3:= (`float`) v8 @kind i2f;
+  #L227600.  v1:= v0.`com.google.android.material.timepicker.ClockHandView.paint` @type ^`android.graphics.Paint` @kind object;
+  #L227604.  v16:= v1 @kind object;
+  #L227608.  v1:= v21 @kind object;
+  #L22760c.  v17:= v4;
+  #L227610.  v4:= v5;
+  #L227612.  v18:= v5;
+  #L227616.  v5:= v17;
+  #L22761a.  v19:= v6;
+  #L22761e.  v6:= v16 @kind object;
+  #L227622.  call `drawLine`(v1, v2, v3, v4, v5, v6) @signature `Landroid/graphics/Canvas;.drawLine:(FFFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L227628.  v1:= (`float`) v9 @kind i2f;
+  #L22762a.  v2:= (`float`) v8 @kind i2f;
+  #L22762c.  v3:= v0.`com.google.android.material.timepicker.ClockHandView.centerDotRadius` @type ^`float`;
+  #L227630.  v4:= v0.`com.google.android.material.timepicker.ClockHandView.paint` @type ^`android.graphics.Paint` @kind object;
+  #L227634.  call `drawCircle`(v7, v1, v2, v3, v4) @signature `Landroid/graphics/Canvas;.drawCircle:(FFFLandroid/graphics/Paint;)V` @kind virtual;
+  #L22763a.  return @kind void;
+}
+procedure `int` `getDegreesFromXY`(`com.google.android.material.timepicker.ClockHandView` v8 @kind this, `float` v9 @name `x`, `float` v10 @name `y`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getDegreesFromXY:(FF)I` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L227380.  call temp:= `getWidth`(v8) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getWidth:()I` @kind virtual;
+  #L227386.  v0:= temp;
+  #L227388.  v0:= v0 / 2;
+  #L22738c.  call temp:= `getHeight`(v8) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getHeight:()I` @kind virtual;
+  #L227392.  v1:= temp;
+  #L227394.  v1:= v1 / 2;
+  #L227398.  v2:= (`float`) v0 @kind i2f;
+  #L22739a.  v2:= v9 - v2 @kind float;
+  #L22739e.  v2:= (`double`) v2 @kind f2d;
+  #L2273a0.  v4:= (`float`) v1 @kind i2f;
+  #L2273a2.  v4:= v10 - v4 @kind float;
+  #L2273a6.  v4:= (`double`) v4 @kind f2d;
+  #L2273a8.  call temp:= `atan2`(v4, v2) @signature `Ljava/lang/Math;.atan2:(DD)D` @kind static;
+  #L2273ae.  v6:= temp @kind wide;
+  #L2273b0.  call temp:= `toDegrees`(v6) @signature `Ljava/lang/Math;.toDegrees:(D)D` @kind static;
+  #L2273b6.  v6:= temp @kind wide;
+  #L2273b8.  v6:= (`int`) v6 @kind d2i;
+  #L2273ba.  v6:= v6 + 90;
+  #L2273be.  if v6 >= 0 then goto L2273c6;
+  #L2273c2.  v6:= v6 + 360;
+  #L2273c6.  return v6;
+}
+procedure `android.util.Pair` `getValuesForAnimation`(`com.google.android.material.timepicker.ClockHandView` v4 @kind this, `float` v5 @name `degrees`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getValuesForAnimation:(F)Landroid/util/Pair;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2271b0.  call temp:= `getHandRotation`(v4) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getHandRotation:()F` @kind virtual;
+  #L2271b6.  v0:= temp;
+  #L2271b8.  v1:= v0 - v5 @kind float;
+  #L2271bc.  call temp:= `abs`(v1) @signature `Ljava/lang/Math;.abs:(F)F` @kind static;
+  #L2271c2.  v1:= temp;
+  #L2271c4.  v2:= 180.0F;
+  #L2271c8.  v1:= fcmpl(v1, v2);
+  #L2271cc.  if v1 <= 0 then goto L2271f8;
+  #L2271d0.  v1:= fcmpl(v0, v2);
+  #L2271d4.  v3:= 360.0F;
+  #L2271d8.  if v1 <= 0 then goto L2271e6;
+  #L2271dc.  v1:= fcmpg(v5, v2);
+  #L2271e0.  if v1 >= 0 then goto L2271e6;
+  #L2271e4.  v5:= v5 + v3 @kind float;
+  #L2271e6.  v1:= fcmpg(v0, v2);
+  #L2271ea.  if v1 >= 0 then goto L2271f8;
+  #L2271ee.  v1:= fcmpl(v5, v2);
+  #L2271f2.  if v1 <= 0 then goto L2271f8;
+  #L2271f6.  v0:= v0 + v3 @kind float;
+  #L2271f8.  v1:= new `android.util.Pair`;
+  #L2271fc.  call temp:= `valueOf`(v0) @signature `Ljava/lang/Float;.valueOf:(F)Ljava/lang/Float;` @kind static;
+  #L227202.  v2:= temp @kind object;
+  #L227204.  call temp:= `valueOf`(v5) @signature `Ljava/lang/Float;.valueOf:(F)Ljava/lang/Float;` @kind static;
+  #L22720a.  v3:= temp @kind object;
+  #L22720c.  call `<init>`(v1, v2, v3) @signature `Landroid/util/Pair;.<init>:(Ljava/lang/Object;Ljava/lang/Object;)V` @kind direct;
+  #L227212.  return v1 @kind object;
+}
+procedure `boolean` `handleTouchInput`(`com.google.android.material.timepicker.ClockHandView` v6 @kind this, `float` v7 @name `x`, `float` v8 @name `y`, `boolean` v9 @name `forceSelection`, `boolean` v10 @name `touchDown`, `boolean` v11 @name `actionUp`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.handleTouchInput:(FFZZZ)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L227224.  call temp:= `getDegreesFromXY`(v6, v7, v8) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getDegreesFromXY:(FF)I` @kind direct;
+  #L22722a.  v0:= temp;
+  #L22722c.  call temp:= `getHandRotation`(v6) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getHandRotation:()F` @kind virtual;
+  #L227232.  v1:= temp;
+  #L227234.  v2:= (`float`) v0 @kind i2f;
+  #L227236.  v1:= fcmpl(v1, v2);
+  #L22723a.  v2:= 0I;
+  #L22723c.  v3:= 1I;
+  #L22723e.  if v1 == 0 then goto L227246;
+  #L227242.  v1:= v3;
+  #L227244.  goto L227248;
+  #L227246.  v1:= v2;
+  #L227248.  if v10 == 0 then goto L227252;
+  #L22724c.  if v1 == 0 then goto L227252;
+  #L227250.  return v3;
+  #L227252.  if v1 != 0 then goto L22725e;
+  #L227256.  if v9 == 0 then goto L22725c;
+  #L22725a.  goto L22725e;
+  #L22725c.  return v2;
+  #L22725e.  v4:= (`float`) v0 @kind i2f;
+  #L227260.  if v11 == 0 then goto L22726e;
+  #L227264.  v5:= v6.`com.google.android.material.timepicker.ClockHandView.animatingOnTouchUp` @type ^`boolean` @kind boolean;
+  #L227268.  if v5 == 0 then goto L22726e;
+  #L22726c.  v2:= v3;
+  #L22726e.  call `setHandRotation`(v6, v4, v2) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotation:(FZ)V` @kind virtual;
+  #L227274.  return v3;
+}
+procedure `void` `setHandRotationInternal`(`com.google.android.material.timepicker.ClockHandView` v10 @kind this, `float` v11 @name `degrees`, `boolean` v12 @name `animate`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotationInternal:(FZ)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L227794.  v0:= 360.0F;
+  #L227798.  v11:= v11 %% v0 @kind float;
+  #L22779a.  v10.`com.google.android.material.timepicker.ClockHandView.originalDeg` @type ^`float` := v11;
+  #L22779e.  v0:= 90.0F;
+  #L2277a2.  v0:= v11 - v0 @kind float;
+  #L2277a6.  v1:= (`double`) v0 @kind f2d;
+  #L2277a8.  call temp:= `toRadians`(v1) @signature `Ljava/lang/Math;.toRadians:(D)D` @kind static;
+  #L2277ae.  v1:= temp @kind wide;
+  #L2277b0.  v10.`com.google.android.material.timepicker.ClockHandView.degRad` @type ^`double` := v1 @kind wide;
+  #L2277b4.  call temp:= `getHeight`(v10) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getHeight:()I` @kind virtual;
+  #L2277ba.  v1:= temp;
+  #L2277bc.  v1:= v1 / 2;
+  #L2277c0.  call temp:= `getWidth`(v10) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getWidth:()I` @kind virtual;
+  #L2277c6.  v2:= temp;
+  #L2277c8.  v2:= v2 / 2;
+  #L2277cc.  v3:= (`float`) v2 @kind i2f;
+  #L2277ce.  v4:= v10.`com.google.android.material.timepicker.ClockHandView.circleRadius` @type ^`int`;
+  #L2277d2.  v4:= (`float`) v4 @kind i2f;
+  #L2277d4.  v5:= v10.`com.google.android.material.timepicker.ClockHandView.degRad` @type ^`double` @kind wide;
+  #L2277d8.  call temp:= `cos`(v5) @signature `Ljava/lang/Math;.cos:(D)D` @kind static;
+  #L2277de.  v5:= temp @kind wide;
+  #L2277e0.  v5:= (`float`) v5 @kind d2f;
+  #L2277e2.  v4:= v4 * v5 @kind float;
+  #L2277e4.  v3:= v3 + v4 @kind float;
+  #L2277e6.  v4:= (`float`) v1 @kind i2f;
+  #L2277e8.  v5:= v10.`com.google.android.material.timepicker.ClockHandView.circleRadius` @type ^`int`;
+  #L2277ec.  v5:= (`float`) v5 @kind i2f;
+  #L2277ee.  v6:= v10.`com.google.android.material.timepicker.ClockHandView.degRad` @type ^`double` @kind wide;
+  #L2277f2.  call temp:= `sin`(v6) @signature `Ljava/lang/Math;.sin:(D)D` @kind static;
+  #L2277f8.  v6:= temp @kind wide;
+  #L2277fa.  v6:= (`float`) v6 @kind d2f;
+  #L2277fc.  v5:= v5 * v6 @kind float;
+  #L2277fe.  v4:= v4 + v5 @kind float;
+  #L227800.  v5:= v10.`com.google.android.material.timepicker.ClockHandView.selectorBox` @type ^`android.graphics.RectF` @kind object;
+  #L227804.  v6:= v10.`com.google.android.material.timepicker.ClockHandView.selectorRadius` @type ^`int`;
+  #L227808.  v7:= (`float`) v6 @kind i2f;
+  #L22780a.  v7:= v3 - v7 @kind float;
+  #L22780e.  v8:= (`float`) v6 @kind i2f;
+  #L227810.  v8:= v4 - v8 @kind float;
+  #L227814.  v9:= (`float`) v6 @kind i2f;
+  #L227816.  v9:= v9 + v3 @kind float;
+  #L227818.  v6:= (`float`) v6 @kind i2f;
+  #L22781a.  v6:= v6 + v4 @kind float;
+  #L22781c.  call `set`(v5, v7, v8, v9, v6) @signature `Landroid/graphics/RectF;.set:(FFFF)V` @kind virtual;
+  #L227822.  v5:= v10.`com.google.android.material.timepicker.ClockHandView.listeners` @type ^`java.util.List` @kind object;
+  #L227826.  call temp:= `iterator`(v5) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L22782c.  v5:= temp @kind object;
+  #L22782e.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L227834.  v6:= temp;
+  #L227836.  if v6 == 0 then goto L22784e;
+  #L22783a.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L227840.  v6:= temp @kind object;
+  #L227842.  v6:= (`com.google.android.material.timepicker.ClockHandView$OnRotateListener`) v6 @kind object;
+  #L227846.  call `onRotate`(v6, v11, v12) @signature `Lcom/google/android/material/timepicker/ClockHandView$OnRotateListener;.onRotate:(FZ)V` @kind interface;
+  #L22784c.  goto L22782e;
+  #L22784e.  call `invalidate`(v10) @signature `Lcom/google/android/material/timepicker/ClockHandView;.invalidate:()V` @kind virtual;
+  #L227854.  return @kind void;
+}
+procedure `void` `addOnRotateListener`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this, `com.google.android.material.timepicker.ClockHandView$OnRotateListener` v2 @kind object @name `listener`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.addOnRotateListener:(Lcom/google/android/material/timepicker/ClockHandView$OnRotateListener;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L227524.  v0:= v1.`com.google.android.material.timepicker.ClockHandView.listeners` @type ^`java.util.List` @kind object;
+  #L227528.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L22752e.  return @kind void;
+}
+procedure `android.graphics.RectF` `getCurrentSelectorBox`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getCurrentSelectorBox:()Landroid/graphics/RectF;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L227198.  v0:= v1.`com.google.android.material.timepicker.ClockHandView.selectorBox` @type ^`android.graphics.RectF` @kind object;
+  #L22719c.  return v0 @kind object;
+}
+procedure `float` `getHandRotation`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getHandRotation:()F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L227368.  v0:= v1.`com.google.android.material.timepicker.ClockHandView.originalDeg` @type ^`float`;
+  #L22736c.  return v0;
+}
+procedure `int` `getSelectorRadius`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getSelectorRadius:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2273d8.  v0:= v1.`com.google.android.material.timepicker.ClockHandView.selectorRadius` @type ^`int`;
+  #L2273dc.  return v0;
+}
+procedure `void` `onDraw`(`com.google.android.material.timepicker.ClockHandView` v0 @kind this, `android.graphics.Canvas` v1 @kind object @name `canvas`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.onDraw:(Landroid/graphics/Canvas;)V` @AccessFlag PROTECTED {
+    temp;
+
+  #L22764c.  call `onDraw`(v0, v1) @signature `Landroid/view/View;.onDraw:(Landroid/graphics/Canvas;)V` @kind super;
+  #L227652.  call `drawSelector`(v0, v1) @signature `Lcom/google/android/material/timepicker/ClockHandView;.drawSelector:(Landroid/graphics/Canvas;)V` @kind direct;
+  #L227658.  return @kind void;
+}
+procedure `void` `onLayout`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this, `boolean` v2 @name `changed`, `int` v3 @name `left`, `int` v4 @name `top`, `int` v5 @name `right`, `int` v6 @name `bottom`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.onLayout:(ZIIII)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+
+  #L22766c.  call `onLayout`(v1, v2, v3, v4, v5, v6) @signature `Landroid/view/View;.onLayout:(ZIIII)V` @kind super;
+  #L227672.  call temp:= `getHandRotation`(v1) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getHandRotation:()F` @kind virtual;
+  #L227678.  v0:= temp;
+  #L22767a.  call `setHandRotation`(v1, v0) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotation:(F)V` @kind virtual;
+  #L227680.  return @kind void;
+}
+procedure `boolean` `onTouchEvent`(`com.google.android.material.timepicker.ClockHandView` v14 @kind this, `android.view.MotionEvent` v15 @kind object @name `event`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.onTouchEvent:(Landroid/view/MotionEvent;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+
+  #L227288.  call temp:= `getActionMasked`(v15) @signature `Landroid/view/MotionEvent;.getActionMasked:()I` @kind virtual;
+  #L22728e.  v0:= temp;
+  #L227290.  v1:= 0I;
+  #L227292.  v2:= 0I;
+  #L227294.  v3:= 0I;
+  #L227296.  call temp:= `getX`(v15) @signature `Landroid/view/MotionEvent;.getX:()F` @kind virtual;
+  #L22729c.  v10:= temp;
+  #L22729e.  call temp:= `getY`(v15) @signature `Landroid/view/MotionEvent;.getY:()F` @kind virtual;
+  #L2272a4.  v11:= temp;
+  #L2272a6.  v4:= 0I;
+  #L2272a8.  v12:= 1I;
+  #L2272aa.  if v0 == 0 then goto L2272fe;
+  #L2272ae.  if v0 == v12 then goto L2272ba;
+  #L2272b2.  v5:= 2I;
+  #L2272b4.  if v0 == v5 then goto L2272ba;
+  #L2272b8.  goto L227312;
+  #L2272ba.  v5:= v14.`com.google.android.material.timepicker.ClockHandView.downX` @type ^`float`;
+  #L2272be.  v5:= v10 - v5 @kind float;
+  #L2272c2.  v5:= (`int`) v5 @kind f2i;
+  #L2272c4.  v6:= v14.`com.google.android.material.timepicker.ClockHandView.downY` @type ^`float`;
+  #L2272c8.  v6:= v11 - v6 @kind float;
+  #L2272cc.  v6:= (`int`) v6 @kind f2i;
+  #L2272ce.  v7:= v5 * v5 @kind int;
+  #L2272d2.  v8:= v6 * v6 @kind int;
+  #L2272d6.  v7:= v7 + v8 @kind int;
+  #L2272d8.  v8:= v14.`com.google.android.material.timepicker.ClockHandView.scaledTouchSlop` @type ^`int`;
+  #L2272dc.  if v7 <= v8 then goto L2272e4;
+  #L2272e0.  v8:= v12;
+  #L2272e2.  goto L2272e6;
+  #L2272e4.  v8:= v4;
+  #L2272e6.  v14.`com.google.android.material.timepicker.ClockHandView.isInTapRegion` @type ^`boolean` := v8 @kind boolean;
+  #L2272ea.  v8:= v14.`com.google.android.material.timepicker.ClockHandView.changedDuringTouch` @type ^`boolean` @kind boolean;
+  #L2272ee.  if v8 == 0 then goto L2272f4;
+  #L2272f2.  v1:= 1I;
+  #L2272f4.  if v0 != v12 then goto L2272fa;
+  #L2272f8.  v4:= v12;
+  #L2272fa.  v3:= v4;
+  #L2272fc.  goto L227312;
+  #L2272fe.  v14.`com.google.android.material.timepicker.ClockHandView.downX` @type ^`float` := v10;
+  #L227302.  v14.`com.google.android.material.timepicker.ClockHandView.downY` @type ^`float` := v11;
+  #L227306.  v14.`com.google.android.material.timepicker.ClockHandView.isInTapRegion` @type ^`boolean` := v12 @kind boolean;
+  #L22730a.  v14.`com.google.android.material.timepicker.ClockHandView.changedDuringTouch` @type ^`boolean` := v4 @kind boolean;
+  #L22730e.  v2:= 1I;
+  #L227310.  
+  #L227312.  v13:= v14.`com.google.android.material.timepicker.ClockHandView.changedDuringTouch` @type ^`boolean` @kind boolean;
+  #L227316.  v4:= v14 @kind object;
+  #L227318.  v5:= v10;
+  #L22731a.  v6:= v11;
+  #L22731c.  v7:= v1;
+  #L22731e.  v8:= v2;
+  #L227320.  v9:= v3;
+  #L227322.  call temp:= `handleTouchInput`(v4, v5, v6, v7, v8, v9) @signature `Lcom/google/android/material/timepicker/ClockHandView;.handleTouchInput:(FFZZZ)Z` @kind direct;
+  #L227328.  v4:= temp;
+  #L22732a.  v4:= v4 ^| v13 @kind int;
+  #L22732c.  v14.`com.google.android.material.timepicker.ClockHandView.changedDuringTouch` @type ^`boolean` := v4 @kind boolean;
+  #L227330.  if v4 == 0 then goto L227354;
+  #L227334.  if v3 == 0 then goto L227354;
+  #L227338.  v4:= v14.`com.google.android.material.timepicker.ClockHandView.onActionUpListener` @type ^`com.google.android.material.timepicker.ClockHandView$OnActionUpListener` @kind object;
+  #L22733c.  if v4 == 0 then goto L227354;
+  #L227340.  call temp:= `getDegreesFromXY`(v14, v10, v11) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getDegreesFromXY:(FF)I` @kind direct;
+  #L227346.  v5:= temp;
+  #L227348.  v5:= (`float`) v5 @kind i2f;
+  #L22734a.  v6:= v14.`com.google.android.material.timepicker.ClockHandView.isInTapRegion` @type ^`boolean` @kind boolean;
+  #L22734e.  call `onActionUp`(v4, v5, v6) @signature `Lcom/google/android/material/timepicker/ClockHandView$OnActionUpListener;.onActionUp:(FZ)V` @kind interface;
+  #L227354.  return v12;
+}
+procedure `void` `setAnimateOnTouchUp`(`com.google.android.material.timepicker.ClockHandView` v0 @kind this, `boolean` v1 @name `animating`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setAnimateOnTouchUp:(Z)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L227694.  v0.`com.google.android.material.timepicker.ClockHandView.animatingOnTouchUp` @type ^`boolean` := v1 @kind boolean;
+  #L227698.  return @kind void;
+}
+procedure `void` `setCircleRadius`(`com.google.android.material.timepicker.ClockHandView` v0 @kind this, `int` v1 @name `circleRadius`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setCircleRadius:(I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L2276ac.  v0.`com.google.android.material.timepicker.ClockHandView.circleRadius` @type ^`int` := v1;
+  #L2276b0.  call `invalidate`(v0) @signature `Lcom/google/android/material/timepicker/ClockHandView;.invalidate:()V` @kind virtual;
+  #L2276b6.  return @kind void;
+}
+procedure `void` `setHandRotation`(`com.google.android.material.timepicker.ClockHandView` v1 @kind this, `float` v2 @name `degrees`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotation:(F)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2276c8.  v0:= 0I;
+  #L2276ca.  call `setHandRotation`(v1, v2, v0) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotation:(FZ)V` @kind virtual;
+  #L2276d0.  return @kind void;
+}
+procedure `void` `setHandRotation`(`com.google.android.material.timepicker.ClockHandView` v4 @kind this, `float` v5 @name `degrees`, `boolean` v6 @name `animate`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotation:(FZ)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2276e4.  v0:= v4.`com.google.android.material.timepicker.ClockHandView.rotationAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L2276e8.  if v0 == 0 then goto L2276f2;
+  #L2276ec.  call `cancel`(v0) @signature `Landroid/animation/ValueAnimator;.cancel:()V` @kind virtual;
+  #L2276f2.  v0:= 0I;
+  #L2276f4.  if v6 != 0 then goto L227700;
+  #L2276f8.  call `setHandRotationInternal`(v4, v5, v0) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setHandRotationInternal:(FZ)V` @kind direct;
+  #L2276fe.  return @kind void;
+  #L227700.  call temp:= `getValuesForAnimation`(v4, v5) @signature `Lcom/google/android/material/timepicker/ClockHandView;.getValuesForAnimation:(F)Landroid/util/Pair;` @kind direct;
+  #L227706.  v1:= temp @kind object;
+  #L227708.  v2:= 2I;
+  #L22770a.  v2:= new `float`[v2];
+  #L22770e.  v3:= v1.`android.util.Pair.first` @type ^`java.lang.Object` @kind object;
+  #L227712.  v3:= (`java.lang.Float`) v3 @kind object;
+  #L227716.  call temp:= `floatValue`(v3) @signature `Ljava/lang/Float;.floatValue:()F` @kind virtual;
+  #L22771c.  v3:= temp;
+  #L22771e.  v2[v0]:= v3;
+  #L227722.  v0:= 1I;
+  #L227724.  v3:= v1.`android.util.Pair.second` @type ^`java.lang.Object` @kind object;
+  #L227728.  v3:= (`java.lang.Float`) v3 @kind object;
+  #L22772c.  call temp:= `floatValue`(v3) @signature `Ljava/lang/Float;.floatValue:()F` @kind virtual;
+  #L227732.  v3:= temp;
+  #L227734.  v2[v0]:= v3;
+  #L227738.  call temp:= `ofFloat`(v2) @signature `Landroid/animation/ValueAnimator;.ofFloat:([F)Landroid/animation/ValueAnimator;` @kind static;
+  #L22773e.  v0:= temp @kind object;
+  #L227740.  v4.`com.google.android.material.timepicker.ClockHandView.rotationAnimator` @type ^`android.animation.ValueAnimator` := v0 @kind object;
+  #L227744.  v2:= 200L;
+  #L227748.  call temp:= `setDuration`(v0, v2) @signature `Landroid/animation/ValueAnimator;.setDuration:(J)Landroid/animation/ValueAnimator;` @kind virtual;
+  #L22774e.  v0:= v4.`com.google.android.material.timepicker.ClockHandView.rotationAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L227752.  v2:= new `com.google.android.material.timepicker.ClockHandView$1`;
+  #L227756.  call `<init>`(v2, v4) @signature `Lcom/google/android/material/timepicker/ClockHandView$1;.<init>:(Lcom/google/android/material/timepicker/ClockHandView;)V` @kind direct;
+  #L22775c.  call `addUpdateListener`(v0, v2) @signature `Landroid/animation/ValueAnimator;.addUpdateListener:(Landroid/animation/ValueAnimator$AnimatorUpdateListener;)V` @kind virtual;
+  #L227762.  v0:= v4.`com.google.android.material.timepicker.ClockHandView.rotationAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L227766.  v2:= new `com.google.android.material.timepicker.ClockHandView$2`;
+  #L22776a.  call `<init>`(v2, v4) @signature `Lcom/google/android/material/timepicker/ClockHandView$2;.<init>:(Lcom/google/android/material/timepicker/ClockHandView;)V` @kind direct;
+  #L227770.  call `addListener`(v0, v2) @signature `Landroid/animation/ValueAnimator;.addListener:(Landroid/animation/Animator$AnimatorListener;)V` @kind virtual;
+  #L227776.  v0:= v4.`com.google.android.material.timepicker.ClockHandView.rotationAnimator` @type ^`android.animation.ValueAnimator` @kind object;
+  #L22777a.  call `start`(v0) @signature `Landroid/animation/ValueAnimator;.start:()V` @kind virtual;
+  #L227780.  return @kind void;
+}
+procedure `void` `setOnActionUpListener`(`com.google.android.material.timepicker.ClockHandView` v0 @kind this, `com.google.android.material.timepicker.ClockHandView$OnActionUpListener` v1 @kind object @name `listener`) @signature `Lcom/google/android/material/timepicker/ClockHandView;.setOnActionUpListener:(Lcom/google/android/material/timepicker/ClockHandView$OnActionUpListener;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L227868.  v0.`com.google.android.material.timepicker.ClockHandView.onActionUpListener` @type ^`com.google.android.material.timepicker.ClockHandView$OnActionUpListener` := v1 @kind object;
+  #L22786c.  return @kind void;
+}

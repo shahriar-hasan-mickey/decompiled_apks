@@ -1,0 +1,378 @@
+record `org.greenrobot.eventbus.SubscriberMethodFinder` @kind class @AccessFlag  {
+  `boolean` `org.greenrobot.eventbus.SubscriberMethodFinder.ignoreGeneratedIndex` @AccessFlag PRIVATE_FINAL;
+  `boolean` `org.greenrobot.eventbus.SubscriberMethodFinder.strictMethodVerification` @AccessFlag PRIVATE_FINAL;
+  `java.util.List` `org.greenrobot.eventbus.SubscriberMethodFinder.subscriberInfoIndexes` @AccessFlag PRIVATE;
+}
+global `int` `@@org.greenrobot.eventbus.SubscriberMethodFinder.BRIDGE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.Map` `@@org.greenrobot.eventbus.SubscriberMethodFinder.METHOD_CACHE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@org.greenrobot.eventbus.SubscriberMethodFinder.MODIFIERS_IGNORE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@org.greenrobot.eventbus.SubscriberMethodFinder.POOL_SIZE` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@org.greenrobot.eventbus.SubscriberMethodFinder.SYNTHETIC` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L483018.  v0:= new `java.util.concurrent.ConcurrentHashMap`;
+  #L48301c.  call `<init>`(v0) @signature `Ljava/util/concurrent/ConcurrentHashMap;.<init>:()V` @kind direct;
+  #L483022.  `@@org.greenrobot.eventbus.SubscriberMethodFinder.METHOD_CACHE` @type ^`java.util.Map` := v0 @kind object;
+  #L483026.  v0:= 4I;
+  #L483028.  v0:= new `org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[v0];
+  #L48302c.  `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] := v0 @kind object;
+  #L483030.  return @kind void;
+}
+procedure `void` `<init>`(`org.greenrobot.eventbus.SubscriberMethodFinder` v0 @kind this, `java.util.List` v1 @kind object, `boolean` v2 , `boolean` v3 ) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.<init>:(Ljava/util/List;ZZ)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L483044.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L48304a.  v0.`org.greenrobot.eventbus.SubscriberMethodFinder.subscriberInfoIndexes` @type ^`java.util.List` := v1 @kind object;
+  #L48304e.  v0.`org.greenrobot.eventbus.SubscriberMethodFinder.strictMethodVerification` @type ^`boolean` := v2 @kind boolean;
+  #L483052.  v0.`org.greenrobot.eventbus.SubscriberMethodFinder.ignoreGeneratedIndex` @type ^`boolean` := v3 @kind boolean;
+  #L483056.  return @kind void;
+}
+procedure `void` `clearCaches`() @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.clearCaches:()V` @AccessFlag STATIC {
+    temp;
+    v0;
+
+  #L483068.  v0:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.METHOD_CACHE` @type ^`java.util.Map` @kind object;
+  #L48306c.  call `clear`(v0) @signature `Ljava/util/Map;.clear:()V` @kind interface;
+  #L483072.  return @kind void;
+}
+procedure `java.util.List` `findUsingInfo`(`org.greenrobot.eventbus.SubscriberMethodFinder` v6 @kind this, `java.lang.Class` v7 @kind object) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findUsingInfo:(Ljava/lang/Class;)Ljava/util/List;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L482df0.  call temp:= `prepareFindState`(v6) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.prepareFindState:()Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;` @kind direct;
+  #L482df6.  v0:= temp @kind object;
+  #L482df8.  call `initForSubscriber`(v0, v7) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.initForSubscriber:(Ljava/lang/Class;)V` @kind virtual;
+  #L482dfe.  v7:= v0.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.clazz` @type ^`java.lang.Class` @kind object;
+  #L482e02.  if v7 == 0 then goto L482e64;
+  #L482e06.  call temp:= `getSubscriberInfo`(v6, v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.getSubscriberInfo:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)Lorg/greenrobot/eventbus/meta/SubscriberInfo;` @kind direct;
+  #L482e0c.  v7:= temp @kind object;
+  #L482e0e.  v0.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberInfo` @type ^`org.greenrobot.eventbus.meta.SubscriberInfo` := v7 @kind object;
+  #L482e12.  v7:= v0.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberInfo` @type ^`org.greenrobot.eventbus.meta.SubscriberInfo` @kind object;
+  #L482e16.  if v7 == 0 then goto L482e56;
+  #L482e1a.  v7:= v0.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberInfo` @type ^`org.greenrobot.eventbus.meta.SubscriberInfo` @kind object;
+  #L482e1e.  call temp:= `getSubscriberMethods`(v7) @signature `Lorg/greenrobot/eventbus/meta/SubscriberInfo;.getSubscriberMethods:()[Lorg/greenrobot/eventbus/SubscriberMethod;` @kind interface;
+  #L482e24.  v7:= temp @kind object;
+  #L482e26.  v1:= length @variable v7;
+  #L482e28.  v2:= 0I;
+  #L482e2a.  if v2 >= v1 then goto L482e5c;
+  #L482e2e.  v3:= v7[v2] @kind object;
+  #L482e32.  v4:= v3.`org.greenrobot.eventbus.SubscriberMethod.method` @type ^`java.lang.reflect.Method` @kind object;
+  #L482e36.  v5:= v3.`org.greenrobot.eventbus.SubscriberMethod.eventType` @type ^`java.lang.Class` @kind object;
+  #L482e3a.  call temp:= `checkAdd`(v0, v4, v5) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.checkAdd:(Ljava/lang/reflect/Method;Ljava/lang/Class;)Z` @kind virtual;
+  #L482e40.  v4:= temp;
+  #L482e42.  if v4 == 0 then goto L482e50;
+  #L482e46.  v4:= v0.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberMethods` @type ^`java.util.List` @kind object;
+  #L482e4a.  call temp:= `add`(v4, v3) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L482e50.  v2:= v2 + 1;
+  #L482e54.  goto L482e2a;
+  #L482e56.  call `findUsingReflectionInSingleClass`(v6, v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findUsingReflectionInSingleClass:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)V` @kind direct;
+  #L482e5c.  call `moveToSuperclass`(v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.moveToSuperclass:()V` @kind virtual;
+  #L482e62.  goto L482dfe;
+  #L482e64.  call temp:= `getMethodsAndRelease`(v6, v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.getMethodsAndRelease:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)Ljava/util/List;` @kind direct;
+  #L482e6a.  v7:= temp @kind object;
+  #L482e6c.  return v7 @kind object;
+}
+procedure `java.util.List` `findUsingReflection`(`org.greenrobot.eventbus.SubscriberMethodFinder` v1 @kind this, `java.lang.Class` v2 @kind object) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findUsingReflection:(Ljava/lang/Class;)Ljava/util/List;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L482e80.  call temp:= `prepareFindState`(v1) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.prepareFindState:()Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;` @kind direct;
+  #L482e86.  v0:= temp @kind object;
+  #L482e88.  call `initForSubscriber`(v0, v2) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.initForSubscriber:(Ljava/lang/Class;)V` @kind virtual;
+  #L482e8e.  v2:= v0.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.clazz` @type ^`java.lang.Class` @kind object;
+  #L482e92.  if v2 == 0 then goto L482ea4;
+  #L482e96.  call `findUsingReflectionInSingleClass`(v1, v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findUsingReflectionInSingleClass:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)V` @kind direct;
+  #L482e9c.  call `moveToSuperclass`(v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.moveToSuperclass:()V` @kind virtual;
+  #L482ea2.  goto L482e8e;
+  #L482ea4.  call temp:= `getMethodsAndRelease`(v1, v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.getMethodsAndRelease:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)Ljava/util/List;` @kind direct;
+  #L482eaa.  v2:= temp @kind object;
+  #L482eac.  return v2 @kind object;
+}
+procedure `void` `findUsingReflectionInSingleClass`(`org.greenrobot.eventbus.SubscriberMethodFinder` v14 @kind this, `org.greenrobot.eventbus.SubscriberMethodFinder$FindState` v15 @kind object) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findUsingReflectionInSingleClass:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+
+  #L483084.  v0:= 1I;
+  #L483086.  v1:= v15.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.clazz` @type ^`java.lang.Class` @kind object;
+  #L48308a.  call temp:= `getDeclaredMethods`(v1) @signature `Ljava/lang/Class;.getDeclaredMethods:()[Ljava/lang/reflect/Method;` @kind virtual;
+  #L483090.  v1:= temp @kind object;
+  #L483092.  goto L4830a4;
+  #L483094.  v1:= v15.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.clazz` @type ^`java.lang.Class` @kind object;
+  #L483098.  call temp:= `getMethods`(v1) @signature `Ljava/lang/Class;.getMethods:()[Ljava/lang/reflect/Method;` @kind virtual;
+  #L48309e.  v1:= temp @kind object;
+  #L4830a0.  v15.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.skipSuperClasses` @type ^`boolean` := v0 @kind boolean;
+  #L4830a4.  v2:= length @variable v1;
+  #L4830a6.  v3:= 0I;
+  #L4830a8.  v4:= 0I;
+  #L4830aa.  if v4 >= v2 then goto L48325e;
+  #L4830ae.  v6:= v1[v4] @kind object;
+  #L4830b2.  call temp:= `getModifiers`(v6) @signature `Ljava/lang/reflect/Method;.getModifiers:()I` @kind virtual;
+  #L4830b8.  v5:= temp;
+  #L4830ba.  v7:= v5 ^& 1;
+  #L4830be.  v8:= "." @kind object;
+  #L4830c2.  if v7 == 0 then goto L4831d2;
+  #L4830c6.  v5:= v5 ^& 5192;
+  #L4830ca.  if v5 != 0 then goto L4831d2;
+  #L4830ce.  call temp:= `getParameterTypes`(v6) @signature `Ljava/lang/reflect/Method;.getParameterTypes:()[Ljava/lang/Class;` @kind virtual;
+  #L4830d4.  v5:= temp @kind object;
+  #L4830d6.  v7:= length @variable v5;
+  #L4830d8.  if v7 != v0 then goto L48313a;
+  #L4830dc.  v7:= constclass @type ^`org.greenrobot.eventbus.Subscribe` @kind object;
+  #L4830e0.  call temp:= `getAnnotation`(v6, v7) @signature `Ljava/lang/reflect/Method;.getAnnotation:(Ljava/lang/Class;)Ljava/lang/annotation/Annotation;` @kind virtual;
+  #L4830e6.  v7:= temp @kind object;
+  #L4830e8.  v7:= (`org.greenrobot.eventbus.Subscribe`) v7 @kind object;
+  #L4830ec.  if v7 == 0 then goto L483256;
+  #L4830f0.  v8:= v5[v3] @kind object;
+  #L4830f4.  call temp:= `checkAdd`(v15, v6, v8) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.checkAdd:(Ljava/lang/reflect/Method;Ljava/lang/Class;)Z` @kind virtual;
+  #L4830fa.  v5:= temp;
+  #L4830fc.  if v5 == 0 then goto L483256;
+  #L483100.  call temp:= `threadMode`(v7) @signature `Lorg/greenrobot/eventbus/Subscribe;.threadMode:()Lorg/greenrobot/eventbus/ThreadMode;` @kind interface;
+  #L483106.  v9:= temp @kind object;
+  #L483108.  v11:= v15.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberMethods` @type ^`java.util.List` @kind object;
+  #L48310c.  v12:= new `org.greenrobot.eventbus.SubscriberMethod`;
+  #L483110.  call temp:= `priority`(v7) @signature `Lorg/greenrobot/eventbus/Subscribe;.priority:()I` @kind interface;
+  #L483116.  v10:= temp;
+  #L483118.  call temp:= `sticky`(v7) @signature `Lorg/greenrobot/eventbus/Subscribe;.sticky:()Z` @kind interface;
+  #L48311e.  v13:= temp;
+  #L483120.  v5:= v12 @kind object;
+  #L483122.  v7:= v8 @kind object;
+  #L483124.  v8:= v9 @kind object;
+  #L483126.  v9:= v10;
+  #L483128.  v10:= v13;
+  #L48312a.  call `<init>`(v5, v6, v7, v8, v9, v10) @signature `Lorg/greenrobot/eventbus/SubscriberMethod;.<init>:(Ljava/lang/reflect/Method;Ljava/lang/Class;Lorg/greenrobot/eventbus/ThreadMode;IZ)V` @kind direct;
+  #L483130.  call temp:= `add`(v11, v12) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L483136.  goto L483256;
+  #L48313a.  v7:= v14.`org.greenrobot.eventbus.SubscriberMethodFinder.strictMethodVerification` @type ^`boolean` @kind boolean;
+  #L48313e.  if v7 == 0 then goto L483256;
+  #L483142.  v7:= constclass @type ^`org.greenrobot.eventbus.Subscribe` @kind object;
+  #L483146.  call temp:= `isAnnotationPresent`(v6, v7) @signature `Ljava/lang/reflect/Method;.isAnnotationPresent:(Ljava/lang/Class;)Z` @kind virtual;
+  #L48314c.  v7:= temp;
+  #L48314e.  if v7 != 0 then goto L483156;
+  #L483152.  goto L483256;
+  #L483156.  v15:= new `java.lang.StringBuilder`;
+  #L48315a.  call `<init>`(v15) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L483160.  call temp:= `getDeclaringClass`(v6) @signature `Ljava/lang/reflect/Method;.getDeclaringClass:()Ljava/lang/Class;` @kind virtual;
+  #L483166.  v0:= temp @kind object;
+  #L483168.  call temp:= `getName`(v0) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L48316e.  v0:= temp @kind object;
+  #L483170.  call temp:= `append`(v15, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L483176.  call temp:= `append`(v15, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48317c.  call temp:= `getName`(v6) @signature `Ljava/lang/reflect/Method;.getName:()Ljava/lang/String;` @kind virtual;
+  #L483182.  v0:= temp @kind object;
+  #L483184.  call temp:= `append`(v15, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48318a.  call temp:= `toString`(v15) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L483190.  v15:= temp @kind object;
+  #L483192.  v0:= new `org.greenrobot.eventbus.EventBusException`;
+  #L483196.  v1:= new `java.lang.StringBuilder`;
+  #L48319a.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4831a0.  v2:= "@Subscribe method " @kind object;
+  #L4831a4.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4831aa.  call temp:= `append`(v1, v15) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4831b0.  v15:= "must have exactly 1 parameter but has " @kind object;
+  #L4831b4.  call temp:= `append`(v1, v15) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4831ba.  v15:= length @variable v5;
+  #L4831bc.  call temp:= `append`(v1, v15) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L4831c2.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L4831c8.  v15:= temp @kind object;
+  #L4831ca.  call `<init>`(v0, v15) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4831d0.  throw v0;
+  #L4831d2.  v5:= v14.`org.greenrobot.eventbus.SubscriberMethodFinder.strictMethodVerification` @type ^`boolean` @kind boolean;
+  #L4831d6.  if v5 == 0 then goto L483256;
+  #L4831da.  v5:= constclass @type ^`org.greenrobot.eventbus.Subscribe` @kind object;
+  #L4831de.  call temp:= `isAnnotationPresent`(v6, v5) @signature `Ljava/lang/reflect/Method;.isAnnotationPresent:(Ljava/lang/Class;)Z` @kind virtual;
+  #L4831e4.  v5:= temp;
+  #L4831e6.  if v5 != 0 then goto L4831ec;
+  #L4831ea.  goto L483256;
+  #L4831ec.  v15:= new `java.lang.StringBuilder`;
+  #L4831f0.  call `<init>`(v15) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L4831f6.  call temp:= `getDeclaringClass`(v6) @signature `Ljava/lang/reflect/Method;.getDeclaringClass:()Ljava/lang/Class;` @kind virtual;
+  #L4831fc.  v0:= temp @kind object;
+  #L4831fe.  call temp:= `getName`(v0) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L483204.  v0:= temp @kind object;
+  #L483206.  call temp:= `append`(v15, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48320c.  call temp:= `append`(v15, v8) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L483212.  call temp:= `getName`(v6) @signature `Ljava/lang/reflect/Method;.getName:()Ljava/lang/String;` @kind virtual;
+  #L483218.  v0:= temp @kind object;
+  #L48321a.  call temp:= `append`(v15, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L483220.  call temp:= `toString`(v15) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L483226.  v15:= temp @kind object;
+  #L483228.  v0:= new `org.greenrobot.eventbus.EventBusException`;
+  #L48322c.  v1:= new `java.lang.StringBuilder`;
+  #L483230.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L483236.  call temp:= `append`(v1, v15) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L48323c.  v15:= " is a illegal @Subscribe method: must be public, non-static, and non-abstract" @kind object;
+  #L483240.  call temp:= `append`(v1, v15) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L483246.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L48324c.  v15:= temp @kind object;
+  #L48324e.  call `<init>`(v0, v15) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L483254.  throw v0;
+  #L483256.  v4:= v4 + 1;
+  #L48325a.  goto L4830aa;
+  #L48325e.  return @kind void;
+  catch `java.lang.Throwable` @[L483086..L483092] goto L483094;
+}
+procedure `java.util.List` `getMethodsAndRelease`(`org.greenrobot.eventbus.SubscriberMethodFinder` v4 @kind this, `org.greenrobot.eventbus.SubscriberMethodFinder$FindState` v5 @kind object) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.getMethodsAndRelease:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)Ljava/util/List;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L482ec0.  v0:= new `java.util.ArrayList`;
+  #L482ec4.  v1:= v5.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberMethods` @type ^`java.util.List` @kind object;
+  #L482ec8.  call `<init>`(v0, v1) @signature `Ljava/util/ArrayList;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L482ece.  call `recycle`(v5) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.recycle:()V` @kind virtual;
+  #L482ed4.  v1:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] @kind object;
+  #L482ed8.  @monitorenter v1
+  #L482eda.  v2:= 0I;
+  #L482edc.  v3:= 4I;
+  #L482ede.  if v2 >= v3 then goto L482efe;
+  #L482ee2.  v3:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] @kind object;
+  #L482ee6.  v3:= v3[v2] @kind object;
+  #L482eea.  if v3 != 0 then goto L482ef8;
+  #L482eee.  v3:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] @kind object;
+  #L482ef2.  v3[v2]:= v5 @kind object;
+  #L482ef6.  goto L482efe;
+  #L482ef8.  v2:= v2 + 1;
+  #L482efc.  goto L482edc;
+  #L482efe.  @monitorexit v1
+  #L482f00.  return v0 @kind object;
+  #L482f02.  v5:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L482f04.  @monitorexit v1
+  #L482f06.  goto L482f0a;
+  #L482f08.  throw v5;
+  #L482f0a.  goto L482f08;
+  catch `java.lang.Throwable` @[L482ee2..L482f06] goto L482f02;
+}
+procedure `org.greenrobot.eventbus.meta.SubscriberInfo` `getSubscriberInfo`(`org.greenrobot.eventbus.SubscriberMethodFinder` v3 @kind this, `org.greenrobot.eventbus.SubscriberMethodFinder$FindState` v4 @kind object) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.getSubscriberInfo:(Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;)Lorg/greenrobot/eventbus/meta/SubscriberInfo;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L482f94.  v0:= v4.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberInfo` @type ^`org.greenrobot.eventbus.meta.SubscriberInfo` @kind object;
+  #L482f98.  if v0 == 0 then goto L482fca;
+  #L482f9c.  v0:= v4.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberInfo` @type ^`org.greenrobot.eventbus.meta.SubscriberInfo` @kind object;
+  #L482fa0.  call temp:= `getSuperSubscriberInfo`(v0) @signature `Lorg/greenrobot/eventbus/meta/SubscriberInfo;.getSuperSubscriberInfo:()Lorg/greenrobot/eventbus/meta/SubscriberInfo;` @kind interface;
+  #L482fa6.  v0:= temp @kind object;
+  #L482fa8.  if v0 == 0 then goto L482fca;
+  #L482fac.  v0:= v4.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.subscriberInfo` @type ^`org.greenrobot.eventbus.meta.SubscriberInfo` @kind object;
+  #L482fb0.  call temp:= `getSuperSubscriberInfo`(v0) @signature `Lorg/greenrobot/eventbus/meta/SubscriberInfo;.getSuperSubscriberInfo:()Lorg/greenrobot/eventbus/meta/SubscriberInfo;` @kind interface;
+  #L482fb6.  v0:= temp @kind object;
+  #L482fb8.  v1:= v4.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.clazz` @type ^`java.lang.Class` @kind object;
+  #L482fbc.  call temp:= `getSubscriberClass`(v0) @signature `Lorg/greenrobot/eventbus/meta/SubscriberInfo;.getSubscriberClass:()Ljava/lang/Class;` @kind interface;
+  #L482fc2.  v2:= temp @kind object;
+  #L482fc4.  if v1 != v2 then goto L482fca;
+  #L482fc8.  return v0 @kind object;
+  #L482fca.  v0:= v3.`org.greenrobot.eventbus.SubscriberMethodFinder.subscriberInfoIndexes` @type ^`java.util.List` @kind object;
+  #L482fce.  if v0 == 0 then goto L483004;
+  #L482fd2.  call temp:= `iterator`(v0) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L482fd8.  v0:= temp @kind object;
+  #L482fda.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L482fe0.  v1:= temp;
+  #L482fe2.  if v1 == 0 then goto L483004;
+  #L482fe6.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L482fec.  v1:= temp @kind object;
+  #L482fee.  v1:= (`org.greenrobot.eventbus.meta.SubscriberInfoIndex`) v1 @kind object;
+  #L482ff2.  v2:= v4.`org.greenrobot.eventbus.SubscriberMethodFinder$FindState.clazz` @type ^`java.lang.Class` @kind object;
+  #L482ff6.  call temp:= `getSubscriberInfo`(v1, v2) @signature `Lorg/greenrobot/eventbus/meta/SubscriberInfoIndex;.getSubscriberInfo:(Ljava/lang/Class;)Lorg/greenrobot/eventbus/meta/SubscriberInfo;` @kind interface;
+  #L482ffc.  v1:= temp @kind object;
+  #L482ffe.  if v1 == 0 then goto L482fda;
+  #L483002.  return v1 @kind object;
+  #L483004.  v4:= 0I;
+  #L483006.  return v4 @kind object;
+}
+procedure `org.greenrobot.eventbus.SubscriberMethodFinder$FindState` `prepareFindState`(`org.greenrobot.eventbus.SubscriberMethodFinder` v5 @kind this) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.prepareFindState:()Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L482f28.  v0:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] @kind object;
+  #L482f2c.  @monitorenter v0
+  #L482f2e.  v1:= 0I;
+  #L482f30.  v2:= 4I;
+  #L482f32.  if v1 >= v2 then goto L482f56;
+  #L482f36.  v2:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] @kind object;
+  #L482f3a.  v2:= v2[v1] @kind object;
+  #L482f3e.  if v2 == 0 then goto L482f50;
+  #L482f42.  v3:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.FIND_STATE_POOL` @type ^`org.greenrobot.eventbus.SubscriberMethodFinder$FindState`[] @kind object;
+  #L482f46.  v4:= 0I;
+  #L482f48.  v3[v1]:= v4 @kind object;
+  #L482f4c.  @monitorexit v0
+  #L482f4e.  return v2 @kind object;
+  #L482f50.  v1:= v1 + 1;
+  #L482f54.  goto L482f30;
+  #L482f56.  @monitorexit v0
+  #L482f58.  v0:= new `org.greenrobot.eventbus.SubscriberMethodFinder$FindState`;
+  #L482f5c.  call `<init>`(v0) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder$FindState;.<init>:()V` @kind direct;
+  #L482f62.  return v0 @kind object;
+  #L482f64.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L482f66.  @monitorexit v0
+  #L482f68.  goto L482f6c;
+  #L482f6a.  throw v1;
+  #L482f6c.  goto L482f6a;
+  catch `java.lang.Throwable` @[L482f36..L482f58] goto L482f64;
+  catch `java.lang.Throwable` @[L482f66..L482f68] goto L482f64;
+}
+procedure `java.util.List` `findSubscriberMethods`(`org.greenrobot.eventbus.SubscriberMethodFinder` v3 @kind this, `java.lang.Class` v4 @kind object) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findSubscriberMethods:(Ljava/lang/Class;)Ljava/util/List;` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L482d60.  v0:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.METHOD_CACHE` @type ^`java.util.Map` @kind object;
+  #L482d64.  call temp:= `get`(v0, v4) @signature `Ljava/util/Map;.get:(Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482d6a.  v0:= temp @kind object;
+  #L482d6c.  v0:= (`java.util.List`) v0 @kind object;
+  #L482d70.  if v0 == 0 then goto L482d76;
+  #L482d74.  return v0 @kind object;
+  #L482d76.  v0:= v3.`org.greenrobot.eventbus.SubscriberMethodFinder.ignoreGeneratedIndex` @type ^`boolean` @kind boolean;
+  #L482d7a.  if v0 == 0 then goto L482d88;
+  #L482d7e.  call temp:= `findUsingReflection`(v3, v4) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findUsingReflection:(Ljava/lang/Class;)Ljava/util/List;` @kind direct;
+  #L482d84.  v0:= temp @kind object;
+  #L482d86.  goto L482d90;
+  #L482d88.  call temp:= `findUsingInfo`(v3, v4) @signature `Lorg/greenrobot/eventbus/SubscriberMethodFinder;.findUsingInfo:(Ljava/lang/Class;)Ljava/util/List;` @kind direct;
+  #L482d8e.  v0:= temp @kind object;
+  #L482d90.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L482d96.  v1:= temp;
+  #L482d98.  if v1 != 0 then goto L482da8;
+  #L482d9c.  v1:= `@@org.greenrobot.eventbus.SubscriberMethodFinder.METHOD_CACHE` @type ^`java.util.Map` @kind object;
+  #L482da0.  call temp:= `put`(v1, v4, v0) @signature `Ljava/util/Map;.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;` @kind interface;
+  #L482da6.  return v0 @kind object;
+  #L482da8.  v0:= new `org.greenrobot.eventbus.EventBusException`;
+  #L482dac.  v1:= new `java.lang.StringBuilder`;
+  #L482db0.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L482db6.  v2:= "Subscriber " @kind object;
+  #L482dba.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L482dc0.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L482dc6.  v4:= " and its super classes have no public methods with the @Subscribe annotation" @kind object;
+  #L482dca.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L482dd0.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L482dd6.  v4:= temp @kind object;
+  #L482dd8.  call `<init>`(v0, v4) @signature `Lorg/greenrobot/eventbus/EventBusException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L482dde.  throw v0;
+}

@@ -1,0 +1,73 @@
+record `com.kona.mobileapi.utils.Config$Cryptor` @kind class @AccessFlag PUBLIC {
+  `java.lang.String` `com.kona.mobileapi.utils.Config$Cryptor.a` @AccessFlag PRIVATE;
+  `byte`[] `com.kona.mobileapi.utils.Config$Cryptor.b` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`com.kona.mobileapi.utils.Config$Cryptor` v3 @kind this) @signature `Lcom/kona/mobileapi/utils/Config$Cryptor;.<init>:()V` @AccessFlag PROTECTED_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L330938.  call `<init>`(v3) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L33093e.  v0:= "konaikey" @kind object;
+  #L330942.  v3.`com.kona.mobileapi.utils.Config$Cryptor.a` @type ^`java.lang.String` := v0 @kind object;
+  #L330946.  call temp:= `getBytes`(v0) @signature `Ljava/lang/String;.getBytes:()[B` @kind virtual;
+  #L33094c.  v0:= temp @kind object;
+  #L33094e.  v1:= "AES" @kind object;
+  #L330952.  call temp:= `getInstance`(v1) @signature `Ljavax/crypto/KeyGenerator;.getInstance:(Ljava/lang/String;)Ljavax/crypto/KeyGenerator;` @kind static;
+  #L330958.  v1:= temp @kind object;
+  #L33095a.  v2:= "SHA1PRNG" @kind object;
+  #L33095e.  call temp:= `getInstance`(v2) @signature `Ljava/security/SecureRandom;.getInstance:(Ljava/lang/String;)Ljava/security/SecureRandom;` @kind static;
+  #L330964.  v2:= temp @kind object;
+  #L330966.  call `setSeed`(v2, v0) @signature `Ljava/security/SecureRandom;.setSeed:([B)V` @kind virtual;
+  #L33096c.  v0:= 128I;
+  #L330970.  call `init`(v1, v0, v2) @signature `Ljavax/crypto/KeyGenerator;.init:(ILjava/security/SecureRandom;)V` @kind virtual;
+  #L330976.  call temp:= `generateKey`(v1) @signature `Ljavax/crypto/KeyGenerator;.generateKey:()Ljavax/crypto/SecretKey;` @kind virtual;
+  #L33097c.  v0:= temp @kind object;
+  #L33097e.  call temp:= `getEncoded`(v0) @signature `Ljavax/crypto/SecretKey;.getEncoded:()[B` @kind interface;
+  #L330984.  v0:= temp @kind object;
+  #L330986.  v3.`com.kona.mobileapi.utils.Config$Cryptor.b` @type ^`byte`[] := v0 @kind object;
+  #L33098a.  goto L33099c;
+  #L33098c.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L33098e.  call temp:= `a`() @signature `Lcom/kona/mobileapi/utils/Config;.a:()Ljava/lang/String;` @kind static;
+  #L330994.  v1:= temp @kind object;
+  #L330996.  call `debugLog`(v1, v0) @signature `Lcom/kona/util/KonaLogger;.debugLog:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind static;
+  #L33099c.  return @kind void;
+  catch `java.lang.Exception` @[L330946..L33098a] goto L33098c;
+}
+procedure `byte`[] `decrypt`(`com.kona.mobileapi.utils.Config$Cryptor` v3 @kind this, `byte`[] v4 @kind object) @signature `Lcom/kona/mobileapi/utils/Config$Cryptor;.decrypt:([B)[B` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3308c0.  v0:= new `javax.crypto.spec.SecretKeySpec`;
+  #L3308c4.  v1:= v3.`com.kona.mobileapi.utils.Config$Cryptor.b` @type ^`byte`[] @kind object;
+  #L3308c8.  v2:= "AES" @kind object;
+  #L3308cc.  call `<init>`(v0, v1, v2) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L3308d2.  call temp:= `getInstance`(v2) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L3308d8.  v1:= temp @kind object;
+  #L3308da.  v2:= 2I;
+  #L3308dc.  call `init`(v1, v2, v0) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/Key;)V` @kind virtual;
+  #L3308e2.  call temp:= `doFinal`(v1, v4) @signature `Ljavax/crypto/Cipher;.doFinal:([B)[B` @kind virtual;
+  #L3308e8.  v4:= temp @kind object;
+  #L3308ea.  return v4 @kind object;
+}
+procedure `byte`[] `encrypt`(`com.kona.mobileapi.utils.Config$Cryptor` v3 @kind this, `byte`[] v4 @kind object) @signature `Lcom/kona/mobileapi/utils/Config$Cryptor;.encrypt:([B)[B` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3308fc.  v0:= new `javax.crypto.spec.SecretKeySpec`;
+  #L330900.  v1:= v3.`com.kona.mobileapi.utils.Config$Cryptor.b` @type ^`byte`[] @kind object;
+  #L330904.  v2:= "AES" @kind object;
+  #L330908.  call `<init>`(v0, v1, v2) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L33090e.  call temp:= `getInstance`(v2) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L330914.  v1:= temp @kind object;
+  #L330916.  v2:= 1I;
+  #L330918.  call `init`(v1, v2, v0) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/Key;)V` @kind virtual;
+  #L33091e.  call temp:= `doFinal`(v1, v4) @signature `Ljavax/crypto/Cipher;.doFinal:([B)[B` @kind virtual;
+  #L330924.  v4:= temp @kind object;
+  #L330926.  return v4 @kind object;
+}

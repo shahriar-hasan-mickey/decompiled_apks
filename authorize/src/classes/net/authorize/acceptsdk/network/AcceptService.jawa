@@ -1,0 +1,223 @@
+record `net.authorize.acceptsdk.network.AcceptService` @kind class @AccessFlag PUBLIC extends `android.app.IntentService` @kind class {
+}
+global `java.lang.String` `@@net.authorize.acceptsdk.network.AcceptService.ACTION_ENCRYPT` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.lang.String` `@@net.authorize.acceptsdk.network.AcceptService.EXTRA_PARAM_RESULT_RECEIVER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@net.authorize.acceptsdk.network.AcceptService.EXTRA_PARAM_TRANSACTION_OBJECT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@net.authorize.acceptsdk.network.AcceptService.POST` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@net.authorize.acceptsdk.network.AcceptService.SERVICE_RESULT_CODE_SDK_ERROR` @AccessFlag PUBLIC_STATIC_FINAL;
+global `int` `@@net.authorize.acceptsdk.network.AcceptService.SERVICE_RESULT_CODE_SDK_RESPONSE` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.lang.String` `@@net.authorize.acceptsdk.network.AcceptService.SERVICE_RESULT_ERROR_KEY` @AccessFlag PUBLIC_STATIC_FINAL;
+global `java.lang.String` `@@net.authorize.acceptsdk.network.AcceptService.SERVICE_RESULT_RESPONSE_KEY` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<init>`(`net.authorize.acceptsdk.network.AcceptService` v1 @kind this) @signature `Lnet/authorize/acceptsdk/network/AcceptService;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2365c0.  v0:= "InAppConnectionService" @kind object;
+  #L2365c4.  call `<init>`(v1, v0) @signature `Landroid/app/IntentService;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L2365ca.  return @kind void;
+}
+procedure `java.lang.Object` `handleActionEncrypt`(`net.authorize.acceptsdk.network.AcceptService` v10 @kind this, `net.authorize.acceptsdk.datamodel.transaction.EncryptTransactionObject` v11 @kind object @name `transactionObject`) @signature `Lnet/authorize/acceptsdk/network/AcceptService;.handleActionEncrypt:(Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;)Ljava/lang/Object;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L236418.  v0:= 0I;
+  #L23641a.  call temp:= `getActiveEndPointUrl`() @signature `Lnet/authorize/acceptsdk/network/ConnectionData;.getActiveEndPointUrl:()Ljava/lang/String;` @kind static;
+  #L236420.  v1:= temp @kind object;
+  #L236422.  v2:= "POST" @kind object;
+  #L236426.  v3:= 1I;
+  #L236428.  call temp:= `getHttpsURLConnection`(v1, v2, v3) @signature `Lnet/authorize/acceptsdk/util/SDKUtils;.getHttpsURLConnection:(Ljava/lang/String;Ljava/lang/String;Z)Ljavax/net/ssl/HttpsURLConnection;` @kind static;
+  #L23642e.  v2:= temp @kind object;
+  #L236430.  v3:= "Content-type" @kind object;
+  #L236434.  v4:= "application/json" @kind object;
+  #L236438.  call `setRequestProperty`(v2, v3, v4) @signature `Ljavax/net/ssl/HttpsURLConnection;.setRequestProperty:(Ljava/lang/String;Ljava/lang/String;)V` @kind virtual;
+  #L23643e.  call temp:= `getConnectionTimeout`() @signature `Lnet/authorize/acceptsdk/network/ConnectionData;.getConnectionTimeout:()I` @kind static;
+  #L236444.  v3:= temp;
+  #L236446.  call `setConnectTimeout`(v2, v3) @signature `Ljavax/net/ssl/HttpsURLConnection;.setConnectTimeout:(I)V` @kind virtual;
+  #L23644c.  call temp:= `getOutputStream`(v2) @signature `Ljavax/net/ssl/HttpsURLConnection;.getOutputStream:()Ljava/io/OutputStream;` @kind virtual;
+  #L236452.  v3:= temp @kind object;
+  #L236454.  v4:= new `java.io.BufferedWriter`;
+  #L236458.  v5:= new `java.io.OutputStreamWriter`;
+  #L23645c.  v6:= `@@android.util.Xml$Encoding.UTF_8` @type ^`android.util.Xml$Encoding` @kind object;
+  #L236460.  call temp:= `name`(v6) @signature `Landroid/util/Xml$Encoding;.name:()Ljava/lang/String;` @kind virtual;
+  #L236466.  v6:= temp @kind object;
+  #L236468.  call `<init>`(v5, v3, v6) @signature `Ljava/io/OutputStreamWriter;.<init>:(Ljava/io/OutputStream;Ljava/lang/String;)V` @kind direct;
+  #L23646e.  call `<init>`(v4, v5) @signature `Ljava/io/BufferedWriter;.<init>:(Ljava/io/Writer;)V` @kind direct;
+  #L236474.  
+  #L236476.  call temp:= `getOrderedJsonFromEncryptTransaction`(v11) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.getOrderedJsonFromEncryptTransaction:(Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;)Ljava/lang/String;` @kind static;
+  #L23647c.  v5:= temp @kind object;
+  #L23647e.  call `write`(v4, v5) @signature `Ljava/io/BufferedWriter;.write:(Ljava/lang/String;)V` @kind virtual;
+  #L236484.  call `flush`(v4) @signature `Ljava/io/BufferedWriter;.flush:()V` @kind virtual;
+  #L23648a.  call `close`(v4) @signature `Ljava/io/BufferedWriter;.close:()V` @kind virtual;
+  #L236490.  call `close`(v3) @signature `Ljava/io/OutputStream;.close:()V` @kind virtual;
+  #L236496.  call temp:= `getResponseCode`(v2) @signature `Ljavax/net/ssl/HttpsURLConnection;.getResponseCode:()I` @kind virtual;
+  #L23649c.  v5:= temp;
+  #L23649e.  v6:= 200I;
+  #L2364a2.  if v5 == v6 then goto L2364e8;
+  #L2364a6.  v6:= 201I;
+  #L2364aa.  if v5 != v6 then goto L2364b0;
+  #L2364ae.  goto L2364e8;
+  #L2364b0.  v6:= 500I;
+  #L2364b4.  if v5 != v6 then goto L2364d8;
+  #L2364b8.  v6:= `@@net.authorize.acceptsdk.datamodel.error.SDKErrorCode.E_WC_02` @type ^`net.authorize.acceptsdk.datamodel.error.SDKErrorCode` @kind object;
+  #L2364bc.  call temp:= `getErrorCode`(v6) @signature `Lnet/authorize/acceptsdk/datamodel/error/SDKErrorCode;.getErrorCode:()Ljava/lang/String;` @kind virtual;
+  #L2364c2.  v6:= temp @kind object;
+  #L2364c4.  call temp:= `getErrorStream`(v2) @signature `Ljavax/net/ssl/HttpsURLConnection;.getErrorStream:()Ljava/io/InputStream;` @kind virtual;
+  #L2364ca.  v7:= temp @kind object;
+  #L2364cc.  call temp:= `createErrorResponse`(v6, v7) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;.createErrorResponse:(Ljava/lang/String;Ljava/io/InputStream;)Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;` @kind static;
+  #L2364d2.  v6:= temp @kind object;
+  #L2364d4.  v0:= v6 @kind object;
+  #L2364d6.  goto L236594;
+  #L2364d8.  v6:= `@@net.authorize.acceptsdk.datamodel.error.SDKErrorCode.E_WC_02` @type ^`net.authorize.acceptsdk.datamodel.error.SDKErrorCode` @kind object;
+  #L2364dc.  call temp:= `createErrorResponse`(v6) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;.createErrorResponse:(Lnet/authorize/acceptsdk/datamodel/error/SDKErrorCode;)Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;` @kind static;
+  #L2364e2.  v6:= temp @kind object;
+  #L2364e4.  v0:= v6 @kind object;
+  #L2364e6.  goto L236594;
+  #L2364e8.  call temp:= `getInputStream`(v2) @signature `Ljavax/net/ssl/HttpsURLConnection;.getInputStream:()Ljava/io/InputStream;` @kind virtual;
+  #L2364ee.  v6:= temp @kind object;
+  #L2364f0.  call temp:= `convertStreamToString`(v6) @signature `Lnet/authorize/acceptsdk/util/SDKUtils;.convertStreamToString:(Ljava/io/InputStream;)Ljava/lang/String;` @kind static;
+  #L2364f6.  v6:= temp @kind object;
+  #L2364f8.  v7:= `@@net.authorize.acceptsdk.util.LogUtil$LOG_LEVEL.INFO` @type ^`net.authorize.acceptsdk.util.LogUtil$LOG_LEVEL` @kind object;
+  #L2364fc.  v8:= new `java.lang.StringBuilder`;
+  #L236500.  call `<init>`(v8) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L236506.  v9:= " response string :" @kind object;
+  #L23650a.  call temp:= `append`(v8, v9) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L236510.  call temp:= `append`(v8, v6) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L236516.  call temp:= `toString`(v8) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L23651c.  v8:= temp @kind object;
+  #L23651e.  call `log`(v7, v8) @signature `Lnet/authorize/acceptsdk/util/LogUtil;.log:(Lnet/authorize/acceptsdk/util/LogUtil$LOG_LEVEL;Ljava/lang/String;)V` @kind static;
+  #L236524.  
+  #L236526.  call temp:= `createEncryptionTransactionResponse`(v6) @signature `Lnet/authorize/acceptsdk/parser/AcceptSDKParser;.createEncryptionTransactionResponse:(Ljava/lang/String;)Lnet/authorize/acceptsdk/datamodel/transaction/response/TransactionResponse;` @kind static;
+  #L23652c.  v7:= temp @kind object;
+  #L23652e.  call temp:= `getResultCode`(v7) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/TransactionResponse;.getResultCode:()Ljava/lang/String;` @kind virtual;
+  #L236534.  v8:= temp @kind object;
+  #L236536.  v9:= "Ok" @kind object;
+  #L23653a.  call temp:= `equals`(v8, v9) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L236540.  v8:= temp;
+  #L236542.  if v8 == 0 then goto L23654a;
+  #L236546.  v0:= v7 @kind object;
+  #L236548.  goto L23654c;
+  #L23654a.  v0:= v7 @kind object;
+  #L23654c.  goto L236594;
+  #L23654e.  v2:= Exception @type ^`org.json.JSONException` @kind object;
+  #L236550.  v3:= `@@net.authorize.acceptsdk.datamodel.error.SDKErrorCode.E_WC_14` @type ^`net.authorize.acceptsdk.datamodel.error.SDKErrorCode` @kind object;
+  #L236554.  call temp:= `getMessage`(v2) @signature `Lorg/json/JSONException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L23655a.  v4:= temp @kind object;
+  #L23655c.  call temp:= `createErrorResponse`(v3, v4) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;.createErrorResponse:(Lnet/authorize/acceptsdk/datamodel/error/SDKErrorCode;Ljava/lang/String;)Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;` @kind static;
+  #L236562.  v0:= temp @kind object;
+  #L236564.  goto L236596;
+  #L236566.  v2:= Exception @type ^`java.io.IOException` @kind object;
+  #L236568.  v3:= `@@net.authorize.acceptsdk.datamodel.error.SDKErrorCode.E_WC_02` @type ^`net.authorize.acceptsdk.datamodel.error.SDKErrorCode` @kind object;
+  #L23656c.  call temp:= `getMessage`(v2) @signature `Ljava/io/IOException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L236572.  v4:= temp @kind object;
+  #L236574.  call temp:= `createErrorResponse`(v3, v4) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;.createErrorResponse:(Lnet/authorize/acceptsdk/datamodel/error/SDKErrorCode;Ljava/lang/String;)Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;` @kind static;
+  #L23657a.  v0:= temp @kind object;
+  #L23657c.  goto L236594;
+  #L23657e.  v2:= Exception @type ^`java.net.SocketTimeoutException` @kind object;
+  #L236580.  v3:= `@@net.authorize.acceptsdk.datamodel.error.SDKErrorCode.E_WC_02` @type ^`net.authorize.acceptsdk.datamodel.error.SDKErrorCode` @kind object;
+  #L236584.  call temp:= `getMessage`(v2) @signature `Ljava/net/SocketTimeoutException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L23658a.  v4:= temp @kind object;
+  #L23658c.  call temp:= `createErrorResponse`(v3, v4) @signature `Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;.createErrorResponse:(Lnet/authorize/acceptsdk/datamodel/error/SDKErrorCode;Ljava/lang/String;)Lnet/authorize/acceptsdk/datamodel/transaction/response/ErrorTransactionResponse;` @kind static;
+  #L236592.  v0:= temp @kind object;
+  #L236594.  
+  #L236596.  return v0 @kind object;
+  catch `java.net.SocketTimeoutException` @[L236422..L236542] goto L23657e;
+  catch `java.io.IOException` @[L236422..L236542] goto L236566;
+  catch `org.json.JSONException` @[L236422..L236542] goto L23654e;
+}
+procedure `void` `startActionEncrypt`(`android.content.Context` v3 @kind object @name `context`, `net.authorize.acceptsdk.datamodel.transaction.EncryptTransactionObject` v4 @kind object @name `transactionObject`, `net.authorize.acceptsdk.network.TransactionResultReceiver` v5 @kind object @name `resultReceiver`) @signature `Lnet/authorize/acceptsdk/network/AcceptService;.startActionEncrypt:(Landroid/content/Context;Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;Lnet/authorize/acceptsdk/network/TransactionResultReceiver;)V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2366c4.  v0:= new `android.content.Intent`;
+  #L2366c8.  v1:= constclass @type ^`net.authorize.acceptsdk.network.AcceptService` @kind object;
+  #L2366cc.  call `<init>`(v0, v3, v1) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L2366d2.  v1:= "net.authorize.action.ENCRYPT" @kind object;
+  #L2366d6.  call temp:= `setAction`(v0, v1) @signature `Landroid/content/Intent;.setAction:(Ljava/lang/String;)Landroid/content/Intent;` @kind virtual;
+  #L2366dc.  v1:= new `android.os.Bundle`;
+  #L2366e0.  call `<init>`(v1) @signature `Landroid/os/Bundle;.<init>:()V` @kind direct;
+  #L2366e6.  v2:= "net.authorize.extra.TRANSACTION_OBJECT" @kind object;
+  #L2366ea.  call `putSerializable`(v1, v2, v4) @signature `Landroid/os/Bundle;.putSerializable:(Ljava/lang/String;Ljava/io/Serializable;)V` @kind virtual;
+  #L2366f0.  v2:= "net.authorize.extra.RESULT_RECEIVER" @kind object;
+  #L2366f4.  call `putParcelable`(v1, v2, v5) @signature `Landroid/os/Bundle;.putParcelable:(Ljava/lang/String;Landroid/os/Parcelable;)V` @kind virtual;
+  #L2366fa.  call temp:= `putExtras`(v0, v1) @signature `Landroid/content/Intent;.putExtras:(Landroid/os/Bundle;)Landroid/content/Intent;` @kind virtual;
+  #L236700.  call temp:= `startService`(v3, v0) @signature `Landroid/content/Context;.startService:(Landroid/content/Intent;)Landroid/content/ComponentName;` @kind virtual;
+  #L236706.  return @kind void;
+}
+procedure `void` `onHandleIntent`(`net.authorize.acceptsdk.network.AcceptService` v4 @kind this, `android.content.Intent` v5 @kind object @name `intent`) @signature `Lnet/authorize/acceptsdk/network/AcceptService;.onHandleIntent:(Landroid/content/Intent;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2365dc.  if v5 == 0 then goto L236648;
+  #L2365e0.  call temp:= `getAction`(v5) @signature `Landroid/content/Intent;.getAction:()Ljava/lang/String;` @kind virtual;
+  #L2365e6.  v0:= temp @kind object;
+  #L2365e8.  v1:= -1I;
+  #L2365ea.  call temp:= `hashCode`(v0) @signature `Ljava/lang/String;.hashCode:()I` @kind virtual;
+  #L2365f0.  v2:= temp;
+  #L2365f2.  v3:= -696836509I;
+  #L2365f8.  if v2 == v3 then goto L2365fe;
+  #L2365fc.  goto L236610;
+  #L2365fe.  v2:= "net.authorize.action.ENCRYPT" @kind object;
+  #L236602.  call temp:= `equals`(v0, v2) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L236608.  v2:= temp;
+  #L23660a.  if v2 == 0 then goto L2365fc;
+  #L23660e.  v1:= 0I;
+  #L236610.  if v1 == 0 then goto L236616;
+  #L236614.  goto L236648;
+  #L236616.  
+  #L236618.  v1:= "net.authorize.extra.TRANSACTION_OBJECT" @kind object;
+  #L23661c.  call temp:= `getSerializableExtra`(v5, v1) @signature `Landroid/content/Intent;.getSerializableExtra:(Ljava/lang/String;)Ljava/io/Serializable;` @kind virtual;
+  #L236622.  v1:= temp @kind object;
+  #L236624.  v1:= (`net.authorize.acceptsdk.datamodel.transaction.EncryptTransactionObject`) v1 @kind object;
+  #L236628.  
+  #L23662a.  v2:= "net.authorize.extra.RESULT_RECEIVER" @kind object;
+  #L23662e.  call temp:= `getParcelableExtra`(v5, v2) @signature `Landroid/content/Intent;.getParcelableExtra:(Ljava/lang/String;)Landroid/os/Parcelable;` @kind virtual;
+  #L236634.  v2:= temp @kind object;
+  #L236636.  v2:= (`android.os.ResultReceiver`) v2 @kind object;
+  #L23663a.  call temp:= `handleActionEncrypt`(v4, v1) @signature `Lnet/authorize/acceptsdk/network/AcceptService;.handleActionEncrypt:(Lnet/authorize/acceptsdk/datamodel/transaction/EncryptTransactionObject;)Ljava/lang/Object;` @kind direct;
+  #L236640.  v3:= temp @kind object;
+  #L236642.  call `onPostHandleAction`(v4, v3, v2) @signature `Lnet/authorize/acceptsdk/network/AcceptService;.onPostHandleAction:(Ljava/lang/Object;Landroid/os/ResultReceiver;)V` @kind virtual;
+  #L236648.  return @kind void;
+}
+procedure `void` `onPostHandleAction`(`net.authorize.acceptsdk.network.AcceptService` v3 @kind this, `java.lang.Object` v4 @kind object @name `result`, `android.os.ResultReceiver` v5 @kind object @name `resultReceiver`) @signature `Lnet/authorize/acceptsdk/network/AcceptService;.onPostHandleAction:(Ljava/lang/Object;Landroid/os/ResultReceiver;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L23665c.  v0:= new `android.os.Bundle`;
+  #L236660.  call `<init>`(v0) @signature `Landroid/os/Bundle;.<init>:()V` @kind direct;
+  #L236666.  v1:= instanceof @variable v4 @type ^`net.authorize.acceptsdk.datamodel.transaction.response.EncryptTransactionResponse` @kind boolean;
+  #L23666a.  if v1 == 0 then goto L23668a;
+  #L23666e.  v1:= v4 @kind object;
+  #L236670.  v1:= (`net.authorize.acceptsdk.datamodel.transaction.response.EncryptTransactionResponse`) v1 @kind object;
+  #L236674.  v2:= "SERVICE_RESULT_RESPONSE_KEY" @kind object;
+  #L236678.  call `putParcelable`(v0, v2, v1) @signature `Landroid/os/Bundle;.putParcelable:(Ljava/lang/String;Landroid/os/Parcelable;)V` @kind virtual;
+  #L23667e.  v2:= 100I;
+  #L236682.  call `send`(v5, v2, v0) @signature `Landroid/os/ResultReceiver;.send:(ILandroid/os/Bundle;)V` @kind virtual;
+  #L236688.  goto L2366ae;
+  #L23668a.  v1:= instanceof @variable v4 @type ^`net.authorize.acceptsdk.datamodel.transaction.response.ErrorTransactionResponse` @kind boolean;
+  #L23668e.  if v1 == 0 then goto L2366ae;
+  #L236692.  v1:= v4 @kind object;
+  #L236694.  v1:= (`net.authorize.acceptsdk.datamodel.transaction.response.ErrorTransactionResponse`) v1 @kind object;
+  #L236698.  v2:= "SERVICE_RESULT_ERROR_KEY" @kind object;
+  #L23669c.  call `putParcelable`(v0, v2, v1) @signature `Landroid/os/Bundle;.putParcelable:(Ljava/lang/String;Landroid/os/Parcelable;)V` @kind virtual;
+  #L2366a2.  v2:= 200I;
+  #L2366a6.  call `send`(v5, v2, v0) @signature `Landroid/os/ResultReceiver;.send:(ILandroid/os/Bundle;)V` @kind virtual;
+  #L2366ac.  goto L2366b0;
+  #L2366ae.  
+  #L2366b0.  return @kind void;
+}

@@ -1,0 +1,258 @@
+record `com.androidnetworking.internal.ANRequestQueue` @kind class @AccessFlag PUBLIC {
+  `java.util.Set` `com.androidnetworking.internal.ANRequestQueue.mCurrentRequests` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `com.androidnetworking.internal.ANRequestQueue.mSequenceGenerator` @AccessFlag PRIVATE;
+}
+global `com.androidnetworking.internal.ANRequestQueue` `@@com.androidnetworking.internal.ANRequestQueue.sInstance` @AccessFlag PRIVATE_STATIC;
+procedure `void` `<clinit>`() @signature `Lcom/androidnetworking/internal/ANRequestQueue;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+
+  #L2ab3d0.  return @kind void;
+}
+procedure `void` `<init>`(`com.androidnetworking.internal.ANRequestQueue` v1 @kind this) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L2ab3e4.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L2ab3ea.  v0:= new `java.util.concurrent.ConcurrentHashMap`;
+  #L2ab3ee.  call `<init>`(v0) @signature `Ljava/util/concurrent/ConcurrentHashMap;.<init>:()V` @kind direct;
+  #L2ab3f4.  call temp:= `newSetFromMap`(v0) @signature `Ljava/util/Collections;.newSetFromMap:(Ljava/util/Map;)Ljava/util/Set;` @kind static;
+  #L2ab3fa.  v0:= temp @kind object;
+  #L2ab3fc.  v1.`com.androidnetworking.internal.ANRequestQueue.mCurrentRequests` @type ^`java.util.Set` := v0 @kind object;
+  #L2ab400.  v0:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L2ab404.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L2ab40a.  v1.`com.androidnetworking.internal.ANRequestQueue.mSequenceGenerator` @type ^`java.util.concurrent.atomic.AtomicInteger` := v0 @kind object;
+  #L2ab40e.  return @kind void;
+}
+procedure `boolean` `access$000`(`com.androidnetworking.internal.ANRequestQueue` v0 @kind object, `com.androidnetworking.common.ANRequest` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.access$000:(Lcom/androidnetworking/internal/ANRequestQueue;Lcom/androidnetworking/common/ANRequest;Ljava/lang/Object;)Z` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L2ab1a8.  call temp:= `isRequestWithTheGivenTag`(v0, v1, v2) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.isRequestWithTheGivenTag:(Lcom/androidnetworking/common/ANRequest;Ljava/lang/Object;)Z` @kind direct;
+  #L2ab1ae.  v0:= temp;
+  #L2ab1b0.  return v0;
+}
+procedure `void` `cancel`(`com.androidnetworking.internal.ANRequestQueue` v3 @kind this, `com.androidnetworking.internal.ANRequestQueue$RequestFilter` v4 @kind object, `boolean` v5 ) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.cancel:(Lcom/androidnetworking/internal/ANRequestQueue$RequestFilter;Z)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2ab420.  v0:= v3.`com.androidnetworking.internal.ANRequestQueue.mCurrentRequests` @type ^`java.util.Set` @kind object;
+  #L2ab424.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2ab42a.  v0:= temp @kind object;
+  #L2ab42c.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2ab432.  v1:= temp;
+  #L2ab434.  if v1 == 0 then goto L2ab478;
+  #L2ab438.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2ab43e.  v1:= temp @kind object;
+  #L2ab440.  v1:= (`com.androidnetworking.common.ANRequest`) v1 @kind object;
+  #L2ab444.  call temp:= `apply`(v4, v1) @signature `Lcom/androidnetworking/internal/ANRequestQueue$RequestFilter;.apply:(Lcom/androidnetworking/common/ANRequest;)Z` @kind interface;
+  #L2ab44a.  v2:= temp;
+  #L2ab44c.  if v2 == 0 then goto L2ab42c;
+  #L2ab450.  call `cancel`(v1, v5) @signature `Lcom/androidnetworking/common/ANRequest;.cancel:(Z)V` @kind virtual;
+  #L2ab456.  call temp:= `isCanceled`(v1) @signature `Lcom/androidnetworking/common/ANRequest;.isCanceled:()Z` @kind virtual;
+  #L2ab45c.  v2:= temp;
+  #L2ab45e.  if v2 == 0 then goto L2ab42c;
+  #L2ab462.  call `destroy`(v1) @signature `Lcom/androidnetworking/common/ANRequest;.destroy:()V` @kind virtual;
+  #L2ab468.  call `remove`(v0) @signature `Ljava/util/Iterator;.remove:()V` @kind interface;
+  #L2ab46e.  goto L2ab42c;
+  #L2ab470.  v4:= Exception @type ^`java.lang.Exception` @kind object;
+  #L2ab472.  call `printStackTrace`(v4) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L2ab478.  return @kind void;
+  catch `java.lang.Exception` @[L2ab420..L2ab46e] goto L2ab470;
+}
+procedure `com.androidnetworking.internal.ANRequestQueue` `getInstance`() @signature `Lcom/androidnetworking/internal/ANRequestQueue;.getInstance:()Lcom/androidnetworking/internal/ANRequestQueue;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L2ab360.  v0:= `@@com.androidnetworking.internal.ANRequestQueue.sInstance` @type ^`com.androidnetworking.internal.ANRequestQueue` @kind object;
+  #L2ab364.  if v0 != 0 then goto L2ab38e;
+  #L2ab368.  v0:= constclass @type ^`com.androidnetworking.internal.ANRequestQueue` @kind object;
+  #L2ab36c.  @monitorenter v0
+  #L2ab36e.  v1:= `@@com.androidnetworking.internal.ANRequestQueue.sInstance` @type ^`com.androidnetworking.internal.ANRequestQueue` @kind object;
+  #L2ab372.  if v1 != 0 then goto L2ab384;
+  #L2ab376.  v1:= new `com.androidnetworking.internal.ANRequestQueue`;
+  #L2ab37a.  call `<init>`(v1) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.<init>:()V` @kind direct;
+  #L2ab380.  `@@com.androidnetworking.internal.ANRequestQueue.sInstance` @type ^`com.androidnetworking.internal.ANRequestQueue` := v1 @kind object;
+  #L2ab384.  @monitorexit v0
+  #L2ab386.  goto L2ab38e;
+  #L2ab388.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L2ab38a.  @monitorexit v0
+  #L2ab38c.  throw v1;
+  #L2ab38e.  v0:= `@@com.androidnetworking.internal.ANRequestQueue.sInstance` @type ^`com.androidnetworking.internal.ANRequestQueue` @kind object;
+  #L2ab392.  return v0 @kind object;
+  catch `java.lang.Throwable` @[L2ab36e..L2ab38c] goto L2ab388;
+}
+procedure `void` `initialize`() @signature `Lcom/androidnetworking/internal/ANRequestQueue;.initialize:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+
+  #L2ab588.  call temp:= `getInstance`() @signature `Lcom/androidnetworking/internal/ANRequestQueue;.getInstance:()Lcom/androidnetworking/internal/ANRequestQueue;` @kind static;
+  #L2ab58e.  return @kind void;
+}
+procedure `boolean` `isRequestWithTheGivenTag`(`com.androidnetworking.internal.ANRequestQueue` v1 @kind this, `com.androidnetworking.common.ANRequest` v2 @kind object, `java.lang.Object` v3 @kind object) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.isRequestWithTheGivenTag:(Lcom/androidnetworking/common/ANRequest;Ljava/lang/Object;)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L2ab230.  call temp:= `getTag`(v2) @signature `Lcom/androidnetworking/common/ANRequest;.getTag:()Ljava/lang/Object;` @kind virtual;
+  #L2ab236.  v0:= temp @kind object;
+  #L2ab238.  if v0 != 0 then goto L2ab240;
+  #L2ab23c.  v2:= 0I;
+  #L2ab23e.  return v2;
+  #L2ab240.  call temp:= `getTag`(v2) @signature `Lcom/androidnetworking/common/ANRequest;.getTag:()Ljava/lang/Object;` @kind virtual;
+  #L2ab246.  v0:= temp @kind object;
+  #L2ab248.  v0:= instanceof @variable v0 @type ^`java.lang.String` @kind boolean;
+  #L2ab24c.  if v0 == 0 then goto L2ab272;
+  #L2ab250.  v0:= instanceof @variable v3 @type ^`java.lang.String` @kind boolean;
+  #L2ab254.  if v0 == 0 then goto L2ab272;
+  #L2ab258.  call temp:= `getTag`(v2) @signature `Lcom/androidnetworking/common/ANRequest;.getTag:()Ljava/lang/Object;` @kind virtual;
+  #L2ab25e.  v2:= temp @kind object;
+  #L2ab260.  v2:= (`java.lang.String`) v2 @kind object;
+  #L2ab264.  v3:= (`java.lang.String`) v3 @kind object;
+  #L2ab268.  call temp:= `equals`(v2, v3) @signature `Ljava/lang/String;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2ab26e.  v2:= temp;
+  #L2ab270.  return v2;
+  #L2ab272.  call temp:= `getTag`(v2) @signature `Lcom/androidnetworking/common/ANRequest;.getTag:()Ljava/lang/Object;` @kind virtual;
+  #L2ab278.  v2:= temp @kind object;
+  #L2ab27a.  call temp:= `equals`(v2, v3) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L2ab280.  v2:= temp;
+  #L2ab282.  return v2;
+}
+procedure `com.androidnetworking.common.ANRequest` `addRequest`(`com.androidnetworking.internal.ANRequestQueue` v2 @kind this, `com.androidnetworking.common.ANRequest` v3 @kind object) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.addRequest:(Lcom/androidnetworking/common/ANRequest;)Lcom/androidnetworking/common/ANRequest;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L2ab294.  v0:= v2.`com.androidnetworking.internal.ANRequestQueue.mCurrentRequests` @type ^`java.util.Set` @kind object;
+  #L2ab298.  call temp:= `add`(v0, v3) @signature `Ljava/util/Set;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L2ab29e.  goto L2ab2a8;
+  #L2ab2a0.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L2ab2a2.  call `printStackTrace`(v0) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L2ab2a8.  call temp:= `getSequenceNumber`(v2) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.getSequenceNumber:()I` @kind virtual;
+  #L2ab2ae.  v0:= temp;
+  #L2ab2b0.  call `setSequenceNumber`(v3, v0) @signature `Lcom/androidnetworking/common/ANRequest;.setSequenceNumber:(I)V` @kind virtual;
+  #L2ab2b6.  call temp:= `getPriority`(v3) @signature `Lcom/androidnetworking/common/ANRequest;.getPriority:()Lcom/androidnetworking/common/Priority;` @kind virtual;
+  #L2ab2bc.  v0:= temp @kind object;
+  #L2ab2be.  v1:= `@@com.androidnetworking.common.Priority.IMMEDIATE` @type ^`com.androidnetworking.common.Priority` @kind object;
+  #L2ab2c2.  if v0 != v1 then goto L2ab2f8;
+  #L2ab2c6.  call temp:= `getInstance`() @signature `Lcom/androidnetworking/core/Core;.getInstance:()Lcom/androidnetworking/core/Core;` @kind static;
+  #L2ab2cc.  v0:= temp @kind object;
+  #L2ab2ce.  call temp:= `getExecutorSupplier`(v0) @signature `Lcom/androidnetworking/core/Core;.getExecutorSupplier:()Lcom/androidnetworking/core/ExecutorSupplier;` @kind virtual;
+  #L2ab2d4.  v0:= temp @kind object;
+  #L2ab2d6.  call temp:= `forImmediateNetworkTasks`(v0) @signature `Lcom/androidnetworking/core/ExecutorSupplier;.forImmediateNetworkTasks:()Lcom/androidnetworking/core/ANExecutor;` @kind interface;
+  #L2ab2dc.  v0:= temp @kind object;
+  #L2ab2de.  v1:= new `com.androidnetworking.internal.InternalRunnable`;
+  #L2ab2e2.  call `<init>`(v1, v3) @signature `Lcom/androidnetworking/internal/InternalRunnable;.<init>:(Lcom/androidnetworking/common/ANRequest;)V` @kind direct;
+  #L2ab2e8.  call temp:= `submit`(v0, v1) @signature `Lcom/androidnetworking/core/ANExecutor;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind virtual;
+  #L2ab2ee.  v0:= temp @kind object;
+  #L2ab2f0.  call `setFuture`(v3, v0) @signature `Lcom/androidnetworking/common/ANRequest;.setFuture:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L2ab2f6.  goto L2ab332;
+  #L2ab2f8.  call temp:= `getInstance`() @signature `Lcom/androidnetworking/core/Core;.getInstance:()Lcom/androidnetworking/core/Core;` @kind static;
+  #L2ab2fe.  v0:= temp @kind object;
+  #L2ab300.  call temp:= `getExecutorSupplier`(v0) @signature `Lcom/androidnetworking/core/Core;.getExecutorSupplier:()Lcom/androidnetworking/core/ExecutorSupplier;` @kind virtual;
+  #L2ab306.  v0:= temp @kind object;
+  #L2ab308.  call temp:= `forNetworkTasks`(v0) @signature `Lcom/androidnetworking/core/ExecutorSupplier;.forNetworkTasks:()Lcom/androidnetworking/core/ANExecutor;` @kind interface;
+  #L2ab30e.  v0:= temp @kind object;
+  #L2ab310.  v1:= new `com.androidnetworking.internal.InternalRunnable`;
+  #L2ab314.  call `<init>`(v1, v3) @signature `Lcom/androidnetworking/internal/InternalRunnable;.<init>:(Lcom/androidnetworking/common/ANRequest;)V` @kind direct;
+  #L2ab31a.  call temp:= `submit`(v0, v1) @signature `Lcom/androidnetworking/core/ANExecutor;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @kind virtual;
+  #L2ab320.  v0:= temp @kind object;
+  #L2ab322.  call `setFuture`(v3, v0) @signature `Lcom/androidnetworking/common/ANRequest;.setFuture:(Ljava/util/concurrent/Future;)V` @kind virtual;
+  #L2ab328.  goto L2ab332;
+  #L2ab32a.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L2ab32c.  call `printStackTrace`(v0) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L2ab332.  return v3 @kind object;
+  catch `java.lang.Exception` @[L2ab294..L2ab29e] goto L2ab2a0;
+  catch `java.lang.Exception` @[L2ab2a8..L2ab328] goto L2ab32a;
+}
+procedure `void` `cancelAll`(`com.androidnetworking.internal.ANRequestQueue` v3 @kind this, `boolean` v4 ) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.cancelAll:(Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2ab49c.  v0:= v3.`com.androidnetworking.internal.ANRequestQueue.mCurrentRequests` @type ^`java.util.Set` @kind object;
+  #L2ab4a0.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2ab4a6.  v0:= temp @kind object;
+  #L2ab4a8.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2ab4ae.  v1:= temp;
+  #L2ab4b0.  if v1 == 0 then goto L2ab4e8;
+  #L2ab4b4.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2ab4ba.  v1:= temp @kind object;
+  #L2ab4bc.  v1:= (`com.androidnetworking.common.ANRequest`) v1 @kind object;
+  #L2ab4c0.  call `cancel`(v1, v4) @signature `Lcom/androidnetworking/common/ANRequest;.cancel:(Z)V` @kind virtual;
+  #L2ab4c6.  call temp:= `isCanceled`(v1) @signature `Lcom/androidnetworking/common/ANRequest;.isCanceled:()Z` @kind virtual;
+  #L2ab4cc.  v2:= temp;
+  #L2ab4ce.  if v2 == 0 then goto L2ab4a8;
+  #L2ab4d2.  call `destroy`(v1) @signature `Lcom/androidnetworking/common/ANRequest;.destroy:()V` @kind virtual;
+  #L2ab4d8.  call `remove`(v0) @signature `Ljava/util/Iterator;.remove:()V` @kind interface;
+  #L2ab4de.  goto L2ab4a8;
+  #L2ab4e0.  v4:= Exception @type ^`java.lang.Exception` @kind object;
+  #L2ab4e2.  call `printStackTrace`(v4) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L2ab4e8.  return @kind void;
+  catch `java.lang.Exception` @[L2ab49c..L2ab4de] goto L2ab4e0;
+}
+procedure `void` `cancelRequestWithGivenTag`(`com.androidnetworking.internal.ANRequestQueue` v1 @kind this, `java.lang.Object` v2 @kind object, `boolean` v3 ) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.cancelRequestWithGivenTag:(Ljava/lang/Object;Z)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2ab50c.  if v2 != 0 then goto L2ab512;
+  #L2ab510.  return @kind void;
+  #L2ab512.  v0:= new `com.androidnetworking.internal.ANRequestQueue$1`;
+  #L2ab516.  call `<init>`(v0, v1, v2) @signature `Lcom/androidnetworking/internal/ANRequestQueue$1;.<init>:(Lcom/androidnetworking/internal/ANRequestQueue;Ljava/lang/Object;)V` @kind direct;
+  #L2ab51c.  call `cancel`(v1, v0, v3) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.cancel:(Lcom/androidnetworking/internal/ANRequestQueue$RequestFilter;Z)V` @kind direct;
+  #L2ab522.  goto L2ab52c;
+  #L2ab524.  v2:= Exception @type ^`java.lang.Exception` @kind object;
+  #L2ab526.  call `printStackTrace`(v2) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L2ab52c.  return @kind void;
+  catch `java.lang.Exception` @[L2ab512..L2ab522] goto L2ab524;
+}
+procedure `void` `finish`(`com.androidnetworking.internal.ANRequestQueue` v1 @kind this, `com.androidnetworking.common.ANRequest` v2 @kind object) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.finish:(Lcom/androidnetworking/common/ANRequest;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2ab550.  v0:= v1.`com.androidnetworking.internal.ANRequestQueue.mCurrentRequests` @type ^`java.util.Set` @kind object;
+  #L2ab554.  call temp:= `remove`(v0, v2) @signature `Ljava/util/Set;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L2ab55a.  goto L2ab564;
+  #L2ab55c.  v2:= Exception @type ^`java.lang.Exception` @kind object;
+  #L2ab55e.  call `printStackTrace`(v2) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L2ab564.  return @kind void;
+  catch `java.lang.Exception` @[L2ab550..L2ab55a] goto L2ab55c;
+}
+procedure `int` `getSequenceNumber`(`com.androidnetworking.internal.ANRequestQueue` v1 @kind this) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.getSequenceNumber:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2ab3b0.  v0:= v1.`com.androidnetworking.internal.ANRequestQueue.mSequenceGenerator` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L2ab3b4.  call temp:= `incrementAndGet`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.incrementAndGet:()I` @kind virtual;
+  #L2ab3ba.  v0:= temp;
+  #L2ab3bc.  return v0;
+}
+procedure `boolean` `isRequestRunning`(`com.androidnetworking.internal.ANRequestQueue` v3 @kind this, `java.lang.Object` v4 @kind object) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.isRequestRunning:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2ab1c4.  v0:= v3.`com.androidnetworking.internal.ANRequestQueue.mCurrentRequests` @type ^`java.util.Set` @kind object;
+  #L2ab1c8.  call temp:= `iterator`(v0) @signature `Ljava/util/Set;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L2ab1ce.  v0:= temp @kind object;
+  #L2ab1d0.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L2ab1d6.  v1:= temp;
+  #L2ab1d8.  if v1 == 0 then goto L2ab20c;
+  #L2ab1dc.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L2ab1e2.  v1:= temp @kind object;
+  #L2ab1e4.  v1:= (`com.androidnetworking.common.ANRequest`) v1 @kind object;
+  #L2ab1e8.  call temp:= `isRequestWithTheGivenTag`(v3, v1, v4) @signature `Lcom/androidnetworking/internal/ANRequestQueue;.isRequestWithTheGivenTag:(Lcom/androidnetworking/common/ANRequest;Ljava/lang/Object;)Z` @kind direct;
+  #L2ab1ee.  v2:= temp;
+  #L2ab1f0.  if v2 == 0 then goto L2ab1d0;
+  #L2ab1f4.  call temp:= `isRunning`(v1) @signature `Lcom/androidnetworking/common/ANRequest;.isRunning:()Z` @kind virtual;
+  #L2ab1fa.  v1:= temp;
+  #L2ab1fc.  if v1 == 0 then goto L2ab1d0;
+  #L2ab200.  v4:= 1I;
+  #L2ab202.  return v4;
+  #L2ab204.  v4:= Exception @type ^`java.lang.Exception` @kind object;
+  #L2ab206.  call `printStackTrace`(v4) @signature `Ljava/lang/Exception;.printStackTrace:()V` @kind virtual;
+  #L2ab20c.  v4:= 0I;
+  #L2ab20e.  return v4;
+  catch `java.lang.Exception` @[L2ab1c4..L2ab1fc] goto L2ab204;
+}

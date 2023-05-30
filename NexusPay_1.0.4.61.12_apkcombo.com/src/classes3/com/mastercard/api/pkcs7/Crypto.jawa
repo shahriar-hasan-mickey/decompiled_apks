@@ -1,0 +1,193 @@
+record `com.mastercard.api.pkcs7.Crypto` @kind class @AccessFlag PUBLIC {
+  `javax.crypto.spec.IvParameterSpec` `com.mastercard.api.pkcs7.Crypto.a` @AccessFlag PRIVATE_FINAL;
+}
+global `java.lang.String` `@@com.mastercard.api.pkcs7.Crypto.KEYPAIR_GENERATOR_ALG` @AccessFlag PUBLIC_STATIC_FINAL;
+procedure `void` `<init>`(`com.mastercard.api.pkcs7.Crypto` v2 @kind this) @signature `Lcom/mastercard/api/pkcs7/Crypto;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L3b5600.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3b5606.  v0:= new `javax.crypto.spec.IvParameterSpec`;
+  #L3b560a.  v1:= 8I;
+  #L3b560e.  v1:= new `byte`[v1];
+  #L3b5612.  call `<init>`(v0, v1) @signature `Ljavax/crypto/spec/IvParameterSpec;.<init>:([B)V` @kind direct;
+  #L3b5618.  v2.`com.mastercard.api.pkcs7.Crypto.a` @type ^`javax.crypto.spec.IvParameterSpec` := v0 @kind object;
+  #L3b561c.  return @kind void;
+}
+procedure `java.security.PrivateKey` `a`(`com.mastercard.api.pkcs7.Crypto` v2 @kind this, `byte`[] v3 @kind object) @signature `Lcom/mastercard/api/pkcs7/Crypto;.a:([B)Ljava/security/PrivateKey;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3b55d0.  v0:= "RSA" @kind object;
+  #L3b55d4.  call temp:= `getInstance`(v0) @signature `Ljava/security/KeyFactory;.getInstance:(Ljava/lang/String;)Ljava/security/KeyFactory;` @kind static;
+  #L3b55da.  v0:= temp @kind object;
+  #L3b55dc.  v1:= new `java.security.spec.PKCS8EncodedKeySpec`;
+  #L3b55e0.  call `<init>`(v1, v3) @signature `Ljava/security/spec/PKCS8EncodedKeySpec;.<init>:([B)V` @kind direct;
+  #L3b55e6.  call temp:= `generatePrivate`(v0, v1) @signature `Ljava/security/KeyFactory;.generatePrivate:(Ljava/security/spec/KeySpec;)Ljava/security/PrivateKey;` @kind virtual;
+  #L3b55ec.  v3:= temp @kind object;
+  #L3b55ee.  return v3 @kind object;
+}
+procedure `byte`[] `b`(`com.mastercard.api.pkcs7.Crypto` v4 @kind this, `byte`[] v5 @kind object) @signature `Lcom/mastercard/api/pkcs7/Crypto;.b:([B)[B` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3b559c.  v0:= 24I;
+  #L3b55a0.  v0:= new `byte`[v0];
+  #L3b55a4.  v1:= length @variable v5;
+  #L3b55a6.  v2:= 0I;
+  #L3b55a8.  call `arraycopy`(v5, v2, v0, v2, v1) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L3b55ae.  v1:= length @variable v5;
+  #L3b55b0.  v3:= length @variable v5;
+  #L3b55b2.  v3:= v3 / 2;
+  #L3b55b6.  call `arraycopy`(v5, v2, v0, v1, v3) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L3b55bc.  return v0 @kind object;
+}
+procedure `byte`[] `decryptData`(`com.mastercard.api.pkcs7.Crypto` v3 @kind this, `byte`[] v4 @kind object, `byte`[] v5 @kind object) @signature `Lcom/mastercard/api/pkcs7/Crypto;.decryptData:([B[B)[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3b5390.  v0:= length @variable v5;
+  #L3b5392.  v1:= 16I;
+  #L3b5396.  if v0 != v1 then goto L3b53a2;
+  #L3b539a.  call temp:= `b`(v3, v5) @signature `Lcom/mastercard/api/pkcs7/Crypto;.b:([B)[B` @kind direct;
+  #L3b53a0.  v5:= temp @kind object;
+  #L3b53a2.  v0:= length @variable v5;
+  #L3b53a4.  v1:= 24I;
+  #L3b53a8.  if v0 == v1 then goto L3b53ba;
+  #L3b53ac.  v0:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b53b0.  v1:= "Key length must be 24" @kind object;
+  #L3b53b4.  call `<init>`(v0, v1) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3b53ba.  v0:= new `javax.crypto.spec.DESedeKeySpec`;
+  #L3b53be.  call `<init>`(v0, v5) @signature `Ljavax/crypto/spec/DESedeKeySpec;.<init>:([B)V` @kind direct;
+  #L3b53c4.  v5:= "DESede" @kind object;
+  #L3b53c8.  call temp:= `getInstance`(v5) @signature `Ljavax/crypto/SecretKeyFactory;.getInstance:(Ljava/lang/String;)Ljavax/crypto/SecretKeyFactory;` @kind static;
+  #L3b53ce.  v5:= temp @kind object;
+  #L3b53d0.  call temp:= `generateSecret`(v5, v0) @signature `Ljavax/crypto/SecretKeyFactory;.generateSecret:(Ljava/security/spec/KeySpec;)Ljavax/crypto/SecretKey;` @kind virtual;
+  #L3b53d6.  v5:= temp @kind object;
+  #L3b53d8.  v0:= "DESede/CBC/PKCS5Padding" @kind object;
+  #L3b53dc.  call temp:= `getInstance`(v0) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L3b53e2.  v0:= temp @kind object;
+  #L3b53e4.  v1:= 2I;
+  #L3b53e6.  v2:= v3.`com.mastercard.api.pkcs7.Crypto.a` @type ^`javax.crypto.spec.IvParameterSpec` @kind object;
+  #L3b53ea.  call `init`(v0, v1, v5, v2) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/Key;Ljava/security/spec/AlgorithmParameterSpec;)V` @kind virtual;
+  #L3b53f0.  call temp:= `doFinal`(v0, v4) @signature `Ljavax/crypto/Cipher;.doFinal:([B)[B` @kind virtual;
+  #L3b53f6.  v4:= temp @kind object;
+  #L3b53f8.  return v4 @kind object;
+  #L3b53fa.  v4:= Exception @type ^`java.security.spec.InvalidKeySpecException` @kind object;
+  #L3b53fc.  v5:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b5400.  v0:= "InvalidKeySpecException" @kind object;
+  #L3b5404.  call `<init>`(v5, v0, v4) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;Ljava/lang/Exception;)V` @kind direct;
+  #L3b540a.  throw v5;
+  #L3b540c.  v4:= Exception @type ^`java.security.InvalidKeyException` @kind object;
+  #L3b540e.  v5:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b5412.  v0:= "InvalidKeyException" @kind object;
+  #L3b5416.  call `<init>`(v5, v0, v4) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;Ljava/lang/Exception;)V` @kind direct;
+  #L3b541c.  throw v5;
+  #L3b541e.  v4:= Exception @type ^`javax.crypto.BadPaddingException` @kind object;
+  #L3b5420.  v5:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b5424.  v0:= "BadPaddingException" @kind object;
+  #L3b5428.  call `<init>`(v5, v0, v4) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;Ljava/lang/Exception;)V` @kind direct;
+  #L3b542e.  throw v5;
+  #L3b5430.  v4:= Exception @type ^`javax.crypto.IllegalBlockSizeException` @kind object;
+  #L3b5432.  v5:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b5436.  v0:= "IllegalBlockSizeException" @kind object;
+  #L3b543a.  call `<init>`(v5, v0, v4) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;Ljava/lang/Exception;)V` @kind direct;
+  #L3b5440.  throw v5;
+  #L3b5442.  v4:= Exception @type ^`java.security.NoSuchAlgorithmException` @kind object;
+  #L3b5444.  v5:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b5448.  v0:= "NoSuchAlgorithmException" @kind object;
+  #L3b544c.  call `<init>`(v5, v0, v4) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;Ljava/lang/Exception;)V` @kind direct;
+  #L3b5452.  throw v5;
+  #L3b5454.  v4:= Exception @type ^`java.security.InvalidAlgorithmParameterException` @kind object;
+  #L3b5456.  v5:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b545a.  v0:= "InvalidAlgorithmParameterException" @kind object;
+  #L3b545e.  call `<init>`(v5, v0, v4) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;Ljava/lang/Exception;)V` @kind direct;
+  #L3b5464.  throw v5;
+  #L3b5466.  v4:= Exception @type ^`javax.crypto.NoSuchPaddingException` @kind object;
+  #L3b5468.  v5:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b546c.  v0:= "NoSuchPaddingException" @kind object;
+  #L3b5470.  call `<init>`(v5, v0, v4) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;Ljava/lang/Exception;)V` @kind direct;
+  #L3b5476.  throw v5;
+  catch `javax.crypto.NoSuchPaddingException` @[L3b53ba..L3b53f8] goto L3b5466;
+  catch `java.security.InvalidAlgorithmParameterException` @[L3b53ba..L3b53f8] goto L3b5454;
+  catch `java.security.NoSuchAlgorithmException` @[L3b53ba..L3b53f8] goto L3b5442;
+  catch `javax.crypto.IllegalBlockSizeException` @[L3b53ba..L3b53f8] goto L3b5430;
+  catch `javax.crypto.BadPaddingException` @[L3b53ba..L3b53f8] goto L3b541e;
+  catch `java.security.InvalidKeyException` @[L3b53ba..L3b53f8] goto L3b540c;
+  catch `java.security.spec.InvalidKeySpecException` @[L3b53ba..L3b53f8] goto L3b53fa;
+}
+procedure `byte`[] `decryptWithPrivateKey`(`com.mastercard.api.pkcs7.Crypto` v2 @kind this, `byte`[] v3 @kind object, `byte`[] v4 @kind object) @signature `Lcom/mastercard/api/pkcs7/Crypto;.decryptWithPrivateKey:([B[B)[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3b54a8.  v0:= "RSA/ECB/PKCS1Padding" @kind object;
+  #L3b54ac.  call temp:= `getInstance`(v0) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L3b54b2.  v0:= temp @kind object;
+  #L3b54b4.  call temp:= `a`(v2, v4) @signature `Lcom/mastercard/api/pkcs7/Crypto;.a:([B)Ljava/security/PrivateKey;` @kind direct;
+  #L3b54ba.  v4:= temp @kind object;
+  #L3b54bc.  v1:= 2I;
+  #L3b54be.  call `init`(v0, v1, v4) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/Key;)V` @kind virtual;
+  #L3b54c4.  call temp:= `doFinal`(v0, v3) @signature `Ljavax/crypto/Cipher;.doFinal:([B)[B` @kind virtual;
+  #L3b54ca.  v3:= temp @kind object;
+  #L3b54cc.  return v3 @kind object;
+}
+procedure `byte`[] `encryptData`(`com.mastercard.api.pkcs7.Crypto` v3 @kind this, `byte`[] v4 @kind object, `byte`[] v5 @kind object) @signature `Lcom/mastercard/api/pkcs7/Crypto;.encryptData:([B[B)[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3b54e0.  v0:= length @variable v5;
+  #L3b54e2.  v1:= 16I;
+  #L3b54e6.  if v0 != v1 then goto L3b54f2;
+  #L3b54ea.  call temp:= `b`(v3, v5) @signature `Lcom/mastercard/api/pkcs7/Crypto;.b:([B)[B` @kind direct;
+  #L3b54f0.  v5:= temp @kind object;
+  #L3b54f2.  v0:= length @variable v5;
+  #L3b54f4.  v1:= 24I;
+  #L3b54f8.  if v0 != v1 then goto L3b554a;
+  #L3b54fc.  v0:= new `javax.crypto.spec.DESedeKeySpec`;
+  #L3b5500.  call `<init>`(v0, v5) @signature `Ljavax/crypto/spec/DESedeKeySpec;.<init>:([B)V` @kind direct;
+  #L3b5506.  v5:= "DESede" @kind object;
+  #L3b550a.  call temp:= `getInstance`(v5) @signature `Ljavax/crypto/SecretKeyFactory;.getInstance:(Ljava/lang/String;)Ljavax/crypto/SecretKeyFactory;` @kind static;
+  #L3b5510.  v5:= temp @kind object;
+  #L3b5512.  call temp:= `generateSecret`(v5, v0) @signature `Ljavax/crypto/SecretKeyFactory;.generateSecret:(Ljava/security/spec/KeySpec;)Ljavax/crypto/SecretKey;` @kind virtual;
+  #L3b5518.  v5:= temp @kind object;
+  #L3b551a.  v0:= "DESede/CBC/PKCS5Padding" @kind object;
+  #L3b551e.  call temp:= `getInstance`(v0) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L3b5524.  v0:= temp @kind object;
+  #L3b5526.  v1:= new `javax.crypto.spec.IvParameterSpec`;
+  #L3b552a.  v2:= 8I;
+  #L3b552e.  v2:= new `byte`[v2];
+  #L3b5532.  call `<init>`(v1, v2) @signature `Ljavax/crypto/spec/IvParameterSpec;.<init>:([B)V` @kind direct;
+  #L3b5538.  v2:= 1I;
+  #L3b553a.  call `init`(v0, v2, v5, v1) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/Key;Ljava/security/spec/AlgorithmParameterSpec;)V` @kind virtual;
+  #L3b5540.  call temp:= `doFinal`(v0, v4) @signature `Ljavax/crypto/Cipher;.doFinal:([B)[B` @kind virtual;
+  #L3b5546.  v4:= temp @kind object;
+  #L3b5548.  return v4 @kind object;
+  #L3b554a.  v4:= new `com.mastercard.api.exception.CryptoOperationFailedException`;
+  #L3b554e.  v5:= "Invalid key length found." @kind object;
+  #L3b5552.  call `<init>`(v4, v5) @signature `Lcom/mastercard/api/exception/CryptoOperationFailedException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3b5558.  throw v4;
+}
+procedure `byte`[] `encryptWithCertificate`(`com.mastercard.api.pkcs7.Crypto` v2 @kind this, `byte`[] v3 @kind object, `java.security.cert.Certificate` v4 @kind object) @signature `Lcom/mastercard/api/pkcs7/Crypto;.encryptWithCertificate:([BLjava/security/cert/Certificate;)[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3b556c.  v0:= "RSA/ECB/PKCS1Padding" @kind object;
+  #L3b5570.  call temp:= `getInstance`(v0) @signature `Ljavax/crypto/Cipher;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Cipher;` @kind static;
+  #L3b5576.  v0:= temp @kind object;
+  #L3b5578.  v1:= 1I;
+  #L3b557a.  call `init`(v0, v1, v4) @signature `Ljavax/crypto/Cipher;.init:(ILjava/security/cert/Certificate;)V` @kind virtual;
+  #L3b5580.  call temp:= `doFinal`(v0, v3) @signature `Ljavax/crypto/Cipher;.doFinal:([B)[B` @kind virtual;
+  #L3b5586.  v3:= temp @kind object;
+  #L3b5588.  return v3 @kind object;
+}

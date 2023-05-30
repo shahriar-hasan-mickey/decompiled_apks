@@ -1,0 +1,269 @@
+record `okio.CipherSink` @kind class @AccessFlag PUBLIC_FINAL extends `okio.Sink` @kind interface {
+  `int` `okio.CipherSink.a` @AccessFlag PRIVATE_FINAL;
+  `boolean` `okio.CipherSink.b` @AccessFlag PRIVATE;
+  `okio.BufferedSink` `okio.CipherSink.c` @AccessFlag PRIVATE_FINAL;
+  `javax.crypto.Cipher` `okio.CipherSink.d` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`okio.CipherSink` v1 @kind this, `okio.BufferedSink` v2 @kind object, `javax.crypto.Cipher` v3 @kind object) @signature `Lokio/CipherSink;.<init>:(Lokio/BufferedSink;Ljavax/crypto/Cipher;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L1d0050.  v0:= "sink" @kind object;
+  #L1d0054.  call `checkNotNullParameter`(v2, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d005a.  v0:= "cipher" @kind object;
+  #L1d005e.  call `checkNotNullParameter`(v3, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d0064.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L1d006a.  v1.`okio.CipherSink.c` @type ^`okio.BufferedSink` := v2 @kind object;
+  #L1d006e.  v1.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` := v3 @kind object;
+  #L1d0072.  call temp:= `getBlockSize`(v3) @signature `Ljavax/crypto/Cipher;.getBlockSize:()I` @kind virtual;
+  #L1d0078.  v2:= temp;
+  #L1d007a.  v1.`okio.CipherSink.a` @type ^`int` := v2;
+  #L1d007e.  if v2 <= 0 then goto L1d0086;
+  #L1d0082.  v2:= 1I;
+  #L1d0084.  goto L1d0088;
+  #L1d0086.  v2:= 0I;
+  #L1d0088.  if v2 == 0 then goto L1d008e;
+  #L1d008c.  return @kind void;
+  #L1d008e.  v2:= new `java.lang.StringBuilder`;
+  #L1d0092.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1d0098.  v3:= "Block cipher required " @kind object;
+  #L1d009c.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d00a2.  v3:= v1.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` @kind object;
+  #L1d00a6.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1d00ac.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d00b2.  v2:= temp @kind object;
+  #L1d00b4.  v3:= new `java.lang.IllegalArgumentException`;
+  #L1d00b8.  call temp:= `toString`(v2) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d00be.  v2:= temp @kind object;
+  #L1d00c0.  call `<init>`(v3, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d00c6.  throw v3;
+}
+procedure `java.lang.Throwable` `a`(`okio.CipherSink` v8 @kind this) @signature `Lokio/CipherSink;.a:()Ljava/lang/Throwable;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L1cff7c.  v0:= v8.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` @kind object;
+  #L1cff80.  v1:= 0I;
+  #L1cff82.  call temp:= `getOutputSize`(v0, v1) @signature `Ljavax/crypto/Cipher;.getOutputSize:(I)I` @kind virtual;
+  #L1cff88.  v0:= temp;
+  #L1cff8a.  v1:= 0I;
+  #L1cff8c.  if v0 != 0 then goto L1cff92;
+  #L1cff90.  return v1 @kind object;
+  #L1cff92.  v2:= v8.`okio.CipherSink.c` @type ^`okio.BufferedSink` @kind object;
+  #L1cff96.  call temp:= `getBuffer`(v2) @signature `Lokio/BufferedSink;.getBuffer:()Lokio/Buffer;` @kind interface;
+  #L1cff9c.  v2:= temp @kind object;
+  #L1cff9e.  call temp:= `writableSegment$okio`(v2, v0) @signature `Lokio/Buffer;.writableSegment$okio:(I)Lokio/Segment;` @kind virtual;
+  #L1cffa4.  v0:= temp @kind object;
+  #L1cffa6.  v3:= v8.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` @kind object;
+  #L1cffaa.  v4:= v0.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L1cffae.  v5:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1cffb2.  call temp:= `doFinal`(v3, v4, v5) @signature `Ljavax/crypto/Cipher;.doFinal:([BI)I` @kind virtual;
+  #L1cffb8.  v3:= temp;
+  #L1cffba.  v4:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1cffbe.  v4:= v4 + v3 @kind int;
+  #L1cffc0.  v0.`okio.Segment.limit` @type ^`int` := v4;
+  #L1cffc4.  call temp:= `size`(v2) @signature `Lokio/Buffer;.size:()J` @kind virtual;
+  #L1cffca.  v4:= temp @kind wide;
+  #L1cffcc.  v6:= (`long`) v3 @kind i2l;
+  #L1cffce.  v4:= v4 + v6 @kind long;
+  #L1cffd0.  call `setSize$okio`(v2, v4) @signature `Lokio/Buffer;.setSize$okio:(J)V` @kind virtual;
+  #L1cffd6.  goto L1cffda;
+  #L1cffd8.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1cffda.  v3:= v0.`okio.Segment.pos` @type ^`int`;
+  #L1cffde.  v4:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1cffe2.  if v3 != v4 then goto L1cfff8;
+  #L1cffe6.  call temp:= `pop`(v0) @signature `Lokio/Segment;.pop:()Lokio/Segment;` @kind virtual;
+  #L1cffec.  v3:= temp @kind object;
+  #L1cffee.  v2.`okio.Buffer.head` @type ^`okio.Segment` := v3 @kind object;
+  #L1cfff2.  call `recycle`(v0) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @kind static;
+  #L1cfff8.  return v1 @kind object;
+  catch `java.lang.Throwable` @[L1cffa6..L1cffd6] goto L1cffd8;
+}
+procedure `int` `b`(`okio.CipherSink` v8 @kind this, `okio.Buffer` v9 @kind object, `long` v10 ) @signature `Lokio/CipherSink;.b:(Lokio/Buffer;J)I` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L1cfe1c.  v0:= v9.`okio.Buffer.head` @type ^`okio.Segment` @kind object;
+  #L1cfe20.  call `checkNotNull`(v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNull:(Ljava/lang/Object;)V` @kind static;
+  #L1cfe26.  v1:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1cfe2a.  v2:= v0.`okio.Segment.pos` @type ^`int`;
+  #L1cfe2e.  v1:= v1 - v2 @kind int;
+  #L1cfe30.  v1:= (`long`) v1 @kind i2l;
+  #L1cfe32.  call temp:= `min`(v10, v1) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L1cfe38.  v10:= temp @kind wide;
+  #L1cfe3a.  v11:= (`int`) v10 @kind l2i;
+  #L1cfe3c.  v10:= v8.`okio.CipherSink.c` @type ^`okio.BufferedSink` @kind object;
+  #L1cfe40.  call temp:= `getBuffer`(v10) @signature `Lokio/BufferedSink;.getBuffer:()Lokio/Buffer;` @kind interface;
+  #L1cfe46.  v10:= temp @kind object;
+  #L1cfe48.  v1:= v8.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` @kind object;
+  #L1cfe4c.  call temp:= `getOutputSize`(v1, v11) @signature `Ljavax/crypto/Cipher;.getOutputSize:(I)I` @kind virtual;
+  #L1cfe52.  v1:= temp;
+  #L1cfe54.  v2:= 8192I;
+  #L1cfe58.  if v1 <= v2 then goto L1cfec8;
+  #L1cfe5c.  v2:= v8.`okio.CipherSink.a` @type ^`int`;
+  #L1cfe60.  if v11 <= v2 then goto L1cfe68;
+  #L1cfe64.  v2:= 1I;
+  #L1cfe66.  goto L1cfe6a;
+  #L1cfe68.  v2:= 0I;
+  #L1cfe6a.  if v2 == 0 then goto L1cfe82;
+  #L1cfe6e.  v1:= v8.`okio.CipherSink.a` @type ^`int`;
+  #L1cfe72.  v11:= v11 - v1 @kind int;
+  #L1cfe74.  v1:= v8.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` @kind object;
+  #L1cfe78.  call temp:= `getOutputSize`(v1, v11) @signature `Ljavax/crypto/Cipher;.getOutputSize:(I)I` @kind virtual;
+  #L1cfe7e.  v1:= temp;
+  #L1cfe80.  goto L1cfe54;
+  #L1cfe82.  v9:= new `java.lang.StringBuilder`;
+  #L1cfe86.  call `<init>`(v9) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L1cfe8c.  v10:= "Unexpected output size " @kind object;
+  #L1cfe90.  call temp:= `append`(v9, v10) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1cfe96.  call temp:= `append`(v9, v1) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1cfe9c.  v10:= " for input size " @kind object;
+  #L1cfea0.  call temp:= `append`(v9, v10) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1cfea6.  call temp:= `append`(v9, v11) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L1cfeac.  call temp:= `toString`(v9) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1cfeb2.  v9:= temp @kind object;
+  #L1cfeb4.  v10:= new `java.lang.IllegalStateException`;
+  #L1cfeb8.  call temp:= `toString`(v9) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1cfebe.  v9:= temp @kind object;
+  #L1cfec0.  call `<init>`(v10, v9) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1cfec6.  throw v10;
+  #L1cfec8.  call temp:= `writableSegment$okio`(v10, v1) @signature `Lokio/Buffer;.writableSegment$okio:(I)Lokio/Segment;` @kind virtual;
+  #L1cfece.  v1:= temp @kind object;
+  #L1cfed0.  v2:= v8.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` @kind object;
+  #L1cfed4.  v3:= v0.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L1cfed8.  v4:= v0.`okio.Segment.pos` @type ^`int`;
+  #L1cfedc.  v6:= v1.`okio.Segment.data` @type ^`byte`[] @kind object;
+  #L1cfee0.  v7:= v1.`okio.Segment.limit` @type ^`int`;
+  #L1cfee4.  v5:= v11;
+  #L1cfee6.  call temp:= `update`(v2, v3, v4, v5, v6, v7) @signature `Ljavax/crypto/Cipher;.update:([BII[BI)I` @kind virtual;
+  #L1cfeec.  v2:= temp;
+  #L1cfeee.  v3:= v1.`okio.Segment.limit` @type ^`int`;
+  #L1cfef2.  v3:= v3 + v2 @kind int;
+  #L1cfef4.  v1.`okio.Segment.limit` @type ^`int` := v3;
+  #L1cfef8.  call temp:= `size`(v10) @signature `Lokio/Buffer;.size:()J` @kind virtual;
+  #L1cfefe.  v3:= temp @kind wide;
+  #L1cff00.  v5:= (`long`) v2 @kind i2l;
+  #L1cff02.  v3:= v3 + v5 @kind long;
+  #L1cff04.  call `setSize$okio`(v10, v3) @signature `Lokio/Buffer;.setSize$okio:(J)V` @kind virtual;
+  #L1cff0a.  v2:= v1.`okio.Segment.pos` @type ^`int`;
+  #L1cff0e.  v3:= v1.`okio.Segment.limit` @type ^`int`;
+  #L1cff12.  if v2 != v3 then goto L1cff28;
+  #L1cff16.  call temp:= `pop`(v1) @signature `Lokio/Segment;.pop:()Lokio/Segment;` @kind virtual;
+  #L1cff1c.  v2:= temp @kind object;
+  #L1cff1e.  v10.`okio.Buffer.head` @type ^`okio.Segment` := v2 @kind object;
+  #L1cff22.  call `recycle`(v1) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @kind static;
+  #L1cff28.  v10:= v8.`okio.CipherSink.c` @type ^`okio.BufferedSink` @kind object;
+  #L1cff2c.  call temp:= `emitCompleteSegments`(v10) @signature `Lokio/BufferedSink;.emitCompleteSegments:()Lokio/BufferedSink;` @kind interface;
+  #L1cff32.  call temp:= `size`(v9) @signature `Lokio/Buffer;.size:()J` @kind virtual;
+  #L1cff38.  v1:= temp @kind wide;
+  #L1cff3a.  v3:= (`long`) v11 @kind i2l;
+  #L1cff3c.  v1:= v1 - v3 @kind long;
+  #L1cff3e.  call `setSize$okio`(v9, v1) @signature `Lokio/Buffer;.setSize$okio:(J)V` @kind virtual;
+  #L1cff44.  v10:= v0.`okio.Segment.pos` @type ^`int`;
+  #L1cff48.  v10:= v10 + v11 @kind int;
+  #L1cff4a.  v0.`okio.Segment.pos` @type ^`int` := v10;
+  #L1cff4e.  v1:= v0.`okio.Segment.limit` @type ^`int`;
+  #L1cff52.  if v10 != v1 then goto L1cff68;
+  #L1cff56.  call temp:= `pop`(v0) @signature `Lokio/Segment;.pop:()Lokio/Segment;` @kind virtual;
+  #L1cff5c.  v10:= temp @kind object;
+  #L1cff5e.  v9.`okio.Buffer.head` @type ^`okio.Segment` := v10 @kind object;
+  #L1cff62.  call `recycle`(v0) @signature `Lokio/SegmentPool;.recycle:(Lokio/Segment;)V` @kind static;
+  #L1cff68.  return v11;
+}
+procedure `void` `close`(`okio.CipherSink` v2 @kind this) @signature `Lokio/CipherSink;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L1d00d8.  v0:= v2.`okio.CipherSink.b` @type ^`boolean` @kind boolean;
+  #L1d00dc.  if v0 == 0 then goto L1d00e2;
+  #L1d00e0.  return @kind void;
+  #L1d00e2.  v0:= 1I;
+  #L1d00e4.  v2.`okio.CipherSink.b` @type ^`boolean` := v0 @kind boolean;
+  #L1d00e8.  call temp:= `a`(v2) @signature `Lokio/CipherSink;.a:()Ljava/lang/Throwable;` @kind direct;
+  #L1d00ee.  v0:= temp @kind object;
+  #L1d00f0.  v1:= v2.`okio.CipherSink.c` @type ^`okio.BufferedSink` @kind object;
+  #L1d00f4.  call `close`(v1) @signature `Lokio/Sink;.close:()V` @kind interface;
+  #L1d00fa.  goto L1d0104;
+  #L1d00fc.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L1d00fe.  if v0 != 0 then goto L1d0104;
+  #L1d0102.  v0:= v1 @kind object;
+  #L1d0104.  if v0 != 0 then goto L1d010a;
+  #L1d0108.  return @kind void;
+  #L1d010a.  throw v0;
+  catch `java.lang.Throwable` @[L1d00f0..L1d00fa] goto L1d00fc;
+}
+procedure `void` `flush`(`okio.CipherSink` v1 @kind this) @signature `Lokio/CipherSink;.flush:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1d0128.  v0:= v1.`okio.CipherSink.c` @type ^`okio.BufferedSink` @kind object;
+  #L1d012c.  call `flush`(v0) @signature `Lokio/BufferedSink;.flush:()V` @kind interface;
+  #L1d0132.  return @kind void;
+}
+procedure `javax.crypto.Cipher` `getCipher`(`okio.CipherSink` v1 @kind this) @signature `Lokio/CipherSink;.getCipher:()Ljavax/crypto/Cipher;` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L1d0018.  v0:= v1.`okio.CipherSink.d` @type ^`javax.crypto.Cipher` @kind object;
+  #L1d001c.  return v0 @kind object;
+}
+procedure `okio.Timeout` `timeout`(`okio.CipherSink` v1 @kind this) @signature `Lokio/CipherSink;.timeout:()Lokio/Timeout;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L1d0030.  v0:= v1.`okio.CipherSink.c` @type ^`okio.BufferedSink` @kind object;
+  #L1d0034.  call temp:= `timeout`(v0) @signature `Lokio/Sink;.timeout:()Lokio/Timeout;` @kind interface;
+  #L1d003a.  v0:= temp @kind object;
+  #L1d003c.  return v0 @kind object;
+}
+procedure `void` `write`(`okio.CipherSink` v7 @kind this, `okio.Buffer` v8 @kind object, `long` v9 ) @signature `Lokio/CipherSink;.write:(Lokio/Buffer;J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L1d0144.  v0:= "source" @kind object;
+  #L1d0148.  call `checkNotNullParameter`(v8, v0) @signature `Lkotlin/jvm/internal/Intrinsics;.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V` @kind static;
+  #L1d014e.  call temp:= `size`(v8) @signature `Lokio/Buffer;.size:()J` @kind virtual;
+  #L1d0154.  v1:= temp @kind wide;
+  #L1d0156.  v3:= 0L;
+  #L1d015a.  v5:= v9 @kind wide;
+  #L1d015c.  call `checkOffsetAndCount`(v1, v3, v5) @signature `Lokio/-Util;.checkOffsetAndCount:(JJJ)V` @kind static;
+  #L1d0162.  v0:= v7.`okio.CipherSink.b` @type ^`boolean` @kind boolean;
+  #L1d0166.  v0:= v0 ^~ 1;
+  #L1d016a.  if v0 == 0 then goto L1d018a;
+  #L1d016e.  v0:= 0L;
+  #L1d0172.  v2:= lcmp(v9, v0);
+  #L1d0176.  if v2 <= 0 then goto L1d0188;
+  #L1d017a.  call temp:= `b`(v7, v8, v9) @signature `Lokio/CipherSink;.b:(Lokio/Buffer;J)I` @kind direct;
+  #L1d0180.  v0:= temp;
+  #L1d0182.  v0:= (`long`) v0 @kind i2l;
+  #L1d0184.  v9:= v9 - v0 @kind long;
+  #L1d0186.  goto L1d016e;
+  #L1d0188.  return @kind void;
+  #L1d018a.  v8:= new `java.lang.IllegalStateException`;
+  #L1d018e.  v9:= "closed" @kind object;
+  #L1d0192.  call temp:= `toString`(v9) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L1d0198.  v9:= temp @kind object;
+  #L1d019a.  call `<init>`(v8, v9) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L1d01a0.  throw v8;
+}

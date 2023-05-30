@@ -1,0 +1,188 @@
+record `kotlinx.coroutines.ExecutorCoroutineDispatcherBase` @kind class @AccessFlag PUBLIC_ABSTRACT extends `kotlinx.coroutines.ExecutorCoroutineDispatcher` @kind class, `kotlinx.coroutines.Delay` @kind interface {
+  `boolean` `kotlinx.coroutines.ExecutorCoroutineDispatcherBase.a` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v0 @kind this) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L159b74.  call `<init>`(v0) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.<init>:()V` @kind direct;
+  #L159b7a.  return @kind void;
+}
+procedure `void` `a`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v1 @kind this, `kotlin.coroutines.CoroutineContext` v2 @kind object, `java.util.concurrent.RejectedExecutionException` v3 @kind object) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.a:(Lkotlin/coroutines/CoroutineContext;Ljava/util/concurrent/RejectedExecutionException;)V` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+
+  #L159b8c.  v0:= "The task was rejected" @kind object;
+  #L159b90.  call temp:= `CancellationException`(v0, v3) @signature `Lkotlinx/coroutines/ExceptionsKt;.CancellationException:(Ljava/lang/String;Ljava/lang/Throwable;)Ljava/util/concurrent/CancellationException;` @kind static;
+  #L159b96.  v3:= temp @kind object;
+  #L159b98.  call `cancel`(v2, v3) @signature `Lkotlinx/coroutines/JobKt;.cancel:(Lkotlin/coroutines/CoroutineContext;Ljava/util/concurrent/CancellationException;)V` @kind static;
+  #L159b9e.  return @kind void;
+}
+procedure `java.util.concurrent.ScheduledFuture` `b`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v3 @kind this, `java.lang.Runnable` v4 @kind object, `kotlin.coroutines.CoroutineContext` v5 @kind object, `long` v6 ) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.b:(Ljava/lang/Runnable;Lkotlin/coroutines/CoroutineContext;J)Ljava/util/concurrent/ScheduledFuture;` @AccessFlag PRIVATE_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L159ad4.  v0:= 0I;
+  #L159ad6.  call temp:= `getExecutor`(v3) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159adc.  v1:= temp @kind object;
+  #L159ade.  v2:= instanceof @variable v1 @type ^`java.util.concurrent.ScheduledExecutorService` @kind boolean;
+  #L159ae2.  if v2 == 0 then goto L159aec;
+  #L159ae6.  v1:= (`java.util.concurrent.ScheduledExecutorService`) v1 @kind object;
+  #L159aea.  goto L159aee;
+  #L159aec.  v1:= v0 @kind object;
+  #L159aee.  if v1 != 0 then goto L159af4;
+  #L159af2.  goto L159b0c;
+  #L159af4.  v2:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L159af8.  call temp:= `schedule`(v1, v4, v6, v2) @signature `Ljava/util/concurrent/ScheduledExecutorService;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Ljava/util/concurrent/ScheduledFuture;` @kind interface;
+  #L159afe.  v4:= temp @kind object;
+  #L159b00.  v0:= v4 @kind object;
+  #L159b02.  goto L159b0c;
+  #L159b04.  v4:= Exception @type ^`java.util.concurrent.RejectedExecutionException` @kind object;
+  #L159b06.  call `a`(v3, v5, v4) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.a:(Lkotlin/coroutines/CoroutineContext;Ljava/util/concurrent/RejectedExecutionException;)V` @kind direct;
+  #L159b0c.  return v0 @kind object;
+  catch `java.util.concurrent.RejectedExecutionException` @[L159ad6..L159b00] goto L159b04;
+}
+procedure `void` `close`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v2 @kind this) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L159bb0.  call temp:= `getExecutor`(v2) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159bb6.  v0:= temp @kind object;
+  #L159bb8.  v1:= instanceof @variable v0 @type ^`java.util.concurrent.ExecutorService` @kind boolean;
+  #L159bbc.  if v1 == 0 then goto L159bc6;
+  #L159bc0.  v0:= (`java.util.concurrent.ExecutorService`) v0 @kind object;
+  #L159bc4.  goto L159bc8;
+  #L159bc6.  v0:= 0I;
+  #L159bc8.  if v0 != 0 then goto L159bce;
+  #L159bcc.  goto L159bd4;
+  #L159bce.  call `shutdown`(v0) @signature `Ljava/util/concurrent/ExecutorService;.shutdown:()V` @kind interface;
+  #L159bd4.  return @kind void;
+}
+procedure `java.lang.Object` `delay`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v0 @kind this, `long` v1 , `kotlin.coroutines.Continuation` v3 @kind object) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.delay:(JLkotlin/coroutines/Continuation;)Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+
+  #L159a94.  call temp:= `delay`(v0, v1, v3) @signature `Lkotlinx/coroutines/Delay$DefaultImpls;.delay:(Lkotlinx/coroutines/Delay;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;` @kind static;
+  #L159a9a.  v1:= temp @kind object;
+  #L159a9c.  return v1 @kind object;
+}
+procedure `void` `dispatch`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v2 @kind this, `kotlin.coroutines.CoroutineContext` v3 @kind object, `java.lang.Runnable` v4 @kind object) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.dispatch:(Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L159be8.  call temp:= `getExecutor`(v2) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159bee.  v0:= temp @kind object;
+  #L159bf0.  call temp:= `getTimeSource`() @signature `Lkotlinx/coroutines/AbstractTimeSourceKt;.getTimeSource:()Lkotlinx/coroutines/AbstractTimeSource;` @kind static;
+  #L159bf6.  v1:= temp @kind object;
+  #L159bf8.  if v1 != 0 then goto L159c00;
+  #L159bfc.  v1:= v4 @kind object;
+  #L159bfe.  goto L159c08;
+  #L159c00.  call temp:= `wrapTask`(v1, v4) @signature `Lkotlinx/coroutines/AbstractTimeSource;.wrapTask:(Ljava/lang/Runnable;)Ljava/lang/Runnable;` @kind virtual;
+  #L159c06.  v1:= temp @kind object;
+  #L159c08.  call `execute`(v0, v1) @signature `Ljava/util/concurrent/Executor;.execute:(Ljava/lang/Runnable;)V` @kind interface;
+  #L159c0e.  goto L159c3e;
+  #L159c10.  v0:= Exception @type ^`java.util.concurrent.RejectedExecutionException` @kind object;
+  #L159c12.  call temp:= `getTimeSource`() @signature `Lkotlinx/coroutines/AbstractTimeSourceKt;.getTimeSource:()Lkotlinx/coroutines/AbstractTimeSource;` @kind static;
+  #L159c18.  v1:= temp @kind object;
+  #L159c1a.  if v1 != 0 then goto L159c20;
+  #L159c1e.  goto L159c26;
+  #L159c20.  call `unTrackTask`(v1) @signature `Lkotlinx/coroutines/AbstractTimeSource;.unTrackTask:()V` @kind virtual;
+  #L159c26.  call `a`(v2, v3, v0) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.a:(Lkotlin/coroutines/CoroutineContext;Ljava/util/concurrent/RejectedExecutionException;)V` @kind direct;
+  #L159c2c.  v0:= `@@kotlinx.coroutines.Dispatchers.INSTANCE` @type ^`kotlinx.coroutines.Dispatchers` @kind object;
+  #L159c30.  call temp:= `getIO`() @signature `Lkotlinx/coroutines/Dispatchers;.getIO:()Lkotlinx/coroutines/CoroutineDispatcher;` @kind static;
+  #L159c36.  v0:= temp @kind object;
+  #L159c38.  call `dispatch`(v0, v3, v4) @signature `Lkotlinx/coroutines/CoroutineDispatcher;.dispatch:(Lkotlin/coroutines/CoroutineContext;Ljava/lang/Runnable;)V` @kind virtual;
+  #L159c3e.  return @kind void;
+  catch `java.util.concurrent.RejectedExecutionException` @[L159be8..L159c0e] goto L159c10;
+}
+procedure `boolean` `equals`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.equals:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L159a38.  v0:= instanceof @variable v2 @type ^`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` @kind boolean;
+  #L159a3c.  if v0 == 0 then goto L159a5c;
+  #L159a40.  v2:= (`kotlinx.coroutines.ExecutorCoroutineDispatcherBase`) v2 @kind object;
+  #L159a44.  call temp:= `getExecutor`(v2) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159a4a.  v2:= temp @kind object;
+  #L159a4c.  call temp:= `getExecutor`(v1) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159a52.  v0:= temp @kind object;
+  #L159a54.  if v2 != v0 then goto L159a5c;
+  #L159a58.  v2:= 1I;
+  #L159a5a.  goto L159a5e;
+  #L159a5c.  v2:= 0I;
+  #L159a5e.  return v2;
+}
+procedure `int` `hashCode`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v1 @kind this) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.hashCode:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L159a70.  call temp:= `getExecutor`(v1) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159a76.  v0:= temp @kind object;
+  #L159a78.  call temp:= `identityHashCode`(v0) @signature `Ljava/lang/System;.identityHashCode:(Ljava/lang/Object;)I` @kind static;
+  #L159a7e.  v0:= temp;
+  #L159a80.  return v0;
+}
+procedure `void` `initFutureCancellation$kotlinx_coroutines_core`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v1 @kind this) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.initFutureCancellation$kotlinx_coroutines_core:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L159c60.  call temp:= `getExecutor`(v1) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159c66.  v0:= temp @kind object;
+  #L159c68.  call temp:= `removeFutureOnCancel`(v0) @signature `Lkotlinx/coroutines/internal/ConcurrentKt;.removeFutureOnCancel:(Ljava/util/concurrent/Executor;)Z` @kind static;
+  #L159c6e.  v0:= temp;
+  #L159c70.  v1.`kotlinx.coroutines.ExecutorCoroutineDispatcherBase.a` @type ^`boolean` := v0 @kind boolean;
+  #L159c74.  return @kind void;
+}
+procedure `kotlinx.coroutines.DisposableHandle` `invokeOnTimeout`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v1 @kind this, `long` v2 , `java.lang.Runnable` v4 @kind object, `kotlin.coroutines.CoroutineContext` v5 @kind object) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.invokeOnTimeout:(JLjava/lang/Runnable;Lkotlin/coroutines/CoroutineContext;)Lkotlinx/coroutines/DisposableHandle;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L159b30.  v0:= v1.`kotlinx.coroutines.ExecutorCoroutineDispatcherBase.a` @type ^`boolean` @kind boolean;
+  #L159b34.  if v0 == 0 then goto L159b42;
+  #L159b38.  call temp:= `b`(v1, v4, v5, v2) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.b:(Ljava/lang/Runnable;Lkotlin/coroutines/CoroutineContext;J)Ljava/util/concurrent/ScheduledFuture;` @kind direct;
+  #L159b3e.  v0:= temp @kind object;
+  #L159b40.  goto L159b44;
+  #L159b42.  v0:= 0I;
+  #L159b44.  if v0 == 0 then goto L159b54;
+  #L159b48.  v2:= new `kotlinx.coroutines.p`;
+  #L159b4c.  call `<init>`(v2, v0) @signature `Lkotlinx/coroutines/p;.<init>:(Ljava/util/concurrent/Future;)V` @kind direct;
+  #L159b52.  goto L159b60;
+  #L159b54.  v0:= `@@kotlinx.coroutines.DefaultExecutor.INSTANCE` @type ^`kotlinx.coroutines.DefaultExecutor` @kind object;
+  #L159b58.  call temp:= `invokeOnTimeout`(v0, v2, v4, v5) @signature `Lkotlinx/coroutines/DefaultExecutor;.invokeOnTimeout:(JLjava/lang/Runnable;Lkotlin/coroutines/CoroutineContext;)Lkotlinx/coroutines/DisposableHandle;` @kind virtual;
+  #L159b5e.  v2:= temp @kind object;
+  #L159b60.  return v2 @kind object;
+}
+procedure `void` `scheduleResumeAfterDelay`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v2 @kind this, `long` v3 , `kotlinx.coroutines.CancellableContinuation` v5 @kind object) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.scheduleResumeAfterDelay:(JLkotlinx/coroutines/CancellableContinuation;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L159c88.  v0:= v2.`kotlinx.coroutines.ExecutorCoroutineDispatcherBase.a` @type ^`boolean` @kind boolean;
+  #L159c8c.  if v0 == 0 then goto L159cac;
+  #L159c90.  v0:= new `kotlinx.coroutines.d0`;
+  #L159c94.  call `<init>`(v0, v2, v5) @signature `Lkotlinx/coroutines/d0;.<init>:(Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CancellableContinuation;)V` @kind direct;
+  #L159c9a.  call temp:= `getContext`(v5) @signature `Lkotlin/coroutines/Continuation;.getContext:()Lkotlin/coroutines/CoroutineContext;` @kind interface;
+  #L159ca0.  v1:= temp @kind object;
+  #L159ca2.  call temp:= `b`(v2, v0, v1, v3) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.b:(Ljava/lang/Runnable;Lkotlin/coroutines/CoroutineContext;J)Ljava/util/concurrent/ScheduledFuture;` @kind direct;
+  #L159ca8.  v0:= temp @kind object;
+  #L159caa.  goto L159cae;
+  #L159cac.  v0:= 0I;
+  #L159cae.  if v0 == 0 then goto L159cba;
+  #L159cb2.  call `cancelFutureOnCancellation`(v5, v0) @signature `Lkotlinx/coroutines/JobKt;.cancelFutureOnCancellation:(Lkotlinx/coroutines/CancellableContinuation;Ljava/util/concurrent/Future;)V` @kind static;
+  #L159cb8.  return @kind void;
+  #L159cba.  v0:= `@@kotlinx.coroutines.DefaultExecutor.INSTANCE` @type ^`kotlinx.coroutines.DefaultExecutor` @kind object;
+  #L159cbe.  call `scheduleResumeAfterDelay`(v0, v3, v5) @signature `Lkotlinx/coroutines/EventLoopImplBase;.scheduleResumeAfterDelay:(JLkotlinx/coroutines/CancellableContinuation;)V` @kind virtual;
+  #L159cc4.  return @kind void;
+}
+procedure `java.lang.String` `toString`(`kotlinx.coroutines.ExecutorCoroutineDispatcherBase` v1 @kind this) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcherBase;.toString:()Ljava/lang/String;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L159ab0.  call temp:= `getExecutor`(v1) @signature `Lkotlinx/coroutines/ExecutorCoroutineDispatcher;.getExecutor:()Ljava/util/concurrent/Executor;` @kind virtual;
+  #L159ab6.  v0:= temp @kind object;
+  #L159ab8.  call temp:= `toString`(v0) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L159abe.  v0:= temp @kind object;
+  #L159ac0.  return v0 @kind object;
+}

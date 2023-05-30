@@ -1,0 +1,174 @@
+record `rx.internal.util.unsafe.SpscArrayQueue` @kind class @AccessFlag PUBLIC_FINAL extends `rx.internal.util.unsafe.SpscArrayQueueL3Pad` @kind class {
+}
+procedure `void` `<init>`(`rx.internal.util.unsafe.SpscArrayQueue` v0 @kind this, `int` v1 ) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4ba6f0.  call `<init>`(v0, v1) @signature `Lrx/internal/util/unsafe/SpscArrayQueueL3Pad;.<init>:(I)V` @kind direct;
+  #L4ba6f6.  return @kind void;
+}
+procedure `long` `lvConsumerIndex`(`rx.internal.util.unsafe.SpscArrayQueue` v3 @kind this) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvConsumerIndex:()J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4ba6a8.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4ba6ac.  v1:= `@@rx.internal.util.unsafe.SpscArrayQueue.C_INDEX_OFFSET` @type ^`long` @kind wide;
+  #L4ba6b0.  call temp:= `getLongVolatile`(v0, v3, v1) @signature `Lsun/misc/Unsafe;.getLongVolatile:(Ljava/lang/Object;J)J` @kind virtual;
+  #L4ba6b6.  v0:= temp @kind wide;
+  #L4ba6b8.  return v0 @kind wide;
+}
+procedure `long` `lvProducerIndex`(`rx.internal.util.unsafe.SpscArrayQueue` v3 @kind this) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvProducerIndex:()J` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4ba6cc.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4ba6d0.  v1:= `@@rx.internal.util.unsafe.SpscArrayQueue.P_INDEX_OFFSET` @type ^`long` @kind wide;
+  #L4ba6d4.  call temp:= `getLongVolatile`(v0, v3, v1) @signature `Lsun/misc/Unsafe;.getLongVolatile:(Ljava/lang/Object;J)J` @kind virtual;
+  #L4ba6da.  v0:= temp @kind wide;
+  #L4ba6dc.  return v0 @kind wide;
+}
+procedure `void` `soConsumerIndex`(`rx.internal.util.unsafe.SpscArrayQueue` v6 @kind this, `long` v7 ) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.soConsumerIndex:(J)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4ba708.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4ba70c.  v2:= `@@rx.internal.util.unsafe.SpscArrayQueue.C_INDEX_OFFSET` @type ^`long` @kind wide;
+  #L4ba710.  v1:= v6 @kind object;
+  #L4ba712.  v4:= v7 @kind wide;
+  #L4ba714.  call `putOrderedLong`(v0, v1, v2, v4) @signature `Lsun/misc/Unsafe;.putOrderedLong:(Ljava/lang/Object;JJ)V` @kind virtual;
+  #L4ba71a.  return @kind void;
+}
+procedure `void` `soProducerIndex`(`rx.internal.util.unsafe.SpscArrayQueue` v6 @kind this, `long` v7 ) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.soProducerIndex:(J)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4ba72c.  v0:= `@@rx.internal.util.unsafe.UnsafeAccess.UNSAFE` @type ^`sun.misc.Unsafe` @kind object;
+  #L4ba730.  v2:= `@@rx.internal.util.unsafe.SpscArrayQueue.P_INDEX_OFFSET` @type ^`long` @kind wide;
+  #L4ba734.  v1:= v6 @kind object;
+  #L4ba736.  v4:= v7 @kind wide;
+  #L4ba738.  call `putOrderedLong`(v0, v1, v2, v4) @signature `Lsun/misc/Unsafe;.putOrderedLong:(Ljava/lang/Object;JJ)V` @kind virtual;
+  #L4ba73e.  return @kind void;
+}
+procedure `boolean` `isEmpty`(`rx.internal.util.unsafe.SpscArrayQueue` v5 @kind this) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.isEmpty:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4ba574.  call temp:= `lvProducerIndex`(v5) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvProducerIndex:()J` @kind direct;
+  #L4ba57a.  v0:= temp @kind wide;
+  #L4ba57c.  call temp:= `lvConsumerIndex`(v5) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvConsumerIndex:()J` @kind direct;
+  #L4ba582.  v2:= temp @kind wide;
+  #L4ba584.  v4:= lcmp(v0, v2);
+  #L4ba588.  if v4 != 0 then goto L4ba590;
+  #L4ba58c.  v0:= 1I;
+  #L4ba58e.  goto L4ba592;
+  #L4ba590.  v0:= 0I;
+  #L4ba592.  return v0;
+}
+procedure `boolean` `offer`(`rx.internal.util.unsafe.SpscArrayQueue` v6 @kind this, `java.lang.Object` v7 @kind object) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.offer:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4ba5a4.  if v7 == 0 then goto L4ba5de;
+  #L4ba5a8.  v0:= v6.`rx.internal.util.unsafe.SpscArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4ba5ac.  v1:= v6.`rx.internal.util.unsafe.SpscArrayQueue.producerIndex` @type ^`long` @kind wide;
+  #L4ba5b0.  call temp:= `calcElementOffset`(v6, v1) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.calcElementOffset:(J)J` @kind virtual;
+  #L4ba5b6.  v3:= temp @kind wide;
+  #L4ba5b8.  call temp:= `lvElement`(v6, v0, v3) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4ba5be.  v5:= temp @kind object;
+  #L4ba5c0.  if v5 == 0 then goto L4ba5c8;
+  #L4ba5c4.  v7:= 0I;
+  #L4ba5c6.  return v7;
+  #L4ba5c8.  call `soElement`(v6, v0, v3, v7) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.soElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4ba5ce.  v3:= 1L;
+  #L4ba5d2.  v1:= v1 + v3 @kind long;
+  #L4ba5d4.  call `soProducerIndex`(v6, v1) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.soProducerIndex:(J)V` @kind direct;
+  #L4ba5da.  v7:= 1I;
+  #L4ba5dc.  return v7;
+  #L4ba5de.  v7:= new `java.lang.NullPointerException`;
+  #L4ba5e2.  v0:= "null elements not allowed" @kind object;
+  #L4ba5e6.  call `<init>`(v7, v0) @signature `Ljava/lang/NullPointerException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4ba5ec.  throw v7;
+}
+procedure `java.lang.Object` `peek`(`rx.internal.util.unsafe.SpscArrayQueue` v2 @kind this) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.peek:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4ba63c.  v0:= v2.`rx.internal.util.unsafe.SpscArrayQueue.consumerIndex` @type ^`long` @kind wide;
+  #L4ba640.  call temp:= `calcElementOffset`(v2, v0) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.calcElementOffset:(J)J` @kind virtual;
+  #L4ba646.  v0:= temp @kind wide;
+  #L4ba648.  call temp:= `lvElement`(v2, v0) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvElement:(J)Ljava/lang/Object;` @kind virtual;
+  #L4ba64e.  v0:= temp @kind object;
+  #L4ba650.  return v0 @kind object;
+}
+procedure `java.lang.Object` `poll`(`rx.internal.util.unsafe.SpscArrayQueue` v7 @kind this) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.poll:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4ba664.  v0:= v7.`rx.internal.util.unsafe.SpscArrayQueue.consumerIndex` @type ^`long` @kind wide;
+  #L4ba668.  call temp:= `calcElementOffset`(v7, v0) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.calcElementOffset:(J)J` @kind virtual;
+  #L4ba66e.  v2:= temp @kind wide;
+  #L4ba670.  v4:= v7.`rx.internal.util.unsafe.SpscArrayQueue.buffer` @type ^`java.lang.Object`[] @kind object;
+  #L4ba674.  call temp:= `lvElement`(v7, v4, v2) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvElement:([Ljava/lang/Object;J)Ljava/lang/Object;` @kind virtual;
+  #L4ba67a.  v5:= temp @kind object;
+  #L4ba67c.  v6:= 0I;
+  #L4ba67e.  if v5 != 0 then goto L4ba684;
+  #L4ba682.  return v6 @kind object;
+  #L4ba684.  call `soElement`(v7, v4, v2, v6) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.soElement:([Ljava/lang/Object;JLjava/lang/Object;)V` @kind virtual;
+  #L4ba68a.  v2:= 1L;
+  #L4ba68e.  v0:= v0 + v2 @kind long;
+  #L4ba690.  call `soConsumerIndex`(v7, v0) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.soConsumerIndex:(J)V` @kind direct;
+  #L4ba696.  return v5 @kind object;
+}
+procedure `int` `size`(`rx.internal.util.unsafe.SpscArrayQueue` v7 @kind this) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.size:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+
+  #L4ba600.  call temp:= `lvConsumerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvConsumerIndex:()J` @kind direct;
+  #L4ba606.  v0:= temp @kind wide;
+  #L4ba608.  call temp:= `lvProducerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvProducerIndex:()J` @kind direct;
+  #L4ba60e.  v2:= temp @kind wide;
+  #L4ba610.  call temp:= `lvConsumerIndex`(v7) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.lvConsumerIndex:()J` @kind direct;
+  #L4ba616.  v4:= temp @kind wide;
+  #L4ba618.  v6:= lcmp(v0, v4);
+  #L4ba61c.  if v6 != 0 then goto L4ba626;
+  #L4ba620.  v2:= v2 - v4 @kind long;
+  #L4ba622.  v0:= (`int`) v2 @kind l2i;
+  #L4ba624.  return v0;
+  #L4ba626.  v0:= v4 @kind wide;
+  #L4ba628.  goto L4ba608;
+}

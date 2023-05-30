@@ -1,0 +1,273 @@
+record `rx.internal.util.OpenHashSet` @kind class @AccessFlag PUBLIC_FINAL {
+  `java.lang.Object`[] `rx.internal.util.OpenHashSet.keys` @AccessFlag ;
+  `float` `rx.internal.util.OpenHashSet.loadFactor` @AccessFlag FINAL;
+  `int` `rx.internal.util.OpenHashSet.mask` @AccessFlag ;
+  `int` `rx.internal.util.OpenHashSet.maxSize` @AccessFlag ;
+  `int` `rx.internal.util.OpenHashSet.size` @AccessFlag ;
+}
+global `int` `@@rx.internal.util.OpenHashSet.INT_PHI` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.util.OpenHashSet` v2 @kind this) @signature `Lrx/internal/util/OpenHashSet;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L4b5f08.  v0:= 16I;
+  #L4b5f0c.  v1:= 0.75F;
+  #L4b5f10.  call `<init>`(v2, v0, v1) @signature `Lrx/internal/util/OpenHashSet;.<init>:(IF)V` @kind direct;
+  #L4b5f16.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.util.OpenHashSet` v1 @kind this, `int` v2 ) @signature `Lrx/internal/util/OpenHashSet;.<init>:(I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b5f28.  v0:= 0.75F;
+  #L4b5f2c.  call `<init>`(v1, v2, v0) @signature `Lrx/internal/util/OpenHashSet;.<init>:(IF)V` @kind direct;
+  #L4b5f32.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.util.OpenHashSet` v1 @kind this, `int` v2 , `float` v3 ) @signature `Lrx/internal/util/OpenHashSet;.<init>:(IF)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b5f44.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b5f4a.  v1.`rx.internal.util.OpenHashSet.loadFactor` @type ^`float` := v3;
+  #L4b5f4e.  call temp:= `roundToPowerOfTwo`(v2) @signature `Lrx/internal/util/unsafe/Pow2;.roundToPowerOfTwo:(I)I` @kind static;
+  #L4b5f54.  v2:= temp;
+  #L4b5f56.  v0:= v2 + -1;
+  #L4b5f5a.  v1.`rx.internal.util.OpenHashSet.mask` @type ^`int` := v0;
+  #L4b5f5e.  v0:= (`float`) v2 @kind i2f;
+  #L4b5f60.  v3:= v3 * v0 @kind float;
+  #L4b5f64.  v3:= (`int`) v3 @kind f2i;
+  #L4b5f66.  v1.`rx.internal.util.OpenHashSet.maxSize` @type ^`int` := v3;
+  #L4b5f6a.  v2:= new `java.lang.Object`[v2];
+  #L4b5f6e.  v2:= (`java.lang.Object`[]) v2 @kind object;
+  #L4b5f72.  v1.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] := v2 @kind object;
+  #L4b5f76.  return @kind void;
+}
+procedure `int` `mix`(`int` v1 ) @signature `Lrx/internal/util/OpenHashSet;.mix:(I)I` @AccessFlag STATIC {
+    temp;
+    v0;
+
+  #L4b5ecc.  v0:= -1640531527I;
+  #L4b5ed2.  v1:= v1 * v0 @kind int;
+  #L4b5ed6.  v0:= v1 ^>> 16;
+  #L4b5eda.  v1:= v1 ^~ v0 @kind int;
+  #L4b5edc.  return v1;
+}
+procedure `boolean` `add`(`rx.internal.util.OpenHashSet` v6 @kind this, `java.lang.Object` v7 @kind object) @signature `Lrx/internal/util/OpenHashSet;.add:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4b5d50.  v0:= v6.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] @kind object;
+  #L4b5d54.  v1:= v6.`rx.internal.util.OpenHashSet.mask` @type ^`int`;
+  #L4b5d58.  call temp:= `hashCode`(v7) @signature `Ljava/lang/Object;.hashCode:()I` @kind virtual;
+  #L4b5d5e.  v2:= temp;
+  #L4b5d60.  call temp:= `mix`(v2) @signature `Lrx/internal/util/OpenHashSet;.mix:(I)I` @kind static;
+  #L4b5d66.  v2:= temp;
+  #L4b5d68.  v2:= v2 ^& v1 @kind int;
+  #L4b5d6a.  v3:= v0[v2] @kind object;
+  #L4b5d6e.  v4:= 1I;
+  #L4b5d70.  if v3 == 0 then goto L4b5da0;
+  #L4b5d74.  call temp:= `equals`(v3, v7) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4b5d7a.  v3:= temp;
+  #L4b5d7c.  v5:= 0I;
+  #L4b5d7e.  if v3 == 0 then goto L4b5d84;
+  #L4b5d82.  return v5;
+  #L4b5d84.  v2:= v2 + v4 @kind int;
+  #L4b5d86.  v2:= v2 ^& v1 @kind int;
+  #L4b5d88.  v3:= v0[v2] @kind object;
+  #L4b5d8c.  if v3 != 0 then goto L4b5d92;
+  #L4b5d90.  goto L4b5da0;
+  #L4b5d92.  call temp:= `equals`(v3, v7) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4b5d98.  v3:= temp;
+  #L4b5d9a.  if v3 == 0 then goto L4b5d84;
+  #L4b5d9e.  return v5;
+  #L4b5da0.  v0[v2]:= v7 @kind object;
+  #L4b5da4.  v7:= v6.`rx.internal.util.OpenHashSet.size` @type ^`int`;
+  #L4b5da8.  v7:= v7 + v4 @kind int;
+  #L4b5daa.  v6.`rx.internal.util.OpenHashSet.size` @type ^`int` := v7;
+  #L4b5dae.  v0:= v6.`rx.internal.util.OpenHashSet.maxSize` @type ^`int`;
+  #L4b5db2.  if v7 < v0 then goto L4b5dbc;
+  #L4b5db6.  call `rehash`(v6) @signature `Lrx/internal/util/OpenHashSet;.rehash:()V` @kind virtual;
+  #L4b5dbc.  return v4;
+}
+procedure `void` `clear`(`rx.internal.util.OpenHashSet` v5 @kind this, `rx.functions.Action1` v6 @kind object) @signature `Lrx/internal/util/OpenHashSet;.clear:(Lrx/functions/Action1;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b5f88.  v0:= v5.`rx.internal.util.OpenHashSet.size` @type ^`int`;
+  #L4b5f8c.  if v0 != 0 then goto L4b5f92;
+  #L4b5f90.  return @kind void;
+  #L4b5f92.  v0:= v5.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] @kind object;
+  #L4b5f96.  v1:= length @variable v0;
+  #L4b5f98.  v2:= 0I;
+  #L4b5f9a.  v3:= 0I;
+  #L4b5f9c.  if v3 >= v1 then goto L4b5fb4;
+  #L4b5fa0.  v4:= v0[v3] @kind object;
+  #L4b5fa4.  if v4 == 0 then goto L4b5fae;
+  #L4b5fa8.  call `call`(v6, v4) @signature `Lrx/functions/Action1;.call:(Ljava/lang/Object;)V` @kind interface;
+  #L4b5fae.  v3:= v3 + 1;
+  #L4b5fb2.  goto L4b5f9c;
+  #L4b5fb4.  v6:= 0I;
+  #L4b5fb6.  call `fill`(v0, v6) @signature `Ljava/util/Arrays;.fill:([Ljava/lang/Object;Ljava/lang/Object;)V` @kind static;
+  #L4b5fbc.  v5.`rx.internal.util.OpenHashSet.size` @type ^`int` := v2;
+  #L4b5fc0.  return @kind void;
+}
+procedure `boolean` `isEmpty`(`rx.internal.util.OpenHashSet` v1 @kind this) @signature `Lrx/internal/util/OpenHashSet;.isEmpty:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b5dd0.  v0:= v1.`rx.internal.util.OpenHashSet.size` @type ^`int`;
+  #L4b5dd4.  if v0 != 0 then goto L4b5ddc;
+  #L4b5dd8.  v0:= 1I;
+  #L4b5dda.  goto L4b5dde;
+  #L4b5ddc.  v0:= 0I;
+  #L4b5dde.  return v0;
+}
+procedure `void` `rehash`(`rx.internal.util.OpenHashSet` v8 @kind this) @signature `Lrx/internal/util/OpenHashSet;.rehash:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L4b5fd4.  v0:= v8.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] @kind object;
+  #L4b5fd8.  v1:= length @variable v0;
+  #L4b5fda.  v2:= v1 ^< 1;
+  #L4b5fde.  v3:= v2 + -1;
+  #L4b5fe2.  v4:= new `java.lang.Object`[v2];
+  #L4b5fe6.  v4:= (`java.lang.Object`[]) v4 @kind object;
+  #L4b5fea.  v5:= v8.`rx.internal.util.OpenHashSet.size` @type ^`int`;
+  #L4b5fee.  v6:= v5 + -1;
+  #L4b5ff2.  if v5 == 0 then goto L4b603c;
+  #L4b5ff6.  v1:= v1 + -1;
+  #L4b5ffa.  v5:= v0[v1] @kind object;
+  #L4b5ffe.  if v5 != 0 then goto L4b6004;
+  #L4b6002.  goto L4b5ff6;
+  #L4b6004.  v5:= v0[v1] @kind object;
+  #L4b6008.  call temp:= `hashCode`(v5) @signature `Ljava/lang/Object;.hashCode:()I` @kind virtual;
+  #L4b600e.  v5:= temp;
+  #L4b6010.  call temp:= `mix`(v5) @signature `Lrx/internal/util/OpenHashSet;.mix:(I)I` @kind static;
+  #L4b6016.  v5:= temp;
+  #L4b6018.  v5:= v5 ^& v3 @kind int;
+  #L4b601a.  v7:= v4[v5] @kind object;
+  #L4b601e.  if v7 == 0 then goto L4b6030;
+  #L4b6022.  v5:= v5 + 1;
+  #L4b6026.  v5:= v5 ^& v3 @kind int;
+  #L4b6028.  v7:= v4[v5] @kind object;
+  #L4b602c.  if v7 != 0 then goto L4b6022;
+  #L4b6030.  v7:= v0[v1] @kind object;
+  #L4b6034.  v4[v5]:= v7 @kind object;
+  #L4b6038.  v5:= v6;
+  #L4b603a.  goto L4b5fee;
+  #L4b603c.  v8.`rx.internal.util.OpenHashSet.mask` @type ^`int` := v3;
+  #L4b6040.  v0:= (`float`) v2 @kind i2f;
+  #L4b6042.  v1:= v8.`rx.internal.util.OpenHashSet.loadFactor` @type ^`float`;
+  #L4b6046.  v0:= v0 * v1 @kind float;
+  #L4b604a.  v0:= (`int`) v0 @kind f2i;
+  #L4b604c.  v8.`rx.internal.util.OpenHashSet.maxSize` @type ^`int` := v0;
+  #L4b6050.  v8.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] := v4 @kind object;
+  #L4b6054.  return @kind void;
+}
+procedure `boolean` `remove`(`rx.internal.util.OpenHashSet` v5 @kind this, `java.lang.Object` v6 @kind object) @signature `Lrx/internal/util/OpenHashSet;.remove:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b5df0.  v0:= v5.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] @kind object;
+  #L4b5df4.  v1:= v5.`rx.internal.util.OpenHashSet.mask` @type ^`int`;
+  #L4b5df8.  call temp:= `hashCode`(v6) @signature `Ljava/lang/Object;.hashCode:()I` @kind virtual;
+  #L4b5dfe.  v2:= temp;
+  #L4b5e00.  call temp:= `mix`(v2) @signature `Lrx/internal/util/OpenHashSet;.mix:(I)I` @kind static;
+  #L4b5e06.  v2:= temp;
+  #L4b5e08.  v2:= v2 ^& v1 @kind int;
+  #L4b5e0a.  v3:= v0[v2] @kind object;
+  #L4b5e0e.  v4:= 0I;
+  #L4b5e10.  if v3 != 0 then goto L4b5e16;
+  #L4b5e14.  return v4;
+  #L4b5e16.  call temp:= `equals`(v3, v6) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4b5e1c.  v3:= temp;
+  #L4b5e1e.  if v3 == 0 then goto L4b5e2c;
+  #L4b5e22.  call temp:= `removeEntry`(v5, v2, v0, v1) @signature `Lrx/internal/util/OpenHashSet;.removeEntry:(I[Ljava/lang/Object;I)Z` @kind virtual;
+  #L4b5e28.  v6:= temp;
+  #L4b5e2a.  return v6;
+  #L4b5e2c.  v2:= v2 + 1;
+  #L4b5e30.  v2:= v2 ^& v1 @kind int;
+  #L4b5e32.  v3:= v0[v2] @kind object;
+  #L4b5e36.  if v3 != 0 then goto L4b5e3c;
+  #L4b5e3a.  return v4;
+  #L4b5e3c.  call temp:= `equals`(v3, v6) @signature `Ljava/lang/Object;.equals:(Ljava/lang/Object;)Z` @kind virtual;
+  #L4b5e42.  v3:= temp;
+  #L4b5e44.  if v3 == 0 then goto L4b5e2c;
+  #L4b5e48.  call temp:= `removeEntry`(v5, v2, v0, v1) @signature `Lrx/internal/util/OpenHashSet;.removeEntry:(I[Ljava/lang/Object;I)Z` @kind virtual;
+  #L4b5e4e.  v6:= temp;
+  #L4b5e50.  return v6;
+}
+procedure `boolean` `removeEntry`(`rx.internal.util.OpenHashSet` v4 @kind this, `int` v5 , `java.lang.Object`[] v6 @kind object, `int` v7 ) @signature `Lrx/internal/util/OpenHashSet;.removeEntry:(I[Ljava/lang/Object;I)Z` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L4b5e64.  v0:= v4.`rx.internal.util.OpenHashSet.size` @type ^`int`;
+  #L4b5e68.  v1:= 1I;
+  #L4b5e6a.  v0:= v0 - v1 @kind int;
+  #L4b5e6c.  v4.`rx.internal.util.OpenHashSet.size` @type ^`int` := v0;
+  #L4b5e70.  v0:= v5 + 1;
+  #L4b5e74.  v0:= v0 ^& v7 @kind int;
+  #L4b5e76.  v2:= v6[v0] @kind object;
+  #L4b5e7a.  if v2 != 0 then goto L4b5e86;
+  #L4b5e7e.  v7:= 0I;
+  #L4b5e80.  v6[v5]:= v7 @kind object;
+  #L4b5e84.  return v1;
+  #L4b5e86.  call temp:= `hashCode`(v2) @signature `Ljava/lang/Object;.hashCode:()I` @kind virtual;
+  #L4b5e8c.  v3:= temp;
+  #L4b5e8e.  call temp:= `mix`(v3) @signature `Lrx/internal/util/OpenHashSet;.mix:(I)I` @kind static;
+  #L4b5e94.  v3:= temp;
+  #L4b5e96.  v3:= v3 ^& v7 @kind int;
+  #L4b5e98.  if v5 > v0 then goto L4b5ea6;
+  #L4b5e9c.  if v5 >= v3 then goto L4b5eae;
+  #L4b5ea0.  if v3 <= v0 then goto L4b5eb6;
+  #L4b5ea4.  goto L4b5eae;
+  #L4b5ea6.  if v5 < v3 then goto L4b5eb6;
+  #L4b5eaa.  if v3 <= v0 then goto L4b5eb6;
+  #L4b5eae.  v6[v5]:= v2 @kind object;
+  #L4b5eb2.  v5:= v0;
+  #L4b5eb4.  goto L4b5e70;
+  #L4b5eb6.  v0:= v0 + 1;
+  #L4b5eba.  goto L4b5e74;
+}
+procedure `void` `terminate`(`rx.internal.util.OpenHashSet` v1 @kind this) @signature `Lrx/internal/util/OpenHashSet;.terminate:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b6068.  v0:= 0I;
+  #L4b606a.  v1.`rx.internal.util.OpenHashSet.size` @type ^`int` := v0;
+  #L4b606e.  v0:= new `java.lang.Object`[v0];
+  #L4b6072.  v0:= (`java.lang.Object`[]) v0 @kind object;
+  #L4b6076.  v1.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] := v0 @kind object;
+  #L4b607a.  return @kind void;
+}
+procedure `java.lang.Object`[] `values`(`rx.internal.util.OpenHashSet` v1 @kind this) @signature `Lrx/internal/util/OpenHashSet;.values:()[Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b5ef0.  v0:= v1.`rx.internal.util.OpenHashSet.keys` @type ^`java.lang.Object`[] @kind object;
+  #L4b5ef4.  return v0 @kind object;
+}

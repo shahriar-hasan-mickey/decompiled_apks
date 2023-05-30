@@ -1,0 +1,177 @@
+record `dream71.com.wasa.location.LocationService` @kind class @AccessFlag PUBLIC extends `android.app.IntentService` @kind class, `dream71.com.wasa.location.Location_Main_MVP` @kind interface {
+  `android.content.Context` `dream71.com.wasa.location.LocationService.context` @AccessFlag ;
+  `dream71.com.wasa.location.LocationPresenter` `dream71.com.wasa.location.LocationService.locationPresenter` @AccessFlag ;
+  `int` `dream71.com.wasa.location.LocationService.state` @AccessFlag ;
+}
+global `java.lang.String` `@@dream71.com.wasa.location.LocationService.currentAddress` @AccessFlag PUBLIC_STATIC;
+global `android.location.Location` `@@dream71.com.wasa.location.LocationService.currentLocation` @AccessFlag PUBLIC_STATIC;
+procedure `void` `<clinit>`() @signature `Ldream71/com/wasa/location/LocationService;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L3c8884.  v0:= new `android.location.Location`;
+  #L3c8888.  v1:= "" @kind object;
+  #L3c888c.  call `<init>`(v0, v1) @signature `Landroid/location/Location;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3c8892.  `@@dream71.com.wasa.location.LocationService.currentLocation` @type ^`android.location.Location` := v0 @kind object;
+  #L3c8896.  `@@dream71.com.wasa.location.LocationService.currentAddress` @type ^`java.lang.String` := v1 @kind object;
+  #L3c889a.  return @kind void;
+}
+procedure `void` `<init>`(`dream71.com.wasa.location.LocationService` v1 @kind this) @signature `Ldream71/com/wasa/location/LocationService;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3c88ac.  v0:= "LocationService" @kind object;
+  #L3c88b0.  call `<init>`(v1, v0) @signature `Landroid/app/IntentService;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3c88b6.  v0:= 0I;
+  #L3c88b8.  v1.`dream71.com.wasa.location.LocationService.state` @type ^`int` := v0;
+  #L3c88bc.  return @kind void;
+}
+procedure `void` `LocationSetting`(`dream71.com.wasa.location.LocationService` v3 @kind this) @signature `Ldream71/com/wasa/location/LocationService;.LocationSetting:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3c88d0.  v0:= `@@android.os.Build$VERSION.SDK_INT` @type ^`int`;
+  #L3c88d4.  v1:= 23I;
+  #L3c88d8.  if v0 < v1 then goto L3c8906;
+  #L3c88dc.  v0:= v3.`dream71.com.wasa.location.LocationService.context` @type ^`android.content.Context` @kind object;
+  #L3c88e0.  v1:= "android.permission.ACCESS_FINE_LOCATION" @kind object;
+  #L3c88e4.  call temp:= `checkSelfPermission`(v0, v1) @signature `Landroidx/core/content/ContextCompat;.checkSelfPermission:(Landroid/content/Context;Ljava/lang/String;)I` @kind static;
+  #L3c88ea.  v0:= temp;
+  #L3c88ec.  if v0 == 0 then goto L3c8906;
+  #L3c88f0.  v0:= v3.`dream71.com.wasa.location.LocationService.context` @type ^`android.content.Context` @kind object;
+  #L3c88f4.  v1:= "android.permission.ACCESS_COARSE_LOCATION" @kind object;
+  #L3c88f8.  call temp:= `checkSelfPermission`(v0, v1) @signature `Landroidx/core/content/ContextCompat;.checkSelfPermission:(Landroid/content/Context;Ljava/lang/String;)I` @kind static;
+  #L3c88fe.  v0:= temp;
+  #L3c8900.  if v0 == 0 then goto L3c8906;
+  #L3c8904.  return @kind void;
+  #L3c8906.  v0:= new `com.patloew.rxlocation.RxLocation`;
+  #L3c890a.  call `<init>`(v0, v3) @signature `Lcom/patloew/rxlocation/RxLocation;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L3c8910.  v1:= new `dream71.com.wasa.location.LocationPresenter`;
+  #L3c8914.  call `<init>`(v1, v0) @signature `Ldream71/com/wasa/location/LocationPresenter;.<init>:(Lcom/patloew/rxlocation/RxLocation;)V` @kind direct;
+  #L3c891a.  v3.`dream71.com.wasa.location.LocationService.locationPresenter` @type ^`dream71.com.wasa.location.LocationPresenter` := v1 @kind object;
+  #L3c891e.  v0:= v3.`dream71.com.wasa.location.LocationService.locationPresenter` @type ^`dream71.com.wasa.location.LocationPresenter` @kind object;
+  #L3c8922.  call `attachView`(v0, v3) @signature `Ldream71/com/wasa/location/LocationPresenter;.attachView:(Ldream71/com/wasa/location/Location_Main_MVP;)V` @kind virtual;
+  #L3c8928.  goto L3c8958;
+  #L3c892a.  v0:= Exception @type ^`java.lang.Exception` @kind object;
+  #L3c892c.  v1:= new `java.lang.StringBuilder`;
+  #L3c8930.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3c8936.  v2:= " exception " @kind object;
+  #L3c893a.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8940.  call temp:= `append`(v1, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8946.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3c894c.  v0:= temp @kind object;
+  #L3c894e.  v1:= "LocationService " @kind object;
+  #L3c8952.  call temp:= `e`(v1, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3c8958.  return @kind void;
+  catch `java.lang.Exception` @[L3c88d0..L3c8928] goto L3c892a;
+}
+procedure `java.lang.String` `getAddressText`(`dream71.com.wasa.location.LocationService` v4 @kind this, `android.location.Address` v5 @kind object) @signature `Ldream71/com/wasa/location/LocationService;.getAddressText:(Landroid/location/Address;)Ljava/lang/String;` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3c880c.  call temp:= `getMaxAddressLineIndex`(v5) @signature `Landroid/location/Address;.getMaxAddressLineIndex:()I` @kind virtual;
+  #L3c8812.  v0:= temp;
+  #L3c8814.  v1:= "" @kind object;
+  #L3c8818.  v2:= 0I;
+  #L3c881a.  if v2 > v0 then goto L3c8870;
+  #L3c881e.  v3:= new `java.lang.StringBuilder`;
+  #L3c8822.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3c8828.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c882e.  call temp:= `getAddressLine`(v5, v2) @signature `Landroid/location/Address;.getAddressLine:(I)Ljava/lang/String;` @kind virtual;
+  #L3c8834.  v1:= temp @kind object;
+  #L3c8836.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c883c.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3c8842.  v1:= temp @kind object;
+  #L3c8844.  if v2 == v0 then goto L3c886a;
+  #L3c8848.  v3:= new `java.lang.StringBuilder`;
+  #L3c884c.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3c8852.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8858.  v1:= "," @kind object;
+  #L3c885c.  call temp:= `append`(v3, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8862.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3c8868.  v1:= temp @kind object;
+  #L3c886a.  v2:= v2 + 1;
+  #L3c886e.  goto L3c881a;
+  #L3c8870.  return v1 @kind object;
+}
+procedure `android.content.Context` `getServiceContext`(`dream71.com.wasa.location.LocationService` v1 @kind this) @signature `Ldream71/com/wasa/location/LocationService;.getServiceContext:()Landroid/content/Context;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c87c8.  v0:= v1.`dream71.com.wasa.location.LocationService.context` @type ^`android.content.Context` @kind object;
+  #L3c87cc.  return v0 @kind object;
+}
+procedure `void` `onAddressUpdate`(`dream71.com.wasa.location.LocationService` v1 @kind this, `android.location.Address` v2 @kind object) @signature `Ldream71/com/wasa/location/LocationService;.onAddressUpdate:(Landroid/location/Address;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c897c.  call temp:= `getAddressText`(v1, v2) @signature `Ldream71/com/wasa/location/LocationService;.getAddressText:(Landroid/location/Address;)Ljava/lang/String;` @kind direct;
+  #L3c8982.  v2:= temp @kind object;
+  #L3c8984.  `@@dream71.com.wasa.location.LocationService.currentAddress` @type ^`java.lang.String` := v2 @kind object;
+  #L3c8988.  v2:= `@@dream71.com.wasa.location.LocationService.currentAddress` @type ^`java.lang.String` @kind object;
+  #L3c898c.  v0:= "adress" @kind object;
+  #L3c8990.  call temp:= `e`(v0, v2) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3c8996.  return @kind void;
+}
+procedure `void` `onDestroy`(`dream71.com.wasa.location.LocationService` v1 @kind this) @signature `Ldream71/com/wasa/location/LocationService;.onDestroy:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3c89a8.  call `onDestroy`(v1) @signature `Landroid/app/IntentService;.onDestroy:()V` @kind super;
+  #L3c89ae.  v0:= v1.`dream71.com.wasa.location.LocationService.locationPresenter` @type ^`dream71.com.wasa.location.LocationPresenter` @kind object;
+  #L3c89b2.  call `detachView`(v0) @signature `Ldream71/com/wasa/location/LocationPresenter;.detachView:()V` @kind virtual;
+  #L3c89b8.  return @kind void;
+}
+procedure `void` `onHandleIntent`(`dream71.com.wasa.location.LocationService` v0 @kind this, `android.content.Intent` v1 @kind object) @signature `Ldream71/com/wasa/location/LocationService;.onHandleIntent:(Landroid/content/Intent;)V` @AccessFlag PROTECTED {
+    temp;
+
+  #L3c89cc.  return @kind void;
+}
+procedure `void` `onLocationSettingsUnsuccessful`(`dream71.com.wasa.location.LocationService` v0 @kind this) @signature `Ldream71/com/wasa/location/LocationService;.onLocationSettingsUnsuccessful:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c89e0.  return @kind void;
+}
+procedure `void` `onLocationUpdate`(`dream71.com.wasa.location.LocationService` v2 @kind this, `android.location.Location` v3 @kind object) @signature `Ldream71/com/wasa/location/LocationService;.onLocationUpdate:(Landroid/location/Location;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3c89f4.  `@@dream71.com.wasa.location.LocationService.currentLocation` @type ^`android.location.Location` := v3 @kind object;
+  #L3c89f8.  v3:= new `java.lang.StringBuilder`;
+  #L3c89fc.  call `<init>`(v3) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3c8a02.  v0:= "Lattitude---" @kind object;
+  #L3c8a06.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8a0c.  v0:= `@@dream71.com.wasa.location.LocationService.currentLocation` @type ^`android.location.Location` @kind object;
+  #L3c8a10.  call temp:= `getLatitude`(v0) @signature `Landroid/location/Location;.getLatitude:()D` @kind virtual;
+  #L3c8a16.  v0:= temp @kind wide;
+  #L3c8a18.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8a1e.  v0:= "Longitude--" @kind object;
+  #L3c8a22.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8a28.  v0:= `@@dream71.com.wasa.location.LocationService.currentLocation` @type ^`android.location.Location` @kind object;
+  #L3c8a2c.  call temp:= `getLongitude`(v0) @signature `Landroid/location/Location;.getLongitude:()D` @kind virtual;
+  #L3c8a32.  v0:= temp @kind wide;
+  #L3c8a34.  call temp:= `append`(v3, v0) @signature `Ljava/lang/StringBuilder;.append:(D)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3c8a3a.  call temp:= `toString`(v3) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3c8a40.  v3:= temp @kind object;
+  #L3c8a42.  v0:= "Latlng" @kind object;
+  #L3c8a46.  call temp:= `e`(v0, v3) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3c8a4c.  return @kind void;
+}
+procedure `int` `onStartCommand`(`dream71.com.wasa.location.LocationService` v0 @kind this, `android.content.Intent` v1 @kind object, `int` v2 , `int` v3 ) @signature `Ldream71/com/wasa/location/LocationService;.onStartCommand:(Landroid/content/Intent;II)I` @AccessFlag PUBLIC {
+    temp;
+
+  #L3c87e0.  v1:= "qwed" @kind object;
+  #L3c87e4.  v2:= "call" @kind object;
+  #L3c87e8.  call temp:= `e`(v1, v2) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3c87ee.  v0.`dream71.com.wasa.location.LocationService.context` @type ^`android.content.Context` := v0 @kind object;
+  #L3c87f2.  call `LocationSetting`(v0) @signature `Ldream71/com/wasa/location/LocationService;.LocationSetting:()V` @kind direct;
+  #L3c87f8.  v1:= 2I;
+  #L3c87fa.  return v1;
+}

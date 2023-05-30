@@ -1,0 +1,111 @@
+record `rx.schedulers.TestScheduler` @kind class @AccessFlag PUBLIC extends `rx.Scheduler` @kind class {
+  `java.util.Queue` `rx.schedulers.TestScheduler.queue` @AccessFlag FINAL;
+  `long` `rx.schedulers.TestScheduler.time` @AccessFlag ;
+}
+global `long` `@@rx.schedulers.TestScheduler.counter` @AccessFlag STATIC;
+procedure `void` `<init>`(`rx.schedulers.TestScheduler` v3 @kind this) @signature `Lrx/schedulers/TestScheduler;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c2a84.  call `<init>`(v3) @signature `Lrx/Scheduler;.<init>:()V` @kind direct;
+  #L4c2a8a.  v0:= new `java.util.PriorityQueue`;
+  #L4c2a8e.  v1:= new `rx.schedulers.TestScheduler$CompareActionsByTime`;
+  #L4c2a92.  call `<init>`(v1) @signature `Lrx/schedulers/TestScheduler$CompareActionsByTime;.<init>:()V` @kind direct;
+  #L4c2a98.  v2:= 11I;
+  #L4c2a9c.  call `<init>`(v0, v2, v1) @signature `Ljava/util/PriorityQueue;.<init>:(ILjava/util/Comparator;)V` @kind direct;
+  #L4c2aa2.  v3.`rx.schedulers.TestScheduler.queue` @type ^`java.util.Queue` := v0 @kind object;
+  #L4c2aa6.  return @kind void;
+}
+procedure `void` `triggerActions`(`rx.schedulers.TestScheduler` v6 @kind this, `long` v7 ) @signature `Lrx/schedulers/TestScheduler;.triggerActions:(J)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L4c2b20.  v0:= v6.`rx.schedulers.TestScheduler.queue` @type ^`java.util.Queue` @kind object;
+  #L4c2b24.  call temp:= `isEmpty`(v0) @signature `Ljava/util/Queue;.isEmpty:()Z` @kind interface;
+  #L4c2b2a.  v0:= temp;
+  #L4c2b2c.  if v0 != 0 then goto L4c2b92;
+  #L4c2b30.  v0:= v6.`rx.schedulers.TestScheduler.queue` @type ^`java.util.Queue` @kind object;
+  #L4c2b34.  call temp:= `peek`(v0) @signature `Ljava/util/Queue;.peek:()Ljava/lang/Object;` @kind interface;
+  #L4c2b3a.  v0:= temp @kind object;
+  #L4c2b3c.  v0:= (`rx.schedulers.TestScheduler$TimedAction`) v0 @kind object;
+  #L4c2b40.  v1:= v0.`rx.schedulers.TestScheduler$TimedAction.time` @type ^`long` @kind wide;
+  #L4c2b44.  v3:= lcmp(v1, v7);
+  #L4c2b48.  if v3 <= 0 then goto L4c2b4e;
+  #L4c2b4c.  goto L4c2b92;
+  #L4c2b4e.  v1:= v0.`rx.schedulers.TestScheduler$TimedAction.time` @type ^`long` @kind wide;
+  #L4c2b52.  v3:= 0L;
+  #L4c2b56.  v5:= lcmp(v1, v3);
+  #L4c2b5a.  if v5 != 0 then goto L4c2b64;
+  #L4c2b5e.  v1:= v6.`rx.schedulers.TestScheduler.time` @type ^`long` @kind wide;
+  #L4c2b62.  goto L4c2b68;
+  #L4c2b64.  v1:= v0.`rx.schedulers.TestScheduler$TimedAction.time` @type ^`long` @kind wide;
+  #L4c2b68.  v6.`rx.schedulers.TestScheduler.time` @type ^`long` := v1 @kind wide;
+  #L4c2b6c.  v1:= v6.`rx.schedulers.TestScheduler.queue` @type ^`java.util.Queue` @kind object;
+  #L4c2b70.  call temp:= `remove`(v1) @signature `Ljava/util/Queue;.remove:()Ljava/lang/Object;` @kind interface;
+  #L4c2b76.  v1:= v0.`rx.schedulers.TestScheduler$TimedAction.scheduler` @type ^`rx.Scheduler$Worker` @kind object;
+  #L4c2b7a.  call temp:= `isUnsubscribed`(v1) @signature `Lrx/Scheduler$Worker;.isUnsubscribed:()Z` @kind virtual;
+  #L4c2b80.  v1:= temp;
+  #L4c2b82.  if v1 != 0 then goto L4c2b20;
+  #L4c2b86.  v0:= v0.`rx.schedulers.TestScheduler$TimedAction.action` @type ^`rx.functions.Action0` @kind object;
+  #L4c2b8a.  call `call`(v0) @signature `Lrx/functions/Action0;.call:()V` @kind interface;
+  #L4c2b90.  goto L4c2b20;
+  #L4c2b92.  v6.`rx.schedulers.TestScheduler.time` @type ^`long` := v7 @kind wide;
+  #L4c2b96.  return @kind void;
+}
+procedure `void` `advanceTimeBy`(`rx.schedulers.TestScheduler` v2 @kind this, `long` v3 , `java.util.concurrent.TimeUnit` v5 @kind object) @signature `Lrx/schedulers/TestScheduler;.advanceTimeBy:(JLjava/util/concurrent/TimeUnit;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c2ab8.  v0:= v2.`rx.schedulers.TestScheduler.time` @type ^`long` @kind wide;
+  #L4c2abc.  call temp:= `toNanos`(v5, v3) @signature `Ljava/util/concurrent/TimeUnit;.toNanos:(J)J` @kind virtual;
+  #L4c2ac2.  v3:= temp @kind wide;
+  #L4c2ac4.  v0:= v0 + v3 @kind long;
+  #L4c2ac6.  v3:= `@@java.util.concurrent.TimeUnit.NANOSECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4c2aca.  call `advanceTimeTo`(v2, v0, v3) @signature `Lrx/schedulers/TestScheduler;.advanceTimeTo:(JLjava/util/concurrent/TimeUnit;)V` @kind virtual;
+  #L4c2ad0.  return @kind void;
+}
+procedure `void` `advanceTimeTo`(`rx.schedulers.TestScheduler` v0 @kind this, `long` v1 , `java.util.concurrent.TimeUnit` v3 @kind object) @signature `Lrx/schedulers/TestScheduler;.advanceTimeTo:(JLjava/util/concurrent/TimeUnit;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4c2ae4.  call temp:= `toNanos`(v3, v1) @signature `Ljava/util/concurrent/TimeUnit;.toNanos:(J)J` @kind virtual;
+  #L4c2aea.  v1:= temp @kind wide;
+  #L4c2aec.  call `triggerActions`(v0, v1) @signature `Lrx/schedulers/TestScheduler;.triggerActions:(J)V` @kind direct;
+  #L4c2af2.  return @kind void;
+}
+procedure `rx.Scheduler$Worker` `createWorker`(`rx.schedulers.TestScheduler` v1 @kind this) @signature `Lrx/schedulers/TestScheduler;.createWorker:()Lrx/Scheduler$Worker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4c2a68.  v0:= new `rx.schedulers.TestScheduler$InnerTestScheduler`;
+  #L4c2a6c.  call `<init>`(v0, v1) @signature `Lrx/schedulers/TestScheduler$InnerTestScheduler;.<init>:(Lrx/schedulers/TestScheduler;)V` @kind direct;
+  #L4c2a72.  return v0 @kind object;
+}
+procedure `long` `now`(`rx.schedulers.TestScheduler` v3 @kind this) @signature `Lrx/schedulers/TestScheduler;.now:()J` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4c2a44.  v0:= `@@java.util.concurrent.TimeUnit.NANOSECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L4c2a48.  v1:= v3.`rx.schedulers.TestScheduler.time` @type ^`long` @kind wide;
+  #L4c2a4c.  call temp:= `toMillis`(v0, v1) @signature `Ljava/util/concurrent/TimeUnit;.toMillis:(J)J` @kind virtual;
+  #L4c2a52.  v0:= temp @kind wide;
+  #L4c2a54.  return v0 @kind wide;
+}
+procedure `void` `triggerActions`(`rx.schedulers.TestScheduler` v2 @kind this) @signature `Lrx/schedulers/TestScheduler;.triggerActions:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4c2b04.  v0:= v2.`rx.schedulers.TestScheduler.time` @type ^`long` @kind wide;
+  #L4c2b08.  call `triggerActions`(v2, v0) @signature `Lrx/schedulers/TestScheduler;.triggerActions:(J)V` @kind direct;
+  #L4c2b0e.  return @kind void;
+}

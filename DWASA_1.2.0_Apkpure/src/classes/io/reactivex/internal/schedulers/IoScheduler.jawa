@@ -1,0 +1,149 @@
+record `io.reactivex.internal.schedulers.IoScheduler` @kind class @AccessFlag PUBLIC_FINAL extends `io.reactivex.Scheduler` @kind class {
+  `java.util.concurrent.atomic.AtomicReference` `io.reactivex.internal.schedulers.IoScheduler.pool` @AccessFlag FINAL;
+  `java.util.concurrent.ThreadFactory` `io.reactivex.internal.schedulers.IoScheduler.threadFactory` @AccessFlag FINAL;
+}
+global `io.reactivex.internal.schedulers.RxThreadFactory` `@@io.reactivex.internal.schedulers.IoScheduler.EVICTOR_THREAD_FACTORY` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@io.reactivex.internal.schedulers.IoScheduler.EVICTOR_THREAD_NAME_PREFIX` @AccessFlag PRIVATE_STATIC_FINAL;
+global `long` `@@io.reactivex.internal.schedulers.IoScheduler.KEEP_ALIVE_TIME` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.concurrent.TimeUnit` `@@io.reactivex.internal.schedulers.IoScheduler.KEEP_ALIVE_UNIT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@io.reactivex.internal.schedulers.IoScheduler.KEY_IO_PRIORITY` @AccessFlag PRIVATE_STATIC_FINAL;
+global `io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool` `@@io.reactivex.internal.schedulers.IoScheduler.NONE` @AccessFlag STATIC_FINAL;
+global `io.reactivex.internal.schedulers.IoScheduler$ThreadWorker` `@@io.reactivex.internal.schedulers.IoScheduler.SHUTDOWN_THREAD_WORKER` @AccessFlag STATIC_FINAL;
+global `io.reactivex.internal.schedulers.RxThreadFactory` `@@io.reactivex.internal.schedulers.IoScheduler.WORKER_THREAD_FACTORY` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@io.reactivex.internal.schedulers.IoScheduler.WORKER_THREAD_NAME_PREFIX` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lio/reactivex/internal/schedulers/IoScheduler;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L440d10.  v0:= `@@java.util.concurrent.TimeUnit.SECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L440d14.  `@@io.reactivex.internal.schedulers.IoScheduler.KEEP_ALIVE_UNIT` @type ^`java.util.concurrent.TimeUnit` := v0 @kind object;
+  #L440d18.  v0:= new `io.reactivex.internal.schedulers.IoScheduler$ThreadWorker`;
+  #L440d1c.  v1:= new `io.reactivex.internal.schedulers.RxThreadFactory`;
+  #L440d20.  v2:= "RxCachedThreadSchedulerShutdown" @kind object;
+  #L440d24.  call `<init>`(v1, v2) @signature `Lio/reactivex/internal/schedulers/RxThreadFactory;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L440d2a.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/schedulers/IoScheduler$ThreadWorker;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L440d30.  `@@io.reactivex.internal.schedulers.IoScheduler.SHUTDOWN_THREAD_WORKER` @type ^`io.reactivex.internal.schedulers.IoScheduler$ThreadWorker` := v0 @kind object;
+  #L440d34.  v0:= `@@io.reactivex.internal.schedulers.IoScheduler.SHUTDOWN_THREAD_WORKER` @type ^`io.reactivex.internal.schedulers.IoScheduler$ThreadWorker` @kind object;
+  #L440d38.  call `dispose`(v0) @signature `Lio/reactivex/internal/schedulers/IoScheduler$ThreadWorker;.dispose:()V` @kind virtual;
+  #L440d3e.  v0:= "rx2.io-priority" @kind object;
+  #L440d42.  v1:= 5I;
+  #L440d44.  call temp:= `getInteger`(v0, v1) @signature `Ljava/lang/Integer;.getInteger:(Ljava/lang/String;I)Ljava/lang/Integer;` @kind static;
+  #L440d4a.  v0:= temp @kind object;
+  #L440d4c.  call temp:= `intValue`(v0) @signature `Ljava/lang/Integer;.intValue:()I` @kind virtual;
+  #L440d52.  v0:= temp;
+  #L440d54.  v1:= 10I;
+  #L440d58.  call temp:= `min`(v1, v0) @signature `Ljava/lang/Math;.min:(II)I` @kind static;
+  #L440d5e.  v0:= temp;
+  #L440d60.  v1:= 1I;
+  #L440d62.  call temp:= `max`(v1, v0) @signature `Ljava/lang/Math;.max:(II)I` @kind static;
+  #L440d68.  v0:= temp;
+  #L440d6a.  v1:= new `io.reactivex.internal.schedulers.RxThreadFactory`;
+  #L440d6e.  v2:= "RxCachedThreadScheduler" @kind object;
+  #L440d72.  call `<init>`(v1, v2, v0) @signature `Lio/reactivex/internal/schedulers/RxThreadFactory;.<init>:(Ljava/lang/String;I)V` @kind direct;
+  #L440d78.  `@@io.reactivex.internal.schedulers.IoScheduler.WORKER_THREAD_FACTORY` @type ^`io.reactivex.internal.schedulers.RxThreadFactory` := v1 @kind object;
+  #L440d7c.  v1:= new `io.reactivex.internal.schedulers.RxThreadFactory`;
+  #L440d80.  v2:= "RxCachedWorkerPoolEvictor" @kind object;
+  #L440d84.  call `<init>`(v1, v2, v0) @signature `Lio/reactivex/internal/schedulers/RxThreadFactory;.<init>:(Ljava/lang/String;I)V` @kind direct;
+  #L440d8a.  `@@io.reactivex.internal.schedulers.IoScheduler.EVICTOR_THREAD_FACTORY` @type ^`io.reactivex.internal.schedulers.RxThreadFactory` := v1 @kind object;
+  #L440d8e.  v0:= new `io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool`;
+  #L440d92.  v1:= `@@io.reactivex.internal.schedulers.IoScheduler.WORKER_THREAD_FACTORY` @type ^`io.reactivex.internal.schedulers.RxThreadFactory` @kind object;
+  #L440d96.  v2:= 0L;
+  #L440d9a.  v4:= 0I;
+  #L440d9c.  call `<init>`(v0, v2, v4, v1) @signature `Lio/reactivex/internal/schedulers/IoScheduler$CachedWorkerPool;.<init>:(JLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L440da2.  `@@io.reactivex.internal.schedulers.IoScheduler.NONE` @type ^`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool` := v0 @kind object;
+  #L440da6.  v0:= `@@io.reactivex.internal.schedulers.IoScheduler.NONE` @type ^`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool` @kind object;
+  #L440daa.  call `shutdown`(v0) @signature `Lio/reactivex/internal/schedulers/IoScheduler$CachedWorkerPool;.shutdown:()V` @kind virtual;
+  #L440db0.  return @kind void;
+}
+procedure `void` `<init>`(`io.reactivex.internal.schedulers.IoScheduler` v1 @kind this) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L440dc4.  v0:= `@@io.reactivex.internal.schedulers.IoScheduler.WORKER_THREAD_FACTORY` @type ^`io.reactivex.internal.schedulers.RxThreadFactory` @kind object;
+  #L440dc8.  call `<init>`(v1, v0) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L440dce.  return @kind void;
+}
+procedure `void` `<init>`(`io.reactivex.internal.schedulers.IoScheduler` v1 @kind this, `java.util.concurrent.ThreadFactory` v2 @kind object) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.<init>:(Ljava/util/concurrent/ThreadFactory;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L440de0.  call `<init>`(v1) @signature `Lio/reactivex/Scheduler;.<init>:()V` @kind direct;
+  #L440de6.  v1.`io.reactivex.internal.schedulers.IoScheduler.threadFactory` @type ^`java.util.concurrent.ThreadFactory` := v2 @kind object;
+  #L440dea.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L440dee.  v0:= `@@io.reactivex.internal.schedulers.IoScheduler.NONE` @type ^`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool` @kind object;
+  #L440df2.  call `<init>`(v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L440df8.  v1.`io.reactivex.internal.schedulers.IoScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L440dfc.  call `start`(v1) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.start:()V` @kind virtual;
+  #L440e02.  return @kind void;
+}
+procedure `io.reactivex.Scheduler$Worker` `createWorker`(`io.reactivex.internal.schedulers.IoScheduler` v2 @kind this) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.createWorker:()Lio/reactivex/Scheduler$Worker;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L440ce4.  v0:= new `io.reactivex.internal.schedulers.IoScheduler$EventLoopWorker`;
+  #L440ce8.  v1:= v2.`io.reactivex.internal.schedulers.IoScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L440cec.  call temp:= `get`(v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L440cf2.  v1:= temp @kind object;
+  #L440cf4.  v1:= (`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool`) v1 @kind object;
+  #L440cf8.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/schedulers/IoScheduler$EventLoopWorker;.<init>:(Lio/reactivex/internal/schedulers/IoScheduler$CachedWorkerPool;)V` @kind direct;
+  #L440cfe.  return v0 @kind object;
+}
+procedure `void` `shutdown`(`io.reactivex.internal.schedulers.IoScheduler` v3 @kind this) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.shutdown:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L440e14.  v0:= v3.`io.reactivex.internal.schedulers.IoScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L440e18.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L440e1e.  v0:= temp @kind object;
+  #L440e20.  v0:= (`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool`) v0 @kind object;
+  #L440e24.  v1:= `@@io.reactivex.internal.schedulers.IoScheduler.NONE` @type ^`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool` @kind object;
+  #L440e28.  if v0 != v1 then goto L440e2e;
+  #L440e2c.  return @kind void;
+  #L440e2e.  v2:= v3.`io.reactivex.internal.schedulers.IoScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L440e32.  call temp:= `compareAndSet`(v2, v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L440e38.  v1:= temp;
+  #L440e3a.  if v1 == 0 then goto L440e14;
+  #L440e3e.  call `shutdown`(v0) @signature `Lio/reactivex/internal/schedulers/IoScheduler$CachedWorkerPool;.shutdown:()V` @kind virtual;
+  #L440e44.  return @kind void;
+}
+procedure `int` `size`(`io.reactivex.internal.schedulers.IoScheduler` v1 @kind this) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.size:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L440cb4.  v0:= v1.`io.reactivex.internal.schedulers.IoScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L440cb8.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L440cbe.  v0:= temp @kind object;
+  #L440cc0.  v0:= (`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool`) v0 @kind object;
+  #L440cc4.  v0:= v0.`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool.allWorkers` @type ^`io.reactivex.disposables.CompositeDisposable` @kind object;
+  #L440cc8.  call temp:= `size`(v0) @signature `Lio/reactivex/disposables/CompositeDisposable;.size:()I` @kind virtual;
+  #L440cce.  v0:= temp;
+  #L440cd0.  return v0;
+}
+procedure `void` `start`(`io.reactivex.internal.schedulers.IoScheduler` v5 @kind this) @signature `Lio/reactivex/internal/schedulers/IoScheduler;.start:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L440e58.  v0:= new `io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool`;
+  #L440e5c.  v1:= `@@io.reactivex.internal.schedulers.IoScheduler.KEEP_ALIVE_UNIT` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L440e60.  v2:= v5.`io.reactivex.internal.schedulers.IoScheduler.threadFactory` @type ^`java.util.concurrent.ThreadFactory` @kind object;
+  #L440e64.  v3:= 60L;
+  #L440e68.  call `<init>`(v0, v3, v1, v2) @signature `Lio/reactivex/internal/schedulers/IoScheduler$CachedWorkerPool;.<init>:(JLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L440e6e.  v1:= v5.`io.reactivex.internal.schedulers.IoScheduler.pool` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L440e72.  v2:= `@@io.reactivex.internal.schedulers.IoScheduler.NONE` @type ^`io.reactivex.internal.schedulers.IoScheduler$CachedWorkerPool` @kind object;
+  #L440e76.  call temp:= `compareAndSet`(v1, v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L440e7c.  v1:= temp;
+  #L440e7e.  if v1 != 0 then goto L440e88;
+  #L440e82.  call `shutdown`(v0) @signature `Lio/reactivex/internal/schedulers/IoScheduler$CachedWorkerPool;.shutdown:()V` @kind virtual;
+  #L440e88.  return @kind void;
+}

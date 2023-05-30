@@ -1,0 +1,487 @@
+record `com.google.firebase.crashlytics.internal.common.CrashlyticsController` @kind class @AccessFlag  {
+  `com.google.firebase.crashlytics.internal.analytics.AnalyticsEventLogger` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.analyticsEventLogger` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.common.AppData` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.appData` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.common.CrashlyticsBackgroundWorker` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.backgroundWorker` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.atomic.AtomicBoolean` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.checkForUnsentReportsCalled` @AccessFlag ;
+  `android.content.Context` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.context` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.common.CrashlyticsUncaughtExceptionHandler` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.crashHandler` @AccessFlag PRIVATE;
+  `com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.crashMarker` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.common.DataCollectionArbiter` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.dataCollectionArbiter` @AccessFlag PRIVATE_FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.eventCounter` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.persistence.FileStore` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.fileStore` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.report.ReportUploader$HandlingExceptionCheck` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.handlingExceptionCheck` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.network.HttpRequestFactory` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.httpRequestFactory` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.common.IdManager` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.idManager` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.common.CrashlyticsController$LogFileDirectoryProvider` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.logFileDirectoryProvider` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.log.LogFileManager` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.logFileManager` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.CrashlyticsNativeComponent` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.nativeComponent` @AccessFlag PRIVATE_FINAL;
+  `com.google.android.gms.tasks.TaskCompletionSource` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.reportActionProvided` @AccessFlag ;
+  `com.google.firebase.crashlytics.internal.report.ReportManager` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.reportManager` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.report.ReportUploader$Provider` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.reportUploaderProvider` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.common.SessionReportingCoordinator` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.reportingCoordinator` @AccessFlag PRIVATE_FINAL;
+  `com.google.firebase.crashlytics.internal.stacktrace.StackTraceTrimmingStrategy` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.stackTraceTrimmingStrategy` @AccessFlag PRIVATE_FINAL;
+  `java.lang.String` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.unityVersion` @AccessFlag PRIVATE_FINAL;
+  `com.google.android.gms.tasks.TaskCompletionSource` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.unsentReportsAvailable` @AccessFlag ;
+  `com.google.android.gms.tasks.TaskCompletionSource` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.unsentReportsHandled` @AccessFlag ;
+  `com.google.firebase.crashlytics.internal.common.UserMetadata` `com.google.firebase.crashlytics.internal.common.CrashlyticsController.userMetadata` @AccessFlag PRIVATE_FINAL;
+}
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.ANALYZER_VERSION` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.io.FilenameFilter` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.APP_EXCEPTION_MARKER_FILTER` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.APP_EXCEPTION_MARKER_PREFIX` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.COLLECT_CUSTOM_KEYS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.CRASHLYTICS_API_ENDPOINT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.EVENT_TYPE_CRASH` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.EVENT_TYPE_LOGGED` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.FATAL_SESSION_DIR` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.FIREBASE_APPLICATION_EXCEPTION` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.FIREBASE_CRASH_TYPE` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.FIREBASE_CRASH_TYPE_FATAL` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.FIREBASE_TIMESTAMP` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.GENERATOR_FORMAT` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String`[] `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.INITIAL_SESSION_PART_TAGS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.util.Comparator` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.LARGEST_FILE_NAME_FIRST` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.MAX_CHAINED_EXCEPTION_DEPTH` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.MAX_LOCAL_LOGGED_EXCEPTIONS` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.MAX_OPEN_SESSIONS` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.MAX_STACK_SIZE` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.NATIVE_SESSION_DIR` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.NONFATAL_SESSION_DIR` @AccessFlag STATIC_FINAL;
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.NUM_STACK_REPETITIONS_ALLOWED` @AccessFlag STATIC_FINAL;
+global `java.util.Map` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SEND_AT_CRASHTIME_HEADER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_APP_TAG` @AccessFlag STATIC_FINAL;
+global `java.io.FilenameFilter` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_BEGIN_FILE_FILTER` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_BEGIN_TAG` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_DEVICE_TAG` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_EVENT_MISSING_BINARY_IMGS_TAG` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_FATAL_TAG` @AccessFlag STATIC_FINAL;
+global `java.io.FilenameFilter` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_FILE_FILTER` @AccessFlag STATIC_FINAL;
+global `java.util.regex.Pattern` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_FILE_PATTERN` @AccessFlag PRIVATE_STATIC_FINAL;
+global `int` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_ID_LENGTH` @AccessFlag PRIVATE_STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_NON_FATAL_TAG` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_OS_TAG` @AccessFlag STATIC_FINAL;
+global `java.lang.String` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SESSION_USER_TAG` @AccessFlag STATIC_FINAL;
+global `java.util.Comparator` `@@com.google.firebase.crashlytics.internal.common.CrashlyticsController.SMALLEST_FILE_NAME_FIRST` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+
+  # return;
+}
+procedure `void` `<init>`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v11 @kind this, `android.content.Context` v12 @kind object, `com.google.firebase.crashlytics.internal.common.CrashlyticsBackgroundWorker` v13 @kind object, `com.google.firebase.crashlytics.internal.network.HttpRequestFactory` v14 @kind object, `com.google.firebase.crashlytics.internal.common.IdManager` v15 @kind object, `com.google.firebase.crashlytics.internal.common.DataCollectionArbiter` v16 @kind object, `com.google.firebase.crashlytics.internal.persistence.FileStore` v17 @kind object, `com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker` v18 @kind object, `com.google.firebase.crashlytics.internal.common.AppData` v19 @kind object, `com.google.firebase.crashlytics.internal.report.ReportManager` v20 @kind object, `com.google.firebase.crashlytics.internal.report.ReportUploader$Provider` v21 @kind object, `com.google.firebase.crashlytics.internal.CrashlyticsNativeComponent` v22 @kind object, `com.google.firebase.crashlytics.internal.unity.UnityVersionProvider` v23 @kind object, `com.google.firebase.crashlytics.internal.analytics.AnalyticsEventLogger` v24 @kind object, `com.google.firebase.crashlytics.internal.settings.SettingsDataProvider` v25 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.<init>:(Landroid/content/Context;Lcom/google/firebase/crashlytics/internal/common/CrashlyticsBackgroundWorker;Lcom/google/firebase/crashlytics/internal/network/HttpRequestFactory;Lcom/google/firebase/crashlytics/internal/common/IdManager;Lcom/google/firebase/crashlytics/internal/common/DataCollectionArbiter;Lcom/google/firebase/crashlytics/internal/persistence/FileStore;Lcom/google/firebase/crashlytics/internal/common/CrashlyticsFileMarker;Lcom/google/firebase/crashlytics/internal/common/AppData;Lcom/google/firebase/crashlytics/internal/report/ReportManager;Lcom/google/firebase/crashlytics/internal/report/ReportUploader$Provider;Lcom/google/firebase/crashlytics/internal/CrashlyticsNativeComponent;Lcom/google/firebase/crashlytics/internal/unity/UnityVersionProvider;Lcom/google/firebase/crashlytics/internal/analytics/AnalyticsEventLogger;Lcom/google/firebase/crashlytics/internal/settings/SettingsDataProvider;)V` @AccessFlag CONSTRUCTOR {
+
+  # return;
+}
+procedure `java.util.regex.Pattern` `access$000`() @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$000:()Ljava/util/regex/Pattern;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `access$1000`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1000:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)V` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.common.DataCollectionArbiter` `access$1100`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1100:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/common/DataCollectionArbiter;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.common.CrashlyticsBackgroundWorker` `access$1200`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1200:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/common/CrashlyticsBackgroundWorker;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `access$1300`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object, `com.google.firebase.crashlytics.internal.settings.model.AppSettingsData` v1 @kind object, `boolean` v2 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1300:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;Lcom/google/firebase/crashlytics/internal/settings/model/AppSettingsData;Z)V` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `access$1400`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1400:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/android/gms/tasks/Task;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.report.ReportManager` `access$1500`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1500:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/report/ReportManager;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `access$1600`(`java.io.File`[] v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1600:([Ljava/io/File;)V` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `access$1700`(`java.lang.String` v0 @kind object, `java.io.File` v1 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1700:(Ljava/lang/String;Ljava/io/File;)V` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.report.ReportUploader$Provider` `access$1800`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1800:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/report/ReportUploader$Provider;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.report.network.CreateReportSpiCall` `access$1900`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object, `java.lang.String` v1 @kind object, `java.lang.String` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$1900:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;Ljava/lang/String;Ljava/lang/String;)Lcom/google/firebase/crashlytics/internal/report/network/CreateReportSpiCall;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.common.AppData` `access$2000`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$2000:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/common/AppData;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.report.ReportUploader$HandlingExceptionCheck` `access$2100`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$2100:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/report/ReportUploader$HandlingExceptionCheck;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.log.LogFileManager` `access$2200`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$2200:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/log/LogFileManager;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `access$2300`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object, `java.lang.Thread` v1 @kind object, `java.lang.Throwable` v2 @kind object, `java.lang.String` v3 @kind object, `long` v4 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$2300:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;Ljava/lang/Thread;Ljava/lang/Throwable;Ljava/lang/String;J)V` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `java.io.File`[] `access$2500`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object, `java.io.FilenameFilter` v1 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$2500:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;Ljava/io/FilenameFilter;)[Ljava/io/File;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `java.lang.String` `access$2600`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$2600:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Ljava/lang/String;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.analytics.AnalyticsEventLogger` `access$2700`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$2700:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/analytics/AnalyticsEventLogger;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `long` `access$300`(`java.util.Date` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$300:(Ljava/util/Date;)J` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `java.lang.String` `access$400`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$400:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Ljava/lang/String;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.common.CrashlyticsFileMarker` `access$500`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$500:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/common/CrashlyticsFileMarker;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `java.lang.String` `access$600`(`java.lang.String` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$600:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.common.SessionReportingCoordinator` `access$700`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$700:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;)Lcom/google/firebase/crashlytics/internal/common/SessionReportingCoordinator;` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `access$800`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object, `java.lang.Thread` v1 @kind object, `java.lang.Throwable` v2 @kind object, `java.lang.String` v3 @kind object, `long` v4 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$800:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;Ljava/lang/Thread;Ljava/lang/Throwable;Ljava/lang/String;J)V` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `access$900`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v0 @kind object, `long` v1 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.access$900:(Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;J)V` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `void` `appendOrganizationIdToSessionFile`(`java.lang.String` v1 @kind object, `java.io.File` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.appendOrganizationIdToSessionFile:(Ljava/lang/String;Ljava/io/File;)V` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `void` `appendToProtoFile`(`java.io.File` v5 @kind object, `com.google.firebase.crashlytics.internal.common.CrashlyticsController$CodedOutputStreamWriteAction` v6 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.appendToProtoFile:(Ljava/io/File;Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController$CodedOutputStreamWriteAction;)V` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `void` `cacheKeyData`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `java.util.Map` v3 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.cacheKeyData:(Ljava/util/Map;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `cacheUserData`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `com.google.firebase.crashlytics.internal.common.UserMetadata` v3 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.cacheUserData:(Lcom/google/firebase/crashlytics/internal/common/UserMetadata;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `closeOpenSessions`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v5 @kind this, `java.io.File`[] v6 @kind object, `int` v7 , `int` v8 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.closeOpenSessions:([Ljava/io/File;II)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `closeWithoutRenamingOrLog`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `com.google.firebase.crashlytics.internal.proto.ClsFileOutputStream` v3 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.closeWithoutRenamingOrLog:(Lcom/google/firebase/crashlytics/internal/proto/ClsFileOutputStream;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `copyToCodedOutputStream`(`java.io.InputStream` v3 @kind object, `com.google.firebase.crashlytics.internal.proto.CodedOutputStream` v4 @kind object, `int` v5 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.copyToCodedOutputStream:(Ljava/io/InputStream;Lcom/google/firebase/crashlytics/internal/proto/CodedOutputStream;I)V` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.report.ReportUploader$Provider` `defaultReportUploader`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.defaultReportUploader:()Lcom/google/firebase/crashlytics/internal/report/ReportUploader$Provider;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `deleteFiles`(`java.io.File`[] v3 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.deleteFiles:([Ljava/io/File;)V` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `void` `doCloseSessions`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v5 @kind this, `int` v6 , `boolean` v7 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.doCloseSessions:(IZ)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `doOpenSession`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v6 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.doOpenSession:()V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `doWriteAppExceptionMarker`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v4 @kind this, `long` v5 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.doWriteAppExceptionMarker:(J)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `doWriteFatal`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v14 @kind this, `java.lang.Thread` v15 @kind object, `java.lang.Throwable` v16 @kind object, `java.lang.String` v17 @kind object, `long` v18 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.doWriteFatal:(Ljava/lang/Thread;Ljava/lang/Throwable;Ljava/lang/String;J)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `doWriteNonFatal`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v15 @kind this, `java.lang.Thread` v16 @kind object, `java.lang.Throwable` v17 @kind object, `java.lang.String` v18 @kind object, `long` v19 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.doWriteNonFatal:(Ljava/lang/Thread;Ljava/lang/Throwable;Ljava/lang/String;J)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `java.io.File`[] `ensureFileArrayNotNull`(`java.io.File`[] v0 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.ensureFileArrayNotNull:([Ljava/io/File;)[Ljava/io/File;` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `void` `finalizePreviousNativeSession`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v6 @kind this, `java.lang.String` v7 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.finalizePreviousNativeSession:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `boolean` `firebaseCrashExists`() @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.firebaseCrashExists:()Z` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `android.content.Context` `getContext`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getContext:()Landroid/content/Context;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.report.network.CreateReportSpiCall` `getCreateReportSpiCall`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v4 @kind this, `java.lang.String` v5 @kind object, `java.lang.String` v6 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getCreateReportSpiCall:(Ljava/lang/String;Ljava/lang/String;)Lcom/google/firebase/crashlytics/internal/report/network/CreateReportSpiCall;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `java.lang.String` `getCurrentSessionId`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getCurrentSessionId:()Ljava/lang/String;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `long` `getCurrentTimestampSeconds`() @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getCurrentTimestampSeconds:()J` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `java.util.List` `getNativeSessionFiles`(`com.google.firebase.crashlytics.internal.NativeSessionFileProvider` v4 @kind object, `java.lang.String` v5 @kind object, `android.content.Context` v6 @kind object, `java.io.File` v7 @kind object, `byte`[] v8 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getNativeSessionFiles:(Lcom/google/firebase/crashlytics/internal/NativeSessionFileProvider;Ljava/lang/String;Landroid/content/Context;Ljava/io/File;[B)Ljava/util/List;` @AccessFlag STATIC {
+
+  # return;
+}
+procedure `java.lang.String` `getSessionIdFromSessionFile`(`java.io.File` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getSessionIdFromSessionFile:(Ljava/io/File;)Ljava/lang/String;` @AccessFlag STATIC {
+
+  # return;
+}
+procedure `long` `getTimestampSeconds`(`java.util.Date` v4 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getTimestampSeconds:(Ljava/util/Date;)J` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `java.io.File`[] `getTrimmedNonFatalFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v4 @kind this, `java.lang.String` v5 @kind object, `java.io.File`[] v6 @kind object, `int` v7 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getTrimmedNonFatalFiles:(Ljava/lang/String;[Ljava/io/File;I)[Ljava/io/File;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.common.UserMetadata` `getUserMetadata`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `java.lang.String` v3 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getUserMetadata:(Ljava/lang/String;)Lcom/google/firebase/crashlytics/internal/common/UserMetadata;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `boolean` `lambda$static$0`(`java.io.File` v0 @kind object, `java.lang.String` v1 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.lambda$static$0:(Ljava/io/File;Ljava/lang/String;)Z` @AccessFlag STATIC_SYNTHETIC {
+
+  # return;
+}
+procedure `java.io.File`[] `listFilesMatching`(`java.io.File` v0 @kind object, `java.io.FilenameFilter` v1 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listFilesMatching:(Ljava/io/File;Ljava/io/FilenameFilter;)[Ljava/io/File;` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `java.io.File`[] `listFilesMatching`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this, `java.io.FilenameFilter` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listFilesMatching:(Ljava/io/FilenameFilter;)[Ljava/io/File;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `java.io.File`[] `listSessionPartFilesFor`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listSessionPartFilesFor:(Ljava/lang/String;)[Ljava/io/File;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `java.io.File`[] `listSortedSessionBeginFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listSortedSessionBeginFiles:()[Ljava/io/File;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `logAnalyticsAppExceptionEvent`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `long` v3 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.logAnalyticsAppExceptionEvent:(J)Lcom/google/android/gms/tasks/Task;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `logAnalyticsAppExceptionEvents`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v8 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.logAnalyticsAppExceptionEvents:()Lcom/google/android/gms/tasks/Task;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `java.lang.String` `makeFirebaseSessionIdentifier`(`java.lang.String` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.makeFirebaseSessionIdentifier:(Ljava/lang/String;)Ljava/lang/String;` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `void` `retainSessions`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v7 @kind this, `java.io.File`[] v8 @kind object, `java.util.Set` v9 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.retainSessions:([Ljava/io/File;Ljava/util/Set;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `sendSessionReports`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v8 @kind this, `com.google.firebase.crashlytics.internal.settings.model.AppSettingsData` v9 @kind object, `boolean` v10 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.sendSessionReports:(Lcom/google/firebase/crashlytics/internal/settings/model/AppSettingsData;Z)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `synthesizeSessionFile`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v9 @kind this, `java.io.File` v10 @kind object, `java.lang.String` v11 @kind object, `java.io.File`[] v12 @kind object, `java.io.File` v13 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.synthesizeSessionFile:(Ljava/io/File;Ljava/lang/String;[Ljava/io/File;Ljava/io/File;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `trimOpenSessions`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v4 @kind this, `int` v5 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.trimOpenSessions:(I)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `trimSessionEventFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this, `java.lang.String` v4 @kind object, `int` v5 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.trimSessionEventFiles:(Ljava/lang/String;I)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `waitForReportAction`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.waitForReportAction:()Lcom/google/android/gms/tasks/Task;` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeBeginSession`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v9 @kind this, `java.lang.String` v10 @kind object, `long` v11 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeBeginSession:(Ljava/lang/String;J)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeInitialPartsTo`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v10 @kind this, `com.google.firebase.crashlytics.internal.proto.CodedOutputStream` v11 @kind object, `java.lang.String` v12 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeInitialPartsTo:(Lcom/google/firebase/crashlytics/internal/proto/CodedOutputStream;Ljava/lang/String;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeNonFatalEventsTo`(`com.google.firebase.crashlytics.internal.proto.CodedOutputStream` v10 @kind object, `java.io.File`[] v11 @kind object, `java.lang.String` v12 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeNonFatalEventsTo:(Lcom/google/firebase/crashlytics/internal/proto/CodedOutputStream;[Ljava/io/File;Ljava/lang/String;)V` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `void` `writeSessionApp`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v13 @kind this, `java.lang.String` v14 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeSessionApp:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeSessionDevice`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v27 @kind this, `java.lang.String` v28 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeSessionDevice:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeSessionEvent`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v25 @kind this, `com.google.firebase.crashlytics.internal.proto.CodedOutputStream` v26 @kind object, `java.lang.Thread` v27 @kind object, `java.lang.Throwable` v28 @kind object, `long` v29 , `java.lang.String` v31 @kind object, `boolean` v32 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeSessionEvent:(Lcom/google/firebase/crashlytics/internal/proto/CodedOutputStream;Ljava/lang/Thread;Ljava/lang/Throwable;JLjava/lang/String;Z)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeSessionOS`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v5 @kind this, `java.lang.String` v6 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeSessionOS:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeSessionPartFile`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v7 @kind this, `java.lang.String` v8 @kind object, `java.lang.String` v9 @kind object, `com.google.firebase.crashlytics.internal.common.CrashlyticsController$CodedOutputStreamWriteAction` v10 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeSessionPartFile:(Ljava/lang/String;Ljava/lang/String;Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController$CodedOutputStreamWriteAction;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeSessionPartsToSessionFile`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v10 @kind this, `java.io.File` v11 @kind object, `java.lang.String` v12 @kind object, `int` v13 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeSessionPartsToSessionFile:(Ljava/io/File;Ljava/lang/String;I)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeSessionUser`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `java.lang.String` v3 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeSessionUser:(Ljava/lang/String;)V` @AccessFlag PRIVATE {
+
+  # return;
+}
+procedure `void` `writeToCosFromFile`(`com.google.firebase.crashlytics.internal.proto.CodedOutputStream` v5 @kind object, `java.io.File` v6 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeToCosFromFile:(Lcom/google/firebase/crashlytics/internal/proto/CodedOutputStream;Ljava/io/File;)V` @AccessFlag PRIVATE_STATIC {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `checkForUnsentReports`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.checkForUnsentReports:()Lcom/google/android/gms/tasks/Task;` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `cleanInvalidTempFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.cleanInvalidTempFiles:()V` @AccessFlag  {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `deleteUnsentReports`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.deleteUnsentReports:()Lcom/google/android/gms/tasks/Task;` @AccessFlag  {
+
+  # return;
+}
+procedure `boolean` `didCrashOnPreviousExecution`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.didCrashOnPreviousExecution:()Z` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `doCleanInvalidTempFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v8 @kind this, `java.io.File`[] v9 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.doCleanInvalidTempFiles:([Ljava/io/File;)V` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `doCloseSessions`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this, `int` v2 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.doCloseSessions:(I)V` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `enableExceptionHandling`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `java.lang.Thread$UncaughtExceptionHandler` v3 @kind object, `com.google.firebase.crashlytics.internal.settings.SettingsDataProvider` v4 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.enableExceptionHandling:(Ljava/lang/Thread$UncaughtExceptionHandler;Lcom/google/firebase/crashlytics/internal/settings/SettingsDataProvider;)V` @AccessFlag  {
+
+  # return;
+}
+procedure `boolean` `finalizeSessions`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this, `int` v4 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.finalizeSessions:(I)Z` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File` `getFatalSessionFilesDir`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getFatalSessionFilesDir:()Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File` `getFilesDir`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getFilesDir:()Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File` `getNativeSessionFilesDir`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getNativeSessionFilesDir:()Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File` `getNonFatalSessionFilesDir`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getNonFatalSessionFilesDir:()Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `com.google.firebase.crashlytics.internal.common.UserMetadata` `getUserMetadata`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.getUserMetadata:()Lcom/google/firebase/crashlytics/internal/common/UserMetadata;` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `handleUncaughtException`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v8 @kind this, `com.google.firebase.crashlytics.internal.settings.SettingsDataProvider` v9 @kind object, `java.lang.Thread` v10 @kind object, `java.lang.Throwable` v11 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.handleUncaughtException:(Lcom/google/firebase/crashlytics/internal/settings/SettingsDataProvider;Ljava/lang/Thread;Ljava/lang/Throwable;)V` @AccessFlag  {
+
+  # return;
+}
+procedure `boolean` `hasOpenSession`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.hasOpenSession:()Z` @AccessFlag  {
+
+  # return;
+}
+procedure `boolean` `isHandlingException`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.isHandlingException:()Z` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File`[] `listAppExceptionMarkerFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listAppExceptionMarkerFiles:()[Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File`[] `listCompleteSessionFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listCompleteSessionFiles:()[Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File`[] `listNativeSessionFileDirectories`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listNativeSessionFileDirectories:()[Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `java.io.File`[] `listSessionBeginFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.listSessionBeginFiles:()[Ljava/io/File;` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `openSession`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.openSession:()V` @AccessFlag  {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `sendUnsentReports`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.sendUnsentReports:()Lcom/google/android/gms/tasks/Task;` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `setCustomKey`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this, `java.lang.String` v2 @kind object, `java.lang.String` v3 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.setCustomKey:(Ljava/lang/String;Ljava/lang/String;)V` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `setUserId`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v1 @kind this, `java.lang.String` v2 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.setUserId:(Ljava/lang/String;)V` @AccessFlag  {
+
+  # return;
+}
+procedure `com.google.android.gms.tasks.Task` `submitAllReports`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `float` v3 , `com.google.android.gms.tasks.Task` v4 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.submitAllReports:(FLcom/google/android/gms/tasks/Task;)Lcom/google/android/gms/tasks/Task;` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `trimSessionFiles`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this, `int` v4 ) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.trimSessionFiles:(I)V` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `writeNonFatalException`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v3 @kind this, `java.lang.Thread` v4 @kind object, `java.lang.Throwable` v5 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeNonFatalException:(Ljava/lang/Thread;Ljava/lang/Throwable;)V` @AccessFlag  {
+
+  # return;
+}
+procedure `void` `writeToLog`(`com.google.firebase.crashlytics.internal.common.CrashlyticsController` v2 @kind this, `long` v3 , `java.lang.String` v5 @kind object) @signature `Lcom/google/firebase/crashlytics/internal/common/CrashlyticsController;.writeToLog:(JLjava/lang/String;)V` @AccessFlag  {
+
+  # return;
+}

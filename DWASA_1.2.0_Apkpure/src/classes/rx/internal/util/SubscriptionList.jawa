@@ -1,0 +1,201 @@
+record `rx.internal.util.SubscriptionList` @kind class @AccessFlag PUBLIC_FINAL extends `rx.Subscription` @kind interface {
+  `java.util.List` `rx.internal.util.SubscriptionList.subscriptions` @AccessFlag PRIVATE;
+  `boolean` `rx.internal.util.SubscriptionList.unsubscribed` @AccessFlag PRIVATE_VOLATILE;
+}
+procedure `void` `<init>`(`rx.internal.util.SubscriptionList` v0 @kind this) @signature `Lrx/internal/util/SubscriptionList;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b71e8.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b71ee.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.util.SubscriptionList` v1 @kind this, `rx.Subscription` v2 @kind object) @signature `Lrx/internal/util/SubscriptionList;.<init>:(Lrx/Subscription;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b7200.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b7206.  v0:= new `java.util.LinkedList`;
+  #L4b720a.  call `<init>`(v0) @signature `Ljava/util/LinkedList;.<init>:()V` @kind direct;
+  #L4b7210.  v1.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` := v0 @kind object;
+  #L4b7214.  v0:= v1.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` @kind object;
+  #L4b7218.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b721e.  return @kind void;
+}
+procedure `void` `<init>`(`rx.internal.util.SubscriptionList` v1 @kind this, `rx.Subscription`[] v2 @kind object) @signature `Lrx/internal/util/SubscriptionList;.<init>:([Lrx/Subscription;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4b7230.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b7236.  v0:= new `java.util.LinkedList`;
+  #L4b723a.  call temp:= `asList`(v2) @signature `Ljava/util/Arrays;.asList:([Ljava/lang/Object;)Ljava/util/List;` @kind static;
+  #L4b7240.  v2:= temp @kind object;
+  #L4b7242.  call `<init>`(v0, v2) @signature `Ljava/util/LinkedList;.<init>:(Ljava/util/Collection;)V` @kind direct;
+  #L4b7248.  v1.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` := v0 @kind object;
+  #L4b724c.  return @kind void;
+}
+procedure `void` `unsubscribeFromAll`(`java.util.Collection` v2 @kind object) @signature `Lrx/internal/util/SubscriptionList;.unsubscribeFromAll:(Ljava/util/Collection;)V` @AccessFlag PRIVATE_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b73dc.  if v2 != 0 then goto L4b73e2;
+  #L4b73e0.  return @kind void;
+  #L4b73e2.  v0:= 0I;
+  #L4b73e4.  call temp:= `iterator`(v2) @signature `Ljava/util/Collection;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L4b73ea.  v2:= temp @kind object;
+  #L4b73ec.  call temp:= `hasNext`(v2) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L4b73f2.  v1:= temp;
+  #L4b73f4.  if v1 == 0 then goto L4b7424;
+  #L4b73f8.  call temp:= `next`(v2) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L4b73fe.  v1:= temp @kind object;
+  #L4b7400.  v1:= (`rx.Subscription`) v1 @kind object;
+  #L4b7404.  call `unsubscribe`(v1) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4b740a.  goto L4b73ec;
+  #L4b740c.  v1:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b740e.  if v0 != 0 then goto L4b741c;
+  #L4b7412.  v0:= new `java.util.ArrayList`;
+  #L4b7416.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L4b741c.  call temp:= `add`(v0, v1) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b7422.  goto L4b73ec;
+  #L4b7424.  call `throwIfAny`(v0) @signature `Lrx/exceptions/Exceptions;.throwIfAny:(Ljava/util/List;)V` @kind static;
+  #L4b742a.  return @kind void;
+  catch `java.lang.Throwable` @[L4b7404..L4b740a] goto L4b740c;
+}
+procedure `void` `add`(`rx.internal.util.SubscriptionList` v1 @kind this, `rx.Subscription` v2 @kind object) @signature `Lrx/internal/util/SubscriptionList;.add:(Lrx/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b7260.  call temp:= `isUnsubscribed`(v2) @signature `Lrx/Subscription;.isUnsubscribed:()Z` @kind interface;
+  #L4b7266.  v0:= temp;
+  #L4b7268.  if v0 == 0 then goto L4b726e;
+  #L4b726c.  return @kind void;
+  #L4b726e.  v0:= v1.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b7272.  if v0 != 0 then goto L4b72aa;
+  #L4b7276.  @monitorenter v1
+  #L4b7278.  v0:= v1.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b727c.  if v0 != 0 then goto L4b72a0;
+  #L4b7280.  v0:= v1.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` @kind object;
+  #L4b7284.  if v0 != 0 then goto L4b7296;
+  #L4b7288.  v0:= new `java.util.LinkedList`;
+  #L4b728c.  call `<init>`(v0) @signature `Ljava/util/LinkedList;.<init>:()V` @kind direct;
+  #L4b7292.  v1.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` := v0 @kind object;
+  #L4b7296.  call temp:= `add`(v0, v2) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b729c.  @monitorexit v1
+  #L4b729e.  return @kind void;
+  #L4b72a0.  @monitorexit v1
+  #L4b72a2.  goto L4b72aa;
+  #L4b72a4.  v2:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b72a6.  @monitorexit v1
+  #L4b72a8.  throw v2;
+  #L4b72aa.  call `unsubscribe`(v2) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4b72b0.  return @kind void;
+  catch `java.lang.Throwable` @[L4b7278..L4b72a8] goto L4b72a4;
+}
+procedure `void` `clear`(`rx.internal.util.SubscriptionList` v2 @kind this) @signature `Lrx/internal/util/SubscriptionList;.clear:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b72d0.  v0:= v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b72d4.  if v0 != 0 then goto L4b72f4;
+  #L4b72d8.  @monitorenter v2
+  #L4b72da.  v0:= v2.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` @kind object;
+  #L4b72de.  v1:= 0I;
+  #L4b72e0.  v2.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` := v1 @kind object;
+  #L4b72e4.  @monitorexit v2
+  #L4b72e6.  call `unsubscribeFromAll`(v0) @signature `Lrx/internal/util/SubscriptionList;.unsubscribeFromAll:(Ljava/util/Collection;)V` @kind static;
+  #L4b72ec.  goto L4b72f4;
+  #L4b72ee.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b72f0.  @monitorexit v2
+  #L4b72f2.  throw v0;
+  #L4b72f4.  return @kind void;
+  catch `java.lang.Throwable` @[L4b72da..L4b72e6] goto L4b72ee;
+  catch `java.lang.Throwable` @[L4b72f0..L4b72f2] goto L4b72ee;
+}
+procedure `boolean` `hasSubscriptions`(`rx.internal.util.SubscriptionList` v2 @kind this) @signature `Lrx/internal/util/SubscriptionList;.hasSubscriptions:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b7178.  v0:= v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b717c.  v1:= 0I;
+  #L4b717e.  if v0 != 0 then goto L4b71b0;
+  #L4b7182.  @monitorenter v2
+  #L4b7184.  v0:= v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b7188.  if v0 != 0 then goto L4b71a6;
+  #L4b718c.  v0:= v2.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` @kind object;
+  #L4b7190.  if v0 == 0 then goto L4b71a6;
+  #L4b7194.  v0:= v2.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` @kind object;
+  #L4b7198.  call temp:= `isEmpty`(v0) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L4b719e.  v0:= temp;
+  #L4b71a0.  if v0 != 0 then goto L4b71a6;
+  #L4b71a4.  v1:= 1I;
+  #L4b71a6.  @monitorexit v2
+  #L4b71a8.  return v1;
+  #L4b71aa.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b71ac.  @monitorexit v2
+  #L4b71ae.  throw v0;
+  #L4b71b0.  return v1;
+  catch `java.lang.Throwable` @[L4b7184..L4b71ae] goto L4b71aa;
+}
+procedure `boolean` `isUnsubscribed`(`rx.internal.util.SubscriptionList` v1 @kind this) @signature `Lrx/internal/util/SubscriptionList;.isUnsubscribed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4b71d0.  v0:= v1.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b71d4.  return v0;
+}
+procedure `void` `remove`(`rx.internal.util.SubscriptionList` v2 @kind this, `rx.Subscription` v3 @kind object) @signature `Lrx/internal/util/SubscriptionList;.remove:(Lrx/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b731c.  v0:= v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b7320.  if v0 != 0 then goto L4b7358;
+  #L4b7324.  @monitorenter v2
+  #L4b7326.  v0:= v2.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` @kind object;
+  #L4b732a.  v1:= v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b732e.  if v1 != 0 then goto L4b734e;
+  #L4b7332.  if v0 != 0 then goto L4b7338;
+  #L4b7336.  goto L4b734e;
+  #L4b7338.  call temp:= `remove`(v0, v3) @signature `Ljava/util/List;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L4b733e.  v0:= temp;
+  #L4b7340.  @monitorexit v2
+  #L4b7342.  if v0 == 0 then goto L4b7358;
+  #L4b7346.  call `unsubscribe`(v3) @signature `Lrx/Subscription;.unsubscribe:()V` @kind interface;
+  #L4b734c.  goto L4b7358;
+  #L4b734e.  @monitorexit v2
+  #L4b7350.  return @kind void;
+  #L4b7352.  v3:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b7354.  @monitorexit v2
+  #L4b7356.  throw v3;
+  #L4b7358.  return @kind void;
+  catch `java.lang.Throwable` @[L4b7326..L4b7342] goto L4b7352;
+  catch `java.lang.Throwable` @[L4b734e..L4b7356] goto L4b7352;
+}
+procedure `void` `unsubscribe`(`rx.internal.util.SubscriptionList` v2 @kind this) @signature `Lrx/internal/util/SubscriptionList;.unsubscribe:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4b7380.  v0:= v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b7384.  if v0 != 0 then goto L4b73b6;
+  #L4b7388.  @monitorenter v2
+  #L4b738a.  v0:= v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` @kind boolean;
+  #L4b738e.  if v0 == 0 then goto L4b7396;
+  #L4b7392.  @monitorexit v2
+  #L4b7394.  return @kind void;
+  #L4b7396.  v0:= 1I;
+  #L4b7398.  v2.`rx.internal.util.SubscriptionList.unsubscribed` @type ^`boolean` := v0 @kind boolean;
+  #L4b739c.  v0:= v2.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` @kind object;
+  #L4b73a0.  v1:= 0I;
+  #L4b73a2.  v2.`rx.internal.util.SubscriptionList.subscriptions` @type ^`java.util.List` := v1 @kind object;
+  #L4b73a6.  @monitorexit v2
+  #L4b73a8.  call `unsubscribeFromAll`(v0) @signature `Lrx/internal/util/SubscriptionList;.unsubscribeFromAll:(Ljava/util/Collection;)V` @kind static;
+  #L4b73ae.  goto L4b73b6;
+  #L4b73b0.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b73b2.  @monitorexit v2
+  #L4b73b4.  throw v0;
+  #L4b73b6.  return @kind void;
+  catch `java.lang.Throwable` @[L4b738a..L4b73a8] goto L4b73b0;
+  catch `java.lang.Throwable` @[L4b73b2..L4b73b4] goto L4b73b0;
+}

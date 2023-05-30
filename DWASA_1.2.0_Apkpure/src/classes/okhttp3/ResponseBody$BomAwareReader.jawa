@@ -1,0 +1,57 @@
+record `okhttp3.ResponseBody$BomAwareReader` @kind class @AccessFlag FINAL extends `java.io.Reader` @kind class {
+  `java.nio.charset.Charset` `okhttp3.ResponseBody$BomAwareReader.charset` @AccessFlag PRIVATE_FINAL;
+  `boolean` `okhttp3.ResponseBody$BomAwareReader.closed` @AccessFlag PRIVATE;
+  `java.io.Reader` `okhttp3.ResponseBody$BomAwareReader.delegate` @AccessFlag PRIVATE;
+  `okio.BufferedSource` `okhttp3.ResponseBody$BomAwareReader.source` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`okhttp3.ResponseBody$BomAwareReader` v0 @kind this, `okio.BufferedSource` v1 @kind object, `java.nio.charset.Charset` v2 @kind object) @signature `Lokhttp3/ResponseBody$BomAwareReader;.<init>:(Lokio/BufferedSource;Ljava/nio/charset/Charset;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+
+  #L4615f4.  call `<init>`(v0) @signature `Ljava/io/Reader;.<init>:()V` @kind direct;
+  #L4615fa.  v0.`okhttp3.ResponseBody$BomAwareReader.source` @type ^`okio.BufferedSource` := v1 @kind object;
+  #L4615fe.  v0.`okhttp3.ResponseBody$BomAwareReader.charset` @type ^`java.nio.charset.Charset` := v2 @kind object;
+  #L461602.  return @kind void;
+}
+procedure `void` `close`(`okhttp3.ResponseBody$BomAwareReader` v1 @kind this) @signature `Lokhttp3/ResponseBody$BomAwareReader;.close:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L461614.  v0:= 1I;
+  #L461616.  v1.`okhttp3.ResponseBody$BomAwareReader.closed` @type ^`boolean` := v0 @kind boolean;
+  #L46161a.  v0:= v1.`okhttp3.ResponseBody$BomAwareReader.delegate` @type ^`java.io.Reader` @kind object;
+  #L46161e.  if v0 == 0 then goto L46162a;
+  #L461622.  call `close`(v0) @signature `Ljava/io/Reader;.close:()V` @kind virtual;
+  #L461628.  goto L461634;
+  #L46162a.  v0:= v1.`okhttp3.ResponseBody$BomAwareReader.source` @type ^`okio.BufferedSource` @kind object;
+  #L46162e.  call `close`(v0) @signature `Lokio/BufferedSource;.close:()V` @kind interface;
+  #L461634.  return @kind void;
+}
+procedure `int` `read`(`okhttp3.ResponseBody$BomAwareReader` v3 @kind this, `char`[] v4 @kind object, `int` v5 , `int` v6 ) @signature `Lokhttp3/ResponseBody$BomAwareReader;.read:([CII)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L46158c.  v0:= v3.`okhttp3.ResponseBody$BomAwareReader.closed` @type ^`boolean` @kind boolean;
+  #L461590.  if v0 != 0 then goto L4615d2;
+  #L461594.  v0:= v3.`okhttp3.ResponseBody$BomAwareReader.delegate` @type ^`java.io.Reader` @kind object;
+  #L461598.  if v0 != 0 then goto L4615c8;
+  #L46159c.  v0:= v3.`okhttp3.ResponseBody$BomAwareReader.source` @type ^`okio.BufferedSource` @kind object;
+  #L4615a0.  v1:= v3.`okhttp3.ResponseBody$BomAwareReader.charset` @type ^`java.nio.charset.Charset` @kind object;
+  #L4615a4.  call temp:= `bomAwareCharset`(v0, v1) @signature `Lokhttp3/internal/Util;.bomAwareCharset:(Lokio/BufferedSource;Ljava/nio/charset/Charset;)Ljava/nio/charset/Charset;` @kind static;
+  #L4615aa.  v0:= temp @kind object;
+  #L4615ac.  v1:= new `java.io.InputStreamReader`;
+  #L4615b0.  v2:= v3.`okhttp3.ResponseBody$BomAwareReader.source` @type ^`okio.BufferedSource` @kind object;
+  #L4615b4.  call temp:= `inputStream`(v2) @signature `Lokio/BufferedSource;.inputStream:()Ljava/io/InputStream;` @kind interface;
+  #L4615ba.  v2:= temp @kind object;
+  #L4615bc.  call `<init>`(v1, v2, v0) @signature `Ljava/io/InputStreamReader;.<init>:(Ljava/io/InputStream;Ljava/nio/charset/Charset;)V` @kind direct;
+  #L4615c2.  v3.`okhttp3.ResponseBody$BomAwareReader.delegate` @type ^`java.io.Reader` := v1 @kind object;
+  #L4615c6.  v0:= v1 @kind object;
+  #L4615c8.  call temp:= `read`(v0, v4, v5, v6) @signature `Ljava/io/Reader;.read:([CII)I` @kind virtual;
+  #L4615ce.  v4:= temp;
+  #L4615d0.  return v4;
+  #L4615d2.  v4:= new `java.io.IOException`;
+  #L4615d6.  v5:= "Stream closed" @kind object;
+  #L4615da.  call `<init>`(v4, v5) @signature `Ljava/io/IOException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4615e0.  throw v4;
+}

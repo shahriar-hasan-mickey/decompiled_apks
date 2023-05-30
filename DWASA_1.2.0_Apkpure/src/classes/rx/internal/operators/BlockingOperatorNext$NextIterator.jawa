@@ -1,0 +1,136 @@
+record `rx.internal.operators.BlockingOperatorNext$NextIterator` @kind class @AccessFlag FINAL extends `java.util.Iterator` @kind interface {
+  `java.lang.Throwable` `rx.internal.operators.BlockingOperatorNext$NextIterator.error` @AccessFlag PRIVATE;
+  `boolean` `rx.internal.operators.BlockingOperatorNext$NextIterator.hasNext` @AccessFlag PRIVATE;
+  `boolean` `rx.internal.operators.BlockingOperatorNext$NextIterator.isNextConsumed` @AccessFlag PRIVATE;
+  `rx.Observable` `rx.internal.operators.BlockingOperatorNext$NextIterator.items` @AccessFlag PRIVATE_FINAL;
+  `java.lang.Object` `rx.internal.operators.BlockingOperatorNext$NextIterator.next` @AccessFlag PRIVATE;
+  `rx.internal.operators.BlockingOperatorNext$NextObserver` `rx.internal.operators.BlockingOperatorNext$NextIterator.observer` @AccessFlag PRIVATE_FINAL;
+  `boolean` `rx.internal.operators.BlockingOperatorNext$NextIterator.started` @AccessFlag PRIVATE;
+}
+procedure `void` `<init>`(`rx.internal.operators.BlockingOperatorNext$NextIterator` v1 @kind this, `rx.Observable` v2 @kind object, `rx.internal.operators.BlockingOperatorNext$NextObserver` v3 @kind object) @signature `Lrx/internal/operators/BlockingOperatorNext$NextIterator;.<init>:(Lrx/Observable;Lrx/internal/operators/BlockingOperatorNext$NextObserver;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L4930e0.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4930e6.  v0:= 1I;
+  #L4930e8.  v1.`rx.internal.operators.BlockingOperatorNext$NextIterator.hasNext` @type ^`boolean` := v0 @kind boolean;
+  #L4930ec.  v1.`rx.internal.operators.BlockingOperatorNext$NextIterator.isNextConsumed` @type ^`boolean` := v0 @kind boolean;
+  #L4930f0.  v1.`rx.internal.operators.BlockingOperatorNext$NextIterator.items` @type ^`rx.Observable` := v2 @kind object;
+  #L4930f4.  v1.`rx.internal.operators.BlockingOperatorNext$NextIterator.observer` @type ^`rx.internal.operators.BlockingOperatorNext$NextObserver` := v3 @kind object;
+  #L4930f8.  return @kind void;
+}
+procedure `boolean` `moveToNext`(`rx.internal.operators.BlockingOperatorNext$NextIterator` v4 @kind this) @signature `Lrx/internal/operators/BlockingOperatorNext$NextIterator;.moveToNext:()Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L492fa8.  v0:= v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.started` @type ^`boolean` @kind boolean;
+  #L492fac.  v1:= 1I;
+  #L492fae.  if v0 != 0 then goto L492fd6;
+  #L492fb2.  v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.started` @type ^`boolean` := v1 @kind boolean;
+  #L492fb6.  v0:= v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.observer` @type ^`rx.internal.operators.BlockingOperatorNext$NextObserver` @kind object;
+  #L492fba.  call `setWaiting`(v0, v1) @signature `Lrx/internal/operators/BlockingOperatorNext$NextObserver;.setWaiting:(I)V` @kind virtual;
+  #L492fc0.  v0:= v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.items` @type ^`rx.Observable` @kind object;
+  #L492fc4.  call temp:= `materialize`(v0) @signature `Lrx/Observable;.materialize:()Lrx/Observable;` @kind virtual;
+  #L492fca.  v0:= temp @kind object;
+  #L492fcc.  v2:= v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.observer` @type ^`rx.internal.operators.BlockingOperatorNext$NextObserver` @kind object;
+  #L492fd0.  call temp:= `subscribe`(v0, v2) @signature `Lrx/Observable;.subscribe:(Lrx/Subscriber;)Lrx/Subscription;` @kind virtual;
+  #L492fd6.  v0:= v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.observer` @type ^`rx.internal.operators.BlockingOperatorNext$NextObserver` @kind object;
+  #L492fda.  call temp:= `takeNext`(v0) @signature `Lrx/internal/operators/BlockingOperatorNext$NextObserver;.takeNext:()Lrx/Notification;` @kind virtual;
+  #L492fe0.  v0:= temp @kind object;
+  #L492fe2.  call temp:= `isOnNext`(v0) @signature `Lrx/Notification;.isOnNext:()Z` @kind virtual;
+  #L492fe8.  v2:= temp;
+  #L492fea.  v3:= 0I;
+  #L492fec.  if v2 == 0 then goto L493002;
+  #L492ff0.  v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.isNextConsumed` @type ^`boolean` := v3 @kind boolean;
+  #L492ff4.  call temp:= `getValue`(v0) @signature `Lrx/Notification;.getValue:()Ljava/lang/Object;` @kind virtual;
+  #L492ffa.  v0:= temp @kind object;
+  #L492ffc.  v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.next` @type ^`java.lang.Object` := v0 @kind object;
+  #L493000.  return v1;
+  #L493002.  v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.hasNext` @type ^`boolean` := v3 @kind boolean;
+  #L493006.  call temp:= `isOnCompleted`(v0) @signature `Lrx/Notification;.isOnCompleted:()Z` @kind virtual;
+  #L49300c.  v1:= temp;
+  #L49300e.  if v1 == 0 then goto L493014;
+  #L493012.  return v3;
+  #L493014.  call temp:= `isOnError`(v0) @signature `Lrx/Notification;.isOnError:()Z` @kind virtual;
+  #L49301a.  v1:= temp;
+  #L49301c.  if v1 == 0 then goto L49303a;
+  #L493020.  call temp:= `getThrowable`(v0) @signature `Lrx/Notification;.getThrowable:()Ljava/lang/Throwable;` @kind virtual;
+  #L493026.  v0:= temp @kind object;
+  #L493028.  v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.error` @type ^`java.lang.Throwable` := v0 @kind object;
+  #L49302c.  v0:= v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.error` @type ^`java.lang.Throwable` @kind object;
+  #L493030.  call temp:= `propagate`(v0) @signature `Lrx/exceptions/Exceptions;.propagate:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L493036.  v0:= temp @kind object;
+  #L493038.  throw v0;
+  #L49303a.  v0:= new `java.lang.IllegalStateException`;
+  #L49303e.  v1:= "Should not reach here" @kind object;
+  #L493042.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L493048.  throw v0;
+  #L49304a.  v0:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L49304c.  v1:= v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.observer` @type ^`rx.internal.operators.BlockingOperatorNext$NextObserver` @kind object;
+  #L493050.  call `unsubscribe`(v1) @signature `Lrx/internal/operators/BlockingOperatorNext$NextObserver;.unsubscribe:()V` @kind virtual;
+  #L493056.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L49305c.  v1:= temp @kind object;
+  #L49305e.  call `interrupt`(v1) @signature `Ljava/lang/Thread;.interrupt:()V` @kind virtual;
+  #L493064.  v4.`rx.internal.operators.BlockingOperatorNext$NextIterator.error` @type ^`java.lang.Throwable` := v0 @kind object;
+  #L493068.  call temp:= `propagate`(v0) @signature `Lrx/exceptions/Exceptions;.propagate:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L49306e.  v0:= temp @kind object;
+  #L493070.  throw v0;
+  catch `java.lang.InterruptedException` @[L492fa8..L49304a] goto L49304a;
+}
+procedure `boolean` `hasNext`(`rx.internal.operators.BlockingOperatorNext$NextIterator` v2 @kind this) @signature `Lrx/internal/operators/BlockingOperatorNext$NextIterator;.hasNext:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L492f60.  v0:= v2.`rx.internal.operators.BlockingOperatorNext$NextIterator.error` @type ^`java.lang.Throwable` @kind object;
+  #L492f64.  if v0 != 0 then goto L492f8c;
+  #L492f68.  v0:= v2.`rx.internal.operators.BlockingOperatorNext$NextIterator.hasNext` @type ^`boolean` @kind boolean;
+  #L492f6c.  v1:= 0I;
+  #L492f6e.  if v0 != 0 then goto L492f74;
+  #L492f72.  return v1;
+  #L492f74.  v0:= v2.`rx.internal.operators.BlockingOperatorNext$NextIterator.isNextConsumed` @type ^`boolean` @kind boolean;
+  #L492f78.  if v0 == 0 then goto L492f88;
+  #L492f7c.  call temp:= `moveToNext`(v2) @signature `Lrx/internal/operators/BlockingOperatorNext$NextIterator;.moveToNext:()Z` @kind direct;
+  #L492f82.  v0:= temp;
+  #L492f84.  if v0 == 0 then goto L492f8a;
+  #L492f88.  v1:= 1I;
+  #L492f8a.  return v1;
+  #L492f8c.  call temp:= `propagate`(v0) @signature `Lrx/exceptions/Exceptions;.propagate:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L492f92.  v0:= temp @kind object;
+  #L492f94.  throw v0;
+}
+procedure `java.lang.Object` `next`(`rx.internal.operators.BlockingOperatorNext$NextIterator` v2 @kind this) @signature `Lrx/internal/operators/BlockingOperatorNext$NextIterator;.next:()Ljava/lang/Object;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L493094.  v0:= v2.`rx.internal.operators.BlockingOperatorNext$NextIterator.error` @type ^`java.lang.Throwable` @kind object;
+  #L493098.  if v0 != 0 then goto L4930c4;
+  #L49309c.  call temp:= `hasNext`(v2) @signature `Lrx/internal/operators/BlockingOperatorNext$NextIterator;.hasNext:()Z` @kind virtual;
+  #L4930a2.  v0:= temp;
+  #L4930a4.  if v0 == 0 then goto L4930b4;
+  #L4930a8.  v0:= 1I;
+  #L4930aa.  v2.`rx.internal.operators.BlockingOperatorNext$NextIterator.isNextConsumed` @type ^`boolean` := v0 @kind boolean;
+  #L4930ae.  v0:= v2.`rx.internal.operators.BlockingOperatorNext$NextIterator.next` @type ^`java.lang.Object` @kind object;
+  #L4930b2.  return v0 @kind object;
+  #L4930b4.  v0:= new `java.util.NoSuchElementException`;
+  #L4930b8.  v1:= "No more elements" @kind object;
+  #L4930bc.  call `<init>`(v0, v1) @signature `Ljava/util/NoSuchElementException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4930c2.  throw v0;
+  #L4930c4.  call temp:= `propagate`(v0) @signature `Lrx/exceptions/Exceptions;.propagate:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L4930ca.  v0:= temp @kind object;
+  #L4930cc.  throw v0;
+}
+procedure `void` `remove`(`rx.internal.operators.BlockingOperatorNext$NextIterator` v2 @kind this) @signature `Lrx/internal/operators/BlockingOperatorNext$NextIterator;.remove:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L49310c.  v0:= new `java.lang.UnsupportedOperationException`;
+  #L493110.  v1:= "Read only iterator" @kind object;
+  #L493114.  call `<init>`(v0, v1) @signature `Ljava/lang/UnsupportedOperationException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L49311a.  throw v0;
+}

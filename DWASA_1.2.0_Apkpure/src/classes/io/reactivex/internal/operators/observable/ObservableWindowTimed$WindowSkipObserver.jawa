@@ -1,0 +1,309 @@
+record `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` @kind class @AccessFlag FINAL extends `io.reactivex.internal.observers.QueueDrainObserver` @kind class, `io.reactivex.disposables.Disposable` @kind interface, `java.lang.Runnable` @kind interface {
+  `int` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.bufferSize` @AccessFlag FINAL;
+  `boolean` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.terminated` @AccessFlag VOLATILE;
+  `long` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.timeskip` @AccessFlag FINAL;
+  `long` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.timespan` @AccessFlag FINAL;
+  `java.util.concurrent.TimeUnit` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.unit` @AccessFlag FINAL;
+  `io.reactivex.disposables.Disposable` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.upstream` @AccessFlag ;
+  `java.util.List` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.windows` @AccessFlag FINAL;
+  `io.reactivex.Scheduler$Worker` `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.worker` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v1 @kind this, `io.reactivex.Observer` v2 @kind object, `long` v3 , `long` v5 , `java.util.concurrent.TimeUnit` v7 @kind object, `io.reactivex.Scheduler$Worker` v8 @kind object, `int` v9 ) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.<init>:(Lio/reactivex/Observer;JJLjava/util/concurrent/TimeUnit;Lio/reactivex/Scheduler$Worker;I)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L434ac4.  v0:= new `io.reactivex.internal.queue.MpscLinkedQueue`;
+  #L434ac8.  call `<init>`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.<init>:()V` @kind direct;
+  #L434ace.  call `<init>`(v1, v2, v0) @signature `Lio/reactivex/internal/observers/QueueDrainObserver;.<init>:(Lio/reactivex/Observer;Lio/reactivex/internal/fuseable/SimplePlainQueue;)V` @kind direct;
+  #L434ad4.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.timespan` @type ^`long` := v3 @kind wide;
+  #L434ad8.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.timeskip` @type ^`long` := v5 @kind wide;
+  #L434adc.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.unit` @type ^`java.util.concurrent.TimeUnit` := v7 @kind object;
+  #L434ae0.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.worker` @type ^`io.reactivex.Scheduler$Worker` := v8 @kind object;
+  #L434ae4.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.bufferSize` @type ^`int` := v9;
+  #L434ae8.  v2:= new `java.util.LinkedList`;
+  #L434aec.  call `<init>`(v2) @signature `Ljava/util/LinkedList;.<init>:()V` @kind direct;
+  #L434af2.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.windows` @type ^`java.util.List` := v2 @kind object;
+  #L434af6.  return @kind void;
+}
+procedure `void` `complete`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v3 @kind this, `io.reactivex.subjects.UnicastSubject` v4 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.complete:(Lio/reactivex/subjects/UnicastSubject;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L434b08.  v0:= v3.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.queue` @type ^`io.reactivex.internal.fuseable.SimplePlainQueue` @kind object;
+  #L434b0c.  v1:= new `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$SubjectWork`;
+  #L434b10.  v2:= 0I;
+  #L434b12.  call `<init>`(v1, v4, v2) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver$SubjectWork;.<init>:(Lio/reactivex/subjects/UnicastSubject;Z)V` @kind direct;
+  #L434b18.  call temp:= `offer`(v0, v1) @signature `Lio/reactivex/internal/fuseable/SimplePlainQueue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L434b1e.  call temp:= `enter`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.enter:()Z` @kind virtual;
+  #L434b24.  v4:= temp;
+  #L434b26.  if v4 == 0 then goto L434b30;
+  #L434b2a.  call `drainLoop`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.drainLoop:()V` @kind virtual;
+  #L434b30.  return @kind void;
+}
+procedure `void` `dispose`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.dispose:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L434b44.  v0:= 1I;
+  #L434b46.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.cancelled` @type ^`boolean` := v0 @kind boolean;
+  #L434b4a.  return @kind void;
+}
+procedure `void` `disposeWorker`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.disposeWorker:()V` @AccessFlag  {
+    temp;
+    v0;
+
+  #L434b5c.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.worker` @type ^`io.reactivex.Scheduler$Worker` @kind object;
+  #L434b60.  call `dispose`(v0) @signature `Lio/reactivex/Scheduler$Worker;.dispose:()V` @kind virtual;
+  #L434b66.  return @kind void;
+}
+procedure `void` `drainLoop`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v10 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.drainLoop:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+
+  #L434b78.  v0:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.queue` @type ^`io.reactivex.internal.fuseable.SimplePlainQueue` @kind object;
+  #L434b7c.  v0:= (`io.reactivex.internal.queue.MpscLinkedQueue`) v0 @kind object;
+  #L434b80.  v1:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L434b84.  v2:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.windows` @type ^`java.util.List` @kind object;
+  #L434b88.  v3:= 1I;
+  #L434b8a.  v4:= 1I;
+  #L434b8c.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.terminated` @type ^`boolean` @kind boolean;
+  #L434b90.  if v5 == 0 then goto L434bb2;
+  #L434b94.  v1:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.upstream` @type ^`io.reactivex.disposables.Disposable` @kind object;
+  #L434b98.  call `dispose`(v1) @signature `Lio/reactivex/disposables/Disposable;.dispose:()V` @kind interface;
+  #L434b9e.  call `disposeWorker`(v10) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.disposeWorker:()V` @kind virtual;
+  #L434ba4.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.clear:()V` @kind virtual;
+  #L434baa.  call `clear`(v2) @signature `Ljava/util/List;.clear:()V` @kind interface;
+  #L434bb0.  return @kind void;
+  #L434bb2.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.done` @type ^`boolean` @kind boolean;
+  #L434bb6.  call temp:= `poll`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.poll:()Ljava/lang/Object;` @kind virtual;
+  #L434bbc.  v6:= temp @kind object;
+  #L434bbe.  if v6 != 0 then goto L434bc6;
+  #L434bc2.  v7:= 1I;
+  #L434bc4.  goto L434bc8;
+  #L434bc6.  v7:= 0I;
+  #L434bc8.  v8:= instanceof @variable v6 @type ^`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$SubjectWork` @kind boolean;
+  #L434bcc.  if v5 == 0 then goto L434c44;
+  #L434bd0.  if v7 != 0 then goto L434bd8;
+  #L434bd4.  if v8 == 0 then goto L434c44;
+  #L434bd8.  call `clear`(v0) @signature `Lio/reactivex/internal/queue/MpscLinkedQueue;.clear:()V` @kind virtual;
+  #L434bde.  v0:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.error` @type ^`java.lang.Throwable` @kind object;
+  #L434be2.  if v0 == 0 then goto L434c0e;
+  #L434be6.  call temp:= `iterator`(v2) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L434bec.  v1:= temp @kind object;
+  #L434bee.  call temp:= `hasNext`(v1) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L434bf4.  v3:= temp;
+  #L434bf6.  if v3 == 0 then goto L434c36;
+  #L434bfa.  call temp:= `next`(v1) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L434c00.  v3:= temp @kind object;
+  #L434c02.  v3:= (`io.reactivex.subjects.UnicastSubject`) v3 @kind object;
+  #L434c06.  call `onError`(v3, v0) @signature `Lio/reactivex/subjects/UnicastSubject;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L434c0c.  goto L434bee;
+  #L434c0e.  call temp:= `iterator`(v2) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L434c14.  v0:= temp @kind object;
+  #L434c16.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L434c1c.  v1:= temp;
+  #L434c1e.  if v1 == 0 then goto L434c36;
+  #L434c22.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L434c28.  v1:= temp @kind object;
+  #L434c2a.  v1:= (`io.reactivex.subjects.UnicastSubject`) v1 @kind object;
+  #L434c2e.  call `onComplete`(v1) @signature `Lio/reactivex/subjects/UnicastSubject;.onComplete:()V` @kind virtual;
+  #L434c34.  goto L434c16;
+  #L434c36.  call `disposeWorker`(v10) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.disposeWorker:()V` @kind virtual;
+  #L434c3c.  call `clear`(v2) @signature `Ljava/util/List;.clear:()V` @kind interface;
+  #L434c42.  return @kind void;
+  #L434c44.  if v7 == 0 then goto L434c58;
+  #L434c48.  v4:= -v4 @kind int;
+  #L434c4a.  call temp:= `leave`(v10, v4) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.leave:(I)I` @kind virtual;
+  #L434c50.  v4:= temp;
+  #L434c52.  if v4 != 0 then goto L434b8c;
+  #L434c56.  return @kind void;
+  #L434c58.  if v8 == 0 then goto L434cda;
+  #L434c5c.  v6:= (`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$SubjectWork`) v6 @kind object;
+  #L434c60.  v5:= v6.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$SubjectWork.open` @type ^`boolean` @kind boolean;
+  #L434c64.  if v5 == 0 then goto L434caa;
+  #L434c68.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.cancelled` @type ^`boolean` @kind boolean;
+  #L434c6c.  if v5 == 0 then goto L434c72;
+  #L434c70.  goto L434b8c;
+  #L434c72.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.bufferSize` @type ^`int`;
+  #L434c76.  call temp:= `create`(v5) @signature `Lio/reactivex/subjects/UnicastSubject;.create:(I)Lio/reactivex/subjects/UnicastSubject;` @kind static;
+  #L434c7c.  v5:= temp @kind object;
+  #L434c7e.  call temp:= `add`(v2, v5) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L434c84.  call `onNext`(v1, v5) @signature `Lio/reactivex/Observer;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L434c8a.  v6:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.worker` @type ^`io.reactivex.Scheduler$Worker` @kind object;
+  #L434c8e.  v7:= new `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$CompletionTask`;
+  #L434c92.  call `<init>`(v7, v10, v5) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver$CompletionTask;.<init>:(Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;Lio/reactivex/subjects/UnicastSubject;)V` @kind direct;
+  #L434c98.  v8:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.timespan` @type ^`long` @kind wide;
+  #L434c9c.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.unit` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L434ca0.  call temp:= `schedule`(v6, v7, v8, v5) @signature `Lio/reactivex/Scheduler$Worker;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L434ca6.  goto L434b8c;
+  #L434caa.  v5:= v6.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$SubjectWork.w` @type ^`io.reactivex.subjects.UnicastSubject` @kind object;
+  #L434cae.  call temp:= `remove`(v2, v5) @signature `Ljava/util/List;.remove:(Ljava/lang/Object;)Z` @kind interface;
+  #L434cb4.  v5:= v6.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$SubjectWork.w` @type ^`io.reactivex.subjects.UnicastSubject` @kind object;
+  #L434cb8.  call `onComplete`(v5) @signature `Lio/reactivex/subjects/UnicastSubject;.onComplete:()V` @kind virtual;
+  #L434cbe.  call temp:= `isEmpty`(v2) @signature `Ljava/util/List;.isEmpty:()Z` @kind interface;
+  #L434cc4.  v5:= temp;
+  #L434cc6.  if v5 == 0 then goto L434b8c;
+  #L434cca.  v5:= v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.cancelled` @type ^`boolean` @kind boolean;
+  #L434cce.  if v5 == 0 then goto L434b8c;
+  #L434cd2.  v10.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.terminated` @type ^`boolean` := v3 @kind boolean;
+  #L434cd6.  goto L434b8c;
+  #L434cda.  call temp:= `iterator`(v2) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L434ce0.  v5:= temp @kind object;
+  #L434ce2.  call temp:= `hasNext`(v5) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L434ce8.  v7:= temp;
+  #L434cea.  if v7 == 0 then goto L434b8c;
+  #L434cee.  call temp:= `next`(v5) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L434cf4.  v7:= temp @kind object;
+  #L434cf6.  v7:= (`io.reactivex.subjects.UnicastSubject`) v7 @kind object;
+  #L434cfa.  call `onNext`(v7, v6) @signature `Lio/reactivex/subjects/UnicastSubject;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L434d00.  goto L434ce2;
+}
+procedure `boolean` `isDisposed`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.isDisposed:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L434aac.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.cancelled` @type ^`boolean` @kind boolean;
+  #L434ab0.  return v0;
+}
+procedure `void` `onComplete`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v1 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.onComplete:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L434d14.  v0:= 1I;
+  #L434d16.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.done` @type ^`boolean` := v0 @kind boolean;
+  #L434d1a.  call temp:= `enter`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.enter:()Z` @kind virtual;
+  #L434d20.  v0:= temp;
+  #L434d22.  if v0 == 0 then goto L434d2c;
+  #L434d26.  call `drainLoop`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.drainLoop:()V` @kind virtual;
+  #L434d2c.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L434d30.  call `onComplete`(v0) @signature `Lio/reactivex/Observer;.onComplete:()V` @kind interface;
+  #L434d36.  call `disposeWorker`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.disposeWorker:()V` @kind virtual;
+  #L434d3c.  return @kind void;
+}
+procedure `void` `onError`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v1 @kind this, `java.lang.Throwable` v2 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L434d50.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.error` @type ^`java.lang.Throwable` := v2 @kind object;
+  #L434d54.  v0:= 1I;
+  #L434d56.  v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.done` @type ^`boolean` := v0 @kind boolean;
+  #L434d5a.  call temp:= `enter`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.enter:()Z` @kind virtual;
+  #L434d60.  v0:= temp;
+  #L434d62.  if v0 == 0 then goto L434d6c;
+  #L434d66.  call `drainLoop`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.drainLoop:()V` @kind virtual;
+  #L434d6c.  v0:= v1.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L434d70.  call `onError`(v0, v2) @signature `Lio/reactivex/Observer;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L434d76.  call `disposeWorker`(v1) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.disposeWorker:()V` @kind virtual;
+  #L434d7c.  return @kind void;
+}
+procedure `void` `onNext`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L434d90.  call temp:= `fastEnter`(v2) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.fastEnter:()Z` @kind virtual;
+  #L434d96.  v0:= temp;
+  #L434d98.  if v0 == 0 then goto L434dd8;
+  #L434d9c.  v0:= v2.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.windows` @type ^`java.util.List` @kind object;
+  #L434da0.  call temp:= `iterator`(v0) @signature `Ljava/util/List;.iterator:()Ljava/util/Iterator;` @kind interface;
+  #L434da6.  v0:= temp @kind object;
+  #L434da8.  call temp:= `hasNext`(v0) @signature `Ljava/util/Iterator;.hasNext:()Z` @kind interface;
+  #L434dae.  v1:= temp;
+  #L434db0.  if v1 == 0 then goto L434dc8;
+  #L434db4.  call temp:= `next`(v0) @signature `Ljava/util/Iterator;.next:()Ljava/lang/Object;` @kind interface;
+  #L434dba.  v1:= temp @kind object;
+  #L434dbc.  v1:= (`io.reactivex.subjects.UnicastSubject`) v1 @kind object;
+  #L434dc0.  call `onNext`(v1, v3) @signature `Lio/reactivex/subjects/UnicastSubject;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L434dc6.  goto L434da8;
+  #L434dc8.  v3:= -1I;
+  #L434dca.  call temp:= `leave`(v2, v3) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.leave:(I)I` @kind virtual;
+  #L434dd0.  v3:= temp;
+  #L434dd2.  if v3 != 0 then goto L434df0;
+  #L434dd6.  return @kind void;
+  #L434dd8.  v0:= v2.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.queue` @type ^`io.reactivex.internal.fuseable.SimplePlainQueue` @kind object;
+  #L434ddc.  call temp:= `offer`(v0, v3) @signature `Lio/reactivex/internal/fuseable/SimplePlainQueue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L434de2.  call temp:= `enter`(v2) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.enter:()Z` @kind virtual;
+  #L434de8.  v3:= temp;
+  #L434dea.  if v3 != 0 then goto L434df0;
+  #L434dee.  return @kind void;
+  #L434df0.  call `drainLoop`(v2) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.drainLoop:()V` @kind virtual;
+  #L434df6.  return @kind void;
+}
+procedure `void` `onSubscribe`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v11 @kind this, `io.reactivex.disposables.Disposable` v12 @kind object) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.onSubscribe:(Lio/reactivex/disposables/Disposable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+
+  #L434e08.  v0:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.upstream` @type ^`io.reactivex.disposables.Disposable` @kind object;
+  #L434e0c.  call temp:= `validate`(v0, v12) @signature `Lio/reactivex/internal/disposables/DisposableHelper;.validate:(Lio/reactivex/disposables/Disposable;Lio/reactivex/disposables/Disposable;)Z` @kind static;
+  #L434e12.  v0:= temp;
+  #L434e14.  if v0 == 0 then goto L434e82;
+  #L434e18.  v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.upstream` @type ^`io.reactivex.disposables.Disposable` := v12 @kind object;
+  #L434e1c.  v12:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L434e20.  call `onSubscribe`(v12, v11) @signature `Lio/reactivex/Observer;.onSubscribe:(Lio/reactivex/disposables/Disposable;)V` @kind interface;
+  #L434e26.  v12:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.cancelled` @type ^`boolean` @kind boolean;
+  #L434e2a.  if v12 == 0 then goto L434e30;
+  #L434e2e.  return @kind void;
+  #L434e30.  v12:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.bufferSize` @type ^`int`;
+  #L434e34.  call temp:= `create`(v12) @signature `Lio/reactivex/subjects/UnicastSubject;.create:(I)Lio/reactivex/subjects/UnicastSubject;` @kind static;
+  #L434e3a.  v12:= temp @kind object;
+  #L434e3c.  v0:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.windows` @type ^`java.util.List` @kind object;
+  #L434e40.  call temp:= `add`(v0, v12) @signature `Ljava/util/List;.add:(Ljava/lang/Object;)Z` @kind interface;
+  #L434e46.  v0:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.downstream` @type ^`io.reactivex.Observer` @kind object;
+  #L434e4a.  call `onNext`(v0, v12) @signature `Lio/reactivex/Observer;.onNext:(Ljava/lang/Object;)V` @kind interface;
+  #L434e50.  v0:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.worker` @type ^`io.reactivex.Scheduler$Worker` @kind object;
+  #L434e54.  v1:= new `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$CompletionTask`;
+  #L434e58.  call `<init>`(v1, v11, v12) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver$CompletionTask;.<init>:(Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;Lio/reactivex/subjects/UnicastSubject;)V` @kind direct;
+  #L434e5e.  v2:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.timespan` @type ^`long` @kind wide;
+  #L434e62.  v12:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.unit` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L434e66.  call temp:= `schedule`(v0, v1, v2, v12) @signature `Lio/reactivex/Scheduler$Worker;.schedule:(Ljava/lang/Runnable;JLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L434e6c.  v4:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.worker` @type ^`io.reactivex.Scheduler$Worker` @kind object;
+  #L434e70.  v8:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.timeskip` @type ^`long` @kind wide;
+  #L434e74.  v10:= v11.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.unit` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L434e78.  v5:= v11 @kind object;
+  #L434e7a.  v6:= v8 @kind wide;
+  #L434e7c.  call temp:= `schedulePeriodically`(v4, v5, v6, v8, v10) @signature `Lio/reactivex/Scheduler$Worker;.schedulePeriodically:(Ljava/lang/Runnable;JJLjava/util/concurrent/TimeUnit;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L434e82.  return @kind void;
+}
+procedure `void` `run`(`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver` v3 @kind this) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.run:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L434e94.  v0:= v3.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.bufferSize` @type ^`int`;
+  #L434e98.  call temp:= `create`(v0) @signature `Lio/reactivex/subjects/UnicastSubject;.create:(I)Lio/reactivex/subjects/UnicastSubject;` @kind static;
+  #L434e9e.  v0:= temp @kind object;
+  #L434ea0.  v1:= new `io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver$SubjectWork`;
+  #L434ea4.  v2:= 1I;
+  #L434ea6.  call `<init>`(v1, v0, v2) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver$SubjectWork;.<init>:(Lio/reactivex/subjects/UnicastSubject;Z)V` @kind direct;
+  #L434eac.  v0:= v3.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.cancelled` @type ^`boolean` @kind boolean;
+  #L434eb0.  if v0 != 0 then goto L434ebe;
+  #L434eb4.  v0:= v3.`io.reactivex.internal.operators.observable.ObservableWindowTimed$WindowSkipObserver.queue` @type ^`io.reactivex.internal.fuseable.SimplePlainQueue` @kind object;
+  #L434eb8.  call temp:= `offer`(v0, v1) @signature `Lio/reactivex/internal/fuseable/SimplePlainQueue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L434ebe.  call temp:= `enter`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.enter:()Z` @kind virtual;
+  #L434ec4.  v0:= temp;
+  #L434ec6.  if v0 == 0 then goto L434ed0;
+  #L434eca.  call `drainLoop`(v3) @signature `Lio/reactivex/internal/operators/observable/ObservableWindowTimed$WindowSkipObserver;.drainLoop:()V` @kind virtual;
+  #L434ed0.  return @kind void;
+}

@@ -1,0 +1,117 @@
+record `io.jsonwebtoken.impl.crypto.MacSigner` @kind class @AccessFlag PUBLIC extends `io.jsonwebtoken.impl.crypto.MacProvider` @kind class, `io.jsonwebtoken.impl.crypto.Signer` @kind interface {
+}
+procedure `void` `<init>`(`io.jsonwebtoken.impl.crypto.MacSigner` v1 @kind this, `io.jsonwebtoken.SignatureAlgorithm` v2 @kind object, `java.security.Key` v3 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L40f634.  call `<init>`(v1, v2, v3) @signature `Lio/jsonwebtoken/impl/crypto/MacProvider;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @kind direct;
+  #L40f63a.  call temp:= `isHmac`(v2) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.isHmac:()Z` @kind virtual;
+  #L40f640.  v2:= temp;
+  #L40f642.  v0:= "The MacSigner only supports HMAC signature algorithms." @kind object;
+  #L40f646.  call `isTrue`(v2, v0) @signature `Lio/jsonwebtoken/lang/Assert;.isTrue:(ZLjava/lang/String;)V` @kind static;
+  #L40f64c.  v2:= instanceof @variable v3 @type ^`javax.crypto.SecretKey` @kind boolean;
+  #L40f650.  if v2 == 0 then goto L40f656;
+  #L40f654.  return @kind void;
+  #L40f656.  v2:= new `java.lang.StringBuilder`;
+  #L40f65a.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40f660.  v0:= "MAC signatures must be computed and verified using a SecretKey.  The specified key of type " @kind object;
+  #L40f664.  call temp:= `append`(v2, v0) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f66a.  call temp:= `getClass`(v3) @signature `Ljava/lang/Object;.getClass:()Ljava/lang/Class;` @kind virtual;
+  #L40f670.  v3:= temp @kind object;
+  #L40f672.  call temp:= `getName`(v3) @signature `Ljava/lang/Class;.getName:()Ljava/lang/String;` @kind virtual;
+  #L40f678.  v3:= temp @kind object;
+  #L40f67a.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f680.  v3:= " is not a SecretKey." @kind object;
+  #L40f684.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f68a.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40f690.  v2:= temp @kind object;
+  #L40f692.  v3:= new `java.lang.IllegalArgumentException`;
+  #L40f696.  call `<init>`(v3, v2) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L40f69c.  throw v3;
+}
+procedure `void` `<init>`(`io.jsonwebtoken.impl.crypto.MacSigner` v2 @kind this, `io.jsonwebtoken.SignatureAlgorithm` v3 @kind object, `byte`[] v4 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;[B)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L40f608.  v0:= new `javax.crypto.spec.SecretKeySpec`;
+  #L40f60c.  call temp:= `getJcaName`(v3) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.getJcaName:()Ljava/lang/String;` @kind virtual;
+  #L40f612.  v1:= temp @kind object;
+  #L40f614.  call `<init>`(v0, v4, v1) @signature `Ljavax/crypto/spec/SecretKeySpec;.<init>:([BLjava/lang/String;)V` @kind direct;
+  #L40f61a.  call `<init>`(v2, v3, v0) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.<init>:(Lio/jsonwebtoken/SignatureAlgorithm;Ljava/security/Key;)V` @kind direct;
+  #L40f620.  return @kind void;
+}
+procedure `javax.crypto.Mac` `doGetMacInstance`(`io.jsonwebtoken.impl.crypto.MacSigner` v2 @kind this) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.doGetMacInstance:()Ljavax/crypto/Mac;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+
+  #L40f504.  v0:= v2.`io.jsonwebtoken.impl.crypto.a.alg` @type ^`io.jsonwebtoken.SignatureAlgorithm` @kind object;
+  #L40f508.  call temp:= `getJcaName`(v0) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.getJcaName:()Ljava/lang/String;` @kind virtual;
+  #L40f50e.  v0:= temp @kind object;
+  #L40f510.  call temp:= `getInstance`(v0) @signature `Ljavax/crypto/Mac;.getInstance:(Ljava/lang/String;)Ljavax/crypto/Mac;` @kind static;
+  #L40f516.  v0:= temp @kind object;
+  #L40f518.  v1:= v2.`io.jsonwebtoken.impl.crypto.a.key` @type ^`java.security.Key` @kind object;
+  #L40f51c.  call `init`(v0, v1) @signature `Ljavax/crypto/Mac;.init:(Ljava/security/Key;)V` @kind virtual;
+  #L40f522.  return v0 @kind object;
+}
+procedure `javax.crypto.Mac` `getMacInstance`(`io.jsonwebtoken.impl.crypto.MacSigner` v3 @kind this) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.getMacInstance:()Ljavax/crypto/Mac;` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L40f534.  call temp:= `doGetMacInstance`(v3) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.doGetMacInstance:()Ljavax/crypto/Mac;` @kind virtual;
+  #L40f53a.  v0:= temp @kind object;
+  #L40f53c.  return v0 @kind object;
+  #L40f53e.  v0:= Exception @type ^`java.security.InvalidKeyException` @kind object;
+  #L40f540.  v1:= new `java.lang.StringBuilder`;
+  #L40f544.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40f54a.  v2:= "The specified signing key is not a valid " @kind object;
+  #L40f54e.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f554.  v2:= v3.`io.jsonwebtoken.impl.crypto.a.alg` @type ^`io.jsonwebtoken.SignatureAlgorithm` @kind object;
+  #L40f558.  call temp:= `name`(v2) @signature `Ljava/lang/Enum;.name:()Ljava/lang/String;` @kind virtual;
+  #L40f55e.  v2:= temp @kind object;
+  #L40f560.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f566.  v2:= " key: " @kind object;
+  #L40f56a.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f570.  call temp:= `getMessage`(v0) @signature `Ljava/security/InvalidKeyException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L40f576.  v2:= temp @kind object;
+  #L40f578.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f57e.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40f584.  v1:= temp @kind object;
+  #L40f586.  v2:= new `io.jsonwebtoken.SignatureException`;
+  #L40f58a.  call `<init>`(v2, v1, v0) @signature `Lio/jsonwebtoken/SignatureException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40f590.  throw v2;
+  #L40f592.  v0:= Exception @type ^`java.security.NoSuchAlgorithmException` @kind object;
+  #L40f594.  v1:= new `java.lang.StringBuilder`;
+  #L40f598.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L40f59e.  v2:= "Unable to obtain JCA MAC algorithm '" @kind object;
+  #L40f5a2.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f5a8.  v2:= v3.`io.jsonwebtoken.impl.crypto.a.alg` @type ^`io.jsonwebtoken.SignatureAlgorithm` @kind object;
+  #L40f5ac.  call temp:= `getJcaName`(v2) @signature `Lio/jsonwebtoken/SignatureAlgorithm;.getJcaName:()Ljava/lang/String;` @kind virtual;
+  #L40f5b2.  v2:= temp @kind object;
+  #L40f5b4.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f5ba.  v2:= "': " @kind object;
+  #L40f5be.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f5c4.  call temp:= `getMessage`(v0) @signature `Ljava/security/NoSuchAlgorithmException;.getMessage:()Ljava/lang/String;` @kind virtual;
+  #L40f5ca.  v2:= temp @kind object;
+  #L40f5cc.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L40f5d2.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L40f5d8.  v1:= temp @kind object;
+  #L40f5da.  v2:= new `io.jsonwebtoken.SignatureException`;
+  #L40f5de.  call `<init>`(v2, v1, v0) @signature `Lio/jsonwebtoken/SignatureException;.<init>:(Ljava/lang/String;Ljava/lang/Throwable;)V` @kind direct;
+  #L40f5e4.  throw v2;
+  catch `java.security.NoSuchAlgorithmException` @[L40f534..L40f53c] goto L40f592;
+  catch `java.security.InvalidKeyException` @[L40f534..L40f53c] goto L40f53e;
+}
+procedure `byte`[] `sign`(`io.jsonwebtoken.impl.crypto.MacSigner` v1 @kind this, `byte`[] v2 @kind object) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.sign:([B)[B` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L40f4e0.  call temp:= `getMacInstance`(v1) @signature `Lio/jsonwebtoken/impl/crypto/MacSigner;.getMacInstance:()Ljavax/crypto/Mac;` @kind virtual;
+  #L40f4e6.  v0:= temp @kind object;
+  #L40f4e8.  call temp:= `doFinal`(v0, v2) @signature `Ljavax/crypto/Mac;.doFinal:([B)[B` @kind virtual;
+  #L40f4ee.  v2:= temp @kind object;
+  #L40f4f0.  return v2 @kind object;
+}

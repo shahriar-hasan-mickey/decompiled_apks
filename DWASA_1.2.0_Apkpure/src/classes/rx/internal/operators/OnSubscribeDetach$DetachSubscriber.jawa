@@ -1,0 +1,152 @@
+record `rx.internal.operators.OnSubscribeDetach$DetachSubscriber` @kind class @AccessFlag FINAL extends `rx.Subscriber` @kind class {
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.operators.OnSubscribeDetach$DetachSubscriber.actual` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicLong` `rx.internal.operators.OnSubscribeDetach$DetachSubscriber.requested` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`rx.internal.operators.OnSubscribeDetach$DetachSubscriber` v1 @kind this, `rx.Subscriber` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.<init>:(Lrx/Subscriber;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L497f60.  call `<init>`(v1) @signature `Lrx/Subscriber;.<init>:()V` @kind direct;
+  #L497f66.  v0:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L497f6a.  call `<init>`(v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L497f70.  v1.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.actual` @type ^`java.util.concurrent.atomic.AtomicReference` := v0 @kind object;
+  #L497f74.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L497f78.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L497f7e.  v1.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L497f82.  v2:= new `java.util.concurrent.atomic.AtomicLong`;
+  #L497f86.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicLong;.<init>:()V` @kind direct;
+  #L497f8c.  v1.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` := v2 @kind object;
+  #L497f90.  return @kind void;
+}
+procedure `void` `innerRequest`(`rx.internal.operators.OnSubscribeDetach$DetachSubscriber` v3 @kind this, `long` v4 ) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.innerRequest:(J)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L497fa4.  v0:= 0L;
+  #L497fa8.  v2:= lcmp(v4, v0);
+  #L497fac.  if v2 < 0 then goto L498006;
+  #L497fb0.  v2:= v3.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L497fb4.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L497fba.  v2:= temp @kind object;
+  #L497fbc.  v2:= (`rx.Producer`) v2 @kind object;
+  #L497fc0.  if v2 == 0 then goto L497fcc;
+  #L497fc4.  call `request`(v2, v4) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L497fca.  goto L498004;
+  #L497fcc.  v2:= v3.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L497fd0.  call temp:= `getAndAddRequest`(v2, v4) @signature `Lrx/internal/operators/BackpressureUtils;.getAndAddRequest:(Ljava/util/concurrent/atomic/AtomicLong;J)J` @kind static;
+  #L497fd6.  v4:= v3.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L497fda.  call temp:= `get`(v4) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L497fe0.  v4:= temp @kind object;
+  #L497fe2.  v4:= (`rx.Producer`) v4 @kind object;
+  #L497fe6.  if v4 == 0 then goto L498004;
+  #L497fea.  v5:= `@@rx.internal.operators.OnSubscribeDetach$TerminatedProducer.INSTANCE` @type ^`rx.internal.operators.OnSubscribeDetach$TerminatedProducer` @kind object;
+  #L497fee.  if v4 == v5 then goto L498004;
+  #L497ff2.  v5:= v3.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L497ff6.  call temp:= `getAndSet`(v5, v0) @signature `Ljava/util/concurrent/atomic/AtomicLong;.getAndSet:(J)J` @kind virtual;
+  #L497ffc.  v0:= temp @kind wide;
+  #L497ffe.  call `request`(v4, v0) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L498004.  return @kind void;
+  #L498006.  v0:= new `java.lang.IllegalArgumentException`;
+  #L49800a.  v1:= new `java.lang.StringBuilder`;
+  #L49800e.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L498014.  v2:= "n >= 0 required but it was " @kind object;
+  #L498018.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L49801e.  call temp:= `append`(v1, v4) @signature `Ljava/lang/StringBuilder;.append:(J)Ljava/lang/StringBuilder;` @kind virtual;
+  #L498024.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L49802a.  v4:= temp @kind object;
+  #L49802c.  call `<init>`(v0, v4) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L498032.  throw v0;
+}
+procedure `void` `innerUnsubscribe`(`rx.internal.operators.OnSubscribeDetach$DetachSubscriber` v2 @kind this) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.innerUnsubscribe:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+
+  #L498044.  v0:= v2.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L498048.  v1:= `@@rx.internal.operators.OnSubscribeDetach$TerminatedProducer.INSTANCE` @type ^`rx.internal.operators.OnSubscribeDetach$TerminatedProducer` @kind object;
+  #L49804c.  call `lazySet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.lazySet:(Ljava/lang/Object;)V` @kind virtual;
+  #L498052.  v0:= v2.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.actual` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L498056.  v1:= 0I;
+  #L498058.  call `lazySet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.lazySet:(Ljava/lang/Object;)V` @kind virtual;
+  #L49805e.  call `unsubscribe`(v2) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.unsubscribe:()V` @kind virtual;
+  #L498064.  return @kind void;
+}
+procedure `void` `onCompleted`(`rx.internal.operators.OnSubscribeDetach$DetachSubscriber` v2 @kind this) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L498078.  v0:= v2.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L49807c.  v1:= `@@rx.internal.operators.OnSubscribeDetach$TerminatedProducer.INSTANCE` @type ^`rx.internal.operators.OnSubscribeDetach$TerminatedProducer` @kind object;
+  #L498080.  call `lazySet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.lazySet:(Ljava/lang/Object;)V` @kind virtual;
+  #L498086.  v0:= v2.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.actual` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L49808a.  v1:= 0I;
+  #L49808c.  call temp:= `getAndSet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L498092.  v0:= temp @kind object;
+  #L498094.  v0:= (`rx.Subscriber`) v0 @kind object;
+  #L498098.  if v0 == 0 then goto L4980a2;
+  #L49809c.  call `onCompleted`(v0) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4980a2.  return @kind void;
+}
+procedure `void` `onError`(`rx.internal.operators.OnSubscribeDetach$DetachSubscriber` v2 @kind this, `java.lang.Throwable` v3 @kind object) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L4980b4.  v0:= v2.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4980b8.  v1:= `@@rx.internal.operators.OnSubscribeDetach$TerminatedProducer.INSTANCE` @type ^`rx.internal.operators.OnSubscribeDetach$TerminatedProducer` @kind object;
+  #L4980bc.  call `lazySet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.lazySet:(Ljava/lang/Object;)V` @kind virtual;
+  #L4980c2.  v0:= v2.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.actual` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4980c6.  v1:= 0I;
+  #L4980c8.  call temp:= `getAndSet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L4980ce.  v0:= temp @kind object;
+  #L4980d0.  v0:= (`rx.Subscriber`) v0 @kind object;
+  #L4980d4.  if v0 == 0 then goto L4980e0;
+  #L4980d8.  call `onError`(v0, v3) @signature `Lrx/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L4980de.  goto L4980e6;
+  #L4980e0.  call `onError`(v3) @signature `Lrx/plugins/RxJavaHooks;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L4980e6.  return @kind void;
+}
+procedure `void` `onNext`(`rx.internal.operators.OnSubscribeDetach$DetachSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4980f8.  v0:= v1.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.actual` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L4980fc.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L498102.  v0:= temp @kind object;
+  #L498104.  v0:= (`rx.Subscriber`) v0 @kind object;
+  #L498108.  if v0 == 0 then goto L498112;
+  #L49810c.  call `onNext`(v0, v2) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L498112.  return @kind void;
+}
+procedure `void` `setProducer`(`rx.internal.operators.OnSubscribeDetach$DetachSubscriber` v3 @kind this, `rx.Producer` v4 @kind object) @signature `Lrx/internal/operators/OnSubscribeDetach$DetachSubscriber;.setProducer:(Lrx/Producer;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L498124.  v0:= v3.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L498128.  v1:= 0I;
+  #L49812a.  call temp:= `compareAndSet`(v0, v1, v4) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L498130.  v0:= temp;
+  #L498132.  if v0 == 0 then goto L49814e;
+  #L498136.  v0:= v3.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.requested` @type ^`java.util.concurrent.atomic.AtomicLong` @kind object;
+  #L49813a.  v1:= 0L;
+  #L49813e.  call temp:= `getAndSet`(v0, v1) @signature `Ljava/util/concurrent/atomic/AtomicLong;.getAndSet:(J)J` @kind virtual;
+  #L498144.  v0:= temp @kind wide;
+  #L498146.  call `request`(v4, v0) @signature `Lrx/Producer;.request:(J)V` @kind interface;
+  #L49814c.  goto L498162;
+  #L49814e.  v4:= v3.`rx.internal.operators.OnSubscribeDetach$DetachSubscriber.producer` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L498152.  call temp:= `get`(v4) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L498158.  v4:= temp @kind object;
+  #L49815a.  v0:= `@@rx.internal.operators.OnSubscribeDetach$TerminatedProducer.INSTANCE` @type ^`rx.internal.operators.OnSubscribeDetach$TerminatedProducer` @kind object;
+  #L49815e.  if v4 != v0 then goto L498164;
+  #L498162.  return @kind void;
+  #L498164.  v4:= new `java.lang.IllegalStateException`;
+  #L498168.  v0:= "Producer already set!" @kind object;
+  #L49816c.  call `<init>`(v4, v0) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L498172.  throw v4;
+}

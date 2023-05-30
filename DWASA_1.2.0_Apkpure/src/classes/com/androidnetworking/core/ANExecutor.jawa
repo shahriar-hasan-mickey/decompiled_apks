@@ -1,0 +1,98 @@
+record `com.androidnetworking.core.ANExecutor` @kind class @AccessFlag PUBLIC extends `java.util.concurrent.ThreadPoolExecutor` @kind class {
+}
+global `int` `@@com.androidnetworking.core.ANExecutor.DEFAULT_THREAD_COUNT` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.androidnetworking.core.ANExecutor` v8 @kind this, `int` v9 , `java.util.concurrent.ThreadFactory` v10 @kind object) @signature `Lcom/androidnetworking/core/ANExecutor;.<init>:(ILjava/util/concurrent/ThreadFactory;)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+
+  #L2a92ec.  v5:= `@@java.util.concurrent.TimeUnit.MILLISECONDS` @type ^`java.util.concurrent.TimeUnit` @kind object;
+  #L2a92f0.  v6:= new `java.util.concurrent.PriorityBlockingQueue`;
+  #L2a92f4.  call `<init>`(v6) @signature `Ljava/util/concurrent/PriorityBlockingQueue;.<init>:()V` @kind direct;
+  #L2a92fa.  v3:= 0L;
+  #L2a92fe.  v0:= v8 @kind object;
+  #L2a9300.  v1:= v9;
+  #L2a9302.  v2:= v9;
+  #L2a9304.  v7:= v10 @kind object;
+  #L2a9306.  call `<init>`(v0, v1, v2, v3, v5, v6, v7) @signature `Ljava/util/concurrent/ThreadPoolExecutor;.<init>:(IIJLjava/util/concurrent/TimeUnit;Ljava/util/concurrent/BlockingQueue;Ljava/util/concurrent/ThreadFactory;)V` @kind direct;
+  #L2a930c.  return @kind void;
+}
+procedure `void` `setThreadCount`(`com.androidnetworking.core.ANExecutor` v0 @kind this, `int` v1 ) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @AccessFlag PRIVATE {
+    temp;
+
+  #L2a93ec.  call `setCorePoolSize`(v0, v1) @signature `Lcom/androidnetworking/core/ANExecutor;.setCorePoolSize:(I)V` @kind virtual;
+  #L2a93f2.  call `setMaximumPoolSize`(v0, v1) @signature `Lcom/androidnetworking/core/ANExecutor;.setMaximumPoolSize:(I)V` @kind virtual;
+  #L2a93f8.  return @kind void;
+}
+procedure `void` `adjustThreadCount`(`com.androidnetworking.core.ANExecutor` v3 @kind this, `android.net.NetworkInfo` v4 @kind object) @signature `Lcom/androidnetworking/core/ANExecutor;.adjustThreadCount:(Landroid/net/NetworkInfo;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L2a9320.  v0:= 3I;
+  #L2a9322.  if v4 == 0 then goto L2a939c;
+  #L2a9326.  call temp:= `isConnectedOrConnecting`(v4) @signature `Landroid/net/NetworkInfo;.isConnectedOrConnecting:()Z` @kind virtual;
+  #L2a932c.  v1:= temp;
+  #L2a932e.  if v1 != 0 then goto L2a9334;
+  #L2a9332.  goto L2a939c;
+  #L2a9334.  call temp:= `getType`(v4) @signature `Landroid/net/NetworkInfo;.getType:()I` @kind virtual;
+  #L2a933a.  v1:= temp;
+  #L2a933c.  v2:= 1I;
+  #L2a933e.  if v1 == 0 then goto L2a9366;
+  #L2a9342.  if v1 == v2 then goto L2a935c;
+  #L2a9346.  v4:= 6I;
+  #L2a9348.  if v1 == v4 then goto L2a935c;
+  #L2a934c.  v4:= 9I;
+  #L2a9350.  if v1 == v4 then goto L2a935c;
+  #L2a9354.  call `setThreadCount`(v3, v0) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @kind direct;
+  #L2a935a.  goto L2a939a;
+  #L2a935c.  v4:= 4I;
+  #L2a935e.  call `setThreadCount`(v3, v4) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @kind direct;
+  #L2a9364.  goto L2a939a;
+  #L2a9366.  call temp:= `getSubtype`(v4) @signature `Landroid/net/NetworkInfo;.getSubtype:()I` @kind virtual;
+  #L2a936c.  v4:= temp;
+  #L2a936e.  goto L2a93a4;
+  #L2a9374.  goto L2a93c4;
+  #L2a937a.  call `setThreadCount`(v3, v0) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @kind direct;
+  #L2a9380.  goto L2a939a;
+  #L2a9382.  call `setThreadCount`(v3, v0) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @kind direct;
+  #L2a9388.  goto L2a939a;
+  #L2a938a.  v4:= 2I;
+  #L2a938c.  call `setThreadCount`(v3, v4) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @kind direct;
+  #L2a9392.  goto L2a939a;
+  #L2a9394.  call `setThreadCount`(v3, v2) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @kind direct;
+  #L2a939a.  return @kind void;
+  #L2a939c.  call `setThreadCount`(v3, v0) @signature `Lcom/androidnetworking/core/ANExecutor;.setThreadCount:(I)V` @kind direct;
+  #L2a93a2.  return @kind void;
+  #L2a93a4.  switch v4
+                  | 1 => goto L2a9394
+                  | 2 => goto L2a9394
+                  | 3 => goto L2a938a
+                  | 4 => goto L2a938a
+                  | 5 => goto L2a938a
+                  | 6 => goto L2a938a
+                  | else => goto L2a9374;
+  #L2a93c4.  switch v4
+                  | 12 => goto L2a938a
+                  | 13 => goto L2a9382
+                  | 14 => goto L2a9382
+                  | 15 => goto L2a9382
+                  | else => goto L2a937a;
+}
+procedure `java.util.concurrent.Future` `submit`(`com.androidnetworking.core.ANExecutor` v1 @kind this, `java.lang.Runnable` v2 @kind object) @signature `Lcom/androidnetworking/core/ANExecutor;.submit:(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L2a92c4.  v0:= new `com.androidnetworking.core.ANExecutor$AndroidNetworkingFutureTask`;
+  #L2a92c8.  v2:= (`com.androidnetworking.internal.InternalRunnable`) v2 @kind object;
+  #L2a92cc.  call `<init>`(v0, v2) @signature `Lcom/androidnetworking/core/ANExecutor$AndroidNetworkingFutureTask;.<init>:(Lcom/androidnetworking/internal/InternalRunnable;)V` @kind direct;
+  #L2a92d2.  call `execute`(v1, v0) @signature `Lcom/androidnetworking/core/ANExecutor;.execute:(Ljava/lang/Runnable;)V` @kind virtual;
+  #L2a92d8.  return v0 @kind object;
+}

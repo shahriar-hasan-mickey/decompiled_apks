@@ -1,0 +1,70 @@
+record `com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver` @kind class @AccessFlag PUBLIC extends `android.content.BroadcastReceiver` @kind class {
+}
+procedure `void` `<init>`(`com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver` v0 @kind this) @signature `Lcom/dexterous/flutterlocalnotifications/ScheduledNotificationReceiver;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L2016b0.  call `<init>`(v0) @signature `Landroid/content/BroadcastReceiver;.<init>:()V` @kind direct;
+  #L2016b6.  return @kind void;
+}
+procedure `void` `onReceive`(`com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver` v4 @kind this, `android.content.Context` v5 @kind object, `android.content.Intent` v6 @kind object) @signature `Lcom/dexterous/flutterlocalnotifications/ScheduledNotificationReceiver;.onReceive:(Landroid/content/Context;Landroid/content/Intent;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L2016c8.  v0:= `@@com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin.NOTIFICATION_DETAILS` @type ^`java.lang.String` @kind object;
+  #L2016cc.  call temp:= `getStringExtra`(v6, v0) @signature `Landroid/content/Intent;.getStringExtra:(Ljava/lang/String;)Ljava/lang/String;` @kind virtual;
+  #L2016d2.  v0:= temp @kind object;
+  #L2016d4.  call temp:= `isNullOrEmpty`(v0) @signature `Lcom/dexterous/flutterlocalnotifications/utils/StringUtils;.isNullOrEmpty:(Ljava/lang/String;)Ljava/lang/Boolean;` @kind static;
+  #L2016da.  v1:= temp @kind object;
+  #L2016dc.  call temp:= `booleanValue`(v1) @signature `Ljava/lang/Boolean;.booleanValue:()Z` @kind virtual;
+  #L2016e2.  v1:= temp;
+  #L2016e4.  if v1 == 0 then goto L20173a;
+  #L2016e8.  v0:= "notification" @kind object;
+  #L2016ec.  call temp:= `getParcelableExtra`(v6, v0) @signature `Landroid/content/Intent;.getParcelableExtra:(Ljava/lang/String;)Landroid/os/Parcelable;` @kind virtual;
+  #L2016f2.  v0:= temp @kind object;
+  #L2016f4.  v0:= (`android.app.Notification`) v0 @kind object;
+  #L2016f8.  call temp:= `currentTimeMillis`() @signature `Ljava/lang/System;.currentTimeMillis:()J` @kind static;
+  #L2016fe.  v1:= temp @kind wide;
+  #L201700.  v0.`android.app.Notification.when` @type ^`long` := v1 @kind wide;
+  #L201704.  v1:= "notification_id" @kind object;
+  #L201708.  v2:= 0I;
+  #L20170a.  call temp:= `getIntExtra`(v6, v1, v2) @signature `Landroid/content/Intent;.getIntExtra:(Ljava/lang/String;I)I` @kind virtual;
+  #L201710.  v1:= temp;
+  #L201712.  call temp:= `f`(v5) @signature `Landroidx/core/app/o;.f:(Landroid/content/Context;)Landroidx/core/app/o;` @kind static;
+  #L201718.  v3:= temp @kind object;
+  #L20171a.  call `i`(v3, v1, v0) @signature `Landroidx/core/app/o;.i:(ILandroid/app/Notification;)V` @kind virtual;
+  #L201720.  v0:= "repeat" @kind object;
+  #L201724.  call temp:= `getBooleanExtra`(v6, v0, v2) @signature `Landroid/content/Intent;.getBooleanExtra:(Ljava/lang/String;Z)Z` @kind virtual;
+  #L20172a.  v6:= temp;
+  #L20172c.  if v6 != 0 then goto L2017a0;
+  #L201730.  call temp:= `valueOf`(v1) @signature `Ljava/lang/Integer;.valueOf:(I)Ljava/lang/Integer;` @kind static;
+  #L201736.  v6:= temp @kind object;
+  #L201738.  goto L20179a;
+  #L20173a.  call temp:= `buildGson`() @signature `Lcom/dexterous/flutterlocalnotifications/FlutterLocalNotificationsPlugin;.buildGson:()Ld8/e;` @kind static;
+  #L201740.  v6:= temp @kind object;
+  #L201742.  v1:= new `com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver$a`;
+  #L201746.  call `<init>`(v1, v4) @signature `Lcom/dexterous/flutterlocalnotifications/ScheduledNotificationReceiver$a;.<init>:(Lcom/dexterous/flutterlocalnotifications/ScheduledNotificationReceiver;)V` @kind direct;
+  #L20174c.  call temp:= `e`(v1) @signature `Lk8/a;.e:()Ljava/lang/reflect/Type;` @kind virtual;
+  #L201752.  v1:= temp @kind object;
+  #L201754.  call temp:= `h`(v6, v0, v1) @signature `Ld8/e;.h:(Ljava/lang/String;Ljava/lang/reflect/Type;)Ljava/lang/Object;` @kind virtual;
+  #L20175a.  v6:= temp @kind object;
+  #L20175c.  v6:= (`com.dexterous.flutterlocalnotifications.models.NotificationDetails`) v6 @kind object;
+  #L201760.  call `showNotification`(v5, v6) @signature `Lcom/dexterous/flutterlocalnotifications/FlutterLocalNotificationsPlugin;.showNotification:(Landroid/content/Context;Lcom/dexterous/flutterlocalnotifications/models/NotificationDetails;)V` @kind static;
+  #L201766.  v0:= v6.`com.dexterous.flutterlocalnotifications.models.NotificationDetails.scheduledNotificationRepeatFrequency` @type ^`com.dexterous.flutterlocalnotifications.models.ScheduledNotificationRepeatFrequency` @kind object;
+  #L20176a.  if v0 == 0 then goto L201776;
+  #L20176e.  call `zonedScheduleNextNotification`(v5, v6) @signature `Lcom/dexterous/flutterlocalnotifications/FlutterLocalNotificationsPlugin;.zonedScheduleNextNotification:(Landroid/content/Context;Lcom/dexterous/flutterlocalnotifications/models/NotificationDetails;)V` @kind static;
+  #L201774.  goto L2017a0;
+  #L201776.  v0:= v6.`com.dexterous.flutterlocalnotifications.models.NotificationDetails.matchDateTimeComponents` @type ^`com.dexterous.flutterlocalnotifications.models.DateTimeComponents` @kind object;
+  #L20177a.  if v0 == 0 then goto L201786;
+  #L20177e.  call `zonedScheduleNextNotificationMatchingDateComponents`(v5, v6) @signature `Lcom/dexterous/flutterlocalnotifications/FlutterLocalNotificationsPlugin;.zonedScheduleNextNotificationMatchingDateComponents:(Landroid/content/Context;Lcom/dexterous/flutterlocalnotifications/models/NotificationDetails;)V` @kind static;
+  #L201784.  goto L2017a0;
+  #L201786.  v0:= v6.`com.dexterous.flutterlocalnotifications.models.NotificationDetails.repeatInterval` @type ^`com.dexterous.flutterlocalnotifications.RepeatInterval` @kind object;
+  #L20178a.  if v0 == 0 then goto L201796;
+  #L20178e.  call `scheduleNextRepeatingNotification`(v5, v6) @signature `Lcom/dexterous/flutterlocalnotifications/FlutterLocalNotificationsPlugin;.scheduleNextRepeatingNotification:(Landroid/content/Context;Lcom/dexterous/flutterlocalnotifications/models/NotificationDetails;)V` @kind static;
+  #L201794.  goto L2017a0;
+  #L201796.  v6:= v6.`com.dexterous.flutterlocalnotifications.models.NotificationDetails.id` @type ^`java.lang.Integer` @kind object;
+  #L20179a.  call `removeNotificationFromCache`(v5, v6) @signature `Lcom/dexterous/flutterlocalnotifications/FlutterLocalNotificationsPlugin;.removeNotificationFromCache:(Landroid/content/Context;Ljava/lang/Integer;)V` @kind static;
+  #L2017a0.  return @kind void;
+}

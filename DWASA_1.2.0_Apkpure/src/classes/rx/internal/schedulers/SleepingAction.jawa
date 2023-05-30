@@ -1,0 +1,52 @@
+record `rx.internal.schedulers.SleepingAction` @kind class @AccessFlag  extends `rx.functions.Action0` @kind interface {
+  `long` `rx.internal.schedulers.SleepingAction.execTime` @AccessFlag PRIVATE_FINAL;
+  `rx.Scheduler$Worker` `rx.internal.schedulers.SleepingAction.innerScheduler` @AccessFlag PRIVATE_FINAL;
+  `rx.functions.Action0` `rx.internal.schedulers.SleepingAction.underlying` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`rx.internal.schedulers.SleepingAction` v0 @kind this, `rx.functions.Action0` v1 @kind object, `rx.Scheduler$Worker` v2 @kind object, `long` v3 ) @signature `Lrx/internal/schedulers/SleepingAction;.<init>:(Lrx/functions/Action0;Lrx/Scheduler$Worker;J)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b3c3c.  call `<init>`(v0) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L4b3c42.  v0.`rx.internal.schedulers.SleepingAction.underlying` @type ^`rx.functions.Action0` := v1 @kind object;
+  #L4b3c46.  v0.`rx.internal.schedulers.SleepingAction.innerScheduler` @type ^`rx.Scheduler$Worker` := v2 @kind object;
+  #L4b3c4a.  v0.`rx.internal.schedulers.SleepingAction.execTime` @type ^`long` := v3 @kind wide;
+  #L4b3c4e.  return @kind void;
+}
+procedure `void` `call`(`rx.internal.schedulers.SleepingAction` v5 @kind this) @signature `Lrx/internal/schedulers/SleepingAction;.call:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L4b3c60.  v0:= v5.`rx.internal.schedulers.SleepingAction.innerScheduler` @type ^`rx.Scheduler$Worker` @kind object;
+  #L4b3c64.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Scheduler$Worker;.isUnsubscribed:()Z` @kind virtual;
+  #L4b3c6a.  v0:= temp;
+  #L4b3c6c.  if v0 == 0 then goto L4b3c72;
+  #L4b3c70.  return @kind void;
+  #L4b3c72.  v0:= v5.`rx.internal.schedulers.SleepingAction.execTime` @type ^`long` @kind wide;
+  #L4b3c76.  v2:= v5.`rx.internal.schedulers.SleepingAction.innerScheduler` @type ^`rx.Scheduler$Worker` @kind object;
+  #L4b3c7a.  call temp:= `now`(v2) @signature `Lrx/Scheduler$Worker;.now:()J` @kind virtual;
+  #L4b3c80.  v2:= temp @kind wide;
+  #L4b3c82.  v0:= v0 - v2 @kind long;
+  #L4b3c84.  v2:= 0L;
+  #L4b3c88.  v4:= lcmp(v0, v2);
+  #L4b3c8c.  if v4 <= 0 then goto L4b3cae;
+  #L4b3c90.  call `sleep`(v0) @signature `Ljava/lang/Thread;.sleep:(J)V` @kind static;
+  #L4b3c96.  goto L4b3cae;
+  #L4b3c98.  v0:= Exception @type ^`java.lang.InterruptedException` @kind object;
+  #L4b3c9a.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L4b3ca0.  v1:= temp @kind object;
+  #L4b3ca2.  call `interrupt`(v1) @signature `Ljava/lang/Thread;.interrupt:()V` @kind virtual;
+  #L4b3ca8.  call temp:= `propagate`(v0) @signature `Lrx/exceptions/Exceptions;.propagate:(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;` @kind static;
+  #L4b3cae.  v0:= v5.`rx.internal.schedulers.SleepingAction.innerScheduler` @type ^`rx.Scheduler$Worker` @kind object;
+  #L4b3cb2.  call temp:= `isUnsubscribed`(v0) @signature `Lrx/Scheduler$Worker;.isUnsubscribed:()Z` @kind virtual;
+  #L4b3cb8.  v0:= temp;
+  #L4b3cba.  if v0 == 0 then goto L4b3cc0;
+  #L4b3cbe.  return @kind void;
+  #L4b3cc0.  v0:= v5.`rx.internal.schedulers.SleepingAction.underlying` @type ^`rx.functions.Action0` @kind object;
+  #L4b3cc4.  call `call`(v0) @signature `Lrx/functions/Action0;.call:()V` @kind interface;
+  #L4b3cca.  return @kind void;
+  catch `java.lang.InterruptedException` @[L4b3c90..L4b3c96] goto L4b3c98;
+}

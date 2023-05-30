@@ -1,0 +1,190 @@
+record `com.google.android.material.elevation.ElevationOverlayProvider` @kind class @AccessFlag PUBLIC {
+  `int` `com.google.android.material.elevation.ElevationOverlayProvider.colorSurface` @AccessFlag PRIVATE_FINAL;
+  `float` `com.google.android.material.elevation.ElevationOverlayProvider.displayDensity` @AccessFlag PRIVATE_FINAL;
+  `int` `com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayColor` @AccessFlag PRIVATE_FINAL;
+  `boolean` `com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayEnabled` @AccessFlag PRIVATE_FINAL;
+}
+global `float` `@@com.google.android.material.elevation.ElevationOverlayProvider.FORMULA_MULTIPLIER` @AccessFlag PRIVATE_STATIC_FINAL;
+global `float` `@@com.google.android.material.elevation.ElevationOverlayProvider.FORMULA_OFFSET` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`com.google.android.material.elevation.ElevationOverlayProvider` v2 @kind this, `android.content.Context` v3 @kind object) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.<init>:(Landroid/content/Context;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L3e44ec.  call `<init>`(v2) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3e44f2.  v0:= `@@com.google.android.material.R$attr.elevationOverlayEnabled` @type ^`int`;
+  #L3e44f6.  v1:= 0I;
+  #L3e44f8.  call temp:= `resolveBoolean`(v3, v0, v1) @signature `Lcom/google/android/material/resources/MaterialAttributes;.resolveBoolean:(Landroid/content/Context;IZ)Z` @kind static;
+  #L3e44fe.  v0:= temp;
+  #L3e4500.  v2.`com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayEnabled` @type ^`boolean` := v0 @kind boolean;
+  #L3e4504.  v0:= `@@com.google.android.material.R$attr.elevationOverlayColor` @type ^`int`;
+  #L3e4508.  call temp:= `getColor`(v3, v0, v1) @signature `Lcom/google/android/material/color/MaterialColors;.getColor:(Landroid/content/Context;II)I` @kind static;
+  #L3e450e.  v0:= temp;
+  #L3e4510.  v2.`com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayColor` @type ^`int` := v0;
+  #L3e4514.  v0:= `@@com.google.android.material.R$attr.colorSurface` @type ^`int`;
+  #L3e4518.  call temp:= `getColor`(v3, v0, v1) @signature `Lcom/google/android/material/color/MaterialColors;.getColor:(Landroid/content/Context;II)I` @kind static;
+  #L3e451e.  v0:= temp;
+  #L3e4520.  v2.`com.google.android.material.elevation.ElevationOverlayProvider.colorSurface` @type ^`int` := v0;
+  #L3e4524.  call temp:= `getResources`(v3) @signature `Landroid/content/Context;.getResources:()Landroid/content/res/Resources;` @kind virtual;
+  #L3e452a.  v3:= temp @kind object;
+  #L3e452c.  call temp:= `getDisplayMetrics`(v3) @signature `Landroid/content/res/Resources;.getDisplayMetrics:()Landroid/util/DisplayMetrics;` @kind virtual;
+  #L3e4532.  v3:= temp @kind object;
+  #L3e4534.  v3:= v3.`android.util.DisplayMetrics.density` @type ^`float`;
+  #L3e4538.  v2.`com.google.android.material.elevation.ElevationOverlayProvider.displayDensity` @type ^`float` := v3;
+  #L3e453c.  return @kind void;
+}
+procedure `boolean` `isThemeSurfaceColor`(`com.google.android.material.elevation.ElevationOverlayProvider` v1 @kind this, `int` v2 ) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.isThemeSurfaceColor:(I)Z` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3e42ec.  v0:= 255I;
+  #L3e42f0.  call temp:= `setAlphaComponent`(v2, v0) @signature `Landroidx/core/graphics/ColorUtils;.setAlphaComponent:(II)I` @kind static;
+  #L3e42f6.  v2:= temp;
+  #L3e42f8.  v0:= v1.`com.google.android.material.elevation.ElevationOverlayProvider.colorSurface` @type ^`int`;
+  #L3e42fc.  if v2 != v0 then goto L3e4304;
+  #L3e4300.  v2:= 1I;
+  #L3e4302.  goto L3e4306;
+  #L3e4304.  v2:= 0I;
+  #L3e4306.  return v2;
+}
+procedure `int` `calculateOverlayAlpha`(`com.google.android.material.elevation.ElevationOverlayProvider` v1 @kind this, `float` v2 ) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.calculateOverlayAlpha:(F)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3e4390.  call temp:= `calculateOverlayAlphaFraction`(v1, v2) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.calculateOverlayAlphaFraction:(F)F` @kind virtual;
+  #L3e4396.  v2:= temp;
+  #L3e4398.  v0:= 255.0F;
+  #L3e439c.  v2:= v2 * v0 @kind float;
+  #L3e43a0.  call temp:= `round`(v2) @signature `Ljava/lang/Math;.round:(F)I` @kind static;
+  #L3e43a6.  v2:= temp;
+  #L3e43a8.  return v2;
+}
+procedure `float` `calculateOverlayAlphaFraction`(`com.google.android.material.elevation.ElevationOverlayProvider` v3 @kind this, `float` v4 ) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.calculateOverlayAlphaFraction:(F)F` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3e4318.  v0:= v3.`com.google.android.material.elevation.ElevationOverlayProvider.displayDensity` @type ^`float`;
+  #L3e431c.  v1:= 0I;
+  #L3e431e.  v2:= fcmpg(v0, v1);
+  #L3e4322.  if v2 <= 0 then goto L3e4360;
+  #L3e4326.  v2:= fcmpg(v4, v1);
+  #L3e432a.  if v2 > 0 then goto L3e4330;
+  #L3e432e.  goto L3e4360;
+  #L3e4330.  v4:= v4 / v0 @kind float;
+  #L3e4332.  v0:= 4.5F;
+  #L3e4336.  v1:= (`double`) v4 @kind f2d;
+  #L3e4338.  call temp:= `log1p`(v1) @signature `Ljava/lang/Math;.log1p:(D)D` @kind static;
+  #L3e433e.  v1:= temp @kind wide;
+  #L3e4340.  v4:= (`float`) v1 @kind d2f;
+  #L3e4342.  v4:= v4 * v0 @kind float;
+  #L3e4346.  v0:= 2.0F;
+  #L3e434a.  v4:= v4 + v0 @kind float;
+  #L3e434c.  v0:= 100.0F;
+  #L3e4350.  v4:= v4 / v0 @kind float;
+  #L3e4352.  v0:= 1.0F;
+  #L3e4356.  call temp:= `min`(v4, v0) @signature `Ljava/lang/Math;.min:(FF)F` @kind static;
+  #L3e435c.  v4:= temp;
+  #L3e435e.  return v4;
+  #L3e4360.  return v1;
+}
+procedure `int` `compositeOverlay`(`com.google.android.material.elevation.ElevationOverlayProvider` v2 @kind this, `int` v3 , `float` v4 ) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlay:(IF)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3e43bc.  call temp:= `calculateOverlayAlphaFraction`(v2, v4) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.calculateOverlayAlphaFraction:(F)F` @kind virtual;
+  #L3e43c2.  v4:= temp;
+  #L3e43c4.  call temp:= `alpha`(v3) @signature `Landroid/graphics/Color;.alpha:(I)I` @kind static;
+  #L3e43ca.  v0:= temp;
+  #L3e43cc.  v1:= 255I;
+  #L3e43d0.  call temp:= `setAlphaComponent`(v3, v1) @signature `Landroidx/core/graphics/ColorUtils;.setAlphaComponent:(II)I` @kind static;
+  #L3e43d6.  v3:= temp;
+  #L3e43d8.  v1:= v2.`com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayColor` @type ^`int`;
+  #L3e43dc.  call temp:= `layer`(v3, v1, v4) @signature `Lcom/google/android/material/color/MaterialColors;.layer:(IIF)I` @kind static;
+  #L3e43e2.  v3:= temp;
+  #L3e43e4.  call temp:= `setAlphaComponent`(v3, v0) @signature `Landroidx/core/graphics/ColorUtils;.setAlphaComponent:(II)I` @kind static;
+  #L3e43ea.  v3:= temp;
+  #L3e43ec.  return v3;
+}
+procedure `int` `compositeOverlay`(`com.google.android.material.elevation.ElevationOverlayProvider` v0 @kind this, `int` v1 , `float` v2 , `android.view.View` v3 @kind object) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlay:(IFLandroid/view/View;)I` @AccessFlag PUBLIC {
+    temp;
+
+  #L3e4400.  call temp:= `getParentAbsoluteElevation`(v0, v3) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.getParentAbsoluteElevation:(Landroid/view/View;)F` @kind virtual;
+  #L3e4406.  v3:= temp;
+  #L3e4408.  v2:= v2 + v3 @kind float;
+  #L3e440a.  call temp:= `compositeOverlay`(v0, v1, v2) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlay:(IF)I` @kind virtual;
+  #L3e4410.  v1:= temp;
+  #L3e4412.  return v1;
+}
+procedure `int` `compositeOverlayIfNeeded`(`com.google.android.material.elevation.ElevationOverlayProvider` v1 @kind this, `int` v2 , `float` v3 ) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlayIfNeeded:(IF)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3e4424.  v0:= v1.`com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayEnabled` @type ^`boolean` @kind boolean;
+  #L3e4428.  if v0 == 0 then goto L3e4440;
+  #L3e442c.  call temp:= `isThemeSurfaceColor`(v1, v2) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.isThemeSurfaceColor:(I)Z` @kind direct;
+  #L3e4432.  v0:= temp;
+  #L3e4434.  if v0 == 0 then goto L3e4440;
+  #L3e4438.  call temp:= `compositeOverlay`(v1, v2, v3) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlay:(IF)I` @kind virtual;
+  #L3e443e.  v2:= temp;
+  #L3e4440.  return v2;
+}
+procedure `int` `compositeOverlayIfNeeded`(`com.google.android.material.elevation.ElevationOverlayProvider` v0 @kind this, `int` v1 , `float` v2 , `android.view.View` v3 @kind object) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlayIfNeeded:(IFLandroid/view/View;)I` @AccessFlag PUBLIC {
+    temp;
+
+  #L3e4454.  call temp:= `getParentAbsoluteElevation`(v0, v3) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.getParentAbsoluteElevation:(Landroid/view/View;)F` @kind virtual;
+  #L3e445a.  v3:= temp;
+  #L3e445c.  v2:= v2 + v3 @kind float;
+  #L3e445e.  call temp:= `compositeOverlayIfNeeded`(v0, v1, v2) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlayIfNeeded:(IF)I` @kind virtual;
+  #L3e4464.  v1:= temp;
+  #L3e4466.  return v1;
+}
+procedure `int` `compositeOverlayWithThemeSurfaceColorIfNeeded`(`com.google.android.material.elevation.ElevationOverlayProvider` v1 @kind this, `float` v2 ) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlayWithThemeSurfaceColorIfNeeded:(F)I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3e4478.  v0:= v1.`com.google.android.material.elevation.ElevationOverlayProvider.colorSurface` @type ^`int`;
+  #L3e447c.  call temp:= `compositeOverlayIfNeeded`(v1, v0, v2) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlayIfNeeded:(IF)I` @kind virtual;
+  #L3e4482.  v2:= temp;
+  #L3e4484.  return v2;
+}
+procedure `int` `compositeOverlayWithThemeSurfaceColorIfNeeded`(`com.google.android.material.elevation.ElevationOverlayProvider` v0 @kind this, `float` v1 , `android.view.View` v2 @kind object) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlayWithThemeSurfaceColorIfNeeded:(FLandroid/view/View;)I` @AccessFlag PUBLIC {
+    temp;
+
+  #L3e4498.  call temp:= `getParentAbsoluteElevation`(v0, v2) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.getParentAbsoluteElevation:(Landroid/view/View;)F` @kind virtual;
+  #L3e449e.  v2:= temp;
+  #L3e44a0.  v1:= v1 + v2 @kind float;
+  #L3e44a2.  call temp:= `compositeOverlayWithThemeSurfaceColorIfNeeded`(v0, v1) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.compositeOverlayWithThemeSurfaceColorIfNeeded:(F)I` @kind virtual;
+  #L3e44a8.  v1:= temp;
+  #L3e44aa.  return v1;
+}
+procedure `float` `getParentAbsoluteElevation`(`com.google.android.material.elevation.ElevationOverlayProvider` v0 @kind this, `android.view.View` v1 @kind object) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.getParentAbsoluteElevation:(Landroid/view/View;)F` @AccessFlag PUBLIC {
+    temp;
+
+  #L3e4374.  call temp:= `getParentAbsoluteElevation`(v1) @signature `Lcom/google/android/material/internal/ViewUtils;.getParentAbsoluteElevation:(Landroid/view/View;)F` @kind static;
+  #L3e437a.  v1:= temp;
+  #L3e437c.  return v1;
+}
+procedure `int` `getThemeElevationOverlayColor`(`com.google.android.material.elevation.ElevationOverlayProvider` v1 @kind this) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.getThemeElevationOverlayColor:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3e44bc.  v0:= v1.`com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayColor` @type ^`int`;
+  #L3e44c0.  return v0;
+}
+procedure `int` `getThemeSurfaceColor`(`com.google.android.material.elevation.ElevationOverlayProvider` v1 @kind this) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.getThemeSurfaceColor:()I` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3e44d4.  v0:= v1.`com.google.android.material.elevation.ElevationOverlayProvider.colorSurface` @type ^`int`;
+  #L3e44d8.  return v0;
+}
+procedure `boolean` `isThemeElevationOverlayEnabled`(`com.google.android.material.elevation.ElevationOverlayProvider` v1 @kind this) @signature `Lcom/google/android/material/elevation/ElevationOverlayProvider;.isThemeElevationOverlayEnabled:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3e42d4.  v0:= v1.`com.google.android.material.elevation.ElevationOverlayProvider.elevationOverlayEnabled` @type ^`boolean` @kind boolean;
+  #L3e42d8.  return v0;
+}

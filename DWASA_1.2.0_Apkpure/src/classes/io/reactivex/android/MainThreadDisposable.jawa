@@ -1,0 +1,79 @@
+record `io.reactivex.android.MainThreadDisposable` @kind class @AccessFlag PUBLIC_ABSTRACT extends `io.reactivex.disposables.Disposable` @kind interface {
+  `java.util.concurrent.atomic.AtomicBoolean` `io.reactivex.android.MainThreadDisposable.unsubscribed` @AccessFlag PRIVATE_FINAL;
+}
+procedure `void` `<init>`(`io.reactivex.android.MainThreadDisposable` v1 @kind this) @signature `Lio/reactivex/android/MainThreadDisposable;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3e38e0.  call `<init>`(v1) @signature `Ljava/lang/Object;.<init>:()V` @kind direct;
+  #L3e38e6.  v0:= new `java.util.concurrent.atomic.AtomicBoolean`;
+  #L3e38ea.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.<init>:()V` @kind direct;
+  #L3e38f0.  v1.`io.reactivex.android.MainThreadDisposable.unsubscribed` @type ^`java.util.concurrent.atomic.AtomicBoolean` := v0 @kind object;
+  #L3e38f4.  return @kind void;
+}
+procedure `void` `verifyMainThread`() @signature `Lio/reactivex/android/MainThreadDisposable;.verifyMainThread:()V` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3e3964.  call temp:= `myLooper`() @signature `Landroid/os/Looper;.myLooper:()Landroid/os/Looper;` @kind static;
+  #L3e396a.  v0:= temp @kind object;
+  #L3e396c.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L3e3972.  v1:= temp @kind object;
+  #L3e3974.  if v0 != v1 then goto L3e397a;
+  #L3e3978.  return @kind void;
+  #L3e397a.  v0:= new `java.lang.IllegalStateException`;
+  #L3e397e.  v1:= new `java.lang.StringBuilder`;
+  #L3e3982.  call `<init>`(v1) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3e3988.  v2:= "Expected to be called on the main thread but was " @kind object;
+  #L3e398c.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3e3992.  call temp:= `currentThread`() @signature `Ljava/lang/Thread;.currentThread:()Ljava/lang/Thread;` @kind static;
+  #L3e3998.  v2:= temp @kind object;
+  #L3e399a.  call temp:= `getName`(v2) @signature `Ljava/lang/Thread;.getName:()Ljava/lang/String;` @kind virtual;
+  #L3e39a0.  v2:= temp @kind object;
+  #L3e39a2.  call temp:= `append`(v1, v2) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3e39a8.  call temp:= `toString`(v1) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3e39ae.  v1:= temp @kind object;
+  #L3e39b0.  call `<init>`(v0, v1) @signature `Ljava/lang/IllegalStateException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L3e39b6.  throw v0;
+}
+procedure `void` `dispose`(`io.reactivex.android.MainThreadDisposable` v3 @kind this) @signature `Lio/reactivex/android/MainThreadDisposable;.dispose:()V` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3e3908.  v0:= v3.`io.reactivex.android.MainThreadDisposable.unsubscribed` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L3e390c.  v1:= 0I;
+  #L3e390e.  v2:= 1I;
+  #L3e3910.  call temp:= `compareAndSet`(v0, v1, v2) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.compareAndSet:(ZZ)Z` @kind virtual;
+  #L3e3916.  v0:= temp;
+  #L3e3918.  if v0 == 0 then goto L3e3950;
+  #L3e391c.  call temp:= `myLooper`() @signature `Landroid/os/Looper;.myLooper:()Landroid/os/Looper;` @kind static;
+  #L3e3922.  v0:= temp @kind object;
+  #L3e3924.  call temp:= `getMainLooper`() @signature `Landroid/os/Looper;.getMainLooper:()Landroid/os/Looper;` @kind static;
+  #L3e392a.  v1:= temp @kind object;
+  #L3e392c.  if v0 != v1 then goto L3e3938;
+  #L3e3930.  call `onDispose`(v3) @signature `Lio/reactivex/android/MainThreadDisposable;.onDispose:()V` @kind virtual;
+  #L3e3936.  goto L3e3950;
+  #L3e3938.  call temp:= `mainThread`() @signature `Lio/reactivex/android/schedulers/AndroidSchedulers;.mainThread:()Lio/reactivex/Scheduler;` @kind static;
+  #L3e393e.  v0:= temp @kind object;
+  #L3e3940.  v1:= new `io.reactivex.android.MainThreadDisposable$1`;
+  #L3e3944.  call `<init>`(v1, v3) @signature `Lio/reactivex/android/MainThreadDisposable$1;.<init>:(Lio/reactivex/android/MainThreadDisposable;)V` @kind direct;
+  #L3e394a.  call temp:= `scheduleDirect`(v0, v1) @signature `Lio/reactivex/Scheduler;.scheduleDirect:(Ljava/lang/Runnable;)Lio/reactivex/disposables/Disposable;` @kind virtual;
+  #L3e3950.  return @kind void;
+}
+procedure `boolean` `isDisposed`(`io.reactivex.android.MainThreadDisposable` v1 @kind this) @signature `Lio/reactivex/android/MainThreadDisposable;.isDisposed:()Z` @AccessFlag PUBLIC_FINAL {
+    temp;
+    v0;
+
+  #L3e38c0.  v0:= v1.`io.reactivex.android.MainThreadDisposable.unsubscribed` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L3e38c4.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L3e38ca.  v0:= temp;
+  #L3e38cc.  return v0;
+}
+procedure `void` `onDispose`() @signature `Lio/reactivex/android/MainThreadDisposable;.onDispose:()V` @AccessFlag PROTECTED_ABSTRACT {
+
+  # return;
+}

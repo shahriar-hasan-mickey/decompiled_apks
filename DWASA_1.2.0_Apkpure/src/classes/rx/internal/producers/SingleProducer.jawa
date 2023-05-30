@@ -1,0 +1,52 @@
+record `rx.internal.producers.SingleProducer` @kind class @AccessFlag PUBLIC_FINAL extends `java.util.concurrent.atomic.AtomicBoolean` @kind class, `rx.Producer` @kind interface {
+  `rx.Subscriber` `rx.internal.producers.SingleProducer.child` @AccessFlag FINAL;
+  `java.lang.Object` `rx.internal.producers.SingleProducer.value` @AccessFlag FINAL;
+}
+global `long` `@@rx.internal.producers.SingleProducer.serialVersionUID` @AccessFlag PRIVATE_STATIC_FINAL;
+procedure `void` `<init>`(`rx.internal.producers.SingleProducer` v0 @kind this, `rx.Subscriber` v1 @kind object, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/producers/SingleProducer;.<init>:(Lrx/Subscriber;Ljava/lang/Object;)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4b1d0c.  call `<init>`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.<init>:()V` @kind direct;
+  #L4b1d12.  v0.`rx.internal.producers.SingleProducer.child` @type ^`rx.Subscriber` := v1 @kind object;
+  #L4b1d16.  v0.`rx.internal.producers.SingleProducer.value` @type ^`java.lang.Object` := v2 @kind object;
+  #L4b1d1a.  return @kind void;
+}
+procedure `void` `request`(`rx.internal.producers.SingleProducer` v3 @kind this, `long` v4 ) @signature `Lrx/internal/producers/SingleProducer;.request:(J)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L4b1d2c.  v0:= 0L;
+  #L4b1d30.  v2:= lcmp(v4, v0);
+  #L4b1d34.  if v2 < 0 then goto L4b1d8e;
+  #L4b1d38.  v2:= lcmp(v4, v0);
+  #L4b1d3c.  if v2 != 0 then goto L4b1d42;
+  #L4b1d40.  return @kind void;
+  #L4b1d42.  v4:= 0I;
+  #L4b1d44.  v5:= 1I;
+  #L4b1d46.  call temp:= `compareAndSet`(v3, v4, v5) @signature `Lrx/internal/producers/SingleProducer;.compareAndSet:(ZZ)Z` @kind virtual;
+  #L4b1d4c.  v4:= temp;
+  #L4b1d4e.  if v4 == 0 then goto L4b1d8c;
+  #L4b1d52.  v4:= v3.`rx.internal.producers.SingleProducer.child` @type ^`rx.Subscriber` @kind object;
+  #L4b1d56.  call temp:= `isUnsubscribed`(v4) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4b1d5c.  v5:= temp;
+  #L4b1d5e.  if v5 == 0 then goto L4b1d64;
+  #L4b1d62.  return @kind void;
+  #L4b1d64.  v5:= v3.`rx.internal.producers.SingleProducer.value` @type ^`java.lang.Object` @kind object;
+  #L4b1d68.  call `onNext`(v4, v5) @signature `Lrx/Subscriber;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L4b1d6e.  call temp:= `isUnsubscribed`(v4) @signature `Lrx/Subscriber;.isUnsubscribed:()Z` @kind virtual;
+  #L4b1d74.  v5:= temp;
+  #L4b1d76.  if v5 == 0 then goto L4b1d7c;
+  #L4b1d7a.  return @kind void;
+  #L4b1d7c.  call `onCompleted`(v4) @signature `Lrx/Subscriber;.onCompleted:()V` @kind virtual;
+  #L4b1d82.  goto L4b1d8c;
+  #L4b1d84.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L4b1d86.  call `throwOrReport`(v0, v4, v5) @signature `Lrx/exceptions/Exceptions;.throwOrReport:(Ljava/lang/Throwable;Lrx/Observer;Ljava/lang/Object;)V` @kind static;
+  #L4b1d8c.  return @kind void;
+  #L4b1d8e.  v4:= new `java.lang.IllegalArgumentException`;
+  #L4b1d92.  v5:= "n >= 0 required" @kind object;
+  #L4b1d96.  call `<init>`(v4, v5) @signature `Ljava/lang/IllegalArgumentException;.<init>:(Ljava/lang/String;)V` @kind direct;
+  #L4b1d9c.  throw v4;
+  catch `java.lang.Throwable` @[L4b1d68..L4b1d6e] goto L4b1d84;
+}

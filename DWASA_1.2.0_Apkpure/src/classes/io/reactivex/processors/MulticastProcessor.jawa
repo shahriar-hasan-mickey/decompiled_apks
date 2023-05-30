@@ -1,0 +1,642 @@
+record `io.reactivex.processors.MulticastProcessor` @kind class @AccessFlag PUBLIC_FINAL extends `io.reactivex.processors.FlowableProcessor` @kind class {
+  `int` `io.reactivex.processors.MulticastProcessor.bufferSize` @AccessFlag FINAL;
+  `int` `io.reactivex.processors.MulticastProcessor.consumed` @AccessFlag ;
+  `boolean` `io.reactivex.processors.MulticastProcessor.done` @AccessFlag VOLATILE;
+  `java.lang.Throwable` `io.reactivex.processors.MulticastProcessor.error` @AccessFlag VOLATILE;
+  `int` `io.reactivex.processors.MulticastProcessor.fusionMode` @AccessFlag ;
+  `int` `io.reactivex.processors.MulticastProcessor.limit` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicBoolean` `io.reactivex.processors.MulticastProcessor.once` @AccessFlag FINAL;
+  `io.reactivex.internal.fuseable.SimpleQueue` `io.reactivex.processors.MulticastProcessor.queue` @AccessFlag VOLATILE;
+  `boolean` `io.reactivex.processors.MulticastProcessor.refcount` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `io.reactivex.processors.MulticastProcessor.subscribers` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicReference` `io.reactivex.processors.MulticastProcessor.upstream` @AccessFlag FINAL;
+  `java.util.concurrent.atomic.AtomicInteger` `io.reactivex.processors.MulticastProcessor.wip` @AccessFlag FINAL;
+}
+global `io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] `@@io.reactivex.processors.MulticastProcessor.EMPTY` @AccessFlag STATIC_FINAL;
+global `io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @AccessFlag STATIC_FINAL;
+procedure `void` `<clinit>`() @signature `Lio/reactivex/processors/MulticastProcessor;.<clinit>:()V` @AccessFlag STATIC_CONSTRUCTOR {
+    temp;
+    v0;
+    v1;
+
+  #L44d3cc.  v0:= 0I;
+  #L44d3ce.  v1:= new `io.reactivex.processors.MulticastProcessor$MulticastSubscription`[v0];
+  #L44d3d2.  `@@io.reactivex.processors.MulticastProcessor.EMPTY` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] := v1 @kind object;
+  #L44d3d6.  v0:= new `io.reactivex.processors.MulticastProcessor$MulticastSubscription`[v0];
+  #L44d3da.  `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] := v0 @kind object;
+  #L44d3de.  return @kind void;
+}
+procedure `void` `<init>`(`io.reactivex.processors.MulticastProcessor` v1 @kind this, `int` v2 , `boolean` v3 ) @signature `Lio/reactivex/processors/MulticastProcessor;.<init>:(IZ)V` @AccessFlag CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L44d3f0.  call `<init>`(v1) @signature `Lio/reactivex/processors/FlowableProcessor;.<init>:()V` @kind direct;
+  #L44d3f6.  v0:= "bufferSize" @kind object;
+  #L44d3fa.  call temp:= `verifyPositive`(v2, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.verifyPositive:(ILjava/lang/String;)I` @kind static;
+  #L44d400.  v1.`io.reactivex.processors.MulticastProcessor.bufferSize` @type ^`int` := v2;
+  #L44d404.  v0:= v2 ^> 2;
+  #L44d408.  v2:= v2 - v0 @kind int;
+  #L44d40a.  v1.`io.reactivex.processors.MulticastProcessor.limit` @type ^`int` := v2;
+  #L44d40e.  v2:= new `java.util.concurrent.atomic.AtomicInteger`;
+  #L44d412.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.<init>:()V` @kind direct;
+  #L44d418.  v1.`io.reactivex.processors.MulticastProcessor.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` := v2 @kind object;
+  #L44d41c.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L44d420.  v0:= `@@io.reactivex.processors.MulticastProcessor.EMPTY` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d424.  call `<init>`(v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:(Ljava/lang/Object;)V` @kind direct;
+  #L44d42a.  v1.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L44d42e.  v2:= new `java.util.concurrent.atomic.AtomicReference`;
+  #L44d432.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.<init>:()V` @kind direct;
+  #L44d438.  v1.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` := v2 @kind object;
+  #L44d43c.  v1.`io.reactivex.processors.MulticastProcessor.refcount` @type ^`boolean` := v3 @kind boolean;
+  #L44d440.  v2:= new `java.util.concurrent.atomic.AtomicBoolean`;
+  #L44d444.  call `<init>`(v2) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.<init>:()V` @kind direct;
+  #L44d44a.  v1.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` := v2 @kind object;
+  #L44d44e.  return @kind void;
+}
+procedure `io.reactivex.processors.MulticastProcessor` `create`() @signature `Lio/reactivex/processors/MulticastProcessor;.create:()Lio/reactivex/processors/MulticastProcessor;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L44d318.  v0:= new `io.reactivex.processors.MulticastProcessor`;
+  #L44d31c.  call temp:= `bufferSize`() @signature `Lio/reactivex/processors/MulticastProcessor;.bufferSize:()I` @kind static;
+  #L44d322.  v1:= temp;
+  #L44d324.  v2:= 0I;
+  #L44d326.  call `<init>`(v0, v1, v2) @signature `Lio/reactivex/processors/MulticastProcessor;.<init>:(IZ)V` @kind direct;
+  #L44d32c.  return v0 @kind object;
+}
+procedure `io.reactivex.processors.MulticastProcessor` `create`(`int` v2 ) @signature `Lio/reactivex/processors/MulticastProcessor;.create:(I)Lio/reactivex/processors/MulticastProcessor;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L44d364.  v0:= new `io.reactivex.processors.MulticastProcessor`;
+  #L44d368.  v1:= 0I;
+  #L44d36a.  call `<init>`(v0, v2, v1) @signature `Lio/reactivex/processors/MulticastProcessor;.<init>:(IZ)V` @kind direct;
+  #L44d370.  return v0 @kind object;
+}
+procedure `io.reactivex.processors.MulticastProcessor` `create`(`int` v1 , `boolean` v2 ) @signature `Lio/reactivex/processors/MulticastProcessor;.create:(IZ)Lio/reactivex/processors/MulticastProcessor;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+
+  #L44d384.  v0:= new `io.reactivex.processors.MulticastProcessor`;
+  #L44d388.  call `<init>`(v0, v1, v2) @signature `Lio/reactivex/processors/MulticastProcessor;.<init>:(IZ)V` @kind direct;
+  #L44d38e.  return v0 @kind object;
+}
+procedure `io.reactivex.processors.MulticastProcessor` `create`(`boolean` v2 ) @signature `Lio/reactivex/processors/MulticastProcessor;.create:(Z)Lio/reactivex/processors/MulticastProcessor;` @AccessFlag PUBLIC_STATIC {
+    temp;
+    v0;
+    v1;
+
+  #L44d340.  v0:= new `io.reactivex.processors.MulticastProcessor`;
+  #L44d344.  call temp:= `bufferSize`() @signature `Lio/reactivex/processors/MulticastProcessor;.bufferSize:()I` @kind static;
+  #L44d34a.  v1:= temp;
+  #L44d34c.  call `<init>`(v0, v1, v2) @signature `Lio/reactivex/processors/MulticastProcessor;.<init>:(IZ)V` @kind direct;
+  #L44d352.  return v0 @kind object;
+}
+procedure `boolean` `add`(`io.reactivex.processors.MulticastProcessor` v4 @kind this, `io.reactivex.processors.MulticastProcessor$MulticastSubscription` v5 @kind object) @signature `Lio/reactivex/processors/MulticastProcessor;.add:(Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;)Z` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L44d1e0.  v0:= v4.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d1e4.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44d1ea.  v0:= temp @kind object;
+  #L44d1ec.  v0:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v0 @kind object;
+  #L44d1f0.  v1:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d1f4.  v2:= 0I;
+  #L44d1f6.  if v0 != v1 then goto L44d1fc;
+  #L44d1fa.  return v2;
+  #L44d1fc.  v1:= length @variable v0;
+  #L44d1fe.  v3:= v1 + 1;
+  #L44d202.  v3:= new `io.reactivex.processors.MulticastProcessor$MulticastSubscription`[v3];
+  #L44d206.  call `arraycopy`(v0, v2, v3, v2, v1) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L44d20c.  v3[v1]:= v5 @kind object;
+  #L44d210.  v1:= v4.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d214.  call temp:= `compareAndSet`(v1, v0, v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L44d21a.  v0:= temp;
+  #L44d21c.  if v0 == 0 then goto L44d1e0;
+  #L44d220.  v5:= 1I;
+  #L44d222.  return v5;
+}
+procedure `void` `drain`(`io.reactivex.processors.MulticastProcessor` v22 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.drain:()V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+    v6;
+    v7;
+    v8;
+    v9;
+    v10;
+    v11;
+    v12;
+    v13;
+    v14;
+    v15;
+    v16;
+    v17;
+    v18;
+    v19;
+    v20;
+    v21;
+
+  #L44d460.  v1:= v22 @kind object;
+  #L44d464.  v0:= v1.`io.reactivex.processors.MulticastProcessor.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L44d468.  call temp:= `getAndIncrement`(v0) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.getAndIncrement:()I` @kind virtual;
+  #L44d46e.  v0:= temp;
+  #L44d470.  if v0 == 0 then goto L44d476;
+  #L44d474.  return @kind void;
+  #L44d476.  v2:= v1.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d47a.  v0:= v1.`io.reactivex.processors.MulticastProcessor.consumed` @type ^`int`;
+  #L44d47e.  v3:= v1.`io.reactivex.processors.MulticastProcessor.limit` @type ^`int`;
+  #L44d482.  v4:= v1.`io.reactivex.processors.MulticastProcessor.fusionMode` @type ^`int`;
+  #L44d486.  v5:= 1I;
+  #L44d488.  v6:= 1I;
+  #L44d48a.  v7:= v1.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` @kind object;
+  #L44d48e.  if v7 == 0 then goto L44d6c0;
+  #L44d492.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44d498.  v8:= temp @kind object;
+  #L44d49a.  v8:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v8 @kind object;
+  #L44d49e.  v9:= length @variable v8;
+  #L44d4a0.  if v9 == 0 then goto L44d6c0;
+  #L44d4a4.  v9:= length @variable v8;
+  #L44d4a6.  v10:= -1L;
+  #L44d4aa.  v14:= v10 @kind wide;
+  #L44d4ac.  v13:= 0I;
+  #L44d4ae.  v16:= 0L;
+  #L44d4b2.  if v13 >= v9 then goto L44d4fc;
+  #L44d4b6.  v12:= v8[v13] @kind object;
+  #L44d4ba.  call temp:= `get`(v12) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.get:()J` @kind virtual;
+  #L44d4c0.  v18:= temp @kind wide;
+  #L44d4c2.  v20:= lcmp(v18, v16);
+  #L44d4c6.  if v20 < 0 then goto L44d4f2;
+  #L44d4ca.  v16:= lcmp(v14, v10);
+  #L44d4ce.  if v16 != 0 then goto L44d4e0;
+  #L44d4d2.  v14:= v12.`io.reactivex.processors.MulticastProcessor$MulticastSubscription.emitted` @type ^`long` @kind wide;
+  #L44d4d6.  v18:= v18 - v14 @kind long;
+  #L44d4da.  v14:= v18 @kind wide;
+  #L44d4de.  goto L44d4f2;
+  #L44d4e0.  v10:= v12.`io.reactivex.processors.MulticastProcessor$MulticastSubscription.emitted` @type ^`long` @kind wide;
+  #L44d4e4.  v10:= v18 - v10 @kind long;
+  #L44d4e8.  call temp:= `min`(v14, v10) @signature `Ljava/lang/Math;.min:(JJ)J` @kind static;
+  #L44d4ee.  v10:= temp @kind wide;
+  #L44d4f0.  v14:= v10 @kind wide;
+  #L44d4f2.  v13:= v13 + 1;
+  #L44d4f6.  v10:= -1L;
+  #L44d4fa.  goto L44d4ae;
+  #L44d4fc.  v9:= v0;
+  #L44d4fe.  v0:= lcmp(v14, v16);
+  #L44d502.  if v0 <= 0 then goto L44d622;
+  #L44d506.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44d50c.  v0:= temp @kind object;
+  #L44d50e.  v0:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v0 @kind object;
+  #L44d512.  v10:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d516.  if v0 != v10 then goto L44d522;
+  #L44d51a.  call `clear`(v7) @signature `Lio/reactivex/internal/fuseable/SimpleQueue;.clear:()V` @kind interface;
+  #L44d520.  return @kind void;
+  #L44d522.  if v8 == v0 then goto L44d52a;
+  #L44d526.  goto L44d64a;
+  #L44d52a.  v0:= v1.`io.reactivex.processors.MulticastProcessor.done` @type ^`boolean` @kind boolean;
+  #L44d52e.  call temp:= `poll`(v7) @signature `Lio/reactivex/internal/fuseable/SimpleQueue;.poll:()Ljava/lang/Object;` @kind interface;
+  #L44d534.  v10:= temp @kind object;
+  #L44d536.  v21:= v10 @kind object;
+  #L44d53a.  v10:= v0;
+  #L44d53c.  v0:= v21 @kind object;
+  #L44d540.  goto L44d562;
+  #L44d542.  v0:= Exception @type ^`java.lang.Throwable` @kind object;
+  #L44d544.  v10:= v0 @kind object;
+  #L44d546.  call `throwIfFatal`(v10) @signature `Lio/reactivex/exceptions/Exceptions;.throwIfFatal:(Ljava/lang/Throwable;)V` @kind static;
+  #L44d54c.  v0:= v1.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d550.  call temp:= `cancel`(v0) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.cancel:(Ljava/util/concurrent/atomic/AtomicReference;)Z` @kind static;
+  #L44d556.  v0:= 0I;
+  #L44d558.  v1.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` := v10 @kind object;
+  #L44d55c.  v1.`io.reactivex.processors.MulticastProcessor.done` @type ^`boolean` := v5 @kind boolean;
+  #L44d560.  v10:= 1I;
+  #L44d562.  if v0 != 0 then goto L44d56a;
+  #L44d566.  v11:= 1I;
+  #L44d568.  goto L44d56c;
+  #L44d56a.  v11:= 0I;
+  #L44d56c.  if v10 == 0 then goto L44d5ce;
+  #L44d570.  if v11 == 0 then goto L44d5ce;
+  #L44d574.  v0:= v1.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` @kind object;
+  #L44d578.  if v0 == 0 then goto L44d5a4;
+  #L44d57c.  v3:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d580.  call temp:= `getAndSet`(v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L44d586.  v2:= temp @kind object;
+  #L44d588.  v2:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v2 @kind object;
+  #L44d58c.  v3:= length @variable v2;
+  #L44d58e.  v4:= 0I;
+  #L44d590.  if v4 >= v3 then goto L44d5cc;
+  #L44d594.  v5:= v2[v4] @kind object;
+  #L44d598.  call `onError`(v5, v0) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L44d59e.  v4:= v4 + 1;
+  #L44d5a2.  goto L44d590;
+  #L44d5a4.  v0:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d5a8.  call temp:= `getAndSet`(v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L44d5ae.  v0:= temp @kind object;
+  #L44d5b0.  v0:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v0 @kind object;
+  #L44d5b4.  v2:= length @variable v0;
+  #L44d5b6.  v3:= 0I;
+  #L44d5b8.  if v3 >= v2 then goto L44d5cc;
+  #L44d5bc.  v4:= v0[v3] @kind object;
+  #L44d5c0.  call `onComplete`(v4) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.onComplete:()V` @kind virtual;
+  #L44d5c6.  v3:= v3 + 1;
+  #L44d5ca.  goto L44d5b8;
+  #L44d5cc.  return @kind void;
+  #L44d5ce.  if v11 == 0 then goto L44d5d4;
+  #L44d5d2.  goto L44d622;
+  #L44d5d4.  v10:= length @variable v8;
+  #L44d5d6.  v11:= 0I;
+  #L44d5d8.  if v11 >= v10 then goto L44d5ec;
+  #L44d5dc.  v12:= v8[v11] @kind object;
+  #L44d5e0.  call `onNext`(v12, v0) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.onNext:(Ljava/lang/Object;)V` @kind virtual;
+  #L44d5e6.  v11:= v11 + 1;
+  #L44d5ea.  goto L44d5d8;
+  #L44d5ec.  v10:= 1L;
+  #L44d5f0.  v14:= v14 - v10 @kind long;
+  #L44d5f2.  if v4 == v5 then goto L44d4fe;
+  #L44d5f6.  v12:= v9 + 1;
+  #L44d5fa.  if v12 != v3 then goto L44d61c;
+  #L44d5fe.  v0:= v1.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d602.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44d608.  v0:= temp @kind object;
+  #L44d60a.  v0:= (`org.reactivestreams.Subscription`) v0 @kind object;
+  #L44d60e.  v9:= (`long`) v3 @kind i2l;
+  #L44d610.  call `request`(v0, v9) @signature `Lorg/reactivestreams/Subscription;.request:(J)V` @kind interface;
+  #L44d616.  v9:= 0I;
+  #L44d618.  goto L44d4fe;
+  #L44d61c.  v9:= v12;
+  #L44d61e.  goto L44d4fe;
+  #L44d622.  v0:= lcmp(v14, v16);
+  #L44d626.  if v0 != 0 then goto L44d6be;
+  #L44d62a.  call temp:= `get`(v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44d630.  v0:= temp @kind object;
+  #L44d632.  v0:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v0 @kind object;
+  #L44d636.  v10:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d63a.  if v0 != v10 then goto L44d646;
+  #L44d63e.  call `clear`(v7) @signature `Lio/reactivex/internal/fuseable/SimpleQueue;.clear:()V` @kind interface;
+  #L44d644.  return @kind void;
+  #L44d646.  if v8 == v0 then goto L44d650;
+  #L44d64a.  v0:= v9;
+  #L44d64c.  goto L44d48a;
+  #L44d650.  v0:= v1.`io.reactivex.processors.MulticastProcessor.done` @type ^`boolean` @kind boolean;
+  #L44d654.  if v0 == 0 then goto L44d6be;
+  #L44d658.  call temp:= `isEmpty`(v7) @signature `Lio/reactivex/internal/fuseable/SimpleQueue;.isEmpty:()Z` @kind interface;
+  #L44d65e.  v0:= temp;
+  #L44d660.  if v0 == 0 then goto L44d6be;
+  #L44d664.  v0:= v1.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` @kind object;
+  #L44d668.  if v0 == 0 then goto L44d694;
+  #L44d66c.  v3:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d670.  call temp:= `getAndSet`(v2, v3) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L44d676.  v2:= temp @kind object;
+  #L44d678.  v2:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v2 @kind object;
+  #L44d67c.  v3:= length @variable v2;
+  #L44d67e.  v4:= 0I;
+  #L44d680.  if v4 >= v3 then goto L44d6bc;
+  #L44d684.  v5:= v2[v4] @kind object;
+  #L44d688.  call `onError`(v5, v0) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L44d68e.  v4:= v4 + 1;
+  #L44d692.  goto L44d680;
+  #L44d694.  v0:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d698.  call temp:= `getAndSet`(v2, v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.getAndSet:(Ljava/lang/Object;)Ljava/lang/Object;` @kind virtual;
+  #L44d69e.  v0:= temp @kind object;
+  #L44d6a0.  v0:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v0 @kind object;
+  #L44d6a4.  v2:= length @variable v0;
+  #L44d6a6.  v3:= 0I;
+  #L44d6a8.  if v3 >= v2 then goto L44d6bc;
+  #L44d6ac.  v4:= v0[v3] @kind object;
+  #L44d6b0.  call `onComplete`(v4) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.onComplete:()V` @kind virtual;
+  #L44d6b6.  v3:= v3 + 1;
+  #L44d6ba.  goto L44d6a8;
+  #L44d6bc.  return @kind void;
+  #L44d6be.  v0:= v9;
+  #L44d6c0.  v7:= v1.`io.reactivex.processors.MulticastProcessor.wip` @type ^`java.util.concurrent.atomic.AtomicInteger` @kind object;
+  #L44d6c4.  v6:= -v6 @kind int;
+  #L44d6c6.  call temp:= `addAndGet`(v7, v6) @signature `Ljava/util/concurrent/atomic/AtomicInteger;.addAndGet:(I)I` @kind virtual;
+  #L44d6cc.  v6:= temp;
+  #L44d6ce.  if v6 != 0 then goto L44d48a;
+  #L44d6d2.  return @kind void;
+  catch `java.lang.Throwable` @[L44d52e..L44d536] goto L44d542;
+}
+procedure `java.lang.Throwable` `getThrowable`(`io.reactivex.processors.MulticastProcessor` v1 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.getThrowable:()Ljava/lang/Throwable;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L44d3a0.  v0:= v1.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d3a4.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L44d3aa.  v0:= temp;
+  #L44d3ac.  if v0 == 0 then goto L44d3b6;
+  #L44d3b0.  v0:= v1.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` @kind object;
+  #L44d3b4.  goto L44d3b8;
+  #L44d3b6.  v0:= 0I;
+  #L44d3b8.  return v0 @kind object;
+}
+procedure `boolean` `hasComplete`(`io.reactivex.processors.MulticastProcessor` v1 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.hasComplete:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L44d234.  v0:= v1.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d238.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L44d23e.  v0:= temp;
+  #L44d240.  if v0 == 0 then goto L44d250;
+  #L44d244.  v0:= v1.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` @kind object;
+  #L44d248.  if v0 != 0 then goto L44d250;
+  #L44d24c.  v0:= 1I;
+  #L44d24e.  goto L44d252;
+  #L44d250.  v0:= 0I;
+  #L44d252.  return v0;
+}
+procedure `boolean` `hasSubscribers`(`io.reactivex.processors.MulticastProcessor` v1 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.hasSubscribers:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L44d264.  v0:= v1.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d268.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44d26e.  v0:= temp @kind object;
+  #L44d270.  v0:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v0 @kind object;
+  #L44d274.  v0:= length @variable v0;
+  #L44d276.  if v0 == 0 then goto L44d27e;
+  #L44d27a.  v0:= 1I;
+  #L44d27c.  goto L44d280;
+  #L44d27e.  v0:= 0I;
+  #L44d280.  return v0;
+}
+procedure `boolean` `hasThrowable`(`io.reactivex.processors.MulticastProcessor` v1 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.hasThrowable:()Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L44d294.  v0:= v1.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d298.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L44d29e.  v0:= temp;
+  #L44d2a0.  if v0 == 0 then goto L44d2b0;
+  #L44d2a4.  v0:= v1.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` @kind object;
+  #L44d2a8.  if v0 == 0 then goto L44d2b0;
+  #L44d2ac.  v0:= 1I;
+  #L44d2ae.  goto L44d2b2;
+  #L44d2b0.  v0:= 0I;
+  #L44d2b2.  return v0;
+}
+procedure `boolean` `offer`(`io.reactivex.processors.MulticastProcessor` v2 @kind this, `java.lang.Object` v3 @kind object) @signature `Lio/reactivex/processors/MulticastProcessor;.offer:(Ljava/lang/Object;)Z` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L44d2c4.  v0:= v2.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d2c8.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L44d2ce.  v0:= temp;
+  #L44d2d0.  v1:= 0I;
+  #L44d2d2.  if v0 == 0 then goto L44d2d8;
+  #L44d2d6.  return v1;
+  #L44d2d8.  v0:= "offer called with null. Null values are generally not allowed in 2.x operators and sources." @kind object;
+  #L44d2dc.  call temp:= `requireNonNull`(v3, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L44d2e2.  v0:= v2.`io.reactivex.processors.MulticastProcessor.fusionMode` @type ^`int`;
+  #L44d2e6.  if v0 != 0 then goto L44d304;
+  #L44d2ea.  v0:= v2.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` @kind object;
+  #L44d2ee.  call temp:= `offer`(v0, v3) @signature `Lio/reactivex/internal/fuseable/SimpleQueue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L44d2f4.  v3:= temp;
+  #L44d2f6.  if v3 == 0 then goto L44d304;
+  #L44d2fa.  call `drain`(v2) @signature `Lio/reactivex/processors/MulticastProcessor;.drain:()V` @kind virtual;
+  #L44d300.  v3:= 1I;
+  #L44d302.  return v3;
+  #L44d304.  return v1;
+}
+procedure `void` `onComplete`(`io.reactivex.processors.MulticastProcessor` v3 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.onComplete:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L44d6f0.  v0:= v3.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d6f4.  v1:= 1I;
+  #L44d6f6.  v2:= 0I;
+  #L44d6f8.  call temp:= `compareAndSet`(v0, v2, v1) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.compareAndSet:(ZZ)Z` @kind virtual;
+  #L44d6fe.  v0:= temp;
+  #L44d700.  if v0 == 0 then goto L44d70e;
+  #L44d704.  v3.`io.reactivex.processors.MulticastProcessor.done` @type ^`boolean` := v1 @kind boolean;
+  #L44d708.  call `drain`(v3) @signature `Lio/reactivex/processors/MulticastProcessor;.drain:()V` @kind virtual;
+  #L44d70e.  return @kind void;
+}
+procedure `void` `onError`(`io.reactivex.processors.MulticastProcessor` v3 @kind this, `java.lang.Throwable` v4 @kind object) @signature `Lio/reactivex/processors/MulticastProcessor;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L44d720.  v0:= "onError called with null. Null values are generally not allowed in 2.x operators and sources." @kind object;
+  #L44d724.  call temp:= `requireNonNull`(v4, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L44d72a.  v0:= v3.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d72e.  v1:= 1I;
+  #L44d730.  v2:= 0I;
+  #L44d732.  call temp:= `compareAndSet`(v0, v2, v1) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.compareAndSet:(ZZ)Z` @kind virtual;
+  #L44d738.  v0:= temp;
+  #L44d73a.  if v0 == 0 then goto L44d74e;
+  #L44d73e.  v3.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` := v4 @kind object;
+  #L44d742.  v3.`io.reactivex.processors.MulticastProcessor.done` @type ^`boolean` := v1 @kind boolean;
+  #L44d746.  call `drain`(v3) @signature `Lio/reactivex/processors/MulticastProcessor;.drain:()V` @kind virtual;
+  #L44d74c.  goto L44d754;
+  #L44d74e.  call `onError`(v4) @signature `Lio/reactivex/plugins/RxJavaPlugins;.onError:(Ljava/lang/Throwable;)V` @kind static;
+  #L44d754.  return @kind void;
+}
+procedure `void` `onNext`(`io.reactivex.processors.MulticastProcessor` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lio/reactivex/processors/MulticastProcessor;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L44d768.  v0:= v1.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d76c.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L44d772.  v0:= temp;
+  #L44d774.  if v0 == 0 then goto L44d77a;
+  #L44d778.  return @kind void;
+  #L44d77a.  v0:= v1.`io.reactivex.processors.MulticastProcessor.fusionMode` @type ^`int`;
+  #L44d77e.  if v0 != 0 then goto L44d7b8;
+  #L44d782.  v0:= "onNext called with null. Null values are generally not allowed in 2.x operators and sources." @kind object;
+  #L44d786.  call temp:= `requireNonNull`(v2, v0) @signature `Lio/reactivex/internal/functions/ObjectHelper;.requireNonNull:(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;` @kind static;
+  #L44d78c.  v0:= v1.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` @kind object;
+  #L44d790.  call temp:= `offer`(v0, v2) @signature `Lio/reactivex/internal/fuseable/SimpleQueue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L44d796.  v2:= temp;
+  #L44d798.  if v2 != 0 then goto L44d7b8;
+  #L44d79c.  v2:= v1.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d7a0.  call temp:= `cancel`(v2) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.cancel:(Ljava/util/concurrent/atomic/AtomicReference;)Z` @kind static;
+  #L44d7a6.  v2:= new `io.reactivex.exceptions.MissingBackpressureException`;
+  #L44d7aa.  call `<init>`(v2) @signature `Lio/reactivex/exceptions/MissingBackpressureException;.<init>:()V` @kind direct;
+  #L44d7b0.  call `onError`(v1, v2) @signature `Lio/reactivex/processors/MulticastProcessor;.onError:(Ljava/lang/Throwable;)V` @kind virtual;
+  #L44d7b6.  return @kind void;
+  #L44d7b8.  call `drain`(v1) @signature `Lio/reactivex/processors/MulticastProcessor;.drain:()V` @kind virtual;
+  #L44d7be.  return @kind void;
+}
+procedure `void` `onSubscribe`(`io.reactivex.processors.MulticastProcessor` v3 @kind this, `org.reactivestreams.Subscription` v4 @kind object) @signature `Lio/reactivex/processors/MulticastProcessor;.onSubscribe:(Lorg/reactivestreams/Subscription;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L44d7d0.  v0:= v3.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d7d4.  call temp:= `setOnce`(v0, v4) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.setOnce:(Ljava/util/concurrent/atomic/AtomicReference;Lorg/reactivestreams/Subscription;)Z` @kind static;
+  #L44d7da.  v0:= temp;
+  #L44d7dc.  if v0 == 0 then goto L44d84c;
+  #L44d7e0.  v0:= instanceof @variable v4 @type ^`io.reactivex.internal.fuseable.QueueSubscription` @kind boolean;
+  #L44d7e4.  if v0 == 0 then goto L44d82e;
+  #L44d7e8.  v0:= v4 @kind object;
+  #L44d7ea.  v0:= (`io.reactivex.internal.fuseable.QueueSubscription`) v0 @kind object;
+  #L44d7ee.  v1:= 3I;
+  #L44d7f0.  call temp:= `requestFusion`(v0, v1) @signature `Lio/reactivex/internal/fuseable/QueueSubscription;.requestFusion:(I)I` @kind interface;
+  #L44d7f6.  v1:= temp;
+  #L44d7f8.  v2:= 1I;
+  #L44d7fa.  if v1 != v2 then goto L44d812;
+  #L44d7fe.  v3.`io.reactivex.processors.MulticastProcessor.fusionMode` @type ^`int` := v1;
+  #L44d802.  v3.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` := v0 @kind object;
+  #L44d806.  v3.`io.reactivex.processors.MulticastProcessor.done` @type ^`boolean` := v2 @kind boolean;
+  #L44d80a.  call `drain`(v3) @signature `Lio/reactivex/processors/MulticastProcessor;.drain:()V` @kind virtual;
+  #L44d810.  return @kind void;
+  #L44d812.  v2:= 2I;
+  #L44d814.  if v1 != v2 then goto L44d82e;
+  #L44d818.  v3.`io.reactivex.processors.MulticastProcessor.fusionMode` @type ^`int` := v1;
+  #L44d81c.  v3.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` := v0 @kind object;
+  #L44d820.  v0:= v3.`io.reactivex.processors.MulticastProcessor.bufferSize` @type ^`int`;
+  #L44d824.  v0:= (`long`) v0 @kind i2l;
+  #L44d826.  call `request`(v4, v0) @signature `Lorg/reactivestreams/Subscription;.request:(J)V` @kind interface;
+  #L44d82c.  return @kind void;
+  #L44d82e.  v0:= new `io.reactivex.internal.queue.SpscArrayQueue`;
+  #L44d832.  v1:= v3.`io.reactivex.processors.MulticastProcessor.bufferSize` @type ^`int`;
+  #L44d836.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/queue/SpscArrayQueue;.<init>:(I)V` @kind direct;
+  #L44d83c.  v3.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` := v0 @kind object;
+  #L44d840.  v0:= v3.`io.reactivex.processors.MulticastProcessor.bufferSize` @type ^`int`;
+  #L44d844.  v0:= (`long`) v0 @kind i2l;
+  #L44d846.  call `request`(v4, v0) @signature `Lorg/reactivestreams/Subscription;.request:(J)V` @kind interface;
+  #L44d84c.  return @kind void;
+}
+procedure `void` `remove`(`io.reactivex.processors.MulticastProcessor` v6 @kind this, `io.reactivex.processors.MulticastProcessor$MulticastSubscription` v7 @kind object) @signature `Lio/reactivex/processors/MulticastProcessor;.remove:(Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;)V` @AccessFlag  {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+    v5;
+
+  #L44d860.  v0:= v6.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d864.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicReference;.get:()Ljava/lang/Object;` @kind virtual;
+  #L44d86a.  v0:= temp @kind object;
+  #L44d86c.  v0:= (`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[]) v0 @kind object;
+  #L44d870.  v1:= length @variable v0;
+  #L44d872.  if v1 != 0 then goto L44d878;
+  #L44d876.  return @kind void;
+  #L44d878.  v2:= -1I;
+  #L44d87a.  v3:= 0I;
+  #L44d87c.  v4:= 0I;
+  #L44d87e.  if v4 >= v1 then goto L44d894;
+  #L44d882.  v5:= v0[v4] @kind object;
+  #L44d886.  if v5 != v7 then goto L44d88e;
+  #L44d88a.  v2:= v4;
+  #L44d88c.  goto L44d894;
+  #L44d88e.  v4:= v4 + 1;
+  #L44d892.  goto L44d87e;
+  #L44d894.  if v2 >= 0 then goto L44d89a;
+  #L44d898.  goto L44d914;
+  #L44d89a.  v4:= 1I;
+  #L44d89c.  if v1 != v4 then goto L44d8e8;
+  #L44d8a0.  v1:= v6.`io.reactivex.processors.MulticastProcessor.refcount` @type ^`boolean` @kind boolean;
+  #L44d8a4.  if v1 == 0 then goto L44d8d2;
+  #L44d8a8.  v1:= v6.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d8ac.  v2:= `@@io.reactivex.processors.MulticastProcessor.TERMINATED` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d8b0.  call temp:= `compareAndSet`(v1, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L44d8b6.  v0:= temp;
+  #L44d8b8.  if v0 == 0 then goto L44d860;
+  #L44d8bc.  v7:= v6.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d8c0.  call temp:= `cancel`(v7) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.cancel:(Ljava/util/concurrent/atomic/AtomicReference;)Z` @kind static;
+  #L44d8c6.  v7:= v6.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d8ca.  call `set`(v7, v4) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.set:(Z)V` @kind virtual;
+  #L44d8d0.  goto L44d914;
+  #L44d8d2.  v1:= v6.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d8d6.  v2:= `@@io.reactivex.processors.MulticastProcessor.EMPTY` @type ^`io.reactivex.processors.MulticastProcessor$MulticastSubscription`[] @kind object;
+  #L44d8da.  call temp:= `compareAndSet`(v1, v0, v2) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L44d8e0.  v0:= temp;
+  #L44d8e2.  if v0 == 0 then goto L44d860;
+  #L44d8e6.  goto L44d914;
+  #L44d8e8.  v5:= v1 + -1;
+  #L44d8ec.  v5:= new `io.reactivex.processors.MulticastProcessor$MulticastSubscription`[v5];
+  #L44d8f0.  call `arraycopy`(v0, v3, v5, v3, v2) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L44d8f6.  v3:= v2 + 1;
+  #L44d8fa.  v1:= v1 - v2 @kind int;
+  #L44d8fc.  v1:= v1 - v4 @kind int;
+  #L44d8fe.  call `arraycopy`(v0, v3, v5, v2, v1) @signature `Ljava/lang/System;.arraycopy:(Ljava/lang/Object;ILjava/lang/Object;II)V` @kind static;
+  #L44d904.  v1:= v6.`io.reactivex.processors.MulticastProcessor.subscribers` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d908.  call temp:= `compareAndSet`(v1, v0, v5) @signature `Ljava/util/concurrent/atomic/AtomicReference;.compareAndSet:(Ljava/lang/Object;Ljava/lang/Object;)Z` @kind virtual;
+  #L44d90e.  v0:= temp;
+  #L44d910.  if v0 == 0 then goto L44d860;
+  #L44d914.  return @kind void;
+}
+procedure `void` `start`(`io.reactivex.processors.MulticastProcessor` v2 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.start:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L44d928.  v0:= v2.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d92c.  v1:= `@@io.reactivex.internal.subscriptions.EmptySubscription.INSTANCE` @type ^`io.reactivex.internal.subscriptions.EmptySubscription` @kind object;
+  #L44d930.  call temp:= `setOnce`(v0, v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.setOnce:(Ljava/util/concurrent/atomic/AtomicReference;Lorg/reactivestreams/Subscription;)Z` @kind static;
+  #L44d936.  v0:= temp;
+  #L44d938.  if v0 == 0 then goto L44d94e;
+  #L44d93c.  v0:= new `io.reactivex.internal.queue.SpscArrayQueue`;
+  #L44d940.  v1:= v2.`io.reactivex.processors.MulticastProcessor.bufferSize` @type ^`int`;
+  #L44d944.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/queue/SpscArrayQueue;.<init>:(I)V` @kind direct;
+  #L44d94a.  v2.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` := v0 @kind object;
+  #L44d94e.  return @kind void;
+}
+procedure `void` `startUnbounded`(`io.reactivex.processors.MulticastProcessor` v2 @kind this) @signature `Lio/reactivex/processors/MulticastProcessor;.startUnbounded:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L44d960.  v0:= v2.`io.reactivex.processors.MulticastProcessor.upstream` @type ^`java.util.concurrent.atomic.AtomicReference` @kind object;
+  #L44d964.  v1:= `@@io.reactivex.internal.subscriptions.EmptySubscription.INSTANCE` @type ^`io.reactivex.internal.subscriptions.EmptySubscription` @kind object;
+  #L44d968.  call temp:= `setOnce`(v0, v1) @signature `Lio/reactivex/internal/subscriptions/SubscriptionHelper;.setOnce:(Ljava/util/concurrent/atomic/AtomicReference;Lorg/reactivestreams/Subscription;)Z` @kind static;
+  #L44d96e.  v0:= temp;
+  #L44d970.  if v0 == 0 then goto L44d986;
+  #L44d974.  v0:= new `io.reactivex.internal.queue.SpscLinkedArrayQueue`;
+  #L44d978.  v1:= v2.`io.reactivex.processors.MulticastProcessor.bufferSize` @type ^`int`;
+  #L44d97c.  call `<init>`(v0, v1) @signature `Lio/reactivex/internal/queue/SpscLinkedArrayQueue;.<init>:(I)V` @kind direct;
+  #L44d982.  v2.`io.reactivex.processors.MulticastProcessor.queue` @type ^`io.reactivex.internal.fuseable.SimpleQueue` := v0 @kind object;
+  #L44d986.  return @kind void;
+}
+procedure `void` `subscribeActual`(`io.reactivex.processors.MulticastProcessor` v5 @kind this, `org.reactivestreams.Subscriber` v6 @kind object) @signature `Lio/reactivex/processors/MulticastProcessor;.subscribeActual:(Lorg/reactivestreams/Subscriber;)V` @AccessFlag PROTECTED {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+    v4;
+
+  #L44d998.  v0:= new `io.reactivex.processors.MulticastProcessor$MulticastSubscription`;
+  #L44d99c.  call `<init>`(v0, v6, v5) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.<init>:(Lorg/reactivestreams/Subscriber;Lio/reactivex/processors/MulticastProcessor;)V` @kind direct;
+  #L44d9a2.  call `onSubscribe`(v6, v0) @signature `Lorg/reactivestreams/Subscriber;.onSubscribe:(Lorg/reactivestreams/Subscription;)V` @kind interface;
+  #L44d9a8.  call temp:= `add`(v5, v0) @signature `Lio/reactivex/processors/MulticastProcessor;.add:(Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;)Z` @kind virtual;
+  #L44d9ae.  v1:= temp;
+  #L44d9b0.  if v1 == 0 then goto L44d9d8;
+  #L44d9b4.  call temp:= `get`(v0) @signature `Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;.get:()J` @kind virtual;
+  #L44d9ba.  v1:= temp @kind wide;
+  #L44d9bc.  v3:= -9223372036854775808L;
+  #L44d9c0.  v6:= lcmp(v1, v3);
+  #L44d9c4.  if v6 != 0 then goto L44d9d0;
+  #L44d9c8.  call `remove`(v5, v0) @signature `Lio/reactivex/processors/MulticastProcessor;.remove:(Lio/reactivex/processors/MulticastProcessor$MulticastSubscription;)V` @kind virtual;
+  #L44d9ce.  goto L44da06;
+  #L44d9d0.  call `drain`(v5) @signature `Lio/reactivex/processors/MulticastProcessor;.drain:()V` @kind virtual;
+  #L44d9d6.  goto L44da06;
+  #L44d9d8.  v0:= v5.`io.reactivex.processors.MulticastProcessor.once` @type ^`java.util.concurrent.atomic.AtomicBoolean` @kind object;
+  #L44d9dc.  call temp:= `get`(v0) @signature `Ljava/util/concurrent/atomic/AtomicBoolean;.get:()Z` @kind virtual;
+  #L44d9e2.  v0:= temp;
+  #L44d9e4.  if v0 != 0 then goto L44d9f0;
+  #L44d9e8.  v0:= v5.`io.reactivex.processors.MulticastProcessor.refcount` @type ^`boolean` @kind boolean;
+  #L44d9ec.  if v0 != 0 then goto L44da00;
+  #L44d9f0.  v0:= v5.`io.reactivex.processors.MulticastProcessor.error` @type ^`java.lang.Throwable` @kind object;
+  #L44d9f4.  if v0 == 0 then goto L44da00;
+  #L44d9f8.  call `onError`(v6, v0) @signature `Lorg/reactivestreams/Subscriber;.onError:(Ljava/lang/Throwable;)V` @kind interface;
+  #L44d9fe.  return @kind void;
+  #L44da00.  call `onComplete`(v6) @signature `Lorg/reactivestreams/Subscriber;.onComplete:()V` @kind interface;
+  #L44da06.  return @kind void;
+}

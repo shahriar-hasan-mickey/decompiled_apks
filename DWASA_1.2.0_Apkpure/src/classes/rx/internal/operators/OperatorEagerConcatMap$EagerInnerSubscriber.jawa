@@ -1,0 +1,62 @@
+record `rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber` @kind class @AccessFlag FINAL extends `rx.Subscriber` @kind class {
+  `boolean` `rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.done` @AccessFlag VOLATILE;
+  `java.lang.Throwable` `rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.error` @AccessFlag ;
+  `rx.internal.operators.OperatorEagerConcatMap$EagerOuterSubscriber` `rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.parent` @AccessFlag FINAL;
+  `java.util.Queue` `rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.queue` @AccessFlag FINAL;
+}
+procedure `void` `<init>`(`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber` v0 @kind this, `rx.internal.operators.OperatorEagerConcatMap$EagerOuterSubscriber` v1 @kind object, `int` v2 ) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerInnerSubscriber;.<init>:(Lrx/internal/operators/OperatorEagerConcatMap$EagerOuterSubscriber;I)V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+
+  #L4a0ba0.  call `<init>`(v0) @signature `Lrx/Subscriber;.<init>:()V` @kind direct;
+  #L4a0ba6.  v0.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.parent` @type ^`rx.internal.operators.OperatorEagerConcatMap$EagerOuterSubscriber` := v1 @kind object;
+  #L4a0baa.  call temp:= `isUnsafeAvailable`() @signature `Lrx/internal/util/unsafe/UnsafeAccess;.isUnsafeAvailable:()Z` @kind static;
+  #L4a0bb0.  v1:= temp;
+  #L4a0bb2.  if v1 == 0 then goto L4a0bc2;
+  #L4a0bb6.  v1:= new `rx.internal.util.unsafe.SpscArrayQueue`;
+  #L4a0bba.  call `<init>`(v1, v2) @signature `Lrx/internal/util/unsafe/SpscArrayQueue;.<init>:(I)V` @kind direct;
+  #L4a0bc0.  goto L4a0bcc;
+  #L4a0bc2.  v1:= new `rx.internal.util.atomic.SpscAtomicArrayQueue`;
+  #L4a0bc6.  call `<init>`(v1, v2) @signature `Lrx/internal/util/atomic/SpscAtomicArrayQueue;.<init>:(I)V` @kind direct;
+  #L4a0bcc.  v0.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.queue` @type ^`java.util.Queue` := v1 @kind object;
+  #L4a0bd0.  v1:= (`long`) v2 @kind i2l;
+  #L4a0bd2.  call `request`(v0, v1) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerInnerSubscriber;.request:(J)V` @kind virtual;
+  #L4a0bd8.  return @kind void;
+}
+procedure `void` `onCompleted`(`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber` v1 @kind this) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerInnerSubscriber;.onCompleted:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a0bec.  v0:= 1I;
+  #L4a0bee.  v1.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.done` @type ^`boolean` := v0 @kind boolean;
+  #L4a0bf2.  v0:= v1.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.parent` @type ^`rx.internal.operators.OperatorEagerConcatMap$EagerOuterSubscriber` @kind object;
+  #L4a0bf6.  call `drain`(v0) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerOuterSubscriber;.drain:()V` @kind virtual;
+  #L4a0bfc.  return @kind void;
+}
+procedure `void` `onError`(`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber` v0 @kind this, `java.lang.Throwable` v1 @kind object) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerInnerSubscriber;.onError:(Ljava/lang/Throwable;)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L4a0c10.  v0.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.error` @type ^`java.lang.Throwable` := v1 @kind object;
+  #L4a0c14.  v1:= 1I;
+  #L4a0c16.  v0.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.done` @type ^`boolean` := v1 @kind boolean;
+  #L4a0c1a.  v1:= v0.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.parent` @type ^`rx.internal.operators.OperatorEagerConcatMap$EagerOuterSubscriber` @kind object;
+  #L4a0c1e.  call `drain`(v1) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerOuterSubscriber;.drain:()V` @kind virtual;
+  #L4a0c24.  return @kind void;
+}
+procedure `void` `onNext`(`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber` v1 @kind this, `java.lang.Object` v2 @kind object) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerInnerSubscriber;.onNext:(Ljava/lang/Object;)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L4a0c38.  v0:= v1.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.queue` @type ^`java.util.Queue` @kind object;
+  #L4a0c3c.  call temp:= `next`(v2) @signature `Lrx/internal/operators/NotificationLite;.next:(Ljava/lang/Object;)Ljava/lang/Object;` @kind static;
+  #L4a0c42.  v2:= temp @kind object;
+  #L4a0c44.  call temp:= `offer`(v0, v2) @signature `Ljava/util/Queue;.offer:(Ljava/lang/Object;)Z` @kind interface;
+  #L4a0c4a.  v2:= v1.`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber.parent` @type ^`rx.internal.operators.OperatorEagerConcatMap$EagerOuterSubscriber` @kind object;
+  #L4a0c4e.  call `drain`(v2) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerOuterSubscriber;.drain:()V` @kind virtual;
+  #L4a0c54.  return @kind void;
+}
+procedure `void` `requestMore`(`rx.internal.operators.OperatorEagerConcatMap$EagerInnerSubscriber` v0 @kind this, `long` v1 ) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerInnerSubscriber;.requestMore:(J)V` @AccessFlag  {
+    temp;
+
+  #L4a0c68.  call `request`(v0, v1) @signature `Lrx/internal/operators/OperatorEagerConcatMap$EagerInnerSubscriber;.request:(J)V` @kind virtual;
+  #L4a0c6e.  return @kind void;
+}

@@ -1,0 +1,432 @@
+record `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` @kind class @AccessFlag PUBLIC extends `androidx.fragment.app.Fragment` @kind class, `dream71.com.wasa.NetworkConnection.DataController` @kind interface, `dream71.com.wasa.interfaces.OnClickItemPosition` @kind interface {
+  `dream71.com.wasa.database.DatabaseHelper` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.databaseHelper` @AccessFlag ;
+  `androidx.recyclerview.widget.RecyclerView` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.dtwList` @AccessFlag ;
+  `com.google.gson.Gson` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.gson` @AccessFlag ;
+  `androidx.swiperefreshlayout.widget.SwipeRefreshLayout` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.mSwipeRefreshLayout` @AccessFlag ;
+  `dream71.com.wasa.home.waterSupply.adapter.WTPAdapter` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeAdapter` @AccessFlag ;
+  `java.util.List` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeList` @AccessFlag ;
+  `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.model.WTPListMessage` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeListMessage` @AccessFlag ;
+  `android.app.ProgressDialog` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @AccessFlag ;
+  `int` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pageNumber` @AccessFlag ;
+  `android.widget.EditText` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.search_bar` @AccessFlag ;
+  `android.widget.TextView` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.titleBar` @AccessFlag ;
+  `butterknife.Unbinder` `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.unbinder` @AccessFlag ;
+}
+procedure `void` `<init>`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.<init>:()V` @AccessFlag PUBLIC_CONSTRUCTOR {
+    temp;
+    v0;
+
+  #L3a76e0.  call `<init>`(v1) @signature `Landroidx/fragment/app/Fragment;.<init>:()V` @kind direct;
+  #L3a76e6.  v0:= new `java.util.ArrayList`;
+  #L3a76ea.  call `<init>`(v0) @signature `Ljava/util/ArrayList;.<init>:()V` @kind direct;
+  #L3a76f0.  v1.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeList` @type ^`java.util.List` := v0 @kind object;
+  #L3a76f4.  v0:= 0I;
+  #L3a76f6.  v1.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pageNumber` @type ^`int` := v0;
+  #L3a76fa.  v0:= new `com.google.gson.Gson`;
+  #L3a76fe.  call `<init>`(v0) @signature `Lcom/google/gson/Gson;.<init>:()V` @kind direct;
+  #L3a7704.  v1.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.gson` @type ^`com.google.gson.Gson` := v0 @kind object;
+  #L3a7708.  return @kind void;
+}
+procedure `void` `ReloadPage`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.ReloadPage:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3a7830.  v0:= `@@dream71.com.wasa.Main.MainActivity.FragmentManagerDashBoard` @type ^`androidx.fragment.app.FragmentManager` @kind object;
+  #L3a7834.  call temp:= `beginTransaction`(v0) @signature `Landroidx/fragment/app/FragmentManager;.beginTransaction:()Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3a783a.  v0:= temp @kind object;
+  #L3a783c.  v1:= 2130771997I;
+  #L3a7842.  v2:= 2130772000I;
+  #L3a7848.  call temp:= `setCustomAnimations`(v0, v1, v2) @signature `Landroidx/fragment/app/FragmentTransaction;.setCustomAnimations:(II)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3a784e.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3a7852.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L3a7858.  v1:= temp @kind object;
+  #L3a785a.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3a785e.  call `onPause`(v1) @signature `Landroidx/fragment/app/Fragment;.onPause:()V` @kind virtual;
+  #L3a7864.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3a7868.  call temp:= `pop`(v1) @signature `Ljava/util/Stack;.pop:()Ljava/lang/Object;` @kind virtual;
+  #L3a786e.  v1:= temp @kind object;
+  #L3a7870.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3a7874.  call temp:= `remove`(v0, v1) @signature `Landroidx/fragment/app/FragmentTransaction;.remove:(Landroidx/fragment/app/Fragment;)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3a787a.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3a787e.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L3a7884.  v1:= temp @kind object;
+  #L3a7886.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3a788a.  call `onResume`(v1) @signature `Landroidx/fragment/app/Fragment;.onResume:()V` @kind virtual;
+  #L3a7890.  v1:= `@@dream71.com.wasa.Main.MainActivity.FragmentStack` @type ^`java.util.Stack` @kind object;
+  #L3a7894.  call temp:= `lastElement`(v1) @signature `Ljava/util/Stack;.lastElement:()Ljava/lang/Object;` @kind virtual;
+  #L3a789a.  v1:= temp @kind object;
+  #L3a789c.  v1:= (`androidx.fragment.app.Fragment`) v1 @kind object;
+  #L3a78a0.  call temp:= `show`(v0, v1) @signature `Landroidx/fragment/app/FragmentTransaction;.show:(Landroidx/fragment/app/Fragment;)Landroidx/fragment/app/FragmentTransaction;` @kind virtual;
+  #L3a78a6.  call temp:= `commit`(v0) @signature `Landroidx/fragment/app/FragmentTransaction;.commit:()I` @kind virtual;
+  #L3a78ac.  return @kind void;
+}
+procedure `void` `SaveData`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v2 @kind this, `java.util.List` v3 @kind object) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.SaveData:(Ljava/util/List;)V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3a78c0.  v0:= new `com.arasthel.asyncjob.AsyncJob$AsyncJobBuilder`;
+  #L3a78c4.  call `<init>`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.<init>:()V` @kind direct;
+  #L3a78ca.  v1:= new `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment$7`;
+  #L3a78ce.  call `<init>`(v1, v2, v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment$7;.<init>:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;Ljava/util/List;)V` @kind direct;
+  #L3a78d4.  call temp:= `doInBackground`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doInBackground:(Lcom/arasthel/asyncjob/AsyncJob$AsyncAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3a78da.  v3:= temp @kind object;
+  #L3a78dc.  v0:= new `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment$6`;
+  #L3a78e0.  call `<init>`(v0, v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment$6;.<init>:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;)V` @kind direct;
+  #L3a78e6.  call temp:= `doWhenFinished`(v3, v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doWhenFinished:(Lcom/arasthel/asyncjob/AsyncJob$AsyncResultAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3a78ec.  v3:= temp @kind object;
+  #L3a78ee.  call temp:= `create`(v3) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.create:()Lcom/arasthel/asyncjob/AsyncJob;` @kind virtual;
+  #L3a78f4.  v3:= temp @kind object;
+  #L3a78f6.  call `start`(v3) @signature `Lcom/arasthel/asyncjob/AsyncJob;.start:()V` @kind virtual;
+  #L3a78fc.  return @kind void;
+}
+procedure `void` `StartServices`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.StartServices:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3a7998.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a799e.  v0:= temp @kind object;
+  #L3a79a0.  v1:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L3a79a4.  call temp:= `isServiceRunning`(v0, v1) @signature `Ldream71/com/wasa/utils/Validation;.isServiceRunning:(Landroid/content/Context;Ljava/lang/Class;)Z` @kind static;
+  #L3a79aa.  v0:= temp;
+  #L3a79ac.  if v0 != 0 then goto L3a79d4;
+  #L3a79b0.  v0:= new `android.content.Intent`;
+  #L3a79b4.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a79ba.  v1:= temp @kind object;
+  #L3a79bc.  v2:= constclass @type ^`dream71.com.wasa.location.LocationService` @kind object;
+  #L3a79c0.  call `<init>`(v0, v1, v2) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L3a79c6.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a79cc.  v1:= temp @kind object;
+  #L3a79ce.  call temp:= `startService`(v1, v0) @signature `Landroidx/fragment/app/FragmentActivity;.startService:(Landroid/content/Intent;)Landroid/content/ComponentName;` @kind virtual;
+  #L3a79d4.  return @kind void;
+}
+procedure `void` `access$000`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v0 @kind object) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.access$000:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;)V` @AccessFlag STATIC_SYNTHETIC {
+    temp;
+
+  #L3a7a40.  call `getData`(v0) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getData:()V` @kind direct;
+  #L3a7a46.  return @kind void;
+}
+procedure `void` `getData`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getData:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+
+  #L3a7a88.  call temp:= `getActivity`(v1) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a7a8e.  v0:= temp @kind object;
+  #L3a7a90.  call temp:= `getConnectivitychecking`(v0) @signature `Ldream71/com/wasa/NetworkConnection/NetworkConnection;.getConnectivitychecking:(Landroid/content/Context;)Z` @kind static;
+  #L3a7a96.  v0:= temp;
+  #L3a7a98.  if v0 != 0 then goto L3a7aa4;
+  #L3a7a9c.  call `getOfflineData`(v1) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getOfflineData:()V` @kind direct;
+  #L3a7aa2.  goto L3a7aaa;
+  #L3a7aa4.  call `getDataFromAPI`(v1) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getDataFromAPI:()V` @kind virtual;
+  #L3a7aaa.  return @kind void;
+}
+procedure `void` `getOfflineData`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getOfflineData:()V` @AccessFlag PRIVATE {
+    temp;
+    v0;
+    v1;
+
+  #L3a7b34.  v0:= new `com.arasthel.asyncjob.AsyncJob$AsyncJobBuilder`;
+  #L3a7b38.  call `<init>`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.<init>:()V` @kind direct;
+  #L3a7b3e.  v1:= new `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment$5`;
+  #L3a7b42.  call `<init>`(v1, v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment$5;.<init>:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;)V` @kind direct;
+  #L3a7b48.  call temp:= `doInBackground`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doInBackground:(Lcom/arasthel/asyncjob/AsyncJob$AsyncAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3a7b4e.  v0:= temp @kind object;
+  #L3a7b50.  v1:= new `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment$4`;
+  #L3a7b54.  call `<init>`(v1, v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment$4;.<init>:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;)V` @kind direct;
+  #L3a7b5a.  call temp:= `doWhenFinished`(v0, v1) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.doWhenFinished:(Lcom/arasthel/asyncjob/AsyncJob$AsyncResultAction;)Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;` @kind virtual;
+  #L3a7b60.  v0:= temp @kind object;
+  #L3a7b62.  call temp:= `create`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob$AsyncJobBuilder;.create:()Lcom/arasthel/asyncjob/AsyncJob;` @kind virtual;
+  #L3a7b68.  v0:= temp @kind object;
+  #L3a7b6a.  call `start`(v0) @signature `Lcom/arasthel/asyncjob/AsyncJob;.start:()V` @kind virtual;
+  #L3a7b70.  return @kind void;
+}
+procedure `void` `DataReceivedFromDataController`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v3 @kind this, `java.lang.String` v4 @kind object, `int` v5 ) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.DataReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3a771c.  v5:= v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3a7720.  v0:= 0I;
+  #L3a7722.  call `setRefreshing`(v5, v0) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setRefreshing:(Z)V` @kind virtual;
+  #L3a7728.  call `hideProgressBar`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.hideProgressBar:()V` @kind virtual;
+  #L3a772e.  v5:= v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L3a7732.  v0:= constclass @type ^`dream71.com.wasa.model.ResponseMessage` @kind object;
+  #L3a7736.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L3a773c.  v5:= temp @kind object;
+  #L3a773e.  v5:= (`dream71.com.wasa.model.ResponseMessage`) v5 @kind object;
+  #L3a7742.  v0:= new `java.lang.StringBuilder`;
+  #L3a7746.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3a774c.  v1:= "" @kind object;
+  #L3a7750.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a7756.  call temp:= `append`(v0, v4) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a775c.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3a7762.  v0:= temp @kind object;
+  #L3a7764.  v2:= "response" @kind object;
+  #L3a7768.  call temp:= `e`(v2, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3a776e.  v0:= v5.`dream71.com.wasa.model.ResponseMessage.status` @type ^`int`;
+  #L3a7772.  v2:= 1I;
+  #L3a7774.  if v0 != v2 then goto L3a77b8;
+  #L3a7778.  v5:= v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.gson` @type ^`com.google.gson.Gson` @kind object;
+  #L3a777c.  v0:= constclass @type ^`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.model.WTPListMessage` @kind object;
+  #L3a7780.  call temp:= `fromJson`(v5, v4, v0) @signature `Lcom/google/gson/Gson;.fromJson:(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;` @kind virtual;
+  #L3a7786.  v4:= temp @kind object;
+  #L3a7788.  v4:= (`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.model.WTPListMessage`) v4 @kind object;
+  #L3a778c.  v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeListMessage` @type ^`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.model.WTPListMessage` := v4 @kind object;
+  #L3a7790.  v4:= v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeListMessage` @type ^`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.model.WTPListMessage` @kind object;
+  #L3a7794.  v4:= v4.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.model.WTPListMessage.water_treatment` @type ^`java.util.List` @kind object;
+  #L3a7798.  v5:= v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeList` @type ^`java.util.List` @kind object;
+  #L3a779c.  call temp:= `addAll`(v5, v4) @signature `Ljava/util/List;.addAll:(Ljava/util/Collection;)Z` @kind interface;
+  #L3a77a2.  v4:= v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WTPAdapter` @kind object;
+  #L3a77a6.  call `notifyDataSetChanged`(v4) @signature `Ldream71/com/wasa/home/waterSupply/adapter/WTPAdapter;.notifyDataSetChanged:()V` @kind virtual;
+  #L3a77ac.  v4:= v3.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeList` @type ^`java.util.List` @kind object;
+  #L3a77b0.  call `SaveData`(v3, v4) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.SaveData:(Ljava/util/List;)V` @kind direct;
+  #L3a77b6.  goto L3a781e;
+  #L3a77b8.  v4:= v5.`dream71.com.wasa.model.ResponseMessage.message` @type ^`java.lang.String` @kind object;
+  #L3a77bc.  call temp:= `toLowerCase`(v4) @signature `Ljava/lang/String;.toLowerCase:()Ljava/lang/String;` @kind virtual;
+  #L3a77c2.  v4:= temp @kind object;
+  #L3a77c4.  v0:= "invalid token" @kind object;
+  #L3a77c8.  call temp:= `contains`(v4, v0) @signature `Ljava/lang/String;.contains:(Ljava/lang/CharSequence;)Z` @kind virtual;
+  #L3a77ce.  v4:= temp;
+  #L3a77d0.  if v4 == 0 then goto L3a77ee;
+  #L3a77d4.  v4:= new `dream71.com.wasa.utils.Utils`;
+  #L3a77d8.  call `<init>`(v4) @signature `Ldream71/com/wasa/utils/Utils;.<init>:()V` @kind direct;
+  #L3a77de.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a77e4.  v5:= temp @kind object;
+  #L3a77e6.  call `showLoginAlertDialog`(v4, v5) @signature `Ldream71/com/wasa/utils/Utils;.showLoginAlertDialog:(Landroid/content/Context;)V` @kind virtual;
+  #L3a77ec.  goto L3a781e;
+  #L3a77ee.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a77f4.  v4:= temp @kind object;
+  #L3a77f6.  v0:= new `java.lang.StringBuilder`;
+  #L3a77fa.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3a7800.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a7806.  v5:= v5.`dream71.com.wasa.model.ResponseMessage.message` @type ^`java.lang.String` @kind object;
+  #L3a780a.  call temp:= `append`(v0, v5) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a7810.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3a7816.  v5:= temp @kind object;
+  #L3a7818.  call `Info`(v4, v5) @signature `Ldream71/com/wasa/utils/ToastyMsg;.Info:(Landroid/content/Context;Ljava/lang/String;)V` @kind static;
+  #L3a781e.  return @kind void;
+}
+procedure `void` `Search`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.Search:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3a7910.  v0:= new `java.lang.StringBuilder`;
+  #L3a7914.  call `<init>`(v0) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3a791a.  v1:= "" @kind object;
+  #L3a791e.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a7924.  v1:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.search_bar` @type ^`android.widget.EditText` @kind object;
+  #L3a7928.  call temp:= `getText`(v1) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L3a792e.  v1:= temp @kind object;
+  #L3a7930.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3a7936.  v1:= temp @kind object;
+  #L3a7938.  call temp:= `trim`(v1) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L3a793e.  v1:= temp @kind object;
+  #L3a7940.  call temp:= `append`(v0, v1) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a7946.  call temp:= `toString`(v0) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3a794c.  v0:= temp @kind object;
+  #L3a794e.  v1:= "search_bar" @kind object;
+  #L3a7952.  call temp:= `e`(v1, v0) @signature `Landroid/util/Log;.e:(Ljava/lang/String;Ljava/lang/String;)I` @kind static;
+  #L3a7958.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WTPAdapter` @kind object;
+  #L3a795c.  call temp:= `getFilter`(v0) @signature `Ldream71/com/wasa/home/waterSupply/adapter/WTPAdapter;.getFilter:()Landroid/widget/Filter;` @kind virtual;
+  #L3a7962.  v0:= temp @kind object;
+  #L3a7964.  v1:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.search_bar` @type ^`android.widget.EditText` @kind object;
+  #L3a7968.  call temp:= `getText`(v1) @signature `Landroid/widget/EditText;.getText:()Landroid/text/Editable;` @kind virtual;
+  #L3a796e.  v1:= temp @kind object;
+  #L3a7970.  call temp:= `toString`(v1) @signature `Ljava/lang/Object;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3a7976.  v1:= temp @kind object;
+  #L3a7978.  call temp:= `trim`(v1) @signature `Ljava/lang/String;.trim:()Ljava/lang/String;` @kind virtual;
+  #L3a797e.  v1:= temp @kind object;
+  #L3a7980.  call `filter`(v0, v1) @signature `Landroid/widget/Filter;.filter:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3a7986.  return @kind void;
+}
+procedure `void` `TubeWeel`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v3 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.TubeWeel:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+
+  #L3a79e8.  call `StartServices`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.StartServices:()V` @kind direct;
+  #L3a79ee.  v0:= new `android.content.Intent`;
+  #L3a79f2.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a79f8.  v1:= temp @kind object;
+  #L3a79fa.  v2:= constclass @type ^`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPActivity` @kind object;
+  #L3a79fe.  call `<init>`(v0, v1, v2) @signature `Landroid/content/Intent;.<init>:(Landroid/content/Context;Ljava/lang/Class;)V` @kind direct;
+  #L3a7a04.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a7a0a.  v1:= temp @kind object;
+  #L3a7a0c.  call `startActivity`(v1, v0) @signature `Landroidx/fragment/app/FragmentActivity;.startActivity:(Landroid/content/Intent;)V` @kind virtual;
+  #L3a7a12.  call temp:= `getActivity`(v3) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a7a18.  v0:= temp @kind object;
+  #L3a7a1a.  v1:= 2130771998I;
+  #L3a7a20.  v2:= 2130771999I;
+  #L3a7a26.  call `overridePendingTransition`(v0, v1, v2) @signature `Landroidx/fragment/app/FragmentActivity;.overridePendingTransition:(II)V` @kind virtual;
+  #L3a7a2c.  return @kind void;
+}
+procedure `void` `back`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v0 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.back:()V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3a7a58.  call `ReloadPage`(v0) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.ReloadPage:()V` @kind direct;
+  #L3a7a5e.  return @kind void;
+}
+procedure `void` `errorReceivedFromDataController`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v0 @kind this, `java.lang.String` v1 @kind object, `int` v2 ) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.errorReceivedFromDataController:(Ljava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3a7a70.  call `hideProgressBar`(v0) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.hideProgressBar:()V` @kind virtual;
+  #L3a7a76.  return @kind void;
+}
+procedure `void` `getDataFromAPI`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v4 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getDataFromAPI:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+    v2;
+    v3;
+
+  #L3a7abc.  call `showProgressBar`(v4) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.showProgressBar:()V` @kind virtual;
+  #L3a7ac2.  v0:= new `dream71.com.wasa.NetworkConnection.RemoteDataController`;
+  #L3a7ac6.  call temp:= `getActivity`(v4) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a7acc.  v1:= temp @kind object;
+  #L3a7ace.  call `<init>`(v0, v4, v1) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.<init>:(Ldream71/com/wasa/NetworkConnection/DataController;Landroid/content/Context;)V` @kind direct;
+  #L3a7ad4.  v1:= new `java.util.HashMap`;
+  #L3a7ad8.  call `<init>`(v1) @signature `Ljava/util/HashMap;.<init>:()V` @kind direct;
+  #L3a7ade.  v2:= new `java.lang.StringBuilder`;
+  #L3a7ae2.  call `<init>`(v2) @signature `Ljava/lang/StringBuilder;.<init>:()V` @kind direct;
+  #L3a7ae8.  v3:= "http://info.dwasa.org.bd:4040/api/water-treatmentlist?page=" @kind object;
+  #L3a7aec.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a7af2.  v3:= v4.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pageNumber` @type ^`int`;
+  #L3a7af6.  call temp:= `append`(v2, v3) @signature `Ljava/lang/StringBuilder;.append:(I)Ljava/lang/StringBuilder;` @kind virtual;
+  #L3a7afc.  call temp:= `toString`(v2) @signature `Ljava/lang/StringBuilder;.toString:()Ljava/lang/String;` @kind virtual;
+  #L3a7b02.  v2:= temp @kind object;
+  #L3a7b04.  v3:= 100I;
+  #L3a7b08.  call `getData`(v0, v2, v1, v3) @signature `Ldream71/com/wasa/NetworkConnection/RemoteDataController;.getData:(Ljava/lang/String;Ljava/util/HashMap;I)V` @kind virtual;
+  #L3a7b0e.  return @kind void;
+}
+procedure `void` `getItemPosition`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v0 @kind this, `int` v1 , `java.lang.String` v2 @kind object, `int` v3 ) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getItemPosition:(ILjava/lang/String;I)V` @AccessFlag PUBLIC {
+    temp;
+
+  #L3a7b20.  return @kind void;
+}
+procedure `void` `hideProgressBar`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.hideProgressBar:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3a7b84.  v0:= v1.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3a7b88.  if v0 == 0 then goto L3a7b92;
+  #L3a7b8c.  call `dismiss`(v0) @signature `Landroid/app/ProgressDialog;.dismiss:()V` @kind virtual;
+  #L3a7b92.  return @kind void;
+}
+procedure `android.view.View` `onCreateView`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v2 @kind this, `android.view.LayoutInflater` v3 @kind object, `android.view.ViewGroup` v4 @kind object, `android.os.Bundle` v5 @kind object) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.onCreateView:(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3a75c0.  v5:= 2131427402I;
+  #L3a75c6.  v0:= 0I;
+  #L3a75c8.  call temp:= `inflate`(v3, v5, v4, v0) @signature `Landroid/view/LayoutInflater;.inflate:(ILandroid/view/ViewGroup;Z)Landroid/view/View;` @kind virtual;
+  #L3a75ce.  v3:= temp @kind object;
+  #L3a75d0.  v4:= 1I;
+  #L3a75d2.  call `shouldShowBackButton`(v4) @signature `Ldream71/com/wasa/Main/MainActivity;.shouldShowBackButton:(Z)V` @kind static;
+  #L3a75d8.  call temp:= `bind`(v2, v3) @signature `Lbutterknife/ButterKnife;.bind:(Ljava/lang/Object;Landroid/view/View;)Lbutterknife/Unbinder;` @kind static;
+  #L3a75de.  v5:= temp @kind object;
+  #L3a75e0.  v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.unbinder` @type ^`butterknife.Unbinder` := v5 @kind object;
+  #L3a75e4.  v5:= `@@dream71.com.wasa.Main.MainActivity.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L3a75e8.  v0:= "" @kind object;
+  #L3a75ec.  call `setText`(v5, v0) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3a75f2.  v5:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L3a75f6.  v0:= "Water Treatment Plant" @kind object;
+  #L3a75fa.  call `setText`(v5, v0) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3a7600.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a7606.  v5:= temp @kind object;
+  #L3a7608.  call temp:= `getAppDatabase`(v5) @signature `Ldream71/com/wasa/database/DatabaseHelper;.getAppDatabase:(Landroid/content/Context;)Ldream71/com/wasa/database/DatabaseHelper;` @kind static;
+  #L3a760e.  v5:= temp @kind object;
+  #L3a7610.  v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.databaseHelper` @type ^`dream71.com.wasa.database.DatabaseHelper` := v5 @kind object;
+  #L3a7614.  v5:= new `androidx.recyclerview.widget.LinearLayoutManager`;
+  #L3a7618.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a761e.  v0:= temp @kind object;
+  #L3a7620.  call `<init>`(v5, v0) @signature `Landroidx/recyclerview/widget/LinearLayoutManager;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L3a7626.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3a762a.  call `setHasFixedSize`(v0, v4) @signature `Landroidx/recyclerview/widget/RecyclerView;.setHasFixedSize:(Z)V` @kind virtual;
+  #L3a7630.  v4:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3a7634.  call `setLayoutManager`(v4, v5) @signature `Landroidx/recyclerview/widget/RecyclerView;.setLayoutManager:(Landroidx/recyclerview/widget/RecyclerView$LayoutManager;)V` @kind virtual;
+  #L3a763a.  v4:= new `dream71.com.wasa.home.waterSupply.adapter.WTPAdapter`;
+  #L3a763e.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a7644.  v0:= temp @kind object;
+  #L3a7646.  v1:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeList` @type ^`java.util.List` @kind object;
+  #L3a764a.  call `<init>`(v4, v0, v1) @signature `Ldream71/com/wasa/home/waterSupply/adapter/WTPAdapter;.<init>:(Landroid/content/Context;Ljava/util/List;)V` @kind direct;
+  #L3a7650.  v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WTPAdapter` := v4 @kind object;
+  #L3a7654.  v4:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3a7658.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.nodeAdapter` @type ^`dream71.com.wasa.home.waterSupply.adapter.WTPAdapter` @kind object;
+  #L3a765c.  call `setAdapter`(v4, v0) @signature `Landroidx/recyclerview/widget/RecyclerView;.setAdapter:(Landroidx/recyclerview/widget/RecyclerView$Adapter;)V` @kind virtual;
+  #L3a7662.  v4:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.dtwList` @type ^`androidx.recyclerview.widget.RecyclerView` @kind object;
+  #L3a7666.  v0:= new `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment$1`;
+  #L3a766a.  call `<init>`(v0, v2, v5) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment$1;.<init>:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;Landroidx/recyclerview/widget/LinearLayoutManager;)V` @kind direct;
+  #L3a7670.  call `addOnScrollListener`(v4, v0) @signature `Landroidx/recyclerview/widget/RecyclerView;.addOnScrollListener:(Landroidx/recyclerview/widget/RecyclerView$OnScrollListener;)V` @kind virtual;
+  #L3a7676.  v4:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3a767a.  v5:= 4I;
+  #L3a767c.  v5:= new `int`[v5];
+  #L3a7680.  goto L3a76b8;
+  #L3a7686.  call `setColorSchemeResources`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setColorSchemeResources:([I)V` @kind virtual;
+  #L3a768c.  v4:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3a7690.  v5:= new `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment$2`;
+  #L3a7694.  call `<init>`(v5, v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment$2;.<init>:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;)V` @kind direct;
+  #L3a769a.  call temp:= `post`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.post:(Ljava/lang/Runnable;)Z` @kind virtual;
+  #L3a76a0.  v4:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.mSwipeRefreshLayout` @type ^`androidx.swiperefreshlayout.widget.SwipeRefreshLayout` @kind object;
+  #L3a76a4.  v5:= new `dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment$3`;
+  #L3a76a8.  call `<init>`(v5, v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment$3;.<init>:(Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;)V` @kind direct;
+  #L3a76ae.  call `setOnRefreshListener`(v4, v5) @signature `Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout;.setOnRefreshListener:(Landroidx/swiperefreshlayout/widget/SwipeRefreshLayout$OnRefreshListener;)V` @kind virtual;
+  #L3a76b4.  return v3 @kind object;
+  #L3a76b6.  
+  #L3a76b8.  v5:= (2131034173I, 17170453I, 17170457I, 17170451I) @kind object;
+  #L3a76cf.  goto L3a7686;
+}
+procedure `void` `onDestroy`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v1 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.onDestroy:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+
+  #L3a7ba4.  call `onDestroy`(v1) @signature `Landroidx/fragment/app/Fragment;.onDestroy:()V` @kind super;
+  #L3a7baa.  v0:= v1.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.unbinder` @type ^`butterknife.Unbinder` @kind object;
+  #L3a7bae.  call `unbind`(v0) @signature `Lbutterknife/Unbinder;.unbind:()V` @kind interface;
+  #L3a7bb4.  return @kind void;
+}
+procedure `void` `onResume`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.onResume:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3a7bc8.  call `onResume`(v2) @signature `Landroidx/fragment/app/Fragment;.onResume:()V` @kind super;
+  #L3a7bce.  v0:= 1I;
+  #L3a7bd0.  call `shouldShowBackButton`(v0) @signature `Ldream71/com/wasa/Main/MainActivity;.shouldShowBackButton:(Z)V` @kind static;
+  #L3a7bd6.  v0:= `@@dream71.com.wasa.Main.MainActivity.titleBar` @type ^`android.widget.TextView` @kind object;
+  #L3a7bda.  v1:= "" @kind object;
+  #L3a7bde.  call `setText`(v0, v1) @signature `Landroid/widget/TextView;.setText:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3a7be4.  return @kind void;
+}
+procedure `void` `showProgressBar`(`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment` v2 @kind this) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.showProgressBar:()V` @AccessFlag PUBLIC {
+    temp;
+    v0;
+    v1;
+
+  #L3a7bf8.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3a7bfc.  if v0 != 0 then goto L3a7c3c;
+  #L3a7c00.  v0:= new `android.app.ProgressDialog`;
+  #L3a7c04.  call temp:= `getActivity`(v2) @signature `Ldream71/com/wasa/home/waterSupply/WaterTreatmentPlant/WTPListFragment;.getActivity:()Landroidx/fragment/app/FragmentActivity;` @kind virtual;
+  #L3a7c0a.  v1:= temp @kind object;
+  #L3a7c0c.  call `<init>`(v0, v1) @signature `Landroid/app/ProgressDialog;.<init>:(Landroid/content/Context;)V` @kind direct;
+  #L3a7c12.  v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @type ^`android.app.ProgressDialog` := v0 @kind object;
+  #L3a7c16.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3a7c1a.  v1:= "Loading..." @kind object;
+  #L3a7c1e.  call `setMessage`(v0, v1) @signature `Landroid/app/ProgressDialog;.setMessage:(Ljava/lang/CharSequence;)V` @kind virtual;
+  #L3a7c24.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3a7c28.  v1:= 0I;
+  #L3a7c2a.  call `setIndeterminate`(v0, v1) @signature `Landroid/app/ProgressDialog;.setIndeterminate:(Z)V` @kind virtual;
+  #L3a7c30.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3a7c34.  v1:= 1I;
+  #L3a7c36.  call `setCancelable`(v0, v1) @signature `Landroid/app/ProgressDialog;.setCancelable:(Z)V` @kind virtual;
+  #L3a7c3c.  v0:= v2.`dream71.com.wasa.home.waterSupply.WaterTreatmentPlant.WTPListFragment.pDialog` @type ^`android.app.ProgressDialog` @kind object;
+  #L3a7c40.  call `show`(v0) @signature `Landroid/app/ProgressDialog;.show:()V` @kind virtual;
+  #L3a7c46.  return @kind void;
+}
